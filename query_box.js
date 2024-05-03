@@ -1,4 +1,4 @@
-class ChatBoxDropdowns {
+class QueryBox {
   static async fetchSettings() {
     const url = 'https://www.perplexity.ai/p/api/v1/user/settings';
     const response = await fetch(url);
@@ -79,7 +79,7 @@ class ChatBoxDropdowns {
       this.fetchSettings().then((settings) => {
         const aiModelCode = settings?.['default_model'];
         const aiModelName = aiModels.find((m) => m.code === aiModelCode)?.name;
-        if (aiModelName) aiModelSelector.setText(aiModelName);
+        if (aiModelName) chatModelSelector.setText(aiModelName);
 
         const imageModelCode = settings?.['default_image_generation_model'];
         const imageModelName = imageModels.find(
@@ -95,12 +95,12 @@ class ChatBoxDropdowns {
     const imageModels = getImageModels();
     let fetchedCollections = initializeCollections();
 
-    const aiModelSelector = UI.createDropdown({
+    const chatModelSelector = UI.createDropdown({
       selectorClass: 'model-selector',
       svgIcon: 'cpu',
     });
     const imageModelSelector = UI.createDropdown({
-      selectorClass: 'model-selector',
+      selectorClass: 'image-model-selector',
       svgIcon: 'image',
     });
 
@@ -109,23 +109,15 @@ class ChatBoxDropdowns {
       svgIcon: 'grid-round-2',
     });
 
-    // const aiModelSelector = UI.createDropdown('', 'model-selector', 'cpu');
-    // const imageModelSelector = UI.createDropdown('', 'model-selector', 'image');
-    // const collectionSelector = UI.createDropdown(
-    //   getDefaultCollectionTitle(),
-    //   'collection-selector',
-    //   'grid-round-2'
-    // );
-
     updateFromSettings(aiModels, imageModels);
 
-    setupModelSelector(aiModelSelector, aiModels, false);
+    setupModelSelector(chatModelSelector, aiModels, false);
     setupModelSelector(imageModelSelector, imageModels, true);
     setupCollectionSelector(collectionSelector, fetchedCollections);
 
     arrangeUI(
       $buttonBar,
-      aiModelSelector,
+      chatModelSelector,
       collectionSelector,
       imageModelSelector
     );
@@ -164,8 +156,8 @@ class ChatBoxDropdowns {
 
     function getImageModels() {
       return [
-        { name: 'Playground', code: 'default' },
         { name: 'DALL-E 3', code: 'dall-e-3' },
+        { name: 'Playground', code: 'default' },
         { name: 'SDXL', code: 'sdxl' },
       ];
     }
@@ -180,34 +172,42 @@ class ChatBoxDropdowns {
     function setupModelSelector(selector, models, isImageModel) {
       selector.$element.click(async () => {
         const { $popover, addSelection } = UI.createSelectionPopover(
-          selector.$element[0]
+          selector.$element[0],
+          isImageModel ? 'image-model-selector' : 'model-selector'
         );
+
         if (!$popover) return;
 
         $('main').append($popover);
+
         const closePopover = () => closeAndRemovePopover($popover);
 
         models.forEach((model) => {
           addSelection({
             name: model.name,
             onClick: async () => {
+              const oldModelName = selector.getText();
               selector.setText(model.name);
-              selector.$element.addClass('selector-loading');
 
-              await setModel(model.code, isImageModel);
+              try {
+                setModel(model.code, isImageModel);
 
-              unsafeWindow.WSHOOK_INSTANCE.persistentSettings.modelPreference =
-                model.code;
-
-              if (isImageModel) {
-                unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModel =
+                unsafeWindow.WSHOOK_INSTANCE.persistentSettings.modelPreference =
                   model.code;
+
+                if (isImageModel) {
+                  unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModel =
+                    model.code;
+                }
+
+                updateFromSettings(getAiModels(), getImageModels());
+              } catch (error) {
+                console.error('Failed to switch model', error);
+                alert('Failed to switch model');
+                selector.setText(oldModelName);
+              } finally {
+                closePopover();
               }
-
-              updateFromSettings(getAiModels(), getImageModels());
-              closePopover();
-
-              selector.$element.removeClass('selector-loading');
             },
           });
         });
@@ -219,7 +219,8 @@ class ChatBoxDropdowns {
     function setupCollectionSelector(selector, collections) {
       selector.$element.click(async () => {
         const { $popover, addSelection } = UI.createSelectionPopover(
-          selector.$element[0]
+          selector.$element[0],
+          'collection-selector'
         );
         if (!$popover) return;
 

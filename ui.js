@@ -16,12 +16,18 @@ class UI {
       setText: (text) => {
         $dropdown.find('#text').text(text);
       },
+      getText: () => $dropdown.find('#text').text(),
     };
   }
 
-  static createSelectionPopover(sourceElement) {
-    if ($('[data-tag="popper"]').length)
-      return $('[data-tag="popper"]').remove();
+  static createSelectionPopover(sourceElement, sourceElementId = '') {
+    if ($(`#${sourceElementId}-popover`).length) {
+      return $('#popover').remove();
+    }
+
+    if ($('#popover').length) {
+      $('#popover').remove();
+    }
 
     const createSelectionElement = (input) => {
       const { name, onClick } = input;
@@ -39,19 +45,16 @@ class UI {
     const $popper = $popover.find('[data-tag="popper"]');
     const $menuContaienr = $popover.find('[data-tag="menu"]');
 
+    $popover.attr('id', `${sourceElementId}-popover`);
+
     if (sourceElement) {
-      const { top, left, width, height } =
+      const { top, left, width, height, right } =
         sourceElement.getBoundingClientRect();
-      const popperWidth = $popper.outerWidth();
-      const scrollX = window.scrollX || document.documentElement.scrollLeft;
+
       const scrollY = window.scrollY || document.documentElement.scrollTop;
 
-      $popper.css(
-        'transform',
-        `translate(${left + (width + popperWidth * 2) - scrollX + 32}px, ${
-          top + height + scrollY
-        }px)`
-      );
+      $popper.css('left', `${left}px`);
+      $popper.css('top', `${top + height + scrollY}px`);
     }
 
     return {

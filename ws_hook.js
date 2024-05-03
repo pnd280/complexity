@@ -21,8 +21,8 @@ class WSHook {
     return this.#socket;
   }
 
-  sendMessage(message) {
-    this.getSocket().send(WSMessage.stringify(message));
+  async sendMessage(message) {
+    return this.getSocket().send(WSMessage.stringify(message));
   }
 
   registerMessageEvents() {
@@ -31,7 +31,9 @@ class WSHook {
     this.addInterceptedMessage({
       interceptedEvent: 'perplexity_ask',
       interceptedCallback: (payload) => {
-        const [eventName, eventData, ...rest] = payload;
+        const [query, eventData, ...rest] = payload;
+
+        if (eventData.isInternal) return payload;
 
         const searchFocus =
           this.persistentSettings.searchFocus || eventData.search_focus;
@@ -50,8 +52,20 @@ class WSHook {
           `Collection: ${targetCollectionUuid}`
         );
 
+        // Logger.log('Sending message to summary title...');
+        
+        // unsafeWindow.WSHOOK_INSTANCE.sendMessage({
+        //   messageCode: -1,
+        //   event: 'summary_title',
+        //   data: {
+        //     eventData,
+        //     ...rest,
+        //   }
+        // })
+
         return [
-          eventName,
+          // query + JSONUtils.unescape('\\n\\nsite:nextjs.org'),
+          query,
           {
             ...eventData,
             search_focus: searchFocus,
@@ -102,11 +116,11 @@ class WSHook {
 
       if (interceptedEvent !== event) return;
 
-      Logger.log(`Intercepting: '${event}'`, ...data);
+      // Logger.log(`Intercepting: '${event}'`, ...data);
 
       interceptedData = interceptedCallback(data);
 
-      Logger.log(`Intercepted: '${event}'`, ...interceptedData);
+      // Logger.log(`Intercepted: '${event}'`, ...interceptedData);
     });
 
     return WSMessage.stringify({
@@ -148,7 +162,7 @@ class WSHook {
     WebSocket.prototype.addEventListener = function (type, listener) {
       if (type === 'message') {
         const hookedListener = function (event) {
-          // Logger.log('ws received:', event.data);
+          Logger.log('ws received:', event.data);
           return listener.apply(this, arguments);
         };
         return originalAddEventListener.call(this, type, hookedListener);
@@ -165,7 +179,7 @@ class WSHook {
             this,
             'message',
             function (event) {
-              // Logger.log('ws onmessage:', event.data);
+              Logger.log('ws onmessage:', event.data);
               handler.apply(this, arguments);
             }
           );

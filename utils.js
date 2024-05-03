@@ -6,7 +6,7 @@ class Utils {
 }
 
 class Logger {
-  static #enable = true;
+  static #enable = false;
 
   static log(...args) {
     if (this.#enable) console.log(...args);
@@ -42,7 +42,7 @@ class JSONUtils {
       .replace(/\n/g, '\\n') // Escape newlines
       .replace(/\r/g, '\\r') // Escape carriage returns
       .replace(/\t/g, '\\t') // Escape tabs
-      .replace(/\b/g, '\\b') // Escape backspaces
+      .replace(/\\b/g, '\\b') // Escape backspaces
       .replace(/\f/g, '\\f'); // Escape form feeds
   }
 }

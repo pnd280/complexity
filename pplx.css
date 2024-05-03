@@ -2,16 +2,19 @@
   --ui-font  : "Golos Text", "Gitlab Sans";
   --mono-font: "JetBrains Mono NL";
 
-  --background-color   : #181818;
-  --accent-color       : rgb(0 122 255);
-  --accent-color-darker: rgb(0 122 255 / 50%);
-  --sidebar-color      : #1f1f1f;
-  --secondary-color    : var(--accent-color);
-  --text-off           : #8d8d8d;
-  --text-main          : #e8e8e8;
+  --background-color      : #181818;
+  /* --accent-color       : rgb(108, 92, 231);
+  --accent-color-darker   : rgba(108, 92, 231, .5); */
+  --accent-color          : rgb(0 122 255);
+  --accent-color-darker   : rgb(0 122 255 / 50%);
+  --sidebar-color         : #1f1f1f;
+  --secondary-color       : var(--accent-color);
+  --text-off              : #8d8d8d;
+  --text-main             : #e8e8e8;
 }
 
 .model-selector,
+.image-model-selector,
 .collection-selector {
   padding: .5rem;
 }
@@ -43,6 +46,7 @@
 }
 
 @media (max-width: 768px) {
+
   .model-selector-wrapper,
   .collection-selector-wrapper {
     display      : block;
@@ -225,6 +229,12 @@ html.dark,
 .selection\:text-textMain::selection,
 .selection\:bg-superDuper ::selection {
   color: var(--accent-color) !important;
+}
+
+.selection\:text-textMain::selection,
+.selection\:bg-superDuper ::selection {
+  color           : var(--accent-color) !important;
+  background-color: var(--background-color) !important;
 }
 
 /* @media (min-width: 768px) {

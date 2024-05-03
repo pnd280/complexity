@@ -30,7 +30,7 @@
     waitForSocket();
 
     Utils.setImmediateInterval(() => {
-      ChatBoxDropdowns.createDropdowns();
+      QueryBox.createDropdowns();
       UITweaks.declutterCollectionPage();
       // UITweaks.hideThreadShareButtons();
       // UITweaks.populateCollectionButtons();
