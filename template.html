@@ -1,0 +1,184 @@
+<div class="md:h-full" id="selection">
+  <div class="md:h-full">
+    <div
+      class="relative cursor-pointer md:hover:bg-offsetPlus py-md px-sm md:p-sm rounded md:hover:dark:bg-offsetPlusDark transition-all duration-300 md:h-full -ml-sm md:ml-0 select-none rounded"
+    >
+      <div class="flex items-center justify-between relative">
+        <div
+          class="flex items-center gap-x-xs default font-sans text-sm font-medium text-textMain dark:text-textMainDark selection:bg-superDuper selection:text-textMain"
+        >
+          <span id="name"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-center items-center" id="popover">
+  <div class="ease-in-out duration-150 transition">
+    <div class="absolute left-0 top-0 z-30">
+      <div
+        data-tag="popper"
+        data-popper-reference-hidden="false"
+        data-popper-escaped="false"
+        data-popper-placement="bottom-end"
+        style="position: absolute; inset: 0px 0px auto auto"
+      >
+        <div
+          class="border animate-in ease-in-out fade-in zoom-in-95 duration-150 rounded shadow-sm p-xs border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-background dark:bg-backgroundDark"
+          style="overflow-y: auto !important; max-height: 250px"
+        >
+          <div
+            data-tag="menu"
+            class="min-w-[160px] max-w-[250px] border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-transparent"
+          >
+            <!-- selections -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="dropdown-wrapper"
+  class="flex items-center leading-none justify-center gap-1"
+>
+  <button
+    id="dropdown"
+    class="md:hover:bg-offsetPlus text-textOff dark:text-textOffDark md:hover:text-textMain dark:md:hover:bg-offsetPlusDark dark:md:hover:text-textMainDark font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded-full cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-sm px-2 font-medium h-8"
+  >
+    <div class="text-align-center relative truncate" id="text"></div>
+  </button>
+</div>
+
+<div id="thread-swap-collection" class="hoverable-text"></div>
+
+<div id="thread-remove-from-collection" class="hoverable-text"></div>
+
+<div id="collection-prompt-edit" class="hoverable-text"></div>
+
+<svg
+  aria-hidden="true"
+  focusable="false"
+  data-prefix="far"
+  data-icon="bars-filter"
+  class="svg-inline--fa fa-bars-filter fa-fw fa-1x"
+  role="img"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 448 512"
+>
+  <path
+    fill="currentColor"
+    d="M0 88C0 74.7 10.7 64 24 64H424c13.3 0 24 10.7 24 24s-10.7 24-24 24H24C10.7 112 0 101.3 0 88zM64 248c0-13.3 10.7-24 24-24H360c13.3 0 24 10.7 24 24s-10.7 24-24 24H88c-13.3 0-24-10.7-24-24zM288 408c0 13.3-10.7 24-24 24H184c-13.3 0-24-10.7-24-24s10.7-24 24-24h80c13.3 0 24 10.7 24 24z"
+  ></path>
+</svg>
+
+<svg
+  aria-hidden="true"
+  focusable="false"
+  data-prefix="far"
+  data-icon="shuffle"
+  class="svg-inline--fa fa-shuffle fa-fw fa-1x"
+  role="img"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+>
+  <path
+    fill="currentColor"
+    d="M425 31l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39H352c-12.6 0-24.4 5.9-32 16l-46 61.3-30-40 37.6-50.1C298.2 117 324.3 104 352 104h78.1L391 65c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0zM204 322.7l-37.6 50.1C149.8 395 123.7 408 96 408H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H96c12.6 0 24.4-5.9 32-16l46-61.3 30 40zM391 287c9.4-9.4 24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39H352c-27.7 0-53.8-13-70.4-35.2L128 168c-7.6-10.1-19.4-16-32-16H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H96c27.7 0 53.8 13 70.4 35.2L320 344c7.6 10.1 19.4 16 32 16h78.1l-39-39c-9.4-9.4-9.4-24.6 0-33.9z"
+  ></path>
+</svg>
+
+<svg
+  aria-hidden="true"
+  focusable="false"
+  data-prefix="far"
+  data-icon="xmark"
+  class="svg-inline--fa fa-xmark fa-fw"
+  role="img"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 384 512"
+>
+  <path
+    fill="currentColor"
+    d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
+  ></path>
+</svg>
+
+<svg
+  aria-hidden="true"
+  focusable="false"
+  data-prefix="far"
+  data-icon="grid-round-2"
+  class="svg-inline--fa fa-grid-round-2 fa-fw"
+  role="img"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+>
+  <path
+    fill="currentColor"
+    d="M128 176a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm96-48A96 96 0 1 1 32 128a96 96 0 1 1 192 0zM128 432a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm96-48A96 96 0 1 1 32 384a96 96 0 1 1 192 0zM336 128a48 48 0 1 0 96 0 48 48 0 1 0 -96 0zm48 96a96 96 0 1 1 0-192 96 96 0 1 1 0 192zm0 208a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm96-48a96 96 0 1 1 -192 0 96 96 0 1 1 192 0z"
+  ></path>
+</svg>
+
+<svg
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  data-icon="cpu"
+  style="width: 1rem; height: 1rem"
+  viewBox="0 0 24 24"
+>
+  <path
+    d="M9 2V4M15 2V4M9 20V22M15 20V22M20 9H22M20 14H22M2 9H4M2 14H4M8.8 20H15.2C16.8802 20 17.7202 20 18.362 19.673C18.9265 19.3854 19.3854 18.9265 19.673 18.362C20 17.7202 20 16.8802 20 15.2V8.8C20 7.11984 20 6.27976 19.673 5.63803C19.3854 5.07354 18.9265 4.6146 18.362 4.32698C17.7202 4 16.8802 4 15.2 4H8.8C7.11984 4 6.27976 4 5.63803 4.32698C5.07354 4.6146 4.6146 5.07354 4.32698 5.63803C4 6.27976 4 7.11984 4 8.8V15.2C4 16.8802 4 17.7202 4.32698 18.362C4.6146 18.9265 5.07354 19.3854 5.63803 19.673C6.27976 20 7.11984 20 8.8 20ZM10.6 15H13.4C13.9601 15 14.2401 15 14.454 14.891C14.6422 14.7951 14.7951 14.6422 14.891 14.454C15 14.2401 15 13.9601 15 13.4V10.6C15 10.0399 15 9.75992 14.891 9.54601C14.7951 9.35785 14.6422 9.20487 14.454 9.10899C14.2401 9 13.9601 9 13.4 9H10.6C10.0399 9 9.75992 9 9.54601 9.10899C9.35785 9.20487 9.20487 9.35785 9.10899 9.54601C9 9.75992 9 10.0399 9 10.6V13.4C9 13.9601 9 14.2401 9.10899 14.454C9.20487 14.6422 9.35785 14.7951 9.54601 14.891C9.75992 15 10.0399 15 10.6 15Z"
+    stroke="currentColor"
+    stroke-width="2"
+  ></path>
+</svg>
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  data-icon="image"
+  style="width: 1rem; height: 1rem"
+>
+  <path
+    d="M14.2639 15.9375L12.5958 14.2834C11.7909 13.4851 11.3884 13.086 10.9266 12.9401C10.5204 12.8118 10.0838 12.8165 9.68048 12.9536C9.22188 13.1095 8.82814 13.5172 8.04068 14.3326L4.04409 18.2801M14.2639 15.9375L14.6053 15.599C15.4112 14.7998 15.8141 14.4002 16.2765 14.2543C16.6831 14.126 17.12 14.1311 17.5236 14.2687C17.9824 14.4251 18.3761 14.8339 19.1634 15.6514L20 16.4934M14.2639 15.9375L18.275 19.9565M18.275 19.9565C17.9176 20 17.4543 20 16.8 20H7.2C6.07989 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4.12796 18.7313 4.07512 18.5321 4.04409 18.2801M18.275 19.9565C18.5293 19.9256 18.7301 19.8727 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V16.4934M4.04409 18.2801C4 17.9221 4 17.4575 4 16.8V7.2C4 6.0799 4 5.51984 4.21799 5.09202C4.40973 4.71569 4.71569 4.40973 5.09202 4.21799C5.51984 4 6.07989 4 7.2 4H16.8C17.9201 4 18.4802 4 18.908 4.21799C19.2843 4.40973 19.5903 4.71569 19.782 5.09202C20 5.51984 20 6.0799 20 7.2V16.4934M17 8.99989C17 10.1045 16.1046 10.9999 15 10.9999C13.8954 10.9999 13 10.1045 13 8.99989C13 7.89532 13.8954 6.99989 15 6.99989C16.1046 6.99989 17 7.89532 17 8.99989Z"
+    stroke="currentColor"
+    stroke-width="2"
+  ></path>
+</svg>
+
+<svg
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  data-icon="robot"
+  style="width: 1rem; height: 1rem"
+  viewBox="0 0 24 24"
+>
+  <g id="SVGRepo_iconCarrier">
+    <path
+      d="M9 15C8.44771 15 8 15.4477 8 16C8 16.5523 8.44771 17 9 17C9.55229 17 10 16.5523 10 16C10 15.4477 9.55229 15 9 15Z"
+      fill="currentColor"
+    ></path>
+    <path
+      d="M14 16C14 15.4477 14.4477 15 15 15C15.5523 15 16 15.4477 16 16C16 16.5523 15.5523 17 15 17C14.4477 17 14 16.5523 14 16Z"
+      fill="currentColor"
+    ></path>
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M12 1C10.8954 1 10 1.89543 10 3C10 3.74028 10.4022 4.38663 11 4.73244V7H6C4.34315 7 3 8.34315 3 10V20C3 21.6569 4.34315 23 6 23H18C19.6569 23 21 21.6569 21 20V10C21 8.34315 19.6569 7 18 7H13V4.73244C13.5978 4.38663 14 3.74028 14 3C14 1.89543 13.1046 1 12 1ZM5 10C5 9.44772 5.44772 9 6 9H7.38197L8.82918 11.8944C9.16796 12.572 9.86049 13 10.618 13H13.382C14.1395 13 14.832 12.572 15.1708 11.8944L16.618 9H18C18.5523 9 19 9.44772 19 10V20C19 20.5523 18.5523 21 18 21H6C5.44772 21 5 20.5523 5 20V10ZM13.382 11L14.382 9H9.61803L10.618 11H13.382Z"
+      fill="currentColor"
+    ></path>
+    <path
+      d="M1 14C0.447715 14 0 14.4477 0 15V17C0 17.5523 0.447715 18 1 18C1.55228 18 2 17.5523 2 17V15C2 14.4477 1.55228 14 1 14Z"
+      fill="currentColor"
+    ></path>
+    <path
+      d="M22 15C22 14.4477 22.4477 14 23 14C23.5523 14 24 14.4477 24 15V17C24 17.5523 23.5523 18 23 18C22.4477 18 22 17.5523 22 17V15Z"
+      fill="currentColor"
+    ></path>
+  </g>
+</svg>

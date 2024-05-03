@@ -1,0 +1,239 @@
+:root {
+  --ui-font  : "Golos Text", "Gitlab Sans";
+  --mono-font: "JetBrains Mono NL";
+
+  --background-color   : #181818;
+  --accent-color       : rgb(0 122 255);
+  --accent-color-darker: rgb(0 122 255 / 50%);
+  --sidebar-color      : #1f1f1f;
+  --secondary-color    : var(--accent-color);
+  --text-off           : #8d8d8d;
+  --text-main          : #e8e8e8;
+}
+
+.model-selector,
+.collection-selector {
+  padding: .5rem;
+}
+
+.selector-loading div#text {
+  color     : var(--text-off) !important;
+  font-style: italic;
+}
+
+#collection-button-container {
+  display     : flex;
+  gap         : .25rem;
+  align-items : center;
+  margin-right: .5rem;
+}
+
+#thread-swap-collection,
+#thread-remove-from-collection {
+  cursor   : pointer;
+  font-size: .8rem;
+}
+
+.hoverable-text {
+  color: var(--text-off) !important;
+}
+
+.hoverable-text:hover {
+  color: var(--text-main) !important;
+}
+
+@media (max-width: 768px) {
+  .model-selector-wrapper,
+  .collection-selector-wrapper {
+    display      : block;
+    margin-right : 0;
+    margin-bottom: 8px;
+  }
+
+  .model-selector,
+  .collection-selector {
+    width: 100%;
+  }
+
+  .model-selector-text,
+  .collection-selector-text {
+    max-width: 120px;
+  }
+}
+
+.max-w-threadWidth {
+  max-width: 1300px;
+}
+
+.font-sans,
+.font-display {
+  --font-fk-grotesk     : var(--ui-font);
+  --font-fk-grotesk-neue: var(--ui-font);
+}
+
+code {
+  font-family: var(--mono-font) !important;
+}
+
+.dark .data-\[state\=checked\]\:dark\:before\:\!bg-superDark[data-state=checked]:before {
+  background-color: var(--accent-color) !important;
+}
+
+.prose :where(code):not(:where([class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"] *))::after {
+  content: "";
+}
+
+.prose :where(code):not(:where([class~="not-prose"] *)) {
+  color           : var(--accent-color) !important;
+  background-color: var(--sidebar-color);
+  padding         : .1rem .3125rem;
+  border-radius   : .375rem;
+}
+
+
+.citation>div>span>div {
+  background-color: var(--accent-color) !important;
+  color           : white !important;
+  border-radius   : .375rem !important;
+}
+
+.citation>div>span>div:not(:hover) {
+  opacity: .5;
+}
+
+strong,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--accent-color) !important;
+}
+
+th {
+  border: 1px solid rgb(56 56 58/var(--tw-border-opacity)) !important;
+  color : white !important;
+}
+
+.pb-\[124px\].pt-md.md\:pt-0>div>div:nth-child(1)>div>div>div:last-child {
+  border-color: var(--accent-color-darker) !important;
+}
+
+@media (max-width: 50rem) {
+  .min-w-\[790px\] {
+    min-width: 80vw;
+  }
+}
+
+/* Background */
+html,
+html.dark,
+:is(.dark .dark\:bg-backgroundDark) {
+  background-color: var(--background-color) !important;
+}
+
+/* Side nav */
+:is(.dark .dark\:bg-offsetDark),
+:is(.dark .dark\:\!bg-offsetDark),
+:is(.dark .dark\:focus\:bg-offsetDark:focus),
+:is(.dark .md\:dark\:hover\:bg-offsetDark:hover) {
+  background-color: var(--sidebar-color);
+}
+
+/* :is(.dark .dark\:border-borderMainDark),
+:is(.dark .dark\:border-borderMainDark\/60),
+:is(.dark .dark\:border-borderMainDark\/80),
+:is(.dark .dark\:divide-borderMainDark\/80) > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--secondary-color);
+} */
+
+/* Main body */
+/* :is(.dark .dark\:bg-offsetPlusDark),
+.bg-offsetPlusDark,
+:is(.dark .md\:hover\:dark\:bg-offsetPlusDark):hover,
+:is(.dark .md\:dark\:hover\:bg-offsetPlusDark:hover) {
+  background-color: var(--secondary-color);
+}
+
+:is(.dark .dark\:\!bg-offsetDark),
+.ePundr,
+.ePundr > span,
+.codeWrapper > span {
+  background-color: var(--secondary-color) !important;
+} */
+
+.hebEKa,
+.gnFpAY {
+  background-color: var(--sidebar-color) !important;
+}
+
+.selection\:bg-superDuper::selection,
+.selection\:text-textMain ::selection,
+.dark .dark\:selection\:text-super ::selection {
+  background-color: var(--sidebar-color) !important;
+  color           : var(--accent-color) !important;
+}
+
+.fill-super,
+.group:hover .group-hover\:fill-superDuper,
+:is(.dark .dark\:fill-superDark) {
+  fill: var(--accent-color);
+}
+
+.caret-superDuper {
+  caret-color: var(--accent-color);
+}
+
+.stroke-super,
+.group:hover .group-hover\:stroke-superDuper,
+:is(.dark .dark\:stroke-superDark),
+:is(.dark .dark\:stroke-textMainDark) {
+  stroke: var(--accent-color);
+}
+
+:is(.dark .dark\:outline-superDark) {
+  outline-color: var(--accent-color);
+}
+
+.hover\:\!ring-super:hover,
+:is(.dark .dark\:focus\:ring-borderMainDark:focus) {
+  --tw-ring-color: var(--accent-color) !important;
+}
+
+/* :is(.dark .dark\:ring-borderMainDark) {
+  --tw-ring-color: var(--secondary-color);
+} */
+
+.ring-2 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+.bg-super,
+.md\:hover\:bg-super:hover,
+:is(.dark .dark\:bg-textMainDark),
+:is(.dark .dark\:bg-superDark) {
+  background-color: var(--accent-color);
+  color           : white;
+}
+
+.text-super,
+.group:hover .md\:group-hover\:text-super,
+.prose :where(a):not(:where([class~="not-prose"] *)),
+:is(.dark .dark\:md\:hover\:text-textMainDark:hover),
+.selection\:text-textMain::selection,
+.selection\:bg-superDuper ::selection {
+  color: var(--accent-color) !important;
+}
+
+/* @media (min-width: 768px) {
+  :is(.dark .dark\:md\:hover\:bg-offsetPlusDark:hover) {
+    background-color: var(--secondary-color);
+  }
+} */
+
+/* LLama */
+/* .justify-end.text-right .grow.min-w-0 .prose {
+  color: var(--background-color);
+} */
