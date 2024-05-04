@@ -39,12 +39,12 @@ class WSHook {
           this.persistentSettings.searchFocus || eventData.search_focus;
 
         const modelPreference =
-          this.persistentSettings.modelPreference || eventData.model_preference;
+          this.persistentSettings.chatModel || eventData.model_preference;
 
         const querySource = eventData.query_source;
 
         const targetCollectionUuid =
-          this.persistentSettings.collection || undefined;
+          this.persistentSettings.collection.uuid || undefined;
 
         Logger.log(
           `Focus: ${searchFocus}`,

@@ -17,7 +17,7 @@
     init();
   }
 
-  function init() {
+  async function init() {
     initGlobals();
 
     $('<style>')
@@ -27,14 +27,14 @@
 
     unsafeWindow.WSHOOK_INSTANCE.hookSocket();
 
-    waitForSocket();
+    await waitForSocket();
 
     Utils.setImmediateInterval(() => {
       QueryBox.createDropdowns();
-      UITweaks.declutterCollectionPage();
+      // UITweaks.declutterCollectionPage();
       // UITweaks.hideThreadShareButtons();
       // UITweaks.populateCollectionButtons();
-    }, 500);
+    }, 100);
   }
 
   function initGlobals() {

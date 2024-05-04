@@ -21,12 +21,18 @@ class UI {
   }
 
   static createSelectionPopover(sourceElement, sourceElementId = '') {
-    if ($(`#${sourceElementId}-popover`).length) {
-      return $('#popover').remove();
+    const ownPopoverId = `#${sourceElementId}-popover`;
+
+    if ($(ownPopoverId).length) {
+      return $(ownPopoverId).each((_, element) => {
+        element.remove();
+      });
     }
 
-    if ($('#popover').length) {
-      $('#popover').remove();
+    if ($(`.popover:not(${ownPopoverId})`).length) {
+      $(`.popover:not(${ownPopoverId})`).each((_, element) => {
+        element.remove();
+      });
     }
 
     const createSelectionElement = (input) => {
