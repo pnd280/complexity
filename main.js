@@ -4,6 +4,8 @@
   init();
 
   async function init() {
+    unsafeWindow.$ = $; // for debugging purposes
+
     initGlobals();
 
     $('<style>')
@@ -24,7 +26,7 @@
   }
 
   function initGlobals() {
-    const scriptLatestBuildId = 'rNzricWEbw-kvUOw4sajX';
+    const scriptLatestBuildId = '7aCnXXs0TIGkrB5u5yDhl';
 
     window.BUILD_ID = $('script#__NEXT_DATA__')
       .text()
@@ -33,7 +35,8 @@
 
     if (window.BUILD_ID !== scriptLatestBuildId) {
       console.warn(
-        "WARNING: Perplexity web app's new build id detected! The script maybe outdated and some features may or may not work as expected."
+        "WARNING: Perplexity web app's new build id detected! The script maybe outdated and some features may or may not work as expected.",
+        "BUILD_ID: ", window.BUILD_ID
       );
     }
 

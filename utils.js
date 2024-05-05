@@ -3,6 +3,17 @@ class Utils {
     callback();
     return setInterval(callback, interval, ...args);
   }
+
+  static whereAmI() {
+    const location = window.location.href;
+
+    switch (true) {
+      case location.startsWith("https://www.perplexity.ai/collections"):
+        return "collection";
+      case location.startsWith("https://www.perplexity.ai/search"):
+        return "thread";
+    }
+  }
 }
 
 class Logger {

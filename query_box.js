@@ -46,10 +46,7 @@ class QueryBox {
     const initializeCollections = async () => {
       const data = await this.experimental_fetchCollections();
 
-      const collections = [
-        { title: 'Default', uuid: undefined },
-        ...data,
-      ];
+      const collections = [{ title: 'Default', uuid: undefined }, ...data];
 
       return collections;
     };
@@ -60,7 +57,8 @@ class QueryBox {
       const chatModelCode = data?.['default_model'];
       const imageModelCode = data?.['default_image_generation_model'];
 
-      unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode = chatModelCode;
+      unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode =
+        chatModelCode;
       unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModelCode =
         imageModelCode;
 
@@ -74,7 +72,8 @@ class QueryBox {
       return (
         getPredefinedChatModels().find(
           (m) =>
-            m.code === unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode
+            m.code ===
+            unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode
         )?.name || ''
       );
     };
@@ -141,9 +140,12 @@ class QueryBox {
     function initializeButtonBar() {
       const $attachButton = $('div:contains("Attach")');
 
-      let $buttonBar = $attachButton.closest(
-        '.flex.bg-background.dark\\:bg-offsetDark.rounded-l-lg.col-start-1.row-start-2.-ml-2'
-      );
+      let $buttonBar = $attachButton
+        .closest(
+          '.flex.bg-background.dark\\:bg-offsetDark.rounded-l-lg.col-start-1.row-start-2.-ml-2'
+        )
+        .last();
+
       if (!$buttonBar.length || $buttonBar.children().length > 2) return null;
 
       $buttonBar
@@ -156,7 +158,7 @@ class QueryBox {
         .find('> button > div > div')
         .addClass('hidden');
 
-      return $buttonBar.length > 1 ? $buttonBar.last() : $buttonBar;
+      return $buttonBar;
     }
 
     function getPredefinedChatModels() {
@@ -273,7 +275,13 @@ class QueryBox {
     ) {
       $buttonBar.children().first().after(imageModelSelector.$element);
       $buttonBar.children().first().after(chatModelSelector.$element);
-      $buttonBar.children().first().after(collectionSelector.$element);
+
+      if (
+        Utils.whereAmI() !== 'collection' ||
+        $buttonBar.closest('div[data-testid="quick-search-modal"]').length
+      )
+        $buttonBar.children().first().after(collectionSelector.$element);
+
       $buttonBar.addClass('flex-wrap col-span-2');
     }
 
