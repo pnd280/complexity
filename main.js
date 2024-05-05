@@ -1,21 +1,7 @@
-// @resource     CSS file:///C:/Users/ngocdg/Desktop/fedora/PPLX_userscript/pplx.css
-
 (() => {
   'use strict';
 
-  if (typeof jQuery === 'undefined') {
-    const script = document.createElement('script');
-    script.src =
-      'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js';
-    script.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(script);
-
-    script.onload = () => {
-      init();
-    };
-  } else {
-    init();
-  }
+  init();
 
   async function init() {
     initGlobals();
@@ -27,10 +13,10 @@
 
     unsafeWindow.WSHOOK_INSTANCE.hookSocket();
 
-    await waitForSocket();
+    await waitForSocketHooking();
 
     Utils.setImmediateInterval(() => {
-      QueryBox.createDropdowns();
+      QueryBox.createSelectors();
       // UITweaks.declutterCollectionPage();
       // UITweaks.hideThreadShareButtons();
       // UITweaks.populateCollectionButtons();
@@ -38,10 +24,18 @@
   }
 
   function initGlobals() {
+    const scriptLatestBuildId = 'rNzricWEbw-kvUOw4sajX';
+
     window.BUILD_ID = $('script#__NEXT_DATA__')
       .text()
       .match(/"buildId":"(.+?)"/)[1]
       .trim();
+
+    if (window.BUILD_ID !== scriptLatestBuildId) {
+      console.warn(
+        "WARNING: Perplexity web app's new build id detected! The script maybe outdated and some features may or may not work as expected."
+      );
+    }
 
     window.$UI_HTML = $('<template>').append(
       $.parseHTML(GM_getResourceText('UI'))
@@ -50,7 +44,7 @@
     unsafeWindow.WSHOOK_INSTANCE = new WSHook();
   }
 
-  function waitForSocket() {
+  function waitForSocketHooking() {
     return new Promise((resolve) => {
       const interval = Utils.setImmediateInterval(() => {
         const activeSocket = unsafeWindow.WSHOOK_INSTANCE.getSocket();
@@ -61,7 +55,7 @@
 
         clearInterval(interval);
         resolve();
-      }, 100);
+      }, 10);
     });
   }
 })();

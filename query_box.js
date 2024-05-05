@@ -1,6 +1,4 @@
 class QueryBox {
-  static #cache = {};
-
   static async fetchSettings() {
     const url = 'https://www.perplexity.ai/p/api/v1/user/settings';
 
@@ -9,11 +7,6 @@ class QueryBox {
     if (!response.ok) throw new Error('Failed to fetch settings');
 
     const data = await response.json();
-
-    this.#cache.settings = {
-      chatModelCode: data?.['default_model'],
-      imageModelCode: data?.['default_image_generation_model'],
-    };
 
     return data;
   }
@@ -45,36 +38,7 @@ class QueryBox {
     return collections;
   }
 
-  static async fetchCollections() {
-    const url = 'https://www.perplexity.ai/library';
-    const html = await fetch(url);
-
-    if (!html.ok) throw new Error('Failed to fetch collections');
-
-    const content = await html.text();
-
-    const data = content.match(
-      /<script id="__NEXT_DATA__" type="application\/json">(.+?)<\/script>/s
-    );
-
-    const fetchedCollections = JSON.parse(data[1]).props.pageProps
-      .dehydratedState.queries[1].state.data.pages[0];
-
-    if (!fetchedCollections?.length) return [];
-
-    const collections = [];
-
-    fetchedCollections.forEach((collection) => {
-      collections.push({
-        title: collection.title,
-        uuid: collection.uuid,
-      });
-    });
-
-    return collections;
-  }
-
-  static createDropdowns() {
+  static createSelectors() {
     const $buttonBar = initializeButtonBar();
 
     if (!$buttonBar) return;
@@ -82,31 +46,35 @@ class QueryBox {
     const initializeCollections = async () => {
       const data = await this.experimental_fetchCollections();
 
-      this.#cache.collections = [
+      const collections = [
         { title: 'Default', uuid: undefined },
         ...data,
       ];
 
-      return this.#cache.collections;
+      return collections;
     };
 
     const initializeDefaultModels = async () => {
       const data = await this.fetchSettings();
 
-      this.#cache.settings.chatModelCode = data?.['default_model'];
-      this.#cache.settings.imageModelCode =
-        data?.['default_image_generation_model'];
+      const chatModelCode = data?.['default_model'];
+      const imageModelCode = data?.['default_image_generation_model'];
+
+      unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode = chatModelCode;
+      unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModelCode =
+        imageModelCode;
 
       return {
-        chatModelCode: this.#cache.settings.chatModelCode,
-        imageModelCode: this.#cache.settings.imageModelCode,
+        chatModelCode,
+        imageModelCode,
       };
     };
 
     const getDefaultChatModelName = () => {
       return (
         getPredefinedChatModels().find(
-          (m) => m.code === this.#cache.settings?.chatModelCode
+          (m) =>
+            m.code === unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode
         )?.name || ''
       );
     };
@@ -114,7 +82,9 @@ class QueryBox {
     const getDefaultImageModelName = () => {
       return (
         getPredefinedImageModels().find(
-          (m) => m.code === this.#cache.settings?.imageModelCode
+          (m) =>
+            m.code ===
+            unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModelCode
         )?.name || ''
       );
     };
@@ -125,6 +95,12 @@ class QueryBox {
         'Default'
       );
     };
+
+    function populateDefaults() {
+      chatModelSelector.setText(getDefaultChatModelName());
+      imageModelSelector.setText(getDefaultImageModelName());
+      collectionSelector.setText(getDefaultCollectionTitle());
+    }
 
     const chatModelSelector = UI.createDropdown({
       selectorClass: 'model-selector',
@@ -139,17 +115,13 @@ class QueryBox {
       svgIcon: 'grid-round-2',
     });
 
-    chatModelSelector.setText(getDefaultChatModelName());
-    imageModelSelector.setText(getDefaultImageModelName());
-    collectionSelector.setText(getDefaultCollectionTitle());
+    populateDefaults();
 
     initializeDefaultModels().then(() => {
       const chatModels = getPredefinedChatModels();
       const imageModels = getPredefinedImageModels();
 
-      chatModelSelector.setText(getDefaultChatModelName());
-      imageModelSelector.setText(getDefaultImageModelName());
-      collectionSelector.setText(getDefaultCollectionTitle());
+      populateDefaults();
 
       setupModelSelector(chatModelSelector, chatModels, false);
       setupModelSelector(imageModelSelector, imageModels, true);
@@ -230,10 +202,10 @@ class QueryBox {
                 setModel(model.code, isImageModel);
 
                 if (isImageModel) {
-                  unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModel =
+                  unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModelCode =
                     model.code;
                 } else {
-                  unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModel =
+                  unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode =
                     model.code;
                 }
 

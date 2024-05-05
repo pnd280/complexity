@@ -1,16 +1,17 @@
 class WSHook {
   #socket = undefined;
-  #registeredInterceptedMessages = [];
+  #registeredInterceptingMessages = [];
+
   persistentSettings = {};
 
   constructor() {}
 
-  addInterceptedMessage(message) {
-    this.#registeredInterceptedMessages.push(message);
+  addInterceptingMessage(message) {
+    this.#registeredInterceptingMessages.push(message);
   }
 
   getInterceptedMessages() {
-    return this.#registeredInterceptedMessages;
+    return this.#registeredInterceptingMessages;
   }
 
   setSocket(socket) {
@@ -26,78 +27,68 @@ class WSHook {
   }
 
   registerMessageEvents() {
-    if (!this.#socket) return;
+    if (!this.getSocket()) return;
 
-    this.addInterceptedMessage({
-      interceptedEvent: 'perplexity_ask',
-      interceptedCallback: (payload) => {
-        const [query, eventData, ...rest] = payload;
+    [
+      {
+        interceptedEvent: 'perplexity_ask',
+        interceptedCallback: (payload) => {
+          const [query, eventData, ...rest] = payload;
 
-        if (eventData.isInternal) return payload;
+          if (eventData.isInternal) return payload;
 
-        const searchFocus =
-          this.persistentSettings.searchFocus || eventData.search_focus;
+          const searchFocus =
+            this.persistentSettings.searchFocus || eventData.search_focus;
 
-        const modelPreference =
-          this.persistentSettings.chatModel || eventData.model_preference;
+          const modelPreference =
+            this.persistentSettings.chatModelCode || eventData.model_preference;
 
-        const querySource = eventData.query_source;
+          const querySource = eventData.query_source;
 
-        const targetCollectionUuid =
-          this.persistentSettings.collection.uuid || undefined;
+          const targetCollectionUuid = this.persistentSettings.collection?.uuid;
 
-        Logger.log(
-          `Focus: ${searchFocus}`,
-          `Model: ${modelPreference}`,
-          `Collection: ${targetCollectionUuid}`
-        );
+          Logger.log(
+            `Focus: ${searchFocus}`,
+            `Model: ${modelPreference}`,
+            `Collection: ${targetCollectionUuid}`
+          );
 
-        // Logger.log('Sending message to summary title...');
-        
-        // unsafeWindow.WSHOOK_INSTANCE.sendMessage({
-        //   messageCode: -1,
-        //   event: 'summary_title',
-        //   data: {
-        //     eventData,
-        //     ...rest,
-        //   }
-        // })
-
-        return [
-          // query + JSONUtils.unescape('\\n\\nsite:nextjs.org'),
-          query,
-          {
-            ...eventData,
-            search_focus: searchFocus,
-            model_preference:
-              querySource !== 'retry'
-                ? modelPreference
-                : eventData.model_preference,
-            target_collection_uuid: targetCollectionUuid,
-          },
-          ...rest,
-        ];
+          return [
+            // query + JSONUtils.unescape('\\n\\nsite:nextjs.org'),
+            query,
+            {
+              ...eventData,
+              search_focus: searchFocus,
+              model_preference:
+                querySource !== 'retry'
+                  ? modelPreference
+                  : eventData.model_preference,
+              target_collection_uuid:
+                querySource !== 'followup' ? targetCollectionUuid : undefined,
+            },
+            ...rest,
+          ];
+        },
       },
-    });
+      {
+        interceptedEvent: 'analytics_event',
+        interceptedCallback: (data) => {
+          const eventName = data[0].event_name;
 
-    this.addInterceptedMessage({
-      interceptedEvent: 'analytics_event',
-      interceptedCallback: (data) => {
-        const eventName = data[0].event_name;
+          if (eventName !== 'search focus click') return data;
 
-        if (eventName !== 'search focus click') return data;
+          const searchFocus = data[0].event_data.assistant;
 
-        const searchFocus = data[0].event_data.assistant;
+          this.persistentSettings.searchFocus = searchFocus || undefined;
 
-        this.persistentSettings.searchFocus = searchFocus || undefined;
+          Logger.log('Focus:', searchFocus);
 
-        Logger.log('Focus:', searchFocus);
-
-        return data;
+          return data;
+        },
       },
-    });
+    ].forEach((event) => this.addInterceptingMessage(event));
 
-    Logger.log('WS message events registered');
+    Logger.log('Socket intercepting messages registered');
   }
 
   #interceptMessage(originalMessage) {
@@ -116,11 +107,11 @@ class WSHook {
 
       if (interceptedEvent !== event) return;
 
-      // Logger.log(`Intercepting: '${event}'`, ...data);
+      Logger.log(`Intercepting: '${event}'`, ...data);
 
       interceptedData = interceptedCallback(data);
 
-      // Logger.log(`Intercepted: '${event}'`, ...interceptedData);
+      Logger.log(`Intercepted: '${event}'`, ...interceptedData);
     });
 
     return WSMessage.stringify({
@@ -136,7 +127,7 @@ class WSHook {
     // Hook into WebSocket send
     const originalSend = WebSocket.prototype.send;
     WebSocket.prototype.send = function (data) {
-      if (!self.#socket) {
+      if (!self.getSocket()) {
         Logger.log('Socket hooked');
         self.setSocket(this);
         self.registerMessageEvents();

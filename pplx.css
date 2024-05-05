@@ -200,6 +200,7 @@ html.dark,
   outline-color: var(--accent-color);
 }
 
+.dark .dark\:hover\:ring-superDark:hover,
 .hover\:\!ring-super:hover,
 :is(.dark .dark\:focus\:ring-borderMainDark:focus) {
   --tw-ring-color: var(--accent-color) !important;
