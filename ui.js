@@ -20,7 +20,7 @@ class UI {
     };
   }
 
-  static createSelectionPopover(sourceElement, sourceElementId = '') {
+  static createSelectionPopover(sourceElement, sourceElementId) {
     const ownPopoverId = `#${sourceElementId}-popover`;
 
     if ($(ownPopoverId).length) {
@@ -65,8 +65,9 @@ class UI {
 
     return {
       $popover,
-      addSelection: (input) => {
+      addSelection: ({ input, isSelected }) => {
         const $selection = createSelectionElement(input);
+        isSelected && $selection.addClass('selected', isSelected);
         $menuContaienr.append($selection);
       },
     };

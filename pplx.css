@@ -13,6 +13,15 @@
   --text-main             : #e8e8e8;
 }
 
+.max-w-screen-md {
+  max-width : 1300px;
+  transition: max-width 0.5s ease;
+}
+
+.selected span#name {
+  color: var(--accent-color) !important;
+}
+
 .model-selector,
 .image-model-selector,
 .collection-selector {
