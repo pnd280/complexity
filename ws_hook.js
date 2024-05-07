@@ -39,11 +39,13 @@ class WSHook {
             unsafeWindow.PERSISTENT_SETTINGS.focus || eventData.search_focus;
 
           const currentModelCode =
-            unsafeWindow.PERSISTENT_SETTINGS.chatModelCode || eventData.model_preference;
+            unsafeWindow.PERSISTENT_SETTINGS.chatModelCode ||
+            eventData.model_preference;
 
           const querySource = eventData.query_source;
 
-          const targetCollectionUuid = unsafeWindow.PERSISTENT_SETTINGS.collection?.uuid;
+          const targetCollectionUuid =
+            unsafeWindow.PERSISTENT_SETTINGS.collection?.uuid;
 
           switch (currentModelCode) {
             case 'claude3opus':
@@ -94,17 +96,9 @@ class WSHook {
       {
         interceptedEvent: 'analytics_event',
         interceptedCallback: (data) => {
-          const eventName = data[0].event_name;
+          Logger.log('Blocked telemetry:', data[0].event_name);
 
-          if (eventName !== 'search focus click') return data;
-
-          const searchFocus = data[0].event_data.assistant;
-
-          unsafeWindow.PERSISTENT_SETTINGS.focus = searchFocus || undefined;
-
-          Logger.log('Focus:', searchFocus);
-
-          return data;
+          return null; // block telemetry
         },
       },
     ].forEach((event) => this.addInterceptingMessage(event));
@@ -162,6 +156,8 @@ class WSHook {
       Logger.log('ws send:', data);
 
       const interceptedData = self.#interceptMessage(data);
+
+      if (!interceptedData) return;
 
       if (Array.isArray(interceptedData)) {
         interceptedData.forEach((element, index) => {
