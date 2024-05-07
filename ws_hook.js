@@ -2,8 +2,6 @@ class WSHook {
   #socket = undefined;
   #registeredInterceptingMessages = [];
 
-  persistentSettings = {};
-
   constructor() {}
 
   addInterceptingMessage(message) {
@@ -38,18 +36,31 @@ class WSHook {
           if (eventData.isInternal) return payload;
 
           const searchFocus =
-            this.persistentSettings.searchFocus || eventData.search_focus;
+            unsafeWindow.PERSISTENT_SETTINGS.focus || eventData.search_focus;
 
-          const modelPreference =
-            this.persistentSettings.chatModelCode || eventData.model_preference;
+          const currentModelCode =
+            unsafeWindow.PERSISTENT_SETTINGS.chatModelCode || eventData.model_preference;
 
           const querySource = eventData.query_source;
 
-          const targetCollectionUuid = this.persistentSettings.collection?.uuid;
+          const targetCollectionUuid = unsafeWindow.PERSISTENT_SETTINGS.collection?.uuid;
+
+          switch (currentModelCode) {
+            case 'claude3opus':
+              unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit -= 1;
+              break;
+            case 'turbo':
+              break;
+            default:
+              unsafeWindow.PERSISTENT_SETTINGS.queryLimit -= 1;
+              break;
+          }
+
+          ModelSelector.updateChatModelFn();
 
           Logger.log(
             `Focus: ${searchFocus}`,
-            `Model: ${modelPreference}`,
+            `Model: ${currentModelCode}`,
             `Collection: ${targetCollectionUuid}`
           );
 
@@ -61,13 +72,23 @@ class WSHook {
               search_focus: searchFocus,
               model_preference:
                 querySource !== 'retry'
-                  ? modelPreference
+                  ? currentModelCode
                   : eventData.model_preference,
               target_collection_uuid:
                 querySource !== 'followup' ? targetCollectionUuid : undefined,
             },
             ...rest,
           ];
+        },
+      },
+      {
+        interceptedEvent: 'create_image_for_entry',
+        interceptedCallback: (payload) => {
+          unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit -= 1;
+
+          ModelSelector.updateImageModelFn();
+
+          return payload;
         },
       },
       {
@@ -79,7 +100,7 @@ class WSHook {
 
           const searchFocus = data[0].event_data.assistant;
 
-          this.persistentSettings.searchFocus = searchFocus || undefined;
+          unsafeWindow.PERSISTENT_SETTINGS.focus = searchFocus || undefined;
 
           Logger.log('Focus:', searchFocus);
 
@@ -102,17 +123,19 @@ class WSHook {
 
     let interceptedData = [...data];
 
-    this.getInterceptedMessages().forEach((message) => {
+    for (const message of this.getInterceptedMessages()) {
       const { interceptedEvent, interceptedCallback } = message;
 
-      if (interceptedEvent !== event) return;
+      if (interceptedEvent !== event) continue;
 
       Logger.log(`Intercepting: '${event}'`, ...data);
 
       interceptedData = interceptedCallback(data);
 
       Logger.log(`Intercepted: '${event}'`, ...interceptedData);
-    });
+
+      break;
+    }
 
     return WSMessage.stringify({
       ...parsedMessage,
@@ -124,14 +147,17 @@ class WSHook {
   hookSocket() {
     const self = this;
 
+    const captureSocket = (socket) => {
+      if (this.getSocket() && this.getSocket().readyState === 1) return;
+      console.log('Socket hooked');
+      this.setSocket(socket);
+      this.registerMessageEvents();
+    };
+
     // Hook into WebSocket send
     const originalSend = WebSocket.prototype.send;
     WebSocket.prototype.send = function (data) {
-      if (!self.getSocket()) {
-        Logger.log('Socket hooked');
-        self.setSocket(this);
-        self.registerMessageEvents();
-      }
+      captureSocket(this);
 
       Logger.log('ws send:', data);
 
@@ -151,14 +177,17 @@ class WSHook {
     // Hook into WebSocket messages
     const originalAddEventListener = WebSocket.prototype.addEventListener;
     WebSocket.prototype.addEventListener = function (type, listener) {
-      if (type === 'message') {
-        const hookedListener = function (event) {
-          Logger.log('ws received:', event.data);
-          return listener.apply(this, arguments);
-        };
-        return originalAddEventListener.call(this, type, hookedListener);
-      } else {
-        return originalAddEventListener.apply(this, arguments);
+      switch (type) {
+        case 'message':
+          const hookedListener = function (event) {
+            captureSocket(this);
+
+            Logger.log('ws received:', event.data);
+            return listener.apply(this, arguments);
+          };
+          return originalAddEventListener.call(this, type, hookedListener);
+        default:
+          return originalAddEventListener.apply(this, arguments);
       }
     };
 
@@ -170,6 +199,8 @@ class WSHook {
             this,
             'message',
             function (event) {
+              captureSocket(this);
+
               Logger.log('ws onmessage:', event.data);
               handler.apply(this, arguments);
             }

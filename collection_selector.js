@@ -20,8 +20,11 @@ class CollectionSelector {
         title: collection.title,
         uuid: collection.uuid,
         instructions: collection.instructions,
+        url: collection.slug,
       });
     });
+
+    unsafeWindow.PERSISTENT_SETTINGS.collections = collections;
 
     return collections;
   }
@@ -29,15 +32,19 @@ class CollectionSelector {
   static async getDropdownItems() {
     const data = await CollectionSelector.fetchCollections();
 
-    const collections = [{ title: 'Default', uuid: undefined }, ...data];
+    const collections = [
+      { title: 'Default', dropdownTitle: 'Collection', uuid: undefined },
+      ...data,
+    ];
 
     return collections;
   }
 
   static getDefaultTitle() {
     return (
-      unsafeWindow.WSHOOK_INSTANCE.persistentSettings.collection?.title ||
-      'Default'
+      unsafeWindow.PERSISTENT_SETTINGS.collection?.dropdownTitle ||
+      unsafeWindow.PERSISTENT_SETTINGS.collection?.title ||
+      'Collection'
     );
   }
 
@@ -48,41 +55,196 @@ class CollectionSelector {
     });
   }
 
-  static setupSelector(selector, collections) {
-    selector.$element.click(async () => {
-      const { $popover, addSelection } = UI.createSelectionPopover(
-        selector.$element[0],
-        'collection-selector'
-      );
+  static setupSelectionContextMenu($selection) {
+    $selection.on('contextmenu', (e) => {
+      e.preventDefault();
+
+      const { $popover, addSelection: contextMenuAddSelection } =
+        UI.createSelectionPopover({
+          sourceElemnt: null,
+          sourceElementId: 'collection-selector-context-menu',
+          isContextMenu: true,
+        });
+
       if (!$popover) return;
 
       $('main').append($popover);
+
       const closePopover = () => QueryBox.closeAndRemovePopover($popover);
 
-      collections.forEach((collection) => {
+      contextMenuAddSelection({
+        input: {
+          name: 'Go to page',
+          onClick: () => {
+            window.location.href = `https://www.perplexity.ai/collections/${$selection[0].params.url}`;
+            closePopover();
+          },
+        },
+      });
+
+      contextMenuAddSelection({
+        input: {
+          name: 'Edit prompt',
+          onClick: () => {
+            closePopover();
+            this.setupPromptEditModal($selection);
+          },
+        },
+      });
+
+      UI.showPopover({
+        $anchor: $selection,
+        $popover: $popover,
+        placement: 'horizontal',
+      });
+
+      setTimeout(() => $(document).on('click', closePopover), 100);
+    });
+  }
+
+  static async editCollectionPrompt(collection) {
+    const { collection_uuid, instructions, title } = collection;
+
+    await unsafeWindow.WSHOOK_INSTANCE.sendMessage({
+      messageCode: 420,
+      event: 'edit_collection',
+      data: [
+        {
+          collection_uuid,
+          source: 'default',
+          instructions,
+          description: '',
+          emoji: '',
+          title,
+          access: 1,
+        },
+      ],
+    });
+
+    const itemIndex = unsafeWindow.PERSISTENT_SETTINGS.collections.findIndex(
+      (item) => item.uuid === collection_uuid
+    );
+
+    unsafeWindow.PERSISTENT_SETTINGS.collections[itemIndex].instructions =
+      instructions;
+  }
+
+  static setupPromptEditModal($selection) {
+    const $promptBox = window.$UI_HTML.find('#prompt-box-wrapper').clone();
+
+    $promptBox.find('h1').text(`Edit ${$selection[0].params.title}'s Prompt`);
+
+    $promptBox.find('#backdrop').click(() => {
+      $promptBox.remove();
+    });
+
+    $promptBox.find('button[data-testid="close-modal"]').click(() => {
+      $promptBox.remove();
+    });
+
+    const $textarea = window.$UI_HTML.find('#prompt-box-textarea').clone();
+
+    $textarea.find('#title').text('AI Prompt');
+    $textarea.find('#optional').remove();
+    $textarea.find('textarea').text($selection[0].params.instructions);
+
+    $promptBox.find('#sections').append($textarea);
+
+    countCharacters();
+    $promptBox.find('textarea').on('input', function () {
+      countCharacters();
+    });
+
+    const $saveButton = window.$UI_HTML
+      .find('#prompt-box-primary-button')
+      .clone();
+
+    $saveButton.find('#text').text('Save');
+
+    $saveButton.click(() => {
+      const instructions = $textarea.find('textarea').val();
+
+      // if (instructions.length > 1024) {
+      //   alert('Instruction is too long');
+      //   return;
+      // }
+
+      this.editCollectionPrompt({
+        collection_uuid: $selection[0].params.uuid,
+        instructions,
+      });
+
+      $promptBox.remove();
+    });
+
+    $promptBox.find('#footer').append($saveButton);
+
+    $promptBox.appendTo('main');
+
+    function countCharacters() {
+      const $counter = $promptBox.find('#character-count');
+      const length = $textarea.find('textarea').val().length;
+
+      if (length > 1024) {
+        $counter.removeClass('text-green');
+        $counter.addClass('text-superAlt');
+      } else {
+        $counter.removeClass('text-superAlt');
+        $counter.addClass('text-green');
+      }
+
+      $counter.text(`${length}`);
+    }
+  }
+
+  static setupSelector(selector, collections) {
+    selector.$element.click(async () => {
+      const { $popover, addSelection } = UI.createSelectionPopover({
+        sourceElement: selector.$element[0],
+        sourceElementId: 'collection-selector',
+      });
+
+      if (!$popover) return;
+
+      $('main').append($popover);
+
+      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+
+      const $selections = collections.map((collection) =>
         addSelection({
           input: {
             name: collection.title,
             onClick: () => {
-              unsafeWindow.WSHOOK_INSTANCE.persistentSettings.collection = {};
-              unsafeWindow.WSHOOK_INSTANCE.persistentSettings.collection.uuid =
-                collection.uuid;
-              unsafeWindow.WSHOOK_INSTANCE.persistentSettings.collection.title =
-                collection.title;
+              unsafeWindow.PERSISTENT_SETTINGS.collection = collection;
+
               Logger.log(
                 'Selected collection:',
                 collection.title,
                 collection.uuid
               );
-              $('.collection-selector-text').text(collection.title);
+
+              $('.collection-selector-text').text(this.getDefaultTitle());
+
               closePopover();
             },
           },
           isSelected:
             collection.uuid ===
-            unsafeWindow.WSHOOK_INSTANCE.persistentSettings.collection?.uuid,
-        });
+            unsafeWindow.PERSISTENT_SETTINGS.collection?.uuid,
+          params: {
+            url: collection.url,
+            uuid: collection.uuid,
+            instructions: collection.instructions,
+            title: collection.title,
+          },
+        })
+      );
+
+      $selections.forEach(($selection) => {
+        this.setupSelectionContextMenu($selection);
       });
+
+      UI.showPopover({ $anchor: selector.$element, $popover });
 
       setTimeout(() => $(document).on('click', closePopover), 100);
     });

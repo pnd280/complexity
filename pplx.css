@@ -11,17 +11,60 @@
   --secondary-color       : var(--accent-color);
   --text-off              : #8d8d8d;
   --text-main             : #e8e8e8;
+  --border-color          : rgba(229, 231, 235, 0.1);
 }
 
-.max-w-screen-md {
+#query-box-follow-up {
+  width: fit-content;
+
+  margin       : 0 auto;
+  margin-bottom: .25rem;
+  padding      : .25rem;
+
+  border-radius: .5rem;
+  border       : 1px solid var(--border-color);
+
+  background: var(--sidebar-color);
+
+  display        : flex;
+  gap            : .25rem;
+  flex-wrap      : wrap;
+  justify-content: center;
+  align-items    : center;
+}
+
+#query-box-button-bar button.rounded-full {
+  border-radius: .5rem !important;
+}
+
+#dropdown-wrapper>button>div {
+  display: flex;
+  gap    : .25rem;
+}
+
+#query-limit {
+  color      : var(--accent-color) !important;
+  font-size  : .5rem;
+  align-self : flex-start;
+  line-height: normal;
+}
+
+/* .max-w-screen-md,
+.max-w-threadWidth {
   max-width : 1300px;
   transition: max-width 0.5s ease;
 }
+
+.max-w-screen-md .mt-md {
+  max-width: 768px;
+  margin   : 1rem auto;
+} */
 
 .selected span#name {
   color: var(--accent-color) !important;
 }
 
+.focus-selector,
 .model-selector,
 .image-model-selector,
 .collection-selector {
@@ -72,10 +115,6 @@
   .collection-selector-text {
     max-width: 120px;
   }
-}
-
-.max-w-threadWidth {
-  max-width: 1300px;
 }
 
 .font-sans,
@@ -181,6 +220,10 @@ html.dark,
   background-color: var(--sidebar-color) !important;
 }
 
+.group:hover .group-hover\:\!bg-super {
+  background-color: var(--accent-color) !important;
+}
+
 .selection\:bg-superDuper::selection,
 .selection\:text-textMain ::selection,
 .dark .dark\:selection\:text-super ::selection {
@@ -257,3 +300,34 @@ html.dark,
 /* .justify-end.text-right .grow.min-w-0 .prose {
   color: var(--background-color);
 } */
+
+
+/* Hide annoying elements */
+.font-regular.font-display.text-4xl {
+  display: none;
+}
+
+.bg-transparent.dark\:border-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:divide-borderMainDark\/50.divide-borderMain\/50.ring-borderMain\/50.border-borderMain\/50.md\:pb-0.md\:px-0.md\:justify-center.pb-2xl.px-sm.gap-y-sm.gap-x-md.items-center.flex-wrap.flex {
+  display: none;
+}
+
+/* Tailwind classes that are not rendered */
+.w-max {
+  width: max-content;
+}
+
+.h-max {
+  height: max-content;
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.text-green {
+  color: rgb(36, 160, 36);
+}
+
+.max-w-\[150px\] {
+  max-width: 150px;
+}

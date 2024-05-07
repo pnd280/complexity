@@ -1,8 +1,6 @@
 class QueryBox {
-  static findButtonBar() {
-    const $attachButton = $('div:contains("Attach")');
-
-    let $buttonBar = $attachButton
+  static findButtonBarContainer() {
+    let $buttonBar = $('div:contains("Attach")')
       .closest(
         '.flex.bg-background.dark\\:bg-offsetDark.rounded-l-lg.col-start-1.row-start-2.-ml-2'
       )
@@ -11,6 +9,8 @@ class QueryBox {
     if (!$buttonBar.length || $buttonBar.children().length > 2) return null;
 
     $buttonBar.attr('id', 'query-box-button-bar');
+
+    $buttonBar.children().first().remove();
 
     $buttonBar
       .children('div:contains("Attach")')
@@ -22,7 +22,43 @@ class QueryBox {
       .find('> button > div > div')
       .addClass('hidden');
 
-    return $buttonBar;
+    return {
+      $element: $buttonBar,
+      type: 'button-bar',
+    };
+  }
+
+  static findFollowUpQueryBoxContainer() {
+    const $quickQueryBoxContainer = $('textarea[placeholder="Ask follow-up"]')
+      .parents()
+      .eq(6);
+
+    if (
+      $quickQueryBoxContainer &&
+      $quickQueryBoxContainer.children().eq(1).attr('class') ===
+        'mb-2 flex justify-center'
+    ) {
+      $('.mb-2.flex.justify-center').prependTo($quickQueryBoxContainer);
+    }
+
+    if (
+      !$quickQueryBoxContainer.length ||
+      $quickQueryBoxContainer.children('#query-box-follow-up').children()
+        .length > 1
+    )
+      return null;
+
+    $quickQueryBoxContainer
+      .children()
+      .last()
+      .before('<div id="query-box-follow-up">');
+
+    const $buttonContainer = $quickQueryBoxContainer.children().last().prev();
+
+    return {
+      $element: $buttonContainer,
+      type: 'follow-up',
+    };
   }
 
   static closeAndRemovePopover($popover) {
@@ -30,22 +66,41 @@ class QueryBox {
     $(document).off('click', this.closeAndRemovePopover);
   }
 
+  static autoRefetch() {
+    let autoUpdateIntervalId;
+
+    window.addEventListener('focus', function () {
+      autoUpdateIntervalId = Utils.setImmediateInterval(async () => {
+        if (!$('#dropdown-wrapper').length) return;
+
+        await ModelSelector.getDefaultModels();
+
+        ModelSelector.updateImageModelFn();
+        ModelSelector.updateChatModelFn();
+      }, 5000);
+    });
+
+    window.addEventListener('blur', function () {
+      clearInterval(autoUpdateIntervalId);
+    });
+  }
+
   static createSelectors() {
-    const $buttonBar = this.findButtonBar();
+    const targetContainer =
+      this.findFollowUpQueryBoxContainer() || this.findButtonBarContainer();
 
-    if (!$buttonBar) return;
+    if (!targetContainer) return;
 
-    function populateDefaults() {
-      chatModelSelector.setText(ModelSelector.getDefaultChatModelName());
-      imageModelSelector.setText(ModelSelector.getDefaultImageModelName());
-      collectionSelector.setText(CollectionSelector.getDefaultTitle());
-    }
+    const $targetContainer = targetContainer.$element;
 
+    const focusSelector = FocusSelector.createDropdown();
     const chatModelSelector = ModelSelector.createChatModelDropdown();
     const imageModelSelector = ModelSelector.createImageModelDropdown();
     const collectionSelector = CollectionSelector.createDropdown();
 
     populateDefaults();
+
+    FocusSelector.setupSelector(focusSelector, FocusSelector.getFocusModes());
 
     ModelSelector.getDefaultModels().then(() => {
       const chatModels = ModelSelector.getPredefinedChatModels();
@@ -61,16 +116,39 @@ class QueryBox {
       CollectionSelector.setupSelector(collectionSelector, collections);
     });
 
-    $buttonBar.children().first().after(imageModelSelector.$element);
+    $targetContainer.prepend(imageModelSelector.$element);
 
-    $buttonBar.children().first().after(chatModelSelector.$element);
+    $targetContainer.prepend(chatModelSelector.$element);
 
     if (
-      Utils.whereAmI() !== 'collection' ||
-      $buttonBar.closest('div[data-testid="quick-search-modal"]').length
+      (Utils.whereAmI() !== 'thread' && Utils.whereAmI() !== 'collection') ||
+      $targetContainer.closest('div[data-testid="quick-search-modal"]').length
     )
-      $buttonBar.children().first().after(collectionSelector.$element);
+      $targetContainer.prepend(collectionSelector.$element);
 
-    $buttonBar.addClass('flex-wrap col-span-2');
+    $targetContainer.prepend(focusSelector.$element);
+
+    $targetContainer.addClass('flex-wrap col-span-2');
+
+    // if user scrolls -> close all popovers
+    $(window).scroll(() => {
+      $('[id$="-popover"]').each((_, popover) => {
+        $(popover).remove();
+      });
+    });
+
+    function populateDefaults() {
+      focusSelector.setText(
+        FocusSelector.getDefaultTitle().title,
+        FocusSelector.getDefaultTitle().icon,
+        FocusSelector.getDefaultTitle().emoji
+      );
+
+      ModelSelector.setChatModelName(chatModelSelector);
+
+      ModelSelector.setImageModelName(imageModelSelector);
+
+      collectionSelector.setText(CollectionSelector.getDefaultTitle());
+    }
   }
 }

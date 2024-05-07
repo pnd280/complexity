@@ -1,4 +1,7 @@
 class ModelSelector {
+  static updateChatModelFn;
+  static updateImageModelFn;
+
   static async fetchSettings() {
     const url = 'https://www.perplexity.ai/p/api/v1/user/settings';
 
@@ -16,54 +19,118 @@ class ModelSelector {
 
     const chatModelCode = data?.['default_model'];
     const imageModelCode = data?.['default_image_generation_model'];
+    const queryLimit = data?.['gpt4_limit'];
+    const opusQueryLimit = data?.['opus_limit'];
+    const imageGenerationLimit = data?.['create_limit'];
 
-    unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode =
+    unsafeWindow.PERSISTENT_SETTINGS.chatModelCode =
       chatModelCode;
-    unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModelCode =
+    unsafeWindow.PERSISTENT_SETTINGS.imageModelCode =
       imageModelCode;
+    unsafeWindow.PERSISTENT_SETTINGS.queryLimit = queryLimit;
+    unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit =
+      opusQueryLimit;
+    unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit =
+      imageGenerationLimit;
 
     return {
       chatModelCode,
       imageModelCode,
+      queryLimit,
+      opusQueryLimit,
+      imageGenerationLimit,
     };
   }
 
   static getDefaultChatModelName() {
-    return (
-      this.getPredefinedChatModels().find(
-        (m) =>
-          m.code ===
-          unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode
-      )?.name || ''
+    const otherModelsQueryLimit =
+      unsafeWindow.PERSISTENT_SETTINGS.queryLimit;
+    const opusQueryLimit =
+      unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit;
+
+    const item = this.getPredefinedChatModels().find(
+      (m) =>
+        m.code === unsafeWindow.PERSISTENT_SETTINGS.chatModelCode
     );
+
+    if (!item) return '';
+
+    const currentModel = item?.dropdownTitle || item?.name || '';
+
+    if (!currentModel) return '';
+
+    let currentLimit;
+
+    switch (unsafeWindow.PERSISTENT_SETTINGS.chatModelCode) {
+      case 'claude3opus':
+        currentLimit = opusQueryLimit;
+        break;
+      case 'turbo':
+        currentLimit = 'UNL';
+        break;
+      default:
+        currentLimit = otherModelsQueryLimit;
+        break;
+    }
+
+    return {
+      name: currentModel,
+      limit: currentLimit,
+    };
   }
 
   static getDefaultImageModelName() {
-    return (
-      this.getPredefinedImageModels().find(
-        (m) =>
-          m.code ===
-          unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModelCode
-      )?.name || ''
+    const currentLimit =
+      unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit;
+
+    const item = this.getPredefinedImageModels().find(
+      (m) =>
+        m.code ===
+        unsafeWindow.PERSISTENT_SETTINGS.imageModelCode
     );
+
+    if (!item) return '';
+
+    const currentModelName = item?.dropdownTitle || item?.name || '';
+
+    return {
+      name: currentModelName,
+      limit: currentLimit,
+    };
+  }
+
+  static setChatModelName(selector, override) {
+    const { name: chatModelName, limit: chatModelLimit } =
+      override || this.getDefaultChatModelName();
+
+    selector.setText(chatModelName);
+    selector.$element.find('#query-limit').text(chatModelLimit);
+  }
+
+  static setImageModelName(selector, override) {
+    const { name: imageModelName, limit: imageModelLimit } =
+      override || this.getDefaultImageModelName();
+
+    selector.setText(imageModelName);
+    selector.$element.find('#query-limit').text(imageModelLimit);
   }
 
   static getPredefinedChatModels() {
     return [
-      { name: 'GPT-4', code: 'gpt4' },
-      { name: 'Claude Opus', code: 'claude3opus' },
-      { name: 'Claude Sonnet', code: 'claude2' },
+      { name: 'GPT-4 Turbo', dropdownTitle: 'GPT-4', code: 'gpt4' },
+      { name: 'Claude 3 Opus', dropdownTitle: 'Opus', code: 'claude3opus' },
+      { name: 'Claude 3 Sonnet', dropdownTitle: 'Sonnet', code: 'claude2' },
       { name: 'Default', code: 'turbo' },
-      { name: 'Sonar Large 32K', code: 'experimental' },
-      { name: 'Mistral Large', code: 'mistral' },
+      { name: 'Sonar Large 32K', dropdownTitle: 'Sonar', code: 'experimental' },
+      { name: 'Mistral Large', dropdownTitle: 'Mistral', code: 'mistral' },
     ];
   }
 
   static getPredefinedImageModels() {
     return [
-      { name: 'DALL-E 3', code: 'dall-e-3' },
+      { name: 'DALL-E 3', dropdownTitle: 'DALL-E', code: 'dall-e-3' },
       { name: 'Playground', code: 'default' },
-      { name: 'SDXL', code: 'sdxl' },
+      { name: 'Stable Diffusion XL', dropdownTitle: 'SDXL', code: 'sdxl' },
     ];
   }
 
@@ -82,11 +149,23 @@ class ModelSelector {
   }
 
   static setupSelector(selector, models, isImageModel) {
+    isImageModel &&
+      (this.updateImageModelFn = ((selector) => {
+        this.setImageModelName(selector);
+      }).bind(this, selector));
+
+    !isImageModel &&
+      (this.updateChatModelFn = ((selector) => {
+        this.setChatModelName(selector);
+      }).bind(this, selector));
+
     selector.$element.click(async () => {
-      const { $popover, addSelection } = UI.createSelectionPopover(
-        selector.$element[0],
-        isImageModel ? 'image-model-selector' : 'model-selector'
-      );
+      const { $popover, addSelection } = UI.createSelectionPopover({
+        sourceElement: selector.$element[0],
+        sourceElementId: isImageModel
+          ? 'image-model-selector'
+          : 'model-selector',
+      });
 
       if (!$popover) return;
 
@@ -99,25 +178,17 @@ class ModelSelector {
           input: {
             name: model.name,
             onClick: async () => {
-              const oldModelName = selector.getText();
-              selector.setText(model.name);
-
               try {
-                this.setModel(model.code, isImageModel);
+                await this.setModel(model.code, isImageModel);
 
-                if (isImageModel) {
-                  unsafeWindow.WSHOOK_INSTANCE.persistentSettings.imageModelCode =
-                    model.code;
-                } else {
-                  unsafeWindow.WSHOOK_INSTANCE.persistentSettings.chatModelCode =
-                    model.code;
-                }
+                await this.getDefaultModels();
 
-                this.getDefaultModels();
+                isImageModel
+                  ? this.setImageModelName(selector)
+                  : this.setChatModelName(selector);
               } catch (error) {
                 console.error('Failed to switch model', error);
                 alert('Failed to switch model');
-                selector.setText(oldModelName);
               } finally {
                 closePopover();
               }
@@ -125,25 +196,25 @@ class ModelSelector {
           },
           isSelected:
             model.code ===
-            unsafeWindow.WSHOOK_INSTANCE.persistentSettings[
+            unsafeWindow.PERSISTENT_SETTINGS[
               isImageModel ? 'imageModelCode' : 'chatModelCode'
             ],
         });
       });
+
+      UI.showPopover({ $anchor: selector.$element, $popover });
 
       setTimeout(() => $(document).on('click', closePopover), 100);
     });
   }
 
   static async setModel(model, isImageModel) {
-    const settingsKey = isImageModel
-      ? 'default_image_generation_model'
-      : 'default_model';
     await unsafeWindow.WSHOOK_INSTANCE.sendMessage({
       messageCode: 423,
       event: 'save_user_settings',
       data: {
-        [settingsKey]: model,
+        [isImageModel ? 'default_image_generation_model' : 'default_model']:
+          model,
       },
     });
   }

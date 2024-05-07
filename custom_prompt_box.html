@@ -1,0 +1,164 @@
+<div id="prompt-box-wrapper">
+  <div
+    id="backdrop"
+    class="items-stretch md:items-center fill-mode-both fixed bottom-0 left-0 right-0 top-0 z-30 bg-[#10100f]/95 animate-in fade-in duration-150 ease-out"
+  ></div>
+  <div
+    id="modal"
+    class="fixed bottom-0 left-0 right-0 top-0 z-30 flex items-center justify-center m-auto w-max h-max"
+  >
+    <div
+      class="duration-250 fill-mode-both animate-in fade-in zoom-in-[0.98] ease-in"
+    >
+      <div class="">
+        <div
+          class="bg-background dark:bg-backgroundDark shadow-md overflow-y-auto scrollbar-thin scrollbar-thumb-idle dark:scrollbar-thumb-idleDark scrollbar-track-transparent fill-mode-both md:rounded-lg md:min-w-[600px] max-w-screen-sm shadow-md relative h-full max-h-[100vh] md:max-h-[95vh] overflow-auto md:w-full"
+        >
+          <div class="top-sm right-sm fixed z-[23] md:absolute"></div>
+          <div
+            class="flex h-full w-[100vw] grow flex-col md:w-[unset] md:grow-[unset] border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-transparent"
+          >
+            <div
+              class="px-md py-sm md:py-md sticky top-0 z-[22] w-full border-b border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-background dark:bg-backgroundDark"
+            >
+              <div class="gap-x-md flex">
+                <h1
+                  class="default font-display text-2xl md:text-3xl text-textMain dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
+                ></h1>
+                <div class="top-sm right-sm absolute">
+                  <button
+                    data-testid="close-modal"
+                    type="button"
+                    class="md:hover:bg-offsetPlus text-textOff dark:text-textOffDark md:hover:text-textMain dark:md:hover:bg-offsetPlusDark dark:md:hover:text-textMainDark font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded-full cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-sm aspect-square h-8"
+                  >
+                    <div
+                      class="flex items-center leading-none justify-center gap-xs"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="far"
+                        data-icon="xmark"
+                        class="svg-inline--fa fa-xmark fa-fw fa-1x"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="py-md px-md grow flex flex-col">
+              <div class="space-y-md" id="sections">
+                <!-- sections -->
+              </div>
+            </div>
+            <div
+              id="footer"
+              class="gap-x-sm p-sm pb-md md:pb-sm sticky bottom-0 z-[10] flex items-center justify-end border-t border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-background dark:bg-backgroundDark"
+            >
+              <!-- footer -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="prompt-box-textarea">
+  <div class="flex gap-x-xs">
+    <div
+      id="title"
+      class="default font-sans text-sm font-medium text-textMain dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
+    ></div>
+    <div
+      id="optional"
+      class="light font-sans text-sm text-textOff dark:text-textOffDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
+    >
+      (optional)
+    </div>
+  </div>
+  <div
+    id="description"
+    class="mb-sm light font-sans text-sm text-textOff dark:text-textOffDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
+  ></div>
+  <div>
+    <div class="rounded-md">
+      <div class="relative flex items-center">
+        <div
+          class="w-full outline-none focus:outline-none focus:ring-borderMain font-sans flex items-center dark:bg-offsetDark dark:text-textMainDark dark:placeholder-textOffDark dark:border-borderMainDark dark:focus:ring-borderMainDark selection:bg-superDuper selection:text-textMain duration-200 transition-all bg-background border text-textMain border-borderMain focus:ring-1 placeholder-textOff rounded-t-md rounded-b-md py-sm text-sm px-md pr-md"
+        >
+          <textarea
+            class="overflow-auto max-h-[50vh] outline-none w-full flex items-center font-sans caret-superDuper resize-none selection:bg-superDuper selection:text-textMain dark:bg-offsetDark dark:text-textMainDark dark:placeholder-textOffDark bg-background text-textMain placeholder-textOff"
+            autocomplete="off"
+            style="height: 400px"
+          ></textarea>
+        </div>
+        <div
+          class="bg-background focus:bg-background dark:bg-offsetDark dark:focus:bg-offsetDark absolute bottom-0 m-[1px] flex justify-between px-[6px] rounded-b-md"
+          style="width: calc(100% - 2px)"
+        >
+          <div
+            class="gap-sm bg-background dark:bg-offsetDark right-sm absolute flex items-center rounded-full pb-xs mb-xs bottom-0"
+          >
+            <div
+              id="character-count"
+              class="font-sans text-xs font-medium selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="prompt-box-input">
+  <div class="flex items-center justify-between mb-sm">
+    <label for="Title"
+      ><div class="gap-x-xs flex" id="title">
+        <div
+          class="select-none default font-sans text-sm font-medium text-textMain dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
+        ></div></div
+    ></label>
+  </div>
+  <div class="rounded-full">
+    <div class="relative flex items-center">
+      <input
+        name="Title"
+        class="w-full outline-none focus:outline-none focus:ring-borderMain font-sans flex items-center dark:bg-offsetDark dark:text-textMainDark dark:placeholder-textOffDark dark:border-borderMainDark dark:focus:ring-borderMainDark selection:bg-superDuper selection:text-textMain duration-200 transition-all bg-background border text-textMain border-borderMain focus:ring-1 placeholder-textOff rounded-t-[32px] rounded-b-[32px] py-sm text-sm px-md pr-md"
+        autocomplete="off"
+        value=""
+      />
+      <div
+        class="gap-sm bg-background dark:bg-offsetDark right-sm absolute flex items-center rounded-full"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<button
+  id="prompt-box-primary-button"
+  type="button"
+  class="bg-super dark:bg-superDark dark:text-backgroundDark text-white hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base px-md font-medium h-10"
+>
+  <div class="flex items-center leading-none justify-center gap-xs">
+    <div class="text-align-center relative" id="text"></div>
+  </div>
+</button>
+
+<button
+  id="prompt-box-secondary-button"
+  type="button"
+  class="bg-background dark:bg-offsetDark dark:text-textMain text-textMain dark:text-textMainDark hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base px-md font-medium h-10"
+>
+  <div class="flex items-center leading-none justify-center gap-xs">
+    <div class="text-align-center relative" id="text"></div>
+  </div>
+</button>
