@@ -126,4 +126,20 @@ class UI {
       },
     };
   }
+
+  static toast({ message, duration = 3000 }) {
+    const $toast = $UI_HTML.find('#toast-wrapper').clone();
+
+    $toast.on('click', () => {
+      $toast.remove();
+    });
+
+    $toast.find('#message').text(message);
+
+    $('main').append($toast);
+
+    setTimeout(() => {
+      $toast.remove();
+    }, duration);
+  }
 }

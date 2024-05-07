@@ -2,16 +2,16 @@ class FocusSelector {
   static getFocusModes() {
     return [
       {
-        name: 'Web browsing',
-        dropdownTitle: 'Internet',
-        code: 'internet',
-        svgIcon: 'globe',
-      },
-      {
         name: 'No web browsing',
         dropdownTitle: 'Writing',
         code: 'writing',
         svgIcon: 'pencil',
+      },
+      {
+        name: 'Web browsing',
+        dropdownTitle: 'Internet',
+        code: 'internet',
+        svgIcon: 'globe',
       },
       {
         name: 'Academic',
@@ -33,11 +33,6 @@ class FocusSelector {
         code: 'reddit',
         svgIcon: 'reddit',
       },
-      {
-        name: '🤖 Refactor bot',
-        code: 'refactor-bot',
-        svgIcon: 'none',
-      },
     ];
   }
 
@@ -56,6 +51,49 @@ class FocusSelector {
   static createDropdown() {
     return UI.createDropdown({
       selectorClass: 'focus-selector',
+    });
+  }
+
+  static setupSelectorContextMenu(selector) {
+    selector.$element.on('contextmenu', (e) => {
+      e.preventDefault();
+
+      const { $popover, addSelection } = UI.createSelectionPopover({
+        sourceElement: null,
+        sourceElementId: 'focus-selector-context-menu',
+        isContextMenu: true,
+      });
+
+      if (!$popover) return;
+
+      $('main').append($popover);
+
+      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+
+      addSelection({
+        input: {
+          name: 'Create new',
+          onClick: () => {
+            closePopover();
+          },
+        },
+      });
+
+      addSelection({
+        input: {
+          name: 'Edit default prompt',
+          onClick: () => {
+            closePopover();
+          },
+        },
+      });
+
+      UI.showPopover({
+        $anchor: selector.$element,
+        $popover,
+      });
+
+      setTimeout(() => $(document).on('click', closePopover), 100);
     });
   }
 
@@ -99,5 +137,7 @@ class FocusSelector {
 
       setTimeout(() => $(document).on('click', closePopover), 100);
     });
+
+    this.setupSelectorContextMenu(selector);
   }
 }

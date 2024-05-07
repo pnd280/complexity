@@ -1,5 +1,6 @@
 class WSHook {
   #socket = undefined;
+  #longPollingSocket = undefined;
   #registeredInterceptingMessages = [];
 
   constructor() {}
@@ -12,6 +13,25 @@ class WSHook {
     return this.#registeredInterceptingMessages;
   }
 
+  getActiveSocketType() {
+    if (this.getSocket() && this.getSocket()?.readyState === 1) return 'socket';
+    if (this.getLongPollingSocket()) return 'long-polling';
+
+    return null;
+  }
+
+  getActiveSocket() {
+    if (this.getSocket() && this.getSocket()?.readyState === 1) {
+      return this.getSocket();
+    }
+
+    if (this.getLongPollingSocket()) {
+      return this.getLongPollingSocket();
+    }
+
+    return null;
+  }
+
   setSocket(socket) {
     this.#socket = socket;
   }
@@ -20,12 +40,31 @@ class WSHook {
     return this.#socket;
   }
 
+  setLongPollingSocket(socket) {
+    this.#longPollingSocket = socket;
+  }
+
+  getLongPollingSocket() {
+    return this.#longPollingSocket;
+  }
+
   async sendMessage(message) {
-    return this.getSocket().send(WSMessage.stringify(message));
+    const socketType = this.getActiveSocketType();
+
+    if (socketType === 'socket') {
+      return this.getActiveSocket().send(WSMessage.stringify(message));
+    }
+
+    const url = this.getLongPollingSocket().responseURL;
+
+    return fetch(url, {
+      method: 'POST',
+      body: WSMessage.stringify(message),
+    });
   }
 
   registerMessageEvents() {
-    if (!this.getSocket()) return;
+    if (!this.getActiveSocket()) return;
 
     [
       {
@@ -78,6 +117,7 @@ class WSHook {
                   : eventData.model_preference,
               target_collection_uuid:
                 querySource !== 'followup' ? targetCollectionUuid : undefined,
+              // is_incognito: true,
             },
             ...rest,
           ];
@@ -126,6 +166,8 @@ class WSHook {
 
       interceptedData = interceptedCallback(data);
 
+      if (!Array.isArray(interceptedData)) return originalMessage;
+
       Logger.log(`Intercepted: '${event}'`, ...interceptedData);
 
       break;
@@ -148,7 +190,6 @@ class WSHook {
       this.registerMessageEvents();
     };
 
-    // Hook into WebSocket send
     const originalSend = WebSocket.prototype.send;
     WebSocket.prototype.send = function (data) {
       captureSocket(this);
@@ -170,7 +211,6 @@ class WSHook {
       return originalSend.apply(this, arguments);
     };
 
-    // Hook into WebSocket messages
     const originalAddEventListener = WebSocket.prototype.addEventListener;
     WebSocket.prototype.addEventListener = function (type, listener) {
       switch (type) {
@@ -182,12 +222,15 @@ class WSHook {
             return listener.apply(this, arguments);
           };
           return originalAddEventListener.call(this, type, hookedListener);
+        case 'error':
+          Logger.log('ws error:', listener);
+
+          return originalAddEventListener.apply(this, arguments);
         default:
           return originalAddEventListener.apply(this, arguments);
       }
     };
 
-    // Also hook into the onmessage property
     Object.defineProperty(WebSocket.prototype, 'onmessage', {
       set: function (handler) {
         if (typeof handler === 'function') {
@@ -204,5 +247,88 @@ class WSHook {
         }
       },
     });
+
+    Object.defineProperty(WebSocket.prototype, 'onerror', {
+      set: function (handler) {
+        if (typeof handler === 'function') {
+          return originalAddEventListener.call(this, 'error', function (event) {
+            console.log('ws onerror:', event);
+            handler.apply(this, arguments);
+
+            UI.toast({
+              message: `⚠️ Websocket connection failed. Fallback to long-polling XHR, bugs may occur.
+                Get rid of this alert by refreshing the page, if still persist, restart the browser.`,
+              duration: 10000,
+            });
+          });
+        }
+      },
+    });
+
+    Object.defineProperty(WebSocket.prototype, 'onopen', {
+      set: function (handler) {
+        if (typeof handler === 'function') {
+          return originalAddEventListener.call(this, 'open', function (event) {
+            captureSocket(this);
+            handler.apply(this, arguments);
+          });
+        }
+      },
+    });
+
+    const captureLongPollingSocket = (socket) => {
+      if (
+        !socket.responseURL ||
+        !socket.responseURL.includes('transport=polling')
+      )
+        return;
+
+      this.setLongPollingSocket(socket);
+      this.registerMessageEvents();
+    };
+
+    const originalXMLHttpRequestOpen = XMLHttpRequest.prototype.open;
+    const originalXMLHttpRequestSend = XMLHttpRequest.prototype.send;
+
+    XMLHttpRequest.prototype.open = function (
+      method,
+      url,
+      async,
+      user,
+      password
+    ) {
+      this.addEventListener(
+        'readystatechange',
+        function () {
+          if (this.readyState === 4) {
+            captureLongPollingSocket(this);
+
+            Logger.log('Polling response:', this.responseText);
+          }
+        },
+        false
+      );
+
+      originalXMLHttpRequestOpen.call(this, method, url, async, user, password);
+    };
+
+    XMLHttpRequest.prototype.send = function (data) {
+      captureLongPollingSocket(this);
+
+      let newData = data;
+
+      try {
+        const interceptedData = self.#interceptMessage(data);
+
+        if (!interceptedData) return;
+
+        newData = interceptedData;
+      } catch (error) {
+        // do nothing
+      } finally {
+        Logger.log('Polling request:', newData);
+        originalXMLHttpRequestSend.call(this, newData);
+      }
+    };
   }
 }

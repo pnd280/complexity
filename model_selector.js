@@ -23,13 +23,10 @@ class ModelSelector {
     const opusQueryLimit = data?.['opus_limit'];
     const imageGenerationLimit = data?.['create_limit'];
 
-    unsafeWindow.PERSISTENT_SETTINGS.chatModelCode =
-      chatModelCode;
-    unsafeWindow.PERSISTENT_SETTINGS.imageModelCode =
-      imageModelCode;
+    unsafeWindow.PERSISTENT_SETTINGS.chatModelCode = chatModelCode;
+    unsafeWindow.PERSISTENT_SETTINGS.imageModelCode = imageModelCode;
     unsafeWindow.PERSISTENT_SETTINGS.queryLimit = queryLimit;
-    unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit =
-      opusQueryLimit;
+    unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit = opusQueryLimit;
     unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit =
       imageGenerationLimit;
 
@@ -43,14 +40,11 @@ class ModelSelector {
   }
 
   static getDefaultChatModelName() {
-    const otherModelsQueryLimit =
-      unsafeWindow.PERSISTENT_SETTINGS.queryLimit;
-    const opusQueryLimit =
-      unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit;
+    const otherModelsQueryLimit = unsafeWindow.PERSISTENT_SETTINGS.queryLimit;
+    const opusQueryLimit = unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit;
 
     const item = this.getPredefinedChatModels().find(
-      (m) =>
-        m.code === unsafeWindow.PERSISTENT_SETTINGS.chatModelCode
+      (m) => m.code === unsafeWindow.PERSISTENT_SETTINGS.chatModelCode
     );
 
     if (!item) return '';
@@ -80,13 +74,10 @@ class ModelSelector {
   }
 
   static getDefaultImageModelName() {
-    const currentLimit =
-      unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit;
+    const currentLimit = unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit;
 
     const item = this.getPredefinedImageModels().find(
-      (m) =>
-        m.code ===
-        unsafeWindow.PERSISTENT_SETTINGS.imageModelCode
+      (m) => m.code === unsafeWindow.PERSISTENT_SETTINGS.imageModelCode
     );
 
     if (!item) return '';
@@ -210,7 +201,10 @@ class ModelSelector {
 
   static async setModel(model, isImageModel) {
     await unsafeWindow.WSHOOK_INSTANCE.sendMessage({
-      messageCode: 423,
+      messageCode:
+        unsafeWindow.WSHOOK_INSTANCE.getActiveSocketType() === 'long-polling'
+          ? 421
+          : 423,
       event: 'save_user_settings',
       data: {
         [isImageModel ? 'default_image_generation_model' : 'default_model']:

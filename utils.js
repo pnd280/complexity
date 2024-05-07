@@ -34,10 +34,14 @@ class Utils {
         return 'thread';
     }
   }
+
+  static async sleep(ms) {
+    return new Promise((resolve) => setTimeout(() => resolve(), ms));
+  }
 }
 
 class Logger {
-  static #enable = true;
+  static #enable = false;
 
   static log(...args) {
     if (this.#enable) console.log(...args);
@@ -78,22 +82,39 @@ class JSONUtils {
 
 class WSMessage {
   static parse(message) {
+    if (typeof message !== 'string') {
+      return message;
+    }
+
+    // if not starting with a number, return the message as is
+    if (isNaN(parseInt(message[0], 10))) {
+      return message;
+    }
+
     // First, we need to trim any leading or trailing whitespace from the message
     message = message.trim();
-  
+
+    // Handle long-polling socket messages
+    const unexpectedSeparator = '';
+
+    const weirdCharIndex = message.indexOf(unexpectedSeparator);
+    if (weirdCharIndex !== -1) {
+      message = message.substring(0, weirdCharIndex);
+    }
+
     // Extract the message code by finding the first occurrence of '['
     const startIndex = message.indexOf('[');
-  
+
     if (startIndex === -1) {
       return message;
     }
-  
+
     const messageCode = parseInt(message.substring(0, startIndex), 10);
-  
+
     // Extract the JSON part of the message
     const jsonString = message.substring(startIndex);
     let data = [];
-  
+
     try {
       // Parse the JSON string to an array
       data = JSON.parse(jsonString);
@@ -101,25 +122,25 @@ class WSMessage {
       console.error('Error parsing JSON from message:', error);
       return null;
     }
-  
+
     // Check if data is in the expected format
     if (!Array.isArray(data)) {
       console.error('Parsed data is not in the expected format');
       return null;
     }
-  
+
     let output;
-  
+
     if (data.length < 2) {
       output = {
         messageCode,
-        event: "blank",
+        event: 'blank',
         data,
-      }
+      };
     } else {
       // Extract the event name and the data
       const [event, ...eventData] = data;
-    
+
       // Construct the output object
       output = {
         messageCode,
@@ -127,7 +148,7 @@ class WSMessage {
         data: eventData,
       };
     }
-  
+
     return output;
   }
 
