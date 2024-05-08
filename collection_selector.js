@@ -164,11 +164,6 @@ class CollectionSelector {
     $saveButton.click(() => {
       const instructions = $textarea.find('textarea').val();
 
-      // if (instructions.length > 1024) {
-      //   alert('Instruction is too long');
-      //   return;
-      // }
-
       this.editCollectionPrompt({
         collection_uuid: $selection[0].params.uuid,
         instructions,
@@ -185,15 +180,13 @@ class CollectionSelector {
       const $counter = $promptBox.find('#character-count');
       const length = $textarea.find('textarea').val().length;
 
-      if (length > 1024) {
+      if (length > 1024 - 10) {
         $counter.removeClass('text-green');
         $counter.addClass('text-superAlt');
+        $counter.text(`${1024 - length}`);
       } else {
-        $counter.removeClass('text-superAlt');
-        $counter.addClass('text-green');
+        $counter.text('');
       }
-
-      $counter.text(`${length}`);
     }
   }
 

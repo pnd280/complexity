@@ -1,13 +1,8 @@
 (async () => {
   'use strict';
 
-
   {
-    window.scriptLatestBuildId = 'Nm-RFGsiatgcyBpLXcoXf';
-
-    unsafeWindow.PERSISTENT_SETTINGS = {
-      focus: 'writing',
-    };
+    window.scriptLatestBuildId = 'PZguQUnh74bBftgKhoRRY';
 
     unsafeWindow.WSHOOK_INSTANCE = new WSHook();
 
@@ -30,6 +25,10 @@
       .html(GM_getResourceText('CSS'))
       .appendTo('head');
 
+    while (!$('script#__NEXT_DATA__').text().includes('"buildId":')) {
+      await Utils.sleep(100);
+    }
+
     window.BUILD_ID = $('script#__NEXT_DATA__')
       .text()
       .match(/"buildId":"(.+?)"/)[1]
@@ -51,16 +50,20 @@
 
     await waitForSocketHooking();
 
+    unsafeWindow.PERSISTENT_SETTINGS = {
+      focus: 'writing',
+    };
+
     Utils.setImmediateInterval(() => {
       QueryBox.createSelectors();
+      UITweaks.alterRewriteButton();
       // UITweaks.declutterCollectionPage();
       // UITweaks.hideThreadShareButtons();
       // UITweaks.populateCollectionButtons();
     }, 100);
-
+    
     QueryBox.autoRefetch();
   }
-  
 
   function waitForSocketHooking() {
     return new Promise((resolve) => {

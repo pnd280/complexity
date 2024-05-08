@@ -1,4 +1,14 @@
 class UITweaks {
+  static findReactFiber($element) {
+    const fiberKey = Object.keys($element[0]).find((key) =>
+      key.startsWith('__reactFiber')
+    );
+
+    const fiber = $element[0][fiberKey];
+
+    return fiber;
+  }
+
   static declutterCollectionPage() {
     if (
       !window.location.href.includes('https://www.perplexity.ai/collections') ||
@@ -24,7 +34,7 @@ class UITweaks {
     if ($('#collection-button-container').children().length > 1) return;
 
     $collectionButton.parent().attr('id', 'collection-button-container');
-    
+
     window.$UI_HTML
       .find('#thread-swap-collection')
       .clone()
@@ -78,6 +88,69 @@ class UITweaks {
 
         $(el).parent().parent().hide();
       });
+    }
+  }
+
+  static alterRewriteButton() {
+    if (!window.location.href.includes('https://www.perplexity.ai/search/'))
+      return;
+
+    const $rewriteButtonTexts = $('button > div > div:contains("Rewrite")');
+
+    if ($rewriteButtonTexts.length) {
+      $rewriteButtonTexts.each((_, el) => {
+        const $button = $(el).parents().eq(1);
+
+        if ($button.attr('id') === 'altered-rewrite-button') return;
+        if ($button.parents().eq(1).children().length > 2) return;
+
+        const $clonedButton = $button.clone();
+
+        $button.parents().eq(1).children().first().after($clonedButton);
+
+        $clonedButton.attr('id', 'altered-rewrite-button');
+
+        $button.parent().css('width', '0').css('visibility', 'hidden');
+
+        $clonedButton.on('contextmenu', (e) => {
+          e.preventDefault();
+          $button.click();
+        });
+
+        const $threadBlock = $button.parents().eq(5);
+
+        const $editThreadButton = $button
+          .parents()
+          .eq(3)
+          .children()
+          .last()
+          .children()
+          .eq(1)
+          .children()
+          .eq(1);
+
+        $clonedButton.on(
+          'click',
+          rewriteCurrentMessage.bind(null, $editThreadButton, $threadBlock)
+        );
+      });
+    }
+
+    async function rewriteCurrentMessage($editThreadButton, $threadBlock) {
+      $editThreadButton.click();
+
+      while (
+        !$threadBlock.find('div.text-align-center.relative:contains("Save")')
+          .length
+      ) {
+        await Utils.sleep(10);
+      }
+
+      $threadBlock
+        .find('div.text-align-center.relative:contains("Save")')
+        .parents()
+        .eq(1)
+        .click();
     }
   }
 }
