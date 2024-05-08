@@ -256,8 +256,7 @@ class WSHook {
             handler.apply(this, arguments);
 
             UI.toast({
-              message: `⚠️ Websocket connection failed. Fallback to long-polling XHR, bugs may occur.
-                Get rid of this alert by refreshing the page, if still persist, restart the browser.`,
+              message: `⚠️ Chatplexity: WebSocket connection failed (possibly by Cloudflare). Falling back to long-polling XHR, bugs may occur. Get rid of this alert by refreshing the page, if still persists, restart the browser.`,
               duration: 10000,
             });
           });

@@ -9,24 +9,27 @@ class UITweaks {
     return fiber;
   }
 
-  static declutterCollectionPage() {
+  static alterSloganHeading() {
     if (
-      !window.location.href.includes('https://www.perplexity.ai/collections') ||
-      !$('.col-span-4').length
+      $(
+        '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center span'
+      ).text() !== 'Chatplexity'
     )
-      return;
-
-    $('.col-span-8').children().first().find('> div:nth-child(2)').remove();
-    $('.col-span-4').remove();
-    $('.col-span-8').removeClass('col-span-8').addClass('col-span-12');
+      $(
+        '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center span'
+      ).text('Chatplexity');
   }
 
   static alterThreadCollectionButton() {
-    const $collectionButton = $('a[href*="/collections"]').last();
+    const $collectionButton = $(
+      'a[href*="/collections"] .overflow-hidden.truncate.text-ellipsis'
+    )
+      .parents()
+      .eq(1);
 
-    if (!isThreadPage() || !isInCollection()) return;
+    if (!isThreadPage() || !isThreadInCollection()) return;
 
-    $collectionButton.parent().attr('id', 'collection-button-container');
+    $collectionButton.parent().attr('id', 'thread-collection-button');
 
     $collectionButton.on('click', (e) => {
       e.preventDefault();
@@ -34,7 +37,7 @@ class UITweaks {
 
       const { $popover, addSelection } = UI.createSelectionPopover({
         sourceElement: $collectionButton,
-        sourceElementId: 'collection-button-container',
+        sourceElementId: 'thread-collection-button',
         isContextMenu: true,
       });
 
@@ -98,17 +101,16 @@ class UITweaks {
     }
 
     function isThreadPage() {
-      return window.location.href.includes('https://www.perplexity.ai/search/');
+      return Utils.whereAmI() === 'thread';
     }
 
-    function isInCollection() {
+    function isThreadInCollection() {
       return $collectionButton.length;
     }
   }
 
   static hideThreadShareButtons() {
-    if (!window.location.href.includes('https://www.perplexity.ai/search/'))
-      return;
+    if (!Utils.whereAmI() === 'thread') return;
 
     if ($('button > div > div:contains("Share")').length > 1) {
       $('button > div > div:contains("Share")').each((index, el) => {
@@ -120,8 +122,7 @@ class UITweaks {
   }
 
   static alterRewriteButton() {
-    if (!window.location.href.includes('https://www.perplexity.ai/search/'))
-      return;
+    if (Utils.whereAmI() !== 'thread') return;
 
     const $rewriteButtonTexts = $('button > div > div:contains("Rewrite")');
 
@@ -130,15 +131,20 @@ class UITweaks {
         const $button = $(el).parents().eq(1);
 
         if ($button.attr('id') === 'altered-rewrite-button') return;
-        if ($button.parents().eq(1).children().length > 2) return;
+
+        $button.parent().css('width', '0').css('visibility', 'hidden');
+
+        if (
+          $button.parents().eq(1).children().length >
+          (isInPrivateCollection() ? 2 : 1)
+        )
+          return;
 
         const $clonedButton = $button.clone();
 
-        $button.parents().eq(1).children().first().after($clonedButton);
+        $button.parents().eq(1).children().last().before($clonedButton);
 
         $clonedButton.attr('id', 'altered-rewrite-button');
-
-        $button.parent().css('width', '0').css('visibility', 'hidden');
 
         $clonedButton.on('contextmenu', (e) => {
           e.preventDefault();
@@ -164,6 +170,10 @@ class UITweaks {
       });
     }
 
+    function isInPrivateCollection() {
+      return $('button > div > div:contains("Share")').length > 1;
+    }
+
     async function rewriteCurrentMessage($editThreadButton, $threadBlock) {
       $editThreadButton.click();
 
@@ -180,5 +190,116 @@ class UITweaks {
         .eq(1)
         .click();
     }
+  }
+
+  static alterThreadLayout() {
+    if (Utils.whereAmI() !== 'thread') return;
+
+    const $threadWrapper = $(
+      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg'
+    );
+
+    if (!$threadWrapper.length) return;
+
+    const $messageContainer = $threadWrapper.find(
+      '> div:first-child > div:first-child > div:first-child > div:first-child > div'
+    );
+
+    if (!$messageContainer.data('observer-mounted')) {
+      $messageContainer.children().each((index, el) => {
+        Utils.observeElementInViewport($(el)[0], () => {
+          unsafeWindow.STORE.inViewMessageIndex = index;
+          console.log(unsafeWindow.STORE.inViewMessageIndex);
+        });
+      });
+
+      /* const $menu = $('<div>').attr('id', 'message-quick-nav');
+
+      $menu.addClass('flex gap-xs');
+
+      if (index > 0) {
+        const $scrollToPrev = window.$UI_HTML.find('#ghost-button').clone();
+        $scrollToPrev.find('#text').text('Prev');
+        $menu.append($scrollToPrev);
+
+        $scrollToPrev.on('click', () => {
+          Utils.scrollToElement($messageContainer.children().eq(index - 1));
+        });
+      }
+
+      const $scrollToQuery = window.$UI_HTML.find('#ghost-button').clone();
+      $scrollToQuery.find('#text').text('#Query');
+      $menu.append($scrollToQuery);
+
+      $scrollToQuery.on('click', () => {
+        Utils.scrollToElement(
+          $messageContainer
+            .children()
+            .eq(unsafeWindow.STORE.inViewMessageIndex)
+            .find('.my-md.md\\:my-lg')
+        );
+      });
+
+      const $scrollToAnswer = window.$UI_HTML.find('#ghost-button').clone();
+      $scrollToAnswer.find('#text').text('#Answer');
+      $menu.append($scrollToAnswer);
+
+      $scrollToAnswer.on('click', () => {
+        Utils.scrollToElement(
+          $messageContainer
+            .children()
+            .eq(unsafeWindow.STORE.inViewMessageIndex)
+            .find('.mb-sm.flex.w-full.items-center.justify-between')
+        );
+      });
+
+      if (index < $messageContainer.children().length - 1) {
+        const $scrollToNext = window.$UI_HTML.find('#ghost-button').clone();
+        $scrollToNext.find('#text').text('Next');
+        $menu.append($scrollToNext);
+
+        $scrollToNext.on('click', () => {
+          Utils.scrollToElement($messageContainer.children().eq(index + 1));
+        });
+      }
+
+      $('#query-box-follow-up-container').append($menu); */
+
+      $messageContainer.data('observer-mounted', true);
+    }
+
+    $('.pointer-events-auto.md\\:col-span-8')
+      .removeClass('md:col-span-8')
+      .addClass('col-span-12');
+  }
+
+  static toggleEmptyThreadMessageVisualContainer() {
+    const $container = $(
+      '.pb-\\[124px\\].pt-md.md\\:pt-0 > div > div:nth-child(1)'
+    ).children();
+
+    $container.each((_, element) => {
+      if (
+        $(element)
+          .find('> div > div > div > div')
+          .eq(1)
+          .find('> div > div')
+          .children().length > 0
+      ) {
+        $(element).find('> div > div > div > div').eq(1).show();
+        $(element)
+          .find('> div > div > div > div')
+          .eq(0)
+          .removeClass('col-span-12')
+          .addClass('col-span-8');
+      } else {
+        $(element).find('> div > div > div > div').eq(1).hide();
+        $(element)
+          .find('> div > div > div > div')
+          .eq(0)
+          .removeClass('col-span-8')
+          .addClass('col-span-12');
+      }
+    });
   }
 }

@@ -58,10 +58,15 @@
     };
 
     Utils.setImmediateInterval(() => {
+      UITweaks.alterSloganHeading();
       QueryBox.createSelectors();
-      UITweaks.alterRewriteButton();
+
       UITweaks.alterThreadCollectionButton();
-      // UITweaks.declutterCollectionPage();
+      UITweaks.alterThreadLayout();
+      UITweaks.toggleEmptyThreadMessageVisualContainer();
+
+      // FIXME:
+      // UITweaks.alterRewriteButton();
       // UITweaks.hideThreadShareButtons();
     }, 100);
 

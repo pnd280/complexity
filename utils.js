@@ -38,6 +38,42 @@ class Utils {
   static async sleep(ms) {
     return new Promise((resolve) => setTimeout(() => resolve(), ms));
   }
+
+  static scrollToElement($anchor, offset = 0) {
+    const $stickyHeader = $('.sticky.left-0.right-0.top-0.z-20.border-b');
+
+    if ($stickyHeader.length) {
+      offset -= $stickyHeader.height();
+    }
+
+    const elementPosition = $anchor.offset().top;
+    const scrollPosition = elementPosition + offset;
+
+    $('html, body').animate(
+      {
+        scrollTop: scrollPosition,
+      },
+      500
+    );
+  }
+
+  static observeElementInViewport(element, callback, threshold = 0.4) {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold,
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          callback();
+        }
+      });
+    }, options);
+
+    observer.observe(element);
+  }
 }
 
 class Logger {

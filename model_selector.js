@@ -128,7 +128,7 @@ class ModelSelector {
   static createChatModelDropdown() {
     return UI.createDropdown({
       selectorClass: 'model-selector',
-      svgIcon: 'cpu',
+      svgIcon: 'microchip-ai',
     });
   }
 

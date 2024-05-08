@@ -43,20 +43,27 @@ class QueryBox {
 
     if (
       !$quickQueryBoxContainer.length ||
-      $quickQueryBoxContainer.children('#query-box-follow-up').children()
-        .length > 1
+      $quickQueryBoxContainer
+        .children('#query-box-follow-up-container')
+        .children().length > 0
     )
       return null;
 
-    $quickQueryBoxContainer
-      .children()
-      .last()
-      .before('<div id="query-box-follow-up">');
+    const $container = $('<div>').attr('id', 'query-box-follow-up-container');
 
-    const $buttonContainer = $quickQueryBoxContainer.children().last().prev();
+    $quickQueryBoxContainer.children().last().before($container);
+
+    const $selectorContainer = $('<div>').attr(
+      'id',
+      'selector-container'
+    );
+
+    $quickQueryBoxContainer.children().last().prev().append($selectorContainer);
+
+    $quickQueryBoxContainer.children().last().before($container);
 
     return {
-      $element: $buttonContainer,
+      $element: $selectorContainer,
       type: 'follow-up',
     };
   }
@@ -114,7 +121,6 @@ class QueryBox {
       CollectionSelector.setupSelector(collectionSelector, collections);
       populateDefaults();
     });
-
 
     $targetContainer.prepend(imageModelSelector.$element);
 

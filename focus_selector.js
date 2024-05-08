@@ -97,7 +97,7 @@ class FocusSelector {
     });
   }
 
-  static setupSelectionContextMenu($selection) {
+  static setupSelectionContextMenu($selection, selector) {
     $selection.on('contextmenu', (e) => {
       e.preventDefault();
 
@@ -121,6 +121,15 @@ class FocusSelector {
               'defaultFocus',
               JSON.stringify($selection[0].params.code)
             );
+
+            unsafeWindow.STORE.focus = $selection[0].params.code;
+
+            selector.setText(
+              this.getDefaultTitle().title,
+              this.getDefaultTitle().icon,
+              this.getDefaultTitle().emoji
+            );
+
             closePopover();
           },
         },
@@ -171,7 +180,7 @@ class FocusSelector {
       );
 
       $selections.forEach(($selection) => {
-        this.setupSelectionContextMenu($selection);
+        this.setupSelectionContextMenu($selection, selector);
       });
 
       UI.showPopover({

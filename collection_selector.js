@@ -8,8 +8,8 @@ class CollectionSelector {
     jsonData = await jsonData.text();
 
     const fetchedCollections =
-      JSONUtils.safeParse(jsonData).pageProps.dehydratedState.queries[1].state.data
-        .pages[0];
+      JSONUtils.safeParse(jsonData).pageProps.dehydratedState.queries[1].state
+        .data.pages[0];
 
     if (!fetchedCollections?.length) return [];
 
