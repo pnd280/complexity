@@ -78,6 +78,14 @@ class JSONUtils {
       .replace(/\\b/g, '\\b')
       .replace(/\f/g, '\\f');
   }
+
+  static safeParse(json) {
+    try {
+      return JSON.parse(json);
+    } catch (error) {
+      return null;
+    }
+  }
 }
 
 class WSMessage {
@@ -115,13 +123,7 @@ class WSMessage {
     const jsonString = message.substring(startIndex);
     let data = [];
 
-    try {
-      // Parse the JSON string to an array
-      data = JSON.parse(jsonString);
-    } catch (error) {
-      console.error('Error parsing JSON from message:', error);
-      return null;
-    }
+    data = JSONUtils.safeParse(jsonString);
 
     // Check if data is in the expected format
     if (!Array.isArray(data)) {

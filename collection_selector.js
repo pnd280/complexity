@@ -8,7 +8,7 @@ class CollectionSelector {
     jsonData = await jsonData.text();
 
     const fetchedCollections =
-      JSON.parse(jsonData).pageProps.dehydratedState.queries[1].state.data
+      JSONUtils.safeParse(jsonData).pageProps.dehydratedState.queries[1].state.data
         .pages[0];
 
     if (!fetchedCollections?.length) return [];
@@ -33,7 +33,7 @@ class CollectionSelector {
     const data = await CollectionSelector.fetchCollections();
 
     const collections = [
-      { title: 'Default', dropdownTitle: 'Collection', uuid: undefined },
+      { title: 'Default', dropdownTitle: 'Collection', uuid: null },
       ...data,
     ];
 
@@ -59,7 +59,7 @@ class CollectionSelector {
     });
   }
 
-  static setupSelectionContextMenu($selection) {
+  static setupSelectionContextMenu($selection, selector) {
     $selection.on('contextmenu', (e) => {
       e.preventDefault();
 
@@ -107,6 +107,10 @@ class CollectionSelector {
                 JSON.stringify($selection[0].params.uuid)
               );
             }
+
+            unsafeWindow.STORE.activeCollectionUUID = $selection[0].params.uuid;
+
+            selector.setText(this.getDefaultTitle());
 
             closePopover();
           },
@@ -236,7 +240,7 @@ class CollectionSelector {
                 collection.uuid
               );
 
-              $('.collection-selector-text').text(this.getDefaultTitle());
+              selector.setText(this.getDefaultTitle());
 
               closePopover();
             },
@@ -253,7 +257,7 @@ class CollectionSelector {
       );
 
       $selections.forEach(($selection) => {
-        this.setupSelectionContextMenu($selection);
+        this.setupSelectionContextMenu($selection, selector);
       });
 
       UI.showPopover({ $anchor: selector.$element, $popover });

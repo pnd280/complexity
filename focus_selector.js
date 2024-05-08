@@ -97,6 +97,45 @@ class FocusSelector {
     });
   }
 
+  static setupSelectionContextMenu($selection) {
+    $selection.on('contextmenu', (e) => {
+      e.preventDefault();
+
+      const { $popover, addSelection } = UI.createSelectionPopover({
+        sourceElement: null,
+        sourceElementId: 'focus-selector-context-menu',
+        isContextMenu: true,
+      });
+
+      if (!$popover) return;
+
+      $('main').append($popover);
+
+      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+
+      addSelection({
+        input: {
+          name: 'Make default',
+          onClick: () => {
+            localStorage.setItem(
+              'defaultFocus',
+              JSON.stringify($selection[0].params.code)
+            );
+            closePopover();
+          },
+        },
+      });
+
+      UI.showPopover({
+        $anchor: $selection,
+        $popover,
+        placement: 'horizontal',
+      });
+
+      setTimeout(() => $(document).on('click', closePopover), 100);
+    });
+  }
+
   static setupSelector(selector, modes) {
     selector.$element.click(async () => {
       const { $popover, addSelection } = UI.createSelectionPopover({
@@ -110,7 +149,7 @@ class FocusSelector {
 
       const closePopover = () => QueryBox.closeAndRemovePopover($popover);
 
-      modes.forEach((mode) => {
+      const $selections = modes.map((mode) =>
         addSelection({
           input: {
             name: mode.name,
@@ -127,7 +166,12 @@ class FocusSelector {
             },
           },
           isSelected: mode.code === unsafeWindow.STORE.focus,
-        });
+          params: { code: mode.code },
+        })
+      );
+
+      $selections.forEach(($selection) => {
+        this.setupSelectionContextMenu($selection);
       });
 
       UI.showPopover({
@@ -137,7 +181,5 @@ class FocusSelector {
 
       setTimeout(() => $(document).on('click', closePopover), 100);
     });
-
-    this.setupSelectorContextMenu(selector);
   }
 }

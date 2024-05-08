@@ -51,8 +51,8 @@
     await waitForSocketHooking();
 
     unsafeWindow.STORE = {
-      focus: 'writing',
-      activeCollectionUUID: JSON.parse(
+      focus: JSONUtils.safeParse(localStorage.getItem('defaultFocus')),
+      activeCollectionUUID: JSONUtils.safeParse(
         localStorage.getItem('defaultCollectionUUID')
       ),
     };
