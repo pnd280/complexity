@@ -37,7 +37,7 @@ class FocusSelector {
   }
 
   static getDefaultTitle() {
-    const searchFocusCode = unsafeWindow.PERSISTENT_SETTINGS.focus;
+    const searchFocusCode = unsafeWindow.STORE.focus;
 
     const item = this.getFocusModes().find((m) => m.code === searchFocusCode);
 
@@ -115,7 +115,7 @@ class FocusSelector {
           input: {
             name: mode.name,
             onClick: async () => {
-              unsafeWindow.PERSISTENT_SETTINGS.focus = mode.code;
+              unsafeWindow.STORE.focus = mode.code;
 
               selector.setText(
                 this.getDefaultTitle().title,
@@ -126,7 +126,7 @@ class FocusSelector {
               closePopover();
             },
           },
-          isSelected: mode.code === unsafeWindow.PERSISTENT_SETTINGS.focus,
+          isSelected: mode.code === unsafeWindow.STORE.focus,
         });
       });
 

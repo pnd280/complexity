@@ -23,11 +23,11 @@ class ModelSelector {
     const opusQueryLimit = data?.['opus_limit'];
     const imageGenerationLimit = data?.['create_limit'];
 
-    unsafeWindow.PERSISTENT_SETTINGS.chatModelCode = chatModelCode;
-    unsafeWindow.PERSISTENT_SETTINGS.imageModelCode = imageModelCode;
-    unsafeWindow.PERSISTENT_SETTINGS.queryLimit = queryLimit;
-    unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit = opusQueryLimit;
-    unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit =
+    unsafeWindow.STORE.chatModelCode = chatModelCode;
+    unsafeWindow.STORE.imageModelCode = imageModelCode;
+    unsafeWindow.STORE.queryLimit = queryLimit;
+    unsafeWindow.STORE.opusQueryLimit = opusQueryLimit;
+    unsafeWindow.STORE.imageGenerationLimit =
       imageGenerationLimit;
 
     return {
@@ -40,11 +40,11 @@ class ModelSelector {
   }
 
   static getDefaultChatModelName() {
-    const otherModelsQueryLimit = unsafeWindow.PERSISTENT_SETTINGS.queryLimit;
-    const opusQueryLimit = unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit;
+    const otherModelsQueryLimit = unsafeWindow.STORE.queryLimit;
+    const opusQueryLimit = unsafeWindow.STORE.opusQueryLimit;
 
     const item = this.getPredefinedChatModels().find(
-      (m) => m.code === unsafeWindow.PERSISTENT_SETTINGS.chatModelCode
+      (m) => m.code === unsafeWindow.STORE.chatModelCode
     );
 
     if (!item) return '';
@@ -55,7 +55,7 @@ class ModelSelector {
 
     let currentLimit;
 
-    switch (unsafeWindow.PERSISTENT_SETTINGS.chatModelCode) {
+    switch (unsafeWindow.STORE.chatModelCode) {
       case 'claude3opus':
         currentLimit = opusQueryLimit;
         break;
@@ -74,10 +74,10 @@ class ModelSelector {
   }
 
   static getDefaultImageModelName() {
-    const currentLimit = unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit;
+    const currentLimit = unsafeWindow.STORE.imageGenerationLimit;
 
     const item = this.getPredefinedImageModels().find(
-      (m) => m.code === unsafeWindow.PERSISTENT_SETTINGS.imageModelCode
+      (m) => m.code === unsafeWindow.STORE.imageModelCode
     );
 
     if (!item) return '';
@@ -187,7 +187,7 @@ class ModelSelector {
           },
           isSelected:
             model.code ===
-            unsafeWindow.PERSISTENT_SETTINGS[
+            unsafeWindow.STORE[
               isImageModel ? 'imageModelCode' : 'chatModelCode'
             ],
         });

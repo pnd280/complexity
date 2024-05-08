@@ -50,16 +50,16 @@
 
     await waitForSocketHooking();
 
-    unsafeWindow.PERSISTENT_SETTINGS = {
+    unsafeWindow.STORE = {
       focus: 'writing',
     };
 
     Utils.setImmediateInterval(() => {
       QueryBox.createSelectors();
       UITweaks.alterRewriteButton();
+      UITweaks.alterThreadCollectionButton();
       // UITweaks.declutterCollectionPage();
       // UITweaks.hideThreadShareButtons();
-      // UITweaks.populateCollectionButtons();
     }, 100);
     
     QueryBox.autoRefetch();

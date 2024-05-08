@@ -76,13 +76,6 @@
   font-style: italic;
 }
 
-#collection-button-container {
-  display     : flex;
-  gap         : .25rem;
-  align-items : center;
-  margin-right: .5rem;
-}
-
 #thread-swap-collection,
 #thread-remove-from-collection {
   cursor   : pointer;

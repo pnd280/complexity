@@ -75,25 +75,25 @@ class WSHook {
           if (eventData.isInternal) return payload;
 
           const searchFocus =
-            unsafeWindow.PERSISTENT_SETTINGS.focus || eventData.search_focus;
+            unsafeWindow.STORE.focus || eventData.search_focus;
 
           const currentModelCode =
-            unsafeWindow.PERSISTENT_SETTINGS.chatModelCode ||
+            unsafeWindow.STORE.chatModelCode ||
             eventData.model_preference;
 
           const querySource = eventData.query_source;
 
           const targetCollectionUuid =
-            unsafeWindow.PERSISTENT_SETTINGS.collection?.uuid;
+            unsafeWindow.STORE.activeCollection?.uuid;
 
           switch (currentModelCode) {
             case 'claude3opus':
-              unsafeWindow.PERSISTENT_SETTINGS.opusQueryLimit -= 1;
+              unsafeWindow.STORE.opusQueryLimit -= 1;
               break;
             case 'turbo':
               break;
             default:
-              unsafeWindow.PERSISTENT_SETTINGS.queryLimit -= 1;
+              unsafeWindow.STORE.queryLimit -= 1;
               break;
           }
 
@@ -126,7 +126,7 @@ class WSHook {
       {
         interceptedEvent: 'create_image_for_entry',
         interceptedCallback: (payload) => {
-          unsafeWindow.PERSISTENT_SETTINGS.imageGenerationLimit -= 1;
+          unsafeWindow.STORE.imageGenerationLimit -= 1;
 
           ModelSelector.updateImageModelFn();
 

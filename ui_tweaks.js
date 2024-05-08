@@ -21,33 +21,61 @@ class UITweaks {
     $('.col-span-8').removeClass('col-span-8').addClass('col-span-12');
   }
 
-  static populateCollectionButtons() {
-    const $collectionButton = $('a[href*="/collections"]');
+  static alterThreadCollectionButton() {
+    const $collectionButton = $('a[href*="/collections"]').last();
 
-    if (!isThreadPage()) return;
-
-    if (!isInCollection()) {
-      $('#collection-button-container').children().not(':last').remove();
-      return;
-    }
-
-    if ($('#collection-button-container').children().length > 1) return;
+    if (!isThreadPage() || !isInCollection()) return;
 
     $collectionButton.parent().attr('id', 'collection-button-container');
 
-    window.$UI_HTML
-      .find('#thread-swap-collection')
-      .clone()
-      .append(window.$UI_HTML.find('svg[data-icon="shuffle"]').clone())
-      .appendTo('#collection-button-container')
-      .on('click', triggerCollectionSwap);
+    $collectionButton.on('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    window.$UI_HTML
-      .find('#thread-remove-from-collection')
-      .clone()
-      .append(window.$UI_HTML.find('svg[data-icon="xmark"]').clone())
-      .appendTo('#collection-button-container')
-      .on('click', triggerRemoveFromCollection);
+      const { $popover, addSelection } = UI.createSelectionPopover({
+        sourceElement: $collectionButton,
+        sourceElementId: 'collection-button-container',
+        isContextMenu: true,
+      });
+
+      if (!$popover) return;
+
+      $('main').append($popover);
+
+      addSelection({
+        input: {
+          name: 'Swap collection',
+          onClick: triggerCollectionSwap,
+        },
+      });
+
+      addSelection({
+        input: {
+          name: 'Remove from collection',
+          onClick: triggerRemoveFromCollection,
+        },
+      });
+
+      addSelection({
+        input: {
+          name: 'View all threads',
+          onClick: () => {
+            window.location.href = $collectionButton.attr('href');
+          },
+        },
+      });
+
+      UI.showPopover({
+        $anchor: $collectionButton,
+        $popover,
+      });
+
+      setTimeout(() => {
+        $(document).on('click', () => {
+          QueryBox.closeAndRemovePopover($popover);
+        });
+      }, 100);
+    });
 
     async function triggerRemoveFromCollection() {
       await triggerCollectionActionMenu();

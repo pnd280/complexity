@@ -24,7 +24,7 @@ class CollectionSelector {
       });
     });
 
-    unsafeWindow.PERSISTENT_SETTINGS.collections = collections;
+    unsafeWindow.STORE.collections = collections;
 
     return collections;
   }
@@ -42,8 +42,8 @@ class CollectionSelector {
 
   static getDefaultTitle() {
     return (
-      unsafeWindow.PERSISTENT_SETTINGS.collection?.dropdownTitle ||
-      unsafeWindow.PERSISTENT_SETTINGS.collection?.title ||
+      unsafeWindow.STORE.activeCollection?.dropdownTitle ||
+      unsafeWindow.STORE.activeCollection?.title ||
       'Collection'
     );
   }
@@ -74,20 +74,20 @@ class CollectionSelector {
 
       contextMenuAddSelection({
         input: {
-          name: 'Go to page',
-          onClick: () => {
-            window.location.href = `https://www.perplexity.ai/collections/${$selection[0].params.url}`;
-            closePopover();
-          },
-        },
-      });
-
-      contextMenuAddSelection({
-        input: {
           name: 'Edit prompt',
           onClick: () => {
             closePopover();
             this.setupPromptEditModal($selection);
+          },
+        },
+      });
+      
+      contextMenuAddSelection({
+        input: {
+          name: 'View all threads',
+          onClick: () => {
+            window.location.href = `https://www.perplexity.ai/collections/${$selection[0].params.url}`;
+            closePopover();
           },
         },
       });
@@ -121,12 +121,11 @@ class CollectionSelector {
       ],
     });
 
-    const itemIndex = unsafeWindow.PERSISTENT_SETTINGS.collections.findIndex(
+    const itemIndex = unsafeWindow.STORE.collections.findIndex(
       (item) => item.uuid === collection_uuid
     );
 
-    unsafeWindow.PERSISTENT_SETTINGS.collections[itemIndex].instructions =
-      instructions;
+    unsafeWindow.STORE.collections[itemIndex].instructions = instructions;
   }
 
   static setupPromptEditModal($selection) {
@@ -208,7 +207,7 @@ class CollectionSelector {
           input: {
             name: collection.title,
             onClick: () => {
-              unsafeWindow.PERSISTENT_SETTINGS.collection = collection;
+              unsafeWindow.STORE.activeCollection = collection;
 
               Logger.log(
                 'Selected collection:',
@@ -222,8 +221,7 @@ class CollectionSelector {
             },
           },
           isSelected:
-            collection.uuid ===
-            unsafeWindow.PERSISTENT_SETTINGS.collection?.uuid,
+            collection.uuid === unsafeWindow.STORE.activeCollection?.uuid,
           params: {
             url: collection.url,
             uuid: collection.uuid,
