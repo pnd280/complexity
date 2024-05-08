@@ -84,7 +84,7 @@ class WSHook {
           const querySource = eventData.query_source;
 
           const targetCollectionUuid =
-            unsafeWindow.STORE.activeCollection?.uuid;
+            unsafeWindow.STORE.activeCollectionUUID;
 
           switch (currentModelCode) {
             case 'claude3opus':

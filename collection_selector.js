@@ -41,9 +41,13 @@ class CollectionSelector {
   }
 
   static getDefaultTitle() {
+    const defaultActiveCollection = unsafeWindow.STORE.collections?.find(
+      (e) => e.uuid == unsafeWindow.STORE.activeCollectionUUID
+    );
+
     return (
-      unsafeWindow.STORE.activeCollection?.dropdownTitle ||
-      unsafeWindow.STORE.activeCollection?.title ||
+      defaultActiveCollection?.dropdownTitle ||
+      defaultActiveCollection?.title ||
       'Collection'
     );
   }
@@ -59,12 +63,11 @@ class CollectionSelector {
     $selection.on('contextmenu', (e) => {
       e.preventDefault();
 
-      const { $popover, addSelection: contextMenuAddSelection } =
-        UI.createSelectionPopover({
-          sourceElemnt: null,
-          sourceElementId: 'collection-selector-context-menu',
-          isContextMenu: true,
-        });
+      const { $popover, addSelection } = UI.createSelectionPopover({
+        sourceElemnt: null,
+        sourceElementId: 'collection-selector-context-menu',
+        isContextMenu: true,
+      });
 
       if (!$popover) return;
 
@@ -72,7 +75,7 @@ class CollectionSelector {
 
       const closePopover = () => QueryBox.closeAndRemovePopover($popover);
 
-      contextMenuAddSelection({
+      addSelection({
         input: {
           name: 'Edit prompt',
           onClick: () => {
@@ -81,12 +84,30 @@ class CollectionSelector {
           },
         },
       });
-      
-      contextMenuAddSelection({
+
+      addSelection({
         input: {
           name: 'View all threads',
           onClick: () => {
             window.location.href = `https://www.perplexity.ai/collections/${$selection[0].params.url}`;
+            closePopover();
+          },
+        },
+      });
+
+      addSelection({
+        input: {
+          name: 'Make default',
+          onClick: () => {
+            if (!$selection[0].params.uuid) {
+              localStorage.removeItem('defaultCollectionUUID');
+            } else {
+              localStorage.setItem(
+                'defaultCollectionUUID',
+                JSON.stringify($selection[0].params.uuid)
+              );
+            }
+
             closePopover();
           },
         },
@@ -207,7 +228,7 @@ class CollectionSelector {
           input: {
             name: collection.title,
             onClick: () => {
-              unsafeWindow.STORE.activeCollection = collection;
+              unsafeWindow.STORE.activeCollectionUUID = collection.uuid;
 
               Logger.log(
                 'Selected collection:',
@@ -221,7 +242,7 @@ class CollectionSelector {
             },
           },
           isSelected:
-            collection.uuid === unsafeWindow.STORE.activeCollection?.uuid,
+            collection.uuid === unsafeWindow.STORE.activeCollectionUUID,
           params: {
             url: collection.url,
             uuid: collection.uuid,

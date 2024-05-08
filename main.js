@@ -52,6 +52,9 @@
 
     unsafeWindow.STORE = {
       focus: 'writing',
+      activeCollectionUUID: JSON.parse(
+        localStorage.getItem('defaultCollectionUUID')
+      ),
     };
 
     Utils.setImmediateInterval(() => {
@@ -61,7 +64,7 @@
       // UITweaks.declutterCollectionPage();
       // UITweaks.hideThreadShareButtons();
     }, 100);
-    
+
     QueryBox.autoRefetch();
   }
 

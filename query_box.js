@@ -106,15 +106,15 @@ class QueryBox {
       const chatModels = ModelSelector.getPredefinedChatModels();
       const imageModels = ModelSelector.getPredefinedImageModels();
 
-      populateDefaults();
-
       ModelSelector.setupSelector(chatModelSelector, chatModels, false);
       ModelSelector.setupSelector(imageModelSelector, imageModels, true);
     });
 
     CollectionSelector.getDropdownItems().then((collections) => {
       CollectionSelector.setupSelector(collectionSelector, collections);
+      populateDefaults();
     });
+
 
     $targetContainer.prepend(imageModelSelector.$element);
 
