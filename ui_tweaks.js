@@ -198,6 +198,25 @@ class UITweaks {
     $('.pointer-events-auto.md\\:col-span-8')
       .removeClass('md:col-span-8')
       .addClass('col-span-12');
+
+    const $messageContainer = $(
+      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child > div'
+    );
+
+    $messageContainer.children().each((_, messageBlock) => {
+      const $buttonBar = $(messageBlock).find(
+        '.mt-sm.flex.items-center.justify-between'
+      );
+
+      const $editButton = $buttonBar.children().last().children().eq(1);
+
+      const $query = $(messageBlock).find('.my-md.md\\:my-lg');
+
+      $query.off('dbclick').on('dblclick', () => {
+        if ($query.find('textarea').length) return;
+        $editButton.click();
+      });
+    });
   }
 
   static toggleEmptyThreadMessageVisualContainer() {
