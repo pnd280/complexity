@@ -14,9 +14,25 @@ class ThreadAnchor {
       $anchorWrapper.css('right', `60px`);
       $anchorWrapper.css('top', `${top + 10}px`);
 
-      $('#visibility-toggle').on('click', () => {
-        $anchorWrapper.find('#container').toggleClass('invisible');
-      });
+      $('#visibility-toggle')
+        .off('click')
+        .on('click', () => {
+          if ($anchorWrapper.find('#container').hasClass('invisible')) {
+            $anchorWrapper.find('#container').removeClass('hidden');
+
+            void $anchorWrapper.find('#container')[0].offsetHeight;
+            
+            $anchorWrapper.find('#container').removeClass('invisible');
+          } else {
+            $anchorWrapper.find('#container').addClass('invisible');
+
+            $anchorWrapper.off('transitionend').on('transitionend', () => {
+              if ($anchorWrapper.find('#container').hasClass('invisible')) {
+                $anchorWrapper.find('#container').addClass('hidden');
+              }
+            });
+          }
+        });
     }
 
     return {
@@ -55,8 +71,9 @@ class ThreadAnchor {
     const callback = (initialRender = false) => {
       $('#thread-anchor-wrapper #container').empty();
 
-      if (Utils.whereAmI() !== 'thread')
+      if (Utils.whereAmI() !== 'thread') {
         return $('#thread-anchor-wrapper').remove();
+      }
 
       this.updateThreadMessageAnchorPosition();
 
@@ -78,7 +95,9 @@ class ThreadAnchor {
           '.mb-sm.flex.w-full.items-center.justify-between'
         );
 
-        const name = $query.find('>*').text();
+        const name =
+          $query.find('textarea').text() ||
+          $query.find('>*:not(#markdowned-text-wrapper)').first().text();
 
         addAnchor({
           input: {
@@ -105,7 +124,7 @@ class ThreadAnchor {
       }
     };
 
-    callback();
+    callback(true);
 
     window.addEventListener('scroll', () => callback());
 

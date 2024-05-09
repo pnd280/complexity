@@ -31,7 +31,7 @@ class UITweaks {
 
     $collectionButton.parent().attr('id', 'thread-collection-button');
 
-    $collectionButton.on('click', (e) => {
+    $collectionButton.off('click').on('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -212,7 +212,53 @@ class UITweaks {
 
       const $query = $(messageBlock).find('.my-md.md\\:my-lg');
 
-      $query.off('dbclick').on('dblclick', () => {
+      if ($query.children().length > 1) {
+        $query.children().each((_, el) => {
+          if ($(el).attr('id') === 'markdowned-text-wrapper') return;
+
+          if ($(el).find('textarea').length) {
+            return $query.find('#markdowned-text-wrapper').addClass('hidden');
+          }
+
+          $query.find('#markdowned-text-wrapper').removeClass('hidden');
+        });
+      }
+
+      if (!$query.data('is-rewritten')) {
+        const mardownedText = Utils.convertMarkdownToHTML($query.text());
+
+        const $wrapper = $('<div>')
+          .html(mardownedText)
+          .attr('id', 'markdowned-text-wrapper')
+          .addClass(
+            'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark'
+          );
+
+        const fontFamily =
+          $('h1')?.css('font-family')?.split(',')?.[0]?.trim() || 'Segoe UI';
+
+        console.log(
+          'UITweaks ~ $messageContainer.children ~ fontFamily:',
+          fontFamily
+        );
+
+        const calculatedWrappedLines = Utils.calculateLines(
+          $query.text(),
+          $query.width(),
+          fontFamily,
+          16
+        );
+
+        $wrapper.addClass(
+          calculatedWrappedLines <= 3 ? 'text-3xl' : 'text-base'
+        );
+
+        $query.append($wrapper);
+
+        $query.data('is-rewritten', true);
+      }
+
+      $query.off('dblclick').on('dblclick', () => {
         if ($query.find('textarea').length) return;
         $editButton.click();
       });

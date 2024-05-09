@@ -1,4 +1,15 @@
 class Utils {
+  static loadScriptAsync(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.type = 'text/javascript';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
   static setImmediateInterval(callback, interval, ...args) {
     callback();
     return setInterval(callback, interval, ...args);
@@ -104,6 +115,42 @@ class Utils {
         callback();
       }
     }).observe(document, { subtree: true, childList: true });
+  }
+
+  static convertMarkdownToHTML(markdownText) {
+    const converter = new showdown.Converter();
+    const html = converter.makeHtml(markdownText);
+    return html;
+  }
+
+  static calculateLines(text, containerWidth, fontFamily, fontSize) {
+    // Create a temporary canvas element
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+  
+    // Set the font properties
+    context.font = `${fontSize}px ${fontFamily}`;
+  
+    // Split the text into words
+    const words = text.split(' ');
+    let line = '';
+    let lines = 1;
+  
+    // Iterate over each word
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + words[i] + ' ';
+      const metrics = context.measureText(testLine);
+  
+      // If the test line is wider than the container, start a new line
+      if (metrics.width > containerWidth) {
+        lines++;
+        line = words[i] + ' ';
+      } else {
+        line = testLine;
+      }
+    }
+  
+    return lines;
   }
 }
 

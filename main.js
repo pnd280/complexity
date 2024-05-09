@@ -9,16 +9,18 @@
     unsafeWindow.WSHOOK_INSTANCE.hookSocket();
 
     if (typeof jQuery === 'undefined') {
-      const script = document.createElement('script');
-      script.src =
-        'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js';
-      script.type = 'text/javascript';
-      document.getElementsByTagName('head')[0].appendChild(script);
+      await Utils.loadScriptAsync(
+        'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'
+      );
 
-      await new Promise((resolve) => {
-        script.onload = resolve;
-      });
+      console.log('jQuery loaded');
     }
+
+    await Utils.loadScriptAsync(
+      'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js'
+    );
+
+    console.log('Showdown loaded');
 
     $('<style>')
       .attr('type', 'text/css')
