@@ -9,15 +9,15 @@ class UITweaks {
     return fiber;
   }
 
-  static alterSloganHeading() {
+  static alterSloganHeading(text = 'Chatplexity') {
     if (
       $(
         '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center span'
-      ).text() !== 'Chatplexity'
+      ).text() !== text
     )
       $(
         '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center span'
-      ).text('Chatplexity');
+      ).text(text);
   }
 
   static alterThreadCollectionButton() {
@@ -194,79 +194,6 @@ class UITweaks {
 
   static alterThreadLayout() {
     if (Utils.whereAmI() !== 'thread') return;
-
-    const $threadWrapper = $(
-      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg'
-    );
-
-    if (!$threadWrapper.length) return;
-
-    const $messageContainer = $threadWrapper.find(
-      '> div:first-child > div:first-child > div:first-child > div:first-child > div'
-    );
-
-    if (!$messageContainer.data('observer-mounted')) {
-      $messageContainer.children().each((index, el) => {
-        Utils.observeElementInViewport($(el)[0], () => {
-          unsafeWindow.STORE.inViewMessageIndex = index;
-          console.log(unsafeWindow.STORE.inViewMessageIndex);
-        });
-      });
-
-      /* const $menu = $('<div>').attr('id', 'message-quick-nav');
-
-      $menu.addClass('flex gap-xs');
-
-      if (index > 0) {
-        const $scrollToPrev = window.$UI_HTML.find('#ghost-button').clone();
-        $scrollToPrev.find('#text').text('Prev');
-        $menu.append($scrollToPrev);
-
-        $scrollToPrev.on('click', () => {
-          Utils.scrollToElement($messageContainer.children().eq(index - 1));
-        });
-      }
-
-      const $scrollToQuery = window.$UI_HTML.find('#ghost-button').clone();
-      $scrollToQuery.find('#text').text('#Query');
-      $menu.append($scrollToQuery);
-
-      $scrollToQuery.on('click', () => {
-        Utils.scrollToElement(
-          $messageContainer
-            .children()
-            .eq(unsafeWindow.STORE.inViewMessageIndex)
-            .find('.my-md.md\\:my-lg')
-        );
-      });
-
-      const $scrollToAnswer = window.$UI_HTML.find('#ghost-button').clone();
-      $scrollToAnswer.find('#text').text('#Answer');
-      $menu.append($scrollToAnswer);
-
-      $scrollToAnswer.on('click', () => {
-        Utils.scrollToElement(
-          $messageContainer
-            .children()
-            .eq(unsafeWindow.STORE.inViewMessageIndex)
-            .find('.mb-sm.flex.w-full.items-center.justify-between')
-        );
-      });
-
-      if (index < $messageContainer.children().length - 1) {
-        const $scrollToNext = window.$UI_HTML.find('#ghost-button').clone();
-        $scrollToNext.find('#text').text('Next');
-        $menu.append($scrollToNext);
-
-        $scrollToNext.on('click', () => {
-          Utils.scrollToElement($messageContainer.children().eq(index + 1));
-        });
-      }
-
-      $('#query-box-follow-up-container').append($menu); */
-
-      $messageContainer.data('observer-mounted', true);
-    }
 
     $('.pointer-events-auto.md\\:col-span-8')
       .removeClass('md:col-span-8')

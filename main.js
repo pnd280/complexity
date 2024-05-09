@@ -58,7 +58,7 @@
     };
 
     Utils.setImmediateInterval(() => {
-      UITweaks.alterSloganHeading();
+      UITweaks.alterSloganHeading('Chatplexity');
       QueryBox.createSelectors();
 
       UITweaks.alterThreadCollectionButton();
@@ -70,7 +70,8 @@
       // UITweaks.hideThreadShareButtons();
     }, 100);
 
-    QueryBox.autoRefetch();
+    ThreadAnchor.mountObserver();
+    MyObserver.closePopovers();
   }
 
   function waitForSocketHooking() {

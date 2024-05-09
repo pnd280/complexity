@@ -73,25 +73,6 @@ class QueryBox {
     $(document).off('click', this.closeAndRemovePopover);
   }
 
-  static autoRefetch() {
-    let autoUpdateIntervalId;
-
-    window.addEventListener('focus', function () {
-      autoUpdateIntervalId = Utils.setImmediateInterval(async () => {
-        if (!$('#dropdown-wrapper').length) return;
-
-        await ModelSelector.getDefaultModels();
-
-        ModelSelector.updateImageModelFn();
-        ModelSelector.updateChatModelFn();
-      }, 5000);
-    });
-
-    window.addEventListener('blur', function () {
-      clearInterval(autoUpdateIntervalId);
-    });
-  }
-
   static createSelectors() {
     const targetContainer =
       this.findFollowUpQueryBoxContainer() || this.findButtonBarContainer();
@@ -136,13 +117,6 @@ class QueryBox {
 
     $targetContainer.addClass('flex-wrap col-span-2');
 
-    // if user scrolls -> close all popovers
-    $(window).scroll(() => {
-      $('[id$="-popover"]').each((_, popover) => {
-        $(popover).remove();
-      });
-    });
-
     function populateDefaults() {
       focusSelector.setText(
         FocusSelector.getDefaultTitle().title,
@@ -157,4 +131,6 @@ class QueryBox {
       collectionSelector.setText(CollectionSelector.getDefaultTitle());
     }
   }
+
+
 }

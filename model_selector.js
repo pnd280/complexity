@@ -139,7 +139,32 @@ class ModelSelector {
     });
   }
 
+  static mountUpdateObserver() {
+    let autoUpdateIntervalId;
+
+    window.addEventListener('focus', function () {
+      autoUpdateIntervalId = Utils.setImmediateInterval(async () => {
+        if (!$('#dropdown-wrapper').length) return;
+
+        await ModelSelector.getDefaultModels();
+
+        ModelSelector.updateImageModelFn();
+        ModelSelector.updateChatModelFn();
+      }, 5000);
+    });
+
+    window.addEventListener('blur', function () {
+      clearInterval(autoUpdateIntervalId);
+    });
+  }
+
   static setupSelector(selector, models, isImageModel) {
+    if (!$('body').data('model-selectors-observer-mounted')) {
+      this.mountUpdateObserver();
+
+      $('body').data('model-selectors-observer-mounted', true);
+    }
+
     isImageModel &&
       (this.updateImageModelFn = ((selector) => {
         this.setImageModelName(selector);

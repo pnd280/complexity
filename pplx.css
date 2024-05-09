@@ -1,6 +1,6 @@
 :root {
   --ui-font  : "Karla", "Golos Text", "Gitlab Sans";
-  --mono-font: "MonoLisa", "JetBrains Mono NL";
+  --mono-font: "JetBrains Mono NL";
 
   --background-color: #181818;
 
@@ -16,6 +16,91 @@
   --text-off       : #8d8d8d;
   --text-main      : #e8e8e8;
   --border-color   : rgba(229, 231, 235, 0.1);
+}
+
+#thread-anchor-wrapper #container {
+  border-radius: .5rem;
+  padding      : 1rem;
+
+  background: var(--background-color);
+
+  justify-content: flex-start;
+
+  width: 100%;
+
+  max-height: 300px;
+
+  overflow-y: auto;
+
+  transition: opacity 0.5s ease;
+
+  transform-origin: right;
+
+  user-select: none;
+}
+
+#thread-anchor-wrapper #container.overlapping {
+  border    : 1px solid var(--border-color);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#thread-anchor-wrapper #visibility-toggle {
+  position: absolute;
+
+  top  : -2rem;
+  right: -2rem;
+
+  width : 2rem;
+  height: 2rem;
+
+  background-color: var(--sidebar-color);
+
+  cursor: pointer;
+
+  border-radius: 9999px;
+
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#thread-anchor-wrapper #visibility-toggle svg {
+  width : 50%;
+  height: 50%;
+
+  position: absolute;
+
+  top : 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  color: var(--text-off);
+
+  transition: color 0.5s ease;
+}
+
+#thread-anchor-wrapper #visibility-toggle svg:hover {
+  color: var(--text-main);
+}
+
+#thread-anchor {
+  min-width: 100px;
+  max-width: 230px;
+
+  margin-top  : .25rem;
+  padding-left: .5rem;
+  color       : var(--text-off);
+  border-left : 2px solid var(--border-color);
+
+  transition: color 0.5s ease, border-left 0.5s ease;
+}
+
+#thread-anchor:hover {
+  color: var(--text-main);
+}
+
+#thread-anchor.selected {
+  color      : var(--text-main) !important;
+  border-left: 4px solid var(--accent-color) !important;
 }
 
 #query-box-follow-up-container #selector-container,
@@ -305,6 +390,18 @@ html.dark,
   color: var(--background-color);
 } */
 
+/* Misc */
+.text-off {
+  color: var(--text-off) !important;
+}
+
+.text-on {
+  color: var(--text-main) !important;
+}
+
+.text-main {
+  color: var(--accent-color) !important;
+}
 
 /* Hide annoying elements */
 .bg-transparent.dark\:border-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:divide-borderMainDark\/50.divide-borderMain\/50.ring-borderMain\/50.border-borderMain\/50.md\:pb-0.md\:px-0.md\:justify-center.pb-2xl.px-sm.gap-y-sm.gap-x-md.items-center.flex-wrap.flex {
@@ -316,6 +413,14 @@ html.dark,
 }
 
 /* Tailwind classes that are not rendered */
+.invisible {
+  opacity: 0;
+}
+
+.max-w-full {
+  max-width: 100%;
+}
+
 .w-max {
   width: max-content;
 }

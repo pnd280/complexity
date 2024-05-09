@@ -57,22 +57,63 @@ class Utils {
     );
   }
 
-  static observeElementInViewport(element, callback, threshold = 0.4) {
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold,
-    };
+  static findMostVisibleElementIndex(elements) {
+    let maxVisiblePercentage = 0;
+    let indexWithMaxVisible = -1;
 
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          callback();
-        }
+    elements.forEach((element, index) => {
+      const visiblePercentage = getVisiblePercentage(element);
+      if (visiblePercentage > maxVisiblePercentage) {
+        maxVisiblePercentage = visiblePercentage;
+        indexWithMaxVisible = index;
+      }
+    });
+
+    return indexWithMaxVisible;
+
+    function getVisiblePercentage(element) {
+      const rect = element.getBoundingClientRect();
+      const windowHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      const windowWidth =
+        window.innerWidth || document.documentElement.clientWidth;
+
+      // Calculate the visible part of the element
+      const visibleWidth = Math.max(
+        0,
+        Math.min(rect.right, windowWidth) - Math.max(rect.left, 0)
+      );
+      const visibleHeight = Math.max(
+        0,
+        Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)
+      );
+      const visibleArea = visibleWidth * visibleHeight;
+      const totalArea = rect.width * rect.height;
+
+      return (visibleArea / totalArea) * 100;
+    }
+  }
+
+  static onShallowRouteChange(callback) {
+    let lastUrl = location.href;
+    new MutationObserver(() => {
+      const url = location.href;
+      if (url !== lastUrl) {
+        lastUrl = url;
+
+        callback();
+      }
+    }).observe(document, { subtree: true, childList: true });
+  }
+}
+
+class MyObserver {
+  static closePopovers() {
+    $(window).scroll(() => {
+      $('[id$="-popover"]').each((_, popover) => {
+        $(popover).remove();
       });
-    }, options);
-
-    observer.observe(element);
+    });
   }
 }
 
