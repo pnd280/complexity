@@ -2,23 +2,24 @@
   --ui-font  : 'Karla', 'Golos Text', 'Gitlab Sans';
   --mono-font: 'JetBrains Mono NL';
 
-  --background-color           : #fcfcf9;
-  /* --accent-color            : rgb(108, 92, 231);
-  --accent-color-darker        : rgba(108, 92, 231, .5); */
-  /* --accent-color            : rgb(0 122 255);
-  --accent-color-darker        : rgb(0 122 255 / 50%); */
-  --accent-color               : rgb(0, 206, 201);
-  --accent-color-darker        : rgba(0, 206, 201, 0.5);
+
+  --background-color: #f3f3ee;
+  --sidebar-color   : #fcfcf9;
+
+  --accent-color       : rgb(0 122 255);
+  --accent-color-darker: rgb(0 122 255 / 50%);
 
   --secondary-color: var(--accent-color);
   --text-main      : #8d8d8d;
   --text-off       : #e8e8e8;
 
-  --border-color : rgba(229, 231, 235, 0.1);
-  --sidebar-color: #f3f3ee;
+  --border-color: rgba(229, 231, 235, 0.1);
 }
 
 html.dark {
+  --background-color: #fcfcf9;
+  --sidebar-color   : #f3f3ee;
+
   --sidebar-color   : #1f1f1f;
   --background-color: #181818;
 
@@ -59,7 +60,7 @@ div.whitespace-pre-line.break-words {
   border-radius: 0.5rem;
   padding      : 1rem;
 
-  background: var(--background-color);
+  background: var(--sidebar-color);
 
   justify-content: flex-start;
 
@@ -149,7 +150,7 @@ div.whitespace-pre-line.break-words {
 
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
-  background: var(--background-color);
+  background: var(--sidebar-color);
 
   display        : flex;
   gap            : 0.25rem;
@@ -230,6 +231,10 @@ div.whitespace-pre-line.break-words {
 
 code {
   font-family: var(--mono-font) !important;
+}
+
+.data-\[state\=checked\]\:dark\:before\:\!bg-superDark[data-state='checked']:before {
+  background-color: var(--accent-color) !important;
 }
 
 .dark .data-\[state\=checked\]\:dark\:before\:\!bg-superDark[data-state='checked']:before {
@@ -408,7 +413,7 @@ html.dark,
     display         : block;
     width           : 50%;
     height          : 1px;
-    background-color: var(--border-color);
+    background-color: var(--text-off);
     margin-bottom   : 1.5rem;
 
     position: absolute;
