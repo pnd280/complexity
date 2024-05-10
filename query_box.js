@@ -10,7 +10,7 @@ class QueryBox {
 
     $buttonBar.attr('id', 'query-box-button-bar');
 
-    $buttonBar.children().first().remove();
+    $buttonBar.children().first().addClass('hidden');
 
     $buttonBar
       .children('div:contains("Attach")')
@@ -29,21 +29,23 @@ class QueryBox {
   }
 
   static findFollowUpQueryBoxContainer() {
-    const $quickQueryBoxContainer = $('textarea[placeholder="Ask follow-up"]')
+    const $followUpQueryBoxContainer = $(
+      'textarea[placeholder="Ask follow-up"]'
+    )
       .parents()
       .eq(6);
 
     if (
-      $quickQueryBoxContainer &&
-      $quickQueryBoxContainer.children().eq(1).attr('class') ===
+      $followUpQueryBoxContainer &&
+      $followUpQueryBoxContainer.children().eq(1).attr('class') ===
         'mb-2 flex justify-center'
     ) {
-      $('.mb-2.flex.justify-center').prependTo($quickQueryBoxContainer);
+      $('.mb-2.flex.justify-center').prependTo($followUpQueryBoxContainer);
     }
 
     if (
-      !$quickQueryBoxContainer.length ||
-      $quickQueryBoxContainer
+      !$followUpQueryBoxContainer.length ||
+      $followUpQueryBoxContainer
         .children('#query-box-follow-up-container')
         .children().length > 0
     )
@@ -51,16 +53,17 @@ class QueryBox {
 
     const $container = $('<div>').attr('id', 'query-box-follow-up-container');
 
-    $quickQueryBoxContainer.children().last().before($container);
+    $followUpQueryBoxContainer.children().last().before($container);
 
-    const $selectorContainer = $('<div>').attr(
-      'id',
-      'selector-container'
-    );
+    const $selectorContainer = $('<div>').attr('id', 'selector-container');
 
-    $quickQueryBoxContainer.children().last().prev().append($selectorContainer);
+    $followUpQueryBoxContainer
+      .children()
+      .last()
+      .prev()
+      .append($selectorContainer);
 
-    $quickQueryBoxContainer.children().last().before($container);
+    $followUpQueryBoxContainer.children().last().before($container);
 
     return {
       $element: $selectorContainer,
@@ -79,7 +82,7 @@ class QueryBox {
 
     if (!targetContainer) return;
 
-    const $targetContainer = targetContainer.$element;
+    const { $element: $targetContainer, type } = targetContainer;
 
     const focusSelector = FocusSelector.createDropdown();
     const chatModelSelector = ModelSelector.createChatModelDropdown();
@@ -103,17 +106,17 @@ class QueryBox {
       populateDefaults();
     });
 
-    $targetContainer.prepend(imageModelSelector.$element);
+    insertToContainer(imageModelSelector.$element, type);
 
-    $targetContainer.prepend(chatModelSelector.$element);
+    insertToContainer(chatModelSelector.$element, type);
 
     if (
       (Utils.whereAmI() !== 'thread' && Utils.whereAmI() !== 'collection') ||
       $targetContainer.closest('div[data-testid="quick-search-modal"]').length
     )
-      $targetContainer.prepend(collectionSelector.$element);
+      insertToContainer(collectionSelector.$element, type);
 
-    $targetContainer.prepend(focusSelector.$element);
+    insertToContainer(focusSelector.$element, type);
 
     $targetContainer.addClass('flex-wrap col-span-2');
 
@@ -130,7 +133,13 @@ class QueryBox {
 
       collectionSelector.setText(CollectionSelector.getDefaultTitle());
     }
+
+    function insertToContainer($element, type) {
+      if (type === 'button-bar') {
+        $targetContainer.children().first().after($element);
+      } else {
+        $targetContainer.prepend($element);
+      }
+    }
   }
-
-
 }
