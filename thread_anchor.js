@@ -11,19 +11,27 @@ class ThreadAnchor {
 
       const top = $stickyHeader.height() + 50;
 
-      $anchorWrapper.css('right', `60px`);
-      $anchorWrapper.css('top', `${top + 10}px`);
+      $anchorWrapper.css('right', `30px`);
+      $anchorWrapper.css('top', `${top + 20}px`);
+
+      const $hamburger = window.$UI_HTML.find('button.menu-button').clone();
+
+      $('#visibility-toggle').html($hamburger);
 
       $('#visibility-toggle')
         .off('click')
         .on('click', () => {
           if ($anchorWrapper.find('#container').hasClass('invisible')) {
+            $hamburger.addClass('active');
+
             $anchorWrapper.find('#container').removeClass('hidden');
 
             void $anchorWrapper.find('#container')[0].offsetHeight;
 
             $anchorWrapper.find('#container').removeClass('invisible');
           } else {
+            $hamburger.removeClass('active');
+
             $anchorWrapper.find('#container').addClass('invisible');
 
             $anchorWrapper.off('transitionend').on('transitionend', () => {
@@ -83,7 +91,7 @@ class ThreadAnchor {
 
       if (!$messageContainer.length) return;
 
-      $messageContainer.each((index, messageBlock) => {
+      $messageContainer.children().each((index, messageBlock) => {
         const $query = $(messageBlock).find('.my-md.md\\:my-lg');
         const $answer = $(messageBlock).find(
           '.mb-sm.flex.w-full.items-center.justify-between:not(#query-anchor)'
@@ -112,8 +120,10 @@ class ThreadAnchor {
       if (initialRender) {
         if ($messageContainer.children().length < 2) {
           $('#thread-anchor-wrapper #container').addClass('invisible');
+          $('button.menu-button').removeClass('active');
         } else {
           $('#thread-anchor-wrapper #container').removeClass('invisible');
+          $('button.menu-button').addClass('active');
         }
       }
     };

@@ -2,7 +2,7 @@
   'use strict';
 
   {
-    window.scriptLatestBuildId = 'PZguQUnh74bBftgKhoRRY';
+    window.latestPPLXBuildId = 'PZguQUnh74bBftgKhoRRY';
 
     unsafeWindow.WSHOOK_INSTANCE = new WSHook();
 
@@ -20,11 +20,13 @@
       'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js'
     );
 
+    console.log('Showdown loaded');
+
     await Utils.loadScriptAsync(
       'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.2/purify.min.js'
     );
 
-    console.log('Showdown loaded');
+    console.log('DOMPurify loaded');
 
     $('<style>')
       .attr('type', 'text/css')
@@ -40,7 +42,7 @@
       .match(/"buildId":"(.+?)"/)[1]
       .trim();
 
-    if (window.BUILD_ID !== window.scriptLatestBuildId) {
+    if (window.BUILD_ID !== window.latestPPLXBuildId) {
       console.warn(
         "WARNING: Perplexity web app's new build id detected! The script maybe outdated and some features may or may not work as expected.",
         'BUILD_ID: ',

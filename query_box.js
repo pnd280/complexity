@@ -1,18 +1,23 @@
 class QueryBox {
   static findButtonBarContainer() {
-    let $buttonBar = $('div:contains("Attach")')
+    const $buttonBar = $('div:contains("Attach")')
       .closest(
         '.flex.bg-background.dark\\:bg-offsetDark.rounded-l-lg.col-start-1.row-start-2.-ml-2'
       )
       .last();
 
-    if (!$buttonBar.length || $buttonBar.children().length > 2) return null;
+    // exclude the incognito indicator
+    const $buttonBarChildren = $buttonBar.children(
+      ':not(.mr-xs.flex.shrink-0.items-center)'
+    );
+
+    if (!$buttonBar.length || $buttonBarChildren.length > 2) return null;
 
     $buttonBar.attr('id', 'query-box-button-bar');
 
-    $buttonBar.children().first().addClass('hidden');
+    $buttonBarChildren.first().addClass('hidden');
 
-    $buttonBar
+    $buttonBarChildren
       .children('div:contains("Attach")')
       .find('> button > div')
       .removeClass('gap-xs');
@@ -106,17 +111,17 @@ class QueryBox {
       populateDefaults();
     });
 
-    insertToContainer(imageModelSelector.$element, type);
-
-    insertToContainer(chatModelSelector.$element, type);
+    $targetContainer.append(focusSelector.$element);
 
     if (
       (Utils.whereAmI() !== 'thread' && Utils.whereAmI() !== 'collection') ||
       $targetContainer.closest('div[data-testid="quick-search-modal"]').length
     )
-      insertToContainer(collectionSelector.$element, type);
+    $targetContainer.append(collectionSelector.$element);
 
-    insertToContainer(focusSelector.$element, type);
+    $targetContainer.append(chatModelSelector.$element);
+
+    $targetContainer.append(imageModelSelector.$element);
 
     $targetContainer.addClass('flex-wrap col-span-2');
 
@@ -132,14 +137,6 @@ class QueryBox {
       ModelSelector.setImageModelName(imageModelSelector);
 
       collectionSelector.setText(CollectionSelector.getDefaultTitle());
-    }
-
-    function insertToContainer($element, type) {
-      if (type === 'button-bar') {
-        $targetContainer.children().first().after($element);
-      } else {
-        $targetContainer.prepend($element);
-      }
     }
   }
 }

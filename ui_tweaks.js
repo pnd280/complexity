@@ -29,7 +29,7 @@ class UITweaks {
 
     if (!isThreadPage() || !isThreadInCollection()) return;
 
-    $collectionButton.parent().attr('id', 'thread-collection-button');
+    $collectionButton.attr('id', 'thread-collection-button');
 
     $collectionButton.off('click').on('click', (e) => {
       e.preventDefault();
@@ -38,7 +38,6 @@ class UITweaks {
       const { $popover, addSelection } = UI.createSelectionPopover({
         sourceElement: $collectionButton,
         sourceElementId: 'thread-collection-button',
-        isContextMenu: true,
       });
 
       if (!$popover) return;
@@ -271,6 +270,7 @@ class UITweaks {
 
       const name = $stickyHeader
         .find('.break-all.line-clamp-1.default.font-sans')
+        .last()
         .text();
 
       const ownUsername = $('.break-all.line-clamp-1.default.font-sans')
@@ -281,22 +281,37 @@ class UITweaks {
         .find('div[color="super"]')
         .children()
         .last()
-        .text(name === ownUsername ? 'You' : name);
+        .text(!name ? 'Anonymous' : name === ownUsername ? 'You' : name);
 
       if (!$userAvatar.length) {
-        $cloned.find('div[color="super"]').children().first().remove();
+        $cloned
+          .find('svg')
+          .replaceWith(window.$UI_HTML.find('#user-icon').clone());
 
-        $cloned.find('div[color="super"]').children().last().text('Anonymous');
+        $query.before($cloned);
+
+        $messageBlock
+          .find('#user-icon')
+          .css('width', '24px')
+          .css('height', '24px')
+          .parent()
+          .css('width', '24px');
       } else {
-        $cloned.find('svg').replaceWith($userAvatar);
+        $cloned
+          .find('svg')
+          .replaceWith(
+            window.$UI_HTML.find('#avatar-box').clone().html($userAvatar)
+          );
+
+        $query.before($cloned);
+
+        $messageBlock
+          .find('#avatar-box')
+          .addClass('overflow-hidden')
+          .parent()
+          .removeClass('overflow-hidden')
+          .css('width', '24px');
       }
-
-      $query.before($cloned);
-
-      $messageBlock
-        .find('img[alt="User avatar"]')
-        .parent()
-        .addClass('w-[24px]');
     }
   }
 

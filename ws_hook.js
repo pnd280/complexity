@@ -74,17 +74,17 @@ class WSHook {
 
           if (eventData.isInternal) return payload;
 
-          const searchFocus =
-            unsafeWindow.STORE.focus || eventData.search_focus;
-
-          const currentModelCode =
-            unsafeWindow.STORE.chatModelCode ||
-            eventData.model_preference;
-
           const querySource = eventData.query_source;
 
-          const targetCollectionUuid =
-            unsafeWindow.STORE.activeCollectionUUID;
+          const searchFocus =
+            querySource !== 'helper'
+              ? unsafeWindow.STORE.focus || eventData.search_focus
+              : eventData.search_focus;
+
+          const currentModelCode =
+            unsafeWindow.STORE.chatModelCode || eventData.model_preference;
+
+          const targetCollectionUuid = unsafeWindow.STORE.activeCollectionUUID;
 
           switch (currentModelCode) {
             case 'claude3opus':
@@ -254,7 +254,7 @@ class WSHook {
       set: function (handler) {
         if (typeof handler === 'function') {
           return originalAddEventListener.call(this, 'error', function (event) {
-            console.log('ws onerror:', event);
+            Logger.log('ws onerror:', event);
             handler.apply(this, arguments);
 
             // UI.toast({

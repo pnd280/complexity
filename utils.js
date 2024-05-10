@@ -128,6 +128,7 @@ class Utils {
       let inCode = false;
       let currentChar = '';
 
+      // TODO: investigate performance
       for (let i = 0; i < markdown.length; i++) {
         currentChar = markdown[i];
 
@@ -162,20 +163,20 @@ class Utils {
     // Create a temporary canvas element
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-  
+
     // Set the font properties
     context.font = `${fontSize}px ${fontFamily}`;
-  
+
     // Split the text into words
     const words = text.split(' ');
     let line = '';
     let lines = 1;
-  
+
     // Iterate over each word
     for (let i = 0; i < words.length; i++) {
       const testLine = line + words[i] + ' ';
       const metrics = context.measureText(testLine);
-  
+
       // If the test line is wider than the container, start a new line
       if (metrics.width > containerWidth) {
         lines++;
@@ -184,7 +185,7 @@ class Utils {
         line = testLine;
       }
     }
-  
+
     return lines;
   }
 }
@@ -200,7 +201,7 @@ class MyObserver {
 }
 
 class Logger {
-  static #enable = true;
+  static #enable = false;
 
   static log(...args) {
     if (this.#enable) console.log(...args);

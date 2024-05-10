@@ -79,7 +79,7 @@ class UI {
 
     if ($(ownPopoverId).length) {
       $(ownPopoverId).each((_, element) => {
-        element.remove();
+        $(element).remove();
       });
 
       if (!isContextMenu)
