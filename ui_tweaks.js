@@ -210,9 +210,11 @@ class UITweaks {
 
       const $query = $(messageBlock).find('.my-md.md\\:my-lg');
 
-      if (!$query.data('is-rewritten')) {
+      if (!$(messageBlock).find('#query-anchor').length) {
         addQueryAnchor($(messageBlock), $query);
+      }
 
+      if (!$query.data('is-rewritten')) {
         const mardownedText = Utils.convertMarkdownToHTML($query.text());
 
         const $wrapper = $('<div>')
@@ -282,9 +284,9 @@ class UITweaks {
         .text(name === ownUsername ? 'You' : name);
 
       if (!$userAvatar.length) {
-        $cloned
-          .find('svg')
-          .html(window.$UI_HTML.find('svg[data-icon="question"]').clone());
+        $cloned.find('div[color="super"]').children().first().remove();
+
+        $cloned.find('div[color="super"]').children().last().text('Anonymous');
       } else {
         $cloned.find('svg').replaceWith($userAvatar);
       }
