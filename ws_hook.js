@@ -166,6 +166,8 @@ class WSHook {
 
       interceptedData = interceptedCallback(data);
 
+      if (!interceptedData) return null;
+
       if (!Array.isArray(interceptedData)) return originalMessage;
 
       Logger.log(`Intercepted: '${event}'`, ...interceptedData);

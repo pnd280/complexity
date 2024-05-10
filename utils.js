@@ -165,7 +165,7 @@ class MyObserver {
 }
 
 class Logger {
-  static #enable = false;
+  static #enable = true;
 
   static log(...args) {
     if (this.#enable) console.log(...args);
