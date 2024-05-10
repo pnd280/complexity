@@ -119,8 +119,43 @@ class Utils {
 
   static convertMarkdownToHTML(markdownText) {
     const converter = new showdown.Converter();
-    const html = converter.makeHtml(markdownText);
-    return html;
+    const dirtyHtml = converter.makeHtml(escapeHTMLTagsSmart(markdownText));
+    const cleanHtml = DOMPurify.sanitize(dirtyHtml);
+    return cleanHtml;
+
+    function escapeHTMLTagsSmart(markdown) {
+      let result = '';
+      let inCode = false;
+      let currentChar = '';
+
+      for (let i = 0; i < markdown.length; i++) {
+        currentChar = markdown[i];
+
+        // Check if entering or exiting code block
+        if (currentChar === '`') {
+          // Toggle the inCode state
+          inCode = !inCode;
+          result += currentChar;
+          continue;
+        }
+
+        if (!inCode) {
+          // Escape < and > if not in code
+          if (currentChar === '<') {
+            result += '&lt;';
+          } else if (currentChar === '>') {
+            result += '&gt;';
+          } else {
+            result += currentChar;
+          }
+        } else {
+          // Add character as is if in code
+          result += currentChar;
+        }
+      }
+
+      return result;
+    }
   }
 
   static calculateLines(text, containerWidth, fontFamily, fontSize) {

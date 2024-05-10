@@ -20,6 +20,10 @@
       'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js'
     );
 
+    await Utils.loadScriptAsync(
+      'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.2/purify.min.js'
+    );
+
     console.log('Showdown loaded');
 
     $('<style>')
