@@ -7,7 +7,7 @@ class ThreadAnchor {
 
       $('main').append($anchorWrapper);
 
-      const $stickyHeader = $('.sticky.left-0.right-0.top-0.z-20.border-b');
+      const $stickyHeader = UITweaks.getStickyHeader();
 
       const top = $stickyHeader.height() + 50;
 
@@ -21,7 +21,7 @@ class ThreadAnchor {
             $anchorWrapper.find('#container').removeClass('hidden');
 
             void $anchorWrapper.find('#container')[0].offsetHeight;
-            
+
             $anchorWrapper.find('#container').removeClass('invisible');
           } else {
             $anchorWrapper.find('#container').addClass('invisible');
@@ -57,11 +57,7 @@ class ThreadAnchor {
 
   static updateThreadMessageAnchorPosition() {
     const index = Utils.findMostVisibleElementIndex(
-      $(
-        '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child > div'
-      )
-        .children()
-        .toArray()
+      UITweaks.getMessageContainer().children().toArray()
     );
 
     unsafeWindow.STORE.inViewMessageIndex = index;
@@ -83,16 +79,14 @@ class ThreadAnchor {
 
       const { addAnchor } = this.createWrapper();
 
-      const $messageContainer = $(
-        '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child > div'
-      );
+      const $messageContainer = UITweaks.getMessageContainer();
 
       if (!$messageContainer.length) return;
 
       $messageContainer.each((index, messageBlock) => {
         const $query = $(messageBlock).find('.my-md.md\\:my-lg');
         const $answer = $(messageBlock).find(
-          '.mb-sm.flex.w-full.items-center.justify-between'
+          '.mb-sm.flex.w-full.items-center.justify-between:not(#query-anchor)'
         );
 
         const name =
@@ -103,7 +97,7 @@ class ThreadAnchor {
           input: {
             name,
             onClick: () => {
-              Utils.scrollToElement($query, -50);
+              Utils.scrollToElement($(messageBlock).find('#query-anchor'), -10);
             },
             oncontextmenu: (event) => {
               event.preventDefault();

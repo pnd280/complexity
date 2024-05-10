@@ -199,9 +199,7 @@ class UITweaks {
       .removeClass('md:col-span-8')
       .addClass('col-span-12');
 
-    const $messageContainer = $(
-      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child > div'
-    );
+    const $messageContainer = this.getMessageContainer();
 
     $messageContainer.children().each((_, messageBlock) => {
       const $buttonBar = $(messageBlock).find(
@@ -212,19 +210,9 @@ class UITweaks {
 
       const $query = $(messageBlock).find('.my-md.md\\:my-lg');
 
-      if ($query.children().length > 1) {
-        $query.children().each((_, el) => {
-          if ($(el).attr('id') === 'markdowned-text-wrapper') return;
-
-          if ($(el).find('textarea').length) {
-            return $query.find('#markdowned-text-wrapper').addClass('hidden');
-          }
-
-          $query.find('#markdowned-text-wrapper').removeClass('hidden');
-        });
-      }
-
       if (!$query.data('is-rewritten')) {
+        addQueryAnchor($(messageBlock), $query);
+
         const mardownedText = Utils.convertMarkdownToHTML($query.text());
 
         const $wrapper = $('<div>')
@@ -236,11 +224,6 @@ class UITweaks {
 
         const fontFamily =
           $('h1')?.css('font-family')?.split(',')?.[0]?.trim() || 'Segoe UI';
-
-        console.log(
-          'UITweaks ~ $messageContainer.children ~ fontFamily:',
-          fontFamily
-        );
 
         const calculatedWrappedLines = Utils.calculateLines(
           $query.text(),
@@ -263,6 +246,56 @@ class UITweaks {
         $editButton.click();
       });
     });
+
+    function addQueryAnchor($messageBlock, $query) {
+      const $answerHeading = $messageBlock
+        .find('.mb-sm.flex.w-full.items-center.justify-between')
+        .last();
+
+      if (!$answerHeading.length) return;
+
+      const $cloned = $answerHeading.clone();
+
+      $cloned.addClass('mt-8');
+
+      $cloned.attr('id', 'query-anchor');
+
+      const $stickyHeader = UITweaks.getStickyHeader();
+
+      const $userAvatar = $stickyHeader
+        .find('img[alt="User avatar"]')
+        .first()
+        .clone();
+
+      const name = $stickyHeader
+        .find('.break-all.line-clamp-1.default.font-sans')
+        .text();
+
+      const ownUsername = $('.break-all.line-clamp-1.default.font-sans')
+        .first()
+        .text();
+
+      $cloned
+        .find('div[color="super"]')
+        .children()
+        .last()
+        .text(name === ownUsername ? 'You' : name);
+
+      if (!$userAvatar.length) {
+        $cloned
+          .find('svg')
+          .html(window.$UI_HTML.find('svg[data-icon="question"]').clone());
+      } else {
+        $cloned.find('svg').replaceWith($userAvatar);
+      }
+
+      $query.before($cloned);
+
+      $messageBlock
+        .find('img[alt="User avatar"]')
+        .parent()
+        .addClass('w-[24px]');
+    }
   }
 
   static toggleEmptyThreadMessageVisualContainer() {
@@ -293,5 +326,23 @@ class UITweaks {
           .addClass('col-span-12');
       }
     });
+  }
+
+  static getMessageContainer() {
+    let $messageContainer = $(
+      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child > div'
+    );
+
+    if (!$messageContainer.length) {
+      $messageContainer = $(
+        '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:nth-child(2)'
+      );
+    }
+
+    return $messageContainer;
+  }
+
+  static getStickyHeader() {
+    return $('.sticky.left-0.right-0.top-0.z-20.border-b');
   }
 }

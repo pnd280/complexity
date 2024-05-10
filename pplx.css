@@ -2,7 +2,6 @@
   --ui-font  : 'Karla', 'Golos Text', 'Gitlab Sans';
   --mono-font: 'JetBrains Mono NL';
 
-
   --background-color: #f3f3ee;
   --sidebar-color   : #fcfcf9;
 
@@ -27,6 +26,10 @@ html.dark {
   --text-off : #8d8d8d;
 }
 
+.my-md.md\:my-lg:has(textarea) #markdowned-text-wrapper {
+  display: none;
+}
+
 h1.whitespace-pre-line.break-words {
   display: none;
 }
@@ -37,11 +40,11 @@ div.whitespace-pre-line.break-words {
 
 #markdowned-text-wrapper {
   pre {
-    background: var(--sidebar-color);
+    background: #1d1f21;
     color     : var(--text-main) !important;
 
-    padding-left: .8rem;
-    padding-top : .8rem;
+    padding-left: 0.8rem;
+    padding-top : 0.8rem;
 
     width    : 100% !important;
     max-width: 90vw !important;
@@ -404,16 +407,16 @@ html.dark,
     color: var(--accent-color);
   }
 
-  padding-top: 1.5rem;
+  /* padding-top: 1.5rem; */
 
-  position: relative;
+  /* position: relative; */
 
-  &::before {
+  /* &::before {
     content         : '';
     display         : block;
     width           : 50%;
     height          : 1px;
-    background-color: var(--text-off);
+    background-color: var(--border-color);
     margin-bottom   : 1.5rem;
 
     position: absolute;
@@ -422,7 +425,7 @@ html.dark,
     left: 50%;
 
     transform: translateX(-50%);
-  }
+  } */
 }
 
 /* @media (min-width: 768px) {
@@ -458,7 +461,42 @@ html.dark,
   display: none;
 }
 
+div.mb-sm.flex.items-center.justify-between.border-t.pl-xs.pr-xs.pt-sm.border-borderMain\/50.ring-borderMain\/50.divide-borderMain\/50.dark\:divide-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:border-borderMainDark\/50.bg-transparent {
+  display: none;
+}
+
+.sticky.top-0.flex.h-full.flex-col.justify-between.overflow-y-auto.overflow-x-hidden {
+  padding-bottom: 0;
+}
+
+div.mb-sm.flex.items-center.justify-between.border-t.pl-xs.pr-xs.pt-sm.border-borderMain\/50.ring-borderMain\/50.divide-borderMain\/50.dark\:divide-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:border-borderMainDark\/50.bg-transparent {
+  display: none;
+}
+
+div.hidden.md\:block.border-borderMain\/50.ring-borderMain\/50.divide-borderMain\/50.dark\:divide-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:border-borderMainDark\/50.bg-transparent>div>div>div>div.flex.flex-col>div:nth-child(2)>a>div {
+  padding-bottom: 0;
+}
+
+/* Hide the first child if there are exactly two children */
+div.sticky.left-0.right-0.top-0.z-20.border-b.md\:mb-0.md\:rounded-t-xl.border-borderMain\/50.ring-borderMain\/50.divide-borderMain\/50.dark\:divide-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:border-borderMainDark\/50.bg-background.dark\:bg-backgroundDark>div>div:nth-child(2)>div {
+  display: block;
+}
+
+div.sticky.left-0.right-0.top-0.z-20.border-b.md\:mb-0.md\:rounded-t-xl.border-borderMain\/50.ring-borderMain\/50.divide-borderMain\/50.dark\:divide-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:border-borderMainDark\/50.bg-background.dark\:bg-backgroundDark>div>div:nth-child(2)>div> :first-child:nth-last-child(2),
+div.sticky.left-0.right-0.top-0.z-20.border-b.md\:mb-0.md\:rounded-t-xl.border-borderMain\/50.ring-borderMain\/50.divide-borderMain\/50.dark\:divide-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:border-borderMainDark\/50.bg-background.dark\:bg-backgroundDark>div>div:nth-child(2)>div> :first-child:nth-last-child(3) {
+  display: none;
+}
+
+/* Hide the first two children if there are exactly three children */
+div.sticky.left-0.right-0.top-0.z-20.border-b.md\:mb-0.md\:rounded-t-xl.border-borderMain\/50.ring-borderMain\/50.divide-borderMain\/50.dark\:divide-borderMainDark\/50.dark\:ring-borderMainDark\/50.dark\:border-borderMainDark\/50.bg-background.dark\:bg-backgroundDark>div>div:nth-child(2)>div> :nth-child(2):nth-last-child(2) {
+  display: none;
+}
+
 /* Tailwind classes that are not rendered */
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .invisible {
   opacity   : 0;
   visibility: hidden;

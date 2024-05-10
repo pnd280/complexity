@@ -51,7 +51,7 @@ class Utils {
   }
 
   static scrollToElement($anchor, offset = 0) {
-    const $stickyHeader = $('.sticky.left-0.right-0.top-0.z-20.border-b');
+    const $stickyHeader = UITweaks.getStickyHeader();
 
     if ($stickyHeader.length) {
       offset -= $stickyHeader.height();
