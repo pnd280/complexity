@@ -59,72 +59,79 @@ class CollectionSelector {
     });
   }
 
-  static setupSelectionContextMenu($selection, selector) {
-    $selection.on('contextmenu', (e) => {
-      e.preventDefault();
+  static setupSelectionContextMenu(
+    { title, instructions, uuid, url, $anchor, isContextMenu = true },
+    selector
+  ) {
+    const { $popover, addSelection } = UI.createSelectionPopover({
+      sourceElemnt: null,
+      sourceElementId: 'collection-selector-context-menu',
+      isContextMenu,
+    });
 
-      const { $popover, addSelection } = UI.createSelectionPopover({
-        sourceElemnt: null,
-        sourceElementId: 'collection-selector-context-menu',
-        isContextMenu: true,
-      });
+    if (!$popover) return;
 
-      if (!$popover) return;
+    $('main').append($popover);
 
-      $('main').append($popover);
+    const closePopover = () => QueryBox.closeAndRemovePopover($popover);
 
-      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
-
-      addSelection({
-        input: {
-          name: 'Edit prompt',
-          onClick: () => {
-            closePopover();
-            this.setupPromptEditModal($selection);
-          },
+    addSelection({
+      input: {
+        name: 'Edit prompt',
+        onClick: () => {
+          closePopover();
+          this.setupPromptEditModal({ title, instructions, uuid });
         },
-      });
+      },
+    });
 
-      addSelection({
-        input: {
-          name: 'View all threads',
-          onClick: () => {
-            window.location.href = `https://www.perplexity.ai/collections/${$selection[0].params.url}`;
-            closePopover();
-          },
+    addSelection({
+      input: {
+        name: 'View all threads',
+        onClick: () => {
+          window.location.href = `https://www.perplexity.ai/collections/${url}`;
+          closePopover();
         },
-      });
+      },
+    });
 
-      addSelection({
-        input: {
-          name: 'Make default',
-          onClick: () => {
-            if (!$selection[0].params.uuid) {
+    const isDefaultCollection =
+      JSONUtils.safeParse(localStorage.getItem('defaultCollectionUUID')) ===
+      uuid;
+
+    addSelection({
+      input: {
+        name: isDefaultCollection ? 'Clear default' : 'Set as default',
+        onClick: () => {
+          if (!isDefaultCollection) {
+            if (!uuid) {
               localStorage.removeItem('defaultCollectionUUID');
             } else {
               localStorage.setItem(
                 'defaultCollectionUUID',
-                JSON.stringify($selection[0].params.uuid)
+                JSON.stringify(uuid)
               );
             }
+          } else {
+            localStorage.removeItem('defaultCollectionUUID');
+          }
 
-            unsafeWindow.STORE.activeCollectionUUID = $selection[0].params.uuid;
+          unsafeWindow.STORE.activeCollectionUUID = uuid;
 
-            selector.setText(this.getDefaultTitle());
+          selector?.setText(this.getDefaultTitle());
 
-            closePopover();
-          },
+          closePopover();
         },
-      });
-
-      UI.showPopover({
-        $anchor: $selection,
-        $popover: $popover,
-        placement: 'horizontal',
-      });
-
-      setTimeout(() => $(document).on('click', closePopover), 100);
+      },
     });
+
+    UI.showPopover({
+      $anchor,
+      $popover: $popover,
+      placement: isContextMenu ? 'horizontal' : 'vertical',
+    });
+
+    setTimeout(() => $(document).on('click', closePopover), 100);
   }
 
   static async editCollectionPrompt(collection) {
@@ -153,10 +160,10 @@ class CollectionSelector {
     unsafeWindow.STORE.collections[itemIndex].instructions = instructions;
   }
 
-  static setupPromptEditModal($selection) {
+  static setupPromptEditModal({ title, instructions, uuid }) {
     const $promptBox = window.$UI_HTML.find('#prompt-box-wrapper').clone();
 
-    $promptBox.find('h1').text(`Edit ${$selection[0].params.title}'s Prompt`);
+    $promptBox.find('h1').text(`Edit ${title}'s Prompt`);
 
     $promptBox.find('#backdrop').click(() => {
       $promptBox.remove();
@@ -170,7 +177,7 @@ class CollectionSelector {
 
     $textarea.find('#title').text('AI Prompt');
     $textarea.find('#optional').remove();
-    $textarea.find('textarea').text($selection[0].params.instructions);
+    $textarea.find('textarea').text(instructions);
 
     $promptBox.find('#sections').append($textarea);
 
@@ -189,7 +196,7 @@ class CollectionSelector {
       const instructions = $textarea.find('textarea').val();
 
       this.editCollectionPrompt({
-        collection_uuid: $selection[0].params.uuid,
+        collection_uuid: uuid,
         instructions,
       });
 
@@ -215,7 +222,7 @@ class CollectionSelector {
   }
 
   static setupSelector(selector, collections) {
-    selector.$element.click(async () => {
+    selector.$element.off('click').on('click', () => {
       const { $popover, addSelection } = UI.createSelectionPopover({
         sourceElement: selector.$element[0],
         sourceElementId: 'collection-selector',
@@ -257,12 +264,42 @@ class CollectionSelector {
       );
 
       $selections.forEach(($selection) => {
-        this.setupSelectionContextMenu($selection, selector);
+        $selection.on('contextmenu', (e) => {
+          e.preventDefault();
+
+          if (!$selection[0].params.uuid) return;
+
+          this.setupSelectionContextMenu(
+            {
+              $anchor: $selection,
+              ...$selection[0].params,
+            },
+            selector
+          );
+        });
       });
 
       UI.showPopover({ $anchor: selector.$element, $popover });
 
       setTimeout(() => $(document).on('click', closePopover), 100);
+    });
+
+    // if right click on the selector and the collection is not default
+    selector.$element.off('contextmenu').on('contextmenu', (e) => {
+      e.preventDefault();
+
+      const activeCollection = collections.find(
+        (collection) =>
+          collection.uuid === unsafeWindow.STORE.activeCollectionUUID
+      );
+
+      if (!activeCollection || !activeCollection.uuid) return;
+
+      this.setupSelectionContextMenu({
+        $anchor: selector.$element,
+        ...activeCollection,
+        isContextMenu: false,
+      });
     });
   }
 }
