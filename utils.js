@@ -117,46 +117,38 @@ class Utils {
     }).observe(document, { subtree: true, childList: true });
   }
 
-  static convertMarkdownToHTML(markdownText) {
-    const converter = new showdown.Converter();
-    const dirtyHtml = converter.makeHtml(escapeHTMLTagsSmart(markdownText));
-    const cleanHtml = DOMPurify.sanitize(dirtyHtml);
-    return cleanHtml;
-
-    function escapeHTMLTagsSmart(markdown) {
-      let result = '';
-      let inCode = false;
-      let currentChar = '';
-
-      // TODO: investigate performance
-      for (let i = 0; i < markdown.length; i++) {
-        currentChar = markdown[i];
-
-        // Check if entering or exiting code block
-        if (currentChar === '`') {
-          // Toggle the inCode state
-          inCode = !inCode;
-          result += currentChar;
-          continue;
-        }
-
-        if (!inCode) {
-          // Escape < and > if not in code
-          if (currentChar === '<') {
-            result += '&lt;';
-          } else if (currentChar === '>') {
-            result += '&gt;';
-          } else {
-            result += currentChar;
-          }
-        } else {
-          // Add character as is if in code
-          result += currentChar;
-        }
-      }
-
-      return result;
+  static markdown2Html(markdown) {
+    const escapeHtmlTags = (html) => {
+      return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
+    
+    const unescapeHtmlTags = (html) => {
+      return html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    }
+
+    const converter = new showdown.Converter();
+    const html = converter.makeHtml(escapeHtmlTags(markdown));
+
+    const $tag = $('<div>').html(html);
+  
+    $tag.find('*').each((_, e) => {
+      const tagName = e.tagName.toLowerCase();
+  
+      if (tagName === 'pre') {
+        const code = $(e).find('code').text();
+        $(e)
+          .find('code')
+          .html(escapeHtmlTags(unescapeHtmlTags(code)));
+      }
+  
+      if (tagName === 'code') {
+        const code = $(e).text();
+        $(e).html(escapeHtmlTags(unescapeHtmlTags(code)));
+      }
+    });
+  
+    
+    return DOMPurify.sanitize($tag.html());
   }
 
   static calculateLines(text, containerWidth, fontFamily, fontSize) {

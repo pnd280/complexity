@@ -214,7 +214,7 @@ class UITweaks {
       }
 
       if (!$query.data('is-rewritten')) {
-        const mardownedText = Utils.convertMarkdownToHTML($query.text());
+        const mardownedText = Utils.markdown2Html($query.text());
 
         const $wrapper = $('<div>')
           .html(mardownedText)
