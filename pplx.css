@@ -124,11 +124,13 @@ div.whitespace-pre-line.break-words {
 
   color: var(--text-off);
 
-  transition: color 0.5s ease;
+  transition: color 0.3s ease;
 }
 
-#thread-anchor-wrapper #visibility-toggle .menu-button:hover div {
-  background-color: var(--text-main);
+#thread-anchor-wrapper #visibility-toggle:hover {
+  & .menu-button div, & .menu-button div::before {
+    background: var(--text-main);
+  }
 }
 
 #thread-anchor {
@@ -140,7 +142,7 @@ div.whitespace-pre-line.break-words {
   color       : var(--text-off);
   border-left : 2px solid var(--border-color);
 
-  transition: color 0.5s ease, border-left 0.5s ease;
+  transition: color 0.3s ease, border-left 0.3s ease;
 }
 
 #thread-anchor:hover {
@@ -197,7 +199,7 @@ div.whitespace-pre-line.break-words {
 
 .mx-auto.h-full.w-full.max-w-screen-md.px-md.md\:px-lg:has(textarea) {
   max-width : 1300px;
-  transition: max-width 0.5s ease;
+  transition: max-width 0.3s ease;
 }
 
 .selected span#name {
@@ -301,6 +303,7 @@ th {
   justify-content: space-around;
   width          : 100%;
   height         : 100%;
+  outline        : none;
 }
 
 .menu-button div {
@@ -315,15 +318,32 @@ th {
 }
 
 .menu-button.active .bar1 {
-  transform: translateY(5.5px) rotate(45deg);
+  opacity: 0;
+
 }
 
 .menu-button.active .bar2 {
-  opacity: 0;
+  transform: rotate(45deg);
+
+  &::before {
+    content      : '';
+    display      : block;
+    width        : 100%;
+    height       : 100%;
+    background   : var(--text-off);
+    border-radius: .5rem;
+    position     : absolute;
+    top          : 0;
+    left         : 0;
+
+    transform: rotate(-90deg);
+
+    transition: all 0.3s ease;
+  }
 }
 
 .menu-button.active .bar3 {
-  transform: translateY(-5.5px) rotate(-45deg);
+  opacity: 0;
 }
 
 
