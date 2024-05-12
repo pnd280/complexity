@@ -27,6 +27,16 @@ class QueryBox {
       .find('> button > div > div')
       .addClass('hidden');
 
+    $(document).ready(function () {
+      $('textarea[placeholder="Ask anything..."]')
+        .off('keydown')
+        .on('keydown', function (e) {
+          if (e.key === 'Enter' && !e.ctrlKey) {
+            e.stopPropagation();
+          }
+        });
+    });
+
     return {
       $element: $buttonBar,
       type: 'button-bar',
@@ -69,6 +79,14 @@ class QueryBox {
       .append($selectorContainer);
 
     $followUpQueryBoxContainer.children().last().before($container);
+
+    $(document).ready(function () {
+      $followUpQueryBoxContainer.off('keydown').on('keydown', function (e) {
+        if (e.key === 'Enter' && !e.ctrlKey) {
+          e.stopPropagation();
+        }
+      });
+    });
 
     return {
       $element: $selectorContainer,
@@ -117,7 +135,7 @@ class QueryBox {
       (Utils.whereAmI() !== 'thread' && Utils.whereAmI() !== 'collection') ||
       $targetContainer.closest('div[data-testid="quick-search-modal"]').length
     )
-    $targetContainer.append(collectionSelector.$element);
+      $targetContainer.append(collectionSelector.$element);
 
     $targetContainer.append(chatModelSelector.$element);
 
