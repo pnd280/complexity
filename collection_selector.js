@@ -5,10 +5,10 @@ class CollectionSelector {
 
     if (!jsonData.ok) throw new Error('Failed to fetch collections');
 
-    jsonData = await jsonData.text();
+    jsonData = JSONUtils.safeParse(await jsonData.text());
 
     const fetchedCollections =
-      JSONUtils.safeParse(jsonData).pageProps.dehydratedState.queries[1].state
+      jsonData.pageProps.dehydratedState.queries[1].state
         .data.pages[0];
 
     if (!fetchedCollections?.length) return [];
@@ -25,6 +25,8 @@ class CollectionSelector {
     });
 
     unsafeWindow.STORE.collections = collections;
+
+    unsafeWindow.STORE.username = jsonData.pageProps.session.user.username;
 
     return collections;
   }

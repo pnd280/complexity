@@ -59,7 +59,8 @@
     await waitForSocketHooking();
 
     unsafeWindow.STORE = {
-      focus: JSONUtils.safeParse(localStorage.getItem('defaultFocus')),
+      focus:
+        JSONUtils.safeParse(localStorage.getItem('defaultFocus')) || 'internet',
       activeCollectionUUID: JSONUtils.safeParse(
         localStorage.getItem('defaultCollectionUUID')
       ),

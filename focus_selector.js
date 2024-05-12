@@ -2,16 +2,15 @@ class FocusSelector {
   static getFocusModes() {
     return [
       {
-        name: 'No web browsing',
-        dropdownTitle: 'Writing',
-        code: 'writing',
-        svgIcon: 'pencil',
-      },
-      {
         name: 'Web browsing',
         dropdownTitle: 'Internet',
         code: 'internet',
         svgIcon: 'globe',
+      },
+      {
+        name: 'Writing',
+        code: 'writing',
+        svgIcon: 'pencil',
       },
       {
         name: 'Academic',
@@ -113,14 +112,21 @@ class FocusSelector {
 
       const closePopover = () => QueryBox.closeAndRemovePopover($popover);
 
+      const isDefaultFocus =
+        $selection[0].params.code === unsafeWindow.STORE.focus;
+
       addSelection({
         input: {
-          name: 'Make default',
+          name: isDefaultFocus ? 'Clear default' : 'Set as default',
           onClick: () => {
-            localStorage.setItem(
-              'defaultFocus',
-              JSON.stringify($selection[0].params.code)
-            );
+            if (!isDefaultFocus) {
+              localStorage.setItem(
+                'defaultFocus',
+                JSON.stringify($selection[0].params.code)
+              );
+            } else {
+              localStorage.removeItem('defaultFocus');
+            }
 
             unsafeWindow.STORE.focus = $selection[0].params.code;
 

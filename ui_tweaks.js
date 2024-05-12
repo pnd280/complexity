@@ -226,7 +226,7 @@ class UITweaks {
         const fontFamily =
           $('h1')?.css('font-family')?.split(',')?.[0]?.trim() || 'Segoe UI';
 
-        const calculatedWrappedLines = Utils.calculateLines(
+        const calculatedWrappedLines = Utils.calculateRenderLines(
           $query.text(),
           $query.width(),
           fontFamily,
@@ -273,15 +273,17 @@ class UITweaks {
         .last()
         .text();
 
-      const ownUsername = $('.break-all.line-clamp-1.default.font-sans')
-        .first()
+      const ownUsername = UITweaks.getCollapsibleSidebar()
+        .find('.break-all.line-clamp-1.default.font-sans')
         .text();
 
-      $cloned
-        .find('div[color="super"]')
-        .children()
-        .last()
-        .text(!name ? 'Anonymous' : name === ownUsername ? 'You' : name);
+      const displayName = name
+        ? name === ownUsername
+          ? 'You'
+          : name
+        : 'Anonymous';
+
+      $cloned.find('div[color="super"]').children().last().text(displayName);
 
       if (!$userAvatar.length) {
         $cloned
@@ -343,6 +345,12 @@ class UITweaks {
           .addClass('col-span-12');
       }
     });
+  }
+
+  static getCollapsibleSidebar() {
+    return $(
+      '.sticky.top-0.flex.h-full.flex-col.justify-between.overflow-y-auto.overflow-x-hidden'
+    );
   }
 
   static getMessageContainer() {

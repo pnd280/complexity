@@ -2,17 +2,16 @@ class ThreadAnchor {
   static createWrapper() {
     let $anchorWrapper = $('#thread-anchor-wrapper');
 
+    const $stickyHeader = UITweaks.getStickyHeader();
+
+    const top = $stickyHeader.height() + 50;
+
     if (!$anchorWrapper.length) {
       $anchorWrapper = window.$UI_HTML.find('#thread-anchor-wrapper').clone();
 
       $('main').append($anchorWrapper);
 
-      const $stickyHeader = UITweaks.getStickyHeader();
-
-      const top = $stickyHeader.height() + 50;
-
-      $anchorWrapper.css('right', `30px`);
-      $anchorWrapper.css('top', `${top + 20}px`);
+      const $container = $anchorWrapper.find('#container');
 
       const $hamburger = window.$UI_HTML.find('button.menu-button').clone();
 
@@ -21,25 +20,7 @@ class ThreadAnchor {
       $('#visibility-toggle')
         .off('click')
         .on('click', () => {
-          if ($anchorWrapper.find('#container').hasClass('invisible')) {
-            $hamburger.addClass('active');
-
-            $anchorWrapper.find('#container').removeClass('hidden');
-
-            void $anchorWrapper.find('#container')[0].offsetHeight;
-
-            $anchorWrapper.find('#container').removeClass('invisible');
-          } else {
-            $hamburger.removeClass('active');
-
-            $anchorWrapper.find('#container').addClass('invisible');
-
-            $anchorWrapper.off('transitionend').on('transitionend', () => {
-              if ($anchorWrapper.find('#container').hasClass('invisible')) {
-                $anchorWrapper.find('#container').addClass('hidden');
-              }
-            });
-          }
+          $container.hasClass('invisible') ? open() : close();
         });
     }
 
@@ -60,7 +41,64 @@ class ThreadAnchor {
 
         $anchorWrapper.find('#container').append($anchor);
       },
+      open,
+      close,
+      float: () => {
+        $anchorWrapper.addClass('float');
+
+        $anchorWrapper.css('right', `2rem`);
+        $anchorWrapper.css('top', `${top / 16 + 1.25}rem`);
+      },
+      dock: () => {
+        $anchorWrapper.removeClass('float');
+
+        $anchorWrapper.css('right', `2rem`);
+        $anchorWrapper.css('top', `${top - 30}px`);
+
+        open();
+      },
     };
+
+    function open() {
+      const $container = $('#thread-anchor-wrapper #container');
+      const $hamburger = $('#visibility-toggle button.menu-button');
+
+      $hamburger.addClass('active');
+
+      $container.removeClass('hidden');
+
+      void $container[0].offsetHeight;
+
+      $container.removeClass('invisible');
+
+      const $anchorWrapper = $('#thread-anchor-wrapper');
+
+      setTimeout(() => {
+        Utils.onElementBlur({
+          $element: $container,
+          eventName: 'anchorBlur',
+          callback: () => {
+            if (!$anchorWrapper.hasClass('float')) return;
+            close($container, $hamburger);
+          },
+        });
+      }, 100);
+    }
+
+    function close() {
+      const $anchorWrapper = $('#thread-anchor-wrapper');
+      const $container = $('#thread-anchor-wrapper #container');
+
+      $('button.menu-button').removeClass('active');
+
+      $container.addClass('invisible');
+
+      $anchorWrapper.off('transitionend').on('transitionend', () => {
+        if ($container.hasClass('invisible')) {
+          $container.addClass('hidden');
+        }
+      });
+    }
   }
 
   static updateThreadMessageAnchorPosition() {
@@ -72,7 +110,7 @@ class ThreadAnchor {
   }
 
   static mountObserver() {
-    const callback = (initialRender = false) => {
+    const callback = (initialRender) => {
       $('#thread-anchor-wrapper #container').empty();
 
       if (Utils.whereAmI() !== 'thread') {
@@ -81,15 +119,17 @@ class ThreadAnchor {
 
       this.updateThreadMessageAnchorPosition();
 
-      const wrapper = this.createWrapper();
-
-      if (!wrapper) return;
-
-      const { addAnchor } = this.createWrapper();
-
       const $messageContainer = UITweaks.getMessageContainer();
 
       if (!$messageContainer.length) return;
+
+      const wrapper = this.createWrapper(
+        initialRender && $messageContainer.children().length >= 2
+      );
+
+      if (!wrapper) return;
+
+      const { addAnchor, open, close, float, dock } = wrapper;
 
       $messageContainer.children().each((index, messageBlock) => {
         const $query = $(messageBlock).find('.my-md.md\\:my-lg');
@@ -117,25 +157,40 @@ class ThreadAnchor {
         });
       });
 
-      if (initialRender) {
-        if ($messageContainer.children().length < 2) {
-          $('#thread-anchor-wrapper #container').addClass('invisible');
-          $('button.menu-button').removeClass('active');
-        } else {
-          $('#thread-anchor-wrapper #container').removeClass('invisible');
-          $('button.menu-button').addClass('active');
-        }
+      float();
+
+      const anchorWrapperWidth = 250;
+
+      const isEnoughSpace =
+        $messageContainer.offset().left +
+          $messageContainer.width() +
+          anchorWrapperWidth <
+        window.innerWidth - 50;
+
+      if (isEnoughSpace) {
+        dock();
+      } else {
+        float();
       }
+
+      initialRender && $messageContainer.children().length >= 2 && open();
+      initialRender && $messageContainer.children().length < 2 && close();
     };
 
     callback(true);
 
-    window.addEventListener('scroll', () => callback());
+    window.addEventListener('scroll', () => callback(false));
 
     Utils.onShallowRouteChange(() => {
       requestIdleCallback(() => {
         callback(true);
       });
     });
+
+    $(window)
+      .off('resize.threadAnchor')
+      .on('resize.threadAnchor', () => {
+        callback(false);
+      });
   }
 }

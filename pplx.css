@@ -2,17 +2,18 @@
   --ui-font  : 'Karla', 'Golos Text', 'Gitlab Sans';
   --mono-font: 'JetBrains Mono NL';
 
-  --background-color: #f3f3ee;
-  --sidebar-color   : #fcfcf9;
+  --background-color: #fcfcf9;
+  --sidebar-color   : #f3f3ee;
 
   --accent-color       : rgb(0 122 255);
   --accent-color-darker: rgb(0 122 255 / 50%);
 
   --secondary-color: var(--accent-color);
-  --text-main      : #8d8d8d;
-  --text-off       : #e8e8e8;
 
-  --border-color: rgba(229, 231, 235, 0.1);
+  --text-main: #13343b;
+  --text-off : #64645f;
+
+  --border-color: rgba(216, 216, 207, 0.5);
 }
 
 .prompt-applied {
@@ -24,14 +25,13 @@
 }
 
 html.dark {
-  --background-color: #fcfcf9;
-  --sidebar-color   : #f3f3ee;
-
   --sidebar-color   : #1f1f1f;
   --background-color: #181818;
 
   --text-main: #e8e8e8;
   --text-off : #8d8d8d;
+
+  --border-color: rgba(235, 229, 229, 0.1);
 }
 
 .my-md.md\:my-lg:has(textarea) #markdowned-text-wrapper {
@@ -69,46 +69,57 @@ div.whitespace-pre-line.break-words {
   }
 }
 
-#thread-anchor-wrapper #container {
-  border-radius: 0.5rem;
-  padding      : 1rem;
+#thread-anchor-wrapper {
 
-  background: var(--sidebar-color);
+  & #container {
+    border-radius: 0.5rem;
+    padding      : 1rem;
 
-  justify-content: flex-start;
+    background: var(--background-color);
 
-  width: 100%;
+    justify-content: flex-start;
 
-  max-height: 300px;
+    width: 100%;
 
-  overflow-y: auto;
+    max-height: 300px;
 
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+    overflow-y: auto;
 
-  transform-origin: right;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 
-  border    : 1px solid var(--border-color);
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    transform-origin: right;
 
-  user-select: none;
-}
+    user-select: none;
+  }
 
-#thread-anchor-wrapper #visibility-toggle {
-  position: absolute;
+  &.float #container {
+    border    : 1px solid var(--border-color);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  }
 
-  top  : -3rem;
-  right: 0;
+  &.float #visibility-toggle {
+    display: block;
+  }
 
-  width : 2.5rem;
-  height: 2.5rem;
+  & #visibility-toggle {
+    display: none;
 
-  background-color: var(--sidebar-color);
+    position: absolute;
 
-  cursor: pointer;
+    top  : -3rem;
+    right: 0;
 
-  border-radius: 9999px;
+    width : 2.5rem;
+    height: 2.5rem;
 
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    background-color: var(--sidebar-color);
+
+    cursor: pointer;
+
+    border-radius: 9999px;
+
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  }
 }
 
 #thread-anchor-wrapper #visibility-toggle .menu-button {
@@ -128,21 +139,22 @@ div.whitespace-pre-line.break-words {
 }
 
 #thread-anchor-wrapper #visibility-toggle:hover {
-  & .menu-button div, & .menu-button div::before {
+
+  & .menu-button div,
+  & .menu-button div::before {
     background: var(--text-main);
   }
 }
 
 #thread-anchor {
-  min-width: 100px;
-  max-width: 230px;
+  width: 250px;
 
   margin-top  : 0.25rem;
   padding-left: 0.5rem;
   color       : var(--text-off);
   border-left : 2px solid var(--border-color);
 
-  transition: color 0.3s ease, border-left 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 #thread-anchor:hover {
@@ -152,6 +164,10 @@ div.whitespace-pre-line.break-words {
 #thread-anchor.selected {
   color      : var(--text-main) !important;
   border-left: 4px solid var(--accent-color) !important;
+}
+
+html.dark #query-box-follow-up-container #selector-container {
+  background: var(--sidebar-color);
 }
 
 #query-box-follow-up-container #selector-container {
@@ -165,7 +181,7 @@ div.whitespace-pre-line.break-words {
 
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
-  background: var(--sidebar-color);
+  background: var(--background-color);
 
   display        : flex;
   gap            : 0.25rem;
@@ -346,6 +362,14 @@ th {
   opacity: 0;
 }
 
+#query-anchor~.my-md.md\:my-lg {
+  margin-top: 0;
+}
+
+.hover\:text-super:hover,
+.hover\:dark\:text-superDark:hover {
+  color: var(--accent-color) !important;
+}
 
 /* Background */
 html,

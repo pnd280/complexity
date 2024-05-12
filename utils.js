@@ -120,38 +120,32 @@ class Utils {
   static markdown2Html(markdown) {
     const escapeHtmlTags = (html) => {
       return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-    
+    };
+
     const unescapeHtmlTags = (html) => {
       return html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-    }
+    };
 
     const converter = new showdown.Converter();
+    converter.setOption('tables', true);
+
     const html = converter.makeHtml(escapeHtmlTags(markdown));
 
     const $tag = $('<div>').html(html);
-  
+
     $tag.find('*').each((_, e) => {
       const tagName = e.tagName.toLowerCase();
-  
-      if (tagName === 'pre') {
-        const code = $(e).find('code').text();
-        $(e)
-          .find('code')
-          .html(escapeHtmlTags(unescapeHtmlTags(code)));
-      }
-  
+
       if (tagName === 'code') {
         const code = $(e).text();
         $(e).html(escapeHtmlTags(unescapeHtmlTags(code)));
       }
     });
-  
-    
+
     return DOMPurify.sanitize($tag.html());
   }
 
-  static calculateLines(text, containerWidth, fontFamily, fontSize) {
+  static calculateRenderLines(text, containerWidth, fontFamily, fontSize) {
     // Create a temporary canvas element
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -179,6 +173,18 @@ class Utils {
     }
 
     return lines;
+  }
+
+  static onElementBlur({ $element, eventName, callback }) {
+    $(document)
+      .off(`click.${eventName}`)
+      .on(`click.${eventName}`, (e) => {
+        if (!$element.is(e.target) && $element.has(e.target).length === 0) {
+          callback();
+
+          $(document).off(`click.${eventName}`);
+        }
+      });
   }
 }
 
