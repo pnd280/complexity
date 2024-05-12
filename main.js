@@ -81,6 +81,13 @@
 
     ThreadAnchor.mountObserver();
     MyObserver.closePopovers();
+
+    $(document).on('keydown', function (event) {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        console.log('CTRL + K pressed');
+      }
+    });
   }
 
   function waitForSocketHooking() {

@@ -286,7 +286,6 @@ class CollectionSelector {
       setTimeout(() => $(document).on('click', closePopover), 100);
     });
 
-    // if right click on the selector and the collection is not default
     selector.$element.off('contextmenu').on('contextmenu', (e) => {
       e.preventDefault();
 

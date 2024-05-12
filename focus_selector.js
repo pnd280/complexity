@@ -69,20 +69,24 @@ class FocusSelector {
 
       const closePopover = () => QueryBox.closeAndRemovePopover($popover);
 
-      addSelection({
-        input: {
-          name: 'Create new',
-          onClick: () => {
-            closePopover();
-          },
-        },
-      });
+      const isDefaultFocus =
+        unsafeWindow.STORE.focus ===
+        JSONUtils.safeParse(localStorage.getItem('defaultFocus'));
 
       addSelection({
         input: {
-          name: 'Edit default prompt',
+          name: !isDefaultFocus ? 'Set as default' : 'Clear default',
           onClick: () => {
             closePopover();
+
+            if (!isDefaultFocus) {
+              localStorage.setItem(
+                'defaultFocus',
+                JSON.stringify(unsafeWindow.STORE.focus)
+              );
+            } else {
+              localStorage.removeItem('defaultFocus');
+            }
           },
         },
       });
@@ -196,5 +200,7 @@ class FocusSelector {
 
       setTimeout(() => $(document).on('click', closePopover), 100);
     });
+
+    this.setupSelectorContextMenu(selector);
   }
 }
