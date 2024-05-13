@@ -48,7 +48,7 @@ class FocusSelector {
   }
 
   static createDropdown() {
-    return UI.createDropdown({
+    return DropdownUI.create({
       selectorClass: 'focus-selector',
     });
   }
@@ -57,7 +57,7 @@ class FocusSelector {
     selector.$element.on('contextmenu', (e) => {
       e.preventDefault();
 
-      const { $popover, addSelection } = UI.createSelectionPopover({
+      const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: null,
         sourceElementId: 'focus-selector-context-menu',
         isContextMenu: true,
@@ -104,7 +104,7 @@ class FocusSelector {
     $selection.on('contextmenu', (e) => {
       e.preventDefault();
 
-      const { $popover, addSelection } = UI.createSelectionPopover({
+      const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: null,
         sourceElementId: 'focus-selector-context-menu',
         isContextMenu: true,
@@ -157,7 +157,7 @@ class FocusSelector {
 
   static setupSelector(selector, modes) {
     selector.$element.click(async () => {
-      const { $popover, addSelection } = UI.createSelectionPopover({
+      const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: selector.$element[0],
         sourceElementId: 'focus-selector',
       });

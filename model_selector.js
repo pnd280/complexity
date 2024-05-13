@@ -126,14 +126,14 @@ class ModelSelector {
   }
 
   static createChatModelDropdown() {
-    return UI.createDropdown({
+    return DropdownUI.create({
       selectorClass: 'model-selector',
       svgIcon: 'microchip-ai',
     });
   }
 
   static createImageModelDropdown() {
-    return UI.createDropdown({
+    return DropdownUI.create({
       selectorClass: 'image-model-selector',
       svgIcon: 'image',
     });
@@ -176,7 +176,7 @@ class ModelSelector {
       }).bind(this, selector));
 
     selector.$element.click(async () => {
-      const { $popover, addSelection } = UI.createSelectionPopover({
+      const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: selector.$element[0],
         sourceElementId: isImageModel
           ? 'image-model-selector'

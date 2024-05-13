@@ -87,7 +87,10 @@ class ThreadAnchor {
 
     function close() {
       const $anchorWrapper = $('#thread-anchor-wrapper');
-      const $container = $('#thread-anchor-wrapper #container');
+      
+      if (!$anchorWrapper.hasClass('float')) return;
+
+      const $container = $anchorWrapper.find('#container');
 
       $('button.menu-button').removeClass('active');
 

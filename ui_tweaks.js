@@ -35,7 +35,7 @@ class UITweaks {
       e.preventDefault();
       e.stopPropagation();
 
-      const { $popover, addSelection } = UI.createSelectionPopover({
+      const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: $collectionButton,
         sourceElementId: 'thread-collection-button',
       });

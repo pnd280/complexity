@@ -64,6 +64,9 @@
       activeCollectionUUID: JSONUtils.safeParse(
         localStorage.getItem('defaultCollectionUUID')
       ),
+      activePromptId: JSONUtils.safeParse(
+        localStorage.getItem('defaultPromptId')
+      ),
     };
 
     Utils.setImmediateInterval(() => {

@@ -35,6 +35,18 @@ class Utils {
     return intervalId;
   }
 
+  static setReactTextareaValue(textarea, newValue) {
+    if (!textarea) return;
+
+    const nativeTextareaValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLTextAreaElement.prototype,
+      'value'
+    ).set;
+    nativeTextareaValueSetter.call(textarea, newValue);
+
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
   static whereAmI() {
     const location = window.location.href;
 

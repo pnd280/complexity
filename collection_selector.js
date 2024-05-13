@@ -8,8 +8,7 @@ class CollectionSelector {
     jsonData = JSONUtils.safeParse(await jsonData.text());
 
     const fetchedCollections =
-      jsonData.pageProps.dehydratedState.queries[1].state
-        .data.pages[0];
+      jsonData.pageProps.dehydratedState.queries[1].state.data.pages[0];
 
     if (!fetchedCollections?.length) return [];
 
@@ -43,19 +42,17 @@ class CollectionSelector {
   }
 
   static getDefaultTitle() {
-    const defaultActiveCollection = unsafeWindow.STORE.collections?.find(
+    const activeCollection = unsafeWindow.STORE.collections?.find(
       (e) => e.uuid == unsafeWindow.STORE.activeCollectionUUID
     );
 
     return (
-      defaultActiveCollection?.dropdownTitle ||
-      defaultActiveCollection?.title ||
-      'Collection'
+      activeCollection?.dropdownTitle || activeCollection?.title || 'Collection'
     );
   }
 
   static createDropdown() {
-    return UI.createDropdown({
+    return DropdownUI.create({
       selectorClass: 'collection-selector',
       svgIcon: 'grid-round-2',
     });
@@ -65,7 +62,7 @@ class CollectionSelector {
     { title, instructions, uuid, url, $anchor, isContextMenu = true },
     selector
   ) {
-    const { $popover, addSelection } = UI.createSelectionPopover({
+    const { $popover, addSelection } = DropdownUI.createSelectionPopover({
       sourceElemnt: null,
       sourceElementId: 'collection-selector-context-menu',
       isContextMenu,
@@ -162,17 +159,17 @@ class CollectionSelector {
     unsafeWindow.STORE.collections[itemIndex].instructions = instructions;
   }
 
-  static setupPromptEditModal({ title, instructions, uuid }) {
+  static setupPromptEditModal({ uuid, title, instructions }) {
     const $promptBox = window.$UI_HTML.find('#prompt-box-wrapper').clone();
 
     $promptBox.find('h1').text(`Edit ${title}'s Prompt`);
 
     $promptBox.find('#backdrop').click(() => {
-      $promptBox.remove();
+      close();
     });
 
     $promptBox.find('button[data-testid="close-modal"]').click(() => {
-      $promptBox.remove();
+      close();
     });
 
     const $textarea = window.$UI_HTML.find('#prompt-box-textarea').clone();
@@ -202,6 +199,10 @@ class CollectionSelector {
         instructions,
       });
 
+      Toast.show({
+        message: '✅ Collection prompt updated',
+      })
+
       $promptBox.remove();
     });
 
@@ -221,11 +222,19 @@ class CollectionSelector {
         $counter.text('');
       }
     }
+
+    function close() {
+      $promptBox.addClass('invisible');
+
+      $promptBox.on('transitionend', () => {
+        $promptBox.remove();
+      });
+    }
   }
 
   static setupSelector(selector, collections) {
     selector.$element.off('click').on('click', () => {
-      const { $popover, addSelection } = UI.createSelectionPopover({
+      const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: selector.$element[0],
         sourceElementId: 'collection-selector',
       });

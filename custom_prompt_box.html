@@ -1,4 +1,4 @@
-<div id="prompt-box-wrapper">
+<div id="prompt-box-wrapper" class="animate-all">
   <div
     id="backdrop"
     class="items-stretch md:items-center fill-mode-both fixed bottom-0 left-0 right-0 top-0 z-30 bg-[#10100f]/95 animate-in fade-in duration-150 ease-out"
@@ -12,7 +12,7 @@
     >
       <div class="">
         <div
-          class="bg-background dark:bg-backgroundDark shadow-md overflow-y-auto scrollbar-thin scrollbar-thumb-idle dark:scrollbar-thumb-idleDark scrollbar-track-transparent fill-mode-both md:rounded-lg md:min-w-[600px] max-w-screen-sm shadow-md relative h-full max-h-[100vh] md:max-h-[95vh] overflow-auto md:w-full"
+          class="bg-background dark:bg-backgroundDark shadow-md overflow-y-auto scrollbar-thin scrollbar-thumb-idle dark:scrollbar-thumb-idleDark scrollbar-track-transparent fill-mode-both md:rounded-lg md:min-w-[600px] max-w-screen-sm relative h-full max-h-[100vh] md:max-h-[95vh] overflow-auto md:w-full"
         >
           <div class="top-sm right-sm fixed z-[23] md:absolute"></div>
           <div
@@ -29,7 +29,7 @@
                   <button
                     data-testid="close-modal"
                     type="button"
-                    class="md:hover:bg-offsetPlus text-textOff dark:text-textOffDark md:hover:text-textMain dark:md:hover:bg-offsetPlusDark dark:md:hover:text-textMainDark font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded-full cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-sm aspect-square h-8"
+                    class="md:hover:bg-offsetPlus text-textOff dark:text-textOffDark md:hover:text-textMain dark:md:hover:bg-offsetPlusDark dark:md:hover:text-textMainDark font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out select-none items-center relative group/button justify-center text-center rounded-full cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-sm aspect-square h-8"
                   >
                     <div
                       class="flex items-center leading-none justify-center gap-xs"
@@ -122,7 +122,7 @@
 <div id="prompt-box-input">
   <div class="flex items-center justify-between mb-sm">
     <label for="Title"
-      ><div class="gap-x-xs flex" id="title">
+      ><div class="gap-x-xs flex font-sans" id="title">
         <div
           class="select-none default font-sans text-sm font-medium text-textMain dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
         ></div></div
@@ -132,7 +132,7 @@
     <div class="relative flex items-center">
       <input
         name="Title"
-        class="w-full outline-none focus:outline-none focus:ring-borderMain font-sans flex items-center dark:bg-offsetDark dark:text-textMainDark dark:placeholder-textOffDark dark:border-borderMainDark dark:focus:ring-borderMainDark selection:bg-superDuper selection:text-textMain duration-200 transition-all bg-background border text-textMain border-borderMain focus:ring-1 placeholder-textOff rounded-t-[32px] rounded-b-[32px] py-sm text-sm px-md pr-md"
+        class="w-full outline-none focus:outline-none focus:ring-borderMain font-sans flex items-center dark:bg-offsetDark dark:text-textMainDark dark:placeholder-textOffDark dark:border-borderMainDark dark:focus:ring-borderMainDark selection:bg-superDuper selection:text-textMain duration-200 transition-all bg-background border text-textMain border-borderMain focus:ring-1 placeholder-textOff rounded-t-[32px] rounded-b-[32px] py-sm text-sm px-md pr-md caret-superDuper"
         autocomplete="off"
         value=""
       />
@@ -146,7 +146,7 @@
 <button
   id="prompt-box-primary-button"
   type="button"
-  class="bg-super dark:bg-superDark dark:text-backgroundDark text-white hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base px-md font-medium h-10"
+  class="bg-super dark:bg-superDark dark:text-backgroundDark text-white hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out select-none items-center relative group/button justify-center text-center rounded cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base px-md font-medium h-10"
 >
   <div class="flex items-center leading-none justify-center gap-xs">
     <div class="text-align-center relative" id="text"></div>
@@ -156,9 +156,46 @@
 <button
   id="prompt-box-secondary-button"
   type="button"
-  class="bg-background dark:bg-offsetDark dark:text-textMain text-textMain dark:text-textMainDark hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base px-md font-medium h-10"
+  class="bg-background dark:bg-offsetDark dark:text-textMain text-textMain dark:text-textMainDark hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out select-none relative group/button justify-center text-center items-center rounded cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base px-md font-medium h-10"
 >
   <div class="flex items-center leading-none justify-center gap-xs">
+    <div class="text-align-center relative" id="text"></div>
+  </div>
+</button>
+
+<div id="prompt-box-popover">
+  <div
+    data-tag="popper"
+    class="z-30 absolute animate-in fade-in zoom-in-95 p-xs rounded border shadow-sm duration-150 ease-in-out border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-background dark:bg-backgroundDark"
+  >
+    <div
+      class="w-max border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-transparent"
+      style="min-width: 100px; max-width: 300px"
+    >
+      <div
+        class="rounded p-sm border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-offset dark:bg-offsetDark"
+      >
+        <div
+          id="content"
+          class="whitespace-pre-wrap max-h-80 overflow-y-auto light font-sans text-sm text-textOff dark:text-textOffDark selection:bg-super/50 selection:text-textMain dark:selection:bg-superDuper/10 dark:selection:text-superDark"
+        ></div>
+        <div
+          id="footer"
+          class="mt-xs flex flex-wrap items-center gap-x-xs border-t pt-xs border-borderMain/50 ring-borderMain/50 divide-borderMain/50 dark:divide-borderMainDark/50 dark:ring-borderMainDark/50 dark:border-borderMainDark/50 bg-transparent"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button
+  id="prompt-box-popover-button"
+  type="button"
+  class="bg-offsetPlus dark:bg-offsetPlusDark text-textMain dark:text-textMainDark md:hover:text-textOff md:dark:hover:text-textOffDark font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-xs font-medium px-sm font-medium h-6"
+  data-state="closed"
+>
+  <div class="flex items-center leading-none justify-center gap-xs">
+    <div id="icon"></div>
     <div class="text-align-center relative" id="text"></div>
   </div>
 </button>

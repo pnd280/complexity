@@ -81,11 +81,42 @@ class QueryBox {
     $followUpQueryBoxContainer.children().last().before($container);
 
     $(document).ready(function () {
-      $followUpQueryBoxContainer.off('keydown').on('keydown', function (e) {
-        if (e.key === 'Enter' && !e.ctrlKey) {
-          e.stopPropagation();
-        }
-      });
+      $followUpQueryBoxContainer
+        .off('keydown')
+        .on('keydown', function (e) {
+          if (e.key === 'Enter' && !e.ctrlKey) {
+            e.stopPropagation();
+          }
+
+          if (e.key === 'Enter' && e.ctrlKey) {
+            const currentQuery = $(
+              'textarea[placeholder="Ask follow-up"]'
+            ).text();
+
+            const prompt = PromptCollection.getPromptById(
+              unsafeWindow.STORE.activePromptId
+            );
+
+            Utils.setReactTextareaValue(
+              $('textarea[placeholder="Ask follow-up"]')[0],
+              prompt.prompt.replace(
+                '{{{query}}}',
+                $('textarea[placeholder="Ask follow-up"]').text()
+              ) ?? currentQuery
+            );
+
+            setTimeout(() => {
+              Utils.setReactTextareaValue(
+                $('textarea[placeholder="Ask follow-up"]')[0],
+                ' '
+              );
+              Utils.setReactTextareaValue(
+                $('textarea[placeholder="Ask follow-up"]')[0],
+                ''
+              );
+            }, 100);
+          }
+        });
     });
 
     return {
@@ -111,6 +142,7 @@ class QueryBox {
     const chatModelSelector = ModelSelector.createChatModelDropdown();
     const imageModelSelector = ModelSelector.createImageModelDropdown();
     const collectionSelector = CollectionSelector.createDropdown();
+    const promptCollectionSelector = PromptCollection.createDropdown();
 
     populateDefaults();
 
@@ -129,6 +161,8 @@ class QueryBox {
       populateDefaults();
     });
 
+    PromptCollection.setupSelector(promptCollectionSelector);
+
     $targetContainer.append(focusSelector.$element);
 
     if (
@@ -136,6 +170,8 @@ class QueryBox {
       $targetContainer.closest('div[data-testid="quick-search-modal"]').length
     )
       $targetContainer.append(collectionSelector.$element);
+
+    $targetContainer.append(promptCollectionSelector.$element);
 
     $targetContainer.append(chatModelSelector.$element);
 
@@ -148,6 +184,10 @@ class QueryBox {
         FocusSelector.getDefaultTitle().title,
         FocusSelector.getDefaultTitle().icon,
         FocusSelector.getDefaultTitle().emoji
+      );
+
+      promptCollectionSelector.setText(
+        PromptCollection.getDefaultPromptTitle()
       );
 
       ModelSelector.setChatModelName(chatModelSelector);

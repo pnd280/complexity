@@ -104,7 +104,6 @@ class WSHook {
           );
 
           return [
-            // query + JSONUtils.unescape('\\n\\nsite:nextjs.org'),
             query,
             {
               ...eventData,
@@ -255,7 +254,7 @@ class WSHook {
             Logger.log('ws onerror:', event);
             handler.apply(this, arguments);
 
-            UI.toast({
+            Toast.show({
               message: `⚠️ Chatplexity: WebSocket connection failed (possibly by Cloudflare). Falling back to long-polling XHR, bugs may occur. Get rid of this alert by refreshing the page, if still persists, restart the browser.`,
               duration: 10000,
             });

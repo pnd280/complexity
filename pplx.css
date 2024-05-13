@@ -16,14 +16,6 @@
   --border-color: rgba(216, 216, 207, 0.5);
 }
 
-.prompt-applied {
-
-  &>.border-borderMain,
-  &>.dark.dark\:border-borderMainDark {
-    border: 2px solid var(--accent-color);
-  }
-}
-
 html.dark {
   --sidebar-color   : #1f1f1f;
   --background-color: #181818;
@@ -32,6 +24,19 @@ html.dark {
   --text-off : #8d8d8d;
 
   --border-color: rgba(235, 229, 229, 0.1);
+}
+
+#toast-wrapper {
+  max-width: 300px;
+}
+
+.prompt-applied {
+
+  &>.border-borderMain,
+  &>.dark.dark\:border-borderMainDark {
+    outline       : 2px solid var(--accent-color);
+    outline-offset: 0px;
+  }
 }
 
 .my-md.md\:my-lg:has(textarea) #markdowned-text-wrapper {
@@ -223,6 +228,7 @@ html.dark #query-box-follow-up-container #selector-container {
 }
 
 .focus-selector,
+.prompt-collection,
 .model-selector,
 .image-model-selector,
 .collection-selector {
@@ -593,6 +599,12 @@ div.sticky.left-0.right-0.top-0.z-20.border-b.md\:mb-0.md\:rounded-t-xl.border-b
 }
 
 /* Tailwind classes that are not rendered */
+.animate-all {
+  transition-property       : all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration       : 300ms;
+}
+
 .mt-8 {
   margin-top: 2rem;
 }
