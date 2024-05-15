@@ -77,6 +77,13 @@ class QueryBox {
           this.injectPrompt({
             $selector: $textarea,
           });
+
+          $('html, body').animate(
+            {
+              scrollTop: $(document).height(),
+            },
+            500
+          );
         }
       });
     });
