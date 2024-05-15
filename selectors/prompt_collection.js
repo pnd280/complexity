@@ -397,11 +397,11 @@ class PromptCollection {
               closePopover();
               UI.closeAndRemovePopover($promptPreviewPopover?.$popover);
 
+              const $closestTextarea = UI.findActiveQueryBoxTextarea();
+
               if (this.isInstantPrompt(prompt)) {
                 unsafeWindow.STORE.activePromptId = null;
                 unsafeWindow.STORE.persistPrompt = false;
-
-                const $closestTextarea = UI.findActiveQueryBoxTextarea();
 
                 Utils.setReactTextareaValue($closestTextarea[0], prompt.prompt);
 
@@ -420,6 +420,8 @@ class PromptCollection {
                 unsafeWindow.STORE.persistPrompt = false;
 
                 $('main').toggleClass('prompt-applied', !!prompt?.id);
+
+                $closestTextarea.focus();
               }
 
               this.reorderPrompts(prompt);
