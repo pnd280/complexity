@@ -15,26 +15,6 @@ class Utils {
     return setInterval(callback, interval, ...args);
   }
 
-  static bindIntervalToElement(element, callback, delay) {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.removedNodes.length > 0) {
-          const removedElements = Array.from(mutation.removedNodes);
-          if (removedElements.includes(element)) {
-            clearInterval(intervalId);
-            observer.disconnect();
-          }
-        }
-      });
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    const intervalId = setInterval(callback, delay);
-
-    return intervalId;
-  }
-
   static setReactTextareaValue(textarea, newValue) {
     if (!textarea) return;
 
@@ -63,7 +43,7 @@ class Utils {
   }
 
   static scrollToElement($anchor, offset = 0) {
-    const $stickyHeader = UITweaks.getStickyHeader();
+    const $stickyHeader = UI.getStickyHeader();
 
     if ($stickyHeader.length) {
       offset -= $stickyHeader.height();
@@ -117,18 +97,6 @@ class Utils {
     }
   }
 
-  static onShallowRouteChange(callback) {
-    let lastUrl = location.href;
-    new MutationObserver(() => {
-      const url = location.href;
-      if (url !== lastUrl) {
-        lastUrl = url;
-
-        callback();
-      }
-    }).observe(document, { subtree: true, childList: true });
-  }
-
   static markdown2Html(markdown) {
     const escapeHtmlTags = (html) => {
       return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -140,6 +108,7 @@ class Utils {
 
     const converter = new showdown.Converter();
     converter.setOption('tables', true);
+    converter.setOption('simpleLineBreaks', true);
 
     const html = converter.makeHtml(escapeHtmlTags(markdown));
 
@@ -187,6 +156,138 @@ class Utils {
     return lines;
   }
 
+  static findReactFiber($element) {
+    const fiberKey = Object.keys($element[0]).find((key) =>
+      key.startsWith('__reactFiber')
+    );
+
+    const fiber = $element[0][fiberKey];
+
+    return fiber;
+  }
+}
+
+class MyObserver {
+  static bindIntervalToElement(element, callback, delay) {
+    if (!document.contains(element)) return;
+
+    const observer = new MutationObserver((mutations, observer) => {
+      if (!document.contains(element)) {
+        observer.disconnect();
+        clearInterval(intervalId);
+        return;
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    const intervalId = setInterval(callback, delay);
+
+    return intervalId;
+  }
+
+  static onElementExist({ selector, callback, recurring = true }) {
+    requestIdleCallback(() => {
+      checkAndInvokeCallback();
+    });
+
+    const observer = new MutationObserver(() => {
+      checkAndInvokeCallback();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
+
+    function checkAndInvokeCallback() {
+      let elements;
+
+      if (typeof selector === 'string') {
+        elements = $(selector).toArray();
+      } else if (typeof selector === 'function') {
+        elements = selector();
+      }
+
+      elements?.forEach((element) => {
+        if (!document.contains(element)) return;
+
+        if ($(element).data('observed') !== true) {
+          callback({
+            element,
+            reobserve: () => $(element).data('observed', false),
+          });
+
+          $(element).data('observed', true);
+          $(element).attr('data-observed', true);
+        }
+      });
+
+      if (!recurring) {
+        observer.disconnect();
+      }
+    }
+  }
+
+  static onDOMChanges({ targetNode, callback, recurring = false }) {
+    if (!targetNode || typeof callback !== 'function') return;
+
+    const observerConfig = {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      characterData: true,
+    };
+
+    let observer;
+
+    const startObserving = () => {
+      observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          callback(mutation);
+        }
+        if (recurring && !document.body.contains(targetNode)) {
+          observer.disconnect();
+          const checkExistence = setInterval(() => {
+            if (document.body.contains(targetNode)) {
+              clearInterval(checkExistence);
+              startObserving();
+            }
+          }, 1000);
+        }
+      });
+      observer.observe(targetNode, observerConfig);
+    };
+
+    const checkNodeExistence = () => {
+      if (document.body.contains(targetNode)) {
+        startObserving();
+      } else if (recurring) {
+        const checkExistence = setInterval(() => {
+          if (document.body.contains(targetNode)) {
+            clearInterval(checkExistence);
+            startObserving();
+          }
+        }, 1000);
+      }
+    };
+
+    checkNodeExistence();
+  }
+
+  static onShallowRouteChange(callback) {
+    let lastUrl = location.href;
+    new MutationObserver(() => {
+      const url = location.href;
+      if (url !== lastUrl) {
+        lastUrl = url;
+
+        callback();
+      }
+    }).observe(document, { subtree: true, childList: true });
+  }
+
   static onElementBlur({ $element, eventName, callback }) {
     $(document)
       .off(`click.${eventName}`)
@@ -197,16 +298,6 @@ class Utils {
           $(document).off(`click.${eventName}`);
         }
       });
-  }
-}
-
-class MyObserver {
-  static closePopovers() {
-    $(window).scroll(() => {
-      $('[id$="-popover"]').each((_, popover) => {
-        $(popover).remove();
-      });
-    });
   }
 }
 

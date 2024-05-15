@@ -45,7 +45,6 @@
 
 - Misc/not categorized:
 
-  - [ ] Button to force update Collection's AI prompt and User Profile (exceed character limits) (glitch)
   - [ ] Selected text on a message will popup an option to add them to the follow-up query box
   - [ ] Replace "Answer" text (below the query) with a short horizontal rule
   - [ ] Hide unnecessary stuffs

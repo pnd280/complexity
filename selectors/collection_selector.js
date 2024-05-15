@@ -72,14 +72,42 @@ class CollectionSelector {
 
     $('main').append($popover);
 
-    const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+    const closePopover = () => UI.closeAndRemovePopover($popover);
 
     addSelection({
       input: {
         name: 'Edit prompt',
         onClick: () => {
           closePopover();
-          this.setupPromptEditModal({ title, instructions, uuid });
+          PromptBoxUI.show({
+            title: `Edit ${title}'s Prompt`,
+            fields: [
+              {
+                title: 'AI Prompt',
+                fieldName: 'ai_prompt',
+                description: 'Instructions for the AI to follow',
+                value: instructions,
+                type: 'textarea',
+                limit: 2000,
+              },
+            ],
+            footerButtons: [
+              {
+                text: 'Save',
+                onClick: async (content) => {
+                  await this.editCollectionPrompt({
+                    collection_uuid: uuid,
+                    instructions: content['ai_prompt'],
+                  });
+
+                  Toast.show({
+                    message: '✅ Collection prompt updated',
+                  });
+                },
+                type: 'primary',
+              },
+            ],
+          });
         },
       },
     });
@@ -137,7 +165,10 @@ class CollectionSelector {
     const { collection_uuid, instructions, title } = collection;
 
     await unsafeWindow.WSHOOK_INSTANCE.sendMessage({
-      messageCode: 420,
+      messageCode:
+        unsafeWindow.WSHOOK_INSTANCE.getActiveSocketType() === 'socket'
+          ? 420
+          : 421,
       event: 'edit_collection',
       data: [
         {
@@ -159,79 +190,6 @@ class CollectionSelector {
     unsafeWindow.STORE.collections[itemIndex].instructions = instructions;
   }
 
-  static setupPromptEditModal({ uuid, title, instructions }) {
-    const $promptBox = window.$UI_HTML.find('#prompt-box-wrapper').clone();
-
-    $promptBox.find('h1').text(`Edit ${title}'s Prompt`);
-
-    $promptBox.find('#backdrop').click(() => {
-      close();
-    });
-
-    $promptBox.find('button[data-testid="close-modal"]').click(() => {
-      close();
-    });
-
-    const $textarea = window.$UI_HTML.find('#prompt-box-textarea').clone();
-
-    $textarea.find('#title').text('AI Prompt');
-    $textarea.find('#optional').remove();
-    $textarea.find('textarea').text(instructions);
-
-    $promptBox.find('#sections').append($textarea);
-
-    countCharacters();
-    $promptBox.find('textarea').on('input', function () {
-      countCharacters();
-    });
-
-    const $saveButton = window.$UI_HTML
-      .find('#prompt-box-primary-button')
-      .clone();
-
-    $saveButton.find('#text').text('Save');
-
-    $saveButton.click(() => {
-      const instructions = $textarea.find('textarea').val();
-
-      this.editCollectionPrompt({
-        collection_uuid: uuid,
-        instructions,
-      });
-
-      Toast.show({
-        message: '✅ Collection prompt updated',
-      })
-
-      $promptBox.remove();
-    });
-
-    $promptBox.find('#footer').append($saveButton);
-
-    $promptBox.appendTo('main');
-
-    function countCharacters() {
-      const $counter = $promptBox.find('#character-count');
-      const length = $textarea.find('textarea').val().length;
-
-      if (length > 1024 - 10) {
-        $counter.removeClass('text-green');
-        $counter.addClass('text-superAlt');
-        $counter.text(`${1024 - length}`);
-      } else {
-        $counter.text('');
-      }
-    }
-
-    function close() {
-      $promptBox.addClass('invisible');
-
-      $promptBox.on('transitionend', () => {
-        $promptBox.remove();
-      });
-    }
-  }
-
   static setupSelector(selector, collections) {
     selector.$element.off('click').on('click', () => {
       const { $popover, addSelection } = DropdownUI.createSelectionPopover({
@@ -243,7 +201,7 @@ class CollectionSelector {
 
       $('main').append($popover);
 
-      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+      const closePopover = () => UI.closeAndRemovePopover($popover);
 
       const $selections = collections.map((collection) =>
         addSelection({

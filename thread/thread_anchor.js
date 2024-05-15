@@ -2,18 +2,18 @@ class ThreadAnchor {
   static createWrapper() {
     let $anchorWrapper = $('#thread-anchor-wrapper');
 
-    const $stickyHeader = UITweaks.getStickyHeader();
+    const $stickyHeader = UI.getStickyHeader();
 
     const top = $stickyHeader.height() + 50;
 
     if (!$anchorWrapper.length) {
-      $anchorWrapper = window.$UI_HTML.find('#thread-anchor-wrapper').clone();
+      $anchorWrapper = $UI_TEMPLATE.find('#thread-anchor-wrapper').clone();
 
       $('main').append($anchorWrapper);
 
       const $container = $anchorWrapper.find('#container');
 
-      const $hamburger = window.$UI_HTML.find('button.menu-button').clone();
+      const $hamburger = $UI_TEMPLATE.find('button.menu-button').clone();
 
       $('#visibility-toggle').html($hamburger);
 
@@ -27,7 +27,7 @@ class ThreadAnchor {
     return {
       $element: $anchorWrapper,
       addAnchor: ({ input, isSelected, params }) => {
-        const $anchor = window.$UI_HTML.find('#thread-anchor').clone();
+        const $anchor = $UI_TEMPLATE.find('#thread-anchor').clone();
 
         $anchor.text(input.name);
 
@@ -74,7 +74,7 @@ class ThreadAnchor {
       const $anchorWrapper = $('#thread-anchor-wrapper');
 
       setTimeout(() => {
-        Utils.onElementBlur({
+        MyObserver.onElementBlur({
           $element: $container,
           eventName: 'anchorBlur',
           callback: () => {
@@ -106,7 +106,7 @@ class ThreadAnchor {
 
   static updateThreadMessageAnchorPosition() {
     const index = Utils.findMostVisibleElementIndex(
-      UITweaks.getMessageContainer().children().toArray()
+      UI.getMessageContainer().children().toArray()
     );
 
     unsafeWindow.STORE.inViewMessageIndex = index;
@@ -122,7 +122,7 @@ class ThreadAnchor {
 
       this.updateThreadMessageAnchorPosition();
 
-      const $messageContainer = UITweaks.getMessageContainer();
+      const $messageContainer = UI.getMessageContainer();
 
       if (!$messageContainer.length) return;
 
@@ -184,7 +184,7 @@ class ThreadAnchor {
 
     window.addEventListener('scroll', () => callback(false));
 
-    Utils.onShallowRouteChange(() => {
+    MyObserver.onShallowRouteChange(() => {
       requestIdleCallback(() => {
         callback(true);
       });

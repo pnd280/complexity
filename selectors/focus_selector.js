@@ -18,7 +18,7 @@ class FocusSelector {
         svgIcon: 'books',
       },
       {
-        name: 'Wolfram|Aplha',
+        name: 'Wolfram|Alpha',
         code: 'wolfram',
         svgIcon: 'badge-percent',
       },
@@ -67,7 +67,7 @@ class FocusSelector {
 
       $('main').append($popover);
 
-      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+      const closePopover = () => UI.closeAndRemovePopover($popover);
 
       const isDefaultFocus =
         unsafeWindow.STORE.focus ===
@@ -114,7 +114,7 @@ class FocusSelector {
 
       $('main').append($popover);
 
-      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+      const closePopover = () => UI.closeAndRemovePopover($popover);
 
       const isDefaultFocus =
         $selection[0].params.code === unsafeWindow.STORE.focus;
@@ -156,7 +156,7 @@ class FocusSelector {
   }
 
   static setupSelector(selector, modes) {
-    selector.$element.click(async () => {
+    selector.$element.on('click', async () => {
       const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: selector.$element[0],
         sourceElementId: 'focus-selector',
@@ -166,7 +166,7 @@ class FocusSelector {
 
       $('main').append($popover);
 
-      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+      const closePopover = () => UI.closeAndRemovePopover($popover);
 
       const $selections = modes.map((mode) =>
         addSelection({

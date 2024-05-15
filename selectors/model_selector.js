@@ -108,12 +108,13 @@ class ModelSelector {
 
   static getPredefinedChatModels() {
     return [
+      { name: 'GPT-4 Omni', dropdownTitle: 'GPT-4o', code: 'gpt4o' },
       { name: 'GPT-4 Turbo', dropdownTitle: 'GPT-4', code: 'gpt4' },
       { name: 'Claude 3 Opus', dropdownTitle: 'Opus', code: 'claude3opus' },
       { name: 'Claude 3 Sonnet', dropdownTitle: 'Sonnet', code: 'claude2' },
-      { name: 'Default', code: 'turbo' },
       { name: 'Sonar Large 32K', dropdownTitle: 'Sonar', code: 'experimental' },
       { name: 'Mistral Large', dropdownTitle: 'Mistral', code: 'mistral' },
+      { name: 'Default', code: 'turbo' },
     ];
   }
 
@@ -175,7 +176,7 @@ class ModelSelector {
         this.setChatModelName(selector);
       }).bind(this, selector));
 
-    selector.$element.click(async () => {
+    selector.$element.on('click', async () => {
       const { $popover, addSelection } = DropdownUI.createSelectionPopover({
         sourceElement: selector.$element[0],
         sourceElementId: isImageModel
@@ -187,7 +188,7 @@ class ModelSelector {
 
       $('main').append($popover);
 
-      const closePopover = () => QueryBox.closeAndRemovePopover($popover);
+      const closePopover = () => UI.closeAndRemovePopover($popover);
 
       models.forEach((model) => {
         addSelection({

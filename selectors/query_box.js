@@ -1,17 +1,8 @@
 class QueryBox {
-  static findButtonBarContainer() {
-    const $buttonBar = $('div:contains("Attach")')
-      .closest(
-        '.flex.bg-background.dark\\:bg-offsetDark.rounded-l-lg.col-start-1.row-start-2.-ml-2'
-      )
-      .last();
-
-    // exclude the incognito indicator
+  static preProcessButtonBarContainer($buttonBar) {
     const $buttonBarChildren = $buttonBar.children(
       ':not(.mr-xs.flex.shrink-0.items-center)'
     );
-
-    if (!$buttonBar.length || $buttonBarChildren.length > 2) return null;
 
     $buttonBar.attr('id', 'query-box-button-bar');
 
@@ -27,29 +18,29 @@ class QueryBox {
       .find('> button > div > div')
       .addClass('hidden');
 
-    $(document).ready(function () {
-      $('textarea[placeholder="Ask anything..."]')
-        .off('keydown')
-        .on('keydown', function (e) {
-          if (e.key === 'Enter' && !e.ctrlKey) {
-            e.stopPropagation();
-          }
-        });
+    const $textarea = $buttonBar.parent().find('textarea');
+
+    $(document).ready(() => {
+      $textarea.off('keydown').on('keydown', (e) => {
+        if (e.key === 'Enter' && !e.ctrlKey) {
+          e.stopPropagation();
+        }
+
+        if (e.key === 'Enter' && e.ctrlKey) {
+          if ($textarea.val().trim() === '') return e.stopPropagation();
+
+          this.injectPrompt({
+            $selector: $textarea,
+            resetAfterInjection: false,
+          });
+        }
+      });
     });
 
-    return {
-      $element: $buttonBar,
-      type: 'button-bar',
-    };
+    return $buttonBar;
   }
 
-  static findFollowUpQueryBoxContainer() {
-    const $followUpQueryBoxContainer = $(
-      'textarea[placeholder="Ask follow-up"]'
-    )
-      .parents()
-      .eq(6);
-
+  static preProcessFollowUpQueryBoxContainer($followUpQueryBoxContainer) {
     if (
       $followUpQueryBoxContainer &&
       $followUpQueryBoxContainer.children().eq(1).attr('class') ===
@@ -57,14 +48,6 @@ class QueryBox {
     ) {
       $('.mb-2.flex.justify-center').prependTo($followUpQueryBoxContainer);
     }
-
-    if (
-      !$followUpQueryBoxContainer.length ||
-      $followUpQueryBoxContainer
-        .children('#query-box-follow-up-container')
-        .children().length > 0
-    )
-      return null;
 
     const $container = $('<div>').attr('id', 'query-box-follow-up-container');
 
@@ -80,63 +63,66 @@ class QueryBox {
 
     $followUpQueryBoxContainer.children().last().before($container);
 
-    $(document).ready(function () {
-      $followUpQueryBoxContainer
-        .off('keydown')
-        .on('keydown', function (e) {
-          if (e.key === 'Enter' && !e.ctrlKey) {
-            e.stopPropagation();
-          }
+    const $textarea = $followUpQueryBoxContainer.find('textarea');
 
-          if (e.key === 'Enter' && e.ctrlKey) {
-            const currentQuery = $(
-              'textarea[placeholder="Ask follow-up"]'
-            ).text();
+    $(document).ready(() => {
+      $followUpQueryBoxContainer.off('keydown').on('keydown', (e) => {
+        if (e.key === 'Enter' && !e.ctrlKey) {
+          e.stopPropagation();
+        }
 
-            const prompt = PromptCollection.getPromptById(
-              unsafeWindow.STORE.activePromptId
-            );
+        if (e.key === 'Enter' && e.ctrlKey) {
+          if ($textarea.val().trim() === '') return e.stopPropagation();
 
-            Utils.setReactTextareaValue(
-              $('textarea[placeholder="Ask follow-up"]')[0],
-              prompt.prompt.replace(
-                '{{{query}}}',
-                $('textarea[placeholder="Ask follow-up"]').text()
-              ) ?? currentQuery
-            );
-
-            setTimeout(() => {
-              Utils.setReactTextareaValue(
-                $('textarea[placeholder="Ask follow-up"]')[0],
-                ' '
-              );
-              Utils.setReactTextareaValue(
-                $('textarea[placeholder="Ask follow-up"]')[0],
-                ''
-              );
-            }, 100);
-          }
-        });
+          this.injectPrompt({
+            $selector: $textarea,
+          });
+        }
+      });
     });
 
-    return {
-      $element: $selectorContainer,
-      type: 'follow-up',
-    };
+    return $selectorContainer;
   }
 
-  static closeAndRemovePopover($popover) {
-    $popover.remove();
-    $(document).off('click', this.closeAndRemovePopover);
+  static injectPrompt({ $selector, resetAfterInjection = true }) {
+    const currentQuery = $selector.text();
+
+    const prompt = PromptCollection.getPromptById(
+      unsafeWindow.STORE.activePromptId
+    );
+
+    Utils.setReactTextareaValue(
+      $selector[0],
+      prompt?.prompt.replace('{{{query}}}', currentQuery) ?? currentQuery
+    );
+
+    if (!unsafeWindow.STORE.persistPrompt) {
+      unsafeWindow.STORE.activePromptId = null;
+
+      $('.prompt-collection-text').text(
+        PromptCollection.getDefaultPromptTitle()
+      );
+
+      $('main').toggleClass('prompt-applied', false);
+    }
+
+    if (resetAfterInjection) {
+      setTimeout(() => {
+        Utils.setReactTextareaValue($selector[0], ' ');
+        Utils.setReactTextareaValue($selector[0], '');
+      }, 100);
+    }
   }
 
-  static createSelectors() {
-    const targetContainer =
-      this.findFollowUpQueryBoxContainer() || this.findButtonBarContainer();
+  static createSelectors({ $element: $targetElement, type }) {
+    if (!$targetElement?.length) return;
 
-    if (!targetContainer) return;
+    const $targetContainer =
+      type === 'button-bar'
+        ? this.preProcessButtonBarContainer($targetElement)
+        : this.preProcessFollowUpQueryBoxContainer($targetElement);
 
-    const { $element: $targetContainer, type } = targetContainer;
+    if (!$targetContainer?.length) return;
 
     const focusSelector = FocusSelector.createDropdown();
     const chatModelSelector = ModelSelector.createChatModelDropdown();
@@ -196,5 +182,41 @@ class QueryBox {
 
       collectionSelector.setText(CollectionSelector.getDefaultTitle());
     }
+  }
+
+  static mountObserver() {
+    MyObserver.onElementExist({
+      selector: () =>
+        $('textarea[placeholder="Ask anything..."]').next().toArray(),
+      callback: ({ element }) => {
+        this.createSelectors({
+          $element: $(element),
+          type: 'button-bar',
+        });
+      },
+    });
+
+    MyObserver.onElementExist({
+      selector: () => [
+        $('textarea[placeholder="Ask follow-up"]').parents().eq(6)[0],
+      ],
+      callback: ({ element }) => {
+        this.createSelectors({
+          $element: $(element),
+          type: 'follow-up-querybox',
+        });
+      },
+    });
+
+    MyObserver.onElementExist({
+      selector: '.pointer-events-auto .mb-2.flex.justify-center',
+      callback: () => {
+        const $querybox = $('textarea[placeholder="Ask follow-up"]')
+          .parents()
+          .eq(6);
+
+        $querybox.children().last().before($('#query-box-follow-up-container'));
+      },
+    });
   }
 }

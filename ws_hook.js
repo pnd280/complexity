@@ -115,6 +115,7 @@ class WSHook {
               target_collection_uuid:
                 querySource !== 'followup' ? targetCollectionUuid : undefined,
               // is_incognito: true,
+              // redo_search: true,
             },
             ...rest,
           ];
