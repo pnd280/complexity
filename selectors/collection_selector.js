@@ -145,7 +145,9 @@ class CollectionSelector {
 
           unsafeWindow.STORE.activeCollectionUUID = uuid;
 
-          selector?.setText(this.getDefaultTitle());
+          selector?.setText({
+            text: this.getDefaultTitle(),
+          });
 
           closePopover();
         },
@@ -216,7 +218,7 @@ class CollectionSelector {
                 collection.uuid
               );
 
-              selector.setText(this.getDefaultTitle());
+              selector.setText({ text: this.getDefaultTitle() });
 
               closePopover();
             },

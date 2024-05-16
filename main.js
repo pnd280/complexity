@@ -23,7 +23,7 @@
   ThreadLayout.mountObserver();
   ThreadAnchor.mountObserver();
 
-  UITweaks.setAccentColor('#e74c3c');
+  // UITweaks.setAccentColor('#55efc4');
   UITweaks.alterSloganHeading('Chatplexity');
   UITweaks.closePopoversOnScroll();
 })();

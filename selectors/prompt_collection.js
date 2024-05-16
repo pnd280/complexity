@@ -312,7 +312,7 @@ class PromptCollection {
                         message: '✅ Prompt deleted',
                       });
 
-                      selector.setText(this.getDefaultPromptTitle());
+                      selector.setText({ text: this.getDefaultPromptTitle() });
 
                       closePopover();
                     },
@@ -362,7 +362,9 @@ class PromptCollection {
                                 prompt: newPrompt,
                               });
 
-                              selector.setText(this.getDefaultPromptTitle());
+                              selector.setText({
+                                text: this.getDefaultPromptTitle(),
+                              });
 
                               Toast.show({
                                 message: '✅ Prompt updated',
@@ -426,7 +428,7 @@ class PromptCollection {
 
               this.reorderPrompts(prompt);
 
-              selector.setText(this.getDefaultPromptTitle());
+              selector.setText({ text: this.getDefaultPromptTitle() });
             },
           },
           isSelected: prompt.id === unsafeWindow.STORE.activePromptId,
@@ -476,7 +478,7 @@ class PromptCollection {
               unsafeWindow.STORE.activePromptId = null;
               unsafeWindow.STORE.persistPrompt = false;
 
-              selector.setText(this.getDefaultPromptTitle());
+              selector.setText({ text: this.getDefaultPromptTitle() });
 
               $('main').toggleClass('prompt-applied', false);
             },

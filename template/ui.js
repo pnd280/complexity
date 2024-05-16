@@ -48,6 +48,33 @@ class UI {
     $(document).off('click', this.closeAndRemovePopover);
   }
 
+  static setDropdownText({
+    $dropdown,
+    text,
+    icon = undefined,
+    emoji = undefined,
+  }) {
+    $dropdown.find('#text').text(text);
+
+    if (icon) {
+      $dropdown.find('button > div#emoji').remove();
+      $dropdown.find('button > svg').remove();
+      $dropdown
+        .find('button')
+        .prepend(
+          $UI_TEMPLATE.find(`svg[data-icon="${icon}"]`).clone().addClass('mr-1')
+        );
+    }
+
+    if (emoji) {
+      $dropdown.find('button > div#emoji').remove();
+      $dropdown.find('button > svg').remove();
+      $dropdown
+        .find('button')
+        .prepend(`<div id="emoji" class="mr-1">${emoji}</div>`);
+    }
+  }
+
   static getCollapsibleSidebar() {
     return $(
       '.sticky.top-0.flex.h-full.flex-col.justify-between.overflow-y-auto.overflow-x-hidden'
@@ -103,29 +130,8 @@ class DropdownUI {
 
     return {
       $element: $dropdown,
-      setText: (text, icon = undefined, emoji = undefined) => {
-        $dropdown.find('#text').text(text);
-
-        if (icon) {
-          $dropdown.find('button > div#emoji').remove();
-          $dropdown.find('button > svg').remove();
-          $dropdown
-            .find('button')
-            .prepend(
-              $UI_TEMPLATE
-                .find(`svg[data-icon="${icon}"]`)
-                .clone()
-                .addClass('mr-1')
-            );
-        }
-
-        if (emoji) {
-          $dropdown.find('button > div#emoji').remove();
-          $dropdown.find('button > svg').remove();
-          $dropdown
-            .find('button')
-            .prepend(`<div id="emoji" class="mr-1">${emoji}</div>`);
-        }
+      setText: ({ text, icon = undefined, emoji = undefined }) => {
+        UI.setDropdownText({ $dropdown, text, icon, emoji });
       },
       getText: () => $dropdown.find('#text').text(),
     };
@@ -206,7 +212,15 @@ class PromptBoxUI {
     $promptBox.find('h1').text(title);
 
     fields.forEach((field) => {
-      const { fieldName, title, description, optional, value, type, limit = 15000 } = field;
+      const {
+        fieldName,
+        title,
+        description,
+        optional,
+        value,
+        type,
+        limit = 15000,
+      } = field;
 
       switch (type) {
         case 'textarea':

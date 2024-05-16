@@ -134,11 +134,15 @@ class FocusSelector {
 
             unsafeWindow.STORE.focus = $selection[0].params.code;
 
-            selector.setText(
-              this.getDefaultTitle().title,
-              this.getDefaultTitle().icon,
-              this.getDefaultTitle().emoji
-            );
+            const defaultTitle = this.getDefaultTitle();
+
+            $('.focus-selector').each((_, el) => {
+              UI.setDropdownText({
+                $dropdown: $(el).parent(),
+                text: defaultTitle.title,
+                icon: defaultTitle.icon,
+              });
+            });
 
             closePopover();
           },
@@ -175,11 +179,15 @@ class FocusSelector {
             onClick: async () => {
               unsafeWindow.STORE.focus = mode.code;
 
-              selector.setText(
-                this.getDefaultTitle().title,
-                this.getDefaultTitle().icon,
-                this.getDefaultTitle().emoji
-              );
+              const defaultTitle = this.getDefaultTitle();
+
+              $('.focus-selector').each((_, el) => {
+                UI.setDropdownText({
+                  $dropdown: $(el).parent(),
+                  text: defaultTitle.title,
+                  icon: defaultTitle.icon,
+                });
+              });
 
               closePopover();
             },

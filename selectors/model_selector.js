@@ -27,8 +27,7 @@ class ModelSelector {
     unsafeWindow.STORE.imageModelCode = imageModelCode;
     unsafeWindow.STORE.queryLimit = queryLimit;
     unsafeWindow.STORE.opusQueryLimit = opusQueryLimit;
-    unsafeWindow.STORE.imageGenerationLimit =
-      imageGenerationLimit;
+    unsafeWindow.STORE.imageGenerationLimit = imageGenerationLimit;
 
     return {
       chatModelCode,
@@ -94,7 +93,7 @@ class ModelSelector {
     const { name: chatModelName, limit: chatModelLimit } =
       override || this.getDefaultChatModelName();
 
-    selector.setText(chatModelName);
+    selector.setText({ text: chatModelName });
     selector.$element.find('#query-limit').text(chatModelLimit);
   }
 
@@ -102,7 +101,7 @@ class ModelSelector {
     const { name: imageModelName, limit: imageModelLimit } =
       override || this.getDefaultImageModelName();
 
-    selector.setText(imageModelName);
+    selector.setText({ text: imageModelName });
     selector.$element.find('#query-limit').text(imageModelLimit);
   }
 

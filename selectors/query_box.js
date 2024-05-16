@@ -173,21 +173,22 @@ class QueryBox {
     $targetContainer.addClass('flex-wrap col-span-2');
 
     function populateDefaults() {
-      focusSelector.setText(
-        FocusSelector.getDefaultTitle().title,
-        FocusSelector.getDefaultTitle().icon,
-        FocusSelector.getDefaultTitle().emoji
-      );
+      focusSelector.setText({
+        text: FocusSelector.getDefaultTitle().title,
+        icon: FocusSelector.getDefaultTitle().icon,
+      });
 
-      promptCollectionSelector.setText(
-        PromptCollection.getDefaultPromptTitle()
-      );
+      promptCollectionSelector.setText({
+        text: PromptCollection.getDefaultPromptTitle(),
+      });
 
       ModelSelector.setChatModelName(chatModelSelector);
 
       ModelSelector.setImageModelName(imageModelSelector);
 
-      collectionSelector.setText(CollectionSelector.getDefaultTitle());
+      collectionSelector.setText({
+        text: CollectionSelector.getDefaultTitle(),
+      });
     }
   }
 

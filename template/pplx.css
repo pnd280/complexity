@@ -50,8 +50,10 @@ div.whitespace-pre-line.break-words {
   display: none;
 }
 
-html.dark #markdowned-text-wrapper code {
-  color: var(--text-main) !important;
+html.dark #markdowned-text-wrapper {
+  & pre code {
+    color: var(--text-main) !important;
+  }
 }
 
 #markdowned-text-wrapper pre {
@@ -185,9 +187,16 @@ html.dark #query-box-follow-up-container #selector-container {
   line-height: normal;
 }
 
-.mx-auto.h-full.w-full.max-w-screen-md.px-md.md\:px-lg:has(textarea) {
-  max-width : 1300px;
-  transition: max-width 0.3s ease;
+.mx-auto.h-full.w-full.max-w-screen-md.px-md.md\:px-lg {
+  &:has(textarea) {
+    max-width : 1300px;
+    transition: max-width 0.3s ease;
+  }
+
+  & .grid.grid-cols-1.gap-sm.md\:grid-cols-2 {
+    max-width: 768px;
+    margin   : 0 auto;
+  }
 }
 
 .max-w-screen-md:has(textarea) {
