@@ -265,6 +265,7 @@ class PromptBoxUI {
           $promptBox.find('#sections').append($textarea);
 
           countCharacters($textarea, limit);
+
           $promptBox
             .find('textarea')
             .off('input')
@@ -308,7 +309,7 @@ class PromptBoxUI {
         const values = {};
 
         fields.forEach((field) => {
-          const { fieldName } = field;
+          const { fieldName, limit = 15000 } = field;
 
           const $field = $promptBox.find(`[field="${fieldName}"]`);
 
@@ -319,6 +320,14 @@ class PromptBoxUI {
             case 'input':
               values[fieldName] = $field.find('input').val();
               break;
+          }
+
+          if (values[fieldName].length > limit) {
+            Toast.show({
+              message: `❌ Exceeds character limit!`,
+            });
+
+            throw new Error('Exceeds character limit!');
           }
         });
 
@@ -343,6 +352,8 @@ class PromptBoxUI {
       } else {
         $counter.text('');
       }
+
+      return length;
     }
 
     function close() {

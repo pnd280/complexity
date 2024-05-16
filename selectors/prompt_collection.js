@@ -284,7 +284,6 @@ class PromptCollection {
           input: {
             name: prompt.title,
             onMouseEnter: ($element) => {
-              console.log(prompt);
               if (!prompt.id) return;
 
               $promptPreviewPopover = this.setupSelectionPreview({
