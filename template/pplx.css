@@ -21,6 +21,75 @@ html.dark {
   --border-color    : rgba(235, 229, 229, 0.1);
 }
 
+/* Follow Up Popover */
+#follow-up-popover {
+  position  : absolute;
+  color     : var(--text-off);
+  background: var(--background-color);
+  font-size : .8rem;
+
+  display: flex;
+
+  gap: .5rem;
+
+  padding: 0 1rem;
+
+  border       : 1px solid var(--border-color);
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  &::after {
+    content         : '';
+    position        : absolute;
+    width           : 0;
+    height          : 0;
+    border          : 0.5rem solid transparent;
+    border-top-color: var(--border-color);
+    bottom          : -1rem;
+    left            : 50%;
+    transform       : translateX(-50%);
+  }
+
+  &.reverse-arrow::after {
+    border          : 0.5rem solid transparent;
+    border-bottom-color: var(--border-color);
+    top             : -1rem;
+    left            : 50%;
+    transform       : translateX(-50%);
+  }
+
+  &>* {
+    display: flex;
+    gap    : 0.5rem;
+
+    padding: 0.5rem 0;
+
+    user-select: none;
+
+    &:hover {
+      color: var(--text-main);
+    }
+
+    &:active {
+      scale: 0.95;
+    }
+  }
+
+  &>*:not(:last-child)::after {
+    content: '';
+
+    width : 1px;
+    height: 80%;
+
+    margin: auto 0;
+
+    background: var(--border-color);
+  }
+}
+
 /* Toast Wrapper */
 #toast-wrapper {
   max-width: 300px;
@@ -34,7 +103,6 @@ html.dark {
     transition    : all 0.15s ease;
     outline       : 1px solid var(--accent-color-darker);
     outline-offset: 0px;
-    margin-top    : 0.25rem;
     box-shadow    : 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
     &:has(textarea:focus) {

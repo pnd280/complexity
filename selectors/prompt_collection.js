@@ -110,7 +110,7 @@ class PromptCollection {
     });
   }
 
-  static setupSelectionContextMenu(selector) {
+  static setupSelectionContextMenu($anchor) {
     $('#prompt-box-popover').each((_, element) => {
       $(element).remove();
     });
@@ -239,7 +239,7 @@ class PromptCollection {
     });
 
     UI.showPopover({
-      $anchor: selector.$element,
+      $anchor,
       $popover,
     });
 
@@ -284,6 +284,7 @@ class PromptCollection {
           input: {
             name: prompt.title,
             onMouseEnter: ($element) => {
+              console.log(prompt);
               if (!prompt.id) return;
 
               $promptPreviewPopover = this.setupSelectionPreview({
@@ -446,7 +447,7 @@ class PromptCollection {
     selector.$element.on('contextmenu', (e) => {
       e.preventDefault();
 
-      this.setupSelectionContextMenu(selector);
+      this.setupSelectionContextMenu(selector.$element);
     });
 
     selector.$element.off('mouseenter').on('mouseenter', () => {
@@ -501,9 +502,6 @@ class PromptCollection {
       UI.showPopover({
         $anchor: selector.$element,
         $popover,
-        offset: {
-          bottom: -10,
-        },
       });
 
       if (typeof close === 'function') {

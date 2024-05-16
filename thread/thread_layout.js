@@ -96,7 +96,7 @@ class ThreadLayout {
     return true;
   }
 
-  static alterMessageLayout({ $query }) {
+  static alterMessageQuery({ $query }) {
     if (Utils.whereAmI() !== 'thread') return;
 
     const { $messageBlock } = $query[0].params;
@@ -230,35 +230,6 @@ class ThreadLayout {
     });
   }
 
-  static getMessageBlocks() {
-    if (Utils.whereAmI() !== 'thread') return [];
-
-    const $messageContainer = UI.getMessageContainer();
-
-    const messageBlocks = [];
-
-    $messageContainer.children().each((_, messageBlock) => {
-      const $messageBlock = $(messageBlock);
-      const $query = $messageBlock.find('.my-md.md\\:my-lg');
-      const $answerHeading = $messageBlock.find(
-        '.mb-sm.flex.w-full.items-center.justify-between:last'
-      );
-
-      $messageBlock.find('.col-span-8:last').addClass('message-col');
-      $messageBlock.find('.col-span-4:last').addClass('visual-col');
-
-      const messageBlockData = {
-        $messageBlock,
-        $query,
-        $answerHeading,
-      };
-
-      messageBlocks.push(messageBlockData);
-    });
-
-    return messageBlocks;
-  }
-
   static mountObserver() {
     MyObserver.onElementExist({
       selector:
@@ -281,7 +252,7 @@ class ThreadLayout {
 
     MyObserver.onElementExist({
       selector: () => {
-        const messageBlocks = this.getMessageBlocks();
+        const messageBlocks = UI.getMessageBlocks();
         return messageBlocks.map(({ $query, $messageBlock }) => {
           if (!$messageBlock?.length) return null;
 
@@ -291,13 +262,13 @@ class ThreadLayout {
         });
       },
       callback: ({ element }) => {
-        this.alterMessageLayout({ $query: $(element) });
+        this.alterMessageQuery({ $query: $(element) });
       },
     });
 
     MyObserver.onElementExist({
       selector: () => {
-        const messageBlocks = this.getMessageBlocks();
+        const messageBlocks = UI.getMessageBlocks();
         return messageBlocks
           .filter(({ $answerHeading }) => $answerHeading.length)
           .map(({ $query, $answerHeading, $messageBlock }) => {

@@ -30,6 +30,7 @@ class QueryBox {
           if ($textarea.val().trim() === '') return e.stopPropagation();
 
           this.injectPrompt({
+            currentQuery: $textarea.val(),
             $selector: $textarea,
             resetAfterInjection: false,
           });
@@ -75,6 +76,7 @@ class QueryBox {
           if ($textarea.val().trim() === '') return e.stopPropagation();
 
           this.injectPrompt({
+            currentQuery: $textarea.val(),
             $selector: $textarea,
           });
 
@@ -91,9 +93,7 @@ class QueryBox {
     return $selectorContainer;
   }
 
-  static injectPrompt({ $selector, resetAfterInjection = true }) {
-    const currentQuery = $selector.text();
-
+  static injectPrompt({ currentQuery, $selector, resetAfterInjection = true }) {
     const prompt = PromptCollection.getPromptById(
       unsafeWindow.STORE.activePromptId
     );

@@ -186,7 +186,12 @@ class MyObserver {
     return intervalId;
   }
 
-  static onElementExist({ selector, callback, recurring = true }) {
+  static onElementExist({
+    selector,
+    callback,
+    recurring = true,
+    id = 'observed',
+  }) {
     requestIdleCallback(() => {
       checkAndInvokeCallback();
     });
@@ -213,14 +218,14 @@ class MyObserver {
       elements?.forEach((element) => {
         if (!document.contains(element)) return;
 
-        if ($(element).data('observed') !== true) {
+        if ($(element).data(id) !== true) {
           callback({
             element,
-            reobserve: () => $(element).data('observed', false),
+            reobserve: () => $(element).data(id, false),
           });
 
-          $(element).data('observed', true);
-          $(element).attr('data-observed', true);
+          $(element).data(id, true);
+          $(element).attr(`data-${id}`, true);
         }
       });
 

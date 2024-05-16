@@ -22,6 +22,7 @@
 
   ThreadLayout.mountObserver();
   ThreadAnchor.mountObserver();
+  FollowUpPopover.mountObserver();
 
   // UITweaks.setAccentColor('#55efc4');
   UITweaks.alterSloganHeading('Chatplexity');

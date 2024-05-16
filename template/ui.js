@@ -12,19 +12,20 @@ class UI {
     let popperTop;
 
     const bottomOverflowed =
-      top + height + $popper.height() > window.innerHeight;
+      top + height + $popper.outerHeight() > window.innerHeight;
 
-    const rightOverflowed = left + $popper.width() > window.innerWidth;
+    const rightOverflowed = left + $popper.outerWidth() > window.innerWidth;
 
     if (placement === 'vertical') {
       popperTop =
-        scrollY + (bottomOverflowed ? top - $popper.height() : top + height);
-      popperLeft = rightOverflowed ? left - $popper.width() : left;
+        scrollY +
+        (bottomOverflowed ? top - $popper.outerHeight() : top + height);
+      popperLeft = rightOverflowed ? left - $popper.outerWidth() : left;
     } else {
       popperTop = top + scrollY;
       popperLeft = rightOverflowed
-        ? left - $anchor.width() - 5
-        : left + $anchor.width() + 5;
+        ? left - $anchor.outerWidth() - 5
+        : left + $anchor.outerWidth() + 5;
     }
 
     if (
@@ -32,11 +33,7 @@ class UI {
       bottomOverflowed &&
       popperTop + $popper.height() > window.innerHeight
     ) {
-      popperTop = scrollY + window.innerHeight - $popper.height() - 20;
-    }
-
-    if (placement === 'vertical' && bottomOverflowed) {
-      popperTop += offset?.bottom || 0;
+      popperTop = scrollY + window.innerHeight - $popper.outerHeight() - 20;
     }
 
     $popper.css('top', `${popperTop + (offset?.y || 0)}px`);
@@ -95,6 +92,39 @@ class UI {
     }
 
     return $messageContainer;
+  }
+
+  static getMessageBlocks() {
+    if (Utils.whereAmI() !== 'thread') return [];
+
+    const $messageContainer = this.getMessageContainer();
+
+    const messageBlocks = [];
+
+    $messageContainer.children().each((_, messageBlock) => {
+      const $messageBlock = $(messageBlock);
+      const $query = $messageBlock.find('.my-md.md\\:my-lg');
+      const $answer = $messageBlock.find(
+        '.relative.default.font-sans.text-base'
+      );
+      const $answerHeading = $messageBlock.find(
+        '.mb-sm.flex.w-full.items-center.justify-between:last'
+      );
+
+      $messageBlock.find('.col-span-8:last').addClass('message-col');
+      $messageBlock.find('.col-span-4:last').addClass('visual-col');
+
+      const messageBlockData = {
+        $messageBlock,
+        $answerHeading,
+        $query,
+        $answer,
+      };
+
+      messageBlocks.push(messageBlockData);
+    });
+
+    return messageBlocks;
   }
 
   static getStickyHeader() {
