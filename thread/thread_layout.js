@@ -167,9 +167,7 @@ class ThreadLayout {
       .last()
       .text();
 
-    const ownUsername = UI.getCollapsibleSidebar()
-      .find('.break-all.line-clamp-1.default.font-sans')
-      .text();
+    const ownUsername = unsafeWindow.STORE.username;
 
     const displayName = name
       ? name === ownUsername

@@ -16,6 +16,7 @@
     activePromptId: JSONUtils.safeParse(
       localStorage.getItem('defaultPromptId')
     ),
+    username: getUsername(),
   };
 
   QueryBox.mountObserver();
@@ -24,7 +25,7 @@
   ThreadAnchor.mountObserver();
   FollowUpPopover.mountObserver();
 
-  // UITweaks.setAccentColor('#55efc4');
+  UITweaks.setAccentColor('#72AEFD');
   UITweaks.alterSloganHeading('Chatplexity');
   UITweaks.closePopoversOnScroll();
 })();
@@ -81,6 +82,13 @@ async function softCheckForUpdates() {
       window.BUILD_ID
     );
   }
+}
+
+function getUsername() {
+  return $('script#__NEXT_DATA__')
+    .text()
+    .match(/"username":"(.+?)"/)[1]
+    .trim();
 }
 
 async function hookSocket() {
