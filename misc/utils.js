@@ -35,6 +35,8 @@ class Utils {
         return 'collection';
       case location.startsWith('https://www.perplexity.ai/search'):
         return 'thread';
+      case location.startsWith('https://labs.perplexity.ai/'):
+        return 'lab';
     }
   }
 
@@ -58,6 +60,27 @@ class Utils {
       },
       500
     );
+  }
+
+  static increaseScrollSpeed(modifier) {
+    let originalScrollHandler = null;
+
+    function handleScroll(event) {
+      if (event.altKey) {
+        $(window).scrollTop(
+          $(window).scrollTop() + event.originalEvent.deltaY * modifier
+        );
+      } else if (originalScrollHandler) {
+        originalScrollHandler(event);
+      }
+    }
+
+    $(window).on('wheel', function (event) {
+      if (originalScrollHandler === null) {
+        originalScrollHandler = event.currentTarget.onscroll;
+      }
+      handleScroll(event);
+    });
   }
 
   static findMostVisibleElementIndex(elements) {
@@ -307,7 +330,7 @@ class MyObserver {
 }
 
 class Logger {
-  static #enable = false;
+  static #enable = true;
 
   static log(...args) {
     if (this.#enable) console.log(...args);

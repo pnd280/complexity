@@ -3,9 +3,15 @@
 
   await loadDependencies();
 
-  await softCheckForUpdates();
+  await Promise.all([
+    softCheckForUpdates(),
+    Utils.whereAmI() !== 'lab' && hookSocket(),
+  ]);
 
-  await hookSocket();
+  UITweaks.setAccentColor('#72AEFD');
+  UITweaks.alterSloganHeading('Chatplexity');
+  UITweaks.closePopoversOnScroll();
+  Utils.increaseScrollSpeed(5);
 
   unsafeWindow.STORE = {
     focus:
@@ -20,43 +26,29 @@
   };
 
   QueryBox.mountObserver();
-
   ThreadLayout.mountObserver();
   ThreadAnchor.mountObserver();
   FollowUpPopover.mountObserver();
-
-  UITweaks.setAccentColor('#72AEFD');
-  UITweaks.alterSloganHeading('Chatplexity');
-  UITweaks.closePopoversOnScroll();
 })();
 
 async function loadDependencies() {
-  if (typeof jQuery === 'undefined') {
-    await Utils.loadScriptAsync(
-      'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'
-    );
-
-    console.log('jQuery loaded');
-  }
-
-  await Utils.loadScriptAsync(
-    'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js'
-  );
-
-  console.log('Showdown loaded');
-
-  await Utils.loadScriptAsync(
-    'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.2/purify.min.js'
-  );
-
-  console.log('DOMPurify loaded');
+  await Promise.all([
+    typeof jQuery === 'undefined' &&
+      Utils.loadScriptAsync(
+        'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'
+      ),
+    Utils.loadScriptAsync(
+      'https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js'
+    ),
+    Utils.loadScriptAsync(
+      'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.2/purify.min.js'
+    ),
+  ]);
 
   $('<style>')
     .attr('type', 'text/css')
     .html(GM_getResourceText('CSS'))
     .appendTo('head');
-
-  console.log('Custom CSS loaded');
 
   window.$UI_TEMPLATE = $('<template>').append(
     $.parseHTML(GM_getResourceText('UI') + GM_getResourceText('UI_PROMPT_BOX'))
@@ -87,7 +79,7 @@ async function softCheckForUpdates() {
 function getUsername() {
   return $('script#__NEXT_DATA__')
     .text()
-    .match(/"username":"(.+?)"/)[1]
+    .match(/"username":"(.+?)"/)?.[1]
     .trim();
 }
 
