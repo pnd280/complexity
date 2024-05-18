@@ -54,11 +54,11 @@ html.dark {
   }
 
   &.reverse-arrow::after {
-    border          : 0.5rem solid transparent;
+    border             : 0.5rem solid transparent;
     border-bottom-color: var(--border-color);
-    top             : -1rem;
-    left            : 50%;
-    transform       : translateX(-50%);
+    top                : -1rem;
+    left               : 50%;
+    transform          : translateX(-50%);
   }
 
   &>* {
@@ -144,9 +144,6 @@ html.dark #markdowned-text-wrapper {
 /* Thread Anchor Wrapper */
 #thread-anchor-wrapper {
   & #container {
-    border-radius   : 0.5rem;
-    padding         : 1rem;
-    background      : var(--background-color);
     justify-content : flex-start;
     width           : 100%;
     max-height      : 300px;
@@ -157,8 +154,11 @@ html.dark #markdowned-text-wrapper {
   }
 
   &.float #container {
-    border    : 1px solid var(--border-color);
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    background   : var(--background-color);
+    border-radius: 0.5rem;
+    padding      : 1rem;
+    border       : 1px solid var(--border-color);
+    box-shadow   : 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
 
   &.float #visibility-toggle {
