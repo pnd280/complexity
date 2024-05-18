@@ -195,6 +195,10 @@ class FollowUpPopover {
   }
 
   static mountObserver() {
+    // $(window).on('scroll', (e) => {
+    //   e.stopPropagation();
+    // });
+
     MyObserver.onElementExist({
       selector: () => UI.getMessageBlocks().map(({ $answer }) => $answer[0]),
       callback: ({ element }) => {

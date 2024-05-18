@@ -11,8 +11,10 @@ class UITweaks {
   }
 
   static closePopoversOnScroll() {
-    $(window).scroll(() => {
+    $(window).on('scroll', () => {
       $('[id$="-popover"]').each((_, popover) => {
+        if ($(popover).attr('id') === 'follow-up-popover') return;
+
         $(popover).remove();
       });
     });
