@@ -132,13 +132,13 @@ class UI {
   }
 
   static findActiveQueryBoxTextarea() {
-    return $('.prompt-collection:last').parents().find('textarea:last');
+    return $('button[aria-label="Submit"]:last')
+      .parents()
+      .find('textarea[placeholder]:last');
   }
 
   static findActiveSubmitQueryButton() {
-    return this.findActiveQueryBoxTextarea()
-      .parents()
-      .find('button[aria-label="Submit"]:last');
+    return $('button[aria-label="Submit"]:last');
   }
 }
 

@@ -18,26 +18,6 @@ class QueryBox {
       .find('> button > div > div')
       .addClass('hidden');
 
-    const $textarea = $buttonBar.parent().find('textarea');
-
-    $(document).ready(() => {
-      $textarea.off('keydown').on('keydown', (e) => {
-        if (e.key === 'Enter' && !e.ctrlKey) {
-          e.stopPropagation();
-        }
-
-        if (e.key === 'Enter' && e.ctrlKey) {
-          if ($textarea.val().trim() === '') return e.stopPropagation();
-
-          this.injectPrompt({
-            currentQuery: $textarea.val(),
-            $selector: $textarea,
-            resetAfterInjection: false,
-          });
-        }
-      });
-    });
-
     return $buttonBar;
   }
 
@@ -63,32 +43,6 @@ class QueryBox {
       .append($selectorContainer);
 
     $followUpQueryBoxContainer.children().last().before($container);
-
-    const $textarea = $followUpQueryBoxContainer.find('textarea');
-
-    $(document).ready(() => {
-      $followUpQueryBoxContainer.off('keydown').on('keydown', (e) => {
-        if (e.key === 'Enter' && !e.ctrlKey) {
-          e.stopPropagation();
-        }
-
-        if (e.key === 'Enter' && e.ctrlKey) {
-          if ($textarea.val().trim() === '') return e.stopPropagation();
-
-          this.injectPrompt({
-            currentQuery: $textarea.val(),
-            $selector: $textarea,
-          });
-
-          $('html, body').animate(
-            {
-              scrollTop: $(document).height(),
-            },
-            500
-          );
-        }
-      });
-    });
 
     return $selectorContainer;
   }
@@ -121,6 +75,42 @@ class QueryBox {
     }
   }
 
+  static bindPromptActivator() {
+    const $textarea = UI.findActiveQueryBoxTextarea();
+
+    $textarea.off('keydown').on('keydown', (e) => {
+      if (e.key === 'Enter' && !e.ctrlKey) {
+        e.stopPropagation();
+      }
+
+      if (e.key === 'Enter' && e.ctrlKey) {
+        if ($textarea.val().trim() === '') return e.stopPropagation();
+
+        this.injectPrompt({
+          currentQuery: $textarea.val(),
+          $selector: $textarea,
+          resetAfterInjection: false,
+        });
+      }
+    });
+
+    const $submitButton = UI.findActiveSubmitQueryButton();
+
+    $submitButton.off('click').on('click', () => {
+      this.injectPrompt({
+        currentQuery: $textarea.val(),
+        $selector: $textarea,
+      });
+
+      $('html, body').animate(
+        {
+          scrollTop: $(document).height(),
+        },
+        500
+      );
+    });
+  }
+
   static createSelectors({ $element: $targetElement, type }) {
     if (!$targetElement?.length) return;
 
@@ -128,6 +118,8 @@ class QueryBox {
       type === 'button-bar'
         ? this.preProcessButtonBarContainer($targetElement)
         : this.preProcessFollowUpQueryBoxContainer($targetElement);
+
+    this.bindPromptActivator();
 
     if (!$targetContainer?.length) return;
 
