@@ -293,5 +293,12 @@ class ThreadLayout {
         });
       },
     });
+
+    MyObserver.onElementExist({
+      selector: '[data-state="open"][data-align="center"]',
+      callback: ({ element }) => {
+        $(element).remove();
+      },
+    });
   }
 }

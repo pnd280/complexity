@@ -26,7 +26,6 @@ html.dark {
   position  : absolute;
   color     : var(--text-off);
   background: var(--background-color);
-  font-size : .8rem;
 
   display: flex;
 
@@ -47,7 +46,7 @@ html.dark {
     width           : 0;
     height          : 0;
     border          : 0.5rem solid transparent;
-    border-top-color: var(--border-color);
+    border-top-color: var(--text-off);
     bottom          : -1rem;
     left            : 50%;
     transform       : translateX(-50%);
@@ -55,7 +54,7 @@ html.dark {
 
   &.reverse-arrow::after {
     border             : 0.5rem solid transparent;
-    border-bottom-color: var(--border-color);
+    border-bottom-color: var(--text-off);
     top                : -1rem;
     left               : 50%;
     transform          : translateX(-50%);
@@ -69,8 +68,10 @@ html.dark {
 
     user-select: none;
 
+    transition: all 0.3s ease;
+
     &:hover {
-      color: var(--text-main);
+      color: var(--accent-color);
     }
 
     &:active {
