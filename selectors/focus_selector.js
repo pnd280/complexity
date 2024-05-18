@@ -172,6 +172,9 @@ class FocusSelector {
 
       const closePopover = () => UI.closeAndRemovePopover($popover);
 
+      const $activeTextarea = UI.findActiveQueryBoxTextarea();
+
+
       const $selections = modes.map((mode) =>
         addSelection({
           input: {
@@ -189,6 +192,8 @@ class FocusSelector {
                 });
               });
 
+              $activeTextarea.focus();
+              
               closePopover();
             },
           },

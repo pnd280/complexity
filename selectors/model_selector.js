@@ -189,12 +189,16 @@ class ModelSelector {
 
       const closePopover = () => UI.closeAndRemovePopover($popover);
 
+      const $activeTextarea = UI.findActiveQueryBoxTextarea();
+
       models.forEach((model) => {
         addSelection({
           input: {
             name: model.name,
             onClick: async () => {
               try {
+                $activeTextarea.focus();
+                
                 await this.setModel(model.code, isImageModel);
 
                 await this.getDefaultModels();
