@@ -8,15 +8,18 @@ import {
 import { getTabId } from './utils';
 
 export const chromeStorage = {
-  async getStorageValue(key: ChromeStoreKey) {
+  async getStorageValue<T extends ChromeStoreKey>(key: T) {
     const { [key]: value } = await chrome.storage.local.get(key);
-    return value;
+    return value as ChromeStore[T];
   },
   async setStorageValue({ key, value }: { key: ChromeStoreKey; value: any }) {
     await chrome.storage.local.set({ [key]: value });
   },
-  async getStore(): Promise<ChromeStore>{
-    return await chrome.storage.local.get() as ChromeStore;
+  async getStore(): Promise<ChromeStore> {
+    return (await chrome.storage.local.get()) as ChromeStore;
+  },
+  async setStore(store: ChromeStore) {
+    await chrome.storage.local.set(store);
   },
 };
 

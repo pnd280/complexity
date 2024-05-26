@@ -185,9 +185,6 @@ class WSHook {
         payload: { event: 'message', payload: event.data },
       });
 
-      console.log(event);
-      
-
       if (originalMessage) originalMessage.call(instance, event);
     };
 

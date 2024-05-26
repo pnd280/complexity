@@ -10,6 +10,7 @@ import {
 } from '@/types/WS';
 import { WSMessageParser } from '@/utils/ws';
 
+import { popupSettingsStore } from '../session-store/popup-settings';
 import { queryBoxStore } from '../session-store/query-box';
 import { webpageMessenger } from './messenger';
 
@@ -150,17 +151,35 @@ function alterQuery() {
 
       if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
+      if (parsedPayload.event !== 'perplexity_ask') {
+        return { match: false };
+      }
+
+      const newModelPreference = popupSettingsStore.getState().queryBoxSelectors
+        .languageModel
+        ? queryBoxStore.getState().selectedLanguageModel
+        : parsedPayload.data[1].model_preference;
+
+      const newSearchFocus = popupSettingsStore.getState().queryBoxSelectors
+        .focus
+        ? queryBoxStore.getState().webAccess.allowWebAccess
+          ? queryBoxStore.getState().webAccess.focus
+          : 'writing'
+        : parsedPayload.data[1].search_focus;
+
+      const newProSearchState = popupSettingsStore.getState().queryBoxSelectors
+        .focus
+        ? queryBoxStore.getState().webAccess.proSearch &&
+          queryBoxStore.getState().webAccess.allowWebAccess
+          ? 'copilot'
+          : 'concise'
+        : parsedPayload.data[1].mode;
+
       parsedPayload.data[1] = {
         ...parsedPayload.data[1],
-        model_preference: queryBoxStore.getState().selectedLanguageModel,
-        search_focus: queryBoxStore.getState().webAccess.allowWebAccess
-          ? queryBoxStore.getState().webAccess.focus
-          : 'writing',
-        mode:
-          queryBoxStore.getState().webAccess.proSearch &&
-          queryBoxStore.getState().webAccess.allowWebAccess
-            ? 'copilot'
-            : 'concise',
+        model_preference: newModelPreference,
+        search_focus: newSearchFocus,
+        mode: newProSearchState,
       };
 
       return {

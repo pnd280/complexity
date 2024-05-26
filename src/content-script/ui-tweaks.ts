@@ -5,6 +5,8 @@ import {
   onElementExist,
 } from '@/utils/observer';
 
+import { popupSettingsStore } from './session-store/popup-settings';
+
 function injectBaseStyles() {
   $('<link>')
     .attr({
@@ -28,6 +30,8 @@ function alterAttachButton() {
       return [];
     },
     callback({ element }) {
+      if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
+
       $(element).find('>div').removeClass('gap-xs');
       $(element).find('>div>div').addClass('hidden');
     },

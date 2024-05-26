@@ -1,6 +1,9 @@
 import $ from 'jquery';
 
 import {
+  popupSettingsStore,
+} from '@/content-script/session-store/popup-settings';
+import {
   onAttributeChanges,
   onElementExist,
 } from '@/utils/observer';
@@ -15,24 +18,30 @@ type UseQueryBoxObserverProps = {
   setContainers: (containers: Element) => void;
   setFollowUpContainers: (containers: Element) => void;
   refetchModels: () => void;
+  disabled?: boolean;
 };
 
 export default function useQueryBoxObserver({
   setContainers,
   setFollowUpContainers,
   refetchModels,
+  disabled,
 }: UseQueryBoxObserverProps) {
   useElementObserver({
     selector: () =>
       $('textarea[placeholder="Ask anything..."]').next().toArray(),
     callback: ({ element }) => {
+      if (disabled) return;
+
       $(element).addClass('tw-col-span-2 tw-flex-wrap');
 
       const $buttonBarChildren = $(element).children(
         ':not(.mr-xs.flex.shrink-0.items-center)'
       );
 
-      $buttonBarChildren.first().addClass('hidden');
+      if (popupSettingsStore.getState().queryBoxSelectors.focus) {
+        $buttonBarChildren.first().addClass('hidden');
+      }
 
       setContainers(element);
       refetchModels();
@@ -46,6 +55,8 @@ export default function useQueryBoxObserver({
     ],
     callback: ({ element }) => {
       if (whereAmI() !== 'thread') return;
+
+      if (disabled) return;
 
       const $followUpQueryBoxContainer = $(element);
 
@@ -146,6 +157,8 @@ export default function useQueryBoxObserver({
     selector:
       '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer',
     callback: ({ element }) => {
+      if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
+
       $(element).addClass('tw-hidden');
     },
     observedIdentifier: 'hide-native-pro-search-switch',

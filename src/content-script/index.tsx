@@ -3,6 +3,7 @@ import '@/content-script/webpage/ws-hook';
 
 import $ from 'jquery';
 
+import { chromeStorage } from '@/utils/chrome-store';
 import { sleep } from '@/utils/utils';
 
 import Root from './Root';
@@ -26,6 +27,18 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   // webpageMessageInterceptors.inspectLongPollingEvents();
 
   uiTweaks.alterAttachButton();
+
+  // chrome.storage.onChanged.addListener((changes, areaName) => {
+  //   if (areaName === 'local') {
+  //     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+  //       console.log(`Storage key "${key}" in "local" changed.`);
+  //       console.log(`Old value: `, oldValue);
+  //       console.log(`New value: `, newValue);
+  //     }
+  //   }
+  // });
+
+  console.log(await chromeStorage.getStorageValue('popupSettings'));
 })();
 
 async function init() {

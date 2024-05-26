@@ -10,6 +10,13 @@ export type ChromeStore = {
   defaultFocus: Nullable<WebAccessFocus['code']>;
   defaultCollectionUUID?: Nullable<string>;
   defaultWebAccess: boolean;
+  popupSettings: {
+    queryBoxSelectors: {
+      focus: boolean;
+      languageModel: boolean;
+      imageGenModel: boolean;
+    };
+  }
 } & {
   [key: `sessionStore-${number}`]: ChromeSessionStore;
 };

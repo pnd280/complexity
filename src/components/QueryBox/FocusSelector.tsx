@@ -236,7 +236,6 @@ export default function FocusSelector() {
                   })}
                   onContextMenu={(e) => {
                     e.preventDefault();
-                    console.log(1);
                   }}
                 >
                   <div className="tw-flex tw-items-center tw-justify-around gap-2">
@@ -253,6 +252,7 @@ export default function FocusSelector() {
             <SelectLabel className="tw-p-2">
               <LabeledSwitch
                 label="Pro search"
+                id="pro-search"
                 onCheckedChange={(checked) => {
                   toggleProSearch(checked);
 

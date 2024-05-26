@@ -4,6 +4,9 @@ import {
 } from 'react';
 import ReactDOM from 'react-dom';
 
+import {
+  usePopupSettingsStore,
+} from '@/content-script/session-store/popup-settings';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
 import { UserSettingsApiResponse } from '@/types/PPLXApi';
 import { fetchResource } from '@/utils/utils';
@@ -29,9 +32,7 @@ export default function QueryBox() {
     setImageCreateLimit,
   } = useQueryBoxStore((state) => state);
 
-  const {
-    toggleProSearch,
-  } = useQueryBoxStore((state) => state.webAccess);
+  const { toggleProSearch } = useQueryBoxStore((state) => state.webAccess);
 
   useEffect(() => {
     if (data) {
@@ -46,6 +47,10 @@ export default function QueryBox() {
     }
   }, [data]);
 
+  const { focus, imageGenModel, languageModel } = usePopupSettingsStore(
+    (state) => state.queryBoxSelectors
+  );
+
   const [containers, setContainers] = useState<Element[]>([]);
   const [followUpContainers, setFollowUpContainers] = useState<Element[]>([]);
 
@@ -55,21 +60,28 @@ export default function QueryBox() {
     setFollowUpContainers: (newContainer) =>
       setFollowUpContainers([...followUpContainers, newContainer]),
     refetchModels: refetch,
+    disabled: !focus && !imageGenModel && !languageModel,
   });
 
   if (!data || isLoading) return null;
 
   const selectors = (
     <>
-      <FocusSelector />
-      <div className="tw-h-8 tw-flex tw-items-center tw-my-auto">
-        <Separator
-          orientation="vertical"
-          className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-zoom-in"
-        />
-      </div>
-      <LanguageModelSelector />
-      <ImageModelSelector />
+      {focus && (
+        <>
+          <FocusSelector />
+          {(languageModel || imageGenModel) && (
+            <div className="tw-h-8 tw-flex tw-items-center tw-my-auto">
+              <Separator
+                orientation="vertical"
+                className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-zoom-in"
+              />
+            </div>
+          )}
+        </>
+      )}
+      {languageModel && <LanguageModelSelector />}
+      {imageGenModel && <ImageModelSelector />}
     </>
   );
 
