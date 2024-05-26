@@ -1,0 +1,194 @@
+html:has(body[data-scroll-locked].bg-transparent) {
+  overflow: hidden !important;
+}
+
+body[data-scroll-locked].bg-transparent {
+  --removed-body-scroll-bar-size: 0 !important;
+  margin-right                  : 0 !important;
+  overflow                      : visible !important;
+  pointer-events                : auto !important;
+}
+
+/* Fonts */
+.font-sans,
+.font-display {
+  --font-fk-grotesk     : var(--ui-font);
+  --font-fk-grotesk-neue: var(--ui-font);
+}
+
+code {
+  font-family: var(--mono-font) !important;
+}
+
+/* Text */
+.data-\[state\=checked\]\:dark\:before\:\!bg-superDark[data-state='checked']:before,
+.dark .data-\[state\=checked\]\:dark\:before\:\!bg-superDark[data-state='checked']:before {
+  background-color: var(--accent-foreground) !important;
+}
+
+.prose :where(code):not(:where([class~='not-prose'] *))::before,
+.prose :where(code):not(:where([class~='not-prose'] *))::after {
+  content: '';
+}
+
+.prose :where(code):not(:where([class~='not-prose'] *)) {
+  color           : var(--accent-foreground) !important;
+  background-color: var(--secondary);
+  padding         : 0.1rem 0.3125rem;
+  border-radius   : 0.375rem;
+}
+
+.citation>div>span>div {
+  background-color: var(--accent-foreground) !important;
+  color           : white !important;
+  border-radius   : 0.375rem !important;
+}
+
+.citation>div>span>div:not(:hover) {
+  opacity: 0.5;
+}
+
+strong,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--accent-foreground) !important;
+}
+
+th {
+  border: 1px solid rgb(56 56 58 / var(--tw-border-opacity)) !important;
+  color : white !important;
+}
+
+.pb-\[124px\].pt-md.md\:pt-0>div>div:nth-child(1)>div>div>div:last-child {
+  border-color: var(--ring-darker) !important;
+}
+
+
+/* Background */
+html,
+html.dark,
+:is(.dark .dark\:bg-backgroundDark) {
+  background-color: var(--background) !important;
+}
+
+/* Side Navigation */
+:is(.dark .dark\:bg-offsetDark),
+:is(.dark .dark\:\!bg-offsetDark),
+:is(.dark .dark\:focus\:bg-offsetDark:focus),
+:is(.dark .md\:dark\:hover\:bg-offsetDark:hover) {
+  background-color: var(--secondary);
+}
+
+.hebEKa,
+.gnFpAY {
+  background-color: var(--secondary) !important;
+}
+
+.group:hover .group-hover\:\!bg-super {
+  background-color: var(--accent-foreground) !important;
+}
+
+.selection\:bg-superDuper::selection,
+.selection\:text-textMain ::selection,
+.dark .dark\:selection\:text-super ::selection {
+  background-color: var(--secondary) !important;
+  color           : var(--accent-foreground) !important;
+}
+
+.fill-super,
+.group:hover .group-hover\:fill-superDuper,
+:is(.dark .dark\:fill-superDark) {
+  fill: var(--accent-foreground);
+}
+
+.caret-superDuper {
+  caret-color: var(--accent-foreground);
+}
+
+.stroke-super,
+.group:hover .group-hover\:stroke-superDuper,
+:is(.dark .dark\:stroke-superDark),
+:is(.dark .dark\:stroke-textMainDark) {
+  stroke: var(--accent-foreground);
+}
+
+:is(.dark .dark\:outline-superDark) {
+  outline-color: var(--accent-foreground);
+}
+
+.dark .dark\:hover\:ring-superDark:hover,
+.hover\:\!ring-super:hover,
+.hover\:ring-super:hover,
+:is(.dark .dark\:focus\:ring-borderMainDark:focus),
+.dark .dark\:ring-superDark,
+.ring-super {
+  --tw-ring-color: var(--accent-foreground) !important;
+}
+
+.\!bg-textMain .text-textMain path {
+  color           : var(--accent-foreground) !important;
+  background-color: var(--accent-foreground) !important;
+}
+
+html.dark .dark\:text-textMainDark {
+  color: var(--text-main) !important;
+}
+
+html.dark .dark\:\!text-backgroundDark {
+  color: var(--text-main) !important;
+
+  & {
+    color: var(--accent-foreground) !important;
+  }
+}
+
+.ring-2 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.bg-super,
+.md\:hover\:bg-super:hover,
+:is(.dark .dark\:bg-textMainDark),
+:is(.dark .dark\:bg-superDark) {
+  background-color: var(--accent-foreground);
+  color           : white;
+}
+
+.text-super,
+.group:hover .md\:group-hover\:text-super,
+.prose :where(a):not(:where([class~='not-prose'] *)),
+:is(.dark .dark\:md\:hover\:text-textMainDark:hover),
+.selection\:text-textMain::selection,
+.selection\:bg-superDuper ::selection {
+  color: var(--accent-foreground) !important;
+}
+
+.selection\:text-textMain::selection,
+.selection\:bg-superDuper ::selection {
+  color           : var(--accent-foreground) !important;
+  background-color: var(--background) !important;
+}
+
+.mb-sm.flex.w-full.items-center.justify-between svg {
+  color: var(--accent-foreground);
+}
+
+
+
+/* Opiniated styles */
+.pro-search {
+
+  & .items-center.grid-rows-1fr-auto.grid.grid-cols-3.w-full.outline-none.focus\:outline-none.focus\:ring-borderMain,
+  & #query-box-follow-up-container~* .grow.block>*>* {
+    transition    : all 0.15s ease-in-out;
+    outline       : 1px solid var(--accent-foreground);
+    outline-offset: 0px;
+
+    &:has(textarea:focus) {
+      box-shadow: 0 0 5px 0 var(--accent-foreground-darker);
+    }
+  }
+}

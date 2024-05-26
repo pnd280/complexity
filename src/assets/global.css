@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fcfcf9;
+    --foreground: #13343B;
+
+    --card           : #fcfcf9;
+    --card-foreground: #13343B;
+
+    --popover           : #fcfcf9;
+    --popover-foreground: #13343B;
+
+    --primary           : #13343B;
+    --primary-foreground: #e8e8e6;
+
+    --secondary           : #e8e8e3;
+    --secondary-foreground: #13343B;
+
+    --muted           : #e8e8e3;
+    --muted-foreground: #64645f;
+
+    --accent                : #e8e8e3;
+    --accent-foreground     : #13343B;
+    --accent-foreground-darker: #13343b80;
+
+    --destructive           : #ef4444;
+    --destructive-foreground: #e8e8e6;
+
+    --border       : #e5e5e5;
+    --border-darker: #e5e5e580;
+    --input        : #e5e5e5;
+    --ring         : #13343b;
+    --ring-darker  : #13343b80;
+
+    --radius: 0.5rem;
+
+    --ui-font  : 'Karla', sans-serif;
+    --mono-font: 'JetBrains Mono NL', monospace;
+  }
+
+  .dark {
+    --background: #181818;
+    --foreground: #e8e8e6;
+
+    --card           : #181818;
+    --card-foreground: #e8e8e6;
+
+    --popover           : #181818;
+    --popover-foreground: #e8e8e6;
+
+    --primary           : #e8e8e6;
+    --primary-foreground: #181818;
+
+    --secondary           : #1f1f1f;
+    --secondary-foreground: #e8e8e6;
+
+    --muted           : #3d3f40;
+    --muted-foreground: #8d9191;
+
+    --accent                : #2d2f2f;
+    --accent-foreground     : #72aefd;
+    --accent-foreground-darker: #72aefd80;
+
+    --destructive           : #7f1d1d;
+    --destructive-foreground: #e8e8e6;
+
+    --border       : #3d3f40;
+    --border-darker: rgba(61, 63, 64, .5);
+    --input        : #3d3f40;
+    --ring         : #72aefd;
+    --ring-darker  : #72aefd80;
+  }
+}
+
+@layer base {
+  * {
+    @apply !tw-border-border-darker;
+  }
+
+  body {
+    @apply tw-bg-background tw-text-foreground !important;
+  }
+}
+
+.reduced-motion .tw-animate-in {
+  animation: none !important;
+}
