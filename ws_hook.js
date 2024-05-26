@@ -9,7 +9,7 @@ class WSHook {
     this.#registeredInterceptingMessages.push(message);
   }
 
-  getInterceptedMessages() {
+  getInterceptingMessages() {
     return this.#registeredInterceptingMessages;
   }
 
@@ -64,6 +64,8 @@ class WSHook {
   }
 
   registerMessageEvents() {
+    if (this.getInterceptingMessages().length) return;
+
     if (!this.getActiveSocket()) return;
 
     [
@@ -155,7 +157,7 @@ class WSHook {
 
     let interceptedData = [...data];
 
-    for (const message of this.getInterceptedMessages()) {
+    for (const message of this.getInterceptingMessages()) {
       const { interceptedEvent, interceptedCallback } = message;
 
       if (interceptedEvent !== event) continue;
@@ -200,15 +202,17 @@ class WSHook {
 
       if (!interceptedData) return;
 
+      const args = [...arguments];
+
       if (Array.isArray(interceptedData)) {
         interceptedData.forEach((element, index) => {
-          arguments[index] = element;
+          args[index] = element;
         });
       } else {
-        arguments[0] = interceptedData;
+        args[0] = interceptedData;
       }
 
-      return originalSend.apply(this, arguments);
+      return originalSend.apply(this, args);
     };
 
     const originalAddEventListener = WebSocket.prototype.addEventListener;
@@ -302,7 +306,7 @@ class WSHook {
           if (this.readyState === 4) {
             captureLongPollingSocket(this);
 
-            Logger.log('Polling response:', this.responseText);
+            console.log('Polling response:', this.responseText);
           }
         },
         false
@@ -325,7 +329,7 @@ class WSHook {
       } catch (error) {
         // do nothing
       } finally {
-        Logger.log('Polling request:', newData);
+        console.log('Polling request:', newData);
         originalXMLHttpRequestSend.call(this, newData);
       }
     };

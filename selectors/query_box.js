@@ -80,7 +80,7 @@ class QueryBox {
 
     $textarea.off('keydown').on('keydown', (e) => {
       if (e.key === 'Enter' && !e.ctrlKey) {
-        e.stopPropagation();
+        return e.stopPropagation();
       }
 
       if (e.key === 'Enter' && e.ctrlKey) {
@@ -91,6 +91,13 @@ class QueryBox {
           $selector: $textarea,
           resetAfterInjection: false,
         });
+
+        $('html, body').animate(
+          {
+            scrollTop: $(document).height(),
+          },
+          500
+        );
       }
     });
 
@@ -101,13 +108,6 @@ class QueryBox {
         currentQuery: $textarea.val(),
         $selector: $textarea,
       });
-
-      $('html, body').animate(
-        {
-          scrollTop: $(document).height(),
-        },
-        500
-      );
     });
   }
 
@@ -201,6 +201,8 @@ class QueryBox {
         $('textarea[placeholder="Ask follow-up"]').parents().eq(6)[0],
       ],
       callback: ({ element }) => {
+        if (Utils.whereAmI() === 'page') return;
+
         this.createSelectors({
           $element: $(element),
           type: 'follow-up-querybox',
@@ -211,6 +213,8 @@ class QueryBox {
     MyObserver.onElementExist({
       selector: '.pointer-events-auto .mb-2.flex.justify-center',
       callback: () => {
+        if (Utils.whereAmI() === 'page') return;
+
         const $querybox = $('textarea[placeholder="Ask follow-up"]')
           .parents()
           .eq(6);

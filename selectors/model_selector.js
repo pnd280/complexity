@@ -111,9 +111,10 @@ class ModelSelector {
       { name: 'GPT-4 Turbo', dropdownTitle: 'GPT-4', code: 'gpt4' },
       { name: 'Claude 3 Opus', dropdownTitle: 'Opus', code: 'claude3opus' },
       { name: 'Claude 3 Sonnet', dropdownTitle: 'Sonnet', code: 'claude2' },
+      { name: 'Claude 3 Haiku', dropdownTitle: 'Haiku', code: 'turbo' },
       { name: 'Sonar Large 32K', dropdownTitle: 'Sonar', code: 'experimental' },
       { name: 'Mistral Large', dropdownTitle: 'Mistral', code: 'mistral' },
-      { name: 'Default', code: 'turbo' },
+      { name: 'Gemini', dropdownTitle: 'Gemini', code: 'gemini' },
     ];
   }
 
@@ -198,7 +199,7 @@ class ModelSelector {
             onClick: async () => {
               try {
                 $activeTextarea.focus();
-                
+
                 await this.setModel(model.code, isImageModel);
 
                 await this.getDefaultModels();

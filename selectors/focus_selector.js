@@ -13,6 +13,11 @@ class FocusSelector {
         svgIcon: 'pencil',
       },
       {
+        name: 'Wikipedia',
+        code: 'wikipedia',
+        svgIcon: 'globe',
+      },
+      {
         name: 'Academic',
         code: 'scholar',
         svgIcon: 'books',

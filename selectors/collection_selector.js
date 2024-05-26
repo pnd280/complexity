@@ -88,7 +88,7 @@ class CollectionSelector {
                 description: 'Instructions for the AI to follow',
                 value: instructions,
                 type: 'textarea',
-                limit: 2000,
+                limit: 20000,
               },
             ],
             footerButtons: [

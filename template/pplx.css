@@ -4,8 +4,8 @@
   --mono-font          : 'JetBrains Mono NL';
   --background-color   : #fcfcf9;
   --sidebar-color      : #f3f3ee;
-  --accent-color       : #007aff;
-  --accent-color-darker: rgb(0 122 255 / 50%);
+  --accent-color       : rgb(114, 174, 253);
+  --accent-color-darker: rgba(114, 174, 253, 0.5);
   --secondary-color    : var(--accent-color);
   --text-main          : #13343b;
   --text-off           : #64645f;

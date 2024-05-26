@@ -37,7 +37,7 @@ class ThreadLayout {
         input: {
           name: 'View all threads',
           onClick: () => {
-            window.location.href = $collectionButton.attr('href');
+            unsafeWindow.next.router.push($collectionButton.attr('href'));
           },
         },
       });
@@ -175,7 +175,9 @@ class ThreadLayout {
         : name
       : 'Anonymous';
 
-    $cloned.find('div[color="super"]').children().last().text(displayName);
+    $cloned.find('div[color="super"]').children().last().text(displayName).css({
+      marginLeft: '.8rem',
+    })
 
     $cloned.addClass('fade-in animate-in duration-300');
 
@@ -186,10 +188,14 @@ class ThreadLayout {
 
       $cloned
         .find('#user-icon')
-        .css('width', '24px')
-        .css('height', '24px')
+        .css({
+          width: '24px',
+          height: '24px',
+        })
         .parent()
-        .css('width', '24px');
+        .css({
+          width: '24px',
+        });
     } else {
       $cloned
         .find('svg')
@@ -204,7 +210,9 @@ class ThreadLayout {
         .addClass('overflow-hidden')
         .parent()
         .removeClass('overflow-hidden')
-        .css('width', '24px');
+        .css({
+          width: '24px',
+        });
     }
   }
 

@@ -37,6 +37,8 @@ class Utils {
         return 'thread';
       case location.startsWith('https://labs.perplexity.ai/'):
         return 'lab';
+      case location.startsWith('https://www.perplexity.ai/page'):
+        return 'page';
     }
   }
 
@@ -330,7 +332,7 @@ class MyObserver {
 }
 
 class Logger {
-  static #enable = true;
+  static #enable = false;
 
   static log(...args) {
     if (this.#enable) console.log(...args);

@@ -5,10 +5,13 @@
 
   await Promise.all([
     softCheckForUpdates(),
-    Utils.whereAmI() !== 'lab' && hookSocket(),
+    hookSocket(),
   ]);
 
   UITweaks.setAccentColor('#72AEFD');
+
+  if (Utils.whereAmI() === 'lab') return;
+
   UITweaks.alterSloganHeading('Chatplexity');
   UITweaks.closePopoversOnScroll();
   Utils.increaseScrollSpeed(5);
