@@ -31,7 +31,7 @@ module.exports = {
         },
         secondary: {
           DEFAULT: 'var(--secondary)',
-          foreground: 'var(--secondary-foregrounpnd)',
+          foreground: 'var(--secondary-foreground)',
         },
         destructive: {
           DEFAULT: 'var(--destructive)',
