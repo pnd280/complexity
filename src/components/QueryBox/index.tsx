@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import ReactDOM from 'react-dom';
@@ -19,6 +20,8 @@ import ImageModelSelector, { ImageModel } from './ImageModelSelector';
 import LanguageModelSelector, { LanguageModel } from './LanguageModelSelector';
 
 export default function QueryBox() {
+  const isDefaultsInitialized = useRef(false);
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['userSettings'],
     queryFn: fetchUserSettings,
@@ -36,14 +39,19 @@ export default function QueryBox() {
 
   useEffect(() => {
     if (data) {
-      setSelectedLanguageModel(data.default_model as LanguageModel['code']);
-      setSelectedImageModel(
-        data.default_image_generation_model as ImageModel['code']
-      );
+      if (!isDefaultsInitialized.current) {
+        setSelectedLanguageModel(data.default_model as LanguageModel['code']);
+        setSelectedImageModel(
+          data.default_image_generation_model as ImageModel['code']
+        );
+        toggleProSearch(data.default_copilot);
+
+        isDefaultsInitialized.current = true;
+      }
+
       setQueryLimit(data.gpt4_limit);
       setOpusLimit(data.opus_limit);
       setImageCreateLimit(data.create_limit);
-      toggleProSearch(data.default_copilot);
     }
   }, [data]);
 
