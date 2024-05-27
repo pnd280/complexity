@@ -159,7 +159,7 @@ export default function useQueryBoxObserver({
     callback: ({ element }) => {
       if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
 
-      $(element).addClass('tw-hidden');
+      $(element).addClass('!tw-hidden');
     },
     observedIdentifier: 'hide-native-pro-search-switch',
   });

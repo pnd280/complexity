@@ -18,6 +18,8 @@
 .env.production.local
 .history
 *.log
+*.crx
+*.pem
 
 # secrets
 secrets.*.js
