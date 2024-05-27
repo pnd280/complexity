@@ -35,7 +35,8 @@ export default function QueryBox() {
     setImageCreateLimit,
   } = useQueryBoxStore((state) => state);
 
-  const { toggleProSearch } = useQueryBoxStore((state) => state.webAccess);
+  const { toggleProSearch, toggleWebAccess, allowWebAccess, proSearch } =
+    useQueryBoxStore((state) => state.webAccess);
 
   useEffect(() => {
     if (data) {
@@ -70,6 +71,28 @@ export default function QueryBox() {
     refetchModels: refetch,
     disabled: !focus && !imageGenModel && !languageModel,
   });
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.altKey && e.key === '.') {
+        e.preventDefault();
+        toggleWebAccess();
+      }
+
+      if (e.ctrlKey && e.key === '.') {
+        e.preventDefault();
+        toggleProSearch();
+
+        !proSearch && !allowWebAccess && toggleWebAccess(true);
+      }
+    };
+
+    document.addEventListener('keydown', down);
+
+    return () => {
+      document.removeEventListener('keydown', down);
+    };
+  }, []);
 
   if (!data || isLoading) return null;
 

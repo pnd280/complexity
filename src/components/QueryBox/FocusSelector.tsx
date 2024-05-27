@@ -118,27 +118,9 @@ export default function FocusSelector() {
     } else {
       $('body').removeClass('pro-search');
     }
+
+    // proSearch && toggleWebAccess(true);
   }, [allowWebAccess, proSearch]);
-
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.altKey && e.key === '.') {
-        e.preventDefault();
-        toggleWebAccess();
-      }
-
-      if (e.ctrlKey && e.key === '.') {
-        e.preventDefault();
-        toggleProSearch();
-      }
-    };
-
-    document.addEventListener('keydown', down);
-
-    return () => {
-      document.removeEventListener('keydown', down);
-    };
-  }, []);
 
   const saveProSearchState = async (checked: boolean) => {
     try {
