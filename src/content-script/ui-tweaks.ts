@@ -16,13 +16,6 @@ function injectBaseStyles() {
       id: 'complexity-base-styles',
     })
     .appendTo('head');
-
-  $('<link>')
-    .attr({
-      href: 'https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap',
-      rel: 'stylesheet',
-    })
-    .appendTo('head');
 }
 
 function alterAttachButton() {

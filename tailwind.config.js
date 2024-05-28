@@ -12,8 +12,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: 'var(--ui-font), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-      mono: 'var(--mono-font), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+      sans: 'var(--ui-font)',
+      mono: 'var(--mono-font)',
     },
     extend: {
       colors: {
