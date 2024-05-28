@@ -9,22 +9,36 @@ import {
   usePopupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
-import { UserSettingsApiResponse } from '@/types/PPLXApi';
-import { fetchResource } from '@/utils/utils';
+import pplxApi from '@/utils/pplx-api';
 import { useQuery } from '@tanstack/react-query';
 
 import useQueryBoxObserver from '../hooks/useQueryBoxObserver';
 import { Separator } from '../ui/separator';
+import CollectionSelector from './CollectionSelector';
 import FocusSelector from './FocusSelector';
 import ImageModelSelector, { ImageModel } from './ImageModelSelector';
 import LanguageModelSelector, { LanguageModel } from './LanguageModelSelector';
 
 export default function QueryBox() {
-  const isDefaultsInitialized = useRef(false);
+  const isDefaultsInitialized = useRef({
+    userSettings: false,
+    collections: false,
+  });
 
-  const { data, isLoading, refetch } = useQuery({
+  const {
+    data: userSettings,
+    isLoading,
+    refetch: refetchUserSettings,
+  } = useQuery({
     queryKey: ['userSettings'],
-    queryFn: fetchUserSettings,
+    queryFn: pplxApi.fetchUserSettings,
+  });
+
+  const { refetch: refetchCollections } = useQuery({
+    queryKey: ['collections'],
+    queryFn: pplxApi.fetchCollections,
+    enabled: false,
+    initialData: [],
   });
 
   const {
@@ -39,26 +53,27 @@ export default function QueryBox() {
     useQueryBoxStore((state) => state.webAccess);
 
   useEffect(() => {
-    if (data) {
-      if (!isDefaultsInitialized.current) {
-        setSelectedLanguageModel(data.default_model as LanguageModel['code']);
-        setSelectedImageModel(
-          data.default_image_generation_model as ImageModel['code']
+    if (userSettings) {
+      if (!isDefaultsInitialized.current.userSettings) {
+        setSelectedLanguageModel(
+          userSettings.default_model as LanguageModel['code']
         );
-        toggleProSearch(data.default_copilot);
+        setSelectedImageModel(
+          userSettings.default_image_generation_model as ImageModel['code']
+        );
+        toggleProSearch(userSettings.default_copilot);
 
-        isDefaultsInitialized.current = true;
+        isDefaultsInitialized.current.userSettings = true;
       }
 
-      setQueryLimit(data.gpt4_limit);
-      setOpusLimit(data.opus_limit);
-      setImageCreateLimit(data.create_limit);
+      setQueryLimit(userSettings.gpt4_limit);
+      setOpusLimit(userSettings.opus_limit);
+      setImageCreateLimit(userSettings.create_limit);
     }
-  }, [data]);
+  }, [userSettings]);
 
-  const { focus, imageGenModel, languageModel } = usePopupSettingsStore(
-    (state) => state.queryBoxSelectors
-  );
+  const { focus, imageGenModel, languageModel, collection } =
+    usePopupSettingsStore((state) => state.queryBoxSelectors);
 
   const [containers, setContainers] = useState<Element[]>([]);
   const [followUpContainers, setFollowUpContainers] = useState<Element[]>([]);
@@ -68,8 +83,9 @@ export default function QueryBox() {
       setContainers([...containers, newContainer]),
     setFollowUpContainers: (newContainer) =>
       setFollowUpContainers([...followUpContainers, newContainer]),
-    refetchModels: refetch,
-    disabled: !focus && !imageGenModel && !languageModel,
+    refetchUserSettings,
+    refetchCollections,
+    disabled: !focus && !languageModel && !imageGenModel && !collection,
   });
 
   useEffect(() => {
@@ -94,26 +110,26 @@ export default function QueryBox() {
     };
   }, []);
 
-  if (!data || isLoading) return null;
+  if (!userSettings || isLoading) return null;
 
   const selectors = (
-    <>
-      {focus && (
-        <>
-          <FocusSelector />
-          {(languageModel || imageGenModel) && (
-            <div className="tw-h-8 tw-flex tw-items-center tw-my-auto">
-              <Separator
-                orientation="vertical"
-                className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-zoom-in"
-              />
-            </div>
-          )}
-        </>
-      )}
-      {languageModel && <LanguageModelSelector />}
-      {imageGenModel && <ImageModelSelector />}
-    </>
+    <CommonSelectors
+      focus={focus}
+      collection={collection}
+      languageModel={languageModel}
+      imageGenModel={imageGenModel}
+      includeCollection={true}
+    />
+  );
+
+  const followUpSelectors = (
+    <CommonSelectors
+      focus={focus}
+      collection={collection}
+      languageModel={languageModel}
+      imageGenModel={imageGenModel}
+      includeCollection={false}
+    />
   );
 
   return (
@@ -122,18 +138,43 @@ export default function QueryBox() {
         ReactDOM.createPortal(selectors, container)
       )}
       {followUpContainers.map((container) =>
-        ReactDOM.createPortal(selectors, container)
+        ReactDOM.createPortal(followUpSelectors, container)
       )}
     </>
   );
 }
 
-async function fetchUserSettings(): Promise<UserSettingsApiResponse> {
-  const resp = fetchResource(
-    'https://www.perplexity.ai/p/api/v1/user/settings'
-  );
-
-  const data = await resp;
-
-  return JSON.parse(data);
-}
+const CommonSelectors = ({
+  focus,
+  collection,
+  languageModel,
+  imageGenModel,
+  includeCollection,
+}: {
+  focus: boolean;
+  collection: boolean;
+  languageModel: boolean;
+  imageGenModel: boolean;
+  includeCollection: boolean;
+}) => (
+  <>
+    {(focus || (includeCollection && collection)) && (
+      <>
+        {focus && <FocusSelector />}
+        {includeCollection && collection && <CollectionSelector />}
+        {(languageModel || imageGenModel) && (
+          <>
+            <div className="tw-h-8 tw-flex tw-items-center tw-my-auto">
+              <Separator
+                orientation="vertical"
+                className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-zoom-in"
+              />
+            </div>
+          </>
+        )}
+      </>
+    )}
+    {languageModel && <LanguageModelSelector />}
+    {imageGenModel && <ImageModelSelector />}
+  </>
+);

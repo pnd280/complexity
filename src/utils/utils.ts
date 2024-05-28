@@ -46,6 +46,34 @@ export const jsonUtils = {
   },
 };
 
+export function detectConsecutiveClicks(params: {
+  element: Element;
+  requiredClicks: number;
+  clickInterval: number;
+  callback: () => void;
+}): void {
+  let clickCount = 0;
+  let clickTimer: number | undefined;
+
+  $(params.element).off('click').on('click', () => {
+    clickCount++;
+
+    if (clickCount === 1) {
+      clickTimer = window.setTimeout(() => {
+        clickCount = 0;
+      }, params.clickInterval);
+    }
+
+    if (clickCount === params.requiredClicks) {
+      if (clickTimer !== undefined) {
+        clearTimeout(clickTimer);
+      }
+      clickCount = 0;
+      params.callback();
+    }
+  });
+}
+
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -103,3 +131,17 @@ export const ui = {
       .find('textarea[placeholder]:last');
   },
 };
+
+export async function getPPLXBuildId() {
+  const NEXTDATA = await getNEXTDATA();
+
+  return NEXTDATA.buildId;
+}
+
+export async function getNEXTDATA() {
+  while (!$('script#__NEXT_DATA__').text().includes('"buildId":')) {
+    await sleep(100);
+  }
+
+  return jsonUtils.safeParse($('script#__NEXT_DATA__').text());
+}

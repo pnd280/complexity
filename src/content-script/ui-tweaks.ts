@@ -37,7 +37,7 @@ function alterAttachButton() {
       return [];
     },
     callback({ element }) {
-      if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
+      if (!popupSettingsStore.getState().queryBoxSelectors.focus && !popupSettingsStore.getState().queryBoxSelectors.collection) return;
 
       $(element).find('>div').removeClass('gap-xs');
       $(element).find('>div>div').addClass('hidden');

@@ -28,4 +28,13 @@ export type UserSettingsApiResponse = {
   subscription_status: string;
   subscription_tier: string;
   upload_limit: number;
-}
+};
+
+export type CollectionsAPIResponse = {
+  title: string;
+  uuid: string;
+  instructions: string;
+  slug: string;
+  description: string;
+  access: 1 | 2;
+}[];

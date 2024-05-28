@@ -57,7 +57,7 @@ export default function ModelSelector<T extends ModelItem>({
         >
           <SelectTrigger
             variant="ghost"
-            className="tw-font-medium !tw-py-0 tw-flex tw-justify-center tw-items-center gap-1 !tw-w-fit tw-max-w-[150px] tw-select-none active:!tw-scale-95 [&_span]:tw-max-w-[100px] !tw-px-2 tw-animate-in tw-zoom-in tw-transition-all tw-duration-300"
+            className="tw-font-medium !tw-py-0 tw-flex tw-justify-center tw-items-center tw-gap-2 !tw-w-fit tw-max-w-[150px] tw-select-none active:!tw-scale-95 [&_span]:tw-max-w-[100px] !tw-px-2 tw-animate-in tw-zoom-in tw-transition-all tw-duration-300"
           >
             {type === 'language' ? (
               <Cpu className="tw-w-4 tw-h-4" />

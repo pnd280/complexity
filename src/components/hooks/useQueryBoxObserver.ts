@@ -3,10 +3,7 @@ import $ from 'jquery';
 import {
   popupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
-import {
-  onAttributeChanges,
-  onElementExist,
-} from '@/utils/observer';
+import { onAttributeChanges } from '@/utils/observer';
 import {
   sleep,
   whereAmI,
@@ -17,14 +14,16 @@ import useElementObserver from './useElementObserver';
 type UseQueryBoxObserverProps = {
   setContainers: (containers: Element) => void;
   setFollowUpContainers: (containers: Element) => void;
-  refetchModels: () => void;
+  refetchUserSettings: () => void;
+  refetchCollections: () => void;
   disabled?: boolean;
 };
 
 export default function useQueryBoxObserver({
   setContainers,
   setFollowUpContainers,
-  refetchModels,
+  refetchUserSettings,
+  refetchCollections,
   disabled,
 }: UseQueryBoxObserverProps) {
   useElementObserver({
@@ -33,7 +32,7 @@ export default function useQueryBoxObserver({
     callback: ({ element }) => {
       if (disabled) return;
 
-      $(element).addClass('tw-col-span-2 tw-flex-wrap');
+      $(element).addClass('tw-col-span-2');
 
       const $buttonBarChildren = $(element).children(
         ':not(.mr-xs.flex.shrink-0.items-center)'
@@ -44,7 +43,8 @@ export default function useQueryBoxObserver({
       }
 
       setContainers(element);
-      refetchModels();
+      refetchUserSettings();
+      refetchCollections();
     },
     observedIdentifier: 'model-selectors',
   });
@@ -92,7 +92,8 @@ export default function useQueryBoxObserver({
 
       setFollowUpContainers($selectorContainer[0]);
 
-      refetchModels();
+      refetchUserSettings();
+      refetchCollections();
     },
     observedIdentifier: 'model-selectors',
   });

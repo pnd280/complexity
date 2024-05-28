@@ -39,8 +39,8 @@
 
     --radius: 0.5rem;
 
-    --ui-font  : 'Karla', sans-serif;
-    --mono-font: 'JetBrains Mono NL', monospace;
+    --ui-font  : 'Karla';
+    --mono-font: 'JetBrains Mono NL';
   }
 
   .dark {

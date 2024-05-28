@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
+import { Collection } from '@/components/QueryBox/CollectionSelector';
 import {
   isValidFocus,
   WebAccessFocus,
@@ -31,6 +32,11 @@ type QueryBoxState = {
     proSearch: boolean;
     toggleProSearch: (toggled?: boolean) => void;
   };
+
+  selectedCollectionUuid: Collection['uuid'];
+  setSelectedCollectionUuid: (
+    selectedCollectionUuid: Collection['uuid']
+  ) => void;
 };
 
 const useQueryBoxStore = create<QueryBoxState>()(
@@ -71,6 +77,10 @@ const useQueryBoxStore = create<QueryBoxState>()(
           },
         })),
     },
+
+    selectedCollectionUuid: '',
+    setSelectedCollectionUuid: (selectedCollectionUuid) =>
+      set({ selectedCollectionUuid }),
   }))
 );
 

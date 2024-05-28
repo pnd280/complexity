@@ -1,8 +1,3 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
-
 import clsx from 'clsx';
 
 import {
@@ -12,8 +7,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-
-let timeoutId: number;
 
 export default function TooltipWrapper({
   children,
@@ -28,8 +21,6 @@ export default function TooltipWrapper({
   contentClassName?: string;
   delayDuration?: number;
 }) {
-  if (!content) return children;
-
   return (
     <TooltipProvider>
       <Tooltip delayDuration={delayDuration}>
@@ -39,9 +30,13 @@ export default function TooltipWrapper({
         <TooltipPortal>
           <TooltipContent
             {...contentOptions}
-            className={clsx(contentClassName)}
+            className={clsx(
+              'tw-whitespace-pre-line tw-max-w-[400px]',
+              contentClassName,
+              { '!tw-invisible': !content || content === '' }
+            )}
           >
-            <p>{content}</p>
+            <p className="tw-line-clamp-3">{content}</p>
           </TooltipContent>
         </TooltipPortal>
       </Tooltip>

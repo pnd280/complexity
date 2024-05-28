@@ -12,7 +12,13 @@ export const chromeStorage = {
     const { [key]: value } = await chrome.storage.local.get(key);
     return value as ChromeStore[T];
   },
-  async setStorageValue({ key, value }: { key: ChromeStoreKey; value: any }) {
+  async setStorageValue<T extends ChromeStoreKey>({
+    key,
+    value,
+  }: {
+    key: T;
+    value: ChromeStore[T];
+  }) {
     await chrome.storage.local.set({ [key]: value });
   },
   async getStore(): Promise<ChromeStore> {

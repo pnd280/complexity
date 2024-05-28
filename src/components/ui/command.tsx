@@ -48,13 +48,17 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
+    searchIcon?: boolean;
+  }
+>(({ className, searchIcon = true, ...props }, ref) => (
   <div
     className="tw-flex tw-items-center tw-border-b tw-px-3"
     cmdk-input-wrapper=""
   >
-    <Search className="tw-mr-2 tw-h-4 tw-w-4 tw-shrink-0 tw-opacity-50" />
+    {searchIcon && (
+      <Search className="tw-mr-2 tw-h-4 tw-w-4 tw-shrink-0 tw-opacity-50" />
+    )}
     <CommandPrimitive.Input
       ref={ref}
       className={cn(

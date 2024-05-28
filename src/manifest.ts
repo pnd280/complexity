@@ -49,6 +49,5 @@ export default defineManifest({
     'storage',
     'tabs',
     'scripting',
-    'unlimitedStorage',
   ],
 });

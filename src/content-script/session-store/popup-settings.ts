@@ -8,6 +8,7 @@ type PopupSettingsState = {
     focus: boolean;
     languageModel: boolean;
     imageGenModel: boolean;
+    collection: boolean;
   };
   usefulTweaks: {
     threadTOC: boolean;
@@ -28,6 +29,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
       focus: false,
       languageModel: false,
       imageGenModel: false,
+      collection: false,
     },
     usefulTweaks: {
       threadTOC: false,

@@ -175,11 +175,20 @@ function alterQuery() {
           : 'concise'
         : parsedPayload.data[1].mode;
 
+      const newTargetCollectionUuid = popupSettingsStore.getState()
+        .queryBoxSelectors.collection
+        ? parsedPayload.data[1].query_source === 'home' ||
+          parsedPayload.data[1].query_source === 'modal'
+          ? queryBoxStore.getState().selectedCollectionUuid
+          : parsedPayload.data[1].target_collection_uuid
+        : undefined;
+
       parsedPayload.data[1] = {
         ...parsedPayload.data[1],
         model_preference: newModelPreference,
         search_focus: newSearchFocus,
         mode: newProSearchState,
+        target_collection_uuid: newTargetCollectionUuid,
       };
 
       return {

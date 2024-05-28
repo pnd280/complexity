@@ -25,6 +25,7 @@ export default function usePopupSettings() {
           focus: false,
           languageModel: false,
           imageGenModel: false,
+          collection: false,
         },
       };
     }

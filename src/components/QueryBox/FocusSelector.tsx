@@ -161,7 +161,7 @@ export default function FocusSelector() {
             className={clsx(
               'tw-font-medium !tw-py-0 tw-flex tw-justify-center tw-items-center gap-1 !tw-w-fit tw-max-w-[150px] tw-select-none active:!tw-scale-95 [&_span]:tw-max-w-[100px] !tw-px-2 tw-animate-in tw-zoom-in tw-transition-all tw-duration-300',
               {
-                'tw-bg-accent': allowWebAccess,
+                '!tw-bg-accent': allowWebAccess,
               }
             )}
             onContextMenu={(e) => {

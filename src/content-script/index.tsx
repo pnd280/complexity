@@ -3,8 +3,7 @@ import '@/content-script/webpage/ws-hook';
 
 import $ from 'jquery';
 
-import { chromeStorage } from '@/utils/chrome-store';
-import { sleep } from '@/utils/utils';
+import { getPPLXBuildId } from '@/utils/utils';
 
 import Root from './Root';
 import uiTweaks from './ui-tweaks';
@@ -38,7 +37,9 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   //   }
   // });
 
-  console.log(await chromeStorage.getStorageValue('popupSettings'));
+  // console.log(await chromeStorage.getStorageValue('popupSettings'));
+
+  // console.log(await pplxApi.fetchCollections());
 })();
 
 async function init() {
@@ -58,14 +59,7 @@ async function init() {
 async function softUpdateCheck() {
   const pplxBuildId = 'Hww6VlF0ln_WDkrGUFhrk';
 
-  while (!$('script#__NEXT_DATA__').text().includes('"buildId":')) {
-    await sleep(100);
-  }
-
-  const latestPPLXBuildId = $('script#__NEXT_DATA__')
-    ?.text()
-    ?.match(/"buildId":"(.+?)"/)?.[1]
-    .trim();
+  const latestPPLXBuildId = await getPPLXBuildId();
 
   if (latestPPLXBuildId && pplxBuildId !== latestPPLXBuildId) {
     console.warn(
