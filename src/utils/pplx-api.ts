@@ -9,6 +9,7 @@ import {
   fetchResource,
   getPPLXBuildId,
   jsonUtils,
+  sleep,
 } from './utils';
 import { WSMessageParser } from './ws';
 

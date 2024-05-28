@@ -8,6 +8,7 @@ import {
   ExternalLink,
   Eye,
   LayoutGrid,
+  LoaderCircle,
   Pencil,
   X,
 } from 'lucide-react';
@@ -44,7 +45,9 @@ export type Collection = {
 };
 
 export default function CollectionSelector() {
-  const { data: collections, isLoading: isFetchingCollections } = useQuery<Collection[]>({
+  const { data: collections, isFetching: isFetchingCollections } = useQuery<
+    Collection[]
+  >({
     queryKey: ['collections'],
     initialData: [],
   });
@@ -106,7 +109,14 @@ export default function CollectionSelector() {
               searchIcon={false}
             />
             <CommandEmpty>
-              {isFetchingCollections ? 'Loading...' : 'No collection found.'}
+              {isFetchingCollections && collections.length < 1 ? (
+                <div className="tw-flex tw-gap-2 tw-justify-center tw-items-center">
+                  <LoaderCircle className="tw-w-4 tw-h-4 tw-animate-spin" />
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                'No collection found.'
+              )}
             </CommandEmpty>
             <CommandList>
               <CommandGroup>
@@ -147,7 +157,9 @@ export default function CollectionSelector() {
                       </div>
                       {(collection.instructions || collection.instructions) && (
                         <TooltipWrapper
-                          content={collection.instructions || collection.description}
+                          content={
+                            collection.instructions || collection.description
+                          }
                           contentOptions={{
                             side: 'right',
                             sideOffset: 60,

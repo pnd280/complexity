@@ -16,30 +16,18 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   Root({});
 
   webpageListeners.onWebSocketCaptured();
-
   webpageMessageInterceptors.trackQueryLimits();
-
   webpageMessageInterceptors.alterQuery();
+
+  uiTweaks.alterAttachButton();
+  uiTweaks.adjustSelectorsBorderRadius();
+  uiTweaks.adjustQueryBoxWidth();
+  uiTweaks.hideScrollToBottomButton();
+  uiTweaks.hideNativeProSearchSwitch();
 
   // webpageMessageInterceptors.inspectWebSocketEvents();
 
   // webpageMessageInterceptors.inspectLongPollingEvents();
-
-  uiTweaks.alterAttachButton();
-
-  // chrome.storage.onChanged.addListener((changes, areaName) => {
-  //   if (areaName === 'local') {
-  //     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-  //       console.log(`Storage key "${key}" in "local" changed.`);
-  //       console.log(`Old value: `, oldValue);
-  //       console.log(`New value: `, newValue);
-  //     }
-  //   }
-  // });
-
-  // console.log(await chromeStorage.getStorageValue('popupSettings'));
-
-  // console.log(await pplxApi.fetchCollections());
 })();
 
 async function init() {
