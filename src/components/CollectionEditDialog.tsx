@@ -4,9 +4,7 @@ import {
 } from 'react';
 
 import { globalStore } from '@/content-script/session-store/global';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
 import pplxApi from '@/utils/pplx-api';
-import { WSMessageParser } from '@/utils/ws';
 import {
   useMutation,
   useQuery,
@@ -25,6 +23,7 @@ import {
 } from './ui/dialog';
 import { Label } from './ui/label';
 import { Separator } from './ui/separator';
+import { useToast } from './ui/use-toast';
 
 type CollectionEditDialogProps = {
   collection: Collection;
@@ -43,6 +42,8 @@ export default function CollectionEditDialog({
   open,
   onOpenChange,
 }: CollectionEditDialogProps) {
+  const { toast } = useToast();
+
   const queryClient = useQueryClient();
 
   const { refetch: refetchCollections } = useQuery({
@@ -81,8 +82,6 @@ export default function CollectionEditDialog({
     },
     onError(error, __, context) {
       queryClient.setQueryData(['collections'], () => context);
-
-      console.log('Failed to edit collection', error);
     },
     onSettled: () => {
       setTimeout(() => {
@@ -115,9 +114,12 @@ export default function CollectionEditDialog({
         newDescription,
         newInstructions,
       });
-      console.log('collection updated');
     } catch (error) {
-      console.error('Failed to edit collection', error);
+      toast({
+        title: '❌ Failed to update collection',
+        description: 'An error occurred while updating the collection',
+        timeout: 2000,
+      });
     }
   };
 

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { Commander } from '@/components/Commander';
 import MainPage from '@/components/MainPage';
 import QueryBox from '@/components/QueryBox';
+import { Toaster } from '@/components/ui/toaster';
 import {
   QueryClient,
   QueryClientProvider,
@@ -25,6 +26,7 @@ export default function Root({ tabId }: { tabId?: number }) {
         <MainPage />
         <QueryBox />
         <Commander />
+        <Toaster />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
