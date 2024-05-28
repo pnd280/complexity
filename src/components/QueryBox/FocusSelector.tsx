@@ -24,7 +24,7 @@ import {
 import { queryBoxStore } from '@/content-script/session-store/query-box';
 import { webpageMessenger } from '@/content-script/webpage/messenger';
 import { chromeStorage } from '@/utils/chrome-store';
-import { ui } from '@/utils/utils';
+import { ui } from '@/utils/ui';
 import { WSMessageParser } from '@/utils/ws';
 import { SelectLabel } from '@radix-ui/react-select';
 import { useToggle } from '@uidotdev/usehooks';
@@ -112,15 +112,11 @@ export default function FocusSelector() {
     });
   }, [allowWebAccess]);
 
-  useEffect(() => {
-    if (proSearch && allowWebAccess) {
-      $('body').addClass('pro-search');
-    } else {
-      $('body').removeClass('pro-search');
-    }
+  $('body').toggleClass('pro-search', proSearch && allowWebAccess);
 
-    // proSearch && toggleWebAccess(true);
-  }, [allowWebAccess, proSearch]);
+  useEffect(() => {
+    proSearch && toggleWebAccess(true);
+  }, [proSearch]);
 
   const saveProSearchState = async (checked: boolean) => {
     try {
@@ -238,7 +234,7 @@ export default function FocusSelector() {
                 onCheckedChange={(checked) => {
                   toggleProSearch(checked);
 
-                  if (proSearch) {
+                  if (checked) {
                     toggleWebAccess(true);
                   }
 

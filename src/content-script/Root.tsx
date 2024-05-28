@@ -4,12 +4,15 @@ import { createRoot } from 'react-dom/client';
 import { Commander } from '@/components/Commander';
 import MainPage from '@/components/MainPage';
 import QueryBox from '@/components/QueryBox';
+import ThreadAnchor from '@/components/ThreadAnchor';
 import { Toaster } from '@/components/ui/toaster';
 import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+import { popupSettingsStore } from './session-store/popup-settings';
 
 export default function Root({ tabId }: { tabId?: number }) {
   $('body').addClass('!tw-mr-0');
@@ -26,6 +29,7 @@ export default function Root({ tabId }: { tabId?: number }) {
         <MainPage />
         <QueryBox />
         <Commander />
+        {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadAnchor />}
         <Toaster />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+import { ui } from './ui';
+
 export const logger = {
   enable: true,
 
@@ -55,23 +57,43 @@ export function detectConsecutiveClicks(params: {
   let clickCount = 0;
   let clickTimer: number | undefined;
 
-  $(params.element).off('click').on('click', () => {
-    clickCount++;
+  $(params.element)
+    .off('click')
+    .on('click', () => {
+      clickCount++;
 
-    if (clickCount === 1) {
-      clickTimer = window.setTimeout(() => {
-        clickCount = 0;
-      }, params.clickInterval);
-    }
-
-    if (clickCount === params.requiredClicks) {
-      if (clickTimer !== undefined) {
-        clearTimeout(clickTimer);
+      if (clickCount === 1) {
+        clickTimer = window.setTimeout(() => {
+          clickCount = 0;
+        }, params.clickInterval);
       }
-      clickCount = 0;
-      params.callback();
-    }
-  });
+
+      if (clickCount === params.requiredClicks) {
+        if (clickTimer !== undefined) {
+          clearTimeout(clickTimer);
+        }
+        clickCount = 0;
+        params.callback();
+      }
+    });
+}
+
+export function scrollToElement($anchor: JQuery<Element>, offset = 0) {
+  const $stickyHeader = ui.getStickyHeader();
+
+  if ($stickyHeader.length) {
+    offset -= $stickyHeader.height() || 0;
+  }
+
+  const elementPosition = $anchor.offset()?.top;
+  const scrollPosition = (elementPosition || 0) + offset;
+
+  $('html, body').animate(
+    {
+      scrollTop: scrollPosition,
+    },
+    500
+  );
 }
 
 export async function sleep(ms: number) {
@@ -123,14 +145,6 @@ export function whereAmI() {
       return 'unknown';
   }
 }
-
-export const ui = {
-  findActiveQueryBoxTextarea() {
-    return $('button[aria-label="Submit"]:last')
-      .parents()
-      .find('textarea[placeholder]:last');
-  },
-};
 
 export async function getPPLXBuildId() {
   const NEXTDATA = await getNEXTDATA();

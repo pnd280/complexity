@@ -18,6 +18,9 @@ export type ChromeStore = {
       imageGenModel: boolean;
       collection: boolean;
     };
+    qolTweaks: {
+      threadTOC: boolean;
+    };
   };
 } & {
   [key: `sessionStore-${number}`]: ChromeSessionStore;

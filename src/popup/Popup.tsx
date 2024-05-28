@@ -6,12 +6,13 @@ import { Separator } from '@/components/ui/separator';
 import usePopupSettings from './hooks/usePopupSettings';
 import popupSettings from './settings';
 
-const { queryBoxSelectors, usefulTweaks, visualTweaks } = popupSettings;
+const { queryBoxSelectors, qolTweaks } = popupSettings;
 
-const displayVersion = 'alpha-test-1.4';
+const displayVersion = 'alpha-test-1.5';
 
 export const Popup = () => {
-  const { store, handleQueryBoxSettingsChange } = usePopupSettings();
+  const { store, handleQueryBoxSettingsChange, handleQolTweaksChange } =
+    usePopupSettings();
 
   if (!store) return null;
 
@@ -43,34 +44,23 @@ export const Popup = () => {
             ))}
           </div>
           <div className="tw-flex tw-flex-col tw-gap-2">
-            <div className="tw-text-lg tw-font-semibold tw-tracking-tight tw-text-muted-foreground">
-              Useful tweaks{' '}
-              <span className="tw-text-sm">(not implemented)</span>
+            <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
+              QoL tweaks
             </div>
             <Separator />
-            {usefulTweaks.map(({ id, label, storeKey }) => (
+            {qolTweaks.map(({ id, label, storeKey }) => (
               <LabeledSwitch
                 key={id}
                 id={id}
                 label={label}
                 labelClassName="tw-max-w-[200px]"
-                checked={false}
-              />
-            ))}
-          </div>
-          <div className="tw-flex tw-flex-col tw-gap-2">
-            <div className="tw-text-lg tw-font-semibold tw-tracking-tight tw-text-muted-foreground">
-              Visual tweaks{' '}
-              <span className="tw-text-sm">(not implemented)</span>
-            </div>
-            <Separator />
-            {visualTweaks.map(({ id, label, storeKey }) => (
-              <LabeledSwitch
-                key={id}
-                id={id}
-                label={label}
-                labelClassName="tw-max-w-[200px]"
-                checked={false}
+                defaultChecked={
+                  store.popupSettings?.qolTweaks?.[storeKey] ?? false
+                }
+                onCheckedChange={(checked) => {
+                  console.log('storeKey', storeKey, 'checked', checked);
+                  handleQolTweaksChange(storeKey, checked);
+                }}
               />
             ))}
           </div>

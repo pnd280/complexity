@@ -4,7 +4,7 @@ import $ from 'jquery';
 import ReactDOM from 'react-dom/client';
 
 import { chromeStorage } from '@/utils/chrome-store';
-import { onElementExist } from '@/utils/observer';
+import observer from '@/utils/observer';
 import { detectConsecutiveClicks } from '@/utils/utils';
 import {
   QueryClient,
@@ -28,7 +28,7 @@ $('html').toggleClass(
   window.matchMedia('(prefers-color-scheme: dark)').matches
 );
 
-onElementExist({
+observer.onElementExist({
   selector: '#complexity-version',
   callback: ({ element }) => {
     detectConsecutiveClicks({

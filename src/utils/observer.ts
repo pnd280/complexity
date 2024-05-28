@@ -7,12 +7,12 @@ export type OnElementExistOptions = {
   observedIdentifier?: string;
 };
 
-export const onElementExist = ({
+function onElementExist({
   selector,
   callback,
   recurring = true,
   observedIdentifier = 'observed',
-}: OnElementExistOptions): MutationObserver => {
+}: OnElementExistOptions): MutationObserver {
   requestIdleCallback(() => {
     checkAndInvokeCallback();
   });
@@ -58,7 +58,7 @@ export const onElementExist = ({
   return observer;
 };
 
-export function onAttributeChanges({
+function onAttributeChanges({
   targetNode,
   attributes,
   immediateInvoke = false,
@@ -98,3 +98,23 @@ export function onAttributeChanges({
 
   return observer;
 }
+
+function onShallowRouteChange(callback: () => void) {
+  let lastUrl = location.href;
+  new MutationObserver(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+
+      callback();
+    }
+  }).observe(document, { subtree: true, childList: true });
+}
+
+const observer = {
+  onElementExist,
+  onAttributeChanges,
+  onShallowRouteChange,
+};
+
+export default observer;

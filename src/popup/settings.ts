@@ -21,50 +21,50 @@ const queryBoxSelectors = [
   },
 ] as const;
 
-const usefulTweaks = [
+const qolTweaks = [
   {
     id: 'thread-toc',
     label: 'Thread TOC',
     storeKey: 'threadTOC',
   },
-  {
-    id: 'double-click-to-edit-query',
-    label: 'Double click to edit query',
-    storeKey: 'doubleClickToEditQuery',
-  },
-  {
-    id: 'collection-quick-context-menu',
-    label: 'Quick context menu on collection links (in thread)',
-    storeKey: 'collectionQuickContextMenu',
-  },
+  // {
+  //   id: 'double-click-to-edit-query',
+  //   label: 'Double click to edit query',
+  //   storeKey: 'doubleClickToEditQuery',
+  // },
+  // {
+  //   id: 'collection-quick-context-menu',
+  //   label: 'Quick context menu on collection links (in thread)',
+  //   storeKey: 'collectionQuickContextMenu',
+  // },
 ] as const;
 
 const visualTweaks = [
-  {
-    id: 'thread-query-markdown',
-    label: 'Thread query markdown',
-    storeKey: 'threadQueryMarkdown',
-  },
-  {
-    id: 'chat-ui', // image & avatar on top of every messages
-    label: 'Chat UI',
-    storeKey: 'chatUI',
-  },
-  {
-    id: 'collapse-empty-visual-columns',
-    label: 'Collapse empty visual columns',
-    storeKey: 'collapseEmptyVisualColumns',
-  },
-  {
-    id: 'wider-thread-width',
-    label: 'Wider thread width',
-    storeKey: 'widerThreadWidth',
-  },
+  // {
+  //   id: 'thread-query-markdown',
+  //   label: 'Thread query markdown',
+  //   storeKey: 'threadQueryMarkdown',
+  // },
+  // {
+  //   id: 'chat-ui', // image & avatar on top of every messages
+  //   label: 'Chat UI',
+  //   storeKey: 'chatUI',
+  // },
+  // {
+  //   id: 'collapse-empty-visual-columns',
+  //   label: 'Collapse empty visual columns',
+  //   storeKey: 'collapseEmptyVisualColumns',
+  // },
+  // {
+  //   id: 'wider-thread-width',
+  //   label: 'Wider thread width',
+  //   storeKey: 'widerThreadWidth',
+  // },
 ] as const;
 
 const popupSettings = {
   queryBoxSelectors,
-  usefulTweaks,
+  qolTweaks,
   visualTweaks,
 };
 

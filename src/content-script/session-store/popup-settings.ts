@@ -10,16 +10,8 @@ type PopupSettingsState = {
     imageGenModel: boolean;
     collection: boolean;
   };
-  usefulTweaks: {
+  qolTweaks: {
     threadTOC: boolean;
-    doubleClickToEditQuery: boolean;
-    collectionQuickContextMenu: boolean;
-  };
-  visualTweaks: {
-    threadQueryMarkdown: boolean;
-    chatUI: boolean;
-    collapseEmptyVisualColumns: boolean;
-    widerThreadWidth: boolean;
   };
 };
 
@@ -31,16 +23,8 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
       imageGenModel: false,
       collection: false,
     },
-    usefulTweaks: {
+    qolTweaks: {
       threadTOC: false,
-      doubleClickToEditQuery: false,
-      collectionQuickContextMenu: false,
-    },
-    visualTweaks: {
-      threadQueryMarkdown: false,
-      chatUI: false,
-      collapseEmptyVisualColumns: false,
-      widerThreadWidth: false,
     },
   }))
 );
@@ -50,11 +34,35 @@ const popupSettingsStore = usePopupSettingsStore;
 (async function initPopupSettingsStore() {
   const settings = await chromeStorage.getStorageValue('popupSettings');
 
+  if (!settings) {
+    await chromeStorage.setStorageValue({
+      key: 'popupSettings',
+      value: {
+        queryBoxSelectors: {
+          focus: false,
+          languageModel: false,
+          imageGenModel: false,
+          collection: false,
+        },
+        qolTweaks: {
+          threadTOC: false,
+        },
+      },
+    });
+  }
+
   const queryBoxSelectors = settings.queryBoxSelectors;
+  const qolTweaks = settings.qolTweaks;
 
   if (queryBoxSelectors) {
     popupSettingsStore.setState((state) => {
       state.queryBoxSelectors = queryBoxSelectors;
+    });
+  }
+
+  if (qolTweaks) {
+    popupSettingsStore.setState((state) => {
+      state.qolTweaks = qolTweaks;
     });
   }
 

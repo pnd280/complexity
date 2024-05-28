@@ -3,10 +3,7 @@ import {
   useState,
 } from 'react';
 
-import {
-  onElementExist,
-  OnElementExistOptions,
-} from '@/utils/observer';
+import observer, { OnElementExistOptions } from '@/utils/observer';
 
 type useElementObserverProps = Omit<OnElementExistOptions, 'callback'> & {
   callback?: ({ element }: { element: Element }) => void;
@@ -21,7 +18,7 @@ export default function useElementObserver({
   const [container, setContainer] = useState<Element>();
 
   useEffect(() => {
-    const observer = onElementExist({
+    const myObserver = observer.onElementExist({
       selector,
       callback: ({ element }) => {
         callback?.({ element });
@@ -32,7 +29,7 @@ export default function useElementObserver({
     });
 
     return () => {
-      observer.disconnect();
+      myObserver.disconnect();
     };
   });
 

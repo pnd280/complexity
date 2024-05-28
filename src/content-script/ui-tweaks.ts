@@ -1,9 +1,6 @@
 import $ from 'jquery';
 
-import {
-  onAttributeChanges,
-  onElementExist,
-} from '@/utils/observer';
+import observer from '@/utils/observer';
 import {
   sleep,
   whereAmI,
@@ -23,7 +20,7 @@ function injectBaseStyles() {
 }
 
 function alterAttachButton() {
-  onElementExist({
+  observer.onElementExist({
     selector: () => {
       const $element = $('button:contains("Attach"):last');
 
@@ -48,7 +45,7 @@ function alterAttachButton() {
 }
 
 function correctColorScheme() {
-  onAttributeChanges({
+  observer.onAttributeChanges({
     targetNode: $('html')[0],
     attributes: ['class'],
     callback: ({ targetNode }) => {
@@ -62,7 +59,7 @@ function correctColorScheme() {
 }
 
 function adjustSelectorsBorderRadius() {
-  onElementExist({
+  observer.onElementExist({
     selector: () =>
       $('textarea[placeholder="Ask anything..."]').next().toArray(),
     callback: ({ element }) => {
@@ -77,11 +74,17 @@ function adjustSelectorsBorderRadius() {
 }
 
 function adjustQueryBoxWidth() {
-  onElementExist({
+  observer.onElementExist({
     selector: () => [
       $('.pointer-events-auto.md\\:col-span-8').children().last()[0],
     ],
     callback: async ({ element }) => {
+      const {
+        queryBoxSelectors: { collection, focus, imageGenModel, languageModel },
+      } = popupSettingsStore.getState();
+
+      if (!collection && !focus && !imageGenModel && !languageModel) return;
+      
       if (whereAmI() !== 'thread') return;
 
       const $element = $(element);
@@ -97,7 +100,7 @@ function adjustQueryBoxWidth() {
       $wrapper.removeClass('md:col-span-8').addClass('col-span-12');
       $wrapper.parent().addClass('!tw-bottom-[5px]');
 
-      onAttributeChanges({
+      observer.onAttributeChanges({
         targetNode: $(
           '.pointer-events-none.fixed.z-10.grid-cols-12.gap-xl.px-sm.py-sm.md\\:bottom-lg'
         )[0],
@@ -112,7 +115,7 @@ function adjustQueryBoxWidth() {
 }
 
 function hideScrollToBottomButton() {
-  onElementExist({
+  observer.onElementExist({
     selector: '.pointer-events-auto .mb-2.flex.justify-center',
     callback: ({ element }) => {
       if (whereAmI() !== 'thread') return;
@@ -124,7 +127,7 @@ function hideScrollToBottomButton() {
 }
 
 function hideNativeProSearchSwitch() {
-  onElementExist({
+  observer.onElementExist({
     selector:
       '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer',
     callback: ({ element }) => {

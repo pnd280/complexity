@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/popover';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
 import { webpageMessenger } from '@/content-script/webpage/messenger';
-import { ui } from '@/utils/utils';
+import { ui } from '@/utils/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 

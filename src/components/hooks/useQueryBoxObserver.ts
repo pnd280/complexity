@@ -3,11 +3,7 @@ import $ from 'jquery';
 import {
   popupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
-import { onAttributeChanges } from '@/utils/observer';
-import {
-  sleep,
-  whereAmI,
-} from '@/utils/utils';
+import { whereAmI } from '@/utils/utils';
 
 import useElementObserver from './useElementObserver';
 

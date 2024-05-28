@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ui } from '@/utils/utils';
+import { ui } from '@/utils/ui';
 
 import TooltipWrapper from '../TooltipWrapper';
 

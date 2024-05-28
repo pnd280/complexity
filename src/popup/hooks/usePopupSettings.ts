@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { produce } from 'immer';
 
 import { ChromeStore } from '@/types/ChromeStore';
@@ -19,21 +21,30 @@ export default function usePopupSettings() {
   ) => {
     if (!store) return;
 
-    if (!store.popupSettings) {
-      store.popupSettings = {
-        queryBoxSelectors: {
-          focus: false,
-          languageModel: false,
-          imageGenModel: false,
-          collection: false,
-        },
-      };
-    }
+    await chromeStorage.setStorageValue({
+      key: 'popupSettings',
+      value: produce(store.popupSettings, (draft) => {
+        draft.queryBoxSelectors ??= {} as ChromeStore['popupSettings']['queryBoxSelectors'];
+        draft.queryBoxSelectors[key] ??= false;
+        draft.queryBoxSelectors[key] = value;
+      }),
+    });
+
+    await refetch();
+  };
+
+  const handleQolTweaksChange = async (
+    key: keyof ChromeStore['popupSettings']['qolTweaks'],
+    value: boolean
+  ) => {
+    if (!store) return;
 
     await chromeStorage.setStorageValue({
       key: 'popupSettings',
       value: produce(store.popupSettings, (draft) => {
-        draft.queryBoxSelectors[key] = value;
+        draft.qolTweaks ??= {} as ChromeStore['popupSettings']['qolTweaks'];
+        draft.qolTweaks[key] ??= false;
+        draft.qolTweaks[key] = value;
       }),
     });
 
@@ -43,5 +54,6 @@ export default function usePopupSettings() {
   return {
     store,
     handleQueryBoxSettingsChange,
+    handleQolTweaksChange,
   };
 }
