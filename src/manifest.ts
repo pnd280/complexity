@@ -47,7 +47,6 @@ export default defineManifest({
   ],
   permissions: [
     'storage',
-    'tabs',
     'scripting',
   ],
 });

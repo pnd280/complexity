@@ -8,7 +8,7 @@ import popupSettings from './settings';
 
 const { queryBoxSelectors, usefulTweaks, visualTweaks } = popupSettings;
 
-const displayVersion = 'alpha-test-1.2';
+const displayVersion = 'alpha-test-1.3';
 
 export const Popup = () => {
   const { store, handleQueryBoxSettingsChange } = usePopupSettings();
@@ -32,6 +32,7 @@ export const Popup = () => {
                 key={id}
                 id={id}
                 label={label}
+                labelClassName="tw-max-w-[200px]"
                 defaultChecked={
                   store.popupSettings?.queryBoxSelectors?.[storeKey] ?? false
                 }
@@ -42,8 +43,9 @@ export const Popup = () => {
             ))}
           </div>
           <div className="tw-flex tw-flex-col tw-gap-2">
-            <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
-              Useful tweaks
+            <div className="tw-text-lg tw-font-semibold tw-tracking-tight tw-text-muted-foreground">
+              Useful tweaks{' '}
+              <span className="tw-text-sm">(not implemented)</span>
             </div>
             <Separator />
             {usefulTweaks.map(({ id, label, storeKey }) => (
@@ -51,14 +53,15 @@ export const Popup = () => {
                 key={id}
                 id={id}
                 label={label}
-                defaultChecked={false}
                 labelClassName="tw-max-w-[200px]"
+                checked={false}
               />
             ))}
           </div>
           <div className="tw-flex tw-flex-col tw-gap-2">
-            <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
-              Visual tweaks
+            <div className="tw-text-lg tw-font-semibold tw-tracking-tight tw-text-muted-foreground">
+              Visual tweaks{' '}
+              <span className="tw-text-sm">(not implemented)</span>
             </div>
             <Separator />
             {visualTweaks.map(({ id, label, storeKey }) => (
@@ -66,7 +69,8 @@ export const Popup = () => {
                 key={id}
                 id={id}
                 label={label}
-                defaultChecked={false}
+                labelClassName="tw-max-w-[200px]"
+                checked={false}
               />
             ))}
           </div>
