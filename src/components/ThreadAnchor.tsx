@@ -55,7 +55,7 @@ export default function ThreadAnchor({}: Props) {
             : '2rem',
         }}
       >
-        {anchorsProps && anchorsProps.length > 0 && (
+        {anchorsProps && anchorsProps.length > 1 && (
           <div
             className={clsx(
               'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-zoom-in tw-transition-all',
@@ -70,7 +70,12 @@ export default function ThreadAnchor({}: Props) {
             {anchorsProps?.map((anchorProps, index) => (
               <div
                 key={index}
-                className="tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group"
+                className={clsx(
+                  'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
+                  {
+                    'tw-mr-6': visible && isFloat && index === 0,
+                  }
+                )}
                 onClick={anchorProps.onClick}
                 onContextMenu={(e) => {
                   e.preventDefault();
@@ -155,11 +160,11 @@ const useThreadAnchorObserver = () => {
 
     setVisibleMessageIndex(
       ui.findMostVisibleElementIndex(
-        ui.getMessageContainer().children().toArray()
+        ui.getMessagesContainer().children().toArray()
       )
     );
 
-    const $messageContainer = ui.getMessageContainer();
+    const $messageContainer = ui.getMessagesContainer();
 
     if (!$messageContainer.length) return;
 

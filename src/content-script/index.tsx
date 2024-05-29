@@ -24,9 +24,10 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   uiTweaks.adjustQueryBoxWidth();
   uiTweaks.hideScrollToBottomButton();
   uiTweaks.hideNativeProSearchSwitch();
+  uiTweaks.signThreadColumns();
+  uiTweaks.collapseEmptyThreadVisualColumns();
 
   // webpageMessageInterceptors.inspectWebSocketEvents();
-
   // webpageMessageInterceptors.inspectLongPollingEvents();
 })();
 

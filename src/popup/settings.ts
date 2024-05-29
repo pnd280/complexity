@@ -50,11 +50,11 @@ const visualTweaks = [
   //   label: 'Chat UI',
   //   storeKey: 'chatUI',
   // },
-  // {
-  //   id: 'collapse-empty-visual-columns',
-  //   label: 'Collapse empty visual columns',
-  //   storeKey: 'collapseEmptyVisualColumns',
-  // },
+  {
+    id: 'collapse-empty-visual-columns',
+    label: 'Collapse empty thread visual columns',
+    storeKey: 'collapseEmptyThreadVisualColumns',
+  },
   // {
   //   id: 'wider-thread-width',
   //   label: 'Wider thread width',

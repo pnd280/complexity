@@ -51,9 +51,28 @@ export default function usePopupSettings() {
     await refetch();
   };
 
+  const handleVisualTweaksChange = async (
+    key: keyof ChromeStore['popupSettings']['visualTweaks'],
+    value: boolean
+  ) => {
+    if (!store) return;
+
+    await chromeStorage.setStorageValue({
+      key: 'popupSettings',
+      value: produce(store.popupSettings, (draft) => {
+        draft.visualTweaks ??= {} as ChromeStore['popupSettings']['visualTweaks'];
+        draft.visualTweaks[key] ??= false;
+        draft.visualTweaks[key] = value;
+      }),
+    });
+
+    await refetch();
+  }
+
   return {
     store,
     handleQueryBoxSettingsChange,
     handleQolTweaksChange,
+    handleVisualTweaksChange,
   };
 }

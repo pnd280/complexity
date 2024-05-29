@@ -13,6 +13,9 @@ type PopupSettingsState = {
   qolTweaks: {
     threadTOC: boolean;
   };
+  visualTweaks: {
+    collapseEmptyThreadVisualColumns: boolean;
+  };
 };
 
 const usePopupSettingsStore = create<PopupSettingsState>()(
@@ -25,6 +28,9 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
     },
     qolTweaks: {
       threadTOC: false,
+    },
+    visualTweaks: {
+      collapseEmptyThreadVisualColumns: false,
     },
   }))
 );
@@ -47,6 +53,9 @@ const popupSettingsStore = usePopupSettingsStore;
         qolTweaks: {
           threadTOC: false,
         },
+        visualTweaks: {
+          collapseEmptyThreadVisualColumns: false,
+        },
       },
     });
   }
@@ -63,6 +72,12 @@ const popupSettingsStore = usePopupSettingsStore;
   if (qolTweaks) {
     popupSettingsStore.setState((state) => {
       state.qolTweaks = qolTweaks;
+    });
+  }
+
+  if (settings.visualTweaks) {
+    popupSettingsStore.setState((state) => {
+      state.visualTweaks = settings.visualTweaks;
     });
   }
 

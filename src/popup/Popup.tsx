@@ -6,18 +6,18 @@ import { Separator } from '@/components/ui/separator';
 import usePopupSettings from './hooks/usePopupSettings';
 import popupSettings from './settings';
 
-const { queryBoxSelectors, qolTweaks } = popupSettings;
+const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 
 const displayVersion = 'alpha-test-1.5';
 
 export const Popup = () => {
-  const { store, handleQueryBoxSettingsChange, handleQolTweaksChange } =
+  const { store, handleQueryBoxSettingsChange, handleQolTweaksChange, handleVisualTweaksChange } =
     usePopupSettings();
 
   if (!store) return null;
 
   return (
-    <main className="tw-relative tw-font-sans tw-bg-background tw-text-foreground tw-flex-col tw-w-max !tw-text-[1em] tw-max-w-max tw-overflow-auto">
+    <main className="tw-relative tw-font-sans tw-bg-background tw-text-foreground tw-flex-col tw-w-[300px] !tw-text-[1em]  tw-overflow-auto">
       <div className="tw-px-4 tw-pt-4 tw-h-[300px] tw-overflow-auto tw-mb-10">
         <div className="tw-text-yellow-300 tw-mb-4 tw-w-full">
           Change(s) requires a full page reload!
@@ -33,7 +33,7 @@ export const Popup = () => {
                 key={id}
                 id={id}
                 label={label}
-                labelClassName="tw-max-w-[200px]"
+                labelClassName="tw-max-w-full"
                 defaultChecked={
                   store.popupSettings?.queryBoxSelectors?.[storeKey] ?? false
                 }
@@ -53,13 +53,34 @@ export const Popup = () => {
                 key={id}
                 id={id}
                 label={label}
-                labelClassName="tw-max-w-[200px]"
+                labelClassName="tw-max-w-full"
                 defaultChecked={
                   store.popupSettings?.qolTweaks?.[storeKey] ?? false
                 }
                 onCheckedChange={(checked) => {
                   console.log('storeKey', storeKey, 'checked', checked);
                   handleQolTweaksChange(storeKey, checked);
+                }}
+              />
+            ))}
+          </div>
+          <div className="tw-flex tw-flex-col tw-gap-2">
+            <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
+              Visual tweaks
+            </div>
+            <Separator />
+            {visualTweaks.map(({ id, label, storeKey }) => (
+              <LabeledSwitch
+                key={id}
+                id={id}
+                label={label}
+                labelClassName="tw-max-w-full"
+                defaultChecked={
+                  store.popupSettings?.visualTweaks?.[storeKey] ?? false
+                }
+                onCheckedChange={(checked) => {
+                  console.log('storeKey', storeKey, 'checked', checked);
+                  handleVisualTweaksChange(storeKey, checked);
                 }}
               />
             ))}

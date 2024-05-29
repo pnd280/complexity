@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import observer from '@/utils/observer';
+import { ui } from '@/utils/ui';
 import {
   sleep,
   whereAmI,
@@ -20,6 +21,12 @@ function injectBaseStyles() {
 }
 
 function alterAttachButton() {
+  if (
+    !popupSettingsStore.getState().queryBoxSelectors.focus &&
+    !popupSettingsStore.getState().queryBoxSelectors.collection
+  )
+    return;
+
   observer.onElementExist({
     selector: () => {
       const $element = $('button:contains("Attach"):last');
@@ -31,12 +38,6 @@ function alterAttachButton() {
       return [];
     },
     callback({ element }) {
-      if (
-        !popupSettingsStore.getState().queryBoxSelectors.focus &&
-        !popupSettingsStore.getState().queryBoxSelectors.collection
-      )
-        return;
-
       $(element).find('>div').removeClass('gap-xs');
       $(element).find('>div>div').addClass('hidden');
     },
@@ -74,17 +75,17 @@ function adjustSelectorsBorderRadius() {
 }
 
 function adjustQueryBoxWidth() {
+  const {
+    queryBoxSelectors: { collection, focus, imageGenModel, languageModel },
+  } = popupSettingsStore.getState();
+
+  if (!collection && !focus && !imageGenModel && !languageModel) return;
+
   observer.onElementExist({
     selector: () => [
       $('.pointer-events-auto.md\\:col-span-8').children().last()[0],
     ],
     callback: async ({ element }) => {
-      const {
-        queryBoxSelectors: { collection, focus, imageGenModel, languageModel },
-      } = popupSettingsStore.getState();
-
-      if (!collection && !focus && !imageGenModel && !languageModel) return;
-      
       if (whereAmI() !== 'thread') return;
 
       const $element = $(element);
@@ -127,15 +128,69 @@ function hideScrollToBottomButton() {
 }
 
 function hideNativeProSearchSwitch() {
+  // FIXME: Data retention switch also gets hidden (unintended)
+
+  if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
+
   observer.onElementExist({
     selector:
       '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer',
     callback: ({ element }) => {
-      if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
-
       $(element).addClass('!tw-hidden');
     },
     observedIdentifier: 'hide-native-pro-search-switch',
+  });
+}
+
+function signThreadColumns() {
+  observer.onElementExist({
+    selector: () =>
+      ui.getMessageBlocks().map(({ $messageBlock }) => $messageBlock[0]),
+    callback() {},
+    observedIdentifier: 'sign-thread-columns',
+  });
+}
+
+function collapseEmptyThreadVisualColumns() {
+  console.log(
+    popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
+  );
+
+  if (
+    !popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
+  )
+    return;
+
+  observer.onElementExist({
+    selector: () => [ui.getMessagesContainer()[0]],
+    callback: ({ element }) => {
+      observer.onDOMChanges({
+        targetNode: element,
+        callback: () => {
+          const $messageContainer = $(element);
+
+          $messageContainer.children().each((_, messageBlock) => {
+            if (
+              $(messageBlock).find('.visual-col > div > div:nth-child(2)')
+                .length
+            ) {
+              $(messageBlock).find('.visual-col').show();
+              $(messageBlock)
+                .find('.message-col')
+                .removeClass('col-span-12')
+                .addClass('col-span-8');
+            } else {
+              $(messageBlock).find('.visual-col').hide();
+              $(messageBlock)
+                .find('.message-col')
+                .removeClass('col-span-8')
+                .addClass('col-span-12');
+            }
+          });
+        },
+      });
+    },
+    observedIdentifier: 'collapse-empty-thread-visual-columns',
   });
 }
 
@@ -147,6 +202,8 @@ const uiTweaks = {
   adjustQueryBoxWidth,
   hideScrollToBottomButton,
   hideNativeProSearchSwitch,
+  signThreadColumns,
+  collapseEmptyThreadVisualColumns,
 };
 
 export default uiTweaks;

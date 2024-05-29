@@ -21,6 +21,9 @@ export type ChromeStore = {
     qolTweaks: {
       threadTOC: boolean;
     };
+    visualTweaks: {
+      collapseEmptyThreadVisualColumns: boolean;
+    };
   };
 } & {
   [key: `sessionStore-${number}`]: ChromeSessionStore;

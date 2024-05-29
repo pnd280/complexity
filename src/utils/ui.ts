@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+import { whereAmI } from './utils';
+
 export const ui = {
   findActiveQueryBoxTextarea() {
     return $('button[aria-label="Submit"]:last')
@@ -45,7 +47,7 @@ export const ui = {
       return (visibleArea / totalArea) * 100;
     }
   },
-  getMessageContainer() {
+  getMessagesContainer() {
     // user's thread
     let $messageContainer = $(
       '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child > div'
@@ -59,5 +61,42 @@ export const ui = {
     }
 
     return $messageContainer;
+  },
+  getMessageBlocks() {
+    if (whereAmI() !== 'thread') return [];
+
+    const $messageContainer = this.getMessagesContainer();
+
+    const messageBlocks: {
+      $messageBlock: JQuery<Element>;
+      $answerHeading: JQuery<Element>;
+      $query: JQuery<Element>;
+      $answer: JQuery<Element>;
+    }[] = [];
+
+    $messageContainer.children().each((_, messageBlock) => {
+      const $messageBlock = $(messageBlock);
+      const $query = $messageBlock.find('.my-md.md\\:my-lg');
+      const $answer = $messageBlock.find(
+        '.relative.default.font-sans.text-base'
+      );
+      const $answerHeading = $messageBlock.find(
+        '.mb-sm.flex.w-full.items-center.justify-between:last'
+      );
+
+      $messageBlock.find('.col-span-8:last').addClass('message-col');
+      $messageBlock.find('.col-span-4:last').addClass('visual-col');
+
+      const messageBlockData = {
+        $messageBlock,
+        $answerHeading,
+        $query,
+        $answer,
+      };
+
+      messageBlocks.push(messageBlockData);
+    });
+
+    return messageBlocks;
   },
 };

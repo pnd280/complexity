@@ -56,7 +56,7 @@ function onElementExist({
   }
 
   return observer;
-};
+}
 
 function onAttributeChanges({
   targetNode,
@@ -99,6 +99,60 @@ function onAttributeChanges({
   return observer;
 }
 
+function onDOMChanges({
+  targetNode,
+  callback,
+  recurring = false,
+}: {
+  targetNode: Node | null;
+  callback: (mutation: MutationRecord) => void;
+  recurring?: boolean;
+}): void {
+  if (!targetNode || typeof callback !== 'function') return;
+
+  const observerConfig: MutationObserverInit = {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    characterData: true,
+  };
+
+  let observer: MutationObserver;
+
+  const startObserving = () => {
+    observer = new MutationObserver((mutationsList: MutationRecord[]) => {
+      for (const mutation of mutationsList) {
+        callback(mutation);
+      }
+      if (recurring && !document.body.contains(targetNode)) {
+        observer.disconnect();
+        const checkExistence = setInterval(() => {
+          if (document.body.contains(targetNode)) {
+            clearInterval(checkExistence);
+            startObserving();
+          }
+        }, 1000);
+      }
+    });
+    observer.observe(targetNode, observerConfig);
+  };
+
+  const checkNodeExistence = () => {
+    if (document.body.contains(targetNode)) {
+      startObserving();
+    } else if (recurring) {
+      const checkExistence = setInterval(() => {
+        if (document.body.contains(targetNode)) {
+          clearInterval(checkExistence);
+          startObserving();
+        }
+      }, 1000);
+    }
+  };
+
+  checkNodeExistence();
+}
+
 function onShallowRouteChange(callback: () => void) {
   let lastUrl = location.href;
   new MutationObserver(() => {
@@ -115,6 +169,7 @@ const observer = {
   onElementExist,
   onAttributeChanges,
   onShallowRouteChange,
+  onDOMChanges,
 };
 
 export default observer;

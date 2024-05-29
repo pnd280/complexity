@@ -1,3 +1,4 @@
+/* Popovers behavior tweaks */
 html:has(body[data-scroll-locked].bg-transparent) {
   overflow: hidden !important;
 }
@@ -12,8 +13,8 @@ body[data-scroll-locked].bg-transparent {
 /* Fonts */
 .font-sans,
 .font-display {
-  --font-fk-grotesk     : var(--ui-font);
-  --font-fk-grotesk-neue: var(--ui-font);
+  --font-fk-grotesk     : var(--ui-font) !important;
+  --font-fk-grotesk-neue: var(--ui-font) !important;
 }
 
 code {
@@ -177,8 +178,6 @@ html.dark .dark\:\!text-backgroundDark {
 }
 
 
-
-/* Opiniated styles */
 .pro-search {
 
   & .items-center.grid-rows-1fr-auto.grid.grid-cols-3.w-full.outline-none.focus\:outline-none.focus\:ring-borderMain,
