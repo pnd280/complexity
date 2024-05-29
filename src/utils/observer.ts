@@ -1,18 +1,28 @@
 import $ from 'jquery';
 
-export type OnElementExistOptions = {
-  selector: string | (() => Element[]);
-  callback: (args: { element: Element; reobserve: () => void }) => void;
+export type OnElementExistOptions<T extends any> = {
+  selector:
+    | string
+    | (() => Element[])
+    | (() => {
+        element: Element;
+        args: T;
+      }[]);
+  callback: (args: {
+    element: Element;
+    args?: T;
+    reobserve: () => void;
+  }) => void;
   recurring?: boolean;
   observedIdentifier?: string;
 };
 
-function onElementExist({
+function onElementExist<T>({
   selector,
   callback,
   recurring = true,
   observedIdentifier = 'observed',
-}: OnElementExistOptions): MutationObserver {
+}: OnElementExistOptions<T>): MutationObserver {
   requestIdleCallback(() => {
     checkAndInvokeCallback();
   });
@@ -30,10 +40,12 @@ function onElementExist({
   function checkAndInvokeCallback() {
     let elements;
 
-    if (typeof selector === 'string') {
+    if (isStringSelector(selector)) {
       elements = $(selector).toArray();
-    } else if (typeof selector === 'function') {
+    } else if (isElementArraySelector(selector)) {
       elements = selector();
+    } else if (isElementWithArgsArraySelector(selector)) {
+      elements = selector().map((item) => item.element);
     }
 
     elements?.forEach((element) => {
@@ -42,6 +54,9 @@ function onElementExist({
       if ($(element).data(observedIdentifier) !== true) {
         callback({
           element,
+          args: isElementWithArgsArraySelector(selector)
+            ? selector().find((item) => item.element === element)?.args
+            : undefined,
           reobserve: () => $(element).data(observedIdentifier, false),
         });
 
@@ -56,6 +71,28 @@ function onElementExist({
   }
 
   return observer;
+
+  function isStringSelector(selector: any): selector is string {
+    return typeof selector === 'string';
+  }
+
+  function isElementArraySelector(selector: any): selector is () => Element[] {
+    return (
+      typeof selector === 'function' &&
+      Array.isArray(selector()) &&
+      selector().every((el: any) => el instanceof Element)
+    );
+  }
+
+  function isElementWithArgsArraySelector(
+    selector: any
+  ): selector is () => { element: Element; args: T }[] {
+    return (
+      typeof selector === 'function' &&
+      Array.isArray(selector()) &&
+      selector().every((item: any) => item?.element instanceof Element)
+    );
+  }
 }
 
 function onAttributeChanges({

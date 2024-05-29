@@ -1,7 +1,7 @@
 {
   "name": "complexity",
   "displayName": "Complexity",
-  "version": "0.0.0.2",
+  "version": "0.0.0.3",
   "author": "pnd280",
   "description": "⚡ Supercharge your Perplexity.ai",
   "type": "module",
@@ -58,10 +58,12 @@
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.19",
     "@types/chrome": "^0.0.246",
+    "@types/dompurify": "^3.0.5",
     "@types/jquery": "^3.5.30",
     "@types/node": "^20.12.12",
     "@types/react": "^18.2.28",
     "@types/react-dom": "^18.2.13",
+    "@types/showdown": "^2.0.6",
     "@vitejs/plugin-react": "^4.1.0",
     "autoprefixer": "^10.4.19",
     "gulp": "^4.0.2",

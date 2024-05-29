@@ -14,6 +14,7 @@ type PopupSettingsState = {
     threadTOC: boolean;
   };
   visualTweaks: {
+    threadQueryMarkdown: boolean;
     collapseEmptyThreadVisualColumns: boolean;
   };
 };
@@ -30,6 +31,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
       threadTOC: false,
     },
     visualTweaks: {
+      threadQueryMarkdown: false,
       collapseEmptyThreadVisualColumns: false,
     },
   }))
@@ -54,6 +56,7 @@ const popupSettingsStore = usePopupSettingsStore;
           threadTOC: false,
         },
         visualTweaks: {
+          threadQueryMarkdown: false,
           collapseEmptyThreadVisualColumns: false,
         },
       },

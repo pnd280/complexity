@@ -8,7 +8,7 @@ import popupSettings from './settings';
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 
-const displayVersion = 'alpha-test-1.5';
+const displayVersion = 'beta-0.0.0.3';
 
 export const Popup = () => {
   const { store, handleQueryBoxSettingsChange, handleQolTweaksChange, handleVisualTweaksChange } =

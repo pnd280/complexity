@@ -1,15 +1,3 @@
-/* Popovers behavior tweaks */
-html:has(body[data-scroll-locked].bg-transparent) {
-  overflow: hidden !important;
-}
-
-body[data-scroll-locked].bg-transparent {
-  --removed-body-scroll-bar-size: 0 !important;
-  margin-right                  : 0 !important;
-  overflow                      : visible !important;
-  pointer-events                : auto !important;
-}
-
 /* Fonts */
 .font-sans,
 .font-display {
@@ -189,5 +177,53 @@ html.dark .dark\:\!text-backgroundDark {
     &:has(textarea:focus) {
       box-shadow: 0 0 5px 0 var(--accent-foreground-darker);
     }
+  }
+}
+
+
+/* Popovers behavior tweaks */
+html:has(body[data-scroll-locked].bg-transparent) {
+  overflow: hidden !important;
+}
+
+body[data-scroll-locked].bg-transparent {
+  --removed-body-scroll-bar-size: 0 !important;
+  margin-right                  : 0 !important;
+  overflow                      : visible !important;
+  pointer-events                : auto !important;
+}
+
+/* Markdown Query Wrapper */
+.my-md.md\:my-lg:has(textarea) #markdown-query-wrapper {
+  display: none;
+}
+
+body:has(#markdown-query-wrapper) {
+  & h1.whitespace-pre-line.break-words,
+  & div.whitespace-pre-line.break-words {
+    display: none;
+  }
+}
+
+html.dark #markdown-query-wrapper {
+  & pre code {
+    color: var(--foreground) !important;
+  }
+}
+
+#markdown-query-wrapper pre {
+  background  : #1d1f21;
+  padding-left: 0.8rem;
+  padding-top : 0.8rem;
+  width       : 100% !important;
+  max-width   : 90vw !important;
+
+  code {
+    color     : #e8e8e8 !important;
+    background: #1d1f21;
+  }
+
+  &.retracted {
+    max-height: 200px;
   }
 }

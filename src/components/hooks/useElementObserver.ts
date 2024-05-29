@@ -5,7 +5,7 @@ import {
 
 import observer, { OnElementExistOptions } from '@/utils/observer';
 
-type useElementObserverProps = Omit<OnElementExistOptions, 'callback'> & {
+type useElementObserverProps = Omit<OnElementExistOptions<any>, 'callback'> & {
   callback?: ({ element }: { element: Element }) => void;
 };
 

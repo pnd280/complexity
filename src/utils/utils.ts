@@ -1,4 +1,6 @@
+import DOMPurify from 'dompurify';
 import $ from 'jquery';
+import showdown from 'showdown';
 
 import { ui } from './ui';
 
@@ -47,6 +49,74 @@ export const jsonUtils = {
     }
   },
 };
+
+export function markdown2Html(markdown: string) {
+  const escapeHtmlTags = (html: string) => {
+    return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  };
+
+  const unescapeHtmlTags = (html: string) => {
+    return html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  };
+
+  const converter = new showdown.Converter();
+  converter.setOption('tables', true);
+  converter.setOption('simpleLineBreaks', true);
+
+  const html = converter.makeHtml(escapeHtmlTags(markdown));
+
+  const $tag = $('<div>').html(html);
+
+  $tag.find('*').each((_, e) => {
+    const tagName = e.tagName.toLowerCase();
+
+    if (tagName === 'code') {
+      const code = $(e).text();
+      $(e).html(escapeHtmlTags(unescapeHtmlTags(code)));
+    }
+  });
+
+  return DOMPurify.sanitize($tag.html());
+}
+
+export function calculateRenderLines(
+  text: string,
+  containerWidth: number,
+  fontFamily: string,
+  fontSize: number
+): number {
+  // Create a temporary canvas element
+  const canvas: HTMLCanvasElement = document.createElement('canvas');
+  const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
+
+  if (!context) {
+    throw new Error('Failed to get 2D context');
+  }
+
+  // Set the font properties
+  context.font = `${fontSize}px ${fontFamily}`;
+
+  // Split the text into words
+  const words: string[] = text.split(' ');
+  let line: string = '';
+  let lines: number = 1;
+
+  // Iterate over each word
+  for (let i = 0; i < words.length; i++) {
+    const testLine: string = line + words[i] + ' ';
+    const metrics: TextMetrics = context.measureText(testLine);
+
+    // If the test line is wider than the container, start a new line
+    if (metrics.width > containerWidth) {
+      lines++;
+      line = words[i] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+
+  return lines;
+}
 
 export function detectConsecutiveClicks(params: {
   element: Element;

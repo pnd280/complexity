@@ -27,6 +27,8 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   uiTweaks.signThreadColumns();
   uiTweaks.collapseEmptyThreadVisualColumns();
 
+  uiTweaks.alterMessageQuery();
+
   // webpageMessageInterceptors.inspectWebSocketEvents();
   // webpageMessageInterceptors.inspectLongPollingEvents();
 })();

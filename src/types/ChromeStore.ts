@@ -22,6 +22,7 @@ export type ChromeStore = {
       threadTOC: boolean;
     };
     visualTweaks: {
+      threadQueryMarkdown: boolean;
       collapseEmptyThreadVisualColumns: boolean;
     };
   };

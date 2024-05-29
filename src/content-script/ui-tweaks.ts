@@ -3,6 +3,8 @@ import $ from 'jquery';
 import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
 import {
+  calculateRenderLines,
+  markdown2Html,
   sleep,
   whereAmI,
 } from '@/utils/utils';
@@ -152,10 +154,6 @@ function signThreadColumns() {
 }
 
 function collapseEmptyThreadVisualColumns() {
-  console.log(
-    popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
-  );
-
   if (
     !popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
   )
@@ -194,6 +192,83 @@ function collapseEmptyThreadVisualColumns() {
   });
 }
 
+function alternateMessageQuery({
+  $messageBlock,
+  $query,
+}: {
+  $messageBlock: JQuery<Element>;
+  $query: JQuery<Element>;
+}) {
+  if (whereAmI() !== 'thread') return;
+
+  const mardownedText = markdown2Html($query.text());
+
+  const $newQueryWrapper = $('<div>')
+    .html(mardownedText)
+    .attr('id', 'markdown-query-wrapper')
+    .addClass(
+      'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection'
+    );
+
+  const fontFamily =
+    $('h1')?.css('font-family')?.split(',')?.[0]?.trim() || 'ui-sans-serif';
+
+  const currentFontSize = parseInt($newQueryWrapper.css('font-size'));
+
+  const calculatedWrappedLines = calculateRenderLines(
+    $query.text(),
+    $query.width() || $messageBlock.width()!,
+    fontFamily,
+    currentFontSize
+  );
+
+  $newQueryWrapper.addClass(
+    calculatedWrappedLines > 1 ? 'text-base' : 'text-3xl'
+  );
+
+  $query.append($newQueryWrapper);
+
+  $query.off('dblclick').on('dblclick', () => {
+    if ($query.find('textarea').length) return;
+    const $buttonBar = $messageBlock.find(
+      '.mt-sm.flex.items-center.justify-between'
+    );
+
+    const $editButton = $buttonBar.children().last().children().eq(1);
+
+    $editButton.trigger('click');
+  });
+}
+
+function alterMessageQuery() {
+  if (!popupSettingsStore.getState().visualTweaks.threadQueryMarkdown) return;
+
+  observer.onElementExist({
+    selector: () => {
+      const elements: {
+        element: Element;
+        args: JQuery<Element>;
+      }[] = [];
+
+      const messageBlocks = ui.getMessageBlocks();
+
+      messageBlocks.forEach(({ $query, $messageBlock }) => {
+        if (!$messageBlock?.length) return;
+
+        elements.push({ element: $query[0], args: $messageBlock });
+      });
+
+      return elements;
+    },
+    callback: ({ element, args }) => {
+      requestIdleCallback(() =>
+        alternateMessageQuery({ $messageBlock: args!, $query: $(element) })
+      );
+    },
+    observedIdentifier: 'alter-message-query',
+  });
+}
+
 const uiTweaks = {
   injectBaseStyles,
   correctColorScheme,
@@ -204,6 +279,7 @@ const uiTweaks = {
   hideNativeProSearchSwitch,
   signThreadColumns,
   collapseEmptyThreadVisualColumns,
+  alterMessageQuery,
 };
 
 export default uiTweaks;

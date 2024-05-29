@@ -40,11 +40,11 @@ const qolTweaks = [
 ] as const;
 
 const visualTweaks = [
-  // {
-  //   id: 'thread-query-markdown',
-  //   label: 'Thread query markdown',
-  //   storeKey: 'threadQueryMarkdown',
-  // },
+  {
+    id: 'thread-query-markdown',
+    label: 'Thread query markdown',
+    storeKey: 'threadQueryMarkdown',
+  },
   // {
   //   id: 'chat-ui', // image & avatar on top of every messages
   //   label: 'Chat UI',
