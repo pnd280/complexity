@@ -1,7 +1,7 @@
 import {
   useEffect,
   useMemo,
-  useState,
+  useRef,
 } from 'react';
 
 import clsx from 'clsx';
@@ -82,6 +82,8 @@ export default function FocusSelector() {
   }, []);
 
   const [open, toggleOpen] = useToggle(false);
+
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const {
     focus,
@@ -167,6 +169,7 @@ export default function FocusSelector() {
             onClick={() => {
               toggleWebAccess();
             }}
+            ref={triggerRef}
           >
             <div
               className={clsx({
@@ -188,7 +191,13 @@ export default function FocusSelector() {
           onCloseAutoFocus={(e: Event) => {
             e.preventDefault();
           }}
-          onPointerDownOutside={() => {
+          onPointerDownOutside={(event) => {
+            if (
+              triggerRef.current &&
+              triggerRef.current.contains(event.target as Node)
+            )
+              return;
+
             toggleOpen(false);
             setTimeout(() => {
               ui.findActiveQueryBoxTextarea().trigger('focus');
