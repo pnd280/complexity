@@ -26,6 +26,7 @@ export type ChromeStore = {
       collapseEmptyThreadVisualColumns: boolean;
     };
   };
+  customCSS: string;
 } & {
   [key: `sessionStore-${number}`]: ChromeSessionStore;
 };

@@ -44,6 +44,7 @@ async function init() {
   ]);
 
   uiTweaks.injectBaseStyles();
+  uiTweaks.injectCustomStyles();
   uiTweaks.correctColorScheme();
 }
 

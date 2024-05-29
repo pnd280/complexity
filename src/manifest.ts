@@ -31,6 +31,7 @@ export default defineManifest({
       run_at: 'document_start',
     },
   ],
+  options_page: 'options.html',
   host_permissions: ['*://*.perplexity.ai/*'],
   web_accessible_resources: [
     {

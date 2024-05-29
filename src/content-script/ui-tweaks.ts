@@ -4,11 +4,13 @@ import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
 import {
   calculateRenderLines,
+  jsonUtils,
   markdown2Html,
   sleep,
   whereAmI,
 } from '@/utils/utils';
 
+import { globalStore } from './session-store/global';
 import { popupSettingsStore } from './session-store/popup-settings';
 
 function injectBaseStyles() {
@@ -20,6 +22,17 @@ function injectBaseStyles() {
       id: 'complexity-base-styles',
     })
     .appendTo('head');
+}
+
+function injectCustomStyles() {
+  globalStore.subscribe(({ customCSS }) => {
+    $('<style>')
+      .attr({
+        id: 'complexity-custom-styles',
+      })
+      .text(jsonUtils.safeParse(customCSS) || '')
+      .appendTo('head');
+  });
 }
 
 function alterAttachButton() {
@@ -271,6 +284,7 @@ function alterMessageQuery() {
 
 const uiTweaks = {
   injectBaseStyles,
+  injectCustomStyles,
   correctColorScheme,
   alterAttachButton,
   adjustSelectorsBorderRadius,

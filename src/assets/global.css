@@ -7,8 +7,8 @@
 
 @layer base {
   :root {
-    --background: #fcfcf9;
-    --foreground: #13343B;
+    --background       : #fcfcf9;
+    --foreground       : #13343B;
     --foreground-darker: #13343b60;
 
     --card           : #fcfcf9;
@@ -42,12 +42,12 @@
     --radius: 0.5rem;
 
     --ui-font  : "Karla", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --mono-font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --mono-font: 'JetBrains Mono', ui-monospace;
   }
 
   .dark {
-    --background: #181818;
-    --foreground: #e8e8e6;
+    --background       : #181818;
+    --foreground       : #e8e8e6;
     --foreground-darker: #e8e8e660;
 
     --card           : #181818;

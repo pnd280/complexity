@@ -47,6 +47,20 @@ export default defineConfig(({ mode }) => {
       }),
     ],
 
+    server: {
+      port: 5173,
+      hmr: {
+        host: 'localhost',
+      }
+      // proxy: {
+      //   '/extension': {
+      //     target: 'http://localhost:5173',
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/extension/, ''),
+      //   },
+      // },
+    },
+
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),

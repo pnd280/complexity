@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { produce } from 'immer';
 
 import { ChromeStore } from '@/types/ChromeStore';

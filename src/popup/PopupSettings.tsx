@@ -1,5 +1,3 @@
-import { Zap } from 'lucide-react';
-
 import LabeledSwitch from '@/components/LabeledSwitch';
 import { Separator } from '@/components/ui/separator';
 
@@ -8,17 +6,19 @@ import popupSettings from './settings';
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 
-const displayVersion = 'beta-0.0.0.3';
-
-export const Popup = () => {
-  const { store, handleQueryBoxSettingsChange, handleQolTweaksChange, handleVisualTweaksChange } =
-    usePopupSettings();
+export const PopupSettings = () => {
+  const {
+    store,
+    handleQueryBoxSettingsChange,
+    handleQolTweaksChange,
+    handleVisualTweaksChange,
+  } = usePopupSettings();
 
   if (!store) return null;
 
   return (
-    <main className="tw-relative tw-font-sans tw-bg-background tw-text-foreground tw-flex-col tw-w-[300px] !tw-text-[1em]  tw-overflow-auto">
-      <div className="tw-px-4 tw-pt-4 tw-h-[300px] tw-overflow-auto tw-mb-10">
+    <main className="tw-relative tw-font-sans tw-bg-background tw-text-foreground tw-flex-col tw-w-full tw-h-full !tw-text-[1em] tw-overflow-auto">
+      <div className="tw-px-4 tw-pt-4 tw-overflow-auto">
         <div className="tw-text-yellow-300 tw-mb-4 tw-w-full">
           Change(s) requires a full page reload!
         </div>
@@ -90,28 +90,8 @@ export const Popup = () => {
           ...more to come
         </div>
       </div>
-
-      <div className="tw-absolute tw-bottom-0 tw-left-0 tw-w-full tw-bg-secondary tw-flex tw-flex-col">
-        <Separator />
-        <div className="tw-flex">
-          <div className="tw-p-2 tw-font-bold tw-flex tw-items-center">
-            <span>Complexity</span>
-            <Zap className="tw-h-3 tw-w-3 tw-mx-1 tw-text-accent-foreground" />
-            <div className="tw-text-secondary-foreground !tw-min-w-max tw-truncate">
-              by pnd280
-            </div>
-          </div>
-          <div
-            id="complexity-version"
-            title={displayVersion}
-            className="tw-px-2 tw-py-1 tw-mr-2 tw-text-[.6rem] tw-font-bold tw-ml-auto tw-bg-background tw-text-foreground tw-rounded-md tw-font-mono tw-self-center tw-border tw-truncate"
-          >
-            {displayVersion}
-          </div>
-        </div>
-      </div>
     </main>
   );
 };
 
-export default Popup;
+export default PopupSettings;
