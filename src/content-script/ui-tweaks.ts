@@ -114,7 +114,7 @@ function adjustQueryBoxWidth() {
       $wrapper.addClass('tw-transition-all tw-duration-300');
       $wrapper.parent().addClass('tw-transition-all tw-duration-300');
       $wrapper.removeClass('md:col-span-8').addClass('col-span-12');
-      $wrapper.parent().addClass('!tw-bottom-[5px]');
+      $wrapper.parent().addClass('md:!tw-bottom-[5px]');
 
       observer.onAttributeChanges({
         targetNode: $(
@@ -122,7 +122,7 @@ function adjustQueryBoxWidth() {
         )[0],
         attributes: ['class'],
         callback: ({ targetNode }) => {
-          $(targetNode).addClass('!tw-bottom-[5px]');
+          $(targetNode).addClass('md:!tw-bottom-[5px]');
         },
       });
     },
@@ -220,7 +220,7 @@ function alternateMessageQuery({
     .html(mardownedText)
     .attr('id', 'markdown-query-wrapper')
     .addClass(
-      'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection'
+      'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection tw-font-mono'
     );
 
   const fontFamily =

@@ -58,7 +58,7 @@ export default function ThreadAnchor({}: Props) {
         {anchorsProps && anchorsProps.length > 1 && (
           <div
             className={clsx(
-              'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-zoom-in tw-transition-all',
+              'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-zoom-in tw-transition-all tw-font-sans',
               {
                 'tw-relative tw-bg-background tw-p-3 tw-rounded-md tw-border tw-border-border tw-shadow-lg':
                   isFloat,

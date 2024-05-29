@@ -102,7 +102,7 @@ export default function CollectionSelector() {
           </PopoverTrigger>
         </TooltipWrapper>
         <PopoverContent className="!tw-w-max !tw-p-0">
-          <Command className="!tw-min-w-[150px] tw-max-w-[250px] tw-bg-background">
+          <Command className="!tw-min-w-[150px] tw-max-w-[250px] tw-bg-background tw-font-sans">
             <CommandInput
               placeholder="Search..."
               className="!tw-py-2 !tw-h-max !tw-min-w-[80px] !tw-text-sm"
@@ -144,37 +144,28 @@ export default function CollectionSelector() {
                     </div>
 
                     <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
-                      <div
-                        className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleOpen(false);
-                          setEditCollection(collection);
-                          toggleEditDialogOpen(true);
+                      <TooltipWrapper
+                        content={
+                          collection.instructions || collection.description
+                        }
+                        contentOptions={{
+                          side: 'right',
+                          sideOffset: 60,
                         }}
                       >
-                        <Pencil className="tw-w-3 tw-h-3" />
-                      </div>
-                      {(collection.instructions || collection.instructions) && (
-                        <TooltipWrapper
-                          content={
-                            collection.instructions || collection.description
-                          }
-                          contentOptions={{
-                            side: 'right',
-                            sideOffset: 60,
+                        <div
+                          className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleOpen(false);
+                            setEditCollection(collection);
+                            toggleEditDialogOpen(true);
                           }}
                         >
-                          <div
-                            className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-cursor-default tw-border active:tw-scale-95"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
-                            <Eye className="tw-w-3 tw-h-3" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
+                          <Pencil className="tw-w-3 tw-h-3" />
+                        </div>
+                      </TooltipWrapper>
+
                       <div
                         className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
                         onClick={(e) => {
