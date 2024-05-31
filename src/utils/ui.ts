@@ -3,13 +3,69 @@ import $ from 'jquery';
 import { whereAmI } from './utils';
 
 export const ui = {
-  findActiveQueryBoxTextarea() {
-    return $('button[aria-label="Submit"]:last')
-      .parents()
-      .find('textarea[placeholder]:last');
+  findActiveQueryBoxTextarea({
+    type,
+  }: {
+    type?: 'main' | 'follow-up';
+  }): JQuery<HTMLTextAreaElement> {
+    const $parents = $('button[aria-label="Submit"]:last').parents();
+
+    if (type === 'main') {
+      return $parents.find(
+        'textarea[placeholder="Ask anything..."]:last'
+      ) as JQuery<HTMLTextAreaElement>;
+    }
+
+    if (type === 'follow-up') {
+      return $parents.find(
+        'textarea[placeholder="Ask follow-up"]:last'
+      ) as JQuery<HTMLTextAreaElement>;
+    }
+
+    return $parents.find(
+      'textarea[placeholder]:last'
+    ) as JQuery<HTMLTextAreaElement>;
+  },
+  findActiveQueryBox({ type }: { type?: 'main' | 'follow-up' }) {
+    return this.findActiveQueryBoxTextarea({
+      type,
+    }).parents('.grow.block');
   },
   getStickyHeader() {
     return $('.sticky.left-0.right-0.top-0.z-20.border-b');
+  },
+  getWordOnCaret(element: HTMLTextAreaElement) {
+    const text = element.value;
+    const caret = element.selectionStart;
+
+    const start = text.slice(0, caret).search(/\S+$/);
+    const end = text.slice(caret).search(/\s/);
+
+    const adjustedEnd = end === -1 ? text.length : end + caret;
+
+    const word = text.slice(start, adjustedEnd);
+    const newText = text.slice(0, start) + text.slice(adjustedEnd);
+
+    return {
+      word,
+      start,
+      end: adjustedEnd,
+      newText,
+    };
+  },
+  setReactTextareaValue(textarea: HTMLTextAreaElement, newValue: string) {
+    if (!textarea) return;
+
+    const nativeTextareaValueSetter = Object.getOwnPropertyDescriptor(
+      HTMLTextAreaElement.prototype,
+      'value'
+    )?.set;
+
+    if (nativeTextareaValueSetter) {
+      nativeTextareaValueSetter.call(textarea, newValue);
+    }
+
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
   },
   findMostVisibleElementIndex(elements: Element[]) {
     let maxVisiblePercentage = 0;

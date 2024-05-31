@@ -1,3 +1,5 @@
+import { chromeStorage } from '@/utils/chrome-store';
+
 chrome.runtime.onMessage.addListener(
   async (
     message: any,
@@ -54,6 +56,15 @@ chrome.tabs.onRemoved.addListener(
     });
   }
 );
+
+chrome.runtime.onUpdateAvailable.addListener((details) => {
+  chromeStorage.setStorageValue({
+    key: 'latestVersion',
+    value: details.version,
+  })
+
+  chrome.runtime.reload();
+});
 
 function injectScript({
   tabId,

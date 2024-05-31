@@ -47,6 +47,11 @@ export default function DOMTooltip({
         clearTimeout(timeoutId);
         setOpen(false);
       });
+
+    return () => {
+      clearTimeout(timeoutId);
+      $(container).off('mouseenter').off('mouseleave');
+    };
   }, [container]);
 
   if (!container) return null;

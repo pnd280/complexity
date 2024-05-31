@@ -39,7 +39,7 @@ import {
   SelectTrigger,
 } from '../ui/select';
 
-const webAccessFocus = [
+export const webAccessFocus = [
   {
     label: 'All',
     code: 'internet',
@@ -106,7 +106,7 @@ export default function FocusSelector() {
       setFocus('internet');
     }
 
-    ui.findActiveQueryBoxTextarea().trigger('focus');
+    ui.findActiveQueryBoxTextarea({}).trigger('focus');
 
     chromeStorage.setStorageValue({
       key: 'defaultWebAccess',
@@ -137,13 +137,16 @@ export default function FocusSelector() {
     }
   };
 
+  useEffect(() => {
+    toggleWebAccess(true);
+  }, [focus]);
+
   return (
     <>
       <Select
         value={focus || ''}
         onValueChange={(value) => {
           setFocus(value as WebAccessFocus['code']);
-          toggleWebAccess(true);
         }}
         open={open}
       >
@@ -200,38 +203,38 @@ export default function FocusSelector() {
 
             toggleOpen(false);
             setTimeout(() => {
-              ui.findActiveQueryBoxTextarea().trigger('focus');
+              ui.findActiveQueryBoxTextarea({}).trigger('focus');
             }, 100);
           }}
         >
           <SelectGroup>
-            {items.map((model) => (
+            {items.map((item) => (
               <TooltipWrapper
-                content={focus !== model.code ? model.tooltip : undefined}
+                content={focus !== item.code ? item.tooltip : undefined}
                 contentOptions={{
                   side: 'right',
                   sideOffset: 10,
                 }}
                 contentClassName="tw-font-sans"
-                key={model.code}
+                key={item.code}
               >
                 <SelectItem
-                  key={model.code}
-                  value={model.code}
+                  key={item.code}
+                  value={item.code}
                   className={clsx({
-                    'tw-text-accent-foreground': model.code === focus,
+                    'tw-text-accent-foreground': item.code === focus,
                   })}
                   onContextMenu={(e) => {
                     e.preventDefault();
                   }}
                 >
                   <div className="tw-flex tw-items-center tw-justify-around gap-2">
-                    {model.icon ? (
-                      <div>{model.icon}</div>
+                    {item.icon ? (
+                      <div>{item.icon}</div>
                     ) : (
                       <Cpu className="tw-w-4 tw-h-4" />
                     )}
-                    <span>{model.label}</span>
+                    <span>{item.label}</span>
                   </div>
                 </SelectItem>
               </TooltipWrapper>
@@ -242,11 +245,7 @@ export default function FocusSelector() {
                 id="pro-search"
                 onCheckedChange={(checked) => {
                   toggleProSearch(checked);
-
-                  if (checked) {
-                    toggleWebAccess(true);
-                  }
-
+                  checked && toggleWebAccess(true);
                   saveProSearchState(checked);
                 }}
                 checked={proSearch}

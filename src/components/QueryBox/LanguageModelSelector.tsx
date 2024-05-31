@@ -16,7 +16,7 @@ import { WSMessageParser } from '@/utils/ws';
 
 import ModelSelector from './ModelSelector';
 
-const languageModels = [
+export const languageModels = [
   {
     label: 'GPT-4 Omni',
     shortLabel: 'GPT-4o',

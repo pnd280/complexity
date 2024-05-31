@@ -64,7 +64,7 @@ export default function CollectionSelector() {
   );
 
   useEffect(() => {
-    ui.findActiveQueryBoxTextarea().trigger('focus');
+    ui.findActiveQueryBoxTextarea({}).trigger('focus');
   }, [selectedCollectionUuid]);
 
   return (

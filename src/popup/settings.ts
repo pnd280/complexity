@@ -27,11 +27,11 @@ const qolTweaks = [
     label: 'Thread TOC',
     storeKey: 'threadTOC',
   },
-  // {
-  //   id: 'double-click-to-edit-query',
-  //   label: 'Double click to edit query',
-  //   storeKey: 'doubleClickToEditQuery',
-  // },
+  {
+    id: 'quick-query-commander',
+    label: 'Inline query params invocation',
+    storeKey: 'quickQueryCommander',
+  },
   // {
   //   id: 'collection-quick-context-menu',
   //   label: 'Quick context menu on collection links (in thread)',
@@ -42,7 +42,7 @@ const qolTweaks = [
 const visualTweaks = [
   {
     id: 'thread-query-markdown',
-    label: 'Thread query markdown',
+    label: 'Thread query markdown (&double click to edit query)',
     storeKey: 'threadQueryMarkdown',
   },
   // {

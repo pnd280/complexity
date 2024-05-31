@@ -28,7 +28,7 @@ export default function useQueryBoxObserver({
     callback: ({ element }) => {
       if (disabled) return;
 
-      $(element).addClass('tw-col-span-2');
+      $(element).addClass('tw-col-span-2 tw-flex-wrap tw-gap-y-1');
 
       const $buttonBarChildren = $(element).children(
         ':not(.mr-xs.flex.shrink-0.items-center)'

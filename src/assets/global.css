@@ -73,7 +73,7 @@
     --destructive-foreground: #e8e8e6;
 
     --border       : #3d3f40;
-    --border-darker: rgba(61, 63, 64, .5);
+    --border-darker: #3d3f4080;
     --input        : #3d3f40;
     --ring         : #72aefd;
     --ring-darker  : #72aefd80;

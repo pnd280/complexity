@@ -18,9 +18,7 @@ import {
 } from '@/utils/utils';
 import { useToggle } from '@uidotdev/usehooks';
 
-type Props = {};
-
-export default function ThreadAnchor({}: Props) {
+export default function ThreadAnchor() {
   const { visibleMessageIndex, anchorsProps, wrapperPos } =
     useThreadAnchorObserver();
 
@@ -34,20 +32,16 @@ export default function ThreadAnchor({}: Props) {
     ? wrapperPos.left + wrapperWidth + 50 > window.innerWidth
     : false;
 
-  useEffect(() => {
-    if (!wrapperPos) {
-      requestIdleCallback(() => {
-        setWrapperWidth($('#thread-anchor')?.outerWidth() || 0);
-      });
-    }
-  }, [wrapperWidth]);
+  requestIdleCallback(() => {
+    setWrapperWidth($('#thread-anchor')?.outerWidth() || 0);
+  });
 
   if (!anchorsProps || !wrapperPos) return null;
 
   return (
     <>
       <div
-        className="tw-fixed tw-z-10 tw-right-0 tw-top-0 tw-transition-all"
+        className="tw-fixed tw-w-max tw-z-10 tw-right-0 tw-top-0 tw-transition-all"
         style={{
           top: `${(ui.getStickyHeader().outerHeight() || 50) + 30}px`,
           [!isFloat ? 'left' : 'right']: !isFloat

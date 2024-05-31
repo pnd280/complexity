@@ -7,6 +7,7 @@ export type ChromeSessionStoreKey = keyof ChromeSessionStore;
 export type ChromeStoreKey = keyof ChromeStore;
 
 export type ChromeStore = {
+  latestVersion: string;
   defaultFocus: Nullable<WebAccessFocus['code']>;
   defaultCollectionUUID?: Nullable<string>;
   defaultWebAccess: boolean;
@@ -20,6 +21,7 @@ export type ChromeStore = {
     };
     qolTweaks: {
       threadTOC: boolean;
+      quickQueryCommander: boolean;
     };
     visualTweaks: {
       threadQueryMarkdown: boolean;

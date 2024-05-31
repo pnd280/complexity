@@ -125,7 +125,7 @@ export default function CollectionEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={(open) => onOpenChange(open)}>
-      <DialogContent className="tw-max-w-full xl:tw-max-w-[40vw] tw-h-[90vh] tw-max-h-[900px] !tw-flex tw-flex-col tw-justify-start tw-flex-grow">
+      <DialogContent className="tw-max-w-full xl:tw-max-w-[40vw] tw-h-[90vh] tw-max-h-[900px] !tw-flex tw-flex-col tw-justify-start tw-flex-grow tw-font-sans">
         <DialogHeader>
           <DialogHeader className="tw-text-3xl">Edit Collection</DialogHeader>
           <Separator />

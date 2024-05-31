@@ -220,7 +220,7 @@ function alternateMessageQuery({
     .html(mardownedText)
     .attr('id', 'markdown-query-wrapper')
     .addClass(
-      'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection tw-font-mono'
+      'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection'
     );
 
   const fontFamily =

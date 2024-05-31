@@ -95,6 +95,34 @@ function onElementExist<T>({
   }
 }
 
+function onElementRemoved({
+  selector,
+  callback,
+}: {
+  selector: Element;
+  callback: () => void;
+}): MutationObserver {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.removedNodes.length > 0) {
+        mutation.removedNodes.forEach((node) => {
+          if (node === selector) {
+            callback();
+            observer.disconnect();
+          }
+        });
+      }
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  return observer;
+}
+
 function onAttributeChanges({
   targetNode,
   attributes,
@@ -204,6 +232,7 @@ function onShallowRouteChange(callback: () => void) {
 
 const observer = {
   onElementExist,
+  onElementRemoved,
   onAttributeChanges,
   onShallowRouteChange,
   onDOMChanges,
