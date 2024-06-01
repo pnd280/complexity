@@ -126,7 +126,7 @@ export default function QuickQueryCommander({
     const textarea = $textarea[0];
 
     const down = (e: JQuery.TriggeredEvent) => {
-      const { word: wordAtCaret, newText, start } = ui.getWordOnCaret(textarea);
+      const { word: wordAtCaret } = ui.getWordOnCaret(textarea);
 
       if (wordAtCaret.trim().length < 1) {
         handleSetVisible(false);
@@ -136,10 +136,6 @@ export default function QuickQueryCommander({
       if (isInterceptableNavigationKey(e)) {
         if (e.key === 'Escape') {
           return handleSetVisible(false);
-        }
-
-        if (e.key === 'Enter') {
-          postSelection({ textarea, newText, start });
         }
 
         return (
@@ -181,7 +177,7 @@ export default function QuickQueryCommander({
     return () => {
       $(textarea).off('keydown');
     };
-  }, [$textarea]);
+  }, [$textarea, visible, searchValue, dispatchKeydown]);
 
   const { refetch: refetchThreadInfo } = useQuery({
     queryKey: ['currentThreadInfo'],
