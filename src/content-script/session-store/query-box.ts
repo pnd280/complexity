@@ -105,20 +105,18 @@ const useQueryBoxStore = create<QueryBoxState>()(
         })),
 
       proSearch: false,
-      toggleProSearch: async (toggled, isInit = false) => {
+      toggleProSearch: async (toggled) => {
         try {
-          if (!isInit) {
-            await webpageMessenger.sendMessage({
-              event: 'sendWebsocketMessage',
-              payload: WSMessageParser.stringify({
-                messageCode: 423,
-                event: 'save_user_settings',
-                data: {
-                  default_copilot: toggled,
-                },
-              }),
-            });
-          }
+          await webpageMessenger.sendMessage({
+            event: 'sendWebsocketMessage',
+            payload: WSMessageParser.stringify({
+              messageCode: 423,
+              event: 'save_user_settings',
+              data: {
+                default_copilot: toggled,
+              },
+            }),
+          });
 
           return set((state) => ({
             webAccess: {
@@ -155,7 +153,7 @@ async function initQueryBoxStore({
       state.webAccess.focus = defaultFocus;
     });
   }
-  // queryBoxStore.getState().webAccess.toggleWebAccess(defaultWebAccess || false);
+
   queryBoxStore.setState((state) => {
     state.webAccess.allowWebAccess = defaultWebAccess;
   });

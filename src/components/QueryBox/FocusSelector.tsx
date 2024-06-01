@@ -22,9 +22,11 @@ import {
 } from 'react-icons/si';
 
 import { queryBoxStore } from '@/content-script/session-store/query-box';
+import { UserSettingsApiResponse } from '@/types/PPLXApi';
 import { chromeStorage } from '@/utils/chrome-store';
 import { ui } from '@/utils/ui';
 import { SelectLabel } from '@radix-ui/react-select';
+import { useQuery } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 
 import LabeledSwitch from '../LabeledSwitch';
@@ -75,6 +77,13 @@ export type WebAccessFocus = (typeof webAccessFocus)[number] & {
 };
 
 export default function FocusSelector() {
+  const { data: userSettings } = useQuery<UserSettingsApiResponse>({
+    queryKey: ['userSettings'],
+    enabled: false,
+  });
+
+  const hasActivePPLXSub = userSettings?.subscription_status === 'active';
+
   const items = useMemo(() => {
     return [...webAccessFocus] as WebAccessFocus[];
   }, []);
@@ -112,7 +121,7 @@ export default function FocusSelector() {
     });
   }, [allowWebAccess]);
 
-  $('body').toggleClass('pro-search', proSearch && allowWebAccess);
+  $('body').toggleClass('pro-search', hasActivePPLXSub && proSearch && allowWebAccess);
 
   return (
     <>
@@ -213,17 +222,19 @@ export default function FocusSelector() {
                 </SelectItem>
               </TooltipWrapper>
             ))}
-            <SelectLabel className="tw-p-2">
-              <LabeledSwitch
-                label="Pro search"
-                id="pro-search"
-                onCheckedChange={(checked) => {
-                  toggleProSearch(checked);
-                  checked && toggleWebAccess(true);
-                }}
-                checked={proSearch}
-              />
-            </SelectLabel>
+            {hasActivePPLXSub && (
+              <SelectLabel className="tw-p-2">
+                <LabeledSwitch
+                  label="Pro search"
+                  id="pro-search"
+                  onCheckedChange={(checked) => {
+                    toggleProSearch(checked);
+                    checked && toggleWebAccess(true);
+                  }}
+                  checked={proSearch}
+                />
+              </SelectLabel>
+            )}
           </SelectGroup>
         </SelectContent>
       </Select>

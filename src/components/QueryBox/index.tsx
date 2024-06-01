@@ -21,6 +21,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import useQueryBoxObserver from '../hooks/useQueryBoxObserver';
 import { Separator } from '../ui/separator';
+import { useToast } from '../ui/use-toast';
 import CollectionSelector from './CollectionSelector';
 import FocusSelector from './FocusSelector';
 import ImageModelSelector, { ImageModel } from './ImageModelSelector';
@@ -28,6 +29,8 @@ import LanguageModelSelector, { LanguageModel } from './LanguageModelSelector';
 import QuickQueryCommander from './QuickQueryCommander';
 
 export default function QueryBox() {
+  const { toast } = useToast();
+
   const isDefaultsInitialized = useRef({
     userSettings: false,
   });
@@ -61,6 +64,9 @@ export default function QueryBox() {
   const { quickQueryCommander } = usePopupSettingsStore(
     (state) => state.qolTweaks
   );
+
+  const hasActivePPLXSub =
+    userSettings && userSettings.subscription_status === 'active';
 
   useEffect(() => {
     if (userSettings) {
@@ -96,13 +102,22 @@ export default function QueryBox() {
   });
 
   useEffect(() => {
+    hasActivePPLXSub === false &&
+      toast({
+        title: '⚠️ Some features are disabled!',
+        description: 'No active Perplexity subscription/Not logged in!',
+        timeout: 1000000000,
+      });
+  }, [hasActivePPLXSub]);
+
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.altKey && e.key === '.') {
         e.preventDefault();
         toggleWebAccess();
       }
 
-      if (e.ctrlKey && e.key === '.') {
+      if (hasActivePPLXSub && e.ctrlKey && e.key === '.') {
         e.preventDefault();
         toggleProSearch();
 
@@ -121,6 +136,7 @@ export default function QueryBox() {
 
   const selectors = (
     <CommonSelectors
+      hasActivePPLXSub={!!hasActivePPLXSub}
       focus={focus}
       collection={collection}
       languageModel={languageModel}
@@ -130,6 +146,7 @@ export default function QueryBox() {
 
   const followUpSelectors = (
     <CommonSelectors
+      hasActivePPLXSub={!!hasActivePPLXSub}
       focus={focus}
       languageModel={languageModel}
       imageGenModel={imageGenModel}
@@ -190,11 +207,13 @@ export default function QueryBox() {
 }
 
 const CommonSelectors = ({
+  hasActivePPLXSub,
   focus,
   collection,
   languageModel,
   imageGenModel,
 }: {
+  hasActivePPLXSub: boolean;
   focus: boolean;
   collection?: boolean;
   languageModel: boolean;
@@ -206,7 +225,7 @@ const CommonSelectors = ({
         <>
           {focus && <FocusSelector />}
           {collection && <CollectionSelector />}
-          {(languageModel || imageGenModel) && (
+          {hasActivePPLXSub && (languageModel || imageGenModel) && (
             <div className="tw-h-8 tw-flex tw-items-center tw-my-auto">
               <Separator
                 orientation="vertical"
@@ -216,8 +235,8 @@ const CommonSelectors = ({
           )}
         </>
       )}
-      {languageModel && <LanguageModelSelector />}
-      {imageGenModel && <ImageModelSelector />}
+      {hasActivePPLXSub && languageModel && <LanguageModelSelector />}
+      {hasActivePPLXSub && imageGenModel && <ImageModelSelector />}
     </>
   );
 };

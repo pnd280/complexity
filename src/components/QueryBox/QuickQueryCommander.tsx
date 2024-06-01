@@ -30,6 +30,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '../ui/command';
+import { Separator } from '../ui/separator';
 
 export type QuickCommanderProps = {
   context: 'main' | 'follow-up';
@@ -198,54 +199,54 @@ export default function QuickQueryCommander({
   }, []);
 
   return (
-    <div>
-      <Command
-        className={clsx(
-          '!tw-absolute tw-rounded-lg tw-border tw-shadow-md tw-w-max tw-h-max tw-z-30 tw-animate-in tw-fade-in tw-max-h-[200px] !tw-outline-none tw-font-sans',
-          {
-            'tw-hidden': !visible,
-          }
-        )}
-        id="quick-commander"
-        ref={commanderRef}
-        onValueChange={(value) => {
-          if (!visible) {
-            return;
-          }
-          setValue(value);
-        }}
-        value={value}
-      >
-        <div className="tw-hidden">
-          <CommandInput value={searchValue} />
-        </div>
-        <CommandList>
-          <CommandEmpty className="tw-text-center tw-text-muted-foreground tw-font-sans tw-text-sm tw-p-2">
-            No results found.
-          </CommandEmpty>
-          {!searchValue &&
-            quickQueryParams.map((param, index) => (
-              <CommandItem key={param.type}>
-                <div className="tw-flex tw-items-center tw-gap-2">
-                  {param.heading}
-                  <KeyCombo keys={[param.prefix]} />
-                </div>
-              </CommandItem>
-            ))}
-          {searchValue &&
-            sortedQuickQueryParams.map((param, index) => {
-              return (
-                <Fragment key={param.type}>
-                  {index > 0 && <CommandSeparator className="tw-w-full" />}
-                  <CommandGroup
-                    heading={
-                      <div className="tw-flex tw-gap-2 tw-items-center">
-                        {param.heading}
-                        <KeyCombo keys={[param.prefix]} />
-                      </div>
-                    }
-                  >
-                    {param.optionItems.filter(optionItem => !optionItem.disabled).map((optionItem) => (
+    <Command
+      className={clsx(
+        '!tw-absolute tw-rounded-lg tw-border tw-shadow-md tw-w-max tw-h-max tw-z-30 tw-animate-in tw-fade-in tw-max-h-[200px] !tw-outline-none tw-font-sans',
+        {
+          'tw-hidden': !visible,
+        }
+      )}
+      id="quick-commander"
+      ref={commanderRef}
+      onValueChange={(value) => {
+        if (!visible) {
+          return;
+        }
+        setValue(value);
+      }}
+      value={value}
+    >
+      <div className="tw-hidden">
+        <CommandInput value={searchValue} />
+      </div>
+      <CommandList>
+        <CommandEmpty className="tw-text-center tw-text-muted-foreground tw-font-sans tw-text-sm tw-p-2">
+          No results found.
+        </CommandEmpty>
+        {!searchValue &&
+          quickQueryParams.map((param, index) => (
+            <CommandItem key={param.type}>
+              <div className="tw-flex tw-items-center tw-gap-2">
+                {param.heading}
+                <KeyCombo keys={[param.prefix]} />
+              </div>
+            </CommandItem>
+          ))}
+        {searchValue &&
+          sortedQuickQueryParams.map((param, index) => {
+            return (
+              <Fragment key={param.type}>
+                <CommandGroup
+                  heading={
+                    <div className="tw-flex tw-gap-2 tw-items-center tw-text-accent-foreground">
+                      {param.heading}
+                      <KeyCombo keys={[param.prefix]} />
+                    </div>
+                  }
+                >
+                  {param.optionItems
+                    .filter((optionItem) => !optionItem.disabled)
+                    .map((optionItem) => (
                       <div key={optionItem.value}>
                         <CommandItem
                           value={optionItem.value}
@@ -256,7 +257,7 @@ export default function QuickQueryCommander({
                               (keyword) => param.prefix + keyword
                             ),
                           ]}
-                          onSelect={(selectedValue) => {
+                          onSelect={() => {
                             const { newText, start } = ui.getWordOnCaret(
                               $textarea[0]
                             );
@@ -285,12 +286,11 @@ export default function QuickQueryCommander({
                         </CommandItem>
                       </div>
                     ))}
-                  </CommandGroup>
-                </Fragment>
-              );
-            })}
-        </CommandList>
-      </Command>
-    </div>
+                </CommandGroup>
+              </Fragment>
+            );
+          })}
+      </CommandList>
+    </Command>
   );
 }

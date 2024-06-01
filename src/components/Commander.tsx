@@ -87,6 +87,10 @@ export function Commander() {
     }, 100);
   };
 
+  if (!import.meta.env.DEV) {
+    return null;
+  }
+
   return (
     <>
       <CommandDialog open={open} onOpenChange={setOpen}>
