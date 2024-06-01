@@ -3,6 +3,13 @@ import $ from 'jquery';
 import { whereAmI } from './utils';
 
 export const ui = {
+  isEnglishInterface(): boolean {
+    const selectElement = document.getElementById(
+      'interface-language-select'
+    ) as HTMLSelectElement;
+    if (!selectElement) return false;
+    return selectElement.value === 'en-US';
+  },
   findActiveQueryBoxTextarea({
     type,
   }: {
