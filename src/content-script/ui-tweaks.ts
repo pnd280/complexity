@@ -143,13 +143,11 @@ function hideScrollToBottomButton() {
 }
 
 function hideNativeProSearchSwitch() {
-  // FIXME: Data retention switch also gets hidden (unintended)
-
   if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
 
   observer.onElementExist({
     selector:
-      '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer',
+      '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer[data-testid="copilot-toggle"]',
     callback: ({ element }) => {
       $(element).addClass('!tw-hidden');
     },
