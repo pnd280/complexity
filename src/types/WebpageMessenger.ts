@@ -81,7 +81,14 @@ export interface EventHandlers {
   websocketCaptured(): void;
   getActiveWebSocketType(): Nullable<'WebSocket' | 'Long-polling'>;
   registerWebSocketMessageListener({}): () => void;
-  routeToPage(data: string): void;
+  routeToPage(
+    data:
+      | string
+      | {
+          url: string;
+          scroll: boolean;
+        }
+  ): void;
 }
 
 const interceptorParamsExample = {};

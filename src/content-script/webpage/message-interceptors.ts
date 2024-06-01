@@ -212,11 +212,48 @@ function alterQuery() {
   });
 }
 
+function waitForUpsertThreadCollection() {
+  const matchCondition = (messageData: MessageData<any>) => {
+    const webSocketMessageData = messageData as MessageData<
+      WebSocketEventData | LongPollingEventData
+    >;
+
+    const parsedPayload: WSParsedMessage | null | string =
+      WSMessageParser.parse(webSocketMessageData.payload.payload);
+
+    if (!isParsedWSMessage(parsedPayload)) return false;
+
+    if (
+      parsedPayload.messageCode !== 431 &&
+      parsedPayload.data?.length === 1 &&
+      parsedPayload.data[0].status === 'completed'
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
+  return new Promise((resolve) => {
+    webpageMessenger.addInterceptor({
+      matchCondition: (messageData: MessageData<any>) => {
+        return { match: matchCondition(messageData) };
+      },
+      callback: async (messageData: MessageData<any>) => {
+        resolve(null);
+        return messageData;
+      },
+      stopCondition: (messageData) => matchCondition(messageData), // stop after the first match
+    });
+  });
+}
+
 const webpageMessageInterceptors = {
   trackQueryLimits,
   inspectWebSocketEvents,
   inspectLongPollingEvents,
   alterQuery,
+  waitForUpsertThreadCollection,
 };
 
 export default webpageMessageInterceptors;

@@ -8,8 +8,6 @@ import {
 import { useImmer } from 'use-immer';
 
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
-import { WSMessageParser } from '@/utils/ws';
 
 import ModelSelector from './ModelSelector';
 
@@ -61,30 +59,11 @@ export default function ImageModelSelector({}: ModelSelectorProps) {
     });
   }, [limit]);
 
-  const handleSetModel = async (value: ImageModel['code']) => {
-    try {
-      await webpageMessenger.sendMessage({
-        event: 'sendWebsocketMessage',
-        payload: WSMessageParser.stringify({
-          messageCode: 423,
-          event: 'save_user_settings',
-          data: {
-            default_image_generation_model: value,
-          },
-        })
-      });
-
-      setValue(value);
-    } catch (e) {
-      alert('Failed to change image model');
-    }
-  };
-
   return (
     <ModelSelector
       type="image"
       items={models}
-      onValueChange={handleSetModel}
+      onValueChange={setValue}
       value={value}
     />
   );

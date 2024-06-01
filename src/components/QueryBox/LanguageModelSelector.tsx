@@ -11,8 +11,6 @@ import { TbLetterM } from 'react-icons/tb';
 import { useImmer } from 'use-immer';
 
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
-import { WSMessageParser } from '@/utils/ws';
 
 import ModelSelector from './ModelSelector';
 
@@ -97,9 +95,7 @@ export default function LanguageModelSelector({}: LanguageModelSelectorProps) {
   );
 
   const value = useQueryBoxStore((state) => state.selectedLanguageModel);
-  const setValue = useQueryBoxStore(
-    (state) => state.setSelectedLanguageModel
-  );
+  const setValue = useQueryBoxStore((state) => state.setSelectedLanguageModel);
 
   useEffect(() => {
     setModels((draft) => {
@@ -109,30 +105,11 @@ export default function LanguageModelSelector({}: LanguageModelSelectorProps) {
     });
   }, [limit, opusLimit]);
 
-  const handleSetModel = async (value: LanguageModel['code']) => {
-    try {
-      await webpageMessenger.sendMessage({
-        event: 'sendWebsocketMessage',
-        payload: WSMessageParser.stringify({
-          messageCode: 423,
-          event: 'save_user_settings',
-          data: {
-            default_model: value,
-          },
-        }),
-      });
-
-      setValue(value);
-    } catch (e) {
-      alert('Failed to change language model');
-    }
-  };
-
   return (
     <ModelSelector
       type="language"
       items={models}
-      onValueChange={handleSetModel}
+      onValueChange={setValue}
       value={value}
     />
   );

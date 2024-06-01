@@ -7,9 +7,13 @@ import {
 } from 'react';
 
 import clsx from 'clsx';
+import { CommandEmpty } from 'cmdk';
 import $ from 'jquery';
 
+import observer from '@/utils/observer';
+import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
+import { useQuery } from '@tanstack/react-query';
 import {
   useToggle,
   useWindowSize,
@@ -98,8 +102,23 @@ export default function QuickQueryCommander({
       e.key === 'Escape') &&
     visible;
 
+  const postSelection = ({
+    textarea,
+    newText,
+    start,
+  }: {
+    textarea: HTMLTextAreaElement;
+    newText: string;
+    start: number;
+  }) => {
+    ui.setReactTextareaValue(textarea as HTMLTextAreaElement, newText);
+    textarea.setSelectionRange(start, start);
+    handleSetVisible(false);
+    ui.findActiveQueryBoxTextarea({})?.trigger('focus');
+  };
+
   useEffect(() => {
-    !value && handleSetVisible(false);
+    !value.trim().length && handleSetVisible(false);
   }, [value]);
 
   useEffect(() => {
@@ -119,9 +138,7 @@ export default function QuickQueryCommander({
         }
 
         if (e.key === 'Enter') {
-          ui.setReactTextareaValue(textarea as HTMLTextAreaElement, newText);
-          textarea.setSelectionRange(start, start);
-          handleSetVisible(false);
+          postSelection({ textarea, newText, start });
         }
 
         return (
@@ -148,25 +165,43 @@ export default function QuickQueryCommander({
       setTimeout(down.bind(null, e), 0);
     });
 
-    $(textarea).on('blur', () => {
+    $(textarea).on('blur', (e) => {
+      if (e.relatedTarget === commanderRef.current) return;
+
       handleSetVisible(false);
     });
 
-    $(window).on('click.query-box-quick-commander', () => {
+    $(document).on('click', (e) => {
+      if (textarea.contains(e.target)) return;
+
       handleSetVisible(false);
     });
 
     return () => {
       $(textarea).off('keydown');
-      $(window).off('click.query-box-quick-commander');
     };
-  }, [$textarea, value, visible]);
+  }, [$textarea]);
+
+  const { refetch: refetchThreadInfo } = useQuery({
+    queryKey: ['currentThreadInfo'],
+    queryFn: () =>
+      pplxApi.fetchThreadInfo(window.location.pathname.split('/').pop() || ''),
+    enabled: window.location.pathname.includes('/search/'),
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    observer.onShallowRouteChange(() => {
+      if (!window.location.pathname.includes('/search/')) return;
+      refetchThreadInfo();
+    });
+  }, []);
 
   return (
     <div>
       <Command
         className={clsx(
-          '!tw-absolute tw-rounded-lg tw-border tw-shadow-md tw-w-max tw-h-max tw-z-30 tw-animate-in tw-fade-in tw-max-h-[200px] !tw-outline-none',
+          '!tw-absolute tw-rounded-lg tw-border tw-shadow-md tw-w-max tw-h-max tw-z-30 tw-animate-in tw-fade-in tw-max-h-[200px] !tw-outline-none tw-font-sans',
           {
             'tw-hidden': !visible,
           }
@@ -178,7 +213,6 @@ export default function QuickQueryCommander({
             return;
           }
           setValue(value);
-          console.log('value:', value);
         }}
         value={value}
       >
@@ -186,6 +220,9 @@ export default function QuickQueryCommander({
           <CommandInput value={searchValue} />
         </div>
         <CommandList>
+          <CommandEmpty className="tw-text-center tw-text-muted-foreground tw-font-sans tw-text-sm tw-p-2">
+            No results found.
+          </CommandEmpty>
           {!searchValue &&
             quickQueryParams.map((param, index) => (
               <CommandItem key={param.type}>
@@ -199,7 +236,7 @@ export default function QuickQueryCommander({
             sortedQuickQueryParams.map((param, index) => {
               return (
                 <Fragment key={param.type}>
-                  {index > 0 && <CommandSeparator />}
+                  {index > 0 && <CommandSeparator className="tw-w-full" />}
                   <CommandGroup
                     heading={
                       <div className="tw-flex tw-gap-2 tw-items-center">
@@ -208,7 +245,7 @@ export default function QuickQueryCommander({
                       </div>
                     }
                   >
-                    {param.optionItems.map((optionItem) => (
+                    {param.optionItems.filter(optionItem => !optionItem.disabled).map((optionItem) => (
                       <div key={optionItem.value}>
                         <CommandItem
                           value={optionItem.value}
@@ -219,15 +256,32 @@ export default function QuickQueryCommander({
                               (keyword) => param.prefix + keyword
                             ),
                           ]}
-                          onSelect={(value) => {
+                          onSelect={(selectedValue) => {
+                            const { newText, start } = ui.getWordOnCaret(
+                              $textarea[0]
+                            );
+
+                            postSelection({
+                              textarea: $textarea[0],
+                              newText,
+                              start,
+                            });
+
                             optionItem.onSelect();
                             handleSetVisible(false);
                           }}
                         >
-                          <div className="tw-h-4 tw-w-4 tw-mr-2 tw-flex tw-items-center">
-                            {optionItem.icon}
+                          <div className="tw-flex tw-gap-2 tw-min-w-max">
+                            <div className="tw-h-4 tw-w-4 tw-flex tw-items-center">
+                              {optionItem.icon}
+                            </div>
+                            <div>{optionItem.label}</div>
                           </div>
-                          <div>{optionItem.label}</div>
+                          {optionItem.hint && (
+                            <div className="tw-ml-2 tw-text-xs tw-text-muted-foreground tw-truncate">
+                              {optionItem.hint}
+                            </div>
+                          )}
                         </CommandItem>
                       </div>
                     ))}

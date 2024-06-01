@@ -1,5 +1,6 @@
 import { Nullable } from '@/types/Utils';
 import {
+  MessageData,
   MessageListener,
   SendMessage,
 } from '@/types/WebpageMessenger';
@@ -328,7 +329,16 @@ class WSHook {
   );
 
   WSHook.contentScriptMessenger.onMessage('routeToPage', async (data) => {
+    if (typeof data.payload === 'object') {
+      // @ts-ignore
+      return window.next.router.push(data.payload.url, undefined, {
+        scroll: data.payload.scroll,
+      });
+    }
+
     // @ts-ignore
-    window.next.router.push(data.payload);
+    window.next.router.push(data.payload, undefined, {
+      scroll: data.payload !== window.location.pathname,
+    });
   });
 })();

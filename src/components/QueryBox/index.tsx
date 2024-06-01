@@ -1,7 +1,6 @@
 import {
   Fragment,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -12,7 +11,10 @@ import $ from 'jquery';
 import {
   usePopupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
-import { useQueryBoxStore } from '@/content-script/session-store/query-box';
+import {
+  initQueryBoxStore,
+  useQueryBoxStore,
+} from '@/content-script/session-store/query-box';
 import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
 import { useQuery } from '@tanstack/react-query';
@@ -28,7 +30,6 @@ import QuickQueryCommander from './QuickQueryCommander';
 export default function QueryBox() {
   const isDefaultsInitialized = useRef({
     userSettings: false,
-    collections: false,
   });
 
   const {
@@ -47,13 +48,9 @@ export default function QueryBox() {
     initialData: [],
   });
 
-  const {
-    setSelectedLanguageModel,
-    setSelectedImageModel,
-    setQueryLimit,
-    setOpusLimit,
-    setImageCreateLimit,
-  } = useQueryBoxStore((state) => state);
+  const { setQueryLimit, setOpusLimit, setImageCreateLimit } = useQueryBoxStore(
+    (state) => state
+  );
 
   const { toggleProSearch, toggleWebAccess, allowWebAccess, proSearch } =
     useQueryBoxStore((state) => state.webAccess);
@@ -68,13 +65,12 @@ export default function QueryBox() {
   useEffect(() => {
     if (userSettings) {
       if (!isDefaultsInitialized.current.userSettings) {
-        setSelectedLanguageModel(
-          userSettings.default_model as LanguageModel['code']
-        );
-        setSelectedImageModel(
-          userSettings.default_image_generation_model as ImageModel['code']
-        );
-        toggleProSearch(userSettings.default_copilot);
+        initQueryBoxStore({
+          imageModel:
+            userSettings.default_image_generation_model as ImageModel['code'],
+          languageModel: userSettings.default_model as LanguageModel['code'],
+          proSearch: userSettings.default_copilot,
+        });
 
         isDefaultsInitialized.current.userSettings = true;
       }
@@ -145,30 +141,32 @@ export default function QueryBox() {
       {containers.map((container, index) => (
         <Fragment key={index}>
           {ReactDOM.createPortal(selectors, container)}
-          {quickQueryCommander && ReactDOM.createPortal(
-            <>
-              <QuickCommander
-                context="main"
-                $trigger={$(container).parents('.grow.block')}
-                $textarea={
-                  $(container)
-                    .parents('.grow.block')
-                    .find(
-                      'textarea[placeholder="Ask anything..."]'
-                    ) as JQuery<HTMLTextAreaElement>
-                }
-                searchValue={quickCommandSearchValue}
-                setQuickCommandSearchValue={setQuickCommandSearchValue}
-              />
-            </>,
-            $(container).parents('.grow.block')[0]
-          )}
+          {quickQueryCommander &&
+            ReactDOM.createPortal(
+              <>
+                <QuickCommander
+                  context="main"
+                  $trigger={$(container).parents('.grow.block')}
+                  $textarea={
+                    $(container)
+                      .parents('.grow.block')
+                      .find(
+                        'textarea[placeholder="Ask anything..."]'
+                      ) as JQuery<HTMLTextAreaElement>
+                  }
+                  searchValue={quickCommandSearchValue}
+                  setQuickCommandSearchValue={setQuickCommandSearchValue}
+                />
+              </>,
+              $(container).parents('.grow.block')[0]
+            )}
         </Fragment>
       ))}
       {followUpContainers.map((container, index) => (
         <Fragment key={index}>
           {ReactDOM.createPortal(followUpSelectors, container)}
-          {quickQueryCommander && ui.findActiveQueryBox({ type: 'follow-up' }).length &&
+          {quickQueryCommander &&
+            ui.findActiveQueryBox({ type: 'follow-up' }).length &&
             ReactDOM.createPortal(
               <>
                 <QuickCommander

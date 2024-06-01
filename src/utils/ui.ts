@@ -38,18 +38,27 @@ export const ui = {
     const text = element.value;
     const caret = element.selectionStart;
 
-    const start = text.slice(0, caret).search(/\S+$/);
-    const end = text.slice(caret).search(/\s/);
+    // Find the start of the word
+    let start = text.slice(0, caret).search(/\S+$/);
+    if (start === -1) {
+      start = caret;
+    }
 
-    const adjustedEnd = end === -1 ? text.length : end + caret;
+    // Find the end of the word
+    let end = text.slice(caret).search(/\s/);
+    if (end === -1) {
+      end = text.length;
+    } else {
+      end += caret;
+    }
 
-    const word = text.slice(start, adjustedEnd);
-    const newText = text.slice(0, start) + text.slice(adjustedEnd);
+    const word = text.slice(start, end);
+    const newText = text.slice(0, start) + text.slice(end);
 
     return {
       word,
       start,
-      end: adjustedEnd,
+      end,
       newText,
     };
   },

@@ -1,3 +1,5 @@
+import { Collection } from '@/components/QueryBox/CollectionSelector';
+
 export type UserSettingsApiResponse = {
   allow_article_creation: boolean;
   article_image_upload_limit: number;
@@ -38,3 +40,12 @@ export type CollectionsAPIResponse = {
   description: string;
   access: 1 | 2;
 }[];
+
+export type ThreadInfoAPIResponse = {
+  text: string;
+  backend_uuid: string;
+  author_image: string;
+  author_username: string;
+  collection_info: Collection;
+  thread_url_slug: string;
+}

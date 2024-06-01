@@ -2,6 +2,7 @@ import { Collection } from '@/components/QueryBox/CollectionSelector';
 import { webpageMessenger } from '@/content-script/webpage/messenger';
 import {
   CollectionsAPIResponse,
+  ThreadInfoAPIResponse,
   UserSettingsApiResponse,
 } from '@/types/PPLXApi';
 
@@ -14,13 +15,11 @@ import {
 import { WSMessageParser } from './ws';
 
 async function fetchUserSettings(): Promise<UserSettingsApiResponse> {
-  const resp = fetchResource(
+  const resp = await fetchResource(
     'https://www.perplexity.ai/p/api/v1/user/settings'
   );
 
-  const data = await resp;
-
-  return JSON.parse(data);
+  return jsonUtils.safeParse(resp);
 }
 
 async function fetchCollections(): Promise<Collection[]> {
@@ -83,10 +82,29 @@ async function updateCollection(args: {
   });
 }
 
+async function fetchThreadInfo(threadSlug: string) {
+  if (!threadSlug) return null;
+  
+  const pplxBuildId = await getPPLXBuildId();
+
+  if (!pplxBuildId) return null;
+
+  const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/search/${threadSlug}.json`;
+
+  const resp = await fetchResource(url);
+
+  const data = jsonUtils.safeParse(resp);
+
+  if (!data) return null;
+
+  return data.pageProps.dehydratedState.queries[1].state.data[0] as ThreadInfoAPIResponse;
+}
+
 const pplxApi = {
   fetchCollections,
   fetchUserSettings,
   updateCollection,
+  fetchThreadInfo,
 };
 
 export default pplxApi;

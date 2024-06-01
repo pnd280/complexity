@@ -22,10 +22,8 @@ import {
 } from 'react-icons/si';
 
 import { queryBoxStore } from '@/content-script/session-store/query-box';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
 import { chromeStorage } from '@/utils/chrome-store';
 import { ui } from '@/utils/ui';
-import { WSMessageParser } from '@/utils/ws';
 import { SelectLabel } from '@radix-ui/react-select';
 import { useToggle } from '@uidotdev/usehooks';
 
@@ -116,37 +114,13 @@ export default function FocusSelector() {
 
   $('body').toggleClass('pro-search', proSearch && allowWebAccess);
 
-  useEffect(() => {
-    proSearch && toggleWebAccess(true);
-  }, [proSearch]);
-
-  const saveProSearchState = async (checked: boolean) => {
-    try {
-      await webpageMessenger.sendMessage({
-        event: 'sendWebsocketMessage',
-        payload: WSMessageParser.stringify({
-          messageCode: 423,
-          event: 'save_user_settings',
-          data: {
-            default_copilot: checked,
-          },
-        }),
-      });
-    } catch (e) {
-      alert('Failed to save pro search state.');
-    }
-  };
-
-  useEffect(() => {
-    toggleWebAccess(true);
-  }, [focus]);
-
   return (
     <>
       <Select
         value={focus || ''}
         onValueChange={(value) => {
           setFocus(value as WebAccessFocus['code']);
+          toggleWebAccess(true);
         }}
         open={open}
       >
@@ -246,7 +220,6 @@ export default function FocusSelector() {
                 onCheckedChange={(checked) => {
                   toggleProSearch(checked);
                   checked && toggleWebAccess(true);
-                  saveProSearchState(checked);
                 }}
                 checked={proSearch}
               />

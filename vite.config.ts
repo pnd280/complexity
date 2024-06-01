@@ -47,12 +47,12 @@ export default defineConfig(({ mode }) => {
       }),
     ],
 
-    // server: {
-    //   port: 5173,
-    //   hmr: {
-    //     host: 'localhost',
-    //   },
-    // },
+    server: {
+      port: 5173,
+      hmr: {
+        host: 'localhost',
+      },
+    },
 
     resolve: {
       alias: {

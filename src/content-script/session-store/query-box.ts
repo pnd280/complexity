@@ -9,6 +9,9 @@ import {
 import { ImageModel } from '@/components/QueryBox/ImageModelSelector';
 import { LanguageModel } from '@/components/QueryBox/LanguageModelSelector';
 import { chromeStorage } from '@/utils/chrome-store';
+import { WSMessageParser } from '@/utils/ws';
+
+import { webpageMessenger } from '../webpage/messenger';
 
 type QueryBoxState = {
   selectedLanguageModel: LanguageModel['code'];
@@ -42,10 +45,43 @@ type QueryBoxState = {
 const useQueryBoxStore = create<QueryBoxState>()(
   immer((set) => ({
     selectedLanguageModel: 'turbo',
-    setSelectedLanguageModel: (selectedLanguageModel) =>
-      set({ selectedLanguageModel }),
+    setSelectedLanguageModel: async (selectedLanguageModel) => {
+      try {
+        await webpageMessenger.sendMessage({
+          event: 'sendWebsocketMessage',
+          payload: WSMessageParser.stringify({
+            messageCode: 423,
+            event: 'save_user_settings',
+            data: {
+              default_model: selectedLanguageModel,
+            },
+          }),
+        });
+
+        return set({ selectedLanguageModel });
+      } catch (e) {
+        alert('Failed to change language model');
+      }
+    },
     selectedImageModel: 'default',
-    setSelectedImageModel: (selectedImageModel) => set({ selectedImageModel }),
+    setSelectedImageModel: async (selectedImageModel) => {
+      try {
+        await webpageMessenger.sendMessage({
+          event: 'sendWebsocketMessage',
+          payload: WSMessageParser.stringify({
+            messageCode: 423,
+            event: 'save_user_settings',
+            data: {
+              default_image_generation_model: selectedImageModel,
+            },
+          }),
+        });
+
+        return set({ selectedImageModel });
+      } catch (e) {
+        alert('Failed to change image model');
+      }
+    },
     queryLimit: 0,
     setQueryLimit: (queryLimit) => set({ queryLimit }),
     opusLimit: 0,
@@ -69,13 +105,31 @@ const useQueryBoxStore = create<QueryBoxState>()(
         })),
 
       proSearch: false,
-      toggleProSearch: (toggled) =>
-        set((state) => ({
-          webAccess: {
-            ...state.webAccess,
-            proSearch: toggled ?? !state.webAccess.proSearch,
-          },
-        })),
+      toggleProSearch: async (toggled, isInit = false) => {
+        try {
+          if (!isInit) {
+            await webpageMessenger.sendMessage({
+              event: 'sendWebsocketMessage',
+              payload: WSMessageParser.stringify({
+                messageCode: 423,
+                event: 'save_user_settings',
+                data: {
+                  default_copilot: toggled,
+                },
+              }),
+            });
+          }
+
+          return set((state) => ({
+            webAccess: {
+              ...state.webAccess,
+              proSearch: toggled ?? !state.webAccess.proSearch,
+            },
+          }));
+        } catch (e) {
+          alert('Failed to save pro search state.');
+        }
+      },
     },
 
     selectedCollectionUuid: '',
@@ -86,14 +140,35 @@ const useQueryBoxStore = create<QueryBoxState>()(
 
 const queryBoxStore = useQueryBoxStore;
 
-(async function initQueryBoxStore() {
+async function initQueryBoxStore({
+  languageModel,
+  imageModel,
+  proSearch,
+}: {
+  languageModel?: LanguageModel['code'];
+  imageModel?: ImageModel['code'];
+  proSearch?: boolean;
+}) {
   const { defaultFocus, defaultWebAccess } = await chromeStorage.getStore();
-
   if (isValidFocus(defaultFocus)) {
-    queryBoxStore.getState().webAccess.setFocus(defaultFocus);
+    queryBoxStore.setState((state) => {
+      state.webAccess.focus = defaultFocus;
+    });
   }
+  // queryBoxStore.getState().webAccess.toggleWebAccess(defaultWebAccess || false);
+  queryBoxStore.setState((state) => {
+    state.webAccess.allowWebAccess = defaultWebAccess;
+  });
 
-  queryBoxStore.getState().webAccess.toggleWebAccess(defaultWebAccess || false);
-})();
+  queryBoxStore.setState((state) => {
+    state.selectedLanguageModel = languageModel || state.selectedLanguageModel;
+    state.selectedImageModel = imageModel || state.selectedImageModel;
+  });
+  queryBoxStore.setState((state) => {
+    state.webAccess.proSearch = proSearch ?? state.webAccess.proSearch;
+  });
+}
 
-export { queryBoxStore, useQueryBoxStore };
+initQueryBoxStore({});
+
+export { initQueryBoxStore, queryBoxStore, useQueryBoxStore };
