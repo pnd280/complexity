@@ -130,7 +130,7 @@ export default function QueryBox() {
     return () => {
       document.removeEventListener('keydown', down);
     };
-  }, []);
+  }, [hasActivePPLXSub, proSearch, allowWebAccess]);
 
   if (!userSettings || isLoading) return null;
 
