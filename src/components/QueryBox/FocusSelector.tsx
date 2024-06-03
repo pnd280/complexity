@@ -121,7 +121,10 @@ export default function FocusSelector() {
     });
   }, [allowWebAccess]);
 
-  $('body').toggleClass('pro-search', hasActivePPLXSub && proSearch && allowWebAccess);
+  $('body').toggleClass(
+    'pro-search',
+    hasActivePPLXSub && proSearch && allowWebAccess
+  );
 
   return (
     <>
@@ -138,7 +141,6 @@ export default function FocusSelector() {
           contentOptions={{
             sideOffset: 8,
           }}
-          contentClassName="tw-font-sans"
         >
           <SelectTrigger
             variant="ghost"
@@ -198,7 +200,6 @@ export default function FocusSelector() {
                   side: 'right',
                   sideOffset: 10,
                 }}
-                contentClassName="tw-font-sans"
                 key={item.code}
               >
                 <SelectItem

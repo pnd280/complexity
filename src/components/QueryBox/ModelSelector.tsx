@@ -53,7 +53,6 @@ export default function ModelSelector<T extends ModelItem>({
           contentOptions={{
             sideOffset: 8,
           }}
-          contentClassName="tw-font-sans"
         >
           <SelectTrigger
             variant="ghost"
@@ -85,7 +84,6 @@ export default function ModelSelector<T extends ModelItem>({
                 side: 'right',
                 sideOffset: 10,
               }}
-              contentClassName="tw-font-sans"
               key={model.code}
             >
               <SelectItem
