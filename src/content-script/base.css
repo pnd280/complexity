@@ -83,6 +83,16 @@ html.dark,
   background-color: var(--accent-foreground) !important;
 }
 
+.dark .dark\:bg-superDark\/10,
+.dark .bg-super\/10 {
+  background-color: var(--accent-foreground-darker) !important;
+
+  & .text-super.dark\:text-superDark {
+    color: white !important;
+  }
+}
+
+.markdown-highlight,
 .selection\:bg-superDuper::selection,
 .selection\:text-textMain ::selection,
 .dark .dark\:selection\:text-super ::selection {
@@ -167,6 +177,13 @@ html.dark .dark\:\!text-backgroundDark {
 .mb-sm.flex.w-full.items-center.justify-between svg {
   color: var(--accent-foreground);
 }
+
+.focus\:ring-superDark:focus {
+  --tw-ring-color: var(--accent-foreground) !important;
+}
+
+
+
 
 
 .pro-search {
