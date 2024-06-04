@@ -5,7 +5,6 @@ import {
   VariantProps,
 } from 'class-variance-authority';
 import {
-  Check,
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';

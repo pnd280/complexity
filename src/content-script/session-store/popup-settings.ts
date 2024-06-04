@@ -21,6 +21,7 @@ type PopupSettingsState = {
 };
 
 const usePopupSettingsStore = create<PopupSettingsState>()(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   immer((set) => ({
     queryBoxSelectors: {
       focus: false,

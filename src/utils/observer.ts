@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-export type OnElementExistOptions<T extends any> = {
+export type OnElementExistOptions<T> = {
   selector:
     | string
     | (() => Element[])

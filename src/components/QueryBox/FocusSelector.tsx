@@ -6,22 +6,12 @@ import {
 
 import clsx from 'clsx';
 import $ from 'jquery';
-import {
-  BadgePercent,
-  Cpu,
-  Library,
-} from 'lucide-react';
-import {
-  PiGlobe,
-  PiGlobeX,
-} from 'react-icons/pi';
-import {
-  SiReddit,
-  SiWikipedia,
-  SiYoutube,
-} from 'react-icons/si';
+import { Cpu } from 'lucide-react';
+import { PiGlobeX } from 'react-icons/pi';
 
+import { webAccessFocus } from '@/consts/model-selector';
 import { queryBoxStore } from '@/content-script/session-store/query-box';
+import { WebAccessFocus } from '@/types/ModelSelector';
 import { UserSettingsApiResponse } from '@/types/PPLXApi';
 import { chromeStorage } from '@/utils/chrome-store';
 import { ui } from '@/utils/ui';
@@ -38,43 +28,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from '../ui/select';
-
-export const webAccessFocus = [
-  {
-    label: 'All',
-    code: 'internet',
-    icon: <PiGlobe className="tw-text-[1rem]" />,
-  },
-  {
-    label: 'Wikipedia',
-    code: 'wikipedia',
-    icon: <SiWikipedia className="tw-text-[1rem]" />,
-  },
-  {
-    label: 'Academic',
-    code: 'scholar',
-    icon: <Library className="tw-w-4 tw-h-4" />,
-  },
-  {
-    label: 'Wolfram|Alpha',
-    code: 'wolfram',
-    icon: <BadgePercent className="tw-w-4 tw-h-4" />,
-  },
-  {
-    label: 'Youtube',
-    code: 'youtube',
-    icon: <SiYoutube className="tw-text-[1rem]" />,
-  },
-  {
-    label: 'Reddit',
-    code: 'reddit',
-    icon: <SiReddit className="tw-text-[1rem]" />,
-  },
-] as const;
-
-export type WebAccessFocus = (typeof webAccessFocus)[number] & {
-  tooltip?: string;
-};
 
 export default function FocusSelector() {
   const { data: userSettings } = useQuery<UserSettingsApiResponse>({
@@ -119,7 +72,7 @@ export default function FocusSelector() {
       key: 'defaultWebAccess',
       value: allowWebAccess,
     });
-  }, [allowWebAccess]);
+  }, [allowWebAccess, focus, setFocus]);
 
   $('body').toggleClass(
     'pro-search',
@@ -241,8 +194,4 @@ export default function FocusSelector() {
       </Select>
     </>
   );
-}
-
-export function isValidFocus(focus?: any): focus is WebAccessFocus['code'] {
-  return webAccessFocus.some((model) => model.code === focus);
 }

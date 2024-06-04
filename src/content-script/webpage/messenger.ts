@@ -10,7 +10,7 @@ import {
   WebSocketEventData,
 } from '@/types/WebpageMessenger';
 
-export const isWorldContext = () => !!!chrome.storage?.local;
+export const isWorldContext = () => !chrome.storage?.local;
 
 class WebpageMessenger {
   public static instance: WebpageMessenger;

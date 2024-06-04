@@ -6,7 +6,6 @@ import {
 import clsx from 'clsx';
 import {
   ExternalLink,
-  Eye,
   LayoutGrid,
   LoaderCircle,
   Pencil,

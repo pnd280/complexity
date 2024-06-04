@@ -15,6 +15,7 @@ import {
   initQueryBoxStore,
   useQueryBoxStore,
 } from '@/content-script/session-store/query-box';
+import { LanguageModel } from '@/types/ModelSelector';
 import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
 import { useQuery } from '@tanstack/react-query';
@@ -25,7 +26,7 @@ import { useToast } from '../ui/use-toast';
 import CollectionSelector from './CollectionSelector';
 import FocusSelector from './FocusSelector';
 import ImageModelSelector, { ImageModel } from './ImageModelSelector';
-import LanguageModelSelector, { LanguageModel } from './LanguageModelSelector';
+import LanguageModelSelector from './LanguageModelSelector';
 import QuickQueryCommander from './QuickQueryCommander';
 
 export default function QueryBox() {
@@ -85,7 +86,7 @@ export default function QueryBox() {
       setOpusLimit(userSettings.opus_limit);
       setImageCreateLimit(userSettings.create_limit);
     }
-  }, [userSettings]);
+  }, [userSettings, setQueryLimit, setOpusLimit, setImageCreateLimit]);
 
   const [containers, setContainers] = useState<Element[]>([]);
   const [followUpContainers, setFollowUpContainers] = useState<Element[]>([]);
@@ -108,7 +109,7 @@ export default function QueryBox() {
         description: 'No active Perplexity subscription/Not logged in!',
         timeout: 1000000000,
       });
-  }, [hasActivePPLXSub]);
+  }, [hasActivePPLXSub, toast]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -130,7 +131,13 @@ export default function QueryBox() {
     return () => {
       document.removeEventListener('keydown', down);
     };
-  }, [hasActivePPLXSub, proSearch, allowWebAccess]);
+  }, [
+    hasActivePPLXSub,
+    proSearch,
+    allowWebAccess,
+    toggleProSearch,
+    toggleWebAccess,
+  ]);
 
   if (!userSettings || isLoading) return null;
 

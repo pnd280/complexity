@@ -29,7 +29,7 @@ export default function CustomCSS() {
     if (!isLoading) {
       ref.current!.value = jsonUtils.safeParse(savedCode || '');
     }
-  }, [savedCode]);
+  }, [savedCode, isLoading]);
 
   return (
     <div className="tw-flex tw-flex-col tw-space-y-4">

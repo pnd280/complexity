@@ -1,5 +1,4 @@
-import { WebAccessFocus } from '@/components/QueryBox/FocusSelector';
-
+import { WebAccessFocus } from './ModelSelector';
 import { Nullable } from './Utils';
 
 export type ChromeSessionStoreKey = keyof ChromeSessionStore;
@@ -33,4 +32,4 @@ export type ChromeStore = {
   [key: `sessionStore-${number}`]: ChromeSessionStore;
 };
 
-export type ChromeSessionStore = {};
+export type ChromeSessionStore = object;

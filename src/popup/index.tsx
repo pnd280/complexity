@@ -35,7 +35,7 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
       <div className="tw-font-sans">
         <DiscordCallout />
         <Separator />
-        <div className="tw-w-[350px] tw-h-[250px] tw-mb-12">
+        <div className="tw-w-[350px] tw-h-[250px]">
           <PopupSettings />
         </div>
         <Footer />
@@ -71,7 +71,7 @@ function Footer() {
     compareVersions(latestVersion || '0', version) === 1;
 
   return (
-    <div className="tw-absolute tw-bottom-0 tw-left-0 tw-w-full tw-bg-secondary tw-flex tw-flex-col tw-font-sans">
+    <div className="tw-w-full tw-bg-secondary tw-flex tw-flex-col tw-font-sans">
       <Separator />
       <div className="tw-flex tw-px-2">
         <div className="tw-py-2 tw-text-sm tw-font-bold tw-flex tw-items-center">

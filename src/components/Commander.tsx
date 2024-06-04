@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -39,6 +40,27 @@ export function Commander() {
 
   const ref = useRef<HTMLInputElement>(null);
 
+  const handleNavigate = useCallback(
+    (path: string, shallow = !kbEvent?.ctrlKey) => {
+      if (kbEvent?.shiftKey) return;
+
+      if (shallow) {
+        webpageMessenger.sendMessage({
+          event: 'routeToPage',
+          payload: path,
+        });
+      } else {
+        window.open(path, '_blank');
+      }
+
+      setOpen(false);
+      setTimeout(() => {
+        setSearchValue('');
+      }, 100);
+    },
+    [kbEvent]
+  );
+
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
@@ -67,25 +89,7 @@ export function Commander() {
       document.removeEventListener('keydown', down);
       document.removeEventListener('keyup', up);
     };
-  }, []);
-
-  const handleNavigate = (path: string, shallow = !!!kbEvent?.ctrlKey) => {
-    if (kbEvent?.shiftKey) return;
-
-    if (shallow) {
-      webpageMessenger.sendMessage({
-        event: 'routeToPage',
-        payload: path,
-      });
-    } else {
-      window.open(path, '_blank');
-    }
-
-    setOpen(false);
-    setTimeout(() => {
-      setSearchValue('');
-    }, 100);
-  };
+  }, [handleNavigate]);
 
   if (!import.meta.env.DEV) {
     return null;

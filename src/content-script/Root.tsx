@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import $ from 'jquery';
 import { createRoot } from 'react-dom/client';
 
@@ -10,7 +8,6 @@ import QueryBox from '@/components/QueryBox';
 import ThreadAnchor from '@/components/ThreadAnchor';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/ui/use-toast';
-import { ui } from '@/utils/ui';
 import {
   QueryClient,
   QueryClientProvider,
@@ -19,7 +16,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { popupSettingsStore } from './session-store/popup-settings';
 
-export default function Root({ tabId }: { tabId?: number }) {
+export default function Root() {
   $('body').addClass('!tw-mr-0');
 
   const $root = $('<div>').attr('id', 'complexity-root').appendTo('body');

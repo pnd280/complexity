@@ -80,7 +80,6 @@ export interface EventHandlers {
   longPollingEvent(data: LongPollingEventData): LongPollingEventData['payload'];
   websocketCaptured(): void;
   getActiveWebSocketType(): Nullable<'WebSocket' | 'Long-polling'>;
-  registerWebSocketMessageListener({}): () => void;
   routeToPage(
     data:
       | string
@@ -90,5 +89,3 @@ export interface EventHandlers {
         }
   ): void;
 }
-
-const interceptorParamsExample = {};

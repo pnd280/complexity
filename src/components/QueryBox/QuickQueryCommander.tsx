@@ -1,5 +1,6 @@
 import {
   Fragment,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -28,9 +29,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from '../ui/command';
-import { Separator } from '../ui/separator';
 
 export type QuickCommanderProps = {
   context: 'main' | 'follow-up';
@@ -84,24 +83,32 @@ export default function QuickQueryCommander({
 
   visible && setPos();
 
-  const handleSetVisible = (state?: boolean) => {
-    toggleVisibility(state);
+  const handleSetVisible = useCallback(
+    (state?: boolean) => {
+      toggleVisibility(state);
+      $('html').toggleClass('!tw-overflow-y-hidden', state);
+    },
+    [toggleVisibility]
+  );
 
-    $('html').toggleClass('!tw-overflow-y-hidden', state);
-  };
+  const dispatchKeydown = useCallback(
+    (e: KeyboardEvent) => {
+      if (visible) {
+        commanderRef.current?.dispatchEvent(new KeyboardEvent('keydown', e));
+      }
+    },
+    [visible, commanderRef]
+  );
 
-  const dispatchKeydown = (e: KeyboardEvent) => {
-    if (visible) {
-      commanderRef.current?.dispatchEvent(new KeyboardEvent('keydown', e));
-    }
-  };
-
-  const isInterceptableNavigationKey = (e: JQuery.TriggeredEvent) =>
-    (e.key === 'ArrowUp' ||
-      e.key === 'ArrowDown' ||
-      e.key === 'Enter' ||
-      e.key === 'Escape') &&
-    visible;
+  const isInterceptableNavigationKey = useCallback(
+    (e: JQuery.TriggeredEvent) =>
+      (e.key === 'ArrowUp' ||
+        e.key === 'ArrowDown' ||
+        e.key === 'Enter' ||
+        e.key === 'Escape') &&
+      visible,
+    [visible]
+  );
 
   const postSelection = ({
     textarea,
@@ -120,7 +127,7 @@ export default function QuickQueryCommander({
 
   useEffect(() => {
     !value.trim().length && handleSetVisible(false);
-  }, [value]);
+  }, [value, handleSetVisible]);
 
   useEffect(() => {
     const textarea = $textarea[0];
@@ -177,7 +184,15 @@ export default function QuickQueryCommander({
     return () => {
       $(textarea).off('keydown');
     };
-  }, [$textarea, visible, searchValue, dispatchKeydown]);
+  }, [
+    $textarea,
+    visible,
+    searchValue,
+    dispatchKeydown,
+    setQuickCommandSearchValue,
+    handleSetVisible,
+    isInterceptableNavigationKey,
+  ]);
 
   const { refetch: refetchThreadInfo } = useQuery({
     queryKey: ['currentThreadInfo'],
@@ -192,7 +207,7 @@ export default function QuickQueryCommander({
       if (!window.location.pathname.includes('/search/')) return;
       refetchThreadInfo();
     });
-  }, []);
+  }, [refetchThreadInfo]);
 
   return (
     <Command
@@ -220,7 +235,7 @@ export default function QuickQueryCommander({
           No results found.
         </CommandEmpty>
         {!searchValue &&
-          quickQueryParams.map((param, index) => (
+          quickQueryParams.map((param) => (
             <CommandItem key={param.type}>
               <div className="tw-flex tw-items-center tw-gap-2">
                 {param.heading}
@@ -229,7 +244,7 @@ export default function QuickQueryCommander({
             </CommandItem>
           ))}
         {searchValue &&
-          sortedQuickQueryParams.map((param, index) => {
+          sortedQuickQueryParams.map((param) => {
             return (
               <Fragment key={param.type}>
                 <CommandGroup

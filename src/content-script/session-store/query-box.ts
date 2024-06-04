@@ -2,12 +2,12 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
 import { Collection } from '@/components/QueryBox/CollectionSelector';
+import { ImageModel } from '@/components/QueryBox/ImageModelSelector';
 import {
   isValidFocus,
+  LanguageModel,
   WebAccessFocus,
-} from '@/components/QueryBox/FocusSelector';
-import { ImageModel } from '@/components/QueryBox/ImageModelSelector';
-import { LanguageModel } from '@/components/QueryBox/LanguageModelSelector';
+} from '@/types/ModelSelector';
 import { chromeStorage } from '@/utils/chrome-store';
 import { WSMessageParser } from '@/utils/ws';
 

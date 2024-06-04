@@ -90,9 +90,9 @@ export default function CollectionEditDialog({
     },
   });
 
-  const [title, setTitle] = useState(collection.title);
-  const [description, setDescription] = useState(collection.description);
-  const [instructions, setInstructions] = useState(collection.instructions);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [instructions, setInstructions] = useState('');
 
   useEffect(() => {
     if (!open) return;
@@ -100,7 +100,7 @@ export default function CollectionEditDialog({
     setTitle(collection.title);
     setDescription(collection.description);
     setInstructions(collection.instructions);
-  }, [open]);
+  }, [open, collection]);
 
   const handleSave = async ({
     title: newTitle,

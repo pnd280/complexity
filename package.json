@@ -66,6 +66,7 @@
     "@types/react-dom": "^18.2.13",
     "@types/showdown": "^2.0.6",
     "@vitejs/plugin-react": "^4.1.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
     "autoprefixer": "^10.4.19",
     "gulp": "^4.0.2",
     "gulp-zip": "^6.0.0",
@@ -73,6 +74,9 @@
     "prettier": "^3.0.3",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
     "uglify-js": "^3.17.4",
     "vite": "^5.2.11"
   }

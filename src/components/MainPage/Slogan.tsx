@@ -34,7 +34,7 @@ export default function Slogan() {
       $(container)
         .toggleClass('tw-animate-pulse', !isReady)
         .toggleClass('!tw-tracking-[.2em]', isReady);
-  }, [isReady]);
+  }, [isReady, container]);
 
   if (!container) return null;
 

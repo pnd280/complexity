@@ -1,6 +1,5 @@
 import { Nullable } from '@/types/Utils';
 import {
-  MessageData,
   MessageListener,
   SendMessage,
 } from '@/types/WebpageMessenger';
@@ -14,7 +13,7 @@ class WSHook {
   public static contentScriptMessenger: {
     onMessage: MessageListener;
     sendMessage: SendMessage;
-    // @ts-ignore
+    // @ts-expect-error
   } = { ...window.Messenger };
 
   constructor() {
@@ -35,7 +34,7 @@ class WSHook {
     this.webSocketInstance = instance;
     this.proxyWebSocketInstance(instance);
 
-    // @ts-ignore
+    // @ts-expect-error
     window.capturedSocket = this.getActiveInstance();
   }
 
@@ -55,9 +54,9 @@ class WSHook {
     this.longPollingInstance = instance;
     // this.proxyXMLHttpRequestInstance(instance);
 
-    // @ts-ignore
+    // @ts-expect-error
     window.capturedSocket = this.getActiveInstance();
-    // @ts-ignore
+    // @ts-expect-error
     window.longPollingInstance = this.getLongPollingInstance();
   }
 
@@ -242,7 +241,9 @@ class WSHook {
                   payload: { event: 'response', payload: message },
                 });
               }
-            } catch (e) {}
+            } catch (e) {
+              // Do nothing
+            }
           }
         },
         false
@@ -303,7 +304,7 @@ class WSHook {
         event: 'websocketCaptured',
       });
 
-      // @ts-ignore
+      // @ts-expect-error
       return self.webSocketOriginalSend.apply(this, arguments);
     };
   }
@@ -330,13 +331,13 @@ class WSHook {
 
   WSHook.contentScriptMessenger.onMessage('routeToPage', async (data) => {
     if (typeof data.payload === 'object') {
-      // @ts-ignore
+      // @ts-expect-error
       return window.next.router.push(data.payload.url, undefined, {
         scroll: data.payload.scroll,
       });
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     window.next.router.push(data.payload, undefined, {
       scroll: data.payload !== window.location.pathname,
     });

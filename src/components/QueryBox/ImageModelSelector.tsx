@@ -36,9 +36,7 @@ export type ImageModel = (typeof imageModels)[number] & {
   tooltip?: number;
 };
 
-type ModelSelectorProps = {};
-
-export default function ImageModelSelector({}: ModelSelectorProps) {
+export default function ImageModelSelector() {
   const limit = useQueryBoxStore((state) => state.imageCreateLimit);
 
   const [models, setModels] = useImmer<ImageModel[]>(
@@ -57,7 +55,7 @@ export default function ImageModelSelector({}: ModelSelectorProps) {
         model.tooltip = limit;
       });
     });
-  }, [limit]);
+  }, [limit, setModels]);
 
   return (
     <ModelSelector
@@ -67,8 +65,4 @@ export default function ImageModelSelector({}: ModelSelectorProps) {
       value={value}
     />
   );
-}
-
-function isValidImageModel(model?: string): model is ImageModel['code'] {
-  return imageModels.some((m) => m.code === model);
 }

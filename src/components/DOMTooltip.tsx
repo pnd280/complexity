@@ -52,7 +52,7 @@ export default function DOMTooltip({
       clearTimeout(timeoutId);
       $(container).off('mouseenter').off('mouseleave');
     };
-  }, [container]);
+  }, [container, delayDuration]);
 
   if (!container) return null;
 

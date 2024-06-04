@@ -22,14 +22,14 @@ const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     useEffect(() => {
       setValue(((props.defaultValue || props.value) as string) || '');
-    }, [props.value])
+    }, [props.value, props.defaultValue]);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       setValue(event.target.value);
     };
 
     return (
-      <div className='tw-w-full tw-h-full tw-relative'>
+      <div className="tw-w-full tw-h-full tw-relative">
         <textarea
           className={cn(
             'tw-flex tw-min-h-[80px] tw-h-full tw-w-full tw-rounded-md tw-border tw-border-input tw-bg-background tw-px-3 tw-py-2 tw-text-sm tw-ring-offset-background placeholder:tw-text-muted-foreground focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-cursor-not-allowed disabled:tw-opacity-50',

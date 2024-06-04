@@ -60,7 +60,8 @@ const WSMessageParser = {
       return parsedMessage as string;
     }
 
-    let { messageCode, event, data } = parsedMessage as WSParsedMessage;
+    let { data } = parsedMessage as WSParsedMessage;
+    const { messageCode, event } = parsedMessage as WSParsedMessage;
 
     if (!Array.isArray(data)) {
       data = [data];

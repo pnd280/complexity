@@ -6,6 +6,10 @@ import {
 } from 'lucide-react';
 import { PiGlobeX } from 'react-icons/pi';
 
+import {
+  languageModels,
+  webAccessFocus,
+} from '@/consts/model-selector';
 import { queryBoxStore } from '@/content-script/session-store/query-box';
 import webpageMessageInterceptors
   from '@/content-script/webpage/message-interceptors';
@@ -21,8 +25,6 @@ import {
 } from '@tanstack/react-query';
 
 import { Collection } from '../QueryBox/CollectionSelector';
-import { webAccessFocus } from '../QueryBox/FocusSelector';
-import { languageModels } from '../QueryBox/LanguageModelSelector';
 
 type UseQuickQueryCommanderParamsProps = {
   context: 'main' | 'follow-up';
@@ -213,7 +215,14 @@ export default function useQuickQueryCommanderParams({
     }
 
     return optionGroups;
-  }, [collections, currentThreadInfo, hasActivePPLXSub]);
+  }, [
+    collections,
+    currentThreadInfo,
+    hasActivePPLXSub,
+    context,
+    isFetchingCurrentThreadInfo,
+    queryClient,
+  ]);
 
   return { quickQueryParams, isFetchingCollections };
 }

@@ -18,7 +18,7 @@ export const PopupSettings = () => {
 
   return (
     <main className="tw-relative tw-font-sans tw-bg-background tw-text-foreground tw-flex-col tw-w-full tw-h-full !tw-text-[1em] tw-overflow-auto">
-      <div className="tw-px-4 tw-pt-2 tw-overflow-auto">
+      <div className="tw-px-4 tw-py-2 tw-overflow-auto">
         <div className="tw-text-yellow-300 tw-mb-4 tw-mt-2 tw-w-full tw-text-sm">
           Change(s) requires a full page reload!
         </div>

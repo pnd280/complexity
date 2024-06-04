@@ -22,14 +22,17 @@ export const logger = {
 
 export const jsonUtils = {
   unescape(escapedJson: string) {
-    return escapedJson
-      .replace(/\\\\/g, '\\') // backslashes
-      .replace(/\\\"/g, '"') // double quotes
-      .replace(/\\n/g, '\n') // newlines
-      .replace(/\\r/g, '\r') // carriage returns
-      .replace(/\\t/g, '\t') // tabs
-      .replace(/\\b/g, '\b') // backspaces
-      .replace(/\\f/g, '\f'); // form feeds
+    return (
+      escapedJson
+        .replace(/\\\\/g, '\\') // backslashes
+        // eslint-disable-next-line no-useless-escape
+        .replace(/\\\"/g, '"') // double quotes
+        .replace(/\\n/g, '\n') // newlines
+        .replace(/\\r/g, '\r') // carriage returns
+        .replace(/\\t/g, '\t') // tabs
+        .replace(/\\b/g, '\b') // backspaces
+        .replace(/\\f/g, '\f')
+    ); // form feeds
   },
   escape(json: string) {
     return json
@@ -208,7 +211,7 @@ export function setImmediateInterval(
 export function setCookie(name: string, value: any, days: number) {
   let expires = '';
   if (days) {
-    let date = new Date();
+    const date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = '; expires=' + date.toUTCString();
   }

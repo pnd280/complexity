@@ -13,7 +13,7 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
 (async function () {
   await init();
 
-  Root({});
+  Root();
 
   webpageListeners.onWebSocketCaptured();
   webpageMessageInterceptors.trackQueryLimits();

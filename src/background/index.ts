@@ -41,7 +41,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 chrome.tabs.onRemoved.addListener(
-  (tabId: number, removeInfo: chrome.tabs.TabRemoveInfo) => {
+  (tabId: number) => {
     const keyToRemove = `sessionStore-${tabId}`;
 
     chrome.storage.local.remove(keyToRemove, () => {
