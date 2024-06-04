@@ -52,7 +52,10 @@ class WSHook {
     if (!url.includes('transport=polling')) return;
 
     this.longPollingInstance = instance;
-    // this.proxyXMLHttpRequestInstance(instance);
+
+    WSHook.contentScriptMessenger.sendMessage({
+      event: 'longPollingCaptured',
+    });
 
     // @ts-expect-error
     window.capturedSocket = this.getActiveInstance();
@@ -84,13 +87,29 @@ class WSHook {
     return null;
   }
 
-  async sendWebsocketMessage(data: any): Promise<void | Response> {
+  async sendWebsocketMessage(
+    data: any,
+    forceLongPolling: boolean
+  ): Promise<void | Response> {
     const instance = this.getActiveInstance();
 
     if (!instance) return alert('No active WebSocket connection found!');
 
     if (instance instanceof WebSocket) {
-      instance.send(data);
+      if (forceLongPolling) {
+        const url = instance.url
+          .replace('wss://', 'https://')
+          .replace('transport="websocket"', 'transport="polling"');
+
+        const response = await fetch(url, {
+          method: 'POST',
+          body: data,
+        });
+
+        return response;
+      }
+
+      return instance.send(data);
     }
 
     if (instance instanceof XMLHttpRequest) {
@@ -318,7 +337,7 @@ class WSHook {
   WSHook.contentScriptMessenger.onMessage(
     'sendWebsocketMessage',
     async (data) => {
-      wsHook.sendWebsocketMessage(data.payload);
+      wsHook.sendWebsocketMessage(data.payload, !!data.forceLongPolling);
     }
   );
 

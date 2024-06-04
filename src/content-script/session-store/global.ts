@@ -3,15 +3,15 @@ import { create } from 'zustand';
 import { chromeStorage } from '@/utils/chrome-store';
 
 type GlobalState = {
-  isReady: boolean;
-  setReady: (isReady: boolean) => void;
+  isWebsocketCaptured: boolean;
+  isLongPollingCaptured: boolean;
   secretMode: boolean;
   customCSS: string;
 };
 
-const useGlobalStore = create<GlobalState>((set) => ({
-  isReady: false,
-  setReady: (isReady: boolean) => set({ isReady }),
+const useGlobalStore = create<GlobalState>(() => ({
+  isWebsocketCaptured: false,
+  isLongPollingCaptured: false,
   secretMode: false,
   customCSS: '',
 }));

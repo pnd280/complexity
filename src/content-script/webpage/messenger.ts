@@ -104,14 +104,15 @@ class WebpageMessenger {
     event,
     payload,
     timeout = 0,
+    forceLongPolling = false,
   }: SendMessageOptions<K>): Promise<ReturnType<EventHandlers[K]>> {
     return new Promise((resolve, reject) => {
       const uniqueId = `msg_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
       const message: MessageData<EventPayloads[K]> = {
         event,
         messageId: uniqueId,
+        forceLongPolling,
         payload: payload as EventPayloads[K],
-
         namespace: 'complexity',
       };
 

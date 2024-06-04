@@ -9,9 +9,7 @@ import {
   WebAccessFocus,
 } from '@/types/ModelSelector';
 import { chromeStorage } from '@/utils/chrome-store';
-import { WSMessageParser } from '@/utils/ws';
-
-import { webpageMessenger } from '../webpage/messenger';
+import pplxApi from '@/utils/pplx-api';
 
 type QueryBoxState = {
   selectedLanguageModel: LanguageModel['code'];
@@ -46,41 +44,13 @@ const useQueryBoxStore = create<QueryBoxState>()(
   immer((set) => ({
     selectedLanguageModel: 'turbo',
     setSelectedLanguageModel: async (selectedLanguageModel) => {
-      try {
-        await webpageMessenger.sendMessage({
-          event: 'sendWebsocketMessage',
-          payload: WSMessageParser.stringify({
-            messageCode: 423,
-            event: 'save_user_settings',
-            data: {
-              default_model: selectedLanguageModel,
-            },
-          }),
-        });
-
+      if (await pplxApi.setDefaultLanguageModel(selectedLanguageModel))
         return set({ selectedLanguageModel });
-      } catch (e) {
-        alert('Failed to change language model');
-      }
     },
     selectedImageModel: 'default',
     setSelectedImageModel: async (selectedImageModel) => {
-      try {
-        await webpageMessenger.sendMessage({
-          event: 'sendWebsocketMessage',
-          payload: WSMessageParser.stringify({
-            messageCode: 423,
-            event: 'save_user_settings',
-            data: {
-              default_image_generation_model: selectedImageModel,
-            },
-          }),
-        });
-
+      if (await pplxApi.setDefaultImageModel(selectedImageModel))
         return set({ selectedImageModel });
-      } catch (e) {
-        alert('Failed to change image model');
-      }
     },
     queryLimit: 0,
     setQueryLimit: (queryLimit) => set({ queryLimit }),
@@ -106,27 +76,13 @@ const useQueryBoxStore = create<QueryBoxState>()(
 
       proSearch: false,
       toggleProSearch: async (toggled) => {
-        try {
-          await webpageMessenger.sendMessage({
-            event: 'sendWebsocketMessage',
-            payload: WSMessageParser.stringify({
-              messageCode: 423,
-              event: 'save_user_settings',
-              data: {
-                default_copilot: toggled,
-              },
-            }),
-          });
-
+        if (await pplxApi.setDefaultProSearch(!!toggled))
           return set((state) => ({
             webAccess: {
               ...state.webAccess,
               proSearch: toggled ?? !state.webAccess.proSearch,
             },
           }));
-        } catch (e) {
-          alert('Failed to save pro search state.');
-        }
       },
     },
 

@@ -31,4 +31,12 @@ export type ThreadInfoAPIResponse = {
   author_username: string;
   collection_info: Collection;
   thread_url_slug: string;
-}
+};
+
+export type UserProfileSettingsAPIResponse = {
+  has_profile: boolean;
+  disabled: boolean;
+  bio: string;
+};
+
+export type UserProfileSettingsAPIRequest = Partial<UserProfileSettingsAPIResponse>;

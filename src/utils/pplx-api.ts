@@ -1,8 +1,13 @@
 import { Collection } from '@/components/QueryBox/CollectionSelector';
+import webpageMessageInterceptors
+  from '@/content-script/webpage/message-interceptors';
 import { webpageMessenger } from '@/content-script/webpage/messenger';
+import { LanguageModel } from '@/types/ModelSelector';
 import {
   CollectionsAPIResponse,
   ThreadInfoAPIResponse,
+  UserProfileSettingsAPIRequest,
+  UserProfileSettingsAPIResponse,
   UserSettingsApiResponse,
 } from '@/types/PPLXApi';
 
@@ -83,7 +88,7 @@ async function updateCollection(args: {
 
 async function fetchThreadInfo(threadSlug: string) {
   if (!threadSlug) return null;
-  
+
   const pplxBuildId = await getPPLXBuildId();
 
   if (!pplxBuildId) return null;
@@ -96,14 +101,129 @@ async function fetchThreadInfo(threadSlug: string) {
 
   if (!data) return null;
 
-  return data.pageProps.dehydratedState.queries[1].state.data[0] as ThreadInfoAPIResponse;
+  return data.pageProps.dehydratedState.queries[1].state
+    .data[0] as ThreadInfoAPIResponse;
+}
+
+async function fetchUserProfileSettings(): Promise<UserProfileSettingsAPIResponse | null> {
+  const pplxBuildId = await getPPLXBuildId();
+
+  if (!pplxBuildId) return null;
+
+  const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/profile.json`;
+
+  const resp = await fetchResource(url);
+
+  const data = jsonUtils.safeParse(resp);
+
+  if (!data) return null;
+
+  return data.pageProps.profile as UserProfileSettingsAPIResponse;
+}
+
+async function setDefaultLanguageModel(
+  selectedLanguageModel: LanguageModel['code']
+) {
+  try {
+    await webpageMessenger.sendMessage({
+      event: 'sendWebsocketMessage',
+      payload: WSMessageParser.stringify({
+        messageCode: 423,
+        event: 'save_user_settings',
+        data: {
+          default_model: selectedLanguageModel,
+        },
+      }),
+    });
+
+    return true;
+  } catch (e) {
+    alert('Failed to change language model');
+  }
+
+  return false;
+}
+
+async function setDefaultImageModel(selectedImageModel: string) {
+  try {
+    await webpageMessenger.sendMessage({
+      event: 'sendWebsocketMessage',
+      payload: WSMessageParser.stringify({
+        messageCode: 423,
+        event: 'save_user_settings',
+        data: {
+          default_image_generation_model: selectedImageModel,
+        },
+      }),
+    });
+
+    return true;
+  } catch (e) {
+    alert('Failed to change image model');
+  }
+
+  return false;
+}
+
+async function setDefaultProSearch(toggled: boolean) {
+  try {
+    await webpageMessenger.sendMessage({
+      event: 'sendWebsocketMessage',
+      payload: WSMessageParser.stringify({
+        messageCode: 423,
+        event: 'save_user_settings',
+        data: {
+          default_copilot: toggled,
+        },
+      }),
+    });
+
+    return true;
+  } catch (e) {
+    alert('Failed to change pro search state');
+  }
+
+  return false;
+}
+
+async function updateUserProfileSettings(data: UserProfileSettingsAPIRequest) {
+  const data2Send = {
+    action:
+      typeof data.disabled === 'undefined' ? 'save_profile' : 'toggle_disabled',
+    disabled: data.disabled ?? undefined,
+    bio: data.bio ?? undefined,
+  };
+
+  try {
+    await webpageMessenger.sendMessage({
+      event: 'sendWebsocketMessage',
+      payload: WSMessageParser.stringify({
+        messageCode: 421,
+        event: 'save_user_ai_profile',
+        data: data2Send,
+      }),
+    });
+
+    await webpageMessageInterceptors.waitForUserProfileSettings();
+
+    return true;
+  } catch (e) {
+    alert('Failed to update profile settings');
+  }
+
+  return false;
 }
 
 const pplxApi = {
   fetchCollections,
   fetchUserSettings,
-  updateCollection,
   fetchThreadInfo,
+  fetchUserProfileSettings,
+  updateCollection,
+  updateUserProfileSettings,
+  setDefaultLanguageModel,
+  setDefaultImageModel,
+  setDefaultProSearch,
 };
 
 export default pplxApi;

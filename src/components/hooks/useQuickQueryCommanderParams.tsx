@@ -46,7 +46,6 @@ export default function useQuickQueryCommanderParams({
     Collection[]
   >({
     queryKey: ['collections'],
-    initialData: [],
   });
 
   const { data: currentThreadInfo, isFetching: isFetchingCurrentThreadInfo } =
@@ -92,7 +91,7 @@ export default function useQuickQueryCommanderParams({
         prefix: '@c',
         heading: context === 'main' ? 'Collections' : 'Swap to Collection',
         optionItems: [
-          ...collections.map((collection) => ({
+          ...(collections || []).map((collection) => ({
             value: collection.uuid,
             label: collection.title,
             icon: <LayoutGrid />,

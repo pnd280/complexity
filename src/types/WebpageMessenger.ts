@@ -5,12 +5,14 @@ export type MessageData<T> = {
   event: keyof EventHandlers;
   payload: T;
   namespace: 'complexity';
+  forceLongPolling?: boolean;
 };
 
 export type SendMessageOptions<K extends keyof EventHandlers> = {
   event: K;
   timeout?: number;
   payload?: EventPayloads[K];
+  forceLongPolling?: boolean;
 };
 
 export type ResponseData<T> = {
@@ -79,6 +81,7 @@ export interface EventHandlers {
   webSocketEvent(data: WebSocketEventData): WebSocketEventData['payload'];
   longPollingEvent(data: LongPollingEventData): LongPollingEventData['payload'];
   websocketCaptured(): void;
+  longPollingCaptured(): void;
   getActiveWebSocketType(): Nullable<'WebSocket' | 'Long-polling'>;
   routeToPage(
     data:

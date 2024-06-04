@@ -3,7 +3,11 @@ import { webpageMessenger } from './messenger';
 
 function onWebSocketCaptured() {
   webpageMessenger.onMessage('websocketCaptured', async () => {
-    globalStore.setState({ isReady: true });
+    globalStore.setState({ isWebsocketCaptured: true });
+  });
+
+  webpageMessenger.onMessage('longPollingCaptured', async () => {
+    globalStore.setState({ isLongPollingCaptured: true });
   });
 }
 

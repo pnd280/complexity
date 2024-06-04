@@ -10,7 +10,7 @@ import { useGlobalStore } from '@/content-script/session-store/global';
 import useElementObserver from '../hooks/useElementObserver';
 
 export default function Slogan() {
-  const isReady = useGlobalStore((state) => state.isReady);
+  const isReady = useGlobalStore((state) => state.isWebsocketCaptured);
 
   const container = useElementObserver({
     selector: '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center',

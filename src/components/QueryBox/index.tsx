@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
 
+import { useGlobalStore } from '@/content-script/session-store/global';
 import {
   usePopupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
@@ -30,6 +31,8 @@ import LanguageModelSelector from './LanguageModelSelector';
 import QuickQueryCommander from './QuickQueryCommander';
 
 export default function QueryBox() {
+  const isReady = useGlobalStore((state) => state.isWebsocketCaptured);
+
   const { toast } = useToast();
 
   const isDefaultsInitialized = useRef({
@@ -38,18 +41,23 @@ export default function QueryBox() {
 
   const {
     data: userSettings,
-    isLoading,
+    isLoading: isLoadingUserSettings,
     refetch: refetchUserSettings,
   } = useQuery({
     queryKey: ['userSettings'],
     queryFn: pplxApi.fetchUserSettings,
   });
 
+  useQuery({
+    queryKey: ['userProfileSettings'],
+    queryFn: pplxApi.fetchUserProfileSettings,
+    enabled: isReady,
+  });
+
   const { refetch: refetchCollections } = useQuery({
     queryKey: ['collections'],
     queryFn: pplxApi.fetchCollections,
     enabled: false,
-    initialData: [],
   });
 
   const { setQueryLimit, setOpusLimit, setImageCreateLimit } = useQueryBoxStore(
@@ -107,7 +115,7 @@ export default function QueryBox() {
       toast({
         title: '⚠️ Some features are disabled!',
         description: 'No active Perplexity subscription/Not logged in!',
-        timeout: 1000000000,
+        timeout: 3000,
       });
   }, [hasActivePPLXSub, toast]);
 
@@ -139,7 +147,7 @@ export default function QueryBox() {
     toggleWebAccess,
   ]);
 
-  if (!userSettings || isLoading) return null;
+  if (!userSettings || isLoadingUserSettings) return null;
 
   const selectors = (
     <CommonSelectors

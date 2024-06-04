@@ -214,14 +214,9 @@ function alterQuery() {
 
 function waitForUpsertThreadCollection() {
   const matchCondition = (messageData: MessageData<any>) => {
-    const webSocketMessageData = messageData as MessageData<
-      WebSocketEventData | LongPollingEventData
-    >;
+    const parsedPayload = parseStructuredMessage(messageData);
 
-    const parsedPayload: WSParsedMessage | null | string =
-      WSMessageParser.parse(webSocketMessageData.payload.payload);
-
-    if (!isParsedWSMessage(parsedPayload)) return false;
+    if (!parsedPayload) return false;
 
     if (
       parsedPayload.messageCode !== 431 &&
@@ -248,12 +243,61 @@ function waitForUpsertThreadCollection() {
   });
 }
 
+function waitForUserProfileSettings() {
+  const matchCondition = (messageData: MessageData<any>) => {
+    const parsedPayload: WSParsedMessage | null =
+      parseStructuredMessage(messageData);
+
+    if (!parsedPayload) return false;
+
+    if (parsedPayload.messageCode !== 431) return false;
+
+    if (parsedPayload.data?.length !== 1) return false;
+
+    if (
+      'has_profile' in parsedPayload.data[0] &&
+      'bio' in parsedPayload.data[0]
+    )
+      return true;
+
+    return false;
+  };
+
+  return new Promise((resolve) => {
+    webpageMessenger.addInterceptor({
+      matchCondition: (messageData: MessageData<any>) => {
+        return { match: matchCondition(messageData) };
+      },
+      callback: async (messageData: MessageData<any>) => {
+        resolve(messageData.payload);
+        return messageData;
+      },
+      stopCondition: (messageData) => matchCondition(messageData), // stop after the first match
+    });
+  });
+}
+
+function parseStructuredMessage(messageData: MessageData<any>) {
+  const webSocketMessageData = messageData as MessageData<
+    WebSocketEventData | LongPollingEventData
+  >;
+
+  const parsedPayload: WSParsedMessage | null | string = WSMessageParser.parse(
+    webSocketMessageData.payload.payload
+  );
+
+  if (!isParsedWSMessage(parsedPayload)) return null;
+
+  return parsedPayload;
+}
+
 const webpageMessageInterceptors = {
   trackQueryLimits,
   inspectWebSocketEvents,
   inspectLongPollingEvents,
   alterQuery,
   waitForUpsertThreadCollection,
+  waitForUserProfileSettings,
 };
 
 export default webpageMessageInterceptors;

@@ -8,7 +8,9 @@ import {
   ExternalLink,
   LayoutGrid,
   LoaderCircle,
+  Pause,
   Pencil,
+  Play,
   X,
 } from 'lucide-react';
 
@@ -19,6 +21,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from '@/components/ui/command';
 import {
   Popover,
@@ -27,12 +30,17 @@ import {
 } from '@/components/ui/popover';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
 import { webpageMessenger } from '@/content-script/webpage/messenger';
+import { cn } from '@/lib/utils';
+import { UserProfileSettingsAPIResponse } from '@/types/PPLXApi';
 import { ui } from '@/utils/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 
 import CollectionEditDialog from '../CollectionEditDialog';
+import useUpdateUserProfileSettings
+  from '../hooks/useUpdateUserProfileSettings';
 import TooltipWrapper from '../TooltipWrapper';
+import UserProfileEditDialog from '../UserProfileEditDialog';
 
 export type Collection = {
   title: string;
@@ -44,14 +52,23 @@ export type Collection = {
 };
 
 export default function CollectionSelector() {
-  const { data: collections, isFetching: isFetchingCollections } = useQuery<
+  const { data: collections, isLoading: isLoadingCollections } = useQuery<
     Collection[]
   >({
     queryKey: ['collections'],
-    initialData: [],
   });
 
+  const { data: userProfileSettings } =
+    useQuery<UserProfileSettingsAPIResponse>({
+      queryKey: ['userProfileSettings'],
+      enabled: false,
+    });
+
+  const { isUpdatingUserProfileSettings, updateUserProfileSettings } =
+    useUpdateUserProfileSettings();
+
   const [open, toggleOpen] = useToggle(false);
+  const [editUserProfileDialog, toggleEditUserProfileDialog] = useToggle(false);
   const [editDialogOpen, toggleEditDialogOpen] = useToggle(false);
   const [editCollection, setEditCollection] = useState<Collection>();
 
@@ -88,7 +105,7 @@ export default function CollectionSelector() {
                   'group-hover:!tw-hidden': selectedCollectionUuid,
                 })}
               />
-              {selectedCollectionUuid ? (
+              {collections && selectedCollectionUuid ? (
                 <span className="tw-items-center tw-max-w-[110px]">
                   {
                     collections.find(
@@ -107,80 +124,160 @@ export default function CollectionSelector() {
               className="!tw-py-2 !tw-h-max !tw-min-w-[80px] !tw-text-sm"
               searchIcon={false}
             />
-            <CommandEmpty>
-              {isFetchingCollections && collections.length < 1 ? (
-                <div className="tw-flex tw-gap-2 tw-justify-center tw-items-center">
-                  <LoaderCircle className="tw-w-4 tw-h-4 tw-animate-spin" />
-                  <span>Loading...</span>
-                </div>
-              ) : (
-                'No collection found.'
-              )}
-            </CommandEmpty>
+            <CommandEmpty>No collection found.</CommandEmpty>
+
             <CommandList>
               <CommandGroup>
-                {collections.map((collection) => (
-                  <CommandItem
-                    key={collection.uuid}
-                    keywords={[collection.title]}
-                    className={clsx(
-                      'tw-w-full tw-max-w-full hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
-                      {
-                        '!tw-text-accent-foreground':
-                          selectedCollectionUuid === collection.uuid,
-                        '!tw-text-foreground':
-                          selectedCollectionUuid !== collection.uuid,
-                      }
-                    )}
-                    value={collection.uuid}
-                    onSelect={(currentValue) => {
-                      toggleOpen(false);
-                      setSelectedCollectionUuid(currentValue);
-                    }}
-                  >
-                    <div className="!tw-text-sm !tw-py-1 tw-truncate tw-mr-8">
-                      {collection.title}
-                    </div>
-
-                    <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
-                      <TooltipWrapper
-                        content={
-                          collection.instructions || collection.description
-                        }
-                        contentOptions={{
-                          side: 'right',
-                          sideOffset: 60,
-                        }}
-                      >
-                        <div
-                          className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleOpen(false);
-                            setEditCollection(collection);
-                            toggleEditDialogOpen(true);
-                          }}
-                        >
-                          <Pencil className="tw-w-3 tw-h-3" />
-                        </div>
-                      </TooltipWrapper>
-
+                <Selection
+                  keywords={['', 'Default', 'Your AI Profile']}
+                  className={clsx(
+                    'tw-w-full tw-max-w-full hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
+                    {
+                      '!tw-text-accent-foreground': !selectedCollectionUuid,
+                      '!tw-text-foreground': selectedCollectionUuid,
+                    }
+                  )}
+                  value=""
+                  onSelect={(currentValue) => {
+                    toggleOpen(false);
+                    setSelectedCollectionUuid(currentValue);
+                  }}
+                  title="Your AI Profile"
+                >
+                  <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
+                    <TooltipWrapper
+                      content={userProfileSettings?.bio || ''}
+                      contentOptions={{
+                        side: 'right',
+                        sideOffset: 60,
+                      }}
+                    >
                       <div
                         className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleOpen(false);
-                          webpageMessenger.sendMessage({
-                            event: 'routeToPage',
-                            payload: `/collections/${collection.url}`,
+                          toggleEditUserProfileDialog();
+                        }}
+                      >
+                        <Pencil className="tw-w-3 tw-h-3" />
+                      </div>
+                    </TooltipWrapper>
+
+                    <TooltipWrapper
+                      content={
+                        userProfileSettings?.disabled
+                          ? 'Enable AI profile'
+                          : 'Disable AI profile'
+                      }
+                    >
+                      <div
+                        className={cn(
+                          'tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95',
+                          {
+                            '!tw-text-muted-foreground':
+                              isUpdatingUserProfileSettings,
+                          }
+                        )}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+
+                          if (isUpdatingUserProfileSettings) {
+                            return;
+                          }
+
+                          updateUserProfileSettings({
+                            disabled: !userProfileSettings?.disabled,
                           });
                         }}
                       >
-                        <ExternalLink className="tw-w-3 tw-h-3" />
+                        {isUpdatingUserProfileSettings ? (
+                          <LoaderCircle className="tw-w-3 tw-h-3 tw-animate-spin" />
+                        ) : (
+                          <>
+                            {userProfileSettings?.disabled ? (
+                              <Play className="tw-w-3 tw-h-3" />
+                            ) : (
+                              <Pause className="tw-w-3 tw-h-3" />
+                            )}
+                          </>
+                        )}
                       </div>
-                    </div>
-                  </CommandItem>
-                ))}
+                    </TooltipWrapper>
+                  </div>
+                </Selection>
+              </CommandGroup>
+
+              <CommandSeparator />
+
+              <CommandGroup heading="Collections">
+                {isLoadingCollections && (
+                  <div className="tw-flex tw-gap-2 tw-justify-center tw-items-center tw-my-4">
+                    <LoaderCircle className="tw-w-4 tw-h-4 tw-animate-spin" />
+                    <span>Loading...</span>
+                  </div>
+                )}
+                {collections &&
+                  collections.map((collection) => (
+                    <Selection
+                      key={collection.uuid}
+                      keywords={[collection.title]}
+                      className={clsx(
+                        'tw-w-full tw-max-w-full hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
+                        {
+                          '!tw-text-accent-foreground':
+                            selectedCollectionUuid === collection.uuid,
+                          '!tw-text-foreground':
+                            selectedCollectionUuid !== collection.uuid,
+                        }
+                      )}
+                      value={collection.uuid}
+                      onSelect={(currentValue) => {
+                        toggleOpen(false);
+                        setSelectedCollectionUuid(currentValue);
+                      }}
+                      title={collection.title}
+                    >
+                      <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
+                        <TooltipWrapper
+                          content={
+                            collection.instructions || collection.description
+                          }
+                          contentOptions={{
+                            side: 'right',
+                            sideOffset: 60,
+                          }}
+                        >
+                          <div
+                            className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleOpen(false);
+                              setEditCollection(collection);
+                              toggleEditDialogOpen(true);
+                            }}
+                          >
+                            <Pencil className="tw-w-3 tw-h-3" />
+                          </div>
+                        </TooltipWrapper>
+
+                        <div
+                          className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleOpen(false);
+                            webpageMessenger.sendMessage({
+                              event: 'routeToPage',
+                              payload: `/collections/${collection.url}`,
+                            });
+                          }}
+                        >
+                          <ExternalLink className="tw-w-3 tw-h-3" />
+                        </div>
+                      </div>
+                    </Selection>
+                  ))}
               </CommandGroup>
             </CommandList>
           </Command>
@@ -193,6 +290,49 @@ export default function CollectionSelector() {
           onOpenChange={toggleEditDialogOpen}
         />
       )}
+      <UserProfileEditDialog
+        open={editUserProfileDialog}
+        onOpenChange={toggleEditUserProfileDialog}
+      />
     </>
+  );
+}
+
+type SelectionProps = {
+  keywords: string[];
+  className?: string;
+  value: string;
+  onSelect: (value: string) => void;
+  title: string;
+  children?: React.ReactNode;
+};
+
+function Selection({
+  keywords,
+  className,
+  value,
+  onSelect,
+  title,
+  children,
+}: SelectionProps) {
+  return (
+    <CommandItem
+      keywords={keywords}
+      className={clsx(
+        'tw-w-full tw-max-w-full hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
+        {
+          '!tw-text-accent-foreground': !value,
+          '!tw-text-foreground': value,
+        },
+        className
+      )}
+      value={value}
+      onSelect={(currentValue) => {
+        onSelect(currentValue);
+      }}
+    >
+      <div className="!tw-text-sm !tw-py-1 tw-truncate tw-mr-8">{title}</div>
+      {children}
+    </CommandItem>
   );
 }
