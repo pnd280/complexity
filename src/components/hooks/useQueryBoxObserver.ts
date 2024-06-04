@@ -68,7 +68,7 @@ export default function useQueryBoxObserver({
 
       const $container = $('<div>')
         .addClass(
-          'tw-flex tw-justify-center tw-mb-1 tw-mx-auto [&>div>*]:tw-h-full [&_button_span]:!tw-font-sans'
+          'tw-flex tw-justify-center tw-mb-2 tw-mx-auto [&>div>*]:tw-h-full [&_button_span]:!tw-font-sans'
         )
         .attr('id', 'query-box-follow-up-container');
 

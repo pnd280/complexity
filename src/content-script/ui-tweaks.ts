@@ -114,7 +114,7 @@ function adjustQueryBoxWidth() {
       $wrapper.addClass('tw-transition-all tw-duration-300');
       $wrapper.parent().addClass('tw-transition-all tw-duration-300');
       $wrapper.removeClass('md:col-span-8').addClass('col-span-12');
-      $wrapper.parent().addClass('md:!tw-bottom-[5px]');
+      $wrapper.parent().addClass('md:!tw-bottom-[.3rem]');
 
       observer.onAttributeChanges({
         targetNode: $(
@@ -122,7 +122,7 @@ function adjustQueryBoxWidth() {
         )[0],
         attributes: ['class'],
         callback: ({ targetNode }) => {
-          $(targetNode).addClass('md:!tw-bottom-[5px]');
+          $(targetNode).addClass('md:!tw-bottom-[.3rem]');
         },
       });
     },
