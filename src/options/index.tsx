@@ -3,6 +3,7 @@ import '@/assets/global.css';
 import $ from 'jquery';
 import ReactDOM from 'react-dom/client';
 
+import CustomTheme from '@/components/CustomTheme';
 import {
   Tabs,
   TabsContent,
@@ -15,8 +16,6 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-
-import CustomCSS from './CustomCSS';
 
 const queryClient = new QueryClient();
 
@@ -31,14 +30,14 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
           className="w-[400px]"
         >
           <TabsList className="tw-grid w-full tw-grid-cols-2">
-            <TabsTrigger value="popupSettings">Settings</TabsTrigger>
+            <TabsTrigger value="popupSettings">Basic Settings</TabsTrigger>
             <TabsTrigger value="customTheme">Custom theme</TabsTrigger>
           </TabsList>
           <TabsContent value="popupSettings">
             <PopupSettings />
           </TabsContent>
           <TabsContent value="customTheme">
-            <CustomCSS />
+            <CustomTheme />
           </TabsContent>
         </Tabs>
       </div>

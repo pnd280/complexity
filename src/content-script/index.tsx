@@ -38,14 +38,14 @@ async function init() {
     'data-dev': `${import.meta.env.DEV}`,
   });
 
+  uiTweaks.correctColorScheme();
+  uiTweaks.injectBaseStyles();
+  uiTweaks.injectCustomStyles();
+  
   await Promise.all([
     softUpdateCheck(),
     chrome.runtime.sendMessage({ action: 'injectScript' }),
   ]);
-
-  uiTweaks.injectBaseStyles();
-  uiTweaks.injectCustomStyles();
-  uiTweaks.correctColorScheme();
 }
 
 async function softUpdateCheck() {

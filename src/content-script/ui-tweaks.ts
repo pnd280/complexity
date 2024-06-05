@@ -25,14 +25,54 @@ function injectBaseStyles() {
 }
 
 function injectCustomStyles() {
-  globalStore.subscribe(({ customCSS }) => {
+  globalStore.subscribe(({ customTheme: { customCSS } }) => {
+    if ($('#complexity-custom-styles').length) {
+      $('#complexity-custom-styles').text(
+        jsonUtils.safeParse(customCSS || '') || ''
+      );
+      return;
+    }
+
     $('<style>')
       .attr({
         id: 'complexity-custom-styles',
       })
-      .text(jsonUtils.safeParse(customCSS) || '')
+      .text(jsonUtils.safeParse(customCSS || '') || '')
       .appendTo('head');
   });
+
+  globalStore.subscribe(
+    ({ customTheme: { uiFont, monoFont, accentColor } }) => {
+      type CustomTheme = {
+        '--ui-font'?: string;
+        '--mono-font'?: string;
+        '--accent-foreground'?: string;
+        '--accent-foreground-darker'?: string;
+        '--ring'?: string;
+        '--ring-darker'?: string;
+      };
+
+      const css: CustomTheme = {
+        '--ui-font': uiFont,
+        '--mono-font': monoFont,
+        '--accent-foreground': accentColor,
+        '--accent-foreground-darker': `${accentColor}80`,
+        '--ring': accentColor,
+        '--ring-darker': `${accentColor}80`,
+      };
+
+      if (!uiFont) delete css['--ui-font'];
+      if (!monoFont) delete css['--mono-font'];
+      if (!accentColor) {
+        delete css['--accent-foreground'];
+        delete css['--accent-foreground-darker'];
+        delete css['--ring'];
+        delete css['--ring-darker'];
+      }
+
+      $('html').css(css);
+    }
+  );
 }
 
 function alterAttachButton() {
@@ -67,8 +107,11 @@ function correctColorScheme() {
     callback: ({ targetNode }) => {
       $(targetNode).toggleClass('tw-dark', $(targetNode).hasClass('dark'));
 
-      document.title === "We'll be right back" &&
+      if (document.title === "We'll be right back") {
         $(targetNode).addClass('dark tw-dark');
+        $('h1').addClass('!tw-text-[4rem]');
+        $('p.message').addClass('tw-font-sans');
+      }
     },
     immediateInvoke: true,
   });

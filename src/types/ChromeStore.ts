@@ -27,7 +27,13 @@ export type ChromeStore = {
       collapseEmptyThreadVisualColumns: boolean;
     };
   };
-  customCSS: string;
+  customTheme: {
+    slogan?: string;
+    uiFont?: string;
+    monoFont?: string;
+    accentColor?: string;
+    customCSS?: string;
+  };
 } & {
   [key: `sessionStore-${number}`]: ChromeSessionStore;
 };

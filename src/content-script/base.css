@@ -248,3 +248,7 @@ html.dark #markdown-query-wrapper {
     max-height: 200px;
   }
 }
+
+.text-shadow-hover:hover {
+  text-shadow: 0 0 10px var(--accent-foreground);
+}

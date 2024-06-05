@@ -1,19 +1,20 @@
 import { create } from 'zustand';
 
+import { ChromeStore } from '@/types/ChromeStore';
 import { chromeStorage } from '@/utils/chrome-store';
 
 type GlobalState = {
   isWebsocketCaptured: boolean;
   isLongPollingCaptured: boolean;
   secretMode: boolean;
-  customCSS: string;
+  customTheme: ChromeStore['customTheme'];
 };
 
 const useGlobalStore = create<GlobalState>(() => ({
   isWebsocketCaptured: false,
   isLongPollingCaptured: false,
   secretMode: false,
-  customCSS: '',
+  customTheme: {},
 }));
 
 const globalStore = useGlobalStore;
@@ -23,9 +24,9 @@ const globalStore = useGlobalStore;
 
   globalStore.setState({ secretMode: !!secretMode });
 
-  const customCSS = await chromeStorage.getStorageValue('customCSS');
+  const customTheme = await chromeStorage.getStorageValue('customTheme');
 
-  globalStore.setState({ customCSS: customCSS || '' });
+  globalStore.setState({ customTheme: customTheme || '' });
 })();
 
 export { globalStore, useGlobalStore };
