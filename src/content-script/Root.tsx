@@ -6,6 +6,7 @@ import useElementObserver from '@/components/hooks/useElementObserver';
 import MainPage from '@/components/MainPage';
 import QueryBox from '@/components/QueryBox';
 import ThreadAnchor from '@/components/ThreadAnchor';
+import ThreadQueryFormatSwitch from '@/components/ThreadQueryFormatSwitch';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -32,6 +33,7 @@ export default function Root() {
         <QueryBox />
         <Commander />
         {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadAnchor />}
+        {popupSettingsStore.getState().visualTweaks.threadQueryMarkdown && <ThreadQueryFormatSwitch />}
         <Toaster />
         <IncompatibleInterfaceLanguageNotice />
         <ReactQueryDevtools initialIsOpen={false} />

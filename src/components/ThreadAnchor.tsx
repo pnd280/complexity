@@ -164,7 +164,8 @@ const useThreadAnchorObserver = () => {
 
     setWrapperPos({
       top: $messageContainer.offset()?.top || 0,
-      left: $messageContainer.width()! + ($messageContainer.offset()?.left || 0),
+      left:
+        $messageContainer.width()! + ($messageContainer.offset()?.left || 0),
     });
 
     setAnchorsProps([]);

@@ -283,7 +283,6 @@ function alternateMessageQuery({
   $query.append($newQueryWrapper);
 
   $query.off('dblclick').on('dblclick', () => {
-    if ($query.find('textarea').length) return;
     const $buttonBar = $messageBlock.find(
       '.mt-sm.flex.items-center.justify-between'
     );

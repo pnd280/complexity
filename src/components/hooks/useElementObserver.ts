@@ -5,9 +5,7 @@ import {
 
 import observer, { OnElementExistOptions } from '@/utils/observer';
 
-type useElementObserverProps = Omit<OnElementExistOptions<any>, 'callback'> & {
-  callback?: ({ element }: { element: Element }) => void;
-};
+type useElementObserverProps = OnElementExistOptions<any>;
 
 export default function useElementObserver({
   selector,
@@ -20,9 +18,9 @@ export default function useElementObserver({
   useEffect(() => {
     const myObserver = observer.onElementExist({
       selector,
-      callback: ({ element }) => {
-        callback?.({ element });
-        setContainer(element);
+      callback: (args) => {
+        callback?.(args);
+        setContainer(args.element);
       },
       observedIdentifier,
       recurring,

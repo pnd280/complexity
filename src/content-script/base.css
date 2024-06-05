@@ -218,13 +218,13 @@ body[data-scroll-locked].bg-transparent {
   display: none;
 }
 
-body:has(#markdown-query-wrapper) {
+/* body:has(#markdown-query-wrapper) {
 
   & h1.whitespace-pre-line.break-words,
   & div.whitespace-pre-line.break-words {
     display: none;
   }
-}
+} */
 
 html.dark #markdown-query-wrapper {
   & pre code {
