@@ -29,6 +29,8 @@ const queryClient = new QueryClient();
 
 const version = `beta-${packageData.version}`;
 
+console.log(chrome.runtime.id);
+
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
   <>
     <QueryClientProvider client={queryClient}>
@@ -39,10 +41,24 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
           <PopupSettings />
         </div>
         <Footer />
+        {chrome.runtime.id !== 'ffppmilmeaekegkpckebkeahjgmhggpj' &&
+          !import.meta.env.DEV && <UntrustedBuildWarning />}
       </div>
     </QueryClientProvider>
   </>
 );
+
+function UntrustedBuildWarning() {
+  return (
+    <div className="tw-w-full tw-bg-secondary tw-flex tw-flex-col tw-font-sans">
+      <Separator />
+      <div className="tw-flex tw-px-2 tw-py-2 tw-text-sm tw-font-bold tw-gap-1 tw-bg-destructive tw-items-center">
+        <CircleAlert className="tw-h-3 tw-w-3 tw-mr-1 tw-text-accent-foreground" />
+        <span>This is an untrusted build. Use at your own risk.</span>
+      </div>
+    </div>
+  );
+}
 
 function DiscordCallout() {
   return (
