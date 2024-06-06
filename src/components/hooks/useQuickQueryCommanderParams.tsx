@@ -49,9 +49,10 @@ export default function useQuickQueryCommanderParams({
   });
 
   const { data: currentThreadInfo, isFetching: isFetchingCurrentThreadInfo } =
-    useQuery<ThreadInfoAPIResponse>({
+    useQuery<ThreadInfoAPIResponse[], Error, ThreadInfoAPIResponse>({
       queryKey: ['currentThreadInfo'],
       enabled: false,
+      select: (data) => data?.[0],
     });
 
   const quickQueryParams = useMemo(() => {

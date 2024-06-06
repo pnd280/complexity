@@ -28,7 +28,7 @@ export default function ThreadQueryFormatSwitch() {
 
   useEffect(() => {
     containers.forEach((container, index) => {
-      if ($(container.query).find('#markdown-query-wrapper.tw-hidden').length) {
+      if ($(container.query).find('#markdown-query-wrapper.\\!tw-hidden').length) {
         setIsMarkdown((draft) => {
           draft[index] = false;
         });
@@ -74,10 +74,10 @@ export default function ThreadQueryFormatSwitch() {
       if (whereAmI() !== 'thread') return;
 
       const isMarkdown =
-        $(element).parent().find('#markdown-query-wrapper:not(.tw-hidden)')
+        $(element).parent().find('#markdown-query-wrapper:not(.\\!tw-hidden)')
           .length > 0 || !$(element).parent().find('#markdown-query-wrapper').length;
 
-      $(element).toggleClass('tw-hidden', isMarkdown);
+      $(element).toggleClass('!tw-hidden', isMarkdown);
     },
     observedIdentifier: 'append-tw-block-to-plain-text-block',
   });
@@ -92,10 +92,10 @@ export default function ThreadQueryFormatSwitch() {
             setIsMarkdown((draft) => {
               $(container.query)
                 .find('.whitespace-pre-line.break-words')
-                .toggleClass('tw-hidden', !draft[index]);
+                .toggleClass('!tw-hidden', !draft[index]);
               $(container.query)
                 .find('#markdown-query-wrapper')
-                .toggleClass('tw-hidden', draft[index]);
+                .toggleClass('!tw-hidden', draft[index]);
               draft[index] = !draft[index];
             });
           }}

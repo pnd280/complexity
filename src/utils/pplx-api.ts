@@ -102,7 +102,7 @@ async function fetchThreadInfo(threadSlug: string) {
   if (!data) return null;
 
   return data.pageProps.dehydratedState.queries[1].state
-    .data[0] as ThreadInfoAPIResponse;
+    .data as ThreadInfoAPIResponse[];
 }
 
 async function fetchUserProfileSettings(): Promise<UserProfileSettingsAPIResponse | null> {

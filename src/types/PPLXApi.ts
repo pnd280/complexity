@@ -25,6 +25,7 @@ export type CollectionsAPIResponse = {
 }[];
 
 export type ThreadInfoAPIResponse = {
+  query_str: string;
   text: string;
   backend_uuid: string;
   author_image: string;
