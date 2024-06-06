@@ -118,7 +118,11 @@ export default function CollectionSelector() {
           </PopoverTrigger>
         </TooltipWrapper>
         <PopoverContent className="!tw-w-max !tw-p-0">
-          <Command className="!tw-min-w-[150px] tw-max-w-[250px] tw-bg-background tw-font-sans">
+          <Command
+            key={selectedCollectionUuid}
+            className="!tw-min-w-[150px] tw-max-w-[250px] tw-bg-background tw-font-sans"
+            defaultValue={selectedCollectionUuid ? selectedCollectionUuid : collections?.[0]?.uuid}
+          >
             <CommandInput
               placeholder="Search..."
               className="!tw-py-2 !tw-h-max !tw-min-w-[80px] !tw-text-sm"
@@ -318,14 +322,7 @@ function Selection({
   return (
     <CommandItem
       keywords={keywords}
-      className={clsx(
-        'tw-w-full tw-max-w-full hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
-        {
-          '!tw-text-accent-foreground': !value,
-          '!tw-text-foreground': value,
-        },
-        className
-      )}
+      className={className}
       value={value}
       onSelect={(currentValue) => {
         onSelect(currentValue);
