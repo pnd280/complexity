@@ -1,5 +1,7 @@
 import { Collection } from '@/components/QueryBox/CollectionSelector';
 
+import { LanguageModel } from './ModelSelector';
+
 export type UserSettingsApiResponse = {
   create_limit: number;
   default_copilot: boolean;
@@ -24,7 +26,7 @@ export type CollectionsAPIResponse = {
   access: 1 | 2;
 }[];
 
-export type ThreadInfoAPIResponse = {
+export type ThreadMessageAPIResponse = {
   query_str: string;
   text: string;
   backend_uuid: string;
@@ -32,6 +34,7 @@ export type ThreadInfoAPIResponse = {
   author_username: string;
   collection_info: Collection;
   thread_url_slug: string;
+  display_model: LanguageModel['code'];
 };
 
 export type UserProfileSettingsAPIResponse = {
@@ -40,4 +43,5 @@ export type UserProfileSettingsAPIResponse = {
   bio: string;
 };
 
-export type UserProfileSettingsAPIRequest = Partial<UserProfileSettingsAPIResponse>;
+export type UserProfileSettingsAPIRequest =
+  Partial<UserProfileSettingsAPIResponse>;

@@ -5,7 +5,7 @@ import { webpageMessenger } from '@/content-script/webpage/messenger';
 import { LanguageModel } from '@/types/ModelSelector';
 import {
   CollectionsAPIResponse,
-  ThreadInfoAPIResponse,
+  ThreadMessageAPIResponse,
   UserProfileSettingsAPIRequest,
   UserProfileSettingsAPIResponse,
   UserSettingsApiResponse,
@@ -102,7 +102,7 @@ async function fetchThreadInfo(threadSlug: string) {
   if (!data) return null;
 
   return data.pageProps.dehydratedState.queries[1].state
-    .data as ThreadInfoAPIResponse[];
+    .data as ThreadMessageAPIResponse[];
 }
 
 async function fetchUserProfileSettings(): Promise<UserProfileSettingsAPIResponse | null> {

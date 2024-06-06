@@ -15,7 +15,7 @@ import webpageMessageInterceptors
   from '@/content-script/webpage/message-interceptors';
 import { webpageMessenger } from '@/content-script/webpage/messenger';
 import {
-  ThreadInfoAPIResponse,
+  ThreadMessageAPIResponse,
   UserSettingsApiResponse,
 } from '@/types/PPLXApi';
 import { WSMessageParser } from '@/utils/ws';
@@ -49,7 +49,7 @@ export default function useQuickQueryCommanderParams({
   });
 
   const { data: currentThreadInfo, isFetching: isFetchingCurrentThreadInfo } =
-    useQuery<ThreadInfoAPIResponse[], Error, ThreadInfoAPIResponse>({
+    useQuery<ThreadMessageAPIResponse[], Error, ThreadMessageAPIResponse>({
       queryKey: ['currentThreadInfo'],
       enabled: false,
       select: (data) => data?.[0],

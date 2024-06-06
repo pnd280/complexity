@@ -13,7 +13,7 @@ import {
   LoaderCircle,
 } from 'lucide-react';
 
-import { ThreadInfoAPIResponse } from '@/types/PPLXApi';
+import { ThreadMessageAPIResponse } from '@/types/PPLXApi';
 import { ui } from '@/utils/ui';
 import {
   jsonUtils,
@@ -26,7 +26,7 @@ import { Button } from './ui/button';
 
 export default function ThreadExportButton() {
   const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery<
-    ThreadInfoAPIResponse[]
+    ThreadMessageAPIResponse[]
   >({
     queryKey: ['currentThreadInfo'],
     enabled: false,
@@ -67,7 +67,7 @@ export default function ThreadExportButton() {
     let outputText = '';
 
     result.data?.map((message) => {
-      outputText += `Question: ${message.query_str}\n\n`;
+      outputText += `**Question**:  \n${message.query_str}\n\n`;
 
       const answer =
         jsonUtils.safeParse(message.text)?.answer ||
@@ -75,7 +75,7 @@ export default function ThreadExportButton() {
           jsonUtils.safeParse(message.text)?.[4].content.answer
         )?.answer;
 
-      outputText += `Answer: ${answer}\n\n`;
+      outputText += `**Answer** (${message.display_model.toUpperCase()}):  \n${answer}\n\n`;
 
       const proSearchWebResults = jsonUtils.safeParse(message.text)?.[2]
         ?.content.web_results;
