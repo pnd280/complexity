@@ -21,6 +21,7 @@ export type ChromeStore = {
     qolTweaks: {
       threadTOC: boolean;
       quickQueryCommander: boolean;
+      codeBlockEnhancedToolbar: boolean;
     };
     visualTweaks: {
       threadQueryMarkdown: boolean;

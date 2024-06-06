@@ -184,7 +184,7 @@ const useThreadAnchorObserver = () => {
 
       const title =
         $query.find('textarea').text() ||
-        $query.find('>*:not(#markdown-query-wrapper)').first().text();
+        $query.find('>*:not(#markdown-query-wrapper):not(.tw-sticky)').first().text();
 
       anchorProps.title = title;
 

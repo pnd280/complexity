@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { createRoot } from 'react-dom/client';
 
+import CodeBlockEnhancedToolbar from '@/components/CodeBlockEnhancedToolbar';
 import { Commander } from '@/components/Commander';
 import useElementObserver from '@/components/hooks/useElementObserver';
 import MainPage from '@/components/MainPage';
@@ -35,6 +36,7 @@ export default function Root() {
         <Commander />
         {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadAnchor />}
         {popupSettingsStore.getState().visualTweaks.threadQueryMarkdown && <ThreadQueryFormatSwitch />}
+        {popupSettingsStore.getState().qolTweaks.codeBlockEnhancedToolbar && <CodeBlockEnhancedToolbar />}
         <ThreadExportButton />
         <Toaster />
         <IncompatibleInterfaceLanguageNotice />

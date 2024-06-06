@@ -21,6 +21,7 @@ export default function ThreadQueryFormatSwitch() {
     {
       messageBlock: Element;
       query: Element;
+      container: Element;
     }[]
   >([]);
 
@@ -28,7 +29,9 @@ export default function ThreadQueryFormatSwitch() {
 
   useEffect(() => {
     containers.forEach((container, index) => {
-      if ($(container.query).find('#markdown-query-wrapper.\\!tw-hidden').length) {
+      if (
+        $(container.query).find('#markdown-query-wrapper.\\!tw-hidden').length
+      ) {
         setIsMarkdown((draft) => {
           draft[index] = false;
         });
@@ -51,9 +54,16 @@ export default function ThreadQueryFormatSwitch() {
 
       $(element).addClass('tw-relative');
 
+      const $container = $('<div>').addClass(
+        'tw-sticky tw-float-right tw-top-[3.5rem] tw-w-max tw-h-0'
+      );
+
+      $(element).children().first().before($container);
+
       setContainers((prev) => [
         ...prev,
         {
+          container: $container[0],
           query: element,
           messageBlock: args.$messageBlock[0],
         },
@@ -75,7 +85,8 @@ export default function ThreadQueryFormatSwitch() {
 
       const isMarkdown =
         $(element).parent().find('#markdown-query-wrapper:not(.\\!tw-hidden)')
-          .length > 0 || !$(element).parent().find('#markdown-query-wrapper').length;
+          .length > 0 ||
+        !$(element).parent().find('#markdown-query-wrapper').length;
 
       $(element).toggleClass('!tw-hidden', isMarkdown);
     },
@@ -99,7 +110,7 @@ export default function ThreadQueryFormatSwitch() {
               draft[index] = !draft[index];
             });
           }}
-          className="tw-absolute tw-right-0 tw-top-0 tw-w-max tw-h-max tw-bg-secondary tw-text-secondary-foreground tw-p-2 tw-rounded-md tw-cursor-pointer tw-border tw-border-border tw-shadow-lg tw-opacity-10 hover:tw-opacity-100 tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95"
+          className="tw-m-4 tw-bg-secondary tw-text-secondary-foreground tw-p-2 tw-rounded-md tw-cursor-pointer tw-border tw-border-border tw-shadow-lg tw-opacity-10 hover:tw-opacity-100 tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95"
         >
           <TooltipWrapper
             content={
@@ -117,7 +128,7 @@ export default function ThreadQueryFormatSwitch() {
             )}
           </TooltipWrapper>
         </div>,
-        container.query
+        container.container
       )}
     </Fragment>
   ));

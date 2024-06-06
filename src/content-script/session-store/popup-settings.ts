@@ -13,6 +13,7 @@ type PopupSettingsState = {
   qolTweaks: {
     threadTOC: boolean;
     quickQueryCommander: boolean;
+    codeBlockEnhancedToolbar: boolean;
   };
   visualTweaks: {
     threadQueryMarkdown: boolean;
@@ -32,6 +33,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
     qolTweaks: {
       threadTOC: false,
       quickQueryCommander: false,
+      codeBlockEnhancedToolbar: false,
     },
     visualTweaks: {
       threadQueryMarkdown: false,
@@ -58,6 +60,7 @@ const popupSettingsStore = usePopupSettingsStore;
         qolTweaks: {
           threadTOC: false,
           quickQueryCommander: false,
+          codeBlockEnhancedToolbar: false,
         },
         visualTweaks: {
           threadQueryMarkdown: false,

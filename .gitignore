@@ -21,6 +21,7 @@
 *.crx
 *.pem
 /public/img_no_track
+/temp
 
 # secrets
 secrets.*.js

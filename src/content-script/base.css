@@ -185,7 +185,7 @@ html.dark .dark\:\!text-backgroundDark {
 
 
 
-
+/* Pro search border indicator */
 .pro-search {
 
   & .items-center.grid-rows-1fr-auto.grid.grid-cols-3.w-full.outline-none.focus\:outline-none.focus\:ring-borderMain,
@@ -218,14 +218,6 @@ body[data-scroll-locked].bg-transparent {
   display: none;
 }
 
-/* body:has(#markdown-query-wrapper) {
-
-  & h1.whitespace-pre-line.break-words,
-  & div.whitespace-pre-line.break-words {
-    display: none;
-  }
-} */
-
 html.dark #markdown-query-wrapper {
   & pre code {
     color: var(--foreground) !important;
@@ -249,6 +241,15 @@ html.dark #markdown-query-wrapper {
   }
 }
 
+pre button {
+  display: none !important;
+}
+
+/* Miscs */
 .text-shadow-hover:hover {
   text-shadow: 0 0 10px var(--accent-foreground);
+}
+
+.data-\[state\=open\]\:animate-slideUpAndFadeIn {
+  z-index: 2;
 }

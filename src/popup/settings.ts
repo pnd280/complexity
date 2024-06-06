@@ -32,11 +32,11 @@ const qolTweaks = [
     label: 'Inline query params invocation',
     storeKey: 'quickQueryCommander',
   },
-  // {
-  //   id: 'collection-quick-context-menu',
-  //   label: 'Quick context menu on collection links (in thread)',
-  //   storeKey: 'collectionQuickContextMenu',
-  // },
+  {
+    id: 'code-block-enhanced-toolbar',
+    label: 'Code block enhanced toolbar',
+    storeKey: 'codeBlockEnhancedToolbar',
+  },
 ] as const;
 
 const visualTweaks = [
