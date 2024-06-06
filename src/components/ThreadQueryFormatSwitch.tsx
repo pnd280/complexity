@@ -103,7 +103,7 @@ export default function ThreadQueryFormatSwitch() {
         >
           <TooltipWrapper
             content={
-              isMarkdown[index] ? 'Switch to Markdown' : 'Switch to Plain Text'
+              isMarkdown[index] ? 'Switch to Plain Text' : 'Switch to Markdown'
             }
             contentOptions={{
               sideOffset: 15,
