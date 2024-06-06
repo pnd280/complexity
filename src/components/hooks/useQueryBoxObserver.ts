@@ -3,6 +3,7 @@ import $ from 'jquery';
 import {
   popupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
+import { cn } from '@/lib/utils';
 import { whereAmI } from '@/utils/utils';
 
 import useElementObserver from './useElementObserver';
@@ -28,7 +29,12 @@ export default function useQueryBoxObserver({
     callback: ({ element }) => {
       if (disabled) return;
 
-      $(element).addClass('tw-col-span-2 tw-flex-wrap tw-gap-y-1');
+      $(element).addClass(() =>
+        cn('tw-col-span-3 tw-col-start-1 tw-flex-wrap tw-gap-y-1', {
+          'tw-mr-[7rem]': !popupSettingsStore.getState().queryBoxSelectors.focus,
+          'tw-mr-10': popupSettingsStore.getState().queryBoxSelectors.focus,
+        })
+      );
 
       const $buttonBarChildren = $(element).children(
         ':not(.mr-xs.flex.shrink-0.items-center)'
