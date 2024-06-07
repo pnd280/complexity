@@ -98,6 +98,12 @@ export function markdown2Html(markdown: string) {
   return DOMPurify.sanitize($tag.html());
 }
 
+export function stripHtml(html: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  return doc.body.textContent || '';
+}
+
 export function calculateRenderLines(
   text: string,
   containerWidth: number,

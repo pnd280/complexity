@@ -1,3 +1,5 @@
+import { ExternalLink } from 'lucide-react';
+
 import LabeledSwitch from '@/components/LabeledSwitch';
 import { Separator } from '@/components/ui/separator';
 
@@ -6,7 +8,11 @@ import popupSettings from './settings';
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 
-export const PopupSettings = () => {
+export const PopupSettings = ({
+  context,
+}: {
+  context?: 'popup' | 'options';
+}) => {
   const {
     store,
     handleQueryBoxSettingsChange,
@@ -86,9 +92,22 @@ export const PopupSettings = () => {
             ))}
           </div>
         </div>
-        <div className="tw-text-muted-foreground tw-text-lg">
-          ...more to come
-        </div>
+
+        {context === 'popup' ? (
+          <div
+            className="tw-flex tw-gap-1 tw-items-center tw-ml-auto tw-w-max hover:tw-underline tw-cursor-pointer"
+            onClick={() => {
+              chrome.runtime.openOptionsPage();
+            }}
+          >
+            <span>Advanced settings</span>
+            <ExternalLink className="tw-w-3 tw-h-3" />
+          </div>
+        ) : (
+          <div className="tw-text-muted-foreground tw-text-lg">
+            ...more to come
+          </div>
+        )}
       </div>
     </main>
   );

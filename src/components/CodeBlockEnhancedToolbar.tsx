@@ -1,7 +1,6 @@
 import {
   Fragment,
   ReactNode,
-  useState,
 } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -9,6 +8,7 @@ import $ from 'jquery';
 import {
   Check,
   Copy,
+  ListOrdered,
   Maximize2,
   Minimize2,
   Text,
@@ -23,10 +23,11 @@ import useElementObserver from './hooks/useElementObserver';
 import TooltipWrapper from './TooltipWrapper';
 
 export default function CodeBlockEnhancedToolbar() {
-  const [containers, setContainers] = useState<
+  const [containers, setContainers] = useImmer<
     {
       element: Element;
       lang: string;
+      lineCount: number;
     }[]
   >([]);
 
@@ -37,6 +38,7 @@ export default function CodeBlockEnhancedToolbar() {
       isCollapsed: boolean;
       isCopied: boolean;
       isWrapped: boolean;
+      isShownLineNumbers: boolean;
     }[]
   >([]);
 
@@ -51,6 +53,8 @@ export default function CodeBlockEnhancedToolbar() {
 
       const $parent = $(element).parent();
 
+      const lang = $(element).find('.absolute').text();
+
       $parent.addClass(
         'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
       );
@@ -59,15 +63,13 @@ export default function CodeBlockEnhancedToolbar() {
 
       $(element).find('.absolute').hide();
 
-      const lang = $(element).find('.absolute').text();
-
       $(element)
         .find('div:nth-child(2)')[0]
         .style.setProperty('padding-top', '0', 'important');
       $(element)
         .find('div:nth-child(2)')
         .addClass('tw-rounded-none tw-rounded-b-md');
-      $(element).find('code').addClass('!tw-pt-0');
+      $(element).find('code:first').addClass('!tw-pt-0');
 
       const $container = $('<div>')
         .addClass(
@@ -79,13 +81,26 @@ export default function CodeBlockEnhancedToolbar() {
 
       $parent.prepend($container);
 
-      setContainers((prev) => [
-        ...prev,
-        {
-          element: $container[0],
-          lang,
-        },
-      ]);
+      requestIdleCallback(() => {
+        const code = $parent.find('code').html();
+
+        const lineCount = code.split('\n').length;
+
+        const wrappedCode = code
+          .replace(/^(.*)$/gm, '<code>$1</code>')
+          .replace(/<code><\/code>$/g, '');
+
+        $parent.find('code').html(wrappedCode);
+
+        setContainers((prev) => [
+          ...prev,
+          {
+            element: $container[0],
+            lang,
+            lineCount,
+          },
+        ]);
+      });
 
       setButtonTextStates((draft) => {
         draft.push(idleCopyButtonText);
@@ -96,6 +111,7 @@ export default function CodeBlockEnhancedToolbar() {
           isCollapsed: false,
           isCopied: false,
           isWrapped: false,
+          isShownLineNumbers: false,
         });
       });
     },
@@ -110,9 +126,28 @@ export default function CodeBlockEnhancedToolbar() {
             {ReactDOM.createPortal(
               <div className="tw-border-b tw-border-border tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
                 <div className="tw-text-background dark:tw-text-foreground">
-                  {container.lang || 'plain-text'}
+                  {container.lang || 'plain-text'} ({container.lineCount - 1}{' '}
+                  lines)
                 </div>
                 <div className="tw-ml-auto tw-flex tw-gap-3">
+                  <TooltipWrapper content="Toggle line numbers">
+                    <div
+                      className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
+                      onClick={() => {
+                        const isShownLineNumbers =
+                          blockState[index]?.isShownLineNumbers;
+                        $(container.element)
+                          .parent()
+                          .find('code>code')
+                          .toggleClass('line', !isShownLineNumbers);
+                        setBlockStates((draft) => {
+                          draft[index].isShownLineNumbers = !isShownLineNumbers;
+                        });
+                      }}
+                    >
+                      <ListOrdered className="tw-w-4 tw-h-4" />
+                    </div>
+                  </TooltipWrapper>
                   <TooltipWrapper
                     content={blockState[index]?.isWrapped ? 'Unwrap' : 'Wrap'}
                   >
@@ -122,8 +157,11 @@ export default function CodeBlockEnhancedToolbar() {
                         const isWrapped = blockState[index]?.isWrapped;
                         $(container.element)
                           .parent()
-                          .find('pre code')
-                          .toggleClass('tw-whitespace-pre-wrap', !isWrapped);
+                          .find('pre code:first')
+                          .toggleClass(
+                            'tw-whitespace-pre-wrap tw-break-words',
+                            !isWrapped
+                          );
                         setBlockStates((draft) => {
                           draft[index].isWrapped = !isWrapped;
                         });

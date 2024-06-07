@@ -38,7 +38,7 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
         <DiscordCallout />
         <Separator />
         <div className="tw-w-[350px] tw-h-[250px]">
-          <PopupSettings />
+          <PopupSettings context='popup' />
         </div>
         <Footer />
         {chrome.runtime.id !== 'ffppmilmeaekegkpckebkeahjgmhggpj' &&

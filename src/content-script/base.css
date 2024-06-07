@@ -263,3 +263,16 @@ pre button {
 .data-\[state\=open\]\:animate-slideUpAndFadeIn {
   z-index: 2;
 }
+
+pre {
+  counter-reset: line;
+}
+
+pre code.line:before {
+  content          : counter(line);
+  counter-increment: line;
+  display          : inline-block;
+  width            : 2em;
+  color            : var(--muted-foreground);
+  opacity          : .4;
+}
