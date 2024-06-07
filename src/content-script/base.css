@@ -168,11 +168,21 @@ html.dark .dark\:\!text-backgroundDark {
   color: var(--accent-foreground) !important;
 }
 
-.selection\:text-textMain::selection,
-.selection\:bg-superDuper ::selection {
-  color           : var(--accent-foreground) !important;
-  background-color: var(--background) !important;
+html.dark {
+
+  & .selection\:text-textMain::selection,
+  & .selection\:bg-superDuper ::selection {
+    color           : var(--accent-foreground) !important;
+    background-color: var(--background) !important;
+  }
 }
+
+& .selection\:text-textMain::selection,
+& .selection\:bg-superDuper ::selection {
+  color           : var(--accent-foreground) !important;
+  background-color: var(--secondary) !important;
+}
+
 
 .mb-sm.flex.w-full.items-center.justify-between svg {
   color: var(--accent-foreground);
