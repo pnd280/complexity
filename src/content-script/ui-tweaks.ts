@@ -198,15 +198,6 @@ function hideNativeProSearchSwitch() {
   });
 }
 
-function signThreadColumns() {
-  observer.onElementExist({
-    selector: () =>
-      ui.getMessageBlocks().map(({ $messageBlock }) => $messageBlock[0]),
-    callback() {},
-    observedIdentifier: 'sign-thread-columns',
-  });
-}
-
 function collapseEmptyThreadVisualColumns() {
   if (
     !popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
@@ -331,7 +322,6 @@ const uiTweaks = {
   adjustQueryBoxWidth,
   hideScrollToBottomButton,
   hideNativeProSearchSwitch,
-  signThreadColumns,
   collapseEmptyThreadVisualColumns,
   alterMessageQuery,
 };

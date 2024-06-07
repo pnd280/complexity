@@ -49,7 +49,7 @@ export default function ModelSelector<T extends ModelItem>({
         }}
       >
         <TooltipWrapper
-          content={`Choose ${type} generation model`}
+          content={`Choose ${type} model`}
           contentOptions={{
             sideOffset: 8,
           }}

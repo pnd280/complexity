@@ -173,7 +173,11 @@ export function detectConsecutiveClicks(params: {
     });
 }
 
-export function scrollToElement($anchor: JQuery<Element>, offset = 0) {
+export function scrollToElement(
+  $anchor: JQuery<Element>,
+  offset = 0,
+  duration = 500
+) {
   const $stickyHeader = ui.getStickyHeader();
 
   if ($stickyHeader.length) {
@@ -187,7 +191,7 @@ export function scrollToElement($anchor: JQuery<Element>, offset = 0) {
     {
       scrollTop: scrollPosition,
     },
-    500
+    duration
   );
 }
 

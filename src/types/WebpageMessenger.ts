@@ -64,7 +64,7 @@ export type AddInterceptorParams<K extends keyof EventHandlers, T, J> = {
     messageData: MessageData<T>,
     args: J[]
   ) => Promise<ReturnType<EventHandlers[K]>>;
-  stopCondition: (messageData: T) => boolean;
+  stopCondition: (messageData: MessageData<T>) => boolean;
 };
 
 export type Interceptor<

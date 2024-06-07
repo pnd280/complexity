@@ -18,13 +18,13 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   webpageListeners.onWebSocketCaptured();
   webpageMessageInterceptors.trackQueryLimits();
   webpageMessageInterceptors.alterQuery();
+  webpageMessageInterceptors.autoScrollNewlyGeneratedAnswers();
 
   uiTweaks.alterAttachButton();
   uiTweaks.adjustSelectorsBorderRadius();
   uiTweaks.adjustQueryBoxWidth();
   uiTweaks.hideScrollToBottomButton();
   uiTweaks.hideNativeProSearchSwitch();
-  uiTweaks.signThreadColumns();
   uiTweaks.collapseEmptyThreadVisualColumns();
 
   uiTweaks.alterMessageQuery();
@@ -41,7 +41,7 @@ async function init() {
   uiTweaks.correctColorScheme();
   uiTweaks.injectBaseStyles();
   uiTweaks.injectCustomStyles();
-  
+
   await Promise.all([
     softUpdateCheck(),
     chrome.runtime.sendMessage({ action: 'injectScript' }),

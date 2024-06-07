@@ -172,8 +172,8 @@ function onDOMChanges({
   targetNode: Node | null;
   callback: (mutation: MutationRecord) => void;
   recurring?: boolean;
-}): void {
-  if (!targetNode || typeof callback !== 'function') return;
+}): (() => void) | null {
+  if (!targetNode || typeof callback !== 'function') return null;
 
   const observerConfig: MutationObserverInit = {
     childList: true,
@@ -216,6 +216,64 @@ function onDOMChanges({
   };
 
   checkNodeExistence();
+
+  return () => observer.disconnect();
+}
+
+function onNewElementAdded({
+  targetNode,
+  callback,
+  recurring = false,
+}: {
+  targetNode: Node | null;
+  callback: (mutation: MutationRecord) => void;
+  recurring?: boolean;
+}): (() => void) | null {
+  if (!targetNode || typeof callback !== 'function') return null;
+
+  const observerConfig: MutationObserverInit = {
+    childList: true,
+    subtree: true,
+  };
+
+  let observer: MutationObserver;
+
+  const startObserving = () => {
+    observer = new MutationObserver((mutationsList: MutationRecord[]) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          callback(mutation);
+        }
+      }
+      if (recurring && !document.body.contains(targetNode)) {
+        observer.disconnect();
+        const checkExistence = setInterval(() => {
+          if (document.body.contains(targetNode)) {
+            clearInterval(checkExistence);
+            startObserving();
+          }
+        }, 1000);
+      }
+    });
+    observer.observe(targetNode, observerConfig);
+  };
+
+  const checkNodeExistence = () => {
+    if (document.body.contains(targetNode)) {
+      startObserving();
+    } else if (recurring) {
+      const checkExistence = setInterval(() => {
+        if (document.body.contains(targetNode)) {
+          clearInterval(checkExistence);
+          startObserving();
+        }
+      }, 1000);
+    }
+  };
+
+  checkNodeExistence();
+
+  return () => observer.disconnect();
 }
 
 function onShallowRouteChange(callback: () => void) {
@@ -236,6 +294,7 @@ const observer = {
   onAttributeChanges,
   onShallowRouteChange,
   onDOMChanges,
+  onNewElementAdded,
 };
 
 export default observer;

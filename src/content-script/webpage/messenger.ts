@@ -203,13 +203,11 @@ class WebpageMessenger {
     };
   }
 
-  // prettier-ignore
   addInterceptor<K extends keyof EventHandlers, T, J>({
     matchCondition,
     callback,
     stopCondition,
   }: AddInterceptorParams<K, T, J>) {
-
     const identifier = `interceptor_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 
     this.interceptors.push({
@@ -220,8 +218,10 @@ class WebpageMessenger {
     });
 
     const removeInterceptor = () => {
-      this.interceptors = this.interceptors.filter((interceptor) => interceptor.identifier !== identifier);
-    }
+      this.interceptors = this.interceptors.filter(
+        (interceptor) => interceptor.identifier !== identifier
+      );
+    };
 
     return removeInterceptor;
   }

@@ -22,6 +22,7 @@ export type ChromeStore = {
       threadTOC: boolean;
       quickQueryCommander: boolean;
       codeBlockEnhancedToolbar: boolean;
+      autoScrollNewlyGeneratedAnswers: boolean;
     };
     visualTweaks: {
       threadQueryMarkdown: boolean;

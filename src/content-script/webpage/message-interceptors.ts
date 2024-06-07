@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import {
   LongPollingEventData,
   MessageData,
@@ -8,6 +10,7 @@ import {
   isParsedWSMessage,
   WSParsedMessage,
 } from '@/types/WS';
+import observer from '@/utils/observer';
 import { WSMessageParser } from '@/utils/ws';
 
 import { popupSettingsStore } from '../session-store/popup-settings';
@@ -291,6 +294,113 @@ function parseStructuredMessage(messageData: MessageData<any>) {
   return parsedPayload;
 }
 
+function autoScrollNewlyGeneratedAnswers() {
+  if (!popupSettingsStore.getState().qolTweaks.autoScrollNewlyGeneratedAnswers)
+    return;
+
+  let currentScrollTop = document.documentElement.scrollTop;
+  let isFromMainPage = false;
+  let stopAutoScrollListener: () => void;
+
+  webpageMessenger.addInterceptor({
+    matchCondition: (messageData) => {
+      const parsedPayload: WSParsedMessage | null | string =
+        parseStructuredMessage(messageData);
+
+      if (!parsedPayload) return { match: false };
+
+      return {
+        match:
+          parsedPayload.event === 'perplexity_ask' &&
+          (parsedPayload.data[1]?.query_source === 'followup' ||
+            parsedPayload.data[1]?.query_source === 'home'),
+        args: [
+          {
+            isFromMainPage: parsedPayload.data[1]?.query_source === 'home',
+          },
+        ],
+      };
+    },
+    callback: async (messageData, args) => {
+      isFromMainPage = args[0].isFromMainPage;
+
+      stopAutoScrollListener = autoScroll();
+
+      return messageData;
+    },
+    stopCondition: () => false,
+  });
+
+  observer.onShallowRouteChange(() => {
+    // ignore first route change if it's from the main page
+    if (isFromMainPage) {
+      isFromMainPage = false;
+      return;
+    }
+    stopAutoScrollListener();
+  });
+
+  function scrollToBottom() {
+    document.documentElement.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    });
+  }
+
+  function autoScroll() {
+    let isTheFirstGeneratedMessage = true;
+
+    const stopAutoScroll = webpageMessenger.addInterceptor({
+      matchCondition: (messageData) => {
+        const parsedPayload: WSParsedMessage | null | string =
+          parseStructuredMessage(messageData);
+
+        if (!parsedPayload) return { match: false };
+
+        return {
+          match: parsedPayload.event === 'query_progress',
+        };
+      },
+      callback: async (messageData) => {
+        if (isTheFirstGeneratedMessage) {
+          isTheFirstGeneratedMessage = false;
+
+          $(document)
+            .off('scroll.autoScrollNewlyGeneratedAnswers')
+            .on('scroll.autoScrollNewlyGeneratedAnswers', () => {
+              const newScrollTop = document.documentElement.scrollTop;
+
+              if (newScrollTop < currentScrollTop) {
+                stopAutoScrollListener?.();
+              }
+
+              currentScrollTop = newScrollTop;
+            });
+        }
+
+        scrollToBottom();
+
+        return messageData;
+      },
+      stopCondition: (messageData) => {
+        const parsedPayload: WSParsedMessage | null | string =
+          parseStructuredMessage(messageData);
+
+        if (!parsedPayload) return false;
+
+        const stop =
+          (parsedPayload.event === 'query_progress' &&
+            parsedPayload.data[0].final) ||
+          parsedPayload.event === 'perplexity_terminate';
+
+        return stop;
+      },
+    });
+
+    return stopAutoScroll;
+  }
+}
+
 const webpageMessageInterceptors = {
   trackQueryLimits,
   inspectWebSocketEvents,
@@ -298,6 +408,7 @@ const webpageMessageInterceptors = {
   alterQuery,
   waitForUpsertThreadCollection,
   waitForUserProfileSettings,
+  autoScrollNewlyGeneratedAnswers,
 };
 
 export default webpageMessageInterceptors;

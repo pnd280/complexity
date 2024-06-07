@@ -1,8 +1,13 @@
-import * as React from "react"
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import { Check, ChevronRight, Circle } from "lucide-react"
+import * as React from 'react';
 
-import { cn } from "@/lib/utils"
+import {
+  Check,
+  ChevronRight,
+  Circle,
+} from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
@@ -82,7 +87,7 @@ const DropdownMenuItem = React.forwardRef<
     ref={ref}
     className={cn(
       "tw-relative tw-flex tw-cursor-default tw-select-none tw-items-center tw-rounded-sm tw-px-2 tw-py-1.5 tw-text-sm tw-outline-none tw-transition-colors focus:tw-bg-accent focus:tw-text-accent-foreground data-[disabled]:tw-pointer-events-none data-[disabled]:tw-opacity-50",
-      inset && "tw-pl-8",
+      inset && "tw-pl-8 tw-font-sans",
       className
     )}
     {...props}
@@ -181,18 +186,18 @@ DropdownMenuShortcut.displayName = "DropdownMenuShortcut"
 
 export {
   DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuCheckboxItem,
-  DropdownMenuRadioItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuGroup,
-  DropdownMenuPortal,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuRadioGroup,
-}
+  DropdownMenuTrigger,
+};
