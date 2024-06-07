@@ -54,6 +54,13 @@ export default function CustomTheme() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      slogan: '',
+      uiFont: '',
+      monoFont: '',
+      accentColor: '',
+      customCSS: '',
+    },
   });
 
   const {
@@ -166,7 +173,11 @@ export default function CustomTheme() {
                       backgroundColor: field.value || '#72aefd',
                     }}
                   />
-                  <Input id="accent-color" placeholder="#72aefd (default dark)" {...field} />
+                  <Input
+                    id="accent-color"
+                    placeholder="#72aefd (default dark)"
+                    {...field}
+                  />
                 </div>
               </FormControl>
               <FormMessage />

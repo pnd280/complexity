@@ -3,6 +3,7 @@ import '@/assets/global.css';
 import $ from 'jquery';
 import ReactDOM from 'react-dom/client';
 
+import Changelog from '@/components/Changelog';
 import CustomTheme from '@/components/CustomTheme';
 import {
   Tabs,
@@ -29,15 +30,19 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
           defaultValue={queryStr.get('tab') || 'popupSettings'}
           className="w-[400px]"
         >
-          <TabsList className="tw-grid w-full tw-grid-cols-2">
+          <TabsList className="tw-grid w-full tw-grid-cols-3">
             <TabsTrigger value="popupSettings">Basic Settings</TabsTrigger>
             <TabsTrigger value="customTheme">Custom theme</TabsTrigger>
+            <TabsTrigger value="changelog">Changelog</TabsTrigger>
           </TabsList>
           <TabsContent value="popupSettings">
             <PopupSettings />
           </TabsContent>
           <TabsContent value="customTheme">
             <CustomTheme />
+          </TabsContent>
+          <TabsContent value="changelog">
+            <Changelog />
           </TabsContent>
         </Tabs>
       </div>

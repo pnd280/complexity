@@ -13,6 +13,7 @@ import {
   LoaderCircle,
 } from 'lucide-react';
 
+import { languageModels } from '@/consts/model-selector';
 import { ThreadMessageAPIResponse } from '@/types/PPLXApi';
 import { ui } from '@/utils/ui';
 import {
@@ -119,9 +120,13 @@ export default function ThreadExportButton() {
           }
         );
 
-        outputText += `**Answer** (${message.display_model.toUpperCase()}):  \n${answer}\n\n`;
+        const modelName =
+          languageModels.find((model) => model.code === message.display_model)
+            ?.label || message.display_model;
 
-        if (includeCitations) {
+        outputText += `**Answer** (${modelName}):  \n${answer}\n\n`;
+
+        if (includeCitations && webResults) {
           outputText += `**Web Results**:  \n${webResults}\n\n`;
         }
 

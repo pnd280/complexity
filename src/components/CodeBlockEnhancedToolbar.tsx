@@ -59,7 +59,7 @@ export default function CodeBlockEnhancedToolbar() {
         'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
       );
 
-      $(element).addClass('tw-m-0 tw-rounded-none tw-rounded-b-md');
+      $(element).addClass('!tw-m-0 tw-rounded-none tw-rounded-b-md');
 
       $(element).find('.absolute').hide();
 

@@ -47,7 +47,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
 const popupSettingsStore = usePopupSettingsStore;
 
 (async function initPopupSettingsStore() {
-  const settings = await chromeStorage.getStorageValue('popupSettings');
+  let settings = await chromeStorage.getStorageValue('popupSettings');
 
   if (!settings) {
     await chromeStorage.setStorageValue({
@@ -71,6 +71,8 @@ const popupSettingsStore = usePopupSettingsStore;
         },
       },
     });
+
+    settings = await chromeStorage.getStorageValue('popupSettings');
   }
 
   const queryBoxSelectors = settings.queryBoxSelectors;

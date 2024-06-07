@@ -69,11 +69,11 @@ export function compareVersions(v1: string, v2: string) {
   return 0;
 }
 
-export function markdown2Html(markdown: string) {
-  const escapeHtmlTags = (html: string) => {
-    return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  };
+export function escapeHtmlTags(html: string) {
+  return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
+export function markdown2Html(markdown: string) {
   const unescapeHtmlTags = (html: string) => {
     return html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
   };

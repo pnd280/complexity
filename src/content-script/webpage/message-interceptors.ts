@@ -337,7 +337,7 @@ function autoScrollNewlyGeneratedAnswers() {
       isFromMainPage = false;
       return;
     }
-    stopAutoScrollListener();
+    stopAutoScrollListener?.();
   });
 
   function scrollToBottom() {

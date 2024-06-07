@@ -1,5 +1,11 @@
 import { chromeStorage } from '@/utils/chrome-store';
 
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.tabs.create({
+    url: chrome.runtime.getURL('options.html') + '?tab=changelog',
+  });
+});
+
 chrome.runtime.onMessage.addListener(
   async (
     message: any,
@@ -40,28 +46,26 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
-chrome.tabs.onRemoved.addListener(
-  (tabId: number) => {
-    const keyToRemove = `sessionStore-${tabId}`;
+chrome.tabs.onRemoved.addListener((tabId: number) => {
+  const keyToRemove = `sessionStore-${tabId}`;
 
-    chrome.storage.local.remove(keyToRemove, () => {
-      if (chrome.runtime.lastError) {
-        console.error(
-          `Error removing key ${keyToRemove}:`,
-          chrome.runtime.lastError
-        );
-      } else {
-        console.log(`Key ${keyToRemove} removed successfully.`);
-      }
-    });
-  }
-);
+  chrome.storage.local.remove(keyToRemove, () => {
+    if (chrome.runtime.lastError) {
+      console.error(
+        `Error removing key ${keyToRemove}:`,
+        chrome.runtime.lastError
+      );
+    } else {
+      console.log(`Key ${keyToRemove} removed successfully.`);
+    }
+  });
+});
 
 chrome.runtime.onUpdateAvailable.addListener((details) => {
   chromeStorage.setStorageValue({
     key: 'latestVersion',
     value: details.version,
-  })
+  });
 
   chrome.runtime.reload();
 });

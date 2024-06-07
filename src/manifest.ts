@@ -42,6 +42,7 @@ export default defineManifest({
         'img/logo-128.png',
         '*.js',
         '*.css',
+        'changelog.md',
       ],
       matches: ['*://*.perplexity.ai/*'],
     },
