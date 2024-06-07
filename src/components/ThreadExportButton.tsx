@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 import { languageModels } from '@/consts/model-selector';
-import { ThreadMessageAPIResponse } from '@/types/PPLXApi';
+import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
 import {
   jsonUtils,
@@ -44,10 +44,10 @@ const exportOptions = [
 ] as const;
 
 export default function ThreadExportButton() {
-  const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery<
-    ThreadMessageAPIResponse[]
-  >({
+  const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
     queryKey: ['currentThreadInfo'],
+    queryFn: () =>
+      pplxApi.fetchThreadInfo(window.location.pathname.split('/').pop() || ''),
     enabled: false,
   });
 
