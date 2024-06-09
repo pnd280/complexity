@@ -88,8 +88,10 @@ class WebpageMessenger {
         );
 
         if (interceptor.stopCondition(newMessageData)) {
+          const myInterceptorId = interceptor.identifier;
+
           this.interceptors = this.interceptors.filter(
-            (interceptor) => interceptor !== interceptor
+            (interceptor) => interceptor.identifier !== myInterceptorId
           );
         }
 
