@@ -98,6 +98,7 @@ export const PopupSettings = ({
             className="tw-flex tw-gap-1 tw-items-center tw-ml-auto tw-w-max hover:tw-underline tw-cursor-pointer"
             onClick={() => {
               chrome.runtime.openOptionsPage();
+              window.close();
             }}
           >
             <span>Advanced settings</span>

@@ -80,7 +80,7 @@ export default function DiffViewDialog({
 
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
-      <DialogContent className="!tw-w-[80vw] !tw-max-w-[1800px] tw-max-h-[900px] tw-overflow-auto tw-font-sans">
+      <DialogContent className="!tw-w-[80vw] !tw-max-w-[1800px] tw-max-h-[90vh] tw-font-sans">
         <DialogHeader className="tw-text-3xl">{`Diff Viewer (${lang || 'plain-text'})`}</DialogHeader>
         <div className="tw-flex tw-flex-col tw-gap-4">
           {isDiff && (
@@ -118,27 +118,29 @@ export default function DiffViewDialog({
               No changes were detected
             </div>
           )}
-          <div className="tw-border tw-border-border tw-font-mono">
-            <ReactDiffViewer
-              oldValue={oldText}
-              newValue={newText}
-              splitView={splitView}
-              compareMethod={mapDiffMethod(diffMethod)}
-              useDarkTheme={$('html').hasClass('dark')}
-              styles={{
-                variables: {
-                  dark: {
-                    diffViewerBackground: 'var(--secondary)',
-                    gutterBackground: 'var(--secondary)',
-                    diffViewerTitleBackground: 'var(--secondary)',
-                    addedBackground: '#12261f',
-                    addedGutterBackground: '#12261f',
-                    wordAddedBackground: '#1d5730',
+          <div className="tw-overflow-auto tw-max-h-[600px]">
+            <div className="tw-border tw-border-border tw-font-mono">
+              <ReactDiffViewer
+                oldValue={oldText}
+                newValue={newText}
+                splitView={splitView}
+                compareMethod={mapDiffMethod(diffMethod)}
+                useDarkTheme={$('html').hasClass('dark')}
+                styles={{
+                  variables: {
+                    dark: {
+                      diffViewerBackground: 'var(--secondary)',
+                      gutterBackground: 'var(--secondary)',
+                      diffViewerTitleBackground: 'var(--secondary)',
+                      addedBackground: '#12261f',
+                      addedGutterBackground: '#12261f',
+                      wordAddedBackground: '#1d5730',
+                    },
                   },
-                },
-              }}
-              renderContent={highlightSyntax}
-            />
+                }}
+                renderContent={highlightSyntax}
+              />
+            </div>
           </div>
         </div>
       </DialogContent>
