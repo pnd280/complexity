@@ -121,23 +121,23 @@ export const ui = {
   },
   getMessagesContainer() {
     // user's thread
-    let $messageContainer = $(
-      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child > div'
+    let $messagesContainer = $(
+      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child'
     );
 
     // branched thread
-    if (!$messageContainer.length) {
-      $messageContainer = $(
+    if (!$messagesContainer.length) {
+      $messagesContainer = $(
         '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:nth-child(2)'
       );
     }
 
-    return $messageContainer;
+    return $messagesContainer;
   },
   getMessageBlocks() {
     if (whereAmI() !== 'thread') return [];
 
-    const $messageContainer = this.getMessagesContainer();
+    const $messagesContainer = this.getMessagesContainer();
 
     const messageBlocks: {
       $messageBlock: JQuery<Element>;
@@ -146,7 +146,7 @@ export const ui = {
       $answer: JQuery<Element>;
     }[] = [];
 
-    $messageContainer.children().each((_, messageBlock) => {
+    $messagesContainer.children().each((_, messageBlock) => {
       const $messageBlock = $(messageBlock);
       const $query = $messageBlock.find('.my-md.md\\:my-lg');
       const $answer = $messageBlock.find(
