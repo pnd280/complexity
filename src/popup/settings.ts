@@ -37,11 +37,6 @@ const qolTweaks = [
     label: 'Code block enhanced toolbar',
     storeKey: 'codeBlockEnhancedToolbar',
   },
-  {
-    id: 'auto-scroll-newly-generated-answers',
-    label: 'Auto scroll newly generated answers',
-    storeKey: 'autoScrollNewlyGeneratedAnswers',
-  },
 ] as const;
 
 const visualTweaks = [

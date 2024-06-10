@@ -14,7 +14,6 @@ type PopupSettingsState = {
     threadTOC: boolean;
     quickQueryCommander: boolean;
     codeBlockEnhancedToolbar: boolean;
-    autoScrollNewlyGeneratedAnswers: boolean;
   };
   visualTweaks: {
     threadQueryMarkdown: boolean;
@@ -35,7 +34,6 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
       threadTOC: false,
       quickQueryCommander: false,
       codeBlockEnhancedToolbar: false,
-      autoScrollNewlyGeneratedAnswers: false,
     },
     visualTweaks: {
       threadQueryMarkdown: false,
@@ -63,7 +61,6 @@ const popupSettingsStore = usePopupSettingsStore;
           threadTOC: false,
           quickQueryCommander: false,
           codeBlockEnhancedToolbar: false,
-          autoScrollNewlyGeneratedAnswers: false,
         },
         visualTweaks: {
           threadQueryMarkdown: false,

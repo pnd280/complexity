@@ -18,7 +18,6 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   webpageListeners.onWebSocketCaptured();
   webpageMessageInterceptors.trackQueryLimits();
   webpageMessageInterceptors.alterQuery();
-  webpageMessageInterceptors.autoScrollNewlyGeneratedAnswers();
 
   uiTweaks.alterAttachButton();
   uiTweaks.adjustSelectorsBorderRadius();
