@@ -72,7 +72,7 @@ export default function UserProfileEditDialog({
               placeholder="User profile AI Prompt"
               onResize={(e) => e.preventDefault()}
               className="tw-resize-none tw-h-full"
-              limit={1000}
+              limit={1500}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
             />
@@ -81,7 +81,7 @@ export default function UserProfileEditDialog({
         <DialogFooter className="sm:justify-start">
           <Button
             type="button"
-            disabled={bio.length > 1000}
+            disabled={bio.length > 1500}
             onClick={() => {
               handleSave({
                 newBio: bio,

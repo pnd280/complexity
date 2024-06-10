@@ -251,10 +251,6 @@ html.dark #markdown-query-wrapper {
   }
 }
 
-pre button {
-  display: none !important;
-}
-
 /* Miscs */
 .text-shadow-hover:hover {
   text-shadow: 0 0 10px var(--accent-foreground);
@@ -272,7 +268,7 @@ pre code.line:before {
   content          : counter(line);
   counter-increment: line;
   display          : inline-block;
-  width            : 2em;
+  width            : 2.2em;
   color            : var(--muted-foreground);
   opacity          : .4;
 }

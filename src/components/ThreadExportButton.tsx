@@ -57,7 +57,7 @@ export default function ThreadExportButton() {
     () => (
       <>
         <Download className="tw-mr-1 tw-w-4 tw-h-4" />
-        <span>Export</span>
+        <span className="tw-font-sans">Export</span>
       </>
     ),
     []

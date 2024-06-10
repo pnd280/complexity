@@ -1,39 +1,47 @@
 import {
   Fragment,
   ReactNode,
+  useEffect,
 } from 'react';
 import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
 import {
-  Check,
   Copy,
-  ListOrdered,
-  Maximize2,
-  Minimize2,
-  Text,
-  WrapText,
+  X,
 } from 'lucide-react';
 import { useImmer } from 'use-immer';
 
+import { updateLineCount } from '@/utils/code-block';
+import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
-import { whereAmI } from '@/utils/utils';
+import {
+  scrollToElement,
+  stripHtml,
+  whereAmI,
+} from '@/utils/utils';
+import { useToggle } from '@uidotdev/usehooks';
 
+import CodeBlockHeader from './CodeBlockHeader';
+import DiffViewDialog from './DiffViewDialog';
 import useElementObserver from './hooks/useElementObserver';
-import TooltipWrapper from './TooltipWrapper';
 
 export default function CodeBlockEnhancedToolbar() {
   const [containers, setContainers] = useImmer<
     {
-      element: Element;
+      header: Element;
+      preElement: Element;
       lang: string;
       lineCount: number;
+      lineCountObserving: boolean;
     }[]
   >([]);
 
+  const [diffViewerOpen, toggleDiffViewerVis] = useToggle(false);
+  const [diffTexts, setDiffTexts] = useImmer<number[]>([]);
   const idleCopyButtonText = <Copy className="tw-w-4 tw-h-4" />;
   const [buttonTextStates, setButtonTextStates] = useImmer<ReactNode[]>([]);
-  const [blockState, setBlockStates] = useImmer<
+  const [blockStates, setBlockStates] = useImmer<
     {
       isCollapsed: boolean;
       isCopied: boolean;
@@ -43,33 +51,32 @@ export default function CodeBlockEnhancedToolbar() {
   >([]);
 
   useElementObserver({
-    selector: () =>
-      ui
+    selector: () => {
+      const pres = ui
         .getMessageBlocks()
         .map((el) => el.$answer.find('pre').toArray())
-        .flat(),
-    callback: ({ element }) => {
+        .flat();
+      return pres;
+    },
+    callback: ({ element: pre }) => {
       if (whereAmI() !== 'thread') return null;
 
-      const $parent = $(element).parent();
-
-      const lang = $(element).find('.absolute').text();
+      const $parent = $(pre).parent();
+      const lang = $(pre).find('.absolute').text();
 
       $parent.addClass(
         'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
       );
-
-      $(element).addClass('!tw-m-0 tw-rounded-none tw-rounded-b-md');
-
-      $(element).find('.absolute').hide();
-
-      $(element)
+      $(pre).addClass('!tw-m-0 !tw-rounded-none !tw-rounded-b-md');
+      $(pre).find('.absolute').hide();
+      $(pre).find('button').hide();
+      $(pre)
         .find('div:nth-child(2)')[0]
         .style.setProperty('padding-top', '0', 'important');
-      $(element)
+      $(pre)
         .find('div:nth-child(2)')
         .addClass('tw-rounded-none tw-rounded-b-md');
-      $(element).find('code:first').addClass('!tw-pt-0');
+      $(pre).find('code:first').addClass('!tw-pt-0');
 
       const $container = $('<div>')
         .addClass(
@@ -81,26 +88,15 @@ export default function CodeBlockEnhancedToolbar() {
 
       $parent.prepend($container);
 
-      requestIdleCallback(() => {
-        const code = $parent.find('code').html();
-
-        const lineCount = code.split('\n').length;
-
-        const wrappedCode = code
-          .replace(/^(.*)$/gm, '<code>$1</code>')
-          .replace(/<code><\/code>$/g, '');
-
-        $parent.find('code').html(wrappedCode);
-
-        setContainers((prev) => [
-          ...prev,
-          {
-            element: $container[0],
-            lang,
-            lineCount,
-          },
-        ]);
-      });
+      setContainers((prev) => [
+        ...prev,
+        {
+          header: $container[0],
+          preElement: pre,
+          lang,
+          lineCount: -1,
+        },
+      ]);
 
       setButtonTextStates((draft) => {
         draft.push(idleCopyButtonText);
@@ -118,112 +114,107 @@ export default function CodeBlockEnhancedToolbar() {
     observedIdentifier: 'code-block-sticky-copy-button',
   });
 
+  useEffect(() => {
+    containers.forEach((container, index) => {
+      if (container.lineCountObserving) return;
+
+      updateLineCount(container.preElement, index, setContainers);
+
+      observer.onDOMChanges({
+        targetNode: container.preElement,
+        callback: () => {
+          updateLineCount(container.preElement, index, setContainers);
+        },
+      });
+
+      setContainers((draft) => {
+        draft[index].lineCountObserving = true;
+      });
+    });
+  }, [containers, setContainers]);
+
+  const handleSelectForCompare = (blockIndex: number) => {
+    if (diffTexts.length === 2) {
+      setDiffTexts([]);
+      return;
+    }
+
+    setDiffTexts((draft) => {
+      if (draft.includes(blockIndex)) {
+        draft.splice(draft.indexOf(blockIndex), 1);
+      } else {
+        draft.push(blockIndex);
+      }
+    });
+  };
+
+  const extractTextFromBlock = (blockIndex: number) => {
+    const code = $(containers[blockIndex]?.preElement)?.find('code').text();
+    return stripHtml(code);
+  };
+
+  useEffect(() => {
+    if (diffTexts.length === 2) {
+      toggleDiffViewerVis(true);
+    }
+  }, [diffTexts, toggleDiffViewerVis]);
+
   return (
     <>
-      {containers.map((container, index) => {
-        return (
-          <Fragment key={index}>
-            {ReactDOM.createPortal(
-              <div className="tw-border-b tw-border-border tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
-                <div className="tw-text-background dark:tw-text-foreground">
-                  {container.lang || 'plain-text'} ({container.lineCount - 1}{' '}
-                  lines)
-                </div>
-                <div className="tw-ml-auto tw-flex tw-gap-3">
-                  <TooltipWrapper content="Toggle line numbers">
-                    <div
-                      className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
-                      onClick={() => {
-                        const isShownLineNumbers =
-                          blockState[index]?.isShownLineNumbers;
-                        $(container.element)
-                          .parent()
-                          .find('code>code')
-                          .toggleClass('line', !isShownLineNumbers);
-                        setBlockStates((draft) => {
-                          draft[index].isShownLineNumbers = !isShownLineNumbers;
-                        });
-                      }}
-                    >
-                      <ListOrdered className="tw-w-4 tw-h-4" />
-                    </div>
-                  </TooltipWrapper>
-                  <TooltipWrapper
-                    content={blockState[index]?.isWrapped ? 'Unwrap' : 'Wrap'}
-                  >
-                    <div
-                      className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
-                      onClick={() => {
-                        const isWrapped = blockState[index]?.isWrapped;
-                        $(container.element)
-                          .parent()
-                          .find('pre code:first')
-                          .toggleClass(
-                            'tw-whitespace-pre-wrap tw-break-words',
-                            !isWrapped
-                          );
-                        setBlockStates((draft) => {
-                          draft[index].isWrapped = !isWrapped;
-                        });
-                      }}
-                    >
-                      {blockState[index]?.isWrapped ? (
-                        <Text className="tw-w-4 tw-h-4" />
-                      ) : (
-                        <WrapText className="tw-w-4 tw-h-4" />
-                      )}
-                    </div>
-                  </TooltipWrapper>
-                  <TooltipWrapper
-                    content={
-                      blockState[index]?.isCollapsed ? 'Expand' : 'Collapse'
-                    }
-                  >
-                    <div
-                      className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
-                      onClick={() => {
-                        const isCollapsed = blockState[index]?.isCollapsed;
-                        $(container.element)
-                          .parent()
-                          .find('pre')
-                          .toggleClass(
-                            'tw-max-h-[300px] tw-overflow-auto',
-                            !isCollapsed
-                          );
-                        setBlockStates((draft) => {
-                          draft[index].isCollapsed = !isCollapsed;
-                        });
-                      }}
-                    >
-                      {blockState[index]?.isCollapsed ? (
-                        <Maximize2 className="tw-w-4 tw-h-4" />
-                      ) : (
-                        <Minimize2 className="tw-w-4 tw-h-4" />
-                      )}
-                    </div>
-                  </TooltipWrapper>
-                  <div
-                    className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
-                    onClick={() => {
-                      setButtonTextStates((draft) => {
-                        draft[index] = <Check className="tw-w-4 tw-h-4" />;
-                      });
-                      setTimeout(() => {
-                        setButtonTextStates((draft) => {
-                          draft[index] = idleCopyButtonText;
-                        });
-                      }, 2000);
-                    }}
-                  >
-                    {buttonTextStates[index]}
-                  </div>
-                </div>
-              </div>,
-              container.element
-            )}
-          </Fragment>
-        );
-      })}
+      {containers.map((container, index) => (
+        <Fragment key={index}>
+          {ReactDOM.createPortal(
+            <CodeBlockHeader
+              container={container}
+              index={index}
+              blockStates={blockStates}
+              setBlockStates={setBlockStates}
+              buttonTextStates={buttonTextStates}
+              setButtonTextStates={setButtonTextStates}
+              handleSelectForCompare={handleSelectForCompare}
+              diffTexts={diffTexts}
+              idleCopyButtonText={idleCopyButtonText}
+            />,
+            container.header
+          )}
+        </Fragment>
+      ))}
+
+      <DiffViewDialog
+        oldText={extractTextFromBlock(diffTexts[0])}
+        newText={extractTextFromBlock(diffTexts[1])}
+        open={diffViewerOpen}
+        toggleOpen={(open) => {
+          setDiffTexts([]);
+          return toggleDiffViewerVis(open);
+        }}
+        lang={containers[diffTexts[0]]?.lang}
+      />
+
+      {!diffViewerOpen &&
+        diffTexts.length === 1 &&
+        ReactDOM.createPortal(
+          <div className="tw-fixed tw-top-[6rem] tw-left-1/2 -tw-translate-x-1/2 tw-z-10">
+            <div
+              className="tw-bg-secondary tw-border tw-rounded-md tw-p-1 tw-px-2 tw-animate-in tw-slide-in-from-top tw-fade-in tw-select-none tw-flex tw-items-center tw-gap-1 active:tw-scale-95 tw-transition-all tw-duration-300 tw-shadow-lg tw-font-sans"
+              onClick={() => {
+                const preElement = containers[diffTexts[0]].preElement;
+
+                scrollToElement($(preElement), -70);
+              }}
+            >
+              <X
+                className="tw-w-4 tw-h-4 tw-cursor-pointer tw-text-muted-foreground dark:tw-text-muted hover:!tw-text-foreground tw-transition-all"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  return setDiffTexts([]);
+                }}
+              />
+              <span>Select another block to compare</span>
+            </div>
+          </div>,
+          $('#complexity-root')[0]
+        )}
     </>
   );
 }

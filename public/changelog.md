@@ -1,3 +1,14 @@
+## v0.0.0.11
+
+- **NEW**: Introducing **Diff Viewer** - compare text/code changes side by side. For text, just ask the AI to wrap any text with triple backticks (\`\`\`).
+  ![Diff Viewer](https://i.imgur.com/wr6kTtW.png)
+
+- **FIX**: Enhanced code block toolbar randomly crashes.
+- **FIX**: Fixed a bug where toggle the AI profile in the collection selector will break other functionalities.
+- **FIX**: Fixed a bug where Export button doesn't work.
+- **FIX**: Corrected AI Profile character limit (1000 -> 1500).
+- **IMPROVE**: Dark theme: Enhanced text contrast.
+
 ## v0.0.0.9
 
 - **NEW**: Auto scroll to the bottom of the thread when new messages are being generated, scroll up for any amount to abort. (currently not support existing/editing/rewriting messages)
