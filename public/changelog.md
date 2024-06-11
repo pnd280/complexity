@@ -1,3 +1,11 @@
+## v0.0.1.0
+
+- **NEW**: Added code block toolbar to markdown query.
+- **FIX**: Fixed a bug where only empty visual column of the first message query is collapsed (PPLX's html structure changed).
+- **IMPROVE**: Diff Viewer now supports more common languages.
+- **CHANGES**:
+  - **Removed** message auto scroll: buggy/needs rework.
+
 ## v0.0.0.11
 
 - **NEW**: Introducing **Diff Viewer** - compare text/code changes side by side. For text, just ask the AI to wrap any text with triple backticks (\`\`\`).
@@ -13,7 +21,7 @@
 
 - **NEW**: Auto scroll to the bottom of the thread when new messages are being generated, scroll up for any amount to abort. (currently not support existing/editing/rewriting messages)
 - **NEW**: Export thread without sources/citations.
-- **NEW**: Improved code block with an sticky toolbar with options to copy, wrap, show line numbers, and collapse/expand the block.
+- **NEW**: Improved code block with a sticky toolbar with options to copy, wrap, show line numbers, and collapse/expand the block.
 - **IMPROVE**: Query box selectors bar prematurely wrap on small width viewport.
 - **FIX**: Light theme: selected text in some places has no indicator.
 - **FIX**: Collection selector - current selected item not being default selected when open.

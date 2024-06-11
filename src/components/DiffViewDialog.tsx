@@ -1,13 +1,9 @@
-import 'prismjs/themes/prism-dark.min.css';
+import 'prismjs/themes/prism-okaidia.min.css';
 
 import { useCallback, useEffect, useState } from 'react';
 
 import $ from 'jquery';
 import Prism from 'prismjs';
-
-import 'prismjs/components/prism-python.min.js';
-import 'prismjs/components/prism-csharp.min.js';
-import 'prismjs/components/prism-typescript.min.js';
 
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 
@@ -18,7 +14,29 @@ import { Dialog, DialogContent, DialogHeader } from './ui/dialog';
 import { Label } from './ui/label';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 
-const supportedLangs = ['javascript', 'python', 'csharp', 'typescript'];
+const supportedLangs = [
+  'javascript',
+  'python',
+  'csharp',
+  'typescript',
+  'java',
+  'markup',
+  'css',
+  'clike',
+  'bash',
+  'c',
+  'cpp',
+  'gradle',
+  'graphql',
+  'json',
+  'makefile',
+  'markdown',
+  'powershell',
+  'rust',
+  'sass',
+  'scss',
+  'sql',
+];
 
 type SupportedLang = (typeof supportedLangs)[number];
 
@@ -42,6 +60,8 @@ type DiffViewDialog = {
   toggleOpen: (open?: boolean) => void;
   lang: string;
 };
+
+const importedLangs = new Set<string>();
 
 export default function DiffViewDialog({
   open,
@@ -75,16 +95,31 @@ export default function DiffViewDialog({
 
   useEffect(() => {
     setDiffMethod('lines');
-    toggleSplitView(true);
-  }, [open, setDiffMethod, toggleSplitView]);
+    toggleSplitView(!!lang);
+  }, [open, setDiffMethod, toggleSplitView, lang]);
+
+  useEffect(() => {
+    if (isLangSupported(lang) && !importedLangs.has(lang)) {
+      import(`../utils/prismjs-components/prism-${lang}.min.js`)
+        .then(() => {
+          importedLangs.add(lang);
+        })
+        .catch((err) =>
+          console.error(
+            `Failed to load Prism language component for ${lang}`,
+            err
+          )
+        );
+    }
+  }, [lang]);
 
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
-      <DialogContent className="!tw-w-[80vw] !tw-max-w-[1800px] tw-max-h-[90vh] tw-font-sans">
+      <DialogContent className="!tw-max-w-[90vw] tw-max-h-[90vh] tw-font-sans">
         <DialogHeader className="tw-text-3xl">{`Diff Viewer (${lang || 'plain-text'})`}</DialogHeader>
-        <div className="tw-flex tw-flex-col tw-gap-4">
+        <div className="tw-flex tw-flex-col tw-gap-4 tw-overflow-auto">
           {isDiff && (
-            <div className="tw-ml-auto tw-flex tw-flex-col tw-gap-2">
+            <div className="tw-ml-auto tw-flex tw-flex-col tw-gap-2 tw-p-2">
               <div className="tw-flex tw-gap-2 tw-items-center tw-ml-auto">
                 <Label>Split view</Label>
                 <Checkbox
