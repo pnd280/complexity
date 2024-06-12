@@ -157,7 +157,7 @@ function adjustQueryBoxWidth() {
       $wrapper.addClass('tw-transition-all tw-duration-300');
       $wrapper.parent().addClass('tw-transition-all tw-duration-300');
       $wrapper.removeClass('md:col-span-8').addClass('col-span-12');
-      $wrapper.parent().addClass('md:!tw-bottom-[.3rem]');
+      $wrapper.parent().addClass('md:!tw-bottom-[.3rem] !tw-z-20');
 
       observer.onAttributeChanges({
         targetNode: $(
@@ -272,22 +272,11 @@ function alternateMessageQuery({
   );
 
   $query.append($newQueryWrapper);
-
-  $query.off('dblclick').on('dblclick', () => {
-    if ($query.find('textarea').length) return;
-    
-    const $buttonBar = $messageBlock.find(
-      '.mt-sm.flex.items-center.justify-between'
-    );
-
-    const $editButton = $buttonBar.children().last().children().eq(1);
-
-    $editButton.trigger('click');
-  });
 }
 
 function alterMessageQuery() {
-  if (!popupSettingsStore.getState().visualTweaks.threadQueryMarkdown) return;
+  if (!popupSettingsStore.getState().visualTweaks.threadQueryEnhancedToolbar)
+    return;
 
   observer.onElementExist({
     selector: () => {
@@ -315,6 +304,68 @@ function alterMessageQuery() {
   });
 }
 
+function displayModelNextToAnswerHeading() {
+  if (!popupSettingsStore.getState().visualTweaks.threadQueryEnhancedToolbar)
+    return;
+
+  observer.onElementExist({
+    selector: () => {
+      const elements: {
+        element: Element;
+        args: {
+          answerHeading: Element;
+          modelName: string;
+        };
+      }[] = [];
+
+      const messageBlocks = ui.getMessageBlocks();
+
+      messageBlocks.forEach(({ $answerHeading, $messageBlock }) => {
+        if (!$messageBlock?.length) return;
+
+        const bottomRightButtonBar = $messageBlock
+          .find('.mt-sm.flex.items-center.justify-between')
+          ?.children()
+          .last();
+
+        // hide the bar
+        $messageBlock
+          .find('.mt-sm.flex.items-center.justify-between')
+          .addClass('!tw-hidden');
+
+        const modelName = bottomRightButtonBar.children().last().text();
+
+        if (bottomRightButtonBar.children().length < 4) {
+          if (!modelName) bottomRightButtonBar.append('<div>');
+          else bottomRightButtonBar.prepend('<div>');
+        }
+
+        elements.push({
+          element: bottomRightButtonBar.children().last()[0],
+          args: {
+            answerHeading: $answerHeading[0],
+            modelName: modelName,
+          },
+        });
+      });
+
+      return elements;
+    },
+    callback: ({ element, args }) => {
+      if (!element || !args?.answerHeading) return;
+
+      args.modelName &&
+        $(args.answerHeading)
+          .find('div:contains("Answer"):last')
+          .text(args.modelName.toUpperCase())
+          .addClass(
+            'tw-font-mono !tw-text-sm tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right'
+          );
+    },
+    observedIdentifier: 'display-model-next-to-answer-heading',
+  });
+}
+
 const uiTweaks = {
   injectBaseStyles,
   injectCustomStyles,
@@ -326,6 +377,7 @@ const uiTweaks = {
   hideNativeProSearchSwitch,
   collapseEmptyThreadVisualColumns,
   alterMessageQuery,
+  displayModelNextToAnswerHeading,
 };
 
 export default uiTweaks;

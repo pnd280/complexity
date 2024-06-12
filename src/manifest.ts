@@ -26,7 +26,7 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['*://*.perplexity.ai/*'],
+      matches: ['https://www.perplexity.ai/*', 'https://perplexity.ai/*'],
       js: ['src/content-script/index.tsx'],
       run_at: 'document_start',
     },
@@ -47,8 +47,5 @@ export default defineManifest({
       matches: ['*://*.perplexity.ai/*'],
     },
   ],
-  permissions: [
-    'storage',
-    'scripting',
-  ],
+  permissions: ['storage', 'scripting'],
 });

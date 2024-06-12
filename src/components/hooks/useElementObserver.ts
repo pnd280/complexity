@@ -5,14 +5,12 @@ import {
 
 import observer, { OnElementExistOptions } from '@/utils/observer';
 
-type useElementObserverProps = OnElementExistOptions<any>;
-
-export default function useElementObserver({
+export default function useElementObserver<T>({
   selector,
   recurring = true,
   observedIdentifier = 'observed',
   callback,
-}: useElementObserverProps) {
+}: OnElementExistOptions<T>) {
   const [container, setContainer] = useState<Element>();
 
   useEffect(() => {

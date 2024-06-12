@@ -17,7 +17,7 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
 
   webpageListeners.onWebSocketCaptured();
   webpageMessageInterceptors.trackQueryLimits();
-  webpageMessageInterceptors.alterQuery();
+  webpageMessageInterceptors.alterQueries();
 
   uiTweaks.alterAttachButton();
   uiTweaks.adjustSelectorsBorderRadius();
@@ -25,6 +25,7 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   uiTweaks.hideScrollToBottomButton();
   uiTweaks.hideNativeProSearchSwitch();
   uiTweaks.collapseEmptyThreadVisualColumns();
+  uiTweaks.displayModelNextToAnswerHeading();
 
   uiTweaks.alterMessageQuery();
 

@@ -10,6 +10,9 @@ import {
   X,
 } from 'lucide-react';
 
+import {
+  popupSettingsStore,
+} from '@/content-script/session-store/popup-settings';
 import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
 import {
@@ -41,9 +44,9 @@ export default function ThreadAnchor() {
   return (
     <>
       <div
-        className="tw-fixed tw-w-max tw-z-10 tw-right-0 tw-top-0 tw-transition-all"
+        className="tw-fixed tw-w-max tw-z-20 tw-right-0 tw-top-0 tw-transition-all"
         style={{
-          top: `${(ui.getStickyHeader().outerHeight() || 50) + 30}px`,
+          top: `${(ui.getStickyHeader().outerHeight() || 50) + (isFloat ? 60 : 30)}px`,
           [!isFloat ? 'left' : 'right']: !isFloat
             ? `${wrapperPos.left + 20}px`
             : '2rem',
@@ -158,43 +161,43 @@ const useThreadAnchorObserver = () => {
       )
     );
 
-    const $messageContainer = ui.getMessagesContainer();
+    const $messagesContainer = ui.getMessagesContainer();
+    const $messageBlocks = ui.getMessageBlocks();
 
-    if (!$messageContainer.length) return;
+    if (!$messageBlocks.length || !$messagesContainer.length) return;
 
     setWrapperPos({
-      top: $messageContainer.offset()?.top || 0,
+      top: $messagesContainer.offset()?.top || 0,
       left:
-        $messageContainer.width()! + ($messageContainer.offset()?.left || 0),
+        $messagesContainer.width()! + ($messagesContainer.offset()?.left || 0),
     });
 
     setAnchorsProps([]);
 
-    $messageContainer.children().each((index, messageBlock) => {
+    $messageBlocks.forEach(({ $query, $answer, $messageBlock }) => {
       const anchorProps = {
-        title: '',
-        onClick: () => {},
-        onContextMenu: () => {},
+        title:
+          $query.find('textarea').text() ||
+          $query
+            .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
+            .first()
+            .text(),
+        onClick: () => {
+          scrollToElement($messageBlock, -10);
+        },
+        onContextMenu: () => {
+          const threadQueryEnabled =
+            popupSettingsStore.getState().visualTweaks.threadQueryEnhancedToolbar;
+
+          const isScrollingUp =
+            ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
+
+          const offset =
+            isScrollingUp && threadQueryEnabled ? -110 : -60;
+
+          scrollToElement($answer, offset);
+        },
       } as AnchorProps;
-
-      const $query = $(messageBlock).find('.my-md.md\\:my-lg');
-      const $answer = $(messageBlock).find(
-        '.mb-sm.flex.w-full.items-center.justify-between'
-      );
-
-      const title =
-        $query.find('textarea').text() ||
-        $query.find('>*:not(#markdown-query-wrapper):not(.tw-sticky)').first().text();
-
-      anchorProps.title = title;
-
-      anchorProps.onClick = () => {
-        scrollToElement($query, -10);
-      };
-
-      anchorProps.onContextMenu = () => {
-        scrollToElement($answer, -10);
-      };
 
       setAnchorsProps((prev) => [...(prev || []), anchorProps]);
     });

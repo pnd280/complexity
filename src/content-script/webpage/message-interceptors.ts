@@ -1,3 +1,4 @@
+import { LanguageModel } from '@/types/ModelSelector';
 import {
   LongPollingEventData,
   MessageData,
@@ -139,7 +140,7 @@ function inspectLongPollingEvents() {
   });
 }
 
-function alterQuery() {
+function alterQueries() {
   webpageMessenger.addInterceptor({
     matchCondition: (messageData: MessageData<any>) => {
       const webSocketMessageData = messageData as MessageData<
@@ -155,10 +156,11 @@ function alterQuery() {
         return { match: false };
       }
 
-      const newModelPreference = popupSettingsStore.getState().queryBoxSelectors
-        .languageModel
-        ? queryBoxStore.getState().selectedLanguageModel
-        : parsedPayload.data[1].model_preference;
+      const newModelPreference =
+        popupSettingsStore.getState().queryBoxSelectors.languageModel &&
+        parsedPayload.data?.[1].query_source !== 'retry'
+          ? queryBoxStore.getState().selectedLanguageModel
+          : parsedPayload.data[1].model_preference;
 
       const newSearchFocus = popupSettingsStore.getState().queryBoxSelectors
         .focus
@@ -192,9 +194,7 @@ function alterQuery() {
       };
 
       return {
-        match:
-          parsedPayload.event === 'perplexity_ask' &&
-          parsedPayload.data?.[1].query_source !== 'retry',
+        match: parsedPayload.event === 'perplexity_ask',
         args: [
           {
             newPayload: WSMessageParser.stringify(parsedPayload),
@@ -209,6 +209,60 @@ function alterQuery() {
       return { ...messageData, payload: { payload: args[0].newPayload } };
     },
     stopCondition: () => false,
+  });
+}
+
+function alterNextQuery({
+  languageModel,
+  proSearchState,
+}: {
+  languageModel: LanguageModel['code'];
+  proSearchState?: boolean;
+}) {
+  webpageMessenger.addInterceptor({
+    matchCondition: (messageData: MessageData<any>) => {
+      const webSocketMessageData = messageData as MessageData<
+        WebSocketEventData | LongPollingEventData
+      >;
+
+      const parsedPayload: WSParsedMessage | null | string =
+        WSMessageParser.parse(webSocketMessageData.payload.payload);
+
+      if (!isParsedWSMessage(parsedPayload)) return { match: false };
+
+      if (parsedPayload.event !== 'perplexity_ask') {
+        return { match: false };
+      }
+
+      console.log(parsedPayload.data[1].focus);
+
+      parsedPayload.data[1] = {
+        ...parsedPayload.data[1],
+        model_preference: languageModel,
+        mode: proSearchState ? 'copilot' : parsedPayload.data[1].mode,
+        search_focus: proSearchState
+          ? queryBoxStore.getState().webAccess.focus
+          : parsedPayload.data[1].search_focus,
+      };
+
+      return {
+        match:
+          parsedPayload.event === 'perplexity_ask' &&
+          parsedPayload.data?.[1].query_source === 'retry',
+        args: [
+          {
+            newPayload: WSMessageParser.stringify(parsedPayload),
+          },
+        ],
+      };
+    },
+    callback: async (
+      messageData: MessageData<WebSocketEventData | LongPollingEventData>,
+      args
+    ) => {
+      return { ...messageData, payload: { payload: args[0].newPayload } };
+    },
+    stopCondition: () => true,
   });
 }
 
@@ -295,7 +349,8 @@ const webpageMessageInterceptors = {
   trackQueryLimits,
   inspectWebSocketEvents,
   inspectLongPollingEvents,
-  alterQuery,
+  alterQueries,
+  alterNextQuery,
   waitForUpsertThreadCollection,
   waitForUserProfileSettings,
 };

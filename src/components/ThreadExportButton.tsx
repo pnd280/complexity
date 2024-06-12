@@ -11,7 +11,9 @@ import {
   Check,
   Download,
   LoaderCircle,
+  Unlink,
 } from 'lucide-react';
+import { FaMarkdown } from 'react-icons/fa';
 
 import { languageModels } from '@/consts/model-selector';
 import pplxApi from '@/utils/pplx-api';
@@ -34,12 +36,14 @@ import { toast } from './ui/use-toast';
 
 const exportOptions = [
   {
-    label: 'With citations',
+    label: 'Default',
     value: 'citations',
+    icon: <FaMarkdown className="tw-w-4 tw-h-4" />,
   },
   {
     label: 'Without citations',
     value: 'no-citations',
+    icon: <Unlink className="tw-w-4 tw-h-4" />,
   },
 ] as const;
 
@@ -183,7 +187,9 @@ export default function ThreadExportButton() {
                 includeCitations: option.value === 'citations',
               });
             }}
+            className="tw-flex tw-gap-2 tw-items-center"
           >
+            {option.icon}
             {option.label}
           </DropdownMenuItem>
         ))}

@@ -51,7 +51,7 @@ const CodeBlockHeader: React.FC<CodeBlockHeaderProps> = ({
   idleCopyButtonText,
 }) => {
   return (
-    <div className="tw-border-b tw-border-border tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
+    <div className="tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
       <div className="tw-text-background dark:tw-text-foreground">
         {container.lang || 'plain-text'} ({container.lineCount} lines)
       </div>

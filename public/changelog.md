@@ -1,10 +1,13 @@
 ## v0.0.1.0
 
+- **NEW**: Sticky thread message toolbar.
+    - "**Thread Query Markdown**" is now merged with this setting.
 - **NEW**: Added code block toolbar to markdown query.
-- **FIX**: Fixed a bug where only empty visual column of the first message query is collapsed (PPLX's html structure changed).
 - **IMPROVE**: Diff Viewer now supports more common languages.
 - **CHANGES**:
-  - **Removed** message auto scroll: buggy/needs rework.
+    - **Removed** message auto scroll: buggy/needs rework.
+- **FIX**: Unintentionally inject scripts into Perplexity's subdomains.
+- **FIX**: Fixed a bug where only empty visual column of the first message query is collapsed (PPLX's html structure changed).
 
 ## v0.0.0.11
 

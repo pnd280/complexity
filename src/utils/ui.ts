@@ -45,6 +45,15 @@ export const ui = {
     const text = element.value;
     const caret = element.selectionStart;
 
+    if (!text || caret === undefined) {
+      return {
+        word: '',
+        start: 0,
+        end: 0,
+        newText: '',
+      };
+    }
+
     // Find the start of the word
     let start = text.slice(0, caret).search(/\S+$/);
     if (start === -1) {
@@ -153,7 +162,7 @@ export const ui = {
         '.relative.default.font-sans.text-base'
       );
       const $answerHeading = $messageBlock.find(
-        '.mb-sm.flex.w-full.items-center.justify-between:last'
+        '.mb-sm.flex.w-full.items-center.justify-between:contains("Answer")'
       );
 
       $messageBlock.find('.col-span-8:last').addClass('message-col');

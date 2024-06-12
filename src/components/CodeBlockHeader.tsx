@@ -80,14 +80,20 @@ export default function CodeBlockEnhancedToolbar() {
         $(pre).find('code:first').addClass('!tw-pt-0 !tw-px-3');
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[3.3rem] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-mb-2'
+          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-mb-2 tw-transition-all tw-border-b tw-border-border'
         );
 
         $parent.prepend($container);
 
         return { $container, lang };
       } else {
-        $(pre).addClass('!tw-rounded-none !tw-m-0 !tw-p-0 !tw-px-2');
+        $(pre).addClass(
+          '!tw-rounded-none !tw-m-0 !tw-p-0 !tw-px-[.7rem] !tw-pb-2 !tw-rounded-b-md'
+        );
+
+        $(pre).find('code:first').addClass('!tw-p-0');
+
+        const lang = $(pre).find('code:first').attr('class')?.match(/language-(\w+)/)?.[1] ?? '';
 
         const $wrapper = $('<div>').addClass(
           'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
@@ -98,12 +104,12 @@ export default function CodeBlockEnhancedToolbar() {
         $wrapper.append(pre);
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[3.3rem] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-mb-2'
+          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-mb-2 tw-transition-all tw-border-b tw-border-border'
         );
 
         $wrapper.prepend($container);
 
-        return { $container, lang: '' };
+        return { $container, lang };
       }
     },
     []
@@ -189,8 +195,6 @@ export default function CodeBlockEnhancedToolbar() {
     const code = stripHtml(
       $(containers[blockIndex]?.preElement)?.find('code').text()
     );
-
-    console.log(code);
 
     return code;
   };

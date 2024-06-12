@@ -97,7 +97,7 @@ export default function useQuickQueryCommanderParams({
             label: collection.title,
             icon: <LayoutGrid />,
             keywords: [collection.title] as string[],
-            hint: (collection.description || collection.instructions).slice(
+            hint: (collection.description || collection.instructions)?.slice(
               0,
               100
             ),

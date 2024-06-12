@@ -118,11 +118,6 @@ function Footer() {
   );
 }
 
-$('html').toggleClass(
-  'dark',
-  window.matchMedia('(prefers-color-scheme: dark)').matches
-);
-
 observer.onElementExist({
   selector: '#complexity-version',
   callback: ({ element }) => {

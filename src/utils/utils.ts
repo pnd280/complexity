@@ -236,10 +236,12 @@ export function whereAmI() {
       return 'collection';
     case location.startsWith('https://www.perplexity.ai/search'):
       return 'thread';
-    case location.startsWith('https://labs.perplexity.ai/'):
-      return 'lab';
     case location.startsWith('https://www.perplexity.ai/page'):
       return 'page';
+    case location.startsWith('https://www.perplexity.ai/'):
+      return 'home';
+    case location.startsWith('https://labs.perplexity.ai/'):
+      return 'lab';
     default:
       return 'unknown';
   }

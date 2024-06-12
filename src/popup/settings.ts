@@ -41,25 +41,15 @@ const qolTweaks = [
 
 const visualTweaks = [
   {
-    id: 'thread-query-markdown',
-    label: 'Thread query markdown (&double click to edit query)',
-    storeKey: 'threadQueryMarkdown',
+    id: 'thread-query-enhanced-toolbar',
+    label: 'Thread query enhanced toolbar (experimental)',
+    storeKey: 'threadQueryEnhancedToolbar',
   },
-  // {
-  //   id: 'chat-ui', // image & avatar on top of every messages
-  //   label: 'Chat UI',
-  //   storeKey: 'chatUI',
-  // },
   {
     id: 'collapse-empty-visual-columns',
     label: 'Collapse empty thread visual columns',
     storeKey: 'collapseEmptyThreadVisualColumns',
   },
-  // {
-  //   id: 'wider-thread-width',
-  //   label: 'Wider thread width',
-  //   storeKey: 'widerThreadWidth',
-  // },
 ] as const;
 
 const popupSettings = {

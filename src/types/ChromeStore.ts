@@ -24,7 +24,7 @@ export type ChromeStore = {
       codeBlockEnhancedToolbar: boolean;
     };
     visualTweaks: {
-      threadQueryMarkdown: boolean;
+      threadQueryEnhancedToolbar: boolean;
       collapseEmptyThreadVisualColumns: boolean;
     };
   };

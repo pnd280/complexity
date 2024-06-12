@@ -16,7 +16,7 @@ type PopupSettingsState = {
     codeBlockEnhancedToolbar: boolean;
   };
   visualTweaks: {
-    threadQueryMarkdown: boolean;
+    threadQueryEnhancedToolbar: boolean;
     collapseEmptyThreadVisualColumns: boolean;
   };
 };
@@ -36,7 +36,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
       codeBlockEnhancedToolbar: false,
     },
     visualTweaks: {
-      threadQueryMarkdown: false,
+      threadQueryEnhancedToolbar: false,
       collapseEmptyThreadVisualColumns: false,
     },
   }))
@@ -63,7 +63,7 @@ const popupSettingsStore = usePopupSettingsStore;
           codeBlockEnhancedToolbar: false,
         },
         visualTweaks: {
-          threadQueryMarkdown: false,
+          threadQueryEnhancedToolbar: false,
           collapseEmptyThreadVisualColumns: false,
         },
       },

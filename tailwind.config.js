@@ -55,6 +55,9 @@ module.exports = {
           },
         },
       },
+      boxShadow: {
+        'bottom-lg': '0 8px 10px -10px rgba(0, 0, 0, 0.5)',
+      },
       colors: {
         border: {
           DEFAULT: 'var(--border)',
