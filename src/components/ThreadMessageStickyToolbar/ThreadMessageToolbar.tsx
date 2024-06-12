@@ -15,8 +15,6 @@ import {
   sleep,
 } from '@/utils/utils';
 
-import CopyButton from '../ThreadQueryHeader/CopyButton';
-import RewriteDropdown from '../ThreadQueryHeader/RewriteDropdown';
 import TooltipWrapper from '../TooltipWrapper';
 import {
   DropdownMenu,
@@ -25,18 +23,20 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Container } from './';
+import CopyButton from './CopyButton';
+import RewriteDropdown from './RewriteDropdown';
 
-type threadQueryToolbar = {
+type ThreadMessageToolbar = {
   containerIndex: number;
   containers: Container[];
   setContainers: Updater<Container[]>;
 };
 
-export default function threadQueryToolbar({
+export default function ThreadMessageToolbar({
   containers,
   containerIndex,
   setContainers,
-}: threadQueryToolbar) {
+}: ThreadMessageToolbar) {
   return (
     <div
       className={cn(

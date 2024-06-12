@@ -8,7 +8,8 @@ import MainPage from '@/components/MainPage';
 import QueryBox from '@/components/QueryBox';
 import ThreadAnchor from '@/components/ThreadAnchor';
 import ThreadExportButton from '@/components/ThreadExportButton';
-import ThreadQueryHeader from '@/components/ThreadQueryHeader';
+import ThreadMessageStickyToolbar
+  from '@/components/ThreadMessageStickyToolbar';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -35,8 +36,8 @@ export default function Root() {
         <QueryBox />
         <Commander />
         {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadAnchor />}
-        {popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar && (
-          <ThreadQueryHeader />
+        {popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar && (
+          <ThreadMessageStickyToolbar />
         )}
         {popupSettingsStore.getState().qolTweaks.codeBlockEnhancedToolbar && (
           <CodeBlockEnhancedToolbar />

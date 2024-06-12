@@ -274,7 +274,7 @@ function alternateMessageQuery({
 }
 
 function alterMessageQuery() {
-  if (!popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar)
+  if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar)
     return;
 
   observer.onElementExist({
@@ -304,7 +304,7 @@ function alterMessageQuery() {
 }
 
 function displayModelNextToAnswerHeading() {
-  if (!popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar)
+  if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar)
     return;
 
   observer.onElementExist({

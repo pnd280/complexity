@@ -18,7 +18,7 @@ import { whereAmI } from '@/utils/utils';
 import { useDebounce } from '@uidotdev/usehooks';
 
 import useElementObserver from '../hooks/useElementObserver';
-import ThreadQueryToolbar from './ThreadQueryToolbar';
+import ThreadMessageToolbar from './ThreadMessageToolbar';
 
 export type Container = {
   messageBlock: Element;
@@ -35,7 +35,7 @@ export type Container = {
   isObserving?: boolean;
 };
 
-export default function ThreadQueryHeader() {
+export default function ThreadMessageStickyToolbar() {
   const [containers, setContainers] = useImmer<Container[]>([]);
 
   const debouncedContainers = useDebounce(containers, 100);
@@ -169,7 +169,7 @@ export default function ThreadQueryHeader() {
       {containers[index] &&
         !containers[index].states.isHidden &&
         ReactDOM.createPortal(
-          <ThreadQueryToolbar
+          <ThreadMessageToolbar
             containers={containers}
             containerIndex={index}
             setContainers={setContainers}
@@ -204,7 +204,7 @@ const useScrollDirection = (
     const stopObserving = observer.onScrollDirectionChange({
       up: () => handleScrollDirectionChange(),
       down: () => handleScrollDirectionChange(),
-      identifier: 'ThreadQueryHeader',
+      identifier: 'ThreadMessageStickyToolbar',
     });
 
     return () => {

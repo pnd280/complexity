@@ -1,6 +1,6 @@
-## v0.0.1.0
+## v0.0.0.12
 
-- **NEW**: Sticky thread message toolbar.
+- **NEW** | **EXPERIMENTAL**: Sticky thread message toolbar.
     - "**Thread Query Markdown**" is now merged with this setting.
 - **NEW**: Added code block toolbar to markdown query.
 - **IMPROVE**: Diff Viewer now supports more common languages.

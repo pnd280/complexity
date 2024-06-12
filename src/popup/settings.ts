@@ -47,9 +47,9 @@ const qolTweaks: PopupSetting<
     storeKey: 'quickQueryCommander',
   },
   {
-    id: 'thread-query-enhanced-toolbar',
-    label: 'Thread query enhanced toolbar',
-    storeKey: 'threadQueryEnhancedToolbar',
+    id: 'thread-message-sticky-toolbar',
+    label: 'Thread message sticky toolbar',
+    storeKey: 'threadMessageStickyToolbar',
     experimental: true,
     versionRelease: '0.0.0.12',
   },

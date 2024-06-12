@@ -196,13 +196,13 @@ const useThreadAnchorObserver = () => {
           scrollToElement($messageBlock, -10);
         },
         onContextMenu: () => {
-          const threadQueryEnabled =
-            popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar;
+          const threadMessageStickyToolbar =
+            popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar;
 
           const isScrollingUp =
             ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
 
-          const offset = isScrollingUp && threadQueryEnabled ? -110 : -60;
+          const offset = isScrollingUp && threadMessageStickyToolbar ? -110 : -60;
 
           scrollToElement($answer, offset);
         },
