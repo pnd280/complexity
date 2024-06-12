@@ -97,7 +97,7 @@ export default function threadQueryToolbar({
 
         <div
           className={cn(
-            'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-duration-300',
+            'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-duration-300 tw-font-sans',
             {
               'tw-invisible tw-opacity-0':
                 !containers[containerIndex].states.isQueryOutOfViewport,

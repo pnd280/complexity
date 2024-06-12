@@ -36,6 +36,8 @@ const supportedLangs = [
   'sass',
   'scss',
   'sql',
+  'kotlin',
+  'haskell',
 ];
 
 type SupportedLang = (typeof supportedLangs)[number];

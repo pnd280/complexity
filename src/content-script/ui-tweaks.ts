@@ -353,7 +353,7 @@ function displayModelNextToAnswerHeading() {
           .find('div:contains("Answer"):last')
           .text(args.modelName.toUpperCase())
           .addClass(
-            'tw-font-mono !tw-text-sm tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right'
+            '!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right'
           );
     },
     observedIdentifier: 'display-model-next-to-answer-heading',
