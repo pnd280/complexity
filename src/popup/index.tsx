@@ -12,14 +12,10 @@ import { FaDiscord } from 'react-icons/fa';
 import { Separator } from '@/components/ui/separator';
 import { chromeStorage } from '@/utils/chrome-store';
 import observer from '@/utils/observer';
-import {
-  compareVersions,
-  detectConsecutiveClicks,
-} from '@/utils/utils';
+import { detectConsecutiveClicks } from '@/utils/utils';
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
 } from '@tanstack/react-query';
 
 import packageData from '../../package.json';
@@ -38,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
         <DiscordCallout />
         <Separator />
         <div className="tw-w-[350px] tw-h-[250px]">
-          <PopupSettings context='popup' />
+          <PopupSettings context="popup" />
         </div>
         <Footer />
         {chrome.runtime.id !== 'ffppmilmeaekegkpckebkeahjgmhggpj' &&
@@ -78,14 +74,6 @@ function DiscordCallout() {
 }
 
 function Footer() {
-  const { data: latestVersion } = useQuery({
-    queryKey: ['latestVersion'],
-    queryFn: () => chromeStorage.getStorageValue('latestVersion'),
-  });
-
-  const newVersionAvailable =
-    compareVersions(latestVersion || '0', version) === 1;
-
   return (
     <div className="tw-w-full tw-bg-secondary tw-flex tw-flex-col tw-font-sans">
       <Separator />
@@ -99,18 +87,11 @@ function Footer() {
         </div>
         <div
           id="complexity-version"
-          title={newVersionAvailable ? 'New version available' : version}
+          title={version}
           className={clsx(
-            'tw-px-2 tw-py-1 tw-text-[.6rem] tw-font-bold tw-ml-auto tw-bg-background tw-text-foreground tw-rounded-md tw-font-mono tw-text-xs tw-self-center tw-border tw-truncate',
-            {
-              'tw-bg-yellow-600 tw-flex tw-gap-1 tw-items-center':
-                newVersionAvailable,
-            }
+            'tw-px-2 tw-py-1 tw-text-[.6rem] tw-font-bold tw-ml-auto tw-bg-background tw-text-foreground tw-rounded-md tw-font-mono tw-text-xs tw-self-center tw-border tw-truncate'
           )}
         >
-          {newVersionAvailable && (
-            <CircleAlert className="tw-h-3 tw-w-3 tw-text-foreground" />
-          )}
           {version}
         </div>
       </div>

@@ -3,20 +3,16 @@ import {
   useState,
 } from 'react';
 
+import { LoaderCircle } from 'lucide-react';
 import showdown from 'showdown';
 
-import {
-  escapeHtmlTags,
-  fetchResource,
-} from '@/utils/utils';
-import { useQuery } from '@tanstack/react-query';
+import { escapeHtmlTags } from '@/utils/utils';
 
-const url = chrome.runtime.getURL('changelog.md');
+import useUpdate from './hooks/useUpdate';
 
 export default function Changelog() {
-  const { data: rawData, isLoading: isRawDataLoading } = useQuery({
-    queryKey: ['changelog'],
-    queryFn: () => fetchResource(url),
+  const { changelog: rawData, isChangelogFetching } = useUpdate({
+    forceFetchChangelog: true,
   });
 
   const [content, setContent] = useState('');
@@ -31,11 +27,19 @@ export default function Changelog() {
     setContent(converter.makeHtml(escapeHtmlTags(rawData)));
   }, [rawData]);
 
-  if (isRawDataLoading) return null;
 
   return (
-    <div className="tw-prose">
-      <div dangerouslySetInnerHTML={{ __html: content }} />
-    </div>
+    <>
+      {isChangelogFetching ? (
+        <div className="tw-flex tw-items-center tw-gap-2 tw-mx-auto tw-w-max">
+          <LoaderCircle className="tw-animate-spin" />
+          <span className="tw-text-xl">Loading...</span>
+        </div>
+      ) : (
+        <div className="tw-prose tw-max-w-full">
+          <div dangerouslySetInnerHTML={{ __html: content }} />
+        </div>
+      )}
+    </>
   );
 }

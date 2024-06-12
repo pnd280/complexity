@@ -1,5 +1,3 @@
-import { chromeStorage } from '@/utils/chrome-store';
-
 chrome.runtime.onInstalled.addListener(() => {
   chrome.tabs.create({
     url: chrome.runtime.getURL('options.html') + '?tab=changelog',
@@ -59,15 +57,6 @@ chrome.tabs.onRemoved.addListener((tabId: number) => {
       console.log(`Key ${keyToRemove} removed successfully.`);
     }
   });
-});
-
-chrome.runtime.onUpdateAvailable.addListener((details) => {
-  chromeStorage.setStorageValue({
-    key: 'latestVersion',
-    value: details.version,
-  });
-
-  chrome.runtime.reload();
 });
 
 function injectScript({

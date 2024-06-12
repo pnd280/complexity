@@ -1,3 +1,5 @@
+import '@/content-script/session-store/popup-settings';
+
 import { ExternalLink } from 'lucide-react';
 
 import LabeledSwitch from '@/components/LabeledSwitch';
