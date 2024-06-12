@@ -21,6 +21,8 @@ export default function touchGlobalCSSPlugin({
     configureServer(server) {
       server.watcher.on('change', (file) => {
         if (watchFiles.some((watchFile) => file.includes(watchFile))) {
+          if (file.includes(cssFilePath)) return;
+
           touchFile(cssFilePath);
           console.log(
             `${chalk.blue(`\n[touch-global-css]`)} ${chalk.green(`Touched ${chalk.yellow(cssFilePath)} due to change in ${chalk.yellow(file)}`)}`

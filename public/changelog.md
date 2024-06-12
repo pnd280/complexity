@@ -12,7 +12,7 @@
 ## v0.0.0.11
 
 - **NEW**: Introducing **Diff Viewer** - compare text/code changes side by side. For text, just ask the AI to wrap any text with triple backticks (\`\`\`).
-  ![Diff Viewer](https://i.imgur.com/wr6kTtW.png)
+    ![Diff Viewer](https://i.imgur.com/wr6kTtW.png)
 
 - **FIX**: Enhanced code block toolbar randomly crashes.
 - **FIX**: Fixed a bug where toggle the AI profile in the collection selector will break other functionalities.
@@ -35,12 +35,12 @@ Thanks @<Code/>, @trai1_blaz3r, @StinkWhistle.
 ## v0.0.0.8
 
 - **NEW**: Export all messages in a thread (including sources).
-  - Pages and publicly shared threads by others are **NOT** yet supported.
+    - Pages and publicly shared threads by others are **NOT** yet supported.
 - **NEW**: Collection selector will now have a "Default" option that is directly linked to your AI Profile.
 - **NEW**: Improved personalization:
-  - Custom Slogan/Heading/Trademark or whatever you want to call it.
-  - Custom UI font & Monospace font.
-  - Custom Accent color.
+    - Custom Slogan/Heading/Trademark or whatever you want to call it.
+    - Custom UI font & Monospace font.
+    - Custom Accent color.
 - **NEW**: Toggle message queries between plain text and markdown format (The switch is on the top-right corner of each message query).
 - **IMPROVE**: Overall performance has been improved.
 - **FIX**: Fixed minor UI glitches/inconsistencies.
@@ -64,8 +64,8 @@ Thanks @paradroid/dayman, @Toxon, @<Code/>.
 ## v0.0.0.4
 
 - **NEW**: Added Collection Selector:
-  - Quickly initiate new chat with a collection without hard-navigating to the collection page.
-  - View and Edit collection details.
+    - Quickly initiate new chat with a collection without hard-navigating to the collection page.
+    - View and Edit collection details.
 - **NEW**: Custom CSS injection (Extension Options => Custom Theme).
 - **NEW**: Render message query in markdown format (+ Double-click to edit).
 - **IMPROVE**: Automatically collapse empty thread's visual columns.
