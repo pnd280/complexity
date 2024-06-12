@@ -182,6 +182,9 @@ export default function FocusSelector() {
                   label="Pro search"
                   id="pro-search"
                   onCheckedChange={(checked) => {
+                    ui.getNativeProSearchSwitchWrapper()
+                      .find('button')
+                      .trigger('click');
                     toggleProSearch(checked);
                     checked && toggleWebAccess(true);
                   }}

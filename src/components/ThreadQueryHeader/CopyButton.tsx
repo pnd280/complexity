@@ -64,7 +64,11 @@ export default function CopyButton({
       '.mt-sm.flex.items-center.justify-between'
     );
 
-    const $button = $buttonBar.children().last().children().first();
+    const $button = $buttonBar
+      .children()
+      .last()
+      .children()
+      .find('div:has([data-icon="clipboard"])');
 
     if (!$button.length) return;
 

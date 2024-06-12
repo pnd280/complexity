@@ -6,7 +6,7 @@ import {
 import clsx from 'clsx';
 import $ from 'jquery';
 import {
-  Menu,
+  ChevronLeft,
   X,
 } from 'lucide-react';
 
@@ -20,6 +20,8 @@ import {
   whereAmI,
 } from '@/utils/utils';
 import { useToggle } from '@uidotdev/usehooks';
+
+import TooltipWrapper from './TooltipWrapper';
 
 export default function ThreadAnchor() {
   const { visibleMessageIndex, anchorsProps, wrapperPos } =
@@ -117,7 +119,8 @@ export default function ThreadAnchor() {
 
         <div
           className={clsx(
-            'tw-absolute -tw-top-2 tw-right-1 tw-bg-secondary tw-rounded-full tw-p-3 active:tw-scale-95 tw-transition-all tw-border tw-border-border tw-shadow-lg tw-cursor-pointer tw-animate-in tw-zoom-in',
+            'tw-absolute -tw-top-2 -tw-right-10 tw-bg-secondary tw-rounded-full tw-h-20 active:tw-scale-95 tw-transition-all tw-border tw-border-border tw-shadow-lg tw-cursor-pointer tw-animate-in tw-zoom-in',
+            'tw-flex tw-items-center hover:-tw-right-8',
             {
               'tw-hidden': !isFloat || visible,
             }
@@ -126,7 +129,14 @@ export default function ThreadAnchor() {
             toggleVisibility(true);
           }}
         >
-          <Menu className="tw-w-5 tw-h-5 tw-text-muted-foreground tw-cursor-pointer hover:!tw-text-foreground tw-transition-colors" />
+          <TooltipWrapper
+            content="Show Table of Content"
+            contentOptions={{
+              side: 'left',
+            }}
+          >
+            <ChevronLeft className="tw-w-5 tw-h-5 tw-text-muted-foreground tw-cursor-pointer hover:!tw-text-foreground tw-transition-colors" />
+          </TooltipWrapper>
         </div>
       </div>
     </>
@@ -187,13 +197,12 @@ const useThreadAnchorObserver = () => {
         },
         onContextMenu: () => {
           const threadQueryEnabled =
-            popupSettingsStore.getState().visualTweaks.threadQueryEnhancedToolbar;
+            popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar;
 
           const isScrollingUp =
             ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
 
-          const offset =
-            isScrollingUp && threadQueryEnabled ? -110 : -60;
+          const offset = isScrollingUp && threadQueryEnabled ? -110 : -60;
 
           scrollToElement($answer, offset);
         },

@@ -1,4 +1,16 @@
-const queryBoxSelectors = [
+import { ChromeStore } from '@/types/ChromeStore';
+
+export type PopupSetting<T> = {
+  id: string;
+  label: string;
+  storeKey: T;
+  versionRelease?: string;
+  experimental?: boolean;
+};
+
+const queryBoxSelectors: PopupSetting<
+  keyof ChromeStore['popupSettings']['queryBoxSelectors']
+>[] = [
   {
     id: 'focus-selector',
     label: 'Web search focus',
@@ -19,9 +31,11 @@ const queryBoxSelectors = [
     label: 'Image Generation Model',
     storeKey: 'imageGenModel',
   },
-] as const;
+];
 
-const qolTweaks = [
+const qolTweaks: PopupSetting<
+  keyof ChromeStore['popupSettings']['qolTweaks']
+>[] = [
   {
     id: 'thread-toc',
     label: 'Thread TOC',
@@ -33,24 +47,28 @@ const qolTweaks = [
     storeKey: 'quickQueryCommander',
   },
   {
+    id: 'thread-query-enhanced-toolbar',
+    label: 'Thread query enhanced toolbar',
+    storeKey: 'threadQueryEnhancedToolbar',
+    experimental: true,
+    versionRelease: '0.0.0.12',
+  },
+  {
     id: 'code-block-enhanced-toolbar',
     label: 'Code block enhanced toolbar',
     storeKey: 'codeBlockEnhancedToolbar',
   },
-] as const;
+];
 
-const visualTweaks = [
-  {
-    id: 'thread-query-enhanced-toolbar',
-    label: 'Thread query enhanced toolbar (experimental)',
-    storeKey: 'threadQueryEnhancedToolbar',
-  },
+const visualTweaks: PopupSetting<
+  keyof ChromeStore['popupSettings']['visualTweaks']
+>[] = [
   {
     id: 'collapse-empty-visual-columns',
     label: 'Collapse empty thread visual columns',
     storeKey: 'collapseEmptyThreadVisualColumns',
   },
-] as const;
+];
 
 const popupSettings = {
   queryBoxSelectors,

@@ -1,8 +1,8 @@
 import {
   Fragment,
+  useCallback,
   useEffect,
   useMemo,
-  useState,
 } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -15,6 +15,7 @@ import {
 import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
 import { whereAmI } from '@/utils/utils';
+import { useDebounce } from '@uidotdev/usehooks';
 
 import useElementObserver from '../hooks/useElementObserver';
 import ThreadQueryToolbar from './ThreadQueryToolbar';
@@ -24,82 +25,80 @@ export type Container = {
   query: Element;
   container: Element;
   answer: Element;
-};
-
-export type ButtonsStates = {
-  isMarkdown: boolean;
-  isEditing: boolean;
-  isCollapsed: boolean;
-  isQueryOutOfViewport: boolean;
-  isHidden: boolean;
+  states: {
+    isMarkdown: boolean;
+    isEditing: boolean;
+    isCollapsed: boolean;
+    isQueryOutOfViewport: boolean;
+    isHidden: boolean;
+  };
+  isObserving?: boolean;
 };
 
 export default function ThreadQueryHeader() {
-  const [containers, setContainers] = useState<Container[]>([]);
+  const [containers, setContainers] = useImmer<Container[]>([]);
 
-  const [buttonsStates, setButtonsStates] = useImmer<ButtonsStates[]>([]);
+  const debouncedContainers = useDebounce(containers, 100);
 
-  useEffect(() => {
-    containers.forEach((container, index) => {
-      observer.onDOMChanges({
-        targetNode: container.messageBlock,
-        callback: () => {
-          if (
-            !$(container.messageBlock).find(
-              '.mt-sm.flex.items-center.justify-between'
-            ).length
-          ) {
-            if (buttonsStates[index]?.isHidden) return;
-
-            $('main').css('--codeBlockTop', '3.35rem');
-
-            return setButtonsStates((draft) => {
-              draft[index].isHidden = true;
-            });
-          }
-
-          if (!buttonsStates[index]?.isHidden) return;
-
-          $('main').css('--codeBlockTop', '6.5rem');
-
-          setButtonsStates((draft) => {
-            draft[index].isHidden = false;
-          });
-        },
-      });
-    });
-  }, [containers, setButtonsStates, buttonsStates]);
-
-  useEffect(() => {
-    containers.forEach((container, index) => {
-      if (buttonsStates.length <= index) {
-        setButtonsStates((draft) => {
-          draft[index] = {
-            isMarkdown: false,
-            isEditing: false,
-            isCollapsed: false,
-            isHidden: true,
-            isQueryOutOfViewport:
-              container.query.getBoundingClientRect().top +
-                container.query.getBoundingClientRect().height <
-              -20,
-          };
-        });
+  const showHideHeader = useCallback(
+    ({ container, index }: { container: Container; index: number }) => {
+      if (!document.contains(container.messageBlock)) {
+        return;
       }
 
       if (
-        $(container.query).find('#markdown-query-wrapper.\\!tw-hidden').length
+        !$(container.messageBlock).find(
+          '.mt-sm.flex.items-center.justify-between'
+        ).length
       ) {
-        setButtonsStates((draft) => {
-          draft[index].isMarkdown = false;
+        $('main').css('--codeBlockTop', '3.35rem');
+
+        return setContainers((draft) => {
+          if (!draft[index].states.isHidden) {
+            draft[index].states.isHidden = true;
+          }
         });
-      } else {
-        setButtonsStates((draft) => {
-          draft[index].isMarkdown = true;
+      }
+
+      $('main').css('--codeBlockTop', '6.5rem');
+
+      setContainers((draft) => {
+        if (draft[index].states.isHidden) {
+          draft[index].states.isHidden = false;
+        }
+      });
+    },
+    [setContainers]
+  );
+
+  useEffect(() => {
+    observer.onDOMChanges({
+      targetNode: ui.getMessagesContainer()[0],
+      callback: () => {
+        setContainers((draft) => {
+          draft.forEach((container, index) => {
+            if (
+              !document.contains(container.messageBlock as unknown as Element)
+            ) {
+              draft.splice(index, 1);
+            }
+          });
+        });
+      },
+    });
+
+    containers.forEach((container, index) => {
+      if (!container.isObserving) {
+        observer.onDOMChanges({
+          targetNode: container.messageBlock,
+          callback: () => showHideHeader({ container, index }),
+        });
+        setContainers((draft) => {
+          draft[index].isObserving = true;
         });
       }
     });
-  }, [containers, buttonsStates, setButtonsStates]);
+  }, [containers, setContainers, showHideHeader]);
 
   useElementObserver({
     selector: () =>
@@ -123,29 +122,33 @@ export default function ThreadQueryHeader() {
 
       $(element).before($container);
 
-      setContainers((prev) =>
-        [
-          ...prev,
+      setContainers((draft) => {
+        return [
+          ...draft,
           {
             container: $container[0],
             query: element,
             messageBlock: args!.messageBlock,
             answer: args!.answer,
+            states: {
+              isMarkdown: true,
+              isEditing: false,
+              isCollapsed: false,
+              isHidden: false,
+              isQueryOutOfViewport: false,
+            },
+            isObserving: false,
           },
-        ].filter((container) => document.contains(container.messageBlock))
-      );
+        ].filter((container) =>
+          document.contains(container.messageBlock as unknown as Element)
+        );
+      });
     },
     observedIdentifier: 'thread-query-format-switch-container',
   });
 
   useElementObserver({
-    selector: () =>
-      ui
-        .getMessageBlocks()
-        .map(
-          ({ $messageBlock }) =>
-            $messageBlock.find('.whitespace-pre-line.break-words')[0]
-        ),
+    selector: () => $('.whitespace-pre-line.break-words').toArray(),
     callback: ({ element }) => {
       if (whereAmI() !== 'thread') return;
 
@@ -159,17 +162,16 @@ export default function ThreadQueryHeader() {
     observedIdentifier: 'thread-query-format-switch',
   });
 
-  useScrollDirection(containers, setButtonsStates);
+  useScrollDirection(containers, setContainers);
 
-  return containers.map((container, index) => (
+  return debouncedContainers.map((container, index) => (
     <Fragment key={index}>
-      {!buttonsStates[index]?.isHidden &&
+      {containers[index] &&
+        !containers[index].states.isHidden &&
         ReactDOM.createPortal(
           <ThreadQueryToolbar
-            container={container}
+            containers={containers}
             containerIndex={index}
-            buttonsStates={buttonsStates}
-            setButtonsStates={setButtonsStates}
             setContainers={setContainers}
           />,
           container.container
@@ -180,7 +182,7 @@ export default function ThreadQueryHeader() {
 
 const useScrollDirection = (
   containers: Container[],
-  setButtonsStates: Updater<ButtonsStates[]>
+  setContainers: Updater<Container[]>
 ) => {
   const stickyNavHeight = useMemo(
     () => ui.getStickyHeader()?.outerHeight() || 3 * 16,
@@ -189,11 +191,11 @@ const useScrollDirection = (
 
   useEffect(() => {
     const handleScrollDirectionChange = () => {
-      setButtonsStates((draft) => {
+      setContainers((draft) => {
         draft.forEach((_, index) => {
-          draft[index].isQueryOutOfViewport =
-            containers[index].query.getBoundingClientRect().top +
-              containers[index].query.getBoundingClientRect().height <
+          draft[index].states.isQueryOutOfViewport =
+            containers[index]?.query.getBoundingClientRect().top +
+              containers[index]?.query.getBoundingClientRect().height <
             -20;
         });
       });
@@ -208,5 +210,5 @@ const useScrollDirection = (
     return () => {
       stopObserving();
     };
-  }, [containers, stickyNavHeight, setButtonsStates]);
+  }, [containers, stickyNavHeight, setContainers]);
 };

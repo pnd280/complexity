@@ -189,8 +189,7 @@ function hideNativeProSearchSwitch() {
   if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
 
   observer.onElementExist({
-    selector:
-      '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer[data-testid="copilot-toggle"]',
+    selector: () => [ui.getNativeProSearchSwitchWrapper()[0]],
     callback: ({ element }) => {
       $(element).addClass('!tw-hidden');
     },
@@ -275,7 +274,7 @@ function alternateMessageQuery({
 }
 
 function alterMessageQuery() {
-  if (!popupSettingsStore.getState().visualTweaks.threadQueryEnhancedToolbar)
+  if (!popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar)
     return;
 
   observer.onElementExist({
@@ -305,7 +304,7 @@ function alterMessageQuery() {
 }
 
 function displayModelNextToAnswerHeading() {
-  if (!popupSettingsStore.getState().visualTweaks.threadQueryEnhancedToolbar)
+  if (!popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar)
     return;
 
   observer.onElementExist({
@@ -335,16 +334,11 @@ function displayModelNextToAnswerHeading() {
 
         const modelName = bottomRightButtonBar.children().last().text();
 
-        if (bottomRightButtonBar.children().length < 4) {
-          if (!modelName) bottomRightButtonBar.append('<div>');
-          else bottomRightButtonBar.prepend('<div>');
-        }
-
         elements.push({
           element: bottomRightButtonBar.children().last()[0],
           args: {
             answerHeading: $answerHeading[0],
-            modelName: modelName,
+            modelName,
           },
         });
       });

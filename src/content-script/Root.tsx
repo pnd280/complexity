@@ -35,7 +35,7 @@ export default function Root() {
         <QueryBox />
         <Commander />
         {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadAnchor />}
-        {popupSettingsStore.getState().visualTweaks.threadQueryEnhancedToolbar && (
+        {popupSettingsStore.getState().qolTweaks.threadQueryEnhancedToolbar && (
           <ThreadQueryHeader />
         )}
         {popupSettingsStore.getState().qolTweaks.codeBlockEnhancedToolbar && (

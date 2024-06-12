@@ -41,6 +41,11 @@ export const ui = {
   getStickyHeader() {
     return $('.sticky.left-0.right-0.top-0.z-20.border-b');
   },
+  getNativeProSearchSwitchWrapper() {
+    return $(
+      '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer[data-testid="copilot-toggle"]'
+    );
+  },
   getWordOnCaret(element: HTMLTextAreaElement) {
     const text = element.value;
     const caret = element.selectionStart;

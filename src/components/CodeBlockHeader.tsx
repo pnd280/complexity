@@ -93,7 +93,11 @@ export default function CodeBlockEnhancedToolbar() {
 
         $(pre).find('code:first').addClass('!tw-p-0');
 
-        const lang = $(pre).find('code:first').attr('class')?.match(/language-(\w+)/)?.[1] ?? '';
+        const lang =
+          $(pre)
+            .find('code:first')
+            .attr('class')
+            ?.match(/language-(\w+)/)?.[1] ?? '';
 
         const $wrapper = $('<div>').addClass(
           'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
@@ -240,9 +244,9 @@ export default function CodeBlockEnhancedToolbar() {
       {!diffViewerOpen &&
         diffTexts.length === 1 &&
         ReactDOM.createPortal(
-          <div className="tw-fixed tw-top-[6rem] tw-left-1/2 -tw-translate-x-1/2 tw-z-10">
+          <div className="tw-fixed tw-bottom-[10rem] tw-left-1/2 -tw-translate-x-1/2 tw-z-10">
             <div
-              className="tw-bg-secondary tw-border tw-rounded-md tw-p-1 tw-px-2 tw-animate-in tw-slide-in-from-top tw-fade-in tw-select-none tw-flex tw-items-center tw-gap-1 active:tw-scale-95 tw-transition-all tw-duration-300 tw-shadow-lg tw-font-sans"
+              className="tw-bg-secondary tw-border tw-rounded-md tw-p-1 tw-px-2 tw-animate-in tw-slide-in-from-bottom tw-fade-in tw-select-none tw-flex tw-items-center tw-gap-1 active:tw-scale-95 tw-transition-all tw-duration-300 tw-shadow-lg tw-font-sans"
               onClick={() => {
                 const preElement = containers[diffTexts[0]].preElement;
 

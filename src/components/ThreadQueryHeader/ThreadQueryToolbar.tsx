@@ -1,8 +1,3 @@
-import {
-  Dispatch,
-  SetStateAction,
-} from 'react';
-
 import $ from 'jquery';
 import {
   Ellipsis,
@@ -29,43 +24,34 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import {
-  ButtonsStates,
-  Container,
-} from './';
+import { Container } from './';
 
 type threadQueryToolbar = {
   containerIndex: number;
-  buttonsStates: ButtonsStates[];
-  setButtonsStates: Updater<ButtonsStates[]>;
-  container: Container;
-  setContainers: Dispatch<SetStateAction<Container[]>>;
+  containers: Container[];
+  setContainers: Updater<Container[]>;
 };
 
 export default function threadQueryToolbar({
-  container,
+  containers,
   containerIndex,
-  buttonsStates,
-  setButtonsStates,
   setContainers,
 }: threadQueryToolbar) {
-  if (buttonsStates.length <= containerIndex) return null;
-
   return (
     <div
       className={cn(
         'tw-w-full tw-py-[.8rem] tw-px-2 tw-border-b tw-border-border tw-bg-background tw-flex tw-items-center tw-gap-2 thread-query-format-switch-toolbar',
         {
           'tw-shadow-bottom-lg':
-            buttonsStates[containerIndex].isQueryOutOfViewport,
+            containers[containerIndex].states.isQueryOutOfViewport,
         }
       )}
     >
       <div className="tw-flex tw-items-center tw-gap-2 tw-w-full">
-        {!buttonsStates[containerIndex].isQueryOutOfViewport && (
+        {!containers[containerIndex].states.isQueryOutOfViewport && (
           <TooltipWrapper
             content={
-              buttonsStates[containerIndex].isMarkdown
+              containers[containerIndex].states.isMarkdown
                 ? 'Convert Query to Plain Text'
                 : 'Convert Query to Markdown'
             }
@@ -78,26 +64,29 @@ export default function threadQueryToolbar({
             <div
               className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 tw-opacity-10 hover:tw-opacity-100"
               onClick={() => {
-                setButtonsStates((draft) => {
-                  $(container.query)
+                setContainers((draft) => {
+                  $(draft[containerIndex].query)
                     .find('.whitespace-pre-line.break-words')
                     .toggleClass(
                       '!tw-hidden',
-                      !draft[containerIndex].isMarkdown
+                      !draft[containerIndex].states.isMarkdown
                     );
-                  $(container.query)
+                  $(draft[containerIndex].query)
                     .find('#markdown-query-wrapper')
                     .toggleClass(
                       '!tw-hidden',
-                      draft[containerIndex].isMarkdown
+                      draft[containerIndex].states.isMarkdown
                     );
-                  draft[containerIndex].isMarkdown =
-                    !draft[containerIndex].isMarkdown;
-                  scrollToElement($(container.query), -60);
+                  draft[containerIndex].states.isMarkdown =
+                    !draft[containerIndex].states.isMarkdown;
+                  scrollToElement(
+                    $(draft[containerIndex].query as unknown as Element),
+                    -60
+                  );
                 });
               }}
             >
-              {buttonsStates[containerIndex].isMarkdown ? (
+              {containers[containerIndex].states.isMarkdown ? (
                 <FaMarkdown className="tw-w-4 tw-h-4" />
               ) : (
                 <Text className="tw-w-4 tw-h-4" />
@@ -111,16 +100,16 @@ export default function threadQueryToolbar({
             'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-duration-300',
             {
               'tw-invisible tw-opacity-0':
-                !buttonsStates[containerIndex].isQueryOutOfViewport,
+                !containers[containerIndex].states.isQueryOutOfViewport,
             }
           )}
           onClick={() => {
-            scrollToElement($(container.query), -60);
+            scrollToElement($(containers[containerIndex].query), -60);
           }}
         >
           <span>
-            {$(container.query).find('textarea').text() ||
-              $(container.query)
+            {$(containers[containerIndex].query).find('textarea').text() ||
+              $(containers[containerIndex].query)
                 .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
                 .first()
                 .text()}
@@ -129,27 +118,34 @@ export default function threadQueryToolbar({
       </div>
 
       <div className="tw-ml-auto tw-flex tw-items-center tw-gap-2">
-        <RewriteDropdown container={container} />
+        <RewriteDropdown container={containers[containerIndex]} />
 
-        <CopyButton container={container} containerIndex={containerIndex} />
+        <CopyButton
+          container={containers[containerIndex]}
+          containerIndex={containerIndex}
+        />
 
         <TooltipWrapper content="Edit Query">
           <div
             className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
             onClick={() => {
-              const $buttonBar = $(container.messageBlock).find(
-                '.mt-sm.flex.items-center.justify-between'
-              );
+              const $buttonBar = $(
+                containers[containerIndex].messageBlock
+              ).find('.mt-sm.flex.items-center.justify-between');
 
-              const $editButton = $buttonBar.children().last().children().eq(1);
+              const $editButton = $buttonBar
+                .children()
+                .last()
+                .children()
+                .find('div:has([data-icon="pen-to-square"])');
 
               if (!$editButton.length) return;
 
               $editButton.trigger('click');
 
-              setButtonsStates((draft) => {
-                draft[containerIndex].isEditing =
-                  !draft[containerIndex].isEditing;
+              setContainers((draft) => {
+                draft[containerIndex].states.isEditing =
+                  !draft[containerIndex].states.isEditing;
               });
             }}
           >
@@ -170,7 +166,7 @@ export default function threadQueryToolbar({
             <DropdownMenuItem
               onSelect={async () => {
                 moreMenuItemClick({
-                  container,
+                  container: containers[containerIndex],
                   item: 'Report',
                 });
               }}
@@ -179,17 +175,14 @@ export default function threadQueryToolbar({
               <LucideThumbsDown className="tw-w-4 tw-h-4" />
               Report
             </DropdownMenuItem>
-            {buttonsStates.length - 1 === containerIndex &&
-              buttonsStates.length > 1 && (
+            {containers.length - 1 === containerIndex &&
+              containers.length > 1 && (
                 <DropdownMenuItem
                   onSelect={async () => {
                     await moreMenuItemClick({
-                      container,
+                      container: containers[containerIndex],
                       item: 'Delete',
                     });
-
-                    setButtonsStates((draft) => draft.slice(0, -1));
-                    setContainers((prev) => prev.slice(0, -1));
                   }}
                   className="tw-flex tw-gap-2 tw-items-center"
                 >
@@ -215,7 +208,11 @@ async function moreMenuItemClick({
     '.mt-sm.flex.items-center.justify-between'
   );
 
-  const $button = $buttonBar.children().last().children().eq(2).find('button');
+  const $button = $buttonBar
+    .children()
+    .last()
+    .children()
+    .find('button:has([data-icon="ellipsis"])');
 
   if (!$button.length) return;
 

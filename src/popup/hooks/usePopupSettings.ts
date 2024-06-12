@@ -13,8 +13,11 @@ export default function usePopupSettings() {
     },
   });
 
-  const handleQueryBoxSettingsChange = async (
-    key: keyof ChromeStore['popupSettings']['queryBoxSelectors'],
+  const handleSettingsChange = async <
+    T extends keyof ChromeStore['popupSettings'],
+  >(
+    section: T,
+    key: keyof ChromeStore['popupSettings'][T],
     value: boolean
   ) => {
     if (!store) return;
@@ -22,55 +25,18 @@ export default function usePopupSettings() {
     await chromeStorage.setStorageValue({
       key: 'popupSettings',
       value: produce(store.popupSettings, (draft) => {
-        draft.queryBoxSelectors ??= {} as ChromeStore['popupSettings']['queryBoxSelectors'];
-        draft.queryBoxSelectors[key] ??= false;
-        draft.queryBoxSelectors[key] = value;
+        draft[section] ??= {} as ChromeStore['popupSettings'][T];
+
+        (draft[section][key] as boolean) ??= false;
+        (draft[section][key] as boolean) = value;
       }),
     });
 
     await refetch();
   };
-
-  const handleQolTweaksChange = async (
-    key: keyof ChromeStore['popupSettings']['qolTweaks'],
-    value: boolean
-  ) => {
-    if (!store) return;
-
-    await chromeStorage.setStorageValue({
-      key: 'popupSettings',
-      value: produce(store.popupSettings, (draft) => {
-        draft.qolTweaks ??= {} as ChromeStore['popupSettings']['qolTweaks'];
-        draft.qolTweaks[key] ??= false;
-        draft.qolTweaks[key] = value;
-      }),
-    });
-
-    await refetch();
-  };
-
-  const handleVisualTweaksChange = async (
-    key: keyof ChromeStore['popupSettings']['visualTweaks'],
-    value: boolean
-  ) => {
-    if (!store) return;
-
-    await chromeStorage.setStorageValue({
-      key: 'popupSettings',
-      value: produce(store.popupSettings, (draft) => {
-        draft.visualTweaks ??= {} as ChromeStore['popupSettings']['visualTweaks'];
-        draft.visualTweaks[key] ??= false;
-        draft.visualTweaks[key] = value;
-      }),
-    });
-
-    await refetch();
-  }
 
   return {
     store,
-    handleQueryBoxSettingsChange,
-    handleQolTweaksChange,
-    handleVisualTweaksChange,
+    handleSettingsChange,
   };
 }

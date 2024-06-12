@@ -21,10 +21,10 @@ export type ChromeStore = {
     qolTweaks: {
       threadTOC: boolean;
       quickQueryCommander: boolean;
+      threadQueryEnhancedToolbar: boolean;
       codeBlockEnhancedToolbar: boolean;
     };
     visualTweaks: {
-      threadQueryEnhancedToolbar: boolean;
       collapseEmptyThreadVisualColumns: boolean;
     };
   };
@@ -40,3 +40,9 @@ export type ChromeStore = {
 };
 
 export type ChromeSessionStore = object;
+
+type NestedKeys<T> = {
+  [K in keyof T]: T[K] extends object ? keyof T[K] : never;
+}[keyof T];
+
+export type PopupSettingKeys = NestedKeys<ChromeStore['popupSettings']>;

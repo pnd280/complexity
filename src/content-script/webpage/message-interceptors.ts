@@ -234,8 +234,6 @@ function alterNextQuery({
         return { match: false };
       }
 
-      console.log(parsedPayload.data[1].focus);
-
       parsedPayload.data[1] = {
         ...parsedPayload.data[1],
         model_preference: languageModel,
