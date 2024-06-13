@@ -197,7 +197,7 @@ export default function CodeBlockEnhancedToolbar() {
 
   const extractTextFromBlock = (blockIndex: number) => {
     const code = stripHtml(
-      $(containers[blockIndex]?.preElement)?.find('code').text()
+      $(containers[blockIndex]?.preElement)?.find('code').html()
     );
 
     return code;

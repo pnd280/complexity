@@ -4,9 +4,9 @@ import { useCallback, useEffect, useState } from 'react';
 
 import $ from 'jquery';
 import Prism from 'prismjs';
+import 'prismjs/components/prism-markup-templating.js';
 
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
-
 import { useToggle } from '@uidotdev/usehooks';
 
 import { Checkbox } from './ui/checkbox';
@@ -15,6 +15,7 @@ import { Label } from './ui/label';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 
 const supportedLangs = [
+  'html',
   'javascript',
   'python',
   'csharp',
@@ -38,6 +39,8 @@ const supportedLangs = [
   'sql',
   'kotlin',
   'haskell',
+  'php',
+  'apex',
 ];
 
 type SupportedLang = (typeof supportedLangs)[number];
