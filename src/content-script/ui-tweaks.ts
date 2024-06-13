@@ -189,7 +189,7 @@ function hideNativeProSearchSwitch() {
   if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
 
   observer.onElementExist({
-    selector: () => [ui.getNativeProSearchSwitchWrapper()[0]],
+    selector: () => ui.getNativeProSearchSwitchWrapper().toArray(),
     callback: ({ element }) => {
       $(element).addClass('!tw-hidden');
     },

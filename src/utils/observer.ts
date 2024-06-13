@@ -21,7 +21,7 @@ function onElementExist<T>({
   selector,
   callback,
   recurring = true,
-  observedIdentifier = 'observed',
+  observedIdentifier,
 }: OnElementExistOptions<T>): MutationObserver {
   requestIdleCallback(() => {
     checkAndInvokeCallback();
@@ -51,23 +51,30 @@ function onElementExist<T>({
     elements?.forEach((element) => {
       if (!document.contains(element)) return;
 
-      if ($(element).data(observedIdentifier) !== true) {
-        callback({
-          element,
-          args: isElementWithArgsArraySelector(selector)
-            ? selector().find((item) => item.element === element)?.args
-            : undefined,
-          reobserve: () => $(element).data(observedIdentifier, false),
-        });
+      if (observedIdentifier && $(element).data(observedIdentifier) === true) {
+        return;
+      }
 
+      callback({
+        element,
+        args: isElementWithArgsArraySelector(selector)
+          ? selector().find((item) => item.element === element)?.args
+          : undefined,
+        reobserve: () =>
+          observedIdentifier
+            ? $(element).data(observedIdentifier, false)
+            : null,
+      });
+
+      if (observedIdentifier) {
         $(element).data(observedIdentifier, true);
         $(element).attr(`data-${observedIdentifier}`, 'true');
       }
-    });
 
-    if (!recurring) {
-      observer.disconnect();
-    }
+      if (!recurring) {
+        observer.disconnect();
+      }
+    });
   }
 
   return observer;

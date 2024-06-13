@@ -76,7 +76,7 @@ export default function FocusSelector() {
 
   $('body').toggleClass(
     'pro-search',
-    hasActivePPLXSub && proSearch && allowWebAccess
+    !!hasActivePPLXSub && !!proSearch && !!allowWebAccess
   );
 
   return (

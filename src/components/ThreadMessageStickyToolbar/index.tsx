@@ -54,7 +54,7 @@ export default function ThreadMessageStickyToolbar() {
         $('main').css('--codeBlockTop', '3.35rem');
 
         return setContainers((draft) => {
-          if (!draft[index].states.isHidden) {
+          if (draft[index] && !draft[index].states.isHidden) {
             draft[index].states.isHidden = true;
           }
         });
@@ -63,7 +63,7 @@ export default function ThreadMessageStickyToolbar() {
       $('main').css('--codeBlockTop', '6.5rem');
 
       setContainers((draft) => {
-        if (draft[index].states.isHidden) {
+        if (draft[index] && draft[index].states.isHidden) {
           draft[index].states.isHidden = false;
         }
       });
@@ -100,6 +100,10 @@ export default function ThreadMessageStickyToolbar() {
     });
   }, [containers, setContainers, showHideHeader]);
 
+  const findContainerDOMIndex = useCallback((element: Element) => {
+    return ui.getMessagesContainer().find(element).index();
+  }, []);
+
   useElementObserver({
     selector: () =>
       ui.getMessageBlocks().map(({ $query, $messageBlock, $answer }) => {
@@ -122,26 +126,34 @@ export default function ThreadMessageStickyToolbar() {
 
       $(element).before($container);
 
+      const index = findContainerDOMIndex(args!.messageBlock);
+
       setContainers((draft) => {
-        return [
-          ...draft,
-          {
-            container: $container[0],
-            query: element,
-            messageBlock: args!.messageBlock,
-            answer: args!.answer,
-            states: {
-              isMarkdown: true,
-              isEditing: false,
-              isCollapsed: false,
-              isHidden: false,
-              isQueryOutOfViewport: false,
-            },
-            isObserving: false,
+        const newContainer = {
+          container: $container[0],
+          query: element,
+          messageBlock: args!.messageBlock,
+          answer: args!.answer,
+          states: {
+            isMarkdown: true,
+            isEditing: false,
+            isCollapsed: false,
+            isHidden: false,
+            isQueryOutOfViewport: false,
           },
-        ].filter((container) =>
-          document.contains(container.messageBlock as unknown as Element)
-        );
+          isObserving: false,
+        };
+
+        // @ts-expect-error
+        draft.splice(index, 0, newContainer);
+
+        draft.forEach((container, index) => {
+          if (
+            !document.contains(container.messageBlock as unknown as Element)
+          ) {
+            draft.splice(index, 1);
+          }
+        });
       });
     },
     observedIdentifier: 'thread-query-format-switch-container',

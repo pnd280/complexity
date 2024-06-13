@@ -32,8 +32,6 @@ import CodeBlockHeader from './CodeBlockToolbar';
 import DiffViewDialog from './DiffViewDialog';
 import useElementObserver from './hooks/useElementObserver';
 
-const importedLangs = new Set<string>();
-
 export default function CodeBlockEnhancedToolbar() {
   const [containers, setContainers] = useImmer<
     {
@@ -42,6 +40,7 @@ export default function CodeBlockEnhancedToolbar() {
       lang: string;
       lineCount: number;
       lineCountObserving: boolean;
+      isNative: boolean;
     }[]
   >([]);
 
@@ -64,6 +63,7 @@ export default function CodeBlockEnhancedToolbar() {
     ): Nullable<{
       $container: JQuery<HTMLElement>;
       lang: string;
+      isNative: boolean;
     }> => {
       if (!pre) return null;
 
@@ -89,18 +89,18 @@ export default function CodeBlockEnhancedToolbar() {
         $(pre)
           .find('div:nth-child(2)')
           .addClass('tw-rounded-none tw-rounded-b-md !tw-p-0');
-        $(pre).find('code:first').addClass('!tw-pt-0 !tw-px-3');
+        $(pre).find('code:first').addClass('!tw-px-3');
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-mb-2 tw-transition-all tw-border-b tw-border-border'
+          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
         );
 
         $parent.prepend($container);
 
-        return { $container, lang };
+        return { $container, lang, isNative: true };
       } else {
         $(pre).addClass(
-          '!tw-rounded-none !tw-m-0 !tw-p-0 !tw-px-[.7rem] !tw-pb-2 !tw-rounded-b-md'
+          '!tw-rounded-none !tw-m-0 !tw-px-[.7rem] !tw-py-2 !tw-rounded-b-md'
         );
 
         $(pre).find('code:first').addClass('!tw-p-0');
@@ -120,12 +120,12 @@ export default function CodeBlockEnhancedToolbar() {
         $wrapper.append(pre);
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-mb-2 tw-transition-all tw-border-b tw-border-border'
+          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
         );
 
         $wrapper.prepend($container);
 
-        return { $container, lang };
+        return { $container, lang, isNative: false };
       }
     },
     []
@@ -133,40 +133,65 @@ export default function CodeBlockEnhancedToolbar() {
 
   useElementObserver({
     selector: () => {
-      const pres = ui
-        .getMessageBlocks()
-        .map((el) => el.$messageBlock.find('pre').toArray())
-        .flat();
+      const messageBlocks = ui.getMessageBlocks();
 
-      return pres;
+      const pres = messageBlocks.map((el) =>
+        el.$messageBlock.find('pre').toArray()
+      );
+
+      const numberedPres: {
+        element: Element;
+        args: { nativeToolbar: () => JQuery<Element> };
+      }[] = [];
+
+      pres.forEach((preBlock, blockIndex) =>
+        preBlock.map((pre) =>
+          numberedPres.push({
+            element: pre,
+            args: {
+              nativeToolbar: () =>
+                messageBlocks[blockIndex].$messageBlock.find(
+                  '.mt-sm.flex.items-center.justify-between'
+                ),
+            },
+          })
+        )
+      );
+
+      return numberedPres;
     },
-    callback: ({ element: pre }) => {
+    callback: async ({ element: pre, args }) => {
       if (whereAmI() !== 'thread') return null;
 
-      const { $container, lang } = rewritePreBlock(pre) ?? {};
+      const { $container, lang, isNative } = rewritePreBlock(pre) ?? {};
 
       if (!$container) return null;
 
       if (lang && prismJs.isLangSupported(lang)) {
-        if (!importedLangs.has(lang)) {
-          import(`../utils/prismjs-components/prism-${lang}.min.js`)
-            .then(() => {
-              importedLangs.add(lang);
-              Prism.highlightAllUnder(pre);
-            })
-            .catch((err) =>
-              console.error(
-                `Failed to load Prism language component for ${lang}`,
-                err
-              )
-            );
-        } else {
-          Prism.highlightAllUnder(pre);
+        try {
+          await prismJs.importComponent(lang);
+
+          if (isNative) {
+            observer.onElementExist({
+              selector: () => [args!.nativeToolbar()[0]],
+              callback: () => {
+                Prism.highlightAllUnder(pre);
+              },
+              recurring: false,
+            });
+          } else {
+            Prism.highlightAllUnder(pre);
+          }
+        } catch (err) {
+          console.error(
+            `Failed to load Prism language component for ${lang}`,
+            err
+          );
         }
       }
 
-      setContainers((prev) => [
-        ...prev,
+      setContainers((draft) => [
+        ...draft,
         {
           header: $container[0],
           preElement: pre,
@@ -188,7 +213,7 @@ export default function CodeBlockEnhancedToolbar() {
         });
       });
     },
-    observedIdentifier: 'code-block-sticky-copy-button',
+    observedIdentifier: 'alternate-code-block',
   });
 
   useEffect(() => {

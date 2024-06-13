@@ -1,9 +1,8 @@
 pre[class*="language-"],
 code[class*="language-"] {
   color          : #d4d4d4;
-  font-size      : 13px;
   text-shadow    : none;
-  font-family    : Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace;
+  font-weight    : 300;
   direction      : ltr;
   text-align     : left;
   white-space    : pre;
@@ -36,9 +35,10 @@ code[class*="language-"] *::selection {
 }
 
 pre[class*="language-"] {
-  padding : 1em;
-  margin  : .5em 0;
-  overflow: auto;
+  padding   : 1em;
+  margin    : .5em 0;
+  overflow  : auto;
+  background: #1e1e1e;
 }
 
 :not(pre)>code[class*="language-"] {

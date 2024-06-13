@@ -115,4 +115,6 @@ observer.onElementExist({
       },
     });
   },
+  observedIdentifier: 'secret-mode',
+  recurring: false,
 });

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import $ from 'jquery';
 import Prism from 'prismjs';
-import 'prismjs/components/prism-markup-templating.js';
 
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import { useToggle } from '@uidotdev/usehooks';
