@@ -1,5 +1,3 @@
-import 'prismjs/themes/prism-okaidia.min.css';
-
 import { useCallback, useEffect, useState } from 'react';
 
 import $ from 'jquery';
@@ -13,37 +11,7 @@ import { Checkbox } from './ui/checkbox';
 import { Dialog, DialogContent, DialogHeader } from './ui/dialog';
 import { Label } from './ui/label';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-
-const supportedLangs = [
-  'html',
-  'javascript',
-  'python',
-  'csharp',
-  'typescript',
-  'java',
-  'markup',
-  'css',
-  'clike',
-  'bash',
-  'c',
-  'cpp',
-  'gradle',
-  'graphql',
-  'json',
-  'makefile',
-  'markdown',
-  'powershell',
-  'rust',
-  'sass',
-  'scss',
-  'sql',
-  'kotlin',
-  'haskell',
-  'php',
-  'apex',
-];
-
-type SupportedLang = (typeof supportedLangs)[number];
+import prismJs from '@/utils/prism';
 
 type MyDiffMethod = 'lines' | 'words' | 'chars';
 
@@ -66,8 +34,6 @@ type DiffViewDialog = {
   lang: string;
 };
 
-const importedLangs = new Set<string>();
-
 export default function DiffViewDialog({
   open,
   toggleOpen,
@@ -82,7 +48,7 @@ export default function DiffViewDialog({
 
   const highlightSyntax = useCallback(
     (str: string) => {
-      if (!isLangSupported(lang)) return <code>{str}</code>;
+      if (!prismJs.isLangSupported(lang)) return <code>{str}</code>;
 
       return !str ? (
         <div />
@@ -102,21 +68,6 @@ export default function DiffViewDialog({
     setDiffMethod('lines');
     toggleSplitView(!!lang);
   }, [open, setDiffMethod, toggleSplitView, lang]);
-
-  useEffect(() => {
-    if (isLangSupported(lang) && !importedLangs.has(lang)) {
-      import(`../utils/prismjs-components/prism-${lang}.min.js`)
-        .then(() => {
-          importedLangs.add(lang);
-        })
-        .catch((err) =>
-          console.error(
-            `Failed to load Prism language component for ${lang}`,
-            err
-          )
-        );
-    }
-  }, [lang]);
 
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
@@ -186,8 +137,4 @@ export default function DiffViewDialog({
       </DialogContent>
     </Dialog>
   );
-}
-
-function isLangSupported(lang: string): lang is SupportedLang {
-  return supportedLangs.includes(lang);
 }

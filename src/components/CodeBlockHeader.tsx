@@ -1,3 +1,5 @@
+import '../utils/prismjs-components/prism-vscode.css';
+
 import {
   Fragment,
   ReactNode,
@@ -11,11 +13,13 @@ import {
   Copy,
   X,
 } from 'lucide-react';
+import Prism from 'prismjs';
 import { useImmer } from 'use-immer';
 
 import { Nullable } from '@/types/Utils';
 import { updateLineCount } from '@/utils/code-block';
 import observer from '@/utils/observer';
+import prismJs from '@/utils/prism';
 import { ui } from '@/utils/ui';
 import {
   scrollToElement,
@@ -27,6 +31,8 @@ import { useToggle } from '@uidotdev/usehooks';
 import CodeBlockHeader from './CodeBlockToolbar';
 import DiffViewDialog from './DiffViewDialog';
 import useElementObserver from './hooks/useElementObserver';
+
+const importedLangs = new Set<string>();
 
 export default function CodeBlockEnhancedToolbar() {
   const [containers, setContainers] = useImmer<
@@ -64,6 +70,12 @@ export default function CodeBlockEnhancedToolbar() {
       if (!$(pre).parent('#markdown-query-wrapper').length) {
         const $parent = $(pre).parent();
         const lang = $(pre).find('.absolute').text();
+
+        if (!$(pre).find('code:first').hasClass(`language-${lang}`)) {
+          $(pre)
+            .find('code:first')
+            .addClass(`${lang} language-${lang} !tw-whitespace-pre`);
+        }
 
         $parent.addClass(
           'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
@@ -108,7 +120,7 @@ export default function CodeBlockEnhancedToolbar() {
         $wrapper.append(pre);
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-mb-2 tw-transition-all tw-border-b tw-border-border'
+          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-mb-2 tw-transition-all tw-border-b tw-border-border'
         );
 
         $wrapper.prepend($container);
@@ -134,6 +146,24 @@ export default function CodeBlockEnhancedToolbar() {
       const { $container, lang } = rewritePreBlock(pre) ?? {};
 
       if (!$container) return null;
+
+      if (lang && prismJs.isLangSupported(lang)) {
+        if (!importedLangs.has(lang)) {
+          import(`../utils/prismjs-components/prism-${lang}.min.js`)
+            .then(() => {
+              importedLangs.add(lang);
+              Prism.highlightAllUnder(pre);
+            })
+            .catch((err) =>
+              console.error(
+                `Failed to load Prism language component for ${lang}`,
+                err
+              )
+            );
+        } else {
+          Prism.highlightAllUnder(pre);
+        }
+      }
 
       setContainers((prev) => [
         ...prev,

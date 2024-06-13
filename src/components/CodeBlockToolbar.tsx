@@ -102,7 +102,7 @@ const CodeBlockHeader: React.FC<CodeBlockHeaderProps> = ({
                 .parent()
                 .find('pre code:first')
                 .toggleClass(
-                  'tw-whitespace-pre-wrap tw-break-words',
+                  '!tw-whitespace-pre-wrap !tw-break-words',
                   !isWrapped
                 );
               setBlockStates((draft) => {
