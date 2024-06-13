@@ -13,6 +13,7 @@ import {
 
 import { cn } from '@/lib/utils';
 import { rewriteCodeBlock } from '@/utils/code-block';
+import { ui } from '@/utils/ui';
 import { stripHtml } from '@/utils/utils';
 
 import TooltipWrapper from './TooltipWrapper';
@@ -91,55 +92,67 @@ const CodeBlockHeader: React.FC<CodeBlockHeaderProps> = ({
             <ListOrdered className="tw-w-4 tw-h-4" />
           </div>
         </TooltipWrapper>
-        <TooltipWrapper
-          content={blockStates[index]?.isWrapped ? 'Unwrap' : 'Wrap'}
-        >
-          <div
-            className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
-            onClick={() => {
-              const isWrapped = blockStates[index]?.isWrapped;
-              $(container.header)
-                .parent()
-                .find('pre code:first')
-                .toggleClass(
-                  '!tw-whitespace-pre-wrap !tw-break-words',
-                  !isWrapped
-                );
-              setBlockStates((draft) => {
-                draft[index].isWrapped = !isWrapped;
-              });
-            }}
+
+        {(blockStates[index].isWrapped ||
+          ui.isChildOverflowing({
+            parent: $(container.preElement)[0],
+            child: $(container.preElement).find('code:first')[0],
+          })) && (
+          <TooltipWrapper
+            content={blockStates[index]?.isWrapped ? 'Unwrap' : 'Wrap'}
           >
-            {blockStates[index]?.isWrapped ? (
-              <Text className="tw-w-4 tw-h-4" />
-            ) : (
-              <WrapText className="tw-w-4 tw-h-4" />
-            )}
-          </div>
-        </TooltipWrapper>
-        <TooltipWrapper
-          content={blockStates[index]?.isCollapsed ? 'Expand' : 'Collapse'}
-        >
-          <div
-            className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
-            onClick={() => {
-              const isCollapsed = blockStates[index]?.isCollapsed;
-              $(container.header)
-                .parent()
-                .find('pre')
-                .toggleClass('tw-max-h-[300px] tw-overflow-auto', !isCollapsed);
-              setBlockStates((draft) => {
-                draft[index].isCollapsed = !isCollapsed;
-              });
-            }}
+            <div
+              className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
+              onClick={() => {
+                const isWrapped = blockStates[index]?.isWrapped;
+                $(container.header)
+                  .parent()
+                  .find('pre code:first')
+                  .toggleClass(
+                    '!tw-whitespace-pre-wrap !tw-break-words',
+                    !isWrapped
+                  );
+                setBlockStates((draft) => {
+                  draft[index].isWrapped = !isWrapped;
+                });
+              }}
+            >
+              {blockStates[index]?.isWrapped ? (
+                <Text className="tw-w-4 tw-h-4" />
+              ) : (
+                <WrapText className="tw-w-4 tw-h-4" />
+              )}
+            </div>
+          </TooltipWrapper>
+        )}
+
+        {(blockStates[index].isCollapsed ||
+          ($(container.preElement)?.outerHeight() || 0) > 300) && (
+          <TooltipWrapper
+            content={blockStates[index]?.isCollapsed ? 'Expand' : 'Collapse'}
           >
-            {blockStates[index]?.isCollapsed ? (
-              <Maximize2 className="tw-w-4 tw-h-4" />
-            ) : (
-              <Minimize2 className="tw-w-4 tw-h-4" />
-            )}
-          </div>
-        </TooltipWrapper>
+            <div
+              className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
+              onClick={() => {
+                const isCollapsed = blockStates[index]?.isCollapsed;
+                $(container.header)
+                  .parent()
+                  .find('pre')
+                  .toggleClass('!tw-h-[300px] !tw-overflow-auto', !isCollapsed);
+                setBlockStates((draft) => {
+                  draft[index].isCollapsed = !isCollapsed;
+                });
+              }}
+            >
+              {blockStates[index]?.isCollapsed ? (
+                <Maximize2 className="tw-w-4 tw-h-4" />
+              ) : (
+                <Minimize2 className="tw-w-4 tw-h-4" />
+              )}
+            </div>
+          </TooltipWrapper>
+        )}
+
         <div
           className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
           onClick={() => {
