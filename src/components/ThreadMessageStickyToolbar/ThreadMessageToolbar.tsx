@@ -1,6 +1,9 @@
+import { useMemo } from 'react';
+
 import $ from 'jquery';
 import {
   Ellipsis,
+  ListOrdered,
   LucideThumbsDown,
   Text,
   X,
@@ -13,6 +16,7 @@ import { cn } from '@/lib/utils';
 import {
   scrollToElement,
   sleep,
+  stripHtml,
 } from '@/utils/utils';
 
 import TooltipWrapper from '../TooltipWrapper';
@@ -37,6 +41,31 @@ export default function ThreadMessageToolbar({
   containerIndex,
   setContainers,
 }: ThreadMessageToolbar) {
+  const markdownText = useMemo(
+    () =>
+      stripHtml(
+        $(containers[containerIndex].query)
+          .find('>#markdown-query-wrapper')
+          .html() || ''
+      ),
+    [containers, containerIndex]
+  );
+
+  const originalText = useMemo(
+    () =>
+      stripHtml(
+        $(containers[containerIndex].query)
+          .find('>*:not(#markdown-query-wrapper)')
+          .html()
+      ),
+    [containers, containerIndex]
+  );
+
+  const markdownVisualDiff =
+    !!markdownText.length &&
+    markdownText !== originalText &&
+    !$(containers[containerIndex].query).find('textarea').length;
+
   return (
     <div
       className={cn(
@@ -48,52 +77,53 @@ export default function ThreadMessageToolbar({
       )}
     >
       <div className="tw-flex tw-items-center tw-gap-2 tw-w-full">
-        {!containers[containerIndex].states.isQueryOutOfViewport && (
-          <TooltipWrapper
-            content={
-              containers[containerIndex].states.isMarkdown
-                ? 'Convert Query to Plain Text'
-                : 'Convert Query to Markdown'
-            }
-            contentOptions={{
-              sideOffset: 15,
-            }}
-            delayDuration={0}
-            contentClassName="tw-w-max"
-          >
-            <div
-              className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 tw-opacity-10 hover:tw-opacity-100"
-              onClick={() => {
-                setContainers((draft) => {
-                  $(draft[containerIndex].query)
-                    .find('.whitespace-pre-line.break-words')
-                    .toggleClass(
-                      '!tw-hidden',
-                      !draft[containerIndex].states.isMarkdown
-                    );
-                  $(draft[containerIndex].query)
-                    .find('#markdown-query-wrapper')
-                    .toggleClass(
-                      '!tw-hidden',
-                      draft[containerIndex].states.isMarkdown
-                    );
-                  draft[containerIndex].states.isMarkdown =
-                    !draft[containerIndex].states.isMarkdown;
-                  scrollToElement(
-                    $(draft[containerIndex].query as unknown as Element),
-                    -60
-                  );
-                });
+        {!containers[containerIndex].states.isQueryOutOfViewport &&
+          markdownVisualDiff && (
+            <TooltipWrapper
+              content={
+                containers[containerIndex].states.isMarkdown
+                  ? 'Convert Query to Plain Text'
+                  : 'Convert Query to Markdown'
+              }
+              contentOptions={{
+                sideOffset: 15,
               }}
+              delayDuration={0}
+              contentClassName="tw-w-max"
             >
-              {containers[containerIndex].states.isMarkdown ? (
-                <FaMarkdown className="tw-w-4 tw-h-4" />
-              ) : (
-                <Text className="tw-w-4 tw-h-4" />
-              )}
-            </div>
-          </TooltipWrapper>
-        )}
+              <div
+                className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 tw-opacity-10 hover:tw-opacity-100"
+                onClick={() => {
+                  setContainers((draft) => {
+                    $(draft[containerIndex].query)
+                      .find('.whitespace-pre-line.break-words')
+                      .toggleClass(
+                        '!tw-hidden',
+                        !draft[containerIndex].states.isMarkdown
+                      );
+                    $(draft[containerIndex].query)
+                      .find('#markdown-query-wrapper')
+                      .toggleClass(
+                        '!tw-hidden',
+                        draft[containerIndex].states.isMarkdown
+                      );
+                    draft[containerIndex].states.isMarkdown =
+                      !draft[containerIndex].states.isMarkdown;
+                    scrollToElement(
+                      $(draft[containerIndex].query as unknown as Element),
+                      -60
+                    );
+                  });
+                }}
+              >
+                {containers[containerIndex].states.isMarkdown ? (
+                  <FaMarkdown className="tw-w-4 tw-h-4" />
+                ) : (
+                  <Text className="tw-w-4 tw-h-4" />
+                )}
+              </div>
+            </TooltipWrapper>
+          )}
 
         <div
           className={cn(
@@ -153,7 +183,7 @@ export default function ThreadMessageToolbar({
           </div>
         </TooltipWrapper>
 
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger>
             <div
               className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
@@ -163,6 +193,22 @@ export default function ThreadMessageToolbar({
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            {!!$(containers[containerIndex].messageBlock).find(
+              '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")'
+            ).length && (
+              <DropdownMenuItem
+                onSelect={async () => {
+                  moreMenuItemClick({
+                    container: containers[containerIndex],
+                    item: 'View Sources',
+                  });
+                }}
+                className="tw-flex tw-gap-2 tw-items-center"
+              >
+                <ListOrdered className="tw-w-4 tw-h-4" />
+                View Sources
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               onSelect={async () => {
                 moreMenuItemClick({
@@ -202,7 +248,7 @@ async function moreMenuItemClick({
   item,
 }: {
   container: Container;
-  item: 'Report' | 'Delete';
+  item: 'Report' | 'Delete' | 'View Sources';
 }) {
   const $buttonBar = $(container.messageBlock).find(
     '.mt-sm.flex.items-center.justify-between'
@@ -218,10 +264,16 @@ async function moreMenuItemClick({
 
   $button.trigger('click');
 
+  let acc = 0;
+
   while (
     !$(`[data-popper-reference-hidden="true"]:contains("${item}")`).length
   ) {
     await sleep(10);
+
+    acc += 10;
+
+    if (acc > 1000) return;
   }
 
   $(`[data-popper-reference-hidden="true"] .md\\:h-full:contains("${item}")`)

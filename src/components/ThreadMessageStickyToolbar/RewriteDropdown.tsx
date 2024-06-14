@@ -87,7 +87,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
   );
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger
         onClick={(e) => {
           if (ctrlDown) {

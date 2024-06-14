@@ -223,7 +223,7 @@ export default function CodeBlockEnhancedToolbar() {
       updateLineCount(container.preElement, index, setContainers);
 
       observer.onDOMChanges({
-        targetNode: container.preElement,
+        targetNode: $(container.preElement).find('code:first')[0],
         callback: () => {
           updateLineCount(container.preElement, index, setContainers);
         },

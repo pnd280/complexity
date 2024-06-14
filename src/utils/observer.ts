@@ -196,14 +196,17 @@ function onDOMChanges({
       for (const mutation of mutationsList) {
         callback(mutation);
       }
-      if (recurring && !document.body.contains(targetNode)) {
+      if (!document.body.contains(targetNode)) {
         observer.disconnect();
-        const checkExistence = setInterval(() => {
-          if (document.body.contains(targetNode)) {
-            clearInterval(checkExistence);
-            startObserving();
-          }
-        }, 1000);
+
+        if (recurring) {
+          const checkExistence = setInterval(() => {
+            if (document.body.contains(targetNode)) {
+              clearInterval(checkExistence);
+              startObserving();
+            }
+          }, 1000);
+        }
       }
     });
     observer.observe(targetNode, observerConfig);

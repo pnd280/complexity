@@ -185,13 +185,7 @@ export const ui = {
 
     return messageBlocks;
   },
-  isChildOverflowing({
-    parent,
-    child,
-  }: {
-    parent: Element;
-    child: Element;
-  }) {
+  isChildOverflowing({ parent, child }: { parent: Element; child: Element }) {
     const parentRect = parent.getBoundingClientRect();
     const childRect = child.getBoundingClientRect();
 

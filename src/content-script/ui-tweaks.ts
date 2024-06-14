@@ -204,31 +204,21 @@ function collapseEmptyThreadVisualColumns() {
     return;
 
   observer.onElementExist({
-    selector: () => [ui.getMessagesContainer()[0]],
+    selector: () =>
+      ui
+        .getMessageBlocks()
+        .map(({ $messageBlock }) => $messageBlock.find('.visual-col')[0]),
     callback: ({ element }) => {
       observer.onDOMChanges({
-        targetNode: element,
+        targetNode: $(element).find('> .sticky')[0],
         callback: () => {
-          const $messageContainer = $(element);
-
-          $messageContainer.children().each((_, messageBlock) => {
-            if (
-              $(messageBlock).find('.visual-col > div > div:nth-child(2)')
-                .length
-            ) {
-              $(messageBlock).find('.visual-col').show();
-              $(messageBlock)
-                .find('.message-col')
-                .removeClass('col-span-12')
-                .addClass('col-span-8');
-            } else {
-              $(messageBlock).find('.visual-col').hide();
-              $(messageBlock)
-                .find('.message-col')
-                .removeClass('col-span-8')
-                .addClass('col-span-12');
-            }
-          });
+          if ($(element).find('div > div:nth-child(2)').length) {
+            $(element).show();
+            $(element).prev().removeClass('col-span-12').addClass('col-span-8');
+          } else {
+            $(element).hide();
+            $(element).prev().removeClass('col-span-8').addClass('col-span-12');
+          }
         },
       });
     },

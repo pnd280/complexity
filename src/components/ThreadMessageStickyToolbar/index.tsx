@@ -7,6 +7,7 @@ import {
 import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
+import { debounce } from 'lodash';
 import {
   Updater,
   useImmer,
@@ -41,58 +42,64 @@ export default function ThreadMessageStickyToolbar() {
   const debouncedContainers = useDebounce(containers, 100);
 
   const showHideHeader = useCallback(
-    ({ container, index }: { container: Container; index: number }) => {
-      if (!document.contains(container.messageBlock)) {
-        return;
-      }
-
-      if (
-        !$(container.messageBlock).find(
-          '.mt-sm.flex.items-center.justify-between'
-        ).length
-      ) {
-        $('main').css('--codeBlockTop', '3.35rem');
+    ({
+      element,
+      index,
+      messageBlock,
+    }: {
+      element: Element;
+      index: number;
+      messageBlock: Element;
+    }) => {
+      if (document.body.contains(element)) {
+        $(messageBlock).css(
+          '--codeBlockTop',
+          (ui.getStickyHeader()?.outerHeight() || 3.35 * 16) + 3.1 * 16 + 'px'
+        );
 
         return setContainers((draft) => {
-          if (draft[index] && !draft[index].states.isHidden) {
-            draft[index].states.isHidden = true;
+          if (draft[index] && draft[index].states.isHidden) {
+            draft[index].states.isHidden = false;
           }
         });
       }
-
-      $('main').css('--codeBlockTop', '6.5rem');
-
-      setContainers((draft) => {
-        if (draft[index] && draft[index].states.isHidden) {
-          draft[index].states.isHidden = false;
-        }
-      });
     },
     [setContainers]
   );
 
   useEffect(() => {
-    observer.onDOMChanges({
-      targetNode: ui.getMessagesContainer()[0],
-      callback: () => {
-        setContainers((draft) => {
-          draft.forEach((container, index) => {
-            if (
-              !document.contains(container.messageBlock as unknown as Element)
-            ) {
-              draft.splice(index, 1);
-            }
-          });
-        });
-      },
-    });
-
     containers.forEach((container, index) => {
       if (!container.isObserving) {
-        observer.onDOMChanges({
-          targetNode: container.messageBlock,
-          callback: () => showHideHeader({ container, index }),
+        observer.onElementExist({
+          selector: () => [
+            {
+              element: $(container.messageBlock).find(
+                '.mt-sm.flex.items-center.justify-between'
+              )[0],
+              args: {
+                messageBlock: container.messageBlock,
+              },
+            },
+          ],
+          callback: ({ element, args }) => {
+            showHideHeader({
+              element,
+              index,
+              messageBlock: args!.messageBlock,
+            });
+          },
+          observedIdentifier: 'show-thread-message-toolbar',
         });
+
+        observer.onElementRemoved({
+          selector: container.messageBlock,
+          callback: () => {
+            setContainers((draft) => {
+              draft.splice(index, 1);
+            });
+          },
+        });
+
         setContainers((draft) => {
           draft[index].isObserving = true;
         });
@@ -103,6 +110,8 @@ export default function ThreadMessageStickyToolbar() {
   const findContainerDOMIndex = useCallback((element: Element) => {
     return ui.getMessagesContainer().find(element).index();
   }, []);
+
+  console.log(ui.getStickyHeader()?.outerHeight());
 
   useElementObserver({
     selector: () =>
@@ -120,16 +129,22 @@ export default function ThreadMessageStickyToolbar() {
 
       $(element).addClass('tw-relative');
 
-      const $container = $('<div>').addClass(
-        'tw-sticky tw-top-[3.35rem] tw-w-full tw-z-[11] tw-mt-4 thread-query-format-switch-container'
-      );
+      const $container = $('<div>')
+        .addClass(
+          'tw-sticky tw-w-full tw-z-[11] tw-mt-4 thread-query-format-switch-container'
+        )
+        .css({
+          top:
+            (ui.getStickyHeader().find('>*')?.outerHeight() || 3.35 * 16) +
+            'px',
+        });
 
       $(element).before($container);
 
       const index = findContainerDOMIndex(args!.messageBlock);
 
       setContainers((draft) => {
-        const newContainer = {
+        const newContainer: Container = {
           container: $container[0],
           query: element,
           messageBlock: args!.messageBlock,
@@ -138,7 +153,7 @@ export default function ThreadMessageStickyToolbar() {
             isMarkdown: true,
             isEditing: false,
             isCollapsed: false,
-            isHidden: false,
+            isHidden: true,
             isQueryOutOfViewport: false,
           },
           isObserving: false,
@@ -176,20 +191,25 @@ export default function ThreadMessageStickyToolbar() {
 
   useScrollDirection(containers, setContainers);
 
-  return debouncedContainers.map((container, index) => (
-    <Fragment key={index}>
-      {containers[index] &&
-        !containers[index].states.isHidden &&
-        ReactDOM.createPortal(
-          <ThreadMessageToolbar
-            containers={containers}
-            containerIndex={index}
-            setContainers={setContainers}
-          />,
-          container.container
-        )}
-    </Fragment>
-  ));
+  const renderToolbar = useCallback(
+    (container: Container, index: number) => (
+      <Fragment key={index}>
+        {containers[index] &&
+          !containers[index].states.isHidden &&
+          ReactDOM.createPortal(
+            <ThreadMessageToolbar
+              containers={containers}
+              containerIndex={index}
+              setContainers={setContainers}
+            />,
+            container.container
+          )}
+      </Fragment>
+    ),
+    [containers, setContainers]
+  );
+
+  return debouncedContainers.map(renderToolbar);
 }
 
 const useScrollDirection = (
@@ -201,26 +221,35 @@ const useScrollDirection = (
     []
   );
 
-  useEffect(() => {
-    const handleScrollDirectionChange = () => {
-      setContainers((draft) => {
-        draft.forEach((_, index) => {
-          draft[index].states.isQueryOutOfViewport =
-            containers[index]?.query.getBoundingClientRect().top +
-              containers[index]?.query.getBoundingClientRect().height <
-            -20;
-        });
+  const handleScrollDirectionChange = useCallback(() => {
+    setContainers((draft) => {
+      draft.forEach((_, index) => {
+        draft[index].states.isQueryOutOfViewport =
+          containers[index]?.query.getBoundingClientRect().top +
+            containers[index]?.query.getBoundingClientRect().height <
+          -20;
       });
-    };
+    });
+  }, [containers, setContainers]);
+
+  useEffect(() => {
+    const debouncedHandleScrollDirectionChange = debounce(
+      handleScrollDirectionChange,
+      100
+    );
 
     const stopObserving = observer.onScrollDirectionChange({
-      up: () => handleScrollDirectionChange(),
-      down: () => handleScrollDirectionChange(),
+      up: () => debouncedHandleScrollDirectionChange(),
+      down: () => debouncedHandleScrollDirectionChange(),
       identifier: 'ThreadMessageStickyToolbar',
     });
 
     return () => {
       stopObserving();
     };
-  }, [containers, stickyNavHeight, setContainers]);
+  }, [containers, stickyNavHeight, setContainers, handleScrollDirectionChange]);
+
+  useEffect(() => {
+    handleScrollDirectionChange();
+  }, [handleScrollDirectionChange]);
 };

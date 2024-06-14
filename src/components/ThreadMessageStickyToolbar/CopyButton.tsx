@@ -126,7 +126,7 @@ export default function CopyButton({
   }, [containerIndex, idleSaveButtonText, refetch, setCopyButtonText]);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger
         onClick={(e) => {
           if (ctrlDown) {
