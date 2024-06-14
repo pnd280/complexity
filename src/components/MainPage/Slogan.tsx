@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 
 import clsx from 'clsx';
 import $ from 'jquery';
-import { Zap } from 'lucide-react';
+import {
+  LoaderCircle,
+  Zap,
+} from 'lucide-react';
 
 import { useGlobalStore } from '@/content-script/session-store/global';
 
@@ -13,7 +16,9 @@ import useUpdate from '../hooks/useUpdate';
 export default function Slogan() {
   const { newVersionAvailable } = useUpdate({});
 
-  const isReady = useGlobalStore((state) => state.isWebsocketCaptured);
+  const isReady = useGlobalStore(
+    (state) => state.isWebSocketCaptured || state.isLongPollingCaptured
+  );
 
   const slogan =
     useGlobalStore((state) => state.customTheme.slogan) ||
@@ -64,7 +69,14 @@ export default function Slogan() {
                   'tw-text-muted-foreground tw-text-sha': !isReady,
                 })}
               >
-                {isReady ? 'enhanced' : 'loading...'}
+                {isReady ? (
+                  'enhanced'
+                ) : (
+                  <div className="tw-flex tw-items-center tw-gap-1">
+                    <LoaderCircle className="tw-w-2 tw-h-2 tw-animate-spin" />
+                    <span>loading..</span>
+                  </div>
+                )}
               </span>
               {isReady && (
                 <Zap className="tw-w-2 tw-h-2 tw-text-accent-foreground" />
@@ -74,22 +86,29 @@ export default function Slogan() {
         </div>,
         $(container).find('> div:first-child')[0]
       )}
-      {newVersionAvailable && ReactDOM.createPortal(
-        <div
-          className="tw-fixed tw-bottom-20 tw-font-sans tw-cursor-pointer tw-select-none"
-          onClick={() => {
-            window.open(
-              chrome.runtime.getURL('options.html') + '?tab=changelog',
-              '_blank'
-            );
-          }}
-        >
-          <div>New version of <span className='tw-font-bold tw-text-accent-foreground'>Complexity</span> is available</div>
-          <div className="tw-w-2 tw-h-2 tw-rounded-full tw-bg-accent-foreground tw-animate-ping tw-absolute -tw-right-3 tw-top-0"></div>
-          <div className="tw-w-2 tw-h-2 tw-rounded-full tw-bg-accent-foreground tw-absolute -tw-right-3 tw-top-0"></div>
-        </div>,
-        container
-      )}
+      {newVersionAvailable &&
+        ReactDOM.createPortal(
+          <div
+            className="tw-fixed tw-bottom-20 tw-font-sans tw-cursor-pointer tw-select-none"
+            onClick={() => {
+              window.open(
+                chrome.runtime.getURL('options.html') + '?tab=changelog',
+                '_blank'
+              );
+            }}
+          >
+            <div>
+              New version of{' '}
+              <span className="tw-font-bold tw-text-accent-foreground">
+                Complexity
+              </span>{' '}
+              is available
+            </div>
+            <div className="tw-w-2 tw-h-2 tw-rounded-full tw-bg-accent-foreground tw-animate-ping tw-absolute -tw-right-3 tw-top-0"></div>
+            <div className="tw-w-2 tw-h-2 tw-rounded-full tw-bg-accent-foreground tw-absolute -tw-right-3 tw-top-0"></div>
+          </div>,
+          container
+        )}
     </>
   );
 }

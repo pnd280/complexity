@@ -4,14 +4,14 @@ import { ChromeStore } from '@/types/ChromeStore';
 import { chromeStorage } from '@/utils/chrome-store';
 
 type GlobalState = {
-  isWebsocketCaptured: boolean;
+  isWebSocketCaptured: boolean;
   isLongPollingCaptured: boolean;
   secretMode: boolean;
   customTheme: ChromeStore['customTheme'];
 };
 
 const useGlobalStore = create<GlobalState>(() => ({
-  isWebsocketCaptured: false,
+  isWebSocketCaptured: false,
   isLongPollingCaptured: false,
   secretMode: false,
   customTheme: {},

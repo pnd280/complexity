@@ -2,8 +2,8 @@ import { globalStore } from '../session-store/global';
 import { webpageMessenger } from './messenger';
 
 function onWebSocketCaptured() {
-  webpageMessenger.onMessage('websocketCaptured', async () => {
-    globalStore.setState({ isWebsocketCaptured: true });
+  webpageMessenger.onMessage('webSocketCaptured', async () => {
+    globalStore.setState({ isWebSocketCaptured: true });
   });
 
   webpageMessenger.onMessage('longPollingCaptured', async () => {

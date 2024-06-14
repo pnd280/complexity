@@ -68,7 +68,7 @@ async function updateCollection(args: {
   const { collection, newTitle, newDescription, newInstructions } = args;
 
   await webpageMessenger.sendMessage({
-    event: 'sendWebsocketMessage',
+    event: 'sendWebSocketMessage',
     payload: WSMessageParser.stringify({
       messageCode: 420,
       event: 'edit_collection',
@@ -126,7 +126,7 @@ async function setDefaultLanguageModel(
 ) {
   try {
     await webpageMessenger.sendMessage({
-      event: 'sendWebsocketMessage',
+      event: 'sendWebSocketMessage',
       payload: WSMessageParser.stringify({
         messageCode: 423,
         event: 'save_user_settings',
@@ -147,7 +147,7 @@ async function setDefaultLanguageModel(
 async function setDefaultImageModel(selectedImageModel: string) {
   try {
     await webpageMessenger.sendMessage({
-      event: 'sendWebsocketMessage',
+      event: 'sendWebSocketMessage',
       payload: WSMessageParser.stringify({
         messageCode: 423,
         event: 'save_user_settings',
@@ -168,7 +168,7 @@ async function setDefaultImageModel(selectedImageModel: string) {
 async function setDefaultProSearch(toggled: boolean) {
   try {
     await webpageMessenger.sendMessage({
-      event: 'sendWebsocketMessage',
+      event: 'sendWebSocketMessage',
       payload: WSMessageParser.stringify({
         messageCode: 423,
         event: 'save_user_settings',
@@ -196,7 +196,7 @@ async function updateUserProfileSettings(data: UserProfileSettingsAPIRequest) {
 
   try {
     await webpageMessenger.sendMessage({
-      event: 'sendWebsocketMessage',
+      event: 'sendWebSocketMessage',
       payload: WSMessageParser.stringify({
         messageCode: 421,
         event: 'save_user_ai_profile',

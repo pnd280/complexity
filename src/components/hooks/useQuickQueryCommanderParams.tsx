@@ -115,7 +115,7 @@ export default function useQuickQueryCommanderParams({
               }
 
               webpageMessenger.sendMessage({
-                event: 'sendWebsocketMessage',
+                event: 'sendWebSocketMessage',
                 payload: WSMessageParser.stringify({
                   messageCode: 421,
                   event: 'upsert_thread_collection',
@@ -161,7 +161,7 @@ export default function useQuickQueryCommanderParams({
               }
 
               webpageMessenger.sendMessage({
-                event: 'sendWebsocketMessage',
+                event: 'sendWebSocketMessage',
                 payload: WSMessageParser.stringify({
                   messageCode: 421,
                   event: 'remove_collection_thread',

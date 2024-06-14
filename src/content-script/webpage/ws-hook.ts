@@ -87,7 +87,7 @@ class WSHook {
     return null;
   }
 
-  async sendWebsocketMessage(
+  async sendWebSocketMessage(
     data: any,
     forceLongPolling: boolean
   ): Promise<void | Response> {
@@ -320,7 +320,7 @@ class WSHook {
       self.setWebSocketInstance(this);
 
       WSHook.contentScriptMessenger.sendMessage({
-        event: 'websocketCaptured',
+        event: 'webSocketCaptured',
       });
 
       // @ts-expect-error
@@ -335,9 +335,9 @@ class WSHook {
   const wsHook = new WSHook();
 
   WSHook.contentScriptMessenger.onMessage(
-    'sendWebsocketMessage',
+    'sendWebSocketMessage',
     async (data) => {
-      wsHook.sendWebsocketMessage(data.payload, !!data.forceLongPolling);
+      wsHook.sendWebSocketMessage(data.payload, !!data.forceLongPolling);
     }
   );
 

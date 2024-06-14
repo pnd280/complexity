@@ -20,7 +20,7 @@ class WebpageMessenger {
   private registeredEventListeners: Record<
     string,
     (event: MessageEvent) => any
-  >[] = [{}];
+  >[] = [];
 
   constructor() {
     if (WebpageMessenger.instance) {

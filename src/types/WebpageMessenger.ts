@@ -77,12 +77,13 @@ export type Interceptor<
 
 export interface EventHandlers {
   log(data: string): string;
-  sendWebsocketMessage(data: string): void;
+  sendWebSocketMessage(data: string): void;
   webSocketEvent(data: WebSocketEventData): WebSocketEventData['payload'];
   longPollingEvent(data: LongPollingEventData): LongPollingEventData['payload'];
-  websocketCaptured(): void;
+  webSocketCaptured(): void;
   longPollingCaptured(): void;
   getActiveWebSocketType(): Nullable<'WebSocket' | 'Long-polling'>;
+  webSocketError(data: Event): void;
   routeToPage(
     data:
       | string
