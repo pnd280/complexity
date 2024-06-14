@@ -111,8 +111,6 @@ export default function ThreadMessageStickyToolbar() {
     return ui.getMessagesContainer().find(element).index();
   }, []);
 
-  console.log(ui.getStickyHeader()?.outerHeight());
-
   useElementObserver({
     selector: () =>
       ui.getMessageBlocks().map(({ $query, $messageBlock, $answer }) => {

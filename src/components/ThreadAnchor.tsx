@@ -41,7 +41,7 @@ export default function ThreadAnchor() {
     setWrapperWidth($('#thread-anchor')?.outerWidth() || 0);
   });
 
-  if (!anchorsProps || !wrapperPos) return null;
+  if (!anchorsProps || !wrapperPos || whereAmI() !== 'thread') return null;
 
   return (
     <>
@@ -202,7 +202,8 @@ const useThreadAnchorObserver = () => {
           const isScrollingUp =
             ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
 
-          const offset = isScrollingUp && threadMessageStickyToolbar ? -110 : -60;
+          const offset =
+            isScrollingUp && threadMessageStickyToolbar ? -110 : -60;
 
           scrollToElement($answer, offset);
         },

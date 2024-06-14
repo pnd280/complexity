@@ -196,7 +196,7 @@ export default function CustomTheme() {
                 <Textarea
                   id="custom-css"
                   placeholder="Put your CSS code here..."
-                  className="tw-font-mono tw-h-[300px] tw-resize-none"
+                  className="!tw-font-mono tw-h-[300px] tw-resize-none"
                   {...field}
                 />
               </FormControl>
