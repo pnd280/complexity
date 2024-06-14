@@ -22,6 +22,7 @@ export type ChromeStore = {
       quickQueryCommander: boolean;
       threadMessageStickyToolbar: boolean;
       codeBlockEnhancedToolbar: boolean;
+      autoRefreshSessionTimeout: boolean;
     };
     visualTweaks: {
       collapseEmptyThreadVisualColumns: boolean;

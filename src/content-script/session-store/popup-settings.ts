@@ -15,6 +15,7 @@ type PopupSettingsState = {
     quickQueryCommander: boolean;
     threadMessageStickyToolbar: boolean;
     codeBlockEnhancedToolbar: boolean;
+    autoRefreshSessionTimeout: boolean;
   };
   visualTweaks: {
     collapseEmptyThreadVisualColumns: boolean;
@@ -35,6 +36,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
       quickQueryCommander: false,
       threadMessageStickyToolbar: false,
       codeBlockEnhancedToolbar: false,
+      autoRefreshSessionTimeout: false,
     },
     visualTweaks: {
       collapseEmptyThreadVisualColumns: false,
@@ -62,6 +64,7 @@ const popupSettingsStore = usePopupSettingsStore;
           quickQueryCommander: false,
           threadMessageStickyToolbar: false,
           codeBlockEnhancedToolbar: false,
+          autoRefreshSessionTimeout: false,
         },
         visualTweaks: {
           collapseEmptyThreadVisualColumns: false,

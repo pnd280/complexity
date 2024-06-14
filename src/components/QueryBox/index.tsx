@@ -19,7 +19,10 @@ import {
 import { LanguageModel } from '@/types/ModelSelector';
 import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
-import { useQuery } from '@tanstack/react-query';
+import {
+  UndefinedInitialDataOptions,
+  useQuery,
+} from '@tanstack/react-query';
 
 import useQueryBoxObserver from '../hooks/useQueryBoxObserver';
 import { Separator } from '../ui/separator';
@@ -39,14 +42,47 @@ export default function QueryBox() {
     userSettings: false,
   });
 
+  const autoRefreshSessionTimeout = usePopupSettingsStore(
+    (state) => state.qolTweaks.autoRefreshSessionTimeout
+  );
+
+  const queryOptions: Pick<
+    UndefinedInitialDataOptions,
+    'refetchIntervalInBackground' | 'retry'
+  > = autoRefreshSessionTimeout
+    ? {
+        refetchIntervalInBackground: true,
+        retry: false,
+      }
+    : {};
+
   const {
     data: userSettings,
     isLoading: isLoadingUserSettings,
     refetch: refetchUserSettings,
+    error: userSettingsError,
   } = useQuery({
     queryKey: ['userSettings'],
     queryFn: pplxApi.fetchUserSettings,
+    refetchInterval: 10000,
+    ...queryOptions,
   });
+
+  useEffect(() => {
+    if (!autoRefreshSessionTimeout) return;
+
+    if (userSettingsError?.message === 'Cloudflare timeout') {
+      toast({
+        title: '⚠️ Cloudflare timeout!',
+        description: 'Refreshing the page...',
+        timeout: 3000,
+      });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    }
+  }, [userSettingsError, autoRefreshSessionTimeout, toast]);
 
   useQuery({
     queryKey: ['userProfileSettings'],

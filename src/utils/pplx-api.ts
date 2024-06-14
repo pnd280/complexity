@@ -23,6 +23,13 @@ async function fetchUserSettings(): Promise<UserSettingsApiResponse> {
     'https://www.perplexity.ai/p/api/v1/user/settings'
   );
 
+  if (
+    resp.startsWith(
+      '<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...'
+    )
+  )
+    throw new Error('Cloudflare timeout');
+
   return jsonUtils.safeParse(resp);
 }
 

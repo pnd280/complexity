@@ -47,6 +47,11 @@ const qolTweaks: PopupSetting<
     storeKey: 'quickQueryCommander',
   },
   {
+    id: 'code-block-enhanced-toolbar',
+    label: 'Code block enhanced toolbar',
+    storeKey: 'codeBlockEnhancedToolbar',
+  },
+  {
     id: 'thread-message-sticky-toolbar',
     label: 'Thread message sticky toolbar',
     storeKey: 'threadMessageStickyToolbar',
@@ -54,9 +59,11 @@ const qolTweaks: PopupSetting<
     versionRelease: '0.0.0.12',
   },
   {
-    id: 'code-block-enhanced-toolbar',
-    label: 'Code block enhanced toolbar',
-    storeKey: 'codeBlockEnhancedToolbar',
+    id: 'auto-refresh-session-timeout',
+    label: 'Auto-refresh Cloudflare session timeout',
+    storeKey: 'autoRefreshSessionTimeout',
+    experimental: true,
+    versionRelease: '0.0.0.12',
   },
 ];
 
