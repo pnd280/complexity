@@ -242,12 +242,10 @@ const useScrollDirection = (
       identifier: 'ThreadMessageStickyToolbar',
     });
 
+    requestIdleCallback(() => debouncedHandleScrollDirectionChange());
+
     return () => {
       stopObserving();
     };
   }, [containers, stickyNavHeight, setContainers, handleScrollDirectionChange]);
-
-  useEffect(() => {
-    handleScrollDirectionChange();
-  }, [handleScrollDirectionChange]);
 };

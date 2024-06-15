@@ -34,7 +34,6 @@ function onElementExist<T>({
   observer.observe(document.body, {
     childList: true,
     subtree: true,
-    attributes: true,
   });
 
   function checkAndInvokeCallback() {

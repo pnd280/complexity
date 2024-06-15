@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { debounce } from 'lodash';
 
 import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
@@ -209,17 +210,23 @@ function collapseEmptyThreadVisualColumns() {
         .getMessageBlocks()
         .map(({ $messageBlock }) => $messageBlock.find('.visual-col')[0]),
     callback: ({ element }) => {
-      observer.onDOMChanges({
-        targetNode: $(element).find('> .sticky')[0],
-        callback: () => {
-          if ($(element).find('div > div:nth-child(2)').length) {
-            $(element).show();
-            $(element).prev().removeClass('col-span-12').addClass('col-span-8');
-          } else {
-            $(element).hide();
-            $(element).prev().removeClass('col-span-8').addClass('col-span-12');
-          }
-        },
+      const collapseExpand = debounce(() => {
+        if ($(element).find('div > div:nth-child(2)').length) {
+          $(element).show();
+          $(element).prev().removeClass('col-span-12').addClass('col-span-8');
+        } else {
+          $(element).hide();
+          $(element).prev().removeClass('col-span-8').addClass('col-span-12');
+        }
+      }, 100);
+
+      requestIdleCallback(() => {
+        collapseExpand();
+        
+        observer.onDOMChanges({
+          targetNode: $(element).find('> .sticky')[0],
+          callback: collapseExpand,
+        });
       });
     },
     observedIdentifier: 'collapse-empty-thread-visual-columns',

@@ -1,10 +1,12 @@
 import {
+  useCallback,
   useEffect,
   useState,
 } from 'react';
 
 import clsx from 'clsx';
 import $ from 'jquery';
+import { debounce } from 'lodash';
 import {
   ChevronLeft,
   X,
@@ -57,7 +59,7 @@ export default function ThreadAnchor() {
         {anchorsProps && anchorsProps.length > 1 && (
           <div
             className={clsx(
-              'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-zoom-in tw-transition-all tw-font-sans',
+              'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans',
               {
                 'tw-relative tw-bg-background tw-p-3 tw-rounded-md tw-border tw-border-border tw-shadow-lg':
                   isFloat,
@@ -119,7 +121,7 @@ export default function ThreadAnchor() {
 
         <div
           className={clsx(
-            'tw-absolute -tw-top-2 -tw-right-10 tw-bg-secondary tw-rounded-full tw-h-20 active:tw-scale-95 tw-transition-all tw-border tw-border-border tw-shadow-lg tw-cursor-pointer tw-animate-in tw-zoom-in',
+            'tw-absolute -tw-top-2 -tw-right-10 tw-bg-secondary tw-rounded-full tw-h-20 active:tw-scale-95 tw-transition-all tw-border tw-border-border tw-shadow-lg tw-cursor-pointer tw-animate-in tw-slide-in-from-left',
             'tw-flex tw-items-center hover:-tw-right-8',
             {
               'tw-hidden': !isFloat || visible,
@@ -159,7 +161,7 @@ const useThreadAnchorObserver = () => {
     left: number;
   }>();
 
-  const myObserver = () => {
+  const myObserver = useCallback(() => {
     const documentNotOverflowing = $(document).height()! <= $(window).height()!;
 
     if (whereAmI() !== 'thread' || documentNotOverflowing)
@@ -211,22 +213,24 @@ const useThreadAnchorObserver = () => {
 
       setAnchorsProps((prev) => [...(prev || []), anchorProps]);
     });
-  };
+  }, []);
 
   useEffect(() => {
-    requestIdleCallback(() => myObserver());
+    const debouncedObserver = debounce(myObserver, 100);
 
-    $(window).on('scroll', () => myObserver());
+    requestIdleCallback(() => debouncedObserver());
+
+    $(window).on('scroll', () => debouncedObserver());
     observer.onShallowRouteChange(() => {
-      requestIdleCallback(() => myObserver());
+      requestIdleCallback(() => debouncedObserver());
     });
 
     $(window)
       .off('resize.threadAnchor')
       .on('resize.threadAnchor', () => {
-        myObserver();
+        debouncedObserver();
       });
-  }, []);
+  }, [myObserver]);
 
   return { visibleMessageIndex, anchorsProps, wrapperPos };
 };
