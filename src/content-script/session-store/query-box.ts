@@ -62,27 +62,45 @@ const useQueryBoxStore = create<QueryBoxState>()(
 
     webAccess: {
       focus: null,
-      setFocus: (focus) =>
-        set((state) => ({ webAccess: { ...state.webAccess, focus } })),
+      setFocus: (focus) => {
+        chromeStorage.setStorageValue({
+          key: 'defaultFocus',
+          value: focus,
+        });
+
+        return set((state) => ({ webAccess: { ...state.webAccess, focus } }));
+      },
 
       allowWebAccess: false,
-      toggleWebAccess: (toggled) =>
-        set((state) => ({
+      toggleWebAccess: (toggled) => {
+        chromeStorage.setStorageValue({
+          key: 'defaultWebAccess',
+          value: !!toggled,
+        });
+
+        return set((state) => ({
           webAccess: {
             ...state.webAccess,
             allowWebAccess: toggled ?? !state.webAccess.allowWebAccess,
           },
-        })),
+        }));
+      },
 
       proSearch: false,
       toggleProSearch: async (toggled) => {
-        if (await pplxApi.setDefaultProSearch(!!toggled))
-          return set((state) => ({
-            webAccess: {
-              ...state.webAccess,
-              proSearch: toggled ?? !state.webAccess.proSearch,
-            },
-          }));
+        if (!(await pplxApi.setDefaultProSearch(!!toggled))) return;
+
+        chromeStorage.setStorageValue({
+          key: 'defaultProSearch',
+          value: !!toggled,
+        });
+
+        return set((state) => ({
+          webAccess: {
+            ...state.webAccess,
+            proSearch: toggled ?? !state.webAccess.proSearch,
+          },
+        }));
       },
     },
 
@@ -97,13 +115,12 @@ const queryBoxStore = useQueryBoxStore;
 async function initQueryBoxStore({
   languageModel,
   imageModel,
-  proSearch,
 }: {
   languageModel?: LanguageModel['code'];
   imageModel?: ImageModel['code'];
-  proSearch?: boolean;
 }) {
-  const { defaultFocus, defaultWebAccess } = await chromeStorage.getStore();
+  const { defaultFocus, defaultWebAccess, defaultProSearch } =
+    await chromeStorage.getStore();
   if (isValidFocus(defaultFocus)) {
     queryBoxStore.setState((state) => {
       state.webAccess.focus = defaultFocus;
@@ -112,14 +129,12 @@ async function initQueryBoxStore({
 
   queryBoxStore.setState((state) => {
     state.webAccess.allowWebAccess = defaultWebAccess;
+    state.webAccess.proSearch = defaultProSearch;
   });
 
   queryBoxStore.setState((state) => {
     state.selectedLanguageModel = languageModel || state.selectedLanguageModel;
     state.selectedImageModel = imageModel || state.selectedImageModel;
-  });
-  queryBoxStore.setState((state) => {
-    state.webAccess.proSearch = proSearch ?? state.webAccess.proSearch;
   });
 }
 

@@ -181,6 +181,7 @@ async function setDefaultProSearch(toggled: boolean) {
         event: 'save_user_settings',
         data: {
           default_copilot: toggled,
+          is_complexity: true,
         },
       }),
     });

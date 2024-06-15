@@ -13,7 +13,6 @@ import { webAccessFocus } from '@/consts/model-selector';
 import { queryBoxStore } from '@/content-script/session-store/query-box';
 import { WebAccessFocus } from '@/types/ModelSelector';
 import { UserSettingsApiResponse } from '@/types/PPLXApi';
-import { chromeStorage } from '@/utils/chrome-store';
 import { ui } from '@/utils/ui';
 import { SelectLabel } from '@radix-ui/react-select';
 import { useQuery } from '@tanstack/react-query';
@@ -55,23 +54,11 @@ export default function FocusSelector() {
   } = queryBoxStore((state) => state.webAccess);
 
   useEffect(() => {
-    chromeStorage.setStorageValue({
-      key: 'defaultFocus',
-      value: focus,
-    });
-  }, [focus]);
-
-  useEffect(() => {
     if (allowWebAccess && !focus) {
       setFocus('internet');
     }
 
     ui.findActiveQueryBoxTextarea({}).trigger('focus');
-
-    chromeStorage.setStorageValue({
-      key: 'defaultWebAccess',
-      value: allowWebAccess,
-    });
   }, [allowWebAccess, focus, setFocus]);
 
   $('body').toggleClass(
@@ -182,9 +169,6 @@ export default function FocusSelector() {
                   label="Pro search"
                   id="pro-search"
                   onCheckedChange={(checked) => {
-                    ui.getNativeProSearchSwitchWrapper()
-                      .find('button')
-                      .trigger('click');
                     toggleProSearch(checked);
                     checked && toggleWebAccess(true);
                   }}

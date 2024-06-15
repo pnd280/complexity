@@ -18,11 +18,15 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   webpageListeners.onWebSocketCaptured();
   webpageMessageInterceptors.trackQueryLimits();
   webpageMessageInterceptors.alterQueries();
+  webpageMessageInterceptors.blockNativeProSearchMessages();
+  webpageMessageInterceptors.blockTelemetry();
+  webpageMessageInterceptors.removeComplexityIdentifier();
 
   uiTweaks.alterAttachButton();
   uiTweaks.adjustSelectorsBorderRadius();
   uiTweaks.adjustQueryBoxWidth();
   uiTweaks.hideScrollToBottomButton();
+  uiTweaks.correctNativeProSearchSwitch();
   uiTweaks.hideNativeProSearchSwitch();
   uiTweaks.collapseEmptyThreadVisualColumns();
   uiTweaks.displayModelNextToAnswerHeading();
@@ -45,17 +49,16 @@ async function init() {
   uiTweaks.correctColorScheme();
   uiTweaks.injectBaseStyles();
   uiTweaks.injectCustomStyles();
-
 }
 
 async function softUpdateCheck() {
-  const pplxBuildId = 'Hww6VlF0ln_WDkrGUFhrk';
+  const pplxBuildId = 'cfzuIprv6N1qK8_fikAkn';
 
   const latestPPLXBuildId = await getPPLXBuildId();
 
   if (latestPPLXBuildId && pplxBuildId !== latestPPLXBuildId) {
     console.warn(
-      "WARNING: Perplexity web app's new build id detected! The script maybe outdated and some features may not work as expected.",
+      "COMPLEXITY: Perplexity web app's new build id detected! The extension maybe outdated and some features may not work as expected.",
       'BUILD_ID:',
       latestPPLXBuildId
     );

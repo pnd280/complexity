@@ -7,8 +7,8 @@ export type ChromeStoreKey = keyof ChromeStore;
 
 export type ChromeStore = {
   defaultFocus: Nullable<WebAccessFocus['code']>;
-  defaultCollectionUUID?: Nullable<string>;
   defaultWebAccess: boolean;
+  defaultProSearch: boolean;
   secretMode: boolean;
   popupSettings: {
     queryBoxSelectors: {

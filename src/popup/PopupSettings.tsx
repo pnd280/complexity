@@ -95,6 +95,7 @@ function RenderSettings<
 
       return (
         <div
+          key={id}
           className={cn({
             'tw-mb-4 tw-flex tw-flex-col tw-gap-1':
               experimental || versionRelease === packageData.version,

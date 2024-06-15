@@ -13,6 +13,7 @@ import {
 
 import { globalStore } from './session-store/global';
 import { popupSettingsStore } from './session-store/popup-settings';
+import { queryBoxStore } from './session-store/query-box';
 
 function injectBaseStyles() {
   $('<link>')
@@ -198,6 +199,26 @@ function hideNativeProSearchSwitch() {
   });
 }
 
+function correctNativeProSearchSwitch() {
+  if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
+
+  queryBoxStore.subscribe(({ webAccess: { allowWebAccess, proSearch } }) => {
+    const $nativeProSearchWrapper = ui.getNativeProSearchSwitchWrapper();
+
+    const currentState = $nativeProSearchWrapper
+      .find('button')
+      .attr('data-state');
+
+    if (currentState === 'checked' && (!allowWebAccess || !proSearch)) {
+      return $nativeProSearchWrapper.find('button').trigger('click');
+    }
+
+    if (currentState === 'unchecked' && allowWebAccess && proSearch) {
+      return $nativeProSearchWrapper.find('button').trigger('click');
+    }
+  });
+}
+
 function collapseEmptyThreadVisualColumns() {
   if (
     !popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
@@ -222,7 +243,7 @@ function collapseEmptyThreadVisualColumns() {
 
       requestIdleCallback(() => {
         collapseExpand();
-        
+
         observer.onDOMChanges({
           targetNode: $(element).find('> .sticky')[0],
           callback: collapseExpand,
@@ -369,6 +390,7 @@ const uiTweaks = {
   collapseEmptyThreadVisualColumns,
   alterMessageQuery,
   displayModelNextToAnswerHeading,
+  correctNativeProSearchSwitch,
 };
 
 export default uiTweaks;

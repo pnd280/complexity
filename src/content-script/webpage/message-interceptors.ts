@@ -264,6 +264,61 @@ function alterNextQuery({
   });
 }
 
+function blockNativeProSearchMessages() {
+  webpageMessenger.addInterceptor({
+    matchCondition: (messageData: MessageData<any>) => {
+      const webSocketMessageData = messageData as MessageData<
+        WebSocketEventData | LongPollingEventData
+      >;
+
+      const parsedPayload: WSParsedMessage | null | string =
+        WSMessageParser.parse(webSocketMessageData.payload.payload);
+
+      if (!isParsedWSMessage(parsedPayload)) return { match: false };
+
+      return {
+        match:
+          parsedPayload.event === 'save_user_settings' &&
+          !parsedPayload.data[0]?.is_complexity,
+      };
+    },
+    callback: async () => {
+      return null;
+    },
+    stopCondition: () => false,
+  });
+}
+
+function removeComplexityIdentifier() {
+  webpageMessenger.addInterceptor({
+    matchCondition: (messageData: MessageData<any>) => {
+      const webSocketMessageData = messageData as MessageData<
+        WebSocketEventData | LongPollingEventData
+      >;
+
+      const parsedPayload: WSParsedMessage | null | string =
+        WSMessageParser.parse(webSocketMessageData.payload.payload);
+
+      if (!isParsedWSMessage(parsedPayload)) return { match: false };
+
+      const match = parsedPayload.data?.[0]?.is_complexity;
+
+      if (parsedPayload.data?.[0]?.is_complexity) {
+        parsedPayload.data[0].is_complexity = undefined;
+      }
+
+      return {
+        match,
+        args: [{ newPayload: WSMessageParser.stringify(parsedPayload) }],
+      };
+    },
+    callback: async (messageData, args) => {
+      return { ...messageData, payload: { payload: args[0].newPayload } };
+    },
+    stopCondition: () => false,
+  });
+}
+
 function waitForUpsertThreadCollection() {
   const matchCondition = (messageData: MessageData<any>) => {
     const parsedPayload = parseStructuredMessage(messageData);
@@ -329,6 +384,29 @@ function waitForUserProfileSettings() {
   });
 }
 
+function blockTelemetry() {
+  webpageMessenger.addInterceptor({
+    matchCondition: (messageData: MessageData<any>) => {
+      const webSocketMessageData = messageData as MessageData<
+        WebSocketEventData | LongPollingEventData
+      >;
+
+      const parsedPayload: WSParsedMessage | null | string =
+        WSMessageParser.parse(webSocketMessageData.payload.payload);
+
+      if (!isParsedWSMessage(parsedPayload)) return { match: false };
+
+      return {
+        match: parsedPayload.event === 'analytics_event',
+      };
+    },
+    callback: async () => {
+      return null;
+    },
+    stopCondition: () => false,
+  });
+}
+
 function parseStructuredMessage(messageData: MessageData<any>) {
   const webSocketMessageData = messageData as MessageData<
     WebSocketEventData | LongPollingEventData
@@ -349,8 +427,11 @@ const webpageMessageInterceptors = {
   inspectLongPollingEvents,
   alterQueries,
   alterNextQuery,
+  blockNativeProSearchMessages,
   waitForUpsertThreadCollection,
+  removeComplexityIdentifier,
   waitForUserProfileSettings,
+  blockTelemetry,
 };
 
 export default webpageMessageInterceptors;

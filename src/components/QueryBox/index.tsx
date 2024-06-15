@@ -120,7 +120,6 @@ export default function QueryBox() {
           imageModel:
             userSettings.default_image_generation_model as ImageModel['code'],
           languageModel: userSettings.default_model as LanguageModel['code'],
-          proSearch: userSettings.default_copilot,
         });
 
         isDefaultsInitialized.current.userSettings = true;
@@ -164,9 +163,12 @@ export default function QueryBox() {
 
       if (hasActivePPLXSub && e.ctrlKey && e.key === '.') {
         e.preventDefault();
-        toggleProSearch();
+        toggleProSearch(!proSearch);
 
-        !proSearch && !allowWebAccess && toggleWebAccess(true);
+        if (!allowWebAccess) {
+          toggleWebAccess(true);
+          toggleProSearch(true);
+        }
       }
     };
 

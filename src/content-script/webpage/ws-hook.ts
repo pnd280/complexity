@@ -226,6 +226,9 @@ class WSHook {
         payload: { event: 'send', payload: data },
         timeout: 1000,
       });
+
+      if (typeof modifiedData !== 'string') return;
+
       originalSend.call(instance, modifiedData);
     };
   }

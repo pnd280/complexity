@@ -59,7 +59,7 @@ class WebpageMessenger {
         messageData
       )) as MessageData<WebSocketEventData>;
 
-      return newMessageData.payload.payload;
+      return newMessageData?.payload.payload;
     });
 
     this.onMessage('longPollingEvent', async (messageData) => {
@@ -67,7 +67,7 @@ class WebpageMessenger {
         messageData
       )) as MessageData<LongPollingEventData>;
 
-      return newMessageData.payload.payload;
+      return newMessageData?.payload.payload;
     });
   }
 
@@ -93,6 +93,10 @@ class WebpageMessenger {
           this.interceptors = this.interceptors.filter(
             (interceptor) => interceptor.identifier !== myInterceptorId
           );
+        }
+
+        if (responsePayload === null) {
+          return null;
         }
 
         newMessageData = responsePayload;
