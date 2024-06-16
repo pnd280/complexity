@@ -212,15 +212,15 @@ html.dark {
 
 
 /* Popovers behavior tweaks */
-html:has(body[data-scroll-locked].bg-transparent) {
-  overflow: hidden !important;
-}
-
 body[data-scroll-locked].bg-transparent {
   --removed-body-scroll-bar-size: 0 !important;
   margin-right                  : 0 !important;
-  overflow                      : visible !important;
+  overflow                      : unset !important;
   pointer-events                : auto !important;
+}
+
+html {
+  overflow: unset !important;
 }
 
 /* Markdown Query Wrapper */
