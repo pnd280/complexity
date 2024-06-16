@@ -232,6 +232,8 @@ export function whereAmI() {
   const location = window.location.href;
 
   switch (true) {
+    case location.startsWith('https://www.perplexity.ai/p/api/'):
+      return 'api';
     case location.startsWith('https://www.perplexity.ai/collections'):
       return 'collection';
     case location.startsWith('https://www.perplexity.ai/search'):

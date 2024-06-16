@@ -20,7 +20,7 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   webpageMessageInterceptors.alterQueries();
   webpageMessageInterceptors.blockNativeProSearchMessages();
   webpageMessageInterceptors.blockTelemetry();
-  
+
   webpageMessageInterceptors.removeComplexityIdentifier();
 
   uiTweaks.alterAttachButton();
@@ -43,13 +43,13 @@ async function init() {
     'data-dev': `${import.meta.env.DEV}`,
   });
 
-  await Promise.all([
-    chrome.runtime.sendMessage({ action: 'injectScript' }),
-    softUpdateCheck(),
-  ]);
   uiTweaks.correctColorScheme();
   uiTweaks.injectBaseStyles();
   uiTweaks.injectCustomStyles();
+
+  softUpdateCheck();
+
+  await chrome.runtime.sendMessage({ action: 'injectScript' });
 }
 
 async function softUpdateCheck() {

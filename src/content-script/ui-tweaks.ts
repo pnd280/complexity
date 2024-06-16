@@ -16,6 +16,8 @@ import { popupSettingsStore } from './session-store/popup-settings';
 import { queryBoxStore } from './session-store/query-box';
 
 function injectBaseStyles() {
+  if (whereAmI() === 'api') $('html').addClass('tw-dark dark');
+
   $('<link>')
     .attr({
       rel: 'stylesheet',
