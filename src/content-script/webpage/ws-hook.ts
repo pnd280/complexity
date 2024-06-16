@@ -303,14 +303,16 @@ class WSHook {
 
         for (const message of messages) {
           newData +=
-            (await WSHook.contentScriptMessenger.sendMessage({
+            ((await WSHook.contentScriptMessenger.sendMessage({
               event: 'longPollingEvent',
               payload: { event: 'request', payload: message },
               timeout: 1000,
-            })) + '';
-        }
+            })) || '') + '';
 
-        newData = newData.slice(0, -1);
+          while (newData.endsWith('')) {
+            newData = newData.slice(0, -1);
+          }
+        }
       } catch (e) {
         newData = data || '';
       } finally {
