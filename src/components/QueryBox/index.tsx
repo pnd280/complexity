@@ -34,7 +34,7 @@ import LanguageModelSelector from './LanguageModelSelector';
 import QuickQueryCommander from './QuickQueryCommander';
 
 export default function QueryBox() {
-  const isReady = useGlobalStore((state) => state.isWebSocketCaptured);
+  const isReady = useGlobalStore((state) => state.isWebSocketCaptured || state.isLongPollingCaptured);
 
   const { toast } = useToast();
 

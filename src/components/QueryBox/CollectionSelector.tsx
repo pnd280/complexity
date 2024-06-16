@@ -58,7 +58,7 @@ export default function CollectionSelector() {
     queryKey: ['collections'],
   });
 
-  const { data: userProfileSettings } =
+  const { data: userProfileSettings, isLoading: isUserProfileSettingsLoading } =
     useQuery<UserProfileSettingsAPIResponse>({
       queryKey: ['userProfileSettings'],
       enabled: false,
@@ -121,7 +121,11 @@ export default function CollectionSelector() {
           <Command
             key={selectedCollectionUuid}
             className="!tw-min-w-[150px] tw-max-w-[250px] tw-bg-background tw-font-sans"
-            defaultValue={selectedCollectionUuid ? selectedCollectionUuid : collections?.[0]?.uuid}
+            defaultValue={
+              selectedCollectionUuid
+                ? selectedCollectionUuid
+                : collections?.[0]?.uuid
+            }
           >
             <CommandInput
               placeholder="Search..."
@@ -196,7 +200,7 @@ export default function CollectionSelector() {
                           });
                         }}
                       >
-                        {isUpdatingUserProfileSettings ? (
+                        {isUserProfileSettingsLoading || isUpdatingUserProfileSettings ? (
                           <LoaderCircle className="tw-w-3 tw-h-3 tw-animate-spin" />
                         ) : (
                           <>

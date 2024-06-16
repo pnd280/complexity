@@ -93,33 +93,43 @@ class WSHook {
   ): Promise<void | Response> {
     const instance = this.getActiveInstance();
 
-    if (!instance) return alert('No active WebSocket connection found!');
+    if (!instance) {
+      alert('No active WebSocket connection found!');
+      return;
+    }
 
     if (instance instanceof WebSocket) {
       if (forceLongPolling) {
         const url = instance.url
           .replace('wss://', 'https://')
           .replace('transport="websocket"', 'transport="polling"');
-
-        const response = await fetch(url, {
-          method: 'POST',
-          body: data,
-        });
-
-        return response;
+        return sendLongPollingRequest(url, data);
+      } else {
+        instance.send(data);
+        return;
       }
-
-      return instance.send(data);
     }
 
     if (instance instanceof XMLHttpRequest) {
       const url = instance.responseURL;
+      if (url) {
+        return sendLongPollingRequest(url, data);
+      }
+    }
 
-      if (!url) return;
+    async function sendLongPollingRequest(
+      url: string,
+      data: any
+    ): Promise<Response> {
+      const newData = await WSHook.contentScriptMessenger.sendMessage({
+        event: 'longPollingEvent',
+        payload: { event: 'request', payload: data },
+        timeout: 1000,
+      });
 
       return fetch(url, {
         method: 'POST',
-        body: data,
+        body: newData,
       });
     }
   }
