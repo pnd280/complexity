@@ -71,6 +71,7 @@ export default function ThreadMessageStickyToolbar() {
     containers.forEach((container, index) => {
       if (!container.isObserving) {
         observer.onElementExist({
+          container: container.messageBlock,
           selector: () => [
             {
               element: $(container.messageBlock).find(

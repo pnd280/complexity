@@ -31,7 +31,8 @@ type RewriteDropdownProps = {
 };
 
 export default function RewriteDropdown({ container }: RewriteDropdownProps) {
-  const [onGoingInterceptor, setOnGoingInterceptor] = useState<() => void>();
+  const [stopOnGoingInterceptor, setStopOnGoingInterceptor] =
+    useState<() => void>();
 
   const ctrlDown = useCtrlDown();
 
@@ -43,18 +44,14 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
       model?: LanguageModel['code'];
       proSearch?: boolean;
     }) => {
-      if (onGoingInterceptor) {
-        onGoingInterceptor();
-      }
+      stopOnGoingInterceptor?.();
 
-      if (model) {
-        const stop = webpageMessageInterceptors.alterNextQuery({
-          languageModel: model,
-          proSearchState: proSearch,
-        });
+      const stop = webpageMessageInterceptors.alterNextQuery({
+        languageModel: model || queryBoxStore.getState().selectedLanguageModel,
+        proSearchState: proSearch,
+      });
 
-        setOnGoingInterceptor(() => stop);
-      }
+      setStopOnGoingInterceptor(() => stop);
 
       const $buttonBar = $(container.messageBlock).find(
         '.mt-sm.flex.items-center.justify-between'
@@ -83,7 +80,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         .last()
         .trigger('click');
     },
-    [container.messageBlock, onGoingInterceptor]
+    [container.messageBlock, stopOnGoingInterceptor]
   );
 
   return (

@@ -234,7 +234,7 @@ class WSHook {
       const modifiedData = await WSHook.contentScriptMessenger.sendMessage({
         event: 'webSocketEvent',
         payload: { event: 'send', payload: data },
-        timeout: 1000,
+        timeout: 5000,
       });
 
       if (typeof modifiedData !== 'string') return;

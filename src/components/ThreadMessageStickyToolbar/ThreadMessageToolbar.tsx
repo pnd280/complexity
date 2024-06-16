@@ -1,4 +1,7 @@
-import { useMemo } from 'react';
+import {
+  useCallback,
+  useState,
+} from 'react';
 
 import $ from 'jquery';
 import {
@@ -13,12 +16,15 @@ import { PiNotePencil } from 'react-icons/pi';
 import { Updater } from 'use-immer';
 
 import { cn } from '@/lib/utils';
+import observer from '@/utils/observer';
 import {
   scrollToElement,
   sleep,
   stripHtml,
 } from '@/utils/utils';
+import { useDebounce } from '@uidotdev/usehooks';
 
+import useElementObserver from '../hooks/useElementObserver';
 import TooltipWrapper from '../TooltipWrapper';
 import {
   DropdownMenu,
@@ -41,30 +47,56 @@ export default function ThreadMessageToolbar({
   containerIndex,
   setContainers,
 }: ThreadMessageToolbar) {
-  const markdownText = useMemo(
-    () =>
-      stripHtml(
-        $(containers[containerIndex].query)
-          .find('>#markdown-query-wrapper')
-          .html() || ''
-      ),
-    [containers, containerIndex]
-  );
+  const debouncedContainers = useDebounce(containers, 100);
 
-  const originalText = useMemo(
-    () =>
-      stripHtml(
-        $(containers[containerIndex].query)
-          .find('>*:not(#markdown-query-wrapper)')
-          .html()
-      ),
-    [containers, containerIndex]
-  );
+  const [markdownVisualDiff, setMarkdownVisualDiff] = useState(false);
 
-  const markdownVisualDiff =
-    !!markdownText.length &&
-    markdownText !== originalText &&
-    !$(containers[containerIndex].query).find('textarea').length;
+  const handleVisualDiff = useCallback(() => {
+    console.log(1);
+    const $textarea = $(containers[containerIndex].query).find('textarea');
+
+    const markdownText = stripHtml(
+      $(containers[containerIndex].query)
+        .find('>#markdown-query-wrapper')
+        .html()
+    );
+
+    const originalText = $(containers[containerIndex].query)
+      .find('>*:not(#markdown-query-wrapper)')
+      .html();
+
+    setMarkdownVisualDiff(
+      !!markdownText.length &&
+        markdownText !== originalText &&
+        !$textarea.length
+    );
+  }, [containerIndex, containers]);
+
+  useElementObserver({
+    container: containers[containerIndex].query,
+    selector: () => [
+      $(containers[containerIndex].query).find('#markdown-query-wrapper')[0],
+    ],
+    callback: () => {
+      handleVisualDiff();
+    },
+  });
+
+  useElementObserver({
+    container: containers[containerIndex].query,
+    selector: () => [$(containers[containerIndex].query).find('textarea')[0]],
+    callback: () => {
+      handleVisualDiff();
+
+      observer.onElementRemoved({
+        container: containers[containerIndex].query,
+        selector: $(containers[containerIndex].query).find('textarea')[0],
+        callback: () => {
+          return handleVisualDiff();
+        },
+      });
+    },
+  });
 
   return (
     <div
@@ -77,7 +109,7 @@ export default function ThreadMessageToolbar({
       )}
     >
       <div className="tw-flex tw-items-center tw-gap-2 tw-w-full">
-        {!containers[containerIndex].states.isQueryOutOfViewport &&
+        {!debouncedContainers[containerIndex].states.isQueryOutOfViewport &&
           markdownVisualDiff && (
             <TooltipWrapper
               content={
@@ -92,7 +124,7 @@ export default function ThreadMessageToolbar({
               contentClassName="tw-w-max"
             >
               <div
-                className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 tw-opacity-10 hover:tw-opacity-100"
+                className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in tw-slide-in-from-top active:tw-scale-95 tw-opacity-10 hover:tw-opacity-100"
                 onClick={() => {
                   setContainers((draft) => {
                     $(draft[containerIndex].query)
@@ -125,26 +157,24 @@ export default function ThreadMessageToolbar({
             </TooltipWrapper>
           )}
 
-        <div
-          className={cn(
-            'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-duration-300 tw-font-sans',
-            {
-              'tw-invisible tw-opacity-0':
-                !containers[containerIndex].states.isQueryOutOfViewport,
-            }
-          )}
-          onClick={() => {
-            scrollToElement($(containers[containerIndex].query), -60);
-          }}
-        >
-          <span>
-            {$(containers[containerIndex].query).find('textarea').text() ||
-              $(containers[containerIndex].query)
-                .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
-                .first()
-                .text()}
-          </span>
-        </div>
+        {debouncedContainers[containerIndex].states.isQueryOutOfViewport && (
+          <div
+            className={cn(
+              'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-duration-300 tw-font-sans tw-animate-in tw-fade-in tw-slide-in-from-bottom'
+            )}
+            onClick={() => {
+              scrollToElement($(containers[containerIndex].query), -60);
+            }}
+          >
+            <span>
+              {$(containers[containerIndex].query).find('textarea').text() ||
+                $(containers[containerIndex].query)
+                  .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
+                  .first()
+                  .text()}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="tw-ml-auto tw-flex tw-items-center tw-gap-2">

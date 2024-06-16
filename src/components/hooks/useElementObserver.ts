@@ -6,6 +6,7 @@ import {
 import observer, { OnElementExistOptions } from '@/utils/observer';
 
 export default function useElementObserver<T>({
+  container: wrapper,
   selector,
   recurring = true,
   observedIdentifier = 'observed',
@@ -15,6 +16,7 @@ export default function useElementObserver<T>({
 
   useEffect(() => {
     const myObserver = observer.onElementExist({
+      container: wrapper,
       selector,
       callback: (args) => {
         callback?.(args);

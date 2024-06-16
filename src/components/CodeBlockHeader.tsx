@@ -141,7 +141,7 @@ export default function CodeBlockEnhancedToolbar() {
 
       const numberedPres: {
         element: Element;
-        args: { nativeToolbar: () => JQuery<Element> };
+        args: { container: Element; nativeToolbar: () => JQuery<Element> };
       }[] = [];
 
       pres.forEach((preBlock, blockIndex) =>
@@ -149,6 +149,7 @@ export default function CodeBlockEnhancedToolbar() {
           numberedPres.push({
             element: pre,
             args: {
+              container: messageBlocks[blockIndex].$messageBlock[0],
               nativeToolbar: () =>
                 messageBlocks[blockIndex].$messageBlock.find(
                   '.mt-sm.flex.items-center.justify-between'
@@ -173,6 +174,7 @@ export default function CodeBlockEnhancedToolbar() {
 
           if (isNative) {
             observer.onElementExist({
+              container: args!.container,
               selector: () => [args!.nativeToolbar()[0]],
               callback: () => {
                 Prism.highlightAllUnder(pre);

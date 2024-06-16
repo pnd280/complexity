@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 export type OnElementExistOptions<T> = {
+  container?: Element;
   selector:
     | string
     | (() => Element[])
@@ -18,6 +19,7 @@ export type OnElementExistOptions<T> = {
 };
 
 function onElementExist<T>({
+  container,
   selector,
   callback,
   recurring = true,
@@ -31,7 +33,7 @@ function onElementExist<T>({
     checkAndInvokeCallback();
   });
 
-  observer.observe(document.body, {
+  observer.observe(container ?? document.body, {
     childList: true,
     subtree: true,
   });
@@ -102,18 +104,20 @@ function onElementExist<T>({
 }
 
 function onElementRemoved({
+  container,
   selector,
   callback,
 }: {
+  container?: Element;
   selector: Element;
-  callback: () => void;
+  callback: (element: Element) => void;
 }): MutationObserver {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.removedNodes.length > 0) {
         mutation.removedNodes.forEach((node) => {
-          if (node === selector) {
-            callback();
+          if (node.contains(selector) || node === selector) {
+            callback(selector);
             observer.disconnect();
           }
         });
@@ -121,7 +125,7 @@ function onElementRemoved({
     });
   });
 
-  observer.observe(document.body, {
+  observer.observe(container ?? document.body, {
     childList: true,
     subtree: true,
   });
