@@ -65,6 +65,12 @@ const qolTweaks: PopupSetting<
     experimental: true,
     versionRelease: '0.0.0.12',
   },
+  {
+    id: 'block-telemetry',
+    label: "Block Perplexity's telemetry data",
+    storeKey: 'blockTelemetry',
+    versionRelease: '0.0.0.13',
+  },
 ];
 
 const visualTweaks: PopupSetting<

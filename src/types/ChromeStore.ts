@@ -23,6 +23,7 @@ export type ChromeStore = {
       threadMessageStickyToolbar: boolean;
       codeBlockEnhancedToolbar: boolean;
       autoRefreshSessionTimeout: boolean;
+      blockTelemetry: boolean;
     };
     visualTweaks: {
       collapseEmptyThreadVisualColumns: boolean;

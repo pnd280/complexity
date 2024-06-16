@@ -109,9 +109,7 @@ function inspectWebSocketEvents() {
         messageData as MessageData<WebSocketEventData>;
 
       return {
-        match:
-          webSocketMessageData.event === 'webSocketEvent' &&
-          webSocketMessageData.payload.event === 'message',
+        match: webSocketMessageData.event === 'webSocketEvent',
       };
     },
     callback: async (messageData: MessageData<WebSocketEventData>) => {
@@ -133,7 +131,7 @@ function inspectLongPollingEvents() {
       };
     },
     callback: async (messageData: MessageData<LongPollingEventData>) => {
-      console.log('long polling:', messageData.payload.payload);
+      console.log('long polling:', messageData.payload);
       return messageData;
     },
     stopCondition: () => false,
@@ -385,6 +383,8 @@ function waitForUserProfileSettings() {
 }
 
 function blockTelemetry() {
+  if (!popupSettingsStore.getState().qolTweaks.blockTelemetry) return;
+
   webpageMessenger.addInterceptor({
     matchCondition: (messageData: MessageData<any>) => {
       const webSocketMessageData = messageData as MessageData<
@@ -429,9 +429,9 @@ const webpageMessageInterceptors = {
   alterNextQuery,
   blockNativeProSearchMessages,
   waitForUpsertThreadCollection,
-  removeComplexityIdentifier,
   waitForUserProfileSettings,
   blockTelemetry,
+  removeComplexityIdentifier,
 };
 
 export default webpageMessageInterceptors;

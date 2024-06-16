@@ -20,6 +20,7 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   webpageMessageInterceptors.alterQueries();
   webpageMessageInterceptors.blockNativeProSearchMessages();
   webpageMessageInterceptors.blockTelemetry();
+  
   webpageMessageInterceptors.removeComplexityIdentifier();
 
   uiTweaks.alterAttachButton();
