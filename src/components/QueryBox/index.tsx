@@ -34,7 +34,9 @@ import LanguageModelSelector from './LanguageModelSelector';
 import QuickQueryCommander from './QuickQueryCommander';
 
 export default function QueryBox() {
-  const isReady = useGlobalStore((state) => state.isWebSocketCaptured || state.isLongPollingCaptured);
+  const isReady = useGlobalStore(
+    (state) => state.isWebSocketCaptured || state.isLongPollingCaptured
+  );
 
   const { toast } = useToast();
 
@@ -66,6 +68,7 @@ export default function QueryBox() {
     queryFn: pplxApi.fetchUserSettings,
     refetchInterval: 10000,
     ...queryOptions,
+    enabled: !$('body').hasClass('no-js'),
   });
 
   useEffect(() => {
