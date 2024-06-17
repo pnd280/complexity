@@ -52,7 +52,6 @@ export default function ThreadMessageToolbar({
   const [markdownVisualDiff, setMarkdownVisualDiff] = useState(false);
 
   const handleVisualDiff = useCallback(() => {
-    console.log(1);
     const $textarea = $(containers[containerIndex].query).find('textarea');
 
     const markdownText = stripHtml(

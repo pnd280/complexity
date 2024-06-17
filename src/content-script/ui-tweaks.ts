@@ -247,7 +247,7 @@ function collapseEmptyThreadVisualColumns() {
         collapseExpand();
 
         observer.onDOMChanges({
-          targetNode: $(element).find('> .sticky')[0],
+          targetNode: element,
           callback: collapseExpand,
         });
       });
