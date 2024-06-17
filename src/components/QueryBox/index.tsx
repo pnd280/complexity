@@ -239,7 +239,7 @@ export default function QueryBox() {
         <Fragment key={index}>
           {ReactDOM.createPortal(followUpSelectors, container)}
           {quickQueryCommander &&
-            ui.findActiveQueryBox({ type: 'follow-up' }).length &&
+            !!ui.findActiveQueryBox({ type: 'follow-up' }).length &&
             ReactDOM.createPortal(
               <>
                 <QuickCommander
