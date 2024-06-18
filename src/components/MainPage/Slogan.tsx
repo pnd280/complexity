@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 
 import { useGlobalStore } from '@/content-script/session-store/global';
+import background from '@/utils/background';
 
 import useElementObserver from '../hooks/useElementObserver';
 import useUpdate from '../hooks/useUpdate';
@@ -91,14 +92,11 @@ export default function Slogan() {
           <div
             className="tw-fixed tw-bottom-20 tw-font-sans tw-cursor-pointer tw-select-none"
             onClick={() => {
-              window.open(
-                chrome.runtime.getURL('options.html') + '?tab=changelog',
-                '_blank'
-              );
+              background.sendMessage({ action: 'openChangelog' });
             }}
           >
             <div>
-              New version of{' '}
+              A new version of{' '}
               <span className="tw-font-bold tw-text-accent-foreground">
                 Complexity
               </span>{' '}

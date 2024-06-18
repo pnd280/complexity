@@ -2,6 +2,7 @@ import DOMPurify from 'dompurify';
 import $ from 'jquery';
 import showdown from 'showdown';
 
+import background from './background';
 import { ui } from './ui';
 
 export const logger = {
@@ -205,7 +206,7 @@ export async function fetchResource(url: string) {
 }
 
 export async function getTabId() {
-  const response = await chrome.runtime.sendMessage({ action: 'getTabId' });
+  const response = await background.sendMessage({ action: 'getTabId' });
   return response.tabId;
 }
 

@@ -54,7 +54,7 @@ th {
   color : white !important;
 }
 
-.pb-\[124px\].pt-md.md\:pt-0>div>div:nth-child(1)>div>div>div:last-child {
+.pt-md.md\:pt-0>div>div:nth-child(1)>div>div>div:last-child {
   border-color: var(--ring-darker) !important;
 }
 

@@ -1,3 +1,5 @@
+import { BackgroundAction } from '@/utils/background';
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.tabs.create({
     url: chrome.runtime.getURL('options.html') + '?tab=changelog',
@@ -10,7 +12,14 @@ chrome.runtime.onMessage.addListener(
     sender: chrome.runtime.MessageSender,
     sendResponse: (response: any) => void
   ) => {
-    switch (message.action) {
+    const action: BackgroundAction = message.action;
+
+    switch (action) {
+      case 'openChangelog':
+        chrome.tabs.create({
+          url: chrome.runtime.getURL('options.html') + '?tab=changelog',
+        });
+        break;
       case 'getTabId':
         if (sender.tab) {
           sendResponse({ tabId: sender.tab.id });

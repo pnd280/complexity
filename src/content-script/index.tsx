@@ -3,6 +3,7 @@ import '@/content-script/webpage/ws-hook';
 
 import $ from 'jquery';
 
+import background from '@/utils/background';
 import { getPPLXBuildId } from '@/utils/utils';
 
 import Root from './Root';
@@ -49,7 +50,7 @@ async function init() {
 
   softUpdateCheck();
 
-  await chrome.runtime.sendMessage({ action: 'injectScript' });
+  await background.sendMessage({ action: 'injectScript' });
 }
 
 async function softUpdateCheck() {
