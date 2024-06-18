@@ -139,6 +139,7 @@ async function setDefaultLanguageModel(
         event: 'save_user_settings',
         data: {
           default_model: selectedLanguageModel,
+          is_complexity: true,
         },
       }),
     });
@@ -160,6 +161,7 @@ async function setDefaultImageModel(selectedImageModel: string) {
         event: 'save_user_settings',
         data: {
           default_image_generation_model: selectedImageModel,
+          is_complexity: true,
         },
       }),
     });
