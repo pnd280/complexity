@@ -290,7 +290,7 @@ export default function QuickQueryCommander({
                             <div>{optionItem.label}</div>
                           </div>
                           {optionItem.hint && (
-                            <div className="tw-ml-2 tw-text-xs tw-text-muted-foreground tw-truncate">
+                            <div className="tw-ml-2 tw-text-xs tw-text-muted-foreground tw-truncate tw-max-w-[500px]">
                               {optionItem.hint}
                             </div>
                           )}

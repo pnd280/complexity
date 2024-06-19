@@ -69,7 +69,7 @@ function NewVersionAvailable() {
     <div className="tw-fixed tw-bottom-10 tw-left-1/2 -tw-translate-x-1/2 tw-w-max">
       <div className="tw-font-sans tw-bg-background tw-text-foreground tw-p-2 tw-px-4 tw-rounded-md tw-border !tw-border-accent-foreground tw-animate-in tw-slide-in-from-bottom tw-transition-all hover:tw-scale-105 tw-shadow-2xl hover:tw-shadow-accent-foreground tw-text-center">
         <div className="tw-text-3xl tw-font-bold">
-          New Version is Available!
+          A New Version is Available!
         </div>
         <div className="tw-flex tw-justify-center tw-items-center tw-gap-2 tw-font-mono">
           <div className="">{version}</div>
@@ -79,15 +79,20 @@ function NewVersionAvailable() {
           </div>
         </div>
         <div className="tw-flex tw-items-center tw-gap-2 tw-justify-center">
-          <span>The extension doesn't update itself?</span>
-          <a
-            className="tw-underline tw-flex tw-items-center tw-gap-1"
-            href="https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj"
-            target="_blank"
-          >
-            Reinstall
-            <ExternalLink className="tw-w-3 tw-h-3" />
-          </a>
+          <div className="tw-flex tw-flex-col tw-gap-1 tw-justify-center tw-items-center">
+            <div>Restart the browser to trigger the update.</div>
+            <div className="tw-flex tw-gap-1 tw-items-center">
+              Not working?{' '}
+              <a
+                className="tw-underline tw-flex tw-items-center tw-gap-1"
+                href="https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj"
+                target="_blank"
+              >
+                Reinstall
+                <ExternalLink className="tw-w-3 tw-h-3" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
