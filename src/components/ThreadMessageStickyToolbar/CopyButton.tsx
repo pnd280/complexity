@@ -100,10 +100,10 @@ export default function CopyButton({
       });
     }
 
-    async function processMessage(containerIndex: number) {
+    async function processMessage(containerIndex: number): Promise<string> {
       const result = await refetch();
 
-      if (!result.data || !result.data[containerIndex]) return;
+      if (!result.data || !result.data[containerIndex]) return '';
 
       const message = result.data[containerIndex];
       const messageText = jsonUtils.safeParse(message.text);

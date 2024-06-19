@@ -84,58 +84,7 @@ export default function ThreadExportButton() {
 
   const handleExportThread = useCallback(
     async ({ includeCitations }: { includeCitations?: boolean }) => {
-      const result = await refetch();
-
-      if (!result.data) return;
-
-      let outputText = '';
-
-      result.data?.map((message) => {
-        outputText += `**Question**:  \n${message.query_str}\n\n`;
-
-        let answer =
-          jsonUtils.safeParse(message.text)?.answer ||
-          jsonUtils.safeParse(
-            jsonUtils.safeParse(message.text)?.[4].content.answer
-          )?.answer;
-
-        const proSearchWebResults = jsonUtils.safeParse(message.text)?.[2]
-          ?.content.web_results;
-        const normalSearchWebResults = jsonUtils.safeParse(
-          message.text
-        ).web_results;
-
-        let webResults = '';
-
-        (proSearchWebResults || normalSearchWebResults).map(
-          (
-            webResult: {
-              name: string;
-              url: string;
-            },
-            index: number
-          ) => {
-            if (includeCitations) {
-              webResults += `[${index + 1}] [${webResult.name}](${webResult.url})  \n`;
-            } else {
-              const findText = `\\[${index + 1}\\]`;
-              answer = answer.replace(new RegExp(findText, 'g'), '');
-            }
-          }
-        );
-
-        const modelName =
-          languageModels.find((model) => model.code === message.display_model)
-            ?.label || message.display_model;
-
-        outputText += `**Answer** (${modelName}):  \n${answer}\n\n`;
-
-        if (includeCitations && webResults) {
-          outputText += `**Web Results**:  \n${webResults}\n\n`;
-        }
-
-        outputText += '\n---\n\n\n';
-      });
+      const outputText = await processMessages();
 
       try {
         await navigator.clipboard.writeText(outputText);
@@ -156,6 +105,66 @@ export default function ThreadExportButton() {
           description: 'The document must be focused to copy the text.',
           timeout: 1000,
         });
+      }
+
+      async function processMessages(): Promise<string> {
+        const result = await refetch();
+
+        if (!result.data) return '';
+
+        let outputText = '';
+
+        result.data?.map((message) => {
+          outputText += `**Question**:  \n${message.query_str}\n\n`;
+
+          const messageText = jsonUtils.safeParse(message.text);
+          const isProSearch = Array.isArray(messageText);
+
+          let answer =
+            jsonUtils.safeParse(message.text)?.answer ||
+            jsonUtils.safeParse(
+              jsonUtils.safeParse(message.text)?.[messageText.length - 1]
+                .content.answer
+            )?.answer;
+
+          let webResults = '';
+
+          const extractedWebResults = isProSearch
+            ? messageText.find((x) => x.step_type === 'SEARCH_RESULTS')?.content
+                ?.web_results
+            : jsonUtils.safeParse(message.text)?.web_results;
+
+          extractedWebResults?.map(
+            (
+              webResult: {
+                name: string;
+                url: string;
+              },
+              index: number
+            ) => {
+              if (includeCitations) {
+                webResults += `[${index + 1}] [${webResult.name}](${webResult.url})  \n`;
+              } else {
+                const findText = `\\[${index + 1}\\]`;
+                answer = answer.replace(new RegExp(findText, 'g'), '');
+              }
+            }
+          );
+
+          const modelName =
+            languageModels.find((model) => model.code === message.display_model)
+              ?.label || message.display_model;
+
+          outputText += `**Answer** (${modelName}):  \n${answer}\n\n`;
+
+          if (includeCitations && webResults) {
+            outputText += `**Web Results**:  \n${webResults}\n\n`;
+          }
+
+          outputText += '\n---\n\n\n';
+        });
+
+        return outputText;
       }
     },
     [refetch, idleSaveButtonText]
