@@ -82,31 +82,7 @@ export default function CopyButton({
   }, [container.messageBlock, idleSaveButtonText, setCopyButtonText]);
 
   const handleCopyStrippedMessage = useCallback(async () => {
-    const result = await refetch();
-
-    if (!result.data) return;
-
-    if (!result.data?.[containerIndex]) return;
-
-    const message = result.data[containerIndex];
-
-    let answer =
-      jsonUtils.safeParse(message.text)?.answer ||
-      jsonUtils.safeParse(jsonUtils.safeParse(message.text)?.[4].content.answer)
-        ?.answer;
-
-    const proSearchWebResults = jsonUtils.safeParse(message.text)?.[2]?.content
-      .web_results;
-    const normalSearchWebResults = jsonUtils.safeParse(
-      message.text
-    ).web_results;
-
-    (proSearchWebResults || normalSearchWebResults).forEach(
-      (_: unknown, index: number) => {
-        const findText = `\\[${index + 1}\\]`;
-        answer = answer.replace(new RegExp(findText, 'g'), '');
-      }
-    );
+    const answer = await processMessage(containerIndex);
 
     try {
       await navigator.clipboard.writeText(answer);
@@ -122,6 +98,34 @@ export default function CopyButton({
         description: 'The document must be focused to copy the text.',
         timeout: 1000,
       });
+    }
+
+    async function processMessage(containerIndex: number) {
+      const result = await refetch();
+
+      if (!result.data || !result.data[containerIndex]) return;
+
+      const message = result.data[containerIndex];
+      const messageText = jsonUtils.safeParse(message.text);
+      const isProSearch = Array.isArray(messageText);
+
+      let answer =
+        messageText?.answer ||
+        jsonUtils.safeParse(
+          messageText?.[messageText.length - 1]?.content?.answer
+        )?.answer;
+
+      const webResults = isProSearch
+        ? messageText.find((x) => x.step_type === 'SEARCH_RESULTS')?.content
+            ?.web_results
+        : jsonUtils.safeParse(message.text)?.web_results;
+
+      webResults?.forEach((_: unknown, index: number) => {
+        const findText = `\\[${index + 1}\\]`;
+        answer = answer.replace(new RegExp(findText, 'g'), '');
+      });
+
+      return answer;
     }
   }, [containerIndex, idleSaveButtonText, refetch, setCopyButtonText]);
 
