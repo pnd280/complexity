@@ -36,6 +36,7 @@ import {
 import { Container } from './';
 import CopyButton from './CopyButton';
 import RewriteDropdown from './RewriteDropdown';
+import ThreadTitle from './ThreadTitle';
 
 type ThreadMessageToolbar = {
   containerIndex: number;
@@ -176,24 +177,21 @@ export default function ThreadMessageToolbar({
             </TooltipWrapper>
           )}
 
-        {debouncedContainers[containerIndex].states.isQueryOutOfViewport && (
-          <div
-            className={cn(
-              'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-duration-300 tw-font-sans tw-animate-in tw-fade-in tw-slide-in-from-bottom'
-            )}
-            onClick={() => {
-              scrollToElement($(containers[containerIndex].query), -60);
-            }}
-          >
-            <span>
-              {$(containers[containerIndex].query).find('textarea').text() ||
-                $(containers[containerIndex].query)
-                  .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
-                  .first()
-                  .text()}
-            </span>
-          </div>
-        )}
+        <ThreadTitle
+          query={
+            $(containers[containerIndex].query).find('textarea').text() ||
+            $(containers[containerIndex].query)
+              .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
+              .first()
+              .text()
+          }
+          onClick={() => {
+            scrollToElement($(containers[containerIndex].query), -60);
+          }}
+          isOutOfViewport={
+            debouncedContainers[containerIndex].states.isQueryOutOfViewport
+          }
+        />
       </div>
 
       <div className="tw-ml-auto tw-flex tw-items-center tw-gap-2">

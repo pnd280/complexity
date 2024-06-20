@@ -97,7 +97,7 @@ const CodeBlockHeader: React.FC<CodeBlockHeaderProps> = ({
           ui.isChildOverflowing({
             parent: $(container.preElement)[0],
             child: $(container.preElement).find('code:first')[0],
-          })) && (
+          }).isXOverflowing) && (
           <TooltipWrapper
             content={blockStates[index]?.isWrapped ? 'Unwrap' : 'Wrap'}
           >

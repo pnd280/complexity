@@ -91,6 +91,12 @@ export default function CodeBlockEnhancedToolbar() {
           .addClass('tw-rounded-none tw-rounded-b-md !tw-p-0');
         $(pre).find('code:first').addClass('!tw-px-3');
 
+        if (!lang) {
+          $(pre)
+            .find('code:first')
+            .addClass('!tw-whitespace-pre-wrap !tw-break-words');
+        }
+
         const $container = $('<div>').addClass(
           'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
         );
@@ -210,7 +216,7 @@ export default function CodeBlockEnhancedToolbar() {
         draft.push({
           isCollapsed: false,
           isCopied: false,
-          isWrapped: false,
+          isWrapped: lang ? false : true,
           isShownLineNumbers: false,
         });
       });

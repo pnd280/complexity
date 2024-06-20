@@ -189,12 +189,14 @@ export const ui = {
     const parentRect = parent.getBoundingClientRect();
     const childRect = child.getBoundingClientRect();
 
-    const isOverflowing =
-      childRect.top < parentRect.top ||
-      childRect.left < parentRect.left ||
-      childRect.bottom > parentRect.bottom ||
-      childRect.right > parentRect.right;
+    const isXOverflowing =
+      childRect.left < parentRect.left || childRect.right > parentRect.right;
+    const isYOverflowing =
+      childRect.top < parentRect.top || childRect.bottom > parentRect.bottom;
 
-    return isOverflowing;
+    return {
+      isXOverflowing,
+      isYOverflowing,
+    };
   },
 };
