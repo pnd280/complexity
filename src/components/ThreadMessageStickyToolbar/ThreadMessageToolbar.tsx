@@ -140,7 +140,6 @@ export default function ThreadMessageToolbar({
               contentOptions={{
                 sideOffset: 15,
               }}
-              delayDuration={0}
               contentClassName="tw-w-max"
             >
               <div

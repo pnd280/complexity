@@ -90,7 +90,7 @@ export default function CollectionSelector() {
           content={!selectedCollectionUuid ? 'Chat with a collection' : ''}
         >
           <PopoverTrigger asChild>
-            <div className="tw-relative tw-flex tw-items-center tw-rounded-md tw-px-2 tw-text-sm [&>span]:tw-select-none [&>span]:!tw-truncate tw-transition-all tw-duration-300 tw-text-muted-foreground hover:tw-text-accent-foreground hover:tw-bg-accent text-center tw-max-w-[150px] tw-gap-2 cursor-pointer active:tw-scale-95 tw-animate-in tw-zoom-in tw-group">
+            <div className="tw-relative tw-flex tw-items-center tw-rounded-md tw-px-2 tw-text-sm [&>span]:tw-select-none [&>span]:!tw-truncate tw-transition-all tw-duration-300 tw-text-muted-foreground hover:tw-text-accent-foreground hover:tw-bg-accent text-center tw-max-w-[150px] tw-gap-2 cursor-pointer active:tw-scale-95 tw-animate-in tw-zoom-in tw-group tw-h-full">
               {selectedCollectionUuid && (
                 <X
                   className="tw-w-4 tw-h-4 !tw-hidden group-hover:!tw-block"
