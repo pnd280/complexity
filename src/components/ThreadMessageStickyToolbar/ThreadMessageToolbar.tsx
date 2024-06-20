@@ -8,6 +8,7 @@ import {
   Ellipsis,
   ListOrdered,
   LucideThumbsDown,
+  Share2,
   Text,
   X,
 } from 'lucide-react';
@@ -97,6 +98,25 @@ export default function ThreadMessageToolbar({
     },
   });
 
+  const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
+    .find('.mt-sm.flex.items-center.justify-between')
+    .children()
+    .last()
+    .children()
+    .find('div:has([data-icon="pen-to-square"]');
+
+  const isMessageEditable = !!$messageEditButton.length;
+
+  const $messageShareButton = $(containers?.[containerIndex]?.messageBlock)
+    .find('.mt-sm.flex.items-center.justify-between')
+    .children()
+    .first()
+    .children()
+    .find('div:contains("Share"):last')
+    .closest('button');
+
+  const isMessageShareable = !!$messageShareButton.length;
+
   return (
     <div
       className={cn(
@@ -177,40 +197,32 @@ export default function ThreadMessageToolbar({
       </div>
 
       <div className="tw-ml-auto tw-flex tw-items-center tw-gap-2">
-        <RewriteDropdown container={containers[containerIndex]} />
+        {isMessageEditable && (
+          <RewriteDropdown container={containers[containerIndex]} />
+        )}
 
         <CopyButton
           container={containers[containerIndex]}
           containerIndex={containerIndex}
         />
 
-        <TooltipWrapper content="Edit Query">
-          <div
-            className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
-            onClick={() => {
-              const $buttonBar = $(
-                containers[containerIndex].messageBlock
-              ).find('.mt-sm.flex.items-center.justify-between');
+        {isMessageEditable && (
+          <TooltipWrapper content="Edit Query">
+            <div
+              className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
+              onClick={() => {
+                $messageEditButton.trigger('click');
 
-              const $editButton = $buttonBar
-                .children()
-                .last()
-                .children()
-                .find('div:has([data-icon="pen-to-square"])');
-
-              if (!$editButton.length) return;
-
-              $editButton.trigger('click');
-
-              setContainers((draft) => {
-                draft[containerIndex].states.isEditing =
-                  !draft[containerIndex].states.isEditing;
-              });
-            }}
-          >
-            <PiNotePencil className="tw-w-4 tw-h-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
-          </div>
-        </TooltipWrapper>
+                setContainers((draft) => {
+                  draft[containerIndex].states.isEditing =
+                    !draft[containerIndex].states.isEditing;
+                });
+              }}
+            >
+              <PiNotePencil className="tw-w-4 tw-h-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
+            </div>
+          </TooltipWrapper>
+        )}
 
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger>
@@ -238,18 +250,34 @@ export default function ThreadMessageToolbar({
                 View Sources
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem
-              onSelect={async () => {
-                moreMenuItemClick({
-                  container: containers[containerIndex],
-                  item: 'Report',
-                });
-              }}
-              className="tw-flex tw-gap-2 tw-items-center"
-            >
-              <LucideThumbsDown className="tw-w-4 tw-h-4" />
-              Report
-            </DropdownMenuItem>
+
+            {isMessageShareable && (
+              <DropdownMenuItem
+                onSelect={() => {
+                  $messageShareButton.trigger('click');
+                }}
+                className="tw-flex tw-gap-2 tw-items-center"
+              >
+                <Share2 className="tw-w-4 tw-h-4" />
+                Share
+              </DropdownMenuItem>
+            )}
+
+            {isMessageEditable && (
+              <DropdownMenuItem
+                onSelect={async () => {
+                  moreMenuItemClick({
+                    container: containers[containerIndex],
+                    item: 'Report',
+                  });
+                }}
+                className="tw-flex tw-gap-2 tw-items-center"
+              >
+                <LucideThumbsDown className="tw-w-4 tw-h-4" />
+                Report
+              </DropdownMenuItem>
+            )}
+
             {containers.length - 1 === containerIndex &&
               containers.length > 1 && (
                 <DropdownMenuItem

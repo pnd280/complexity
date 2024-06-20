@@ -33,7 +33,11 @@ function onElementExist<T>({
     checkAndInvokeCallback();
   });
 
-  observer.observe(container ?? document.body, {
+  const wrapper = typeof container === 'undefined' ? document.body : container;
+
+  if (!document.contains(wrapper)) return observer;
+
+  observer.observe(wrapper, {
     childList: true,
     subtree: true,
   });
