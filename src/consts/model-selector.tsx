@@ -49,6 +49,18 @@ export const webAccessFocus = [
 
 export const languageModels = [
   {
+    label: 'Claude 3.5 Sonnet',
+    shortLabel: 'Sonnet',
+    code: 'claude2',
+    icon: <SiAnthropic />,
+  },
+  {
+    label: 'Claude 3 Opus',
+    shortLabel: 'Opus',
+    code: 'claude3opus',
+    icon: <SiAnthropic />,
+  },
+  {
     label: 'GPT-4 Omni',
     shortLabel: 'GPT-4o',
     code: 'gpt4o',
@@ -59,18 +71,6 @@ export const languageModels = [
     shortLabel: 'GPT-4',
     code: 'gpt4',
     icon: <AiOutlineOpenAI />,
-  },
-  {
-    label: 'Claude 3 Opus',
-    shortLabel: 'Opus',
-    code: 'claude3opus',
-    icon: <SiAnthropic />,
-  },
-  {
-    label: 'Claude 3 Sonnet',
-    shortLabel: 'Sonnet',
-    code: 'claude2',
-    icon: <SiAnthropic />,
   },
   {
     label: 'Claude 3 Haiku',
