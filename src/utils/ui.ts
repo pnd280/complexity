@@ -18,8 +18,16 @@ export const ui = {
     const $parents = $('button[aria-label="Submit"]:last').parents();
 
     if (type === 'main') {
-      return $parents.find(
+      const $main = $parents.find(
         'textarea[placeholder="Ask anything..."]:last'
+      );
+
+      const $collection = $parents.find(
+        'textarea[placeholder="New Thread"]:last'
+      );
+
+      return (
+        $main.length ? $main : $collection
       ) as JQuery<HTMLTextAreaElement>;
     }
 

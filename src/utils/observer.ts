@@ -295,14 +295,18 @@ function onNewElementAdded({
 
 function onShallowRouteChange(callback: () => void) {
   let lastUrl = location.href;
-  new MutationObserver(() => {
+  const observer = new MutationObserver(() => {
     const url = location.href;
     if (url !== lastUrl) {
       lastUrl = url;
 
       callback();
     }
-  }).observe(document, { subtree: true, childList: true });
+  });
+
+  observer.observe(document, { subtree: true, childList: true });
+
+  return () => observer.disconnect();
 }
 
 type ScrollCallback = () => void;

@@ -32,7 +32,9 @@ import { useQueryBoxStore } from '@/content-script/session-store/query-box';
 import { webpageMessenger } from '@/content-script/webpage/messenger';
 import { cn } from '@/lib/utils';
 import { UserProfileSettingsAPIResponse } from '@/types/PPLXApi';
+import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
+import { whereAmI } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 
@@ -82,6 +84,26 @@ export default function CollectionSelector() {
   useEffect(() => {
     ui.findActiveQueryBoxTextarea({}).trigger('focus');
   }, [selectedCollectionUuid]);
+
+  useEffect(() => {
+    const autoSelect = () => {
+      if (whereAmI() !== 'collection') return;
+
+      const collectionSlug = window.location.pathname.split('/').pop();
+
+      const collection = collections?.find((x) => x.url === collectionSlug);
+
+      if (!collection) return;
+
+      setSelectedCollectionUuid(collection.uuid);
+    };
+
+    autoSelect();
+
+    const stopObserving = observer.onShallowRouteChange(autoSelect);
+
+    return () => stopObserving();
+  }, [collections, setSelectedCollectionUuid]);
 
   return (
     <>
@@ -200,7 +222,8 @@ export default function CollectionSelector() {
                           });
                         }}
                       >
-                        {isUserProfileSettingsLoading || isUpdatingUserProfileSettings ? (
+                        {isUserProfileSettingsLoading ||
+                        isUpdatingUserProfileSettings ? (
                           <LoaderCircle className="tw-w-3 tw-h-3 tw-animate-spin" />
                         ) : (
                           <>

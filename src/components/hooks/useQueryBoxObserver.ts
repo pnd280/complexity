@@ -4,6 +4,7 @@ import {
   popupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
 import { cn } from '@/lib/utils';
+import { ui } from '@/utils/ui';
 import { whereAmI } from '@/utils/utils';
 
 import useElementObserver from './useElementObserver';
@@ -25,13 +26,14 @@ export default function useQueryBoxObserver({
 }: UseQueryBoxObserverProps) {
   useElementObserver({
     selector: () =>
-      $('textarea[placeholder="Ask anything..."]').next().toArray(),
+      ui.findActiveQueryBoxTextarea({ type: 'main' }).next().toArray(),
     callback: ({ element }) => {
       if (disabled) return;
 
       $(element).addClass(() =>
         cn('tw-col-span-3 tw-col-start-1 tw-flex-wrap tw-gap-y-1', {
-          'tw-mr-[7rem]': !popupSettingsStore.getState().queryBoxSelectors.focus,
+          'tw-mr-[7rem]':
+            !popupSettingsStore.getState().queryBoxSelectors.focus,
           'tw-mr-10': popupSettingsStore.getState().queryBoxSelectors.focus,
         })
       );
