@@ -1,10 +1,14 @@
+import { MermaidConfig } from 'mermaid';
+
 import { BackgroundAction } from '@/utils/background';
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.create({
-    url: chrome.runtime.getURL('options.html') + '?tab=changelog',
+if (!import.meta.env.DEV) {
+  chrome.runtime.onInstalled.addListener(() => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL('options.html') + '?tab=changelog',
+    });
   });
-});
+}
 
 chrome.runtime.onMessage.addListener(
   async (
@@ -48,6 +52,33 @@ chrome.runtime.onMessage.addListener(
           sendResponse({ message: 'WSHook injected' });
         }
         break;
+      case 'injectMermaid':
+        if (sender.tab) {
+          const tabId = sender.tab.id;
+
+          const { darkTheme } = message.payload;
+
+          const config: MermaidConfig = {
+            startOnLoad: false,
+            theme: darkTheme ? 'dark' : 'base',
+            themeVariables: {
+              edgeLabelBackground: darkTheme ? '#191a1a' : '#fcfcf9',
+            },
+          };
+
+          await injectScriptBlock({
+            tabId: tabId!,
+            scriptId: 'mermaid',
+            scriptContent: `
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+              window.mermaid = mermaid;
+              window.mermaid.initialize(${JSON.stringify(config)});
+            `,
+            waitForExecution: true,
+          });
+
+          sendResponse({ message: 'Mermaid injected' });
+        }
     }
     return true;
   }
@@ -95,6 +126,38 @@ function injectScript({
       });
     },
     args: [scriptUrl, scriptId, waitForExecution],
+    injectImmediately: true,
+    world: 'MAIN',
+  });
+}
+
+function injectScriptBlock({
+  tabId,
+  scriptId,
+  scriptContent,
+  waitForExecution = false,
+}: {
+  tabId: number;
+  scriptId: string;
+  scriptContent: string;
+  waitForExecution?: boolean;
+}) {
+  return chrome.scripting.executeScript({
+    target: { tabId: tabId },
+    func: (content: string, id: string, wait: boolean) => {
+      return new Promise<void>((resolve, reject) => {
+        const script = document.createElement('script');
+        script.id = id;
+        script.type = 'module';
+        script.text = content;
+        script.onload = () => resolve();
+        script.onerror = () =>
+          reject(new Error(`Failed to load script: ${content}`));
+        document.body.appendChild(script);
+        if (!wait) resolve();
+      });
+    },
+    args: [scriptContent, scriptId, waitForExecution],
     injectImmediately: true,
     world: 'MAIN',
   });

@@ -26,10 +26,6 @@ export default function ThreadTitle({
 
     if (isOutOfViewport) {
       toggleVis(true);
-    } else {
-      setTimeout(() => {
-        toggleVis(false);
-      }, 290);
     }
   }, [isOutOfViewport, toggleVis]);
 
@@ -37,7 +33,7 @@ export default function ThreadTitle({
     <div
       ref={ref}
       className={cn(
-        'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-duration-300 tw-font-sans tw-fade-in tw-slide-in-from-bottom tw-fade-out tw-slide-out-to-bottom',
+        'tw-transition-all tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-font-sans tw-fade-in tw-slide-in-from-bottom tw-fade-out tw-slide-out-to-bottom tw-fill-mode-forwards',
         {
           '!tw-hidden': !visible,
           'tw-animate-in': isOutOfViewport,
@@ -45,6 +41,11 @@ export default function ThreadTitle({
         }
       )}
       onClick={onClick}
+      onAnimationEnd={() => {
+        if (!isOutOfViewport) {
+          toggleVis(false);
+        }
+      }}
     >
       <span>{query}</span>
     </div>

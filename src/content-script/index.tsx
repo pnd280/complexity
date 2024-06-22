@@ -3,10 +3,16 @@ import '@/content-script/webpage/ws-hook';
 
 import $ from 'jquery';
 
+import { ChromeStore } from '@/types/ChromeStore';
 import background from '@/utils/background';
-import { getPPLXBuildId } from '@/utils/utils';
+import {
+  getPPLXBuildId,
+  waitForNextjsHydration,
+} from '@/utils/utils';
 
 import Root from './Root';
+import { globalStore } from './session-store/global';
+import { popupSettingsStore } from './session-store/popup-settings';
 import uiTweaks from './ui-tweaks';
 import webpageListeners from './webpage/listeners';
 import webpageMessageInterceptors from './webpage/message-interceptors';
@@ -40,6 +46,8 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
 })();
 
 async function init() {
+  await waitForNextjsHydration();
+
   $('html').attr({
     'data-dev': `${import.meta.env.DEV}`,
   });
@@ -51,6 +59,8 @@ async function init() {
   softUpdateCheck();
 
   await background.sendMessage({ action: 'injectScript' });
+
+  handleArtifactsInjection();
 }
 
 async function softUpdateCheck() {
@@ -60,9 +70,57 @@ async function softUpdateCheck() {
 
   if (latestPPLXBuildId && pplxBuildId !== latestPPLXBuildId) {
     console.warn(
-      "COMPLEXITY: Perplexity web app's new build id detected! The extension maybe outdated and some features may not work as expected.",
+      "COMPLEXITY: Perplexity web app's new build id detected! The extension maybe outdated and some features may not work as expected. Please report any issues by joining the Discord server: https://discord.gg/fxzqdkwmWx.",
       'BUILD_ID:',
       latestPPLXBuildId
     );
+  }
+}
+
+function handleArtifactsInjection() {
+  const injected: ChromeStore['artifacts'] = {
+    mermaid: false,
+  };
+
+  globalStore.subscribe(({ artifacts }) => {
+    inject({
+      codeBlockEnhancedToolbarEnabled:
+        popupSettingsStore.getState().qolTweaks.codeBlockEnhancedToolbar,
+      artifacts,
+    });
+  });
+
+  popupSettingsStore.subscribe(
+    ({ qolTweaks: { codeBlockEnhancedToolbar } }) => {
+      inject({
+        codeBlockEnhancedToolbarEnabled: codeBlockEnhancedToolbar,
+        artifacts: globalStore.getState().artifacts,
+      });
+    }
+  );
+
+  function inject({
+    codeBlockEnhancedToolbarEnabled,
+    artifacts,
+  }: {
+    codeBlockEnhancedToolbarEnabled: ChromeStore['popupSettings']['qolTweaks']['codeBlockEnhancedToolbar'];
+    artifacts: ChromeStore['artifacts'];
+  }) {
+    if (!codeBlockEnhancedToolbarEnabled) return;
+
+    const { mermaid } = artifacts;
+
+    requestIdleCallback(async () => {
+      const darkTheme = $('html').hasClass('dark');
+
+      if (mermaid) {
+        if (injected.mermaid) return;
+
+        await background.sendMessage({
+          action: 'injectMermaid',
+          payload: { darkTheme },
+        });
+      }
+    });
   }
 }

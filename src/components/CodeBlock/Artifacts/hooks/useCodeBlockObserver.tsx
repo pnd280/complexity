@@ -1,61 +1,43 @@
-import '../utils/prismjs-components/prism-vscode.css';
-
 import {
-  Fragment,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useCallback,
-  useEffect,
 } from 'react';
-import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
-import {
-  Copy,
-  X,
-} from 'lucide-react';
 import Prism from 'prismjs';
-import { useImmer } from 'use-immer';
+import { Updater } from 'use-immer';
 
+import useElementObserver from '@/components/hooks/useElementObserver';
+import { useGlobalStore } from '@/content-script/session-store/global';
 import { Nullable } from '@/types/Utils';
-import { updateLineCount } from '@/utils/code-block';
 import observer from '@/utils/observer';
 import prismJs from '@/utils/prism';
 import { ui } from '@/utils/ui';
+import { whereAmI } from '@/utils/utils';
+
 import {
-  scrollToElement,
-  stripHtml,
-  whereAmI,
-} from '@/utils/utils';
-import { useToggle } from '@uidotdev/usehooks';
+  CodeBlockContainer,
+  CodeBlockStates,
+} from '../../CodeBlockHeader';
 
-import CodeBlockHeader from './CodeBlockToolbar';
-import DiffViewDialog from './DiffViewDialog';
-import useElementObserver from './hooks/useElementObserver';
+type useCodeBlockObserverProps = {
+  idleCopyButtonText: ReactNode;
+  setContainers: Updater<CodeBlockContainer[]>;
+  setButtonTextStates: Updater<ReactNode[]>;
+  setBlockStates: Updater<CodeBlockStates[]>;
+  setMermaidWrappers: Dispatch<SetStateAction<Element[]>>;
+};
 
-export default function CodeBlockEnhancedToolbar() {
-  const [containers, setContainers] = useImmer<
-    {
-      header: Element;
-      preElement: Element;
-      lang: string;
-      lineCount: number;
-      lineCountObserving: boolean;
-      isNative: boolean;
-    }[]
-  >([]);
-
-  const [diffViewerOpen, toggleDiffViewerVis] = useToggle(false);
-  const [diffTexts, setDiffTexts] = useImmer<number[]>([]);
-  const idleCopyButtonText = <Copy className="tw-w-4 tw-h-4" />;
-  const [buttonTextStates, setButtonTextStates] = useImmer<ReactNode[]>([]);
-  const [blockStates, setBlockStates] = useImmer<
-    {
-      isCollapsed: boolean;
-      isCopied: boolean;
-      isWrapped: boolean;
-      isShownLineNumbers: boolean;
-    }[]
-  >([]);
+export default function useCodeBlockObserver({
+  idleCopyButtonText,
+  setBlockStates,
+  setButtonTextStates,
+  setContainers,
+  setMermaidWrappers,
+}: useCodeBlockObserverProps) {
+  const mermaidEnabled = useGlobalStore((state) => state.artifacts.mermaid);
 
   const rewritePreBlock = useCallback(
     (
@@ -78,7 +60,7 @@ export default function CodeBlockEnhancedToolbar() {
         }
 
         $parent.addClass(
-          'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
+          'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border code-block-wapper'
         );
         $(pre).addClass('!tw-m-0 !tw-rounded-none !tw-rounded-b-md');
         $(pre).find('.absolute').hide();
@@ -95,6 +77,12 @@ export default function CodeBlockEnhancedToolbar() {
           $(pre)
             .find('code:first')
             .addClass('!tw-whitespace-pre-wrap !tw-break-words');
+        }
+
+        if (lang === 'mermaid' && mermaidEnabled) {
+          const $wrapper = $('<div>').addClass('mermaid-wrapper');
+
+          $(pre).closest('.code-block-wapper').after($wrapper);
         }
 
         const $container = $('<div>').addClass(
@@ -117,8 +105,14 @@ export default function CodeBlockEnhancedToolbar() {
             .attr('class')
             ?.match(/language-(\w+)/)?.[1] ?? '';
 
+        if (!lang) {
+          $(pre)
+            .find('code:first')
+            .addClass('!tw-whitespace-pre-wrap !tw-break-words');
+        }
+
         const $wrapper = $('<div>').addClass(
-          'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
+          'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border tw-py-4'
         );
 
         $(pre).before($wrapper);
@@ -134,7 +128,7 @@ export default function CodeBlockEnhancedToolbar() {
         return { $container, lang, isNative: false };
       }
     },
-    []
+    [mermaidEnabled]
   );
 
   useElementObserver({
@@ -182,8 +176,22 @@ export default function CodeBlockEnhancedToolbar() {
             observer.onElementExist({
               container: args!.container,
               selector: () => [args!.nativeToolbar()[0]],
-              callback: () => {
+              callback: async () => {
                 Prism.highlightAllUnder(pre);
+
+                if (lang === 'mermaid' && mermaidEnabled) {
+                  setMermaidWrappers((prev) => {
+                    const draft = prev.filter((el) =>
+                      document.body.contains(el)
+                    );
+
+                    if (prev.includes(pre)) return draft;
+
+                    draft.push(pre);
+
+                    return draft;
+                  });
+                }
               },
               recurring: false,
             });
@@ -223,111 +231,4 @@ export default function CodeBlockEnhancedToolbar() {
     },
     observedIdentifier: 'alternate-code-block',
   });
-
-  useEffect(() => {
-    containers.forEach((container, index) => {
-      if (container.lineCountObserving) return;
-
-      updateLineCount(container.preElement, index, setContainers);
-
-      observer.onDOMChanges({
-        targetNode: $(container.preElement).find('code:first')[0],
-        callback: () => {
-          updateLineCount(container.preElement, index, setContainers);
-        },
-      });
-
-      setContainers((draft) => {
-        draft[index].lineCountObserving = true;
-      });
-    });
-  }, [containers, setContainers]);
-
-  const handleSelectForCompare = (blockIndex: number) => {
-    if (diffTexts.length === 2) {
-      setDiffTexts([]);
-      return;
-    }
-
-    setDiffTexts((draft) => {
-      if (draft.includes(blockIndex)) {
-        draft.splice(draft.indexOf(blockIndex), 1);
-      } else {
-        draft.push(blockIndex);
-      }
-    });
-  };
-
-  const extractTextFromBlock = (blockIndex: number) => {
-    const code = stripHtml(
-      $(containers[blockIndex]?.preElement)?.find('code').html()
-    );
-
-    return code;
-  };
-
-  useEffect(() => {
-    if (diffTexts.length === 2) {
-      toggleDiffViewerVis(true);
-    }
-  }, [diffTexts, toggleDiffViewerVis]);
-
-  return (
-    <>
-      {containers.map((container, index) => (
-        <Fragment key={index}>
-          {ReactDOM.createPortal(
-            <CodeBlockHeader
-              container={container}
-              index={index}
-              blockStates={blockStates}
-              setBlockStates={setBlockStates}
-              buttonTextStates={buttonTextStates}
-              setButtonTextStates={setButtonTextStates}
-              handleSelectForCompare={handleSelectForCompare}
-              diffTexts={diffTexts}
-              idleCopyButtonText={idleCopyButtonText}
-            />,
-            container.header
-          )}
-        </Fragment>
-      ))}
-
-      <DiffViewDialog
-        oldText={extractTextFromBlock(diffTexts[0])}
-        newText={extractTextFromBlock(diffTexts[1])}
-        open={diffViewerOpen}
-        toggleOpen={(open) => {
-          setDiffTexts([]);
-          return toggleDiffViewerVis(open);
-        }}
-        lang={containers[diffTexts[0]]?.lang}
-      />
-
-      {!diffViewerOpen &&
-        diffTexts.length === 1 &&
-        ReactDOM.createPortal(
-          <div className="tw-fixed tw-bottom-[10rem] tw-left-1/2 -tw-translate-x-1/2 tw-z-10">
-            <div
-              className="tw-bg-secondary tw-border tw-rounded-md tw-p-1 tw-px-2 tw-animate-in tw-slide-in-from-bottom tw-fade-in tw-select-none tw-flex tw-items-center tw-gap-1 active:tw-scale-95 tw-transition-all tw-duration-300 tw-shadow-lg tw-font-sans"
-              onClick={() => {
-                const preElement = containers[diffTexts[0]].preElement;
-
-                scrollToElement($(preElement), -70);
-              }}
-            >
-              <X
-                className="tw-w-4 tw-h-4 tw-cursor-pointer tw-text-muted-foreground dark:tw-text-muted hover:!tw-text-foreground tw-transition-all"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  return setDiffTexts([]);
-                }}
-              />
-              <span>Select another block to compare</span>
-            </div>
-          </div>,
-          $('#complexity-root')[0]
-        )}
-    </>
-  );
 }

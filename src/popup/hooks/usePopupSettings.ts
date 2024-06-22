@@ -1,5 +1,8 @@
 import { produce } from 'immer';
 
+import {
+  popupSettingsStore,
+} from '@/content-script/session-store/popup-settings';
 import { ChromeStore } from '@/types/ChromeStore';
 import { chromeStorage } from '@/utils/chrome-store';
 import { useQuery } from '@tanstack/react-query';
@@ -33,6 +36,13 @@ export default function usePopupSettings() {
     });
 
     await refetch();
+
+    popupSettingsStore.setState((state) => {
+      state[section] ??= {} as ChromeStore['popupSettings'][T];
+
+      (state[section][key] as boolean) ??= false;
+      (state[section][key] as boolean) = value;
+    });
   };
 
   return {

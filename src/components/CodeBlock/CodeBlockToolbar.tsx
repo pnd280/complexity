@@ -10,15 +10,17 @@ import {
   Text,
   WrapText,
 } from 'lucide-react';
+import { FaProjectDiagram } from 'react-icons/fa';
 
 import { cn } from '@/lib/utils';
 import { rewriteCodeBlock } from '@/utils/code-block';
 import { ui } from '@/utils/ui';
 import { stripHtml } from '@/utils/utils';
 
-import TooltipWrapper from './TooltipWrapper';
+import TooltipWrapper from '../TooltipWrapper';
+import useArtifactsSettings from './Artifacts/hooks/useArtifactsSettings';
 
-interface CodeBlockHeaderProps {
+type CodeBlockHeaderProps = {
   container: {
     header: Element;
     preElement: Element;
@@ -38,9 +40,9 @@ interface CodeBlockHeaderProps {
   handleSelectForCompare: (index: number) => void;
   diffTexts: number[];
   idleCopyButtonText: ReactNode;
-}
+};
 
-const CodeBlockHeader: React.FC<CodeBlockHeaderProps> = ({
+export default function CodeBlockHeader({
   container,
   index,
   blockStates,
@@ -50,7 +52,9 @@ const CodeBlockHeader: React.FC<CodeBlockHeaderProps> = ({
   handleSelectForCompare,
   diffTexts,
   idleCopyButtonText,
-}) => {
+}: CodeBlockHeaderProps) {
+  const artifactsSettings = useArtifactsSettings();
+
   return (
     <div className="tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
       <div className="tw-text-background dark:tw-text-foreground">
@@ -179,9 +183,32 @@ const CodeBlockHeader: React.FC<CodeBlockHeaderProps> = ({
         >
           {buttonTextStates[index]}
         </div>
+
+        {artifactsSettings &&
+          artifactsSettings.mermaid &&
+          container.lang === 'mermaid' && (
+            <TooltipWrapper content="Render">
+              <div
+                className={cn(
+                  'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
+                )}
+                onClick={() => {
+                  $(container.preElement)
+                    .closest('.code-block-wapper')
+                    .parent()
+                    .find('.mermaid-wrapper')
+                    .removeClass('!tw-hidden');
+
+                  $(container.preElement)
+                    .closest('.code-block-wapper')
+                    .addClass('!tw-hidden');
+                }}
+              >
+                <FaProjectDiagram className="tw-w-4 tw-h-4" />
+              </div>
+            </TooltipWrapper>
+          )}
       </div>
     </div>
   );
-};
-
-export default CodeBlockHeader;
+}

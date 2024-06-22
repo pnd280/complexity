@@ -70,6 +70,20 @@ export function compareVersions(v1: string, v2: string) {
   return 0;
 }
 
+export function waitForNextjsHydration() {
+  return new Promise((resolve) => {
+    const checkInterval = setInterval(() => {
+      const nextDataElement = $('#__NEXT_DATA__');
+      const nextContainer = $('#__next');
+
+      if (nextDataElement && nextContainer) {
+        clearInterval(checkInterval);
+        resolve(null);
+      }
+    }, 100);
+  });
+}
+
 export function escapeHtmlTags(html: string) {
   return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }

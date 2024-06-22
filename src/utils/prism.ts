@@ -32,6 +32,7 @@ const supportedLangs = [
   'php',
   'apex',
   'blade',
+  'mermaid',
 ];
 
 const deps: Record<SupportedLang, SupportedLang[]> = {

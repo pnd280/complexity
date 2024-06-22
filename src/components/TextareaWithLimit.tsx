@@ -8,11 +8,11 @@ import clsx from 'clsx';
 
 import { cn } from '@/lib/utils';
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  limit?: number;
-  triggerCounterLimitOffset?: number;
-}
+export type TextareaProps =
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    limit?: number;
+    triggerCounterLimitOffset?: number;
+  };
 
 const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, limit, triggerCounterLimitOffset = 0, ...props }, ref) => {

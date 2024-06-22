@@ -7,6 +7,7 @@ type GlobalState = {
   isWebSocketCaptured: boolean;
   isLongPollingCaptured: boolean;
   secretMode: boolean;
+  artifacts: ChromeStore['artifacts'];
   customTheme: ChromeStore['customTheme'];
 };
 
@@ -14,6 +15,7 @@ const useGlobalStore = create<GlobalState>(() => ({
   isWebSocketCaptured: false,
   isLongPollingCaptured: false,
   secretMode: false,
+  artifacts: {},
   customTheme: {},
 }));
 
@@ -24,9 +26,13 @@ const globalStore = useGlobalStore;
 
   globalStore.setState({ secretMode: !!secretMode });
 
+  const artifacts = await chromeStorage.getStorageValue('artifacts');
+
+  globalStore.setState({ artifacts: artifacts || {} });
+
   const customTheme = await chromeStorage.getStorageValue('customTheme');
 
-  globalStore.setState({ customTheme: customTheme || '' });
+  globalStore.setState({ customTheme: customTheme || {} });
 })();
 
 export { globalStore, useGlobalStore };

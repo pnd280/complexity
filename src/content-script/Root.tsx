@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { createRoot } from 'react-dom/client';
 
-import CodeBlockEnhancedToolbar from '@/components/CodeBlockHeader';
+import CodeBlockEnhancedToolbar from '@/components/CodeBlock/CodeBlockHeader';
 import { Commander } from '@/components/Commander';
 import useElementObserver from '@/components/hooks/useElementObserver';
 import MainPage from '@/components/MainPage';

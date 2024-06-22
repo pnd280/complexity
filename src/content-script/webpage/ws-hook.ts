@@ -376,4 +376,20 @@ class WSHook {
       scroll: data.payload !== window.location.pathname,
     });
   });
+
+  WSHook.contentScriptMessenger.onMessage(
+    'runMermaid',
+    async ({ payload: querySelector }) => {
+      try {
+        // @ts-expect-error
+        await window.mermaid.run({
+          querySelector,
+        });
+
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+  );
 })();

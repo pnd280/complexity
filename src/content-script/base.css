@@ -284,3 +284,8 @@ pre code.line:before {
 [data-popper-reference-hidden="true"] {
   display: none;
 }
+
+/* mermaid */
+.mermaid-run svg .label {
+  font-family: var(--mono-font) !important;
+}

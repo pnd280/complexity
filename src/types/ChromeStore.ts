@@ -29,6 +29,9 @@ export type ChromeStore = {
       collapseEmptyThreadVisualColumns: boolean;
     };
   };
+  artifacts: {
+    mermaid?: boolean;
+  };
   customTheme: {
     slogan?: string;
     uiFont?: string;
