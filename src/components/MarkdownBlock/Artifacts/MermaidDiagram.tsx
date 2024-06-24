@@ -119,6 +119,7 @@ export default function MermaidDiagram({
               'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
             }
             onClick={() => {
+              svgPanZoomRef.current?.resize();
               svgPanZoomRef.current?.reset();
             }}
           >
