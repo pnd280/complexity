@@ -73,17 +73,22 @@ const useQueryBoxStore = create<QueryBoxState>()(
 
       allowWebAccess: false,
       toggleWebAccess: (toggled) => {
-        chromeStorage.setStorageValue({
-          key: 'defaultWebAccess',
-          value: !!toggled,
-        });
+        return set((state) => {
+          if (typeof toggled === 'undefined')
+            toggled = !state.webAccess.allowWebAccess;
 
-        return set((state) => ({
-          webAccess: {
-            ...state.webAccess,
-            allowWebAccess: toggled ?? !state.webAccess.allowWebAccess,
-          },
-        }));
+          chromeStorage.setStorageValue({
+            key: 'defaultWebAccess',
+            value: !!toggled,
+          });
+
+          return {
+            webAccess: {
+              ...state.webAccess,
+              allowWebAccess: toggled ?? !state.webAccess.allowWebAccess,
+            },
+          };
+        });
       },
 
       proSearch: false,
