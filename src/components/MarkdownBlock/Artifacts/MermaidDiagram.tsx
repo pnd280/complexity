@@ -45,22 +45,22 @@ export default function MermaidDiagram({
     };
 
     requestIdleCallback(async () => {
-      $(pre).closest('.code-block-wapper').addClass('!tw-hidden');
+      $(pre).closest('.markdown-block-wapper').addClass('!tw-hidden');
 
       await runMermaid();
 
       $(pre)
-        .closest('.code-block-wapper')
+        .closest('.markdown-block-wapper')
         .parent()
         .find('.mermaid-run')
         .removeClass('tw-opacity-0 tw-invisible')
         .addClass('tw-animate-in tw-fade-in');
 
       observer.onElementExist({
-        container: $(pre).closest('.code-block-wapper').parent()[0],
+        container: $(pre).closest('.markdown-block-wapper').parent()[0],
         selector: () => [
           $(pre)
-            .closest('.code-block-wapper')
+            .closest('.markdown-block-wapper')
             .parent()
             .find('.mermaid-wrapper svg')[0],
         ],
@@ -92,16 +92,16 @@ export default function MermaidDiagram({
               'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
             }
             onClick={() => {
-              $(pre).closest('.code-block-wapper').removeClass('!tw-hidden');
+              $(pre).closest('.markdown-block-wapper').removeClass('!tw-hidden');
 
               $(pre)
-                .closest('.code-block-wapper')
+                .closest('.markdown-block-wapper')
                 .parent()
                 .find('.mermaid-run')
                 .removeClass('tw-animate-in tw-fade-in');
 
               $(pre)
-                .closest('.code-block-wapper')
+                .closest('.markdown-block-wapper')
                 .parent()
                 .find('.mermaid-wrapper')
                 .addClass('!tw-hidden');

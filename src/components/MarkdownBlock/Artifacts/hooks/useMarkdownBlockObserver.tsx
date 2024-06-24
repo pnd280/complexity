@@ -18,25 +18,25 @@ import { ui } from '@/utils/ui';
 import { whereAmI } from '@/utils/utils';
 
 import {
-  CodeBlockContainer,
-  CodeBlockStates,
-} from '../../CodeBlockHeader';
+  MarkdownBlockContainer,
+  MarkdownBlockStates,
+} from '../../MarkdownBlockHeader';
 
-type useCodeBlockObserverProps = {
+type useMarkdownBlockObserverProps = {
   idleCopyButtonText: ReactNode;
-  setContainers: Updater<CodeBlockContainer[]>;
+  setContainers: Updater<MarkdownBlockContainer[]>;
   setButtonTextStates: Updater<ReactNode[]>;
-  setBlockStates: Updater<CodeBlockStates[]>;
+  setBlockStates: Updater<MarkdownBlockStates[]>;
   setMermaidWrappers: Dispatch<SetStateAction<Element[]>>;
 };
 
-export default function useCodeBlockObserver({
+export default function useMarkdownBlockObserver({
   idleCopyButtonText,
   setBlockStates,
   setButtonTextStates,
   setContainers,
   setMermaidWrappers,
-}: useCodeBlockObserverProps) {
+}: useMarkdownBlockObserverProps) {
   const mermaidEnabled = useGlobalStore((state) => state.artifacts.mermaid);
 
   const rewritePreBlock = useCallback(
@@ -60,7 +60,7 @@ export default function useCodeBlockObserver({
         }
 
         $parent.addClass(
-          'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border code-block-wapper'
+          'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border markdown-block-wapper'
         );
         $(pre).addClass('!tw-m-0 !tw-rounded-none !tw-rounded-b-md');
         $(pre).find('.absolute').hide();
@@ -82,11 +82,11 @@ export default function useCodeBlockObserver({
         if (lang === 'mermaid' && mermaidEnabled) {
           const $wrapper = $('<div>').addClass('mermaid-wrapper');
 
-          $(pre).closest('.code-block-wapper').after($wrapper);
+          $(pre).closest('.markdown-block-wapper').after($wrapper);
         }
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
+          'tw-sticky tw-top-[var(--markdownBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
         );
 
         $parent.prepend($container);
@@ -112,7 +112,7 @@ export default function useCodeBlockObserver({
         }
 
         const $wrapper = $('<div>').addClass(
-          'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border tw-py-4'
+          'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
         );
 
         $(pre).before($wrapper);
@@ -120,7 +120,7 @@ export default function useCodeBlockObserver({
         $wrapper.append(pre);
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[var(--codeBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
+          'tw-sticky tw-top-[var(--markdownBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
         );
 
         $wrapper.prepend($container);
@@ -229,6 +229,6 @@ export default function useCodeBlockObserver({
         });
       });
     },
-    observedIdentifier: 'alternate-code-block',
+    observedIdentifier: 'alternate-markdown-block',
   });
 }

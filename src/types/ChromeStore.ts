@@ -21,7 +21,7 @@ export type ChromeStore = {
       threadTOC: boolean;
       quickQueryCommander: boolean;
       threadMessageStickyToolbar: boolean;
-      codeBlockEnhancedToolbar: boolean;
+      markdownBlockEnhancedToolbar: boolean;
       autoRefreshSessionTimeout: boolean;
       blockTelemetry: boolean;
     };

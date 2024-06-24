@@ -62,9 +62,11 @@ export default function ThreadMessageToolbar({
         .html()
     );
 
-    const originalText = $(containers[containerIndex].query)
-      .find('>*:not(#markdown-query-wrapper)')
-      .html();
+    const originalText = stripHtml(
+      $(containers[containerIndex].query)
+        .find('>*:not(#markdown-query-wrapper)')
+        .html()
+    );
 
     setMarkdownVisualDiff(
       !!markdownText.length &&

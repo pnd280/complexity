@@ -13,14 +13,14 @@ import {
 import { FaProjectDiagram } from 'react-icons/fa';
 
 import { cn } from '@/lib/utils';
-import { rewriteCodeBlock } from '@/utils/code-block';
+import { rewriteMarkdownBlock } from '@/utils/markdown-block';
 import { ui } from '@/utils/ui';
 import { stripHtml } from '@/utils/utils';
 
 import TooltipWrapper from '../TooltipWrapper';
 import useArtifactsSettings from './Artifacts/hooks/useArtifactsSettings';
 
-type CodeBlockHeaderProps = {
+type MarkdownBlockHeaderProps = {
   container: {
     header: Element;
     preElement: Element;
@@ -42,7 +42,7 @@ type CodeBlockHeaderProps = {
   idleCopyButtonText: ReactNode;
 };
 
-export default function CodeBlockHeader({
+export default function MarkdownBlockHeader({
   container,
   index,
   blockStates,
@@ -52,7 +52,7 @@ export default function CodeBlockHeader({
   handleSelectForCompare,
   diffTexts,
   idleCopyButtonText,
-}: CodeBlockHeaderProps) {
+}: MarkdownBlockHeaderProps) {
   const artifactsSettings = useArtifactsSettings();
 
   return (
@@ -81,7 +81,7 @@ export default function CodeBlockHeader({
           <div
             className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
             onClick={() => {
-              rewriteCodeBlock(container.preElement);
+              rewriteMarkdownBlock(container.preElement);
 
               const isShownLineNumbers = blockStates[index]?.isShownLineNumbers;
               $(container.header)
@@ -194,13 +194,13 @@ export default function CodeBlockHeader({
                 )}
                 onClick={() => {
                   $(container.preElement)
-                    .closest('.code-block-wapper')
+                    .closest('.markdown-block-wapper')
                     .parent()
                     .find('.mermaid-wrapper')
                     .removeClass('!tw-hidden');
 
                   $(container.preElement)
-                    .closest('.code-block-wapper')
+                    .closest('.markdown-block-wapper')
                     .addClass('!tw-hidden');
                 }}
               >

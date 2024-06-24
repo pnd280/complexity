@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-export const rewriteCodeBlock = (pre: Element) => {
+export const rewriteMarkdownBlock = (pre: Element) => {
   if ($(pre).find('code>code').length) return;
 
   const code = $(pre).find('code').html();

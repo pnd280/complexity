@@ -47,9 +47,9 @@ const qolTweaks: PopupSetting<
     storeKey: 'quickQueryCommander',
   },
   {
-    id: 'code-block-enhanced-toolbar',
-    label: 'Code block enhanced toolbar',
-    storeKey: 'codeBlockEnhancedToolbar',
+    id: 'markdown-block-enhanced-toolbar',
+    label: 'Markdown block toolbar',
+    storeKey: 'markdownBlockEnhancedToolbar',
   },
   {
     id: 'thread-message-sticky-toolbar',

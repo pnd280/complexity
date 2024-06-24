@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useImmer } from 'use-immer';
 
-import { updateLineCount } from '@/utils/code-block';
+import { updateLineCount } from '@/utils/markdown-block';
 import observer from '@/utils/observer';
 import {
   scrollToElement,
@@ -26,11 +26,12 @@ import { useToggle } from '@uidotdev/usehooks';
 
 import DiffViewDialog from '../DiffViewDialog';
 import useArtifactsSettings from './Artifacts/hooks/useArtifactsSettings';
-import useCodeBlockObserver from './Artifacts/hooks/useCodeBlockObserver';
+import useMarkdownBlockObserver
+  from './Artifacts/hooks/useMarkdownBlockObserver';
 import MermaidDiagram from './Artifacts/MermaidDiagram';
-import CodeBlockHeader from './CodeBlockToolbar';
+import MarkdownBlockHeader from './MarkdownBlockToolbar';
 
-export type CodeBlockContainer = {
+export type MarkdownBlockContainer = {
   header: Element;
   preElement: Element;
   lang: string;
@@ -39,23 +40,23 @@ export type CodeBlockContainer = {
   isNative: boolean;
 };
 
-export type CodeBlockStates = {
+export type MarkdownBlockStates = {
   isCollapsed: boolean;
   isCopied: boolean;
   isWrapped: boolean;
   isShownLineNumbers: boolean;
 };
 
-export default function CodeBlockEnhancedToolbar() {
-  const [containers, setContainers] = useImmer<CodeBlockContainer[]>([]);
+export default function MarkdownBlockEnhancedToolbar() {
+  const [containers, setContainers] = useImmer<MarkdownBlockContainer[]>([]);
   const [diffViewerOpen, toggleDiffViewerVis] = useToggle(false);
   const [diffTexts, setDiffTexts] = useImmer<number[]>([]);
   const [buttonTextStates, setButtonTextStates] = useImmer<ReactNode[]>([]);
-  const [blockStates, setBlockStates] = useImmer<CodeBlockStates[]>([]);
+  const [blockStates, setBlockStates] = useImmer<MarkdownBlockStates[]>([]);
   const [mermaidWrapeprs, setMermaidWrappers] = useState<Element[]>([]);
   const idleCopyButtonText = <Copy className="tw-w-4 tw-h-4" />;
 
-  useCodeBlockObserver({
+  useMarkdownBlockObserver({
     idleCopyButtonText,
     setBlockStates,
     setButtonTextStates,
@@ -121,7 +122,7 @@ export default function CodeBlockEnhancedToolbar() {
       if (!artifactsSettings || !artifactsSettings.mermaid) return;
 
       const $container = $(pre)
-        .closest('.code-block-wapper')
+        .closest('.markdown-block-wapper')
         .parent()
         .find('.mermaid-wrapper');
 
@@ -147,7 +148,7 @@ export default function CodeBlockEnhancedToolbar() {
       {containers.map((container, index) => (
         <Fragment key={index}>
           {ReactDOM.createPortal(
-            <CodeBlockHeader
+            <MarkdownBlockHeader
               container={container}
               index={index}
               blockStates={blockStates}

@@ -84,29 +84,29 @@ function handleArtifactsInjection() {
 
   globalStore.subscribe(({ artifacts }) => {
     inject({
-      codeBlockEnhancedToolbarEnabled:
-        popupSettingsStore.getState().qolTweaks.codeBlockEnhancedToolbar,
+      markdownBlockEnhancedToolbarEnabled:
+        popupSettingsStore.getState().qolTweaks.markdownBlockEnhancedToolbar,
       artifacts,
     });
   });
 
   popupSettingsStore.subscribe(
-    ({ qolTweaks: { codeBlockEnhancedToolbar } }) => {
+    ({ qolTweaks: { markdownBlockEnhancedToolbar } }) => {
       inject({
-        codeBlockEnhancedToolbarEnabled: codeBlockEnhancedToolbar,
+        markdownBlockEnhancedToolbarEnabled: markdownBlockEnhancedToolbar,
         artifacts: globalStore.getState().artifacts,
       });
     }
   );
 
   function inject({
-    codeBlockEnhancedToolbarEnabled,
+    markdownBlockEnhancedToolbarEnabled,
     artifacts,
   }: {
-    codeBlockEnhancedToolbarEnabled: ChromeStore['popupSettings']['qolTweaks']['codeBlockEnhancedToolbar'];
+    markdownBlockEnhancedToolbarEnabled: ChromeStore['popupSettings']['qolTweaks']['markdownBlockEnhancedToolbar'];
     artifacts: ChromeStore['artifacts'];
   }) {
-    if (!codeBlockEnhancedToolbarEnabled) return;
+    if (!markdownBlockEnhancedToolbarEnabled) return;
 
     const { mermaid } = artifacts;
 

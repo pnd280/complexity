@@ -278,7 +278,7 @@ pre code.line:before {
 }
 
 :root {
-  --codeBlockTop: 3.35rem;
+  --markdownBlockTop: 3.35rem;
 }
 
 [data-popper-reference-hidden="true"] {
