@@ -388,6 +388,32 @@ function displayModelNextToAnswerHeading() {
   });
 }
 
+function preventLayoutShiftWhileGeneratingAnswer() {
+  observer.onElementExist({
+    selector: () => [$('button [data-icon="circle-stop"]')[0]],
+    callback: ({ element }) => {
+      requestIdleCallback(() => {
+        ui.getMessagesContainer().parent().parent().addClass('!tw-pb-[1000px]');
+      });
+
+      observer.onElementRemoved({
+        selector: element,
+        callback: () => {
+          setTimeout(() => {
+            requestIdleCallback(() => {
+              ui.getMessagesContainer()
+                .parent()
+                .parent()
+                .removeClass('!tw-pb-[1000px]');
+            });
+          }, 200);
+        },
+      });
+    },
+    observedIdentifier: 'prevent-layout-shift-while-generating-answer',
+  });
+}
+
 const uiTweaks = {
   injectBaseStyles,
   injectCustomStyles,
@@ -401,6 +427,7 @@ const uiTweaks = {
   alterMessageQuery,
   displayModelNextToAnswerHeading,
   correctNativeProSearchSwitch,
+  preventLayoutShiftWhileGeneratingAnswer,
 };
 
 export default uiTweaks;

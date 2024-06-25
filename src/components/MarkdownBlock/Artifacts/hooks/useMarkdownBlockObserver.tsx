@@ -93,7 +93,7 @@ export default function useMarkdownBlockObserver({
         }
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[var(--markdownBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
+          'tw-sticky tw-top-[var(--markdownBlockToolbarTop)] tw-bottom-[4rem] tw-w-full tw-z-[1] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
         );
 
         $parent.prepend($container);
@@ -127,7 +127,7 @@ export default function useMarkdownBlockObserver({
         $wrapper.append(pre);
 
         const $container = $('<div>').addClass(
-          'tw-sticky tw-top-[var(--markdownBlockTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
+          'tw-sticky tw-top-[var(--markdownBlockToolbarTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border'
         );
 
         $wrapper.prepend($container);

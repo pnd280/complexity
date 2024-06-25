@@ -53,7 +53,7 @@ export default function ThreadMessageStickyToolbar() {
     }) => {
       if (document.body.contains(element)) {
         $(messageBlock).css(
-          '--markdownBlockTop',
+          '--markdownBlockToolbarTop',
           (ui.getStickyHeader()?.outerHeight() || 3.35 * 16) + 3.1 * 16 + 'px'
         );
 
