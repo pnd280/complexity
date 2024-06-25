@@ -47,6 +47,8 @@ function injectCustomStyles() {
 
   globalStore.subscribe(
     ({ customTheme: { uiFont, monoFont, accentColor } }) => {
+      const darkTheme = $('html').hasClass('dark');
+
       type CustomTheme = {
         '--ui-font'?: string;
         '--mono-font'?: string;
@@ -54,6 +56,8 @@ function injectCustomStyles() {
         '--accent-foreground-darker'?: string;
         '--ring'?: string;
         '--ring-darker'?: string;
+        '--selection'?: string;
+        '--selection-foreground'?: string;
       };
 
       const css: CustomTheme = {
@@ -63,6 +67,8 @@ function injectCustomStyles() {
         '--accent-foreground-darker': `${accentColor}80`,
         '--ring': accentColor,
         '--ring-darker': `${accentColor}80`,
+        '--selection': !darkTheme ? `${accentColor}80` : undefined,
+        '--selection-foreground': darkTheme ? accentColor : undefined,
       };
 
       if (!uiFont) delete css['--ui-font'];
@@ -72,6 +78,8 @@ function injectCustomStyles() {
         delete css['--accent-foreground-darker'];
         delete css['--ring'];
         delete css['--ring-darker'];
+        delete css['--selection'];
+        delete css['--selection-foreground'];
       }
 
       $('html').css(css);

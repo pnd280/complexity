@@ -40,8 +40,7 @@ const supportedLangs = [
 const deps: Record<SupportedLang, SupportedLang[]> = {
   cpp: ['c'],
   blade: ['javascript', 'php', 'css'],
-  typescript: ['javascript'],
-  tsx: ['typescript', 'jsx'],
+  tsx: ['typescript'],
 };
 
 const mappedLangs: Record<string, SupportedLang[]> = {
@@ -73,8 +72,6 @@ async function importComponent(lang: SupportedLang) {
   }
 
   if (importedLangs.has(mappedImportName)) return;
-
-  console.log(mappedImportName);
 
   await import(`../utils/prismjs-components/prism-${mappedImportName}.min.js`);
 
