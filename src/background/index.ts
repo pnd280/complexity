@@ -64,6 +64,9 @@ chrome.runtime.onMessage.addListener(
             themeVariables: {
               edgeLabelBackground: darkTheme ? '#191a1a' : '#fcfcf9',
             },
+            gitGraph: {
+              useMaxWidth: true,
+            },
           };
 
           await injectScriptBlock({

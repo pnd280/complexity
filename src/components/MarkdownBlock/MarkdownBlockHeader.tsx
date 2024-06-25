@@ -32,7 +32,9 @@ import useMarkdownBlockObserver
   from './Artifacts/hooks/useMarkdownBlockObserver';
 import MarkdownBlockToolbar from './MarkdownBlockToolbar';
 
-const MermaidDiagram = lazy(() => import('./Artifacts/MermaidDiagram'));
+const MermaidDiagram = lazy(
+  () => import('@/components/MarkdownBlock/Artifacts/MermaidDiagram')
+);
 
 export type MarkdownBlockContainer = {
   header: Element;

@@ -91,7 +91,7 @@ export default function MermaidDiagram({
       )}
       <div
         className={cn(
-          'mermaid-run tw-h-full [&>svg]:!tw-flex-grow [&>svg]:!tw-max-w-none [&>svg]:!tw-h-full',
+          'mermaid-run tw-h-full [&>svg]:!tw-flex-grow [&>svg]:!tw-max-w-full [&>svg]:!tw-h-full',
           {
             'tw-animate-in tw-fade-in': processed,
             'tw-opacity-0 tw-invisible': !processed,

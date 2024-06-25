@@ -392,9 +392,9 @@ function preventLayoutShiftWhileGeneratingAnswer() {
   observer.onElementExist({
     selector: () => [$('button [data-icon="circle-stop"]')[0]],
     callback: ({ element }) => {
-      requestIdleCallback(() => {
-        ui.getMessagesContainer().parent().parent().addClass('!tw-pb-[1000px]');
-      });
+      $(document).scrollTop($(document).height()!);
+
+      ui.getMessagesContainer().parent().parent().addClass('!tw-pb-[1000px]');
 
       observer.onElementRemoved({
         selector: element,
