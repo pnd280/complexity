@@ -59,7 +59,7 @@ export default function ThreadAnchor() {
         {anchorsProps && anchorsProps.length > 1 && (
           <div
             className={clsx(
-              'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans',
+              'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans tw-max-h-[50vh] tw-overflow-auto',
               {
                 'tw-relative tw-bg-background tw-p-3 tw-rounded-md tw-border tw-border-border tw-shadow-lg':
                   isFloat,
