@@ -12,6 +12,7 @@ import { Updater } from 'use-immer';
 import useElementObserver from '@/components/hooks/useElementObserver';
 import { useGlobalStore } from '@/content-script/session-store/global';
 import { Nullable } from '@/types/Utils';
+import artifactsUtils from '@/utils/artifacts';
 import observer from '@/utils/observer';
 import prismJs from '@/utils/prism';
 import { ui } from '@/utils/ui';
@@ -26,13 +27,13 @@ type useMarkdownBlockObserverProps = {
   idleCopyButtonText: ReactNode;
   setContainers: Updater<MarkdownBlockContainer[]>;
   setButtonTextStates: Updater<ReactNode[]>;
-  setBlockStates: Updater<MarkdownBlockStates[]>;
+  setBlocksStates: Updater<MarkdownBlockStates[]>;
   setMermaidWrappers: Dispatch<SetStateAction<Element[]>>;
 };
 
 export default function useMarkdownBlockObserver({
   idleCopyButtonText,
-  setBlockStates,
+  setBlocksStates,
   setButtonTextStates,
   setContainers,
   setMermaidWrappers,
@@ -60,7 +61,7 @@ export default function useMarkdownBlockObserver({
         }
 
         $parent.addClass(
-          'tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border markdown-block-wapper'
+          `tw-my-4 tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border markdown-block-wrapper markdown-block-wrapper`
         );
         $(pre).addClass('!tw-m-0 !tw-rounded-none !tw-rounded-b-md');
         $(pre).find('.absolute').hide();
@@ -80,9 +81,15 @@ export default function useMarkdownBlockObserver({
         }
 
         if (lang === 'mermaid' && mermaidEnabled) {
-          const $wrapper = $('<div>').addClass('mermaid-wrapper');
+          const $wrapper = $('<div>').addClass(
+            'artifact-wrapper mermaid-wrapper'
+          );
+          const $loadingWrapper = $('<div>').addClass('artifact-loader');
 
-          $(pre).closest('.markdown-block-wapper').after($wrapper);
+          $(pre)
+            .closest(`.markdown-block-wrapper`)
+            .after($wrapper)
+            .after($loadingWrapper);
         }
 
         const $container = $('<div>').addClass(
@@ -220,12 +227,13 @@ export default function useMarkdownBlockObserver({
         draft.push(idleCopyButtonText);
       });
 
-      setBlockStates((draft) => {
+      setBlocksStates((draft) => {
         draft.push({
           isCollapsed: false,
           isCopied: false,
           isWrapped: lang ? false : true,
           isShownLineNumbers: false,
+          isArtifact: artifactsUtils.isSupportedArtifact(lang || ''),
         });
       });
     },

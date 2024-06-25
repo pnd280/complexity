@@ -6,127 +6,141 @@ import {
 import $ from 'jquery';
 import {
   FileCode,
+  LoaderCircle,
   RefreshCcw,
 } from 'lucide-react';
 import svgPanZoom from 'svg-pan-zoom';
+import { Updater } from 'use-immer';
 
 import TooltipWrapper from '@/components/TooltipWrapper';
 import { useGlobalStore } from '@/content-script/session-store/global';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
+import { cn } from '@/lib/utils';
+import mermaidUtils from '@/utils/mermaid-utils';
 import observer from '@/utils/observer';
-import { sleep } from '@/utils/utils';
+import { useToggle } from '@uidotdev/usehooks';
+
+import { MarkdownBlockStates } from '../MarkdownBlockHeader';
 
 export default function MermaidDiagram({
   pre,
   code,
+  containerIndex,
+  setBlocksStates,
 }: {
   pre: Element;
   code: string;
+  containerIndex: number;
+  blockStates: MarkdownBlockStates;
+  setBlocksStates: Updater<MarkdownBlockStates[]>;
 }) {
+  const [processed, setProcessed] = useToggle(false);
+
   const svgPanZoomRef = useRef<SvgPanZoom.Instance>();
 
   const enable = useGlobalStore((state) => state.artifacts.mermaid);
 
   useEffect(() => {
-    if (!enable) return;
+    if (!enable || processed) return;
 
-    const runMermaid = async () => {
-      let success = false;
+    $(pre).closest('.markdown-block-wrapper').addClass('!tw-hidden');
 
-      while (!success) {
-        success = await webpageMessenger.sendMessage({
-          event: 'runMermaid',
-          payload: '.mermaid-run',
-          timeout: 1000,
-        });
+    $(() => {
+      requestIdleCallback(async () => {
+        await mermaidUtils.enqueue(
+          `.mermaid-wrapper-${containerIndex} .mermaid-run`
+        );
 
-        await sleep(100);
-      }
-    };
+        observer.onElementExist({
+          container: $(pre).closest('.markdown-block-wrapper').parent()[0],
+          selector: () => [
+            $(`.mermaid-wrapper-${containerIndex} .mermaid-run svg`)[0],
+          ],
+          callback: ({ element }) => {
+            requestIdleCallback(() => {
+              svgPanZoomRef.current = svgPanZoom(element as HTMLElement, {
+                zoomScaleSensitivity: 0.4,
+                center: true,
+                fit: true,
+                contain: true,
+              });
 
-    requestIdleCallback(async () => {
-      $(pre).closest('.markdown-block-wapper').addClass('!tw-hidden');
-
-      await runMermaid();
-
-      $(pre)
-        .closest('.markdown-block-wapper')
-        .parent()
-        .find('.mermaid-run')
-        .removeClass('tw-opacity-0 tw-invisible')
-        .addClass('tw-animate-in tw-fade-in');
-
-      observer.onElementExist({
-        container: $(pre).closest('.markdown-block-wapper').parent()[0],
-        selector: () => [
-          $(pre)
-            .closest('.markdown-block-wapper')
-            .parent()
-            .find('.mermaid-wrapper svg')[0],
-        ],
-        callback: ({ element }) => {
-          requestIdleCallback(() => {
-            svgPanZoomRef.current = svgPanZoom(element as HTMLElement, {
-              zoomScaleSensitivity: 1,
-              center: true,
-              fit: true,
-              contain: true,
+              setProcessed(true);
             });
-          });
-        },
-        recurring: false,
+          },
+          recurring: false,
+        });
       });
     });
-  }, [pre, enable]);
+  }, [pre, enable, containerIndex, processed, setBlocksStates, setProcessed]);
+
+  useEffect(() => {}, []);
 
   return (
-    <div className="tw-relative">
-      <div className="mermaid-run tw-h-[500px] tw-my-4 tw-block tw-border tw-border-border tw-rounded-md tw-select-none [&>svg]:!tw-flex-grow [&>svg]:!tw-max-w-none [&>svg]:!tw-h-full tw-opacity-0 tw-invisible">
+    <div
+      className={cn(
+        'tw-relative tw-h-[500px] tw-my-4 tw-block tw-border tw-border-border tw-rounded-md tw-select-none tw-animate-in tw-fade-in',
+        {
+          'artifact-processed': processed,
+        }
+      )}
+    >
+      {!processed && (
+        <div className="tw-absolute tw-top-1/2 tw-left-1/2 -tw-translate-x-1/2 -tw-translate-y-1/2">
+          <LoaderCircle className="tw-w-6 tw-h-6 tw-animate-spin" />
+        </div>
+      )}
+      <div
+        className={cn(
+          'mermaid-run tw-h-full [&>svg]:!tw-flex-grow [&>svg]:!tw-max-w-none [&>svg]:!tw-h-full',
+          {
+            'tw-animate-in tw-fade-in': processed,
+            'tw-opacity-0 tw-invisible': !processed,
+          }
+        )}
+      >
         {code}
       </div>
+      {processed && (
+        <>
+          <div className="tw-absolute tw-top-2 tw-right-2 tw-flex tw-gap-2 tw-items-center">
+            <TooltipWrapper content="View code">
+              <div
+                className={
+                  'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
+                }
+                onClick={() => {
+                  $(pre)
+                    .closest('.markdown-block-wrapper')
+                    .removeClass('!tw-hidden');
 
-      <div className="tw-absolute tw-top-2 tw-right-2 tw-flex tw-gap-2 tw-items-center">
-        <TooltipWrapper content="View code">
-          <div
-            className={
-              'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
-            }
-            onClick={() => {
-              $(pre).closest('.markdown-block-wapper').removeClass('!tw-hidden');
-
-              $(pre)
-                .closest('.markdown-block-wapper')
-                .parent()
-                .find('.mermaid-run')
-                .removeClass('tw-animate-in tw-fade-in');
-
-              $(pre)
-                .closest('.markdown-block-wapper')
-                .parent()
-                .find('.mermaid-wrapper')
-                .addClass('!tw-hidden');
-            }}
-          >
-            <FileCode className="tw-w-4 tw-h-4" />
+                  $(pre)
+                    .closest('.markdown-block-wrapper')
+                    .nextUntil('.artifact-wrapper')
+                    .next()
+                    .addClass('!tw-hidden');
+                }}
+              >
+                <FileCode className="tw-w-4 tw-h-4" />
+              </div>
+            </TooltipWrapper>
           </div>
-        </TooltipWrapper>
-      </div>
-
-      <div className="tw-absolute tw-bottom-2 tw-right-2 tw-flex tw-gap-2 tw-items-center">
-        <TooltipWrapper content="Reset Zoom">
-          <div
-            className={
-              'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
-            }
-            onClick={() => {
-              svgPanZoomRef.current?.resize();
-              svgPanZoomRef.current?.reset();
-            }}
-          >
-            <RefreshCcw className="tw-w-4 tw-h-4" />
+          <div className="tw-absolute tw-bottom-2 tw-right-2 tw-flex tw-gap-2 tw-items-center">
+            <TooltipWrapper content="Reset Zoom">
+              <div
+                className={
+                  'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
+                }
+                onClick={() => {
+                  svgPanZoomRef.current?.resize();
+                  svgPanZoomRef.current?.reset();
+                }}
+              >
+                <RefreshCcw className="tw-w-4 tw-h-4" />
+              </div>
+            </TooltipWrapper>
           </div>
-        </TooltipWrapper>
-      </div>
+        </>
+      )}
     </div>
   );
 }

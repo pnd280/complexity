@@ -19,8 +19,9 @@ import { stripHtml } from '@/utils/utils';
 
 import TooltipWrapper from '../TooltipWrapper';
 import useArtifactsSettings from './Artifacts/hooks/useArtifactsSettings';
+import { MarkdownBlockStates } from './MarkdownBlockHeader';
 
-type MarkdownBlockHeaderProps = {
+type MarkdownBlockToolbarProps = {
   container: {
     header: Element;
     preElement: Element;
@@ -28,13 +29,8 @@ type MarkdownBlockHeaderProps = {
     lineCount: number;
   };
   index: number;
-  blockStates: {
-    isCollapsed: boolean;
-    isCopied: boolean;
-    isWrapped: boolean;
-    isShownLineNumbers: boolean;
-  }[];
-  setBlockStates: (callback: (draft: any) => void) => void;
+  blocksStates: MarkdownBlockStates[];
+  setBlocksStates: (callback: (draft: any) => void) => void;
   buttonTextStates: ReactNode[];
   setButtonTextStates: (callback: (draft: any) => void) => void;
   handleSelectForCompare: (index: number) => void;
@@ -42,23 +38,27 @@ type MarkdownBlockHeaderProps = {
   idleCopyButtonText: ReactNode;
 };
 
-export default function MarkdownBlockHeader({
+export default function MarkdownBlockToolbar({
   container,
   index,
-  blockStates,
-  setBlockStates,
+  blocksStates,
+  setBlocksStates,
   buttonTextStates,
   setButtonTextStates,
   handleSelectForCompare,
   diffTexts,
   idleCopyButtonText,
-}: MarkdownBlockHeaderProps) {
+}: MarkdownBlockToolbarProps) {
   const artifactsSettings = useArtifactsSettings();
 
   return (
     <div className="tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
       <div className="tw-text-background dark:tw-text-foreground">
-        {container.lang || 'plain-text'} ({container.lineCount} lines)
+        {container.lang || 'plain-text'}{' '}
+        {blocksStates[index].isArtifact ? (
+          <span className="tw-text-accent-foreground">Artifact ✨</span>
+        ) : null}{' '}
+        ({container.lineCount} lines)
       </div>
       <div className="tw-ml-auto tw-flex tw-gap-3">
         <TooltipWrapper content="Select for Compare">
@@ -83,12 +83,13 @@ export default function MarkdownBlockHeader({
             onClick={() => {
               rewriteMarkdownBlock(container.preElement);
 
-              const isShownLineNumbers = blockStates[index]?.isShownLineNumbers;
+              const isShownLineNumbers =
+                blocksStates[index]?.isShownLineNumbers;
               $(container.header)
                 .parent()
                 .find('code>code')
                 .toggleClass('line', !isShownLineNumbers);
-              setBlockStates((draft) => {
+              setBlocksStates((draft) => {
                 draft[index].isShownLineNumbers = !isShownLineNumbers;
               });
             }}
@@ -97,18 +98,18 @@ export default function MarkdownBlockHeader({
           </div>
         </TooltipWrapper>
 
-        {(blockStates[index].isWrapped ||
+        {(blocksStates[index].isWrapped ||
           ui.isChildOverflowing({
             parent: $(container.preElement)[0],
             child: $(container.preElement).find('code:first')[0],
           }).isXOverflowing) && (
           <TooltipWrapper
-            content={blockStates[index]?.isWrapped ? 'Unwrap' : 'Wrap'}
+            content={blocksStates[index]?.isWrapped ? 'Unwrap' : 'Wrap'}
           >
             <div
               className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
               onClick={() => {
-                const isWrapped = blockStates[index]?.isWrapped;
+                const isWrapped = blocksStates[index]?.isWrapped;
                 $(container.header)
                   .parent()
                   .find('pre code:first')
@@ -116,12 +117,12 @@ export default function MarkdownBlockHeader({
                     '!tw-whitespace-pre-wrap !tw-break-words',
                     !isWrapped
                   );
-                setBlockStates((draft) => {
+                setBlocksStates((draft) => {
                   draft[index].isWrapped = !isWrapped;
                 });
               }}
             >
-              {blockStates[index]?.isWrapped ? (
+              {blocksStates[index]?.isWrapped ? (
                 <Text className="tw-w-4 tw-h-4" />
               ) : (
                 <WrapText className="tw-w-4 tw-h-4" />
@@ -130,25 +131,25 @@ export default function MarkdownBlockHeader({
           </TooltipWrapper>
         )}
 
-        {(blockStates[index].isCollapsed ||
+        {(blocksStates[index].isCollapsed ||
           ($(container.preElement)?.outerHeight() || 0) > 300) && (
           <TooltipWrapper
-            content={blockStates[index]?.isCollapsed ? 'Expand' : 'Collapse'}
+            content={blocksStates[index]?.isCollapsed ? 'Expand' : 'Collapse'}
           >
             <div
               className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
               onClick={() => {
-                const isCollapsed = blockStates[index]?.isCollapsed;
+                const isCollapsed = blocksStates[index]?.isCollapsed;
                 $(container.header)
                   .parent()
                   .find('pre')
                   .toggleClass('!tw-h-[300px] !tw-overflow-auto', !isCollapsed);
-                setBlockStates((draft) => {
+                setBlocksStates((draft) => {
                   draft[index].isCollapsed = !isCollapsed;
                 });
               }}
             >
-              {blockStates[index]?.isCollapsed ? (
+              {blocksStates[index]?.isCollapsed ? (
                 <Maximize2 className="tw-w-4 tw-h-4" />
               ) : (
                 <Minimize2 className="tw-w-4 tw-h-4" />
@@ -194,13 +195,13 @@ export default function MarkdownBlockHeader({
                 )}
                 onClick={() => {
                   $(container.preElement)
-                    .closest('.markdown-block-wapper')
-                    .parent()
-                    .find('.mermaid-wrapper')
+                    .closest('.markdown-block-wrapper')
+                    .nextUntil('.artifact-wrapper')
+                    .next()
                     .removeClass('!tw-hidden');
 
                   $(container.preElement)
-                    .closest('.markdown-block-wapper')
+                    .closest('.markdown-block-wrapper')
                     .addClass('!tw-hidden');
                 }}
               >

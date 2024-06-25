@@ -2,7 +2,9 @@ import '@/utils/prismjs-components/prism-vscode.css';
 
 import {
   Fragment,
+  lazy,
   ReactNode,
+  Suspense,
   useCallback,
   useEffect,
   useState,
@@ -28,8 +30,9 @@ import DiffViewDialog from '../DiffViewDialog';
 import useArtifactsSettings from './Artifacts/hooks/useArtifactsSettings';
 import useMarkdownBlockObserver
   from './Artifacts/hooks/useMarkdownBlockObserver';
-import MermaidDiagram from './Artifacts/MermaidDiagram';
-import MarkdownBlockHeader from './MarkdownBlockToolbar';
+import MarkdownBlockToolbar from './MarkdownBlockToolbar';
+
+const MermaidDiagram = lazy(() => import('./Artifacts/MermaidDiagram'));
 
 export type MarkdownBlockContainer = {
   header: Element;
@@ -45,20 +48,21 @@ export type MarkdownBlockStates = {
   isCopied: boolean;
   isWrapped: boolean;
   isShownLineNumbers: boolean;
+  isArtifact: boolean;
 };
 
-export default function MarkdownBlockEnhancedToolbar() {
+export default function MarkdownBlockHeader() {
   const [containers, setContainers] = useImmer<MarkdownBlockContainer[]>([]);
   const [diffViewerOpen, toggleDiffViewerVis] = useToggle(false);
   const [diffTexts, setDiffTexts] = useImmer<number[]>([]);
   const [buttonTextStates, setButtonTextStates] = useImmer<ReactNode[]>([]);
-  const [blockStates, setBlockStates] = useImmer<MarkdownBlockStates[]>([]);
-  const [mermaidWrapeprs, setMermaidWrappers] = useState<Element[]>([]);
+  const [blocksStates, setBlocksStates] = useImmer<MarkdownBlockStates[]>([]);
+  const [mermaidWrappers, setMermaidWrappers] = useState<Element[]>([]);
   const idleCopyButtonText = <Copy className="tw-w-4 tw-h-4" />;
 
   useMarkdownBlockObserver({
     idleCopyButtonText,
-    setBlockStates,
+    setBlocksStates,
     setButtonTextStates,
     setContainers,
     setMermaidWrappers,
@@ -122,43 +126,52 @@ export default function MarkdownBlockEnhancedToolbar() {
       if (!artifactsSettings || !artifactsSettings.mermaid) return;
 
       const $container = $(pre)
-        .closest('.markdown-block-wapper')
-        .parent()
-        .find('.mermaid-wrapper');
+        .closest('.markdown-block-wrapper')
+        .nextUntil('.artifact-wrapper')
+        .next();
+
+      $container.addClass(`mermaid-wrapper-${index}`);
 
       if (!$container.length) return;
 
       return ReactDOM.createPortal(
-        <MermaidDiagram
-          key={index}
-          code={stripHtml($(pre).find('code:first').html())}
-          pre={pre}
-        />,
+        <Suspense fallback={null}>
+          <MermaidDiagram
+            key={index}
+            code={stripHtml($(pre).find('code:first').html())}
+            pre={pre}
+            containerIndex={index}
+            blockStates={blocksStates[index]}
+            setBlocksStates={setBlocksStates}
+          />
+        </Suspense>,
         $container[0]
       );
     },
-    [artifactsSettings]
+    [artifactsSettings, blocksStates, setBlocksStates]
   );
 
   return (
     <>
       {artifactsSettings &&
         artifactsSettings.mermaid &&
-        mermaidWrapeprs.map(renderMermaid)}
+        mermaidWrappers.map(renderMermaid)}
       {containers.map((container, index) => (
         <Fragment key={index}>
           {ReactDOM.createPortal(
-            <MarkdownBlockHeader
-              container={container}
-              index={index}
-              blockStates={blockStates}
-              setBlockStates={setBlockStates}
-              buttonTextStates={buttonTextStates}
-              setButtonTextStates={setButtonTextStates}
-              handleSelectForCompare={handleSelectForCompare}
-              diffTexts={diffTexts}
-              idleCopyButtonText={idleCopyButtonText}
-            />,
+            <>
+              <MarkdownBlockToolbar
+                container={container}
+                index={index}
+                blocksStates={blocksStates}
+                setBlocksStates={setBlocksStates}
+                buttonTextStates={buttonTextStates}
+                setButtonTextStates={setButtonTextStates}
+                handleSelectForCompare={handleSelectForCompare}
+                diffTexts={diffTexts}
+                idleCopyButtonText={idleCopyButtonText}
+              />
+            </>,
             container.header
           )}
         </Fragment>

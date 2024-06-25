@@ -17,13 +17,13 @@ import {
 export default function ArtifactsSettings() {
   const mermaid = useGlobalStore(({ artifacts }) => artifacts.mermaid);
 
-  const markdownBlockEnhancedToolbar = usePopupSettingsStore(
-    ({ qolTweaks: { markdownBlockEnhancedToolbar } }) => markdownBlockEnhancedToolbar
+  const MarkdownBlockToolbar = usePopupSettingsStore(
+    ({ qolTweaks: { MarkdownBlockToolbar } }) => MarkdownBlockToolbar
   );
 
   return (
     <div className="tw-flex tw-flex-col tw-gap-2 ">
-      {!markdownBlockEnhancedToolbar && (
+      {!MarkdownBlockToolbar && (
         <div className="tw-mx-auto">
           You need to enable the{' '}
           <span className="tw-font-bold tw-text-accent-foreground">
@@ -37,7 +37,7 @@ export default function ArtifactsSettings() {
         </div>
       )}
 
-      {markdownBlockEnhancedToolbar && (
+      {MarkdownBlockToolbar && (
         <>
           <h1 className="tw-text-xl tw-text-yellow-300 tw-mx-auto">
             ⚠️ This is a{' '}

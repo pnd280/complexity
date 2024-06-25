@@ -14,7 +14,7 @@ type PopupSettingsState = {
     threadTOC: boolean;
     quickQueryCommander: boolean;
     threadMessageStickyToolbar: boolean;
-    markdownBlockEnhancedToolbar: boolean;
+    MarkdownBlockToolbar: boolean;
     autoRefreshSessionTimeout: boolean;
     blockTelemetry: boolean;
   };
@@ -36,7 +36,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
       threadTOC: false,
       quickQueryCommander: false,
       threadMessageStickyToolbar: false,
-      markdownBlockEnhancedToolbar: false,
+      MarkdownBlockToolbar: false,
       autoRefreshSessionTimeout: false,
       blockTelemetry: false,
     },
@@ -65,7 +65,7 @@ const popupSettingsStore = usePopupSettingsStore;
           threadTOC: false,
           quickQueryCommander: false,
           threadMessageStickyToolbar: false,
-          markdownBlockEnhancedToolbar: false,
+          MarkdownBlockToolbar: false,
           autoRefreshSessionTimeout: false,
           blockTelemetry: false,
         },

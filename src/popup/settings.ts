@@ -49,7 +49,7 @@ const qolTweaks: PopupSetting<
   {
     id: 'markdown-block-enhanced-toolbar',
     label: 'Markdown block toolbar',
-    storeKey: 'markdownBlockEnhancedToolbar',
+    storeKey: 'MarkdownBlockToolbar',
   },
   {
     id: 'thread-message-sticky-toolbar',

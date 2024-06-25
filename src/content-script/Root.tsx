@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { Commander } from '@/components/Commander';
 import useElementObserver from '@/components/hooks/useElementObserver';
 import MainPage from '@/components/MainPage';
-import MarkdownBlockEnhancedToolbar
+import MarkdownBlockHeader
   from '@/components/MarkdownBlock/MarkdownBlockHeader';
 import QueryBox from '@/components/QueryBox';
 import ThreadAnchor from '@/components/ThreadAnchor';
@@ -40,8 +40,8 @@ export default function Root() {
         {popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar && (
           <ThreadMessageStickyToolbar />
         )}
-        {popupSettingsStore.getState().qolTweaks.markdownBlockEnhancedToolbar && (
-          <MarkdownBlockEnhancedToolbar />
+        {popupSettingsStore.getState().qolTweaks.MarkdownBlockToolbar && (
+          <MarkdownBlockHeader />
         )}
         <ThreadExportButton />
         <Toaster />

@@ -286,6 +286,10 @@ pre code.line:before {
 }
 
 /* mermaid */
-.mermaid-run svg .label {
-  font-family: var(--mono-font) !important;
+[id^='mermaid-'] {
+  font-family: var(--ui-font) !important;
+
+  & .label {
+    font-family: var(--ui-font) !important;
+  }
 }

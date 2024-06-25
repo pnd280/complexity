@@ -7,12 +7,12 @@ export default function useArtifactsSettings() {
 
   const {
     popupSettings: {
-      qolTweaks: { markdownBlockEnhancedToolbar },
+      qolTweaks: { MarkdownBlockToolbar },
     },
     artifacts,
   } = store;
 
   return {
-    mermaid: markdownBlockEnhancedToolbar && artifacts.mermaid,
+    mermaid: MarkdownBlockToolbar && artifacts.mermaid,
   };
 }
