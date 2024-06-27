@@ -243,10 +243,10 @@ function collapseEmptyThreadVisualColumns() {
     callback: ({ element }) => {
       const collapseExpand = debounce(() => {
         if ($(element).find('div > div:nth-child(2)').length) {
-          $(element).show();
+          $(element).removeClass('!tw-hidden');
           $(element).prev().removeClass('col-span-12').addClass('col-span-8');
         } else {
-          $(element).hide();
+          $(element).addClass('!tw-hidden');
           $(element).prev().removeClass('col-span-8').addClass('col-span-12');
         }
       }, 100);
@@ -388,32 +388,6 @@ function displayModelNextToAnswerHeading() {
   });
 }
 
-function preventLayoutShiftWhileGeneratingAnswer() {
-  observer.onElementExist({
-    selector: () => [$('button [data-icon="circle-stop"]')[0]],
-    callback: ({ element }) => {
-      $(document).scrollTop($(document).height()!);
-
-      ui.getMessagesContainer().parent().parent().addClass('!tw-pb-[1000px]');
-
-      observer.onElementRemoved({
-        selector: element,
-        callback: () => {
-          setTimeout(() => {
-            requestIdleCallback(() => {
-              ui.getMessagesContainer()
-                .parent()
-                .parent()
-                .removeClass('!tw-pb-[1000px]');
-            });
-          }, 200);
-        },
-      });
-    },
-    observedIdentifier: 'prevent-layout-shift-while-generating-answer',
-  });
-}
-
 const uiTweaks = {
   injectBaseStyles,
   injectCustomStyles,
@@ -427,7 +401,6 @@ const uiTweaks = {
   alterMessageQuery,
   displayModelNextToAnswerHeading,
   correctNativeProSearchSwitch,
-  preventLayoutShiftWhileGeneratingAnswer,
 };
 
 export default uiTweaks;

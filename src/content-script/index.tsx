@@ -34,7 +34,6 @@ import webpageMessageInterceptors from './webpage/message-interceptors';
   uiTweaks.hideNativeProSearchSwitch();
   uiTweaks.collapseEmptyThreadVisualColumns();
   uiTweaks.displayModelNextToAnswerHeading();
-  uiTweaks.preventLayoutShiftWhileGeneratingAnswer();
   uiTweaks.alterMessageQuery();
 
   // webpageMessageInterceptors.inspectWebSocketEvents();

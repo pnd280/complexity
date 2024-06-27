@@ -6,7 +6,7 @@ import {
 
 import clsx from 'clsx';
 import $ from 'jquery';
-import { debounce } from 'lodash';
+import { throttle } from 'lodash';
 import {
   ChevronLeft,
   X,
@@ -24,15 +24,16 @@ import {
 import { useToggle } from '@uidotdev/usehooks';
 
 import TooltipWrapper from './TooltipWrapper';
+import { ScrollArea } from './ui/scroll-area';
 
-export default function ThreadAnchor() {
+export default function ThreadTOC() {
   const { visibleMessageIndex, anchorsProps, wrapperPos } =
-    useThreadAnchorObserver();
+    useThreadTOCObserver();
 
   const [visible, toggleVisibility] = useToggle(true);
 
   const [wrapperWidth, setWrapperWidth] = useState<number>(
-    $('#thread-anchor')?.outerWidth() || 0
+    $('#thread-toc')?.outerWidth() || 0
   );
 
   const isFloat = wrapperPos
@@ -40,7 +41,7 @@ export default function ThreadAnchor() {
     : false;
 
   requestIdleCallback(() => {
-    setWrapperWidth($('#thread-anchor')?.outerWidth() || 0);
+    setWrapperWidth($('#thread-toc')?.outerWidth() || 0);
   });
 
   if (!anchorsProps || !wrapperPos || whereAmI() !== 'thread') return null;
@@ -59,51 +60,55 @@ export default function ThreadAnchor() {
         {anchorsProps && anchorsProps.length > 1 && (
           <div
             className={clsx(
-              'tw-flex tw-flex-col tw-gap-1 tw-min-w-[150px] tw-max-w-[250px] tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans tw-max-h-[50vh] tw-overflow-auto',
+              'tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans',
               {
                 'tw-relative tw-bg-background tw-p-3 tw-rounded-md tw-border tw-border-border tw-shadow-lg':
                   isFloat,
                 'tw-hidden': !visible && isFloat,
               }
             )}
-            id="thread-anchor"
+            id="thread-toc"
           >
-            {anchorsProps?.map((anchorProps, index) => (
-              <div
-                key={index}
-                className={clsx(
-                  'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
-                  {
-                    'tw-mr-6': visible && isFloat && index === 0,
-                  }
-                )}
-                onClick={anchorProps.onClick}
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  anchorProps.onContextMenu();
-                }}
-              >
-                <div
-                  className={clsx(
-                    'tw-w-[.1rem] tw-h-5 tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out',
-                    {
-                      '!tw-bg-accent-foreground': index === visibleMessageIndex,
-                    }
-                  )}
-                />
-                <div
-                  className={clsx(
-                    'tw-truncate tw-w-full tw-cursor-pointer tw-text-foreground-darker group-hover:tw-text-muted-foreground tw-transition-colors tw-duration-300 tw-ease-in-out tw-select-none',
-                    {
-                      '!tw-text-foreground': index === visibleMessageIndex,
-                    }
-                  )}
-                >
-                  {anchorProps.title}
-                </div>
+            <ScrollArea scrollHideDelay={0}>
+              <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[500px]">
+                {anchorsProps?.map((anchorProps, index) => (
+                  <div
+                    key={index}
+                    className={clsx(
+                      'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
+                      {
+                        'tw-mr-6': visible && isFloat && index === 0,
+                      }
+                    )}
+                    onClick={anchorProps.onClick}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      anchorProps.onContextMenu();
+                    }}
+                  >
+                    <div
+                      className={clsx(
+                        'tw-w-[.1rem] tw-h-5 tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out',
+                        {
+                          '!tw-bg-accent-foreground':
+                            index === visibleMessageIndex,
+                        }
+                      )}
+                    />
+                    <div
+                      className={clsx(
+                        'tw-truncate tw-w-full tw-cursor-pointer tw-text-foreground-darker group-hover:tw-text-muted-foreground tw-transition-colors tw-duration-300 tw-ease-in-out tw-select-none',
+                        {
+                          '!tw-text-foreground': index === visibleMessageIndex,
+                        }
+                      )}
+                    >
+                      {anchorProps.title}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-
+            </ScrollArea>
             {isFloat && visible && (
               <div
                 className={clsx(
@@ -151,7 +156,7 @@ type AnchorProps = {
   onContextMenu: () => void;
 };
 
-const useThreadAnchorObserver = () => {
+const useThreadTOCObserver = () => {
   const [visibleMessageIndex, setVisibleMessageIndex] = useState<number>(0);
 
   const [anchorsProps, setAnchorsProps] = useState<AnchorProps[]>();
@@ -216,19 +221,19 @@ const useThreadAnchorObserver = () => {
   }, []);
 
   useEffect(() => {
-    const debouncedObserver = debounce(myObserver, 100);
+    const throttledObserver = throttle(myObserver, 50);
 
-    requestIdleCallback(() => debouncedObserver());
+    requestIdleCallback(() => throttledObserver());
 
-    $(window).on('scroll', () => debouncedObserver());
+    $(window).on('scroll', () => throttledObserver());
     observer.onShallowRouteChange(() => {
-      requestIdleCallback(() => debouncedObserver());
+      requestIdleCallback(() => throttledObserver());
     });
 
     $(window)
-      .off('resize.threadAnchor')
-      .on('resize.threadAnchor', () => {
-        debouncedObserver();
+      .off('resize.ThreadTOC')
+      .on('resize.ThreadTOC', () => {
+        throttledObserver();
       });
   }, [myObserver]);
 

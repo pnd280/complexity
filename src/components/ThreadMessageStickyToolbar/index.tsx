@@ -187,7 +187,6 @@ export default function ThreadMessageStickyToolbar() {
       $(element).toggleClass('!tw-hidden', isMarkdown);
     },
     observedIdentifier: 'thread-query-format-switch',
-    debounceTime: 0,
   });
 
   useScrollDirection(containers, setContainers);

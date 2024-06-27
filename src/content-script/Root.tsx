@@ -7,10 +7,10 @@ import MainPage from '@/components/MainPage';
 import MarkdownBlockHeader
   from '@/components/MarkdownBlock/MarkdownBlockHeader';
 import QueryBox from '@/components/QueryBox';
-import ThreadAnchor from '@/components/ThreadAnchor';
 import ThreadExportButton from '@/components/ThreadExportButton';
 import ThreadMessageStickyToolbar
   from '@/components/ThreadMessageStickyToolbar';
+import ThreadTOC from '@/components/ThreadTOC';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -36,7 +36,7 @@ export default function Root() {
         <MainPage />
         <QueryBox />
         <Commander />
-        {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadAnchor />}
+        {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadTOC />}
         {popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar && (
           <ThreadMessageStickyToolbar />
         )}

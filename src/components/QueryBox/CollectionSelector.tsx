@@ -142,7 +142,7 @@ export default function CollectionSelector() {
         <PopoverContent className="!tw-w-max !tw-p-0">
           <Command
             key={selectedCollectionUuid}
-            className="!tw-min-w-[150px] tw-max-w-[250px] tw-bg-background tw-font-sans"
+            className="!tw-min-w-[150px] tw-bg-background tw-font-sans"
             defaultValue={
               selectedCollectionUuid
                 ? selectedCollectionUuid
@@ -249,13 +249,18 @@ export default function CollectionSelector() {
                     <span>Loading...</span>
                   </div>
                 )}
+                {collections && collections.length === 0 && (
+                  <div className="tw-text-sm tw-text-center tw-text-muted-foreground tw-my-4 tw-w-full">
+                    No collection found.
+                  </div>
+                )}
                 {collections &&
                   collections.map((collection) => (
                     <Selection
                       key={collection.uuid}
                       keywords={[collection.title]}
                       className={clsx(
-                        'tw-w-full tw-max-w-full hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
+                        'hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
                         {
                           '!tw-text-accent-foreground':
                             selectedCollectionUuid === collection.uuid,
@@ -355,7 +360,7 @@ function Selection({
         onSelect(currentValue);
       }}
     >
-      <div className="!tw-text-sm !tw-py-1 tw-truncate tw-mr-8">{title}</div>
+      <div className="!tw-text-sm !tw-py-1 tw-truncate">{title}</div>
       {children}
     </CommandItem>
   );
