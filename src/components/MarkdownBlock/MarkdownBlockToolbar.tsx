@@ -54,9 +54,9 @@ export default function MarkdownBlockToolbar({
   return (
     <div className="tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
       <div className="tw-text-background dark:tw-text-foreground">
-        {container.lang || 'plain-text'}{' '}
-        {blocksStates[index].isArtifact ? (
-          <span className="tw-text-accent-foreground">Artifact ✨</span>
+        {container.lang || 'plain-text'}
+        {blocksStates[index].isArtifact && artifactsSettings?.mermaid ? (
+          <span className="tw-text-accent-foreground"> Artifact ✨</span>
         ) : null}{' '}
         ({container.lineCount} lines)
       </div>

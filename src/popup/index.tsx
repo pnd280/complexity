@@ -26,8 +26,6 @@ const queryClient = new QueryClient();
 
 const version = `beta-${packageData.version}`;
 
-console.log(chrome.runtime.id);
-
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
   <>
     <QueryClientProvider client={queryClient}>

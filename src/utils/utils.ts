@@ -5,22 +5,6 @@ import showdown from 'showdown';
 import background from './background';
 import { ui } from './ui';
 
-export const logger = {
-  enable: true,
-
-  log(...args: any[]) {
-    if (this.enable) console.log(...args);
-  },
-
-  on() {
-    this.enable = true;
-  },
-
-  off() {
-    this.enable = false;
-  },
-};
-
 export const jsonUtils = {
   unescape(escapedJson: string) {
     return (

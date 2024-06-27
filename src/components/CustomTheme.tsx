@@ -72,8 +72,6 @@ export default function CustomTheme() {
   const [saveButtonText, setSaveButtonText] = useState<ReactNode>('Save');
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-
     chromeStorage.setStorageValue({
       key: 'customTheme',
       value: {

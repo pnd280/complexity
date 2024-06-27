@@ -1,7 +1,6 @@
 import { webpageMessenger } from '@/content-script/webpage/messenger';
 
 import { mermaid } from './artifacts-imports';
-import { sleep } from './utils';
 
 let queue: { selector: string; resolve: () => void }[] | null = null;
 let isProcessing = false;
@@ -25,10 +24,8 @@ const processQueue = async (): Promise<void> => {
       success = await webpageMessenger.sendMessage({
         event: 'runMermaid',
         payload: allSelectors,
-        timeout: 10000,
+        timeout: 1000,
       });
-
-      await sleep(100);
     }
 
     currentQueue.forEach((item) => item.resolve());

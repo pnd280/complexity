@@ -45,7 +45,7 @@ export default function MermaidDiagram({
     $(pre).closest('.markdown-block-wrapper').addClass('!tw-hidden');
 
     $(() => {
-      requestIdleCallback(async () => {
+      requestAnimationFrame(async () => {
         await mermaidUtils.enqueue(
           `.mermaid-wrapper-${containerIndex} .mermaid-run`
         );
@@ -56,16 +56,14 @@ export default function MermaidDiagram({
             $(`.mermaid-wrapper-${containerIndex} .mermaid-run svg`)[0],
           ],
           callback: ({ element }) => {
-            requestIdleCallback(() => {
-              svgPanZoomRef.current = svgPanZoom(element as HTMLElement, {
-                zoomScaleSensitivity: 0.4,
-                center: true,
-                fit: true,
-                contain: true,
-              });
-
-              setProcessed(true);
+            svgPanZoomRef.current = svgPanZoom(element as HTMLElement, {
+              zoomScaleSensitivity: 0.4,
+              center: true,
+              fit: true,
+              contain: true,
             });
+
+            setProcessed(true);
           },
           recurring: false,
         });
@@ -106,7 +104,7 @@ export default function MermaidDiagram({
             <TooltipWrapper content="View code">
               <div
                 className={
-                  'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
+                  'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-foreground tw-transition-all active:tw-scale-95'
                 }
                 onClick={() => {
                   $(pre)
@@ -128,7 +126,7 @@ export default function MermaidDiagram({
             <TooltipWrapper content="Reset Zoom">
               <div
                 className={
-                  'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95'
+                  'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-foreground tw-transition-all active:tw-scale-95'
                 }
                 onClick={() => {
                   svgPanZoomRef.current?.resize();

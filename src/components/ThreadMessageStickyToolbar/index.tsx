@@ -113,8 +113,8 @@ export default function ThreadMessageStickyToolbar() {
   }, []);
 
   useElementObserver({
-    selector: () =>
-      ui.getMessageBlocks().map(({ $query, $messageBlock, $answer }) => {
+    selector: () => {
+      return ui.getMessageBlocks().map(({ $query, $messageBlock, $answer }) => {
         return {
           element: $query[0],
           args: {
@@ -122,7 +122,8 @@ export default function ThreadMessageStickyToolbar() {
             answer: $answer[0],
           },
         };
-      }),
+      });
+    },
     callback: ({ element, args }) => {
       if (whereAmI() !== 'thread') return setContainers([]);
 
@@ -130,7 +131,7 @@ export default function ThreadMessageStickyToolbar() {
 
       const $container = $('<div>')
         .addClass(
-          'tw-sticky tw-w-full tw-z-[11] tw-mt-4 thread-query-format-switch-container'
+          'tw-sticky tw-w-full tw-z-[11] tw-mt-4 thread-message-toolbar-container'
         )
         .css({
           top:
@@ -170,7 +171,7 @@ export default function ThreadMessageStickyToolbar() {
         });
       });
     },
-    observedIdentifier: 'thread-query-format-switch-container',
+    observedIdentifier: 'thread-message-toolbar-container',
   });
 
   useElementObserver({
@@ -186,6 +187,7 @@ export default function ThreadMessageStickyToolbar() {
       $(element).toggleClass('!tw-hidden', isMarkdown);
     },
     observedIdentifier: 'thread-query-format-switch',
+    debounceTime: 0,
   });
 
   useScrollDirection(containers, setContainers);

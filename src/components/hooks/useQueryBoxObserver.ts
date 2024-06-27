@@ -99,6 +99,6 @@ export default function useQueryBoxObserver({
       refetchUserSettings();
       refetchCollections();
     },
-    observedIdentifier: 'model-selectors',
+    observedIdentifier: 'model-selectors-follow-up',
   });
 }
