@@ -26,7 +26,7 @@ export default function useQueryBoxObserver({
 }: UseQueryBoxObserverProps) {
   useElementObserver({
     selector: () =>
-      ui.findActiveQueryBoxTextarea({ type: 'main' }).next().toArray(),
+      ui.findActiveQueryBoxTextarea({ type: 'main' }).parent().next().toArray(),
     callback: ({ element }) => {
       if (disabled) return;
 
