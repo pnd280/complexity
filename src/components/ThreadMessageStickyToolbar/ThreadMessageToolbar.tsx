@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useEffect,
   useState,
 } from 'react';
 
@@ -17,40 +18,40 @@ import { PiNotePencil } from 'react-icons/pi';
 import { Updater } from 'use-immer';
 
 import { cn } from '@/lib/utils';
-import observer from '@/utils/observer';
 import {
   scrollToElement,
   sleep,
   stripHtml,
 } from '@/utils/utils';
-import { useDebounce } from '@uidotdev/usehooks';
 
-import useElementObserver from '../hooks/useElementObserver';
-import TooltipWrapper from '../TooltipWrapper';
+import TooltipWrapper from '../Tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { Container } from './';
 import CopyButton from './CopyButton';
 import RewriteDropdown from './RewriteDropdown';
+import {
+  Container,
+  ContainerStates,
+} from './ThreadMessageStickyHeader';
 import ThreadTitle from './ThreadTitle';
 
 type ThreadMessageToolbar = {
   containerIndex: number;
   containers: Container[];
-  setContainers: Updater<Container[]>;
+  containersStates: ContainerStates[];
+  setContainersStates: Updater<ContainerStates[]>;
 };
 
 export default function ThreadMessageToolbar({
-  containers,
   containerIndex,
-  setContainers,
+  containers,
+  containersStates,
+  setContainersStates,
 }: ThreadMessageToolbar) {
-  const debouncedContainers = useDebounce(containers, 100);
-
   const [markdownVisualDiff, setMarkdownVisualDiff] = useState(false);
 
   const handleVisualDiff = useCallback(() => {
@@ -70,36 +71,15 @@ export default function ThreadMessageToolbar({
 
     setMarkdownVisualDiff(
       !!markdownText.length &&
+        !!originalText.length &&
         markdownText !== originalText &&
         !$textarea.length
     );
   }, [containerIndex, containers]);
 
-  useElementObserver({
-    container: containers[containerIndex].query,
-    selector: () => [
-      $(containers[containerIndex].query).find('#markdown-query-wrapper')[0],
-    ],
-    callback: () => {
-      handleVisualDiff();
-    },
-  });
-
-  useElementObserver({
-    container: containers[containerIndex].query,
-    selector: () => [$(containers[containerIndex].query).find('textarea')[0]],
-    callback: () => {
-      handleVisualDiff();
-
-      observer.onElementRemoved({
-        container: containers[containerIndex].query,
-        selector: $(containers[containerIndex].query).find('textarea')[0],
-        callback: () => {
-          return handleVisualDiff();
-        },
-      });
-    },
-  });
+  useEffect(() => {
+    handleVisualDiff();
+  }, [containersStates, handleVisualDiff]);
 
   const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
     .find('.mt-sm.flex.items-center.justify-between')
@@ -123,19 +103,20 @@ export default function ThreadMessageToolbar({
   return (
     <div
       className={cn(
-        'tw-w-full tw-py-[.8rem] tw-px-2 tw-border-b tw-border-border tw-bg-background tw-flex tw-items-center tw-gap-2 thread-query-format-switch-toolbar',
+        'thread-message-toolbar w-w-full tw-py-[.8rem] tw-px-2 tw-border-b tw-border-border tw-bg-background tw-flex tw-items-center tw-gap-2',
         {
           'tw-shadow-bottom-lg':
-            containers[containerIndex].states.isQueryOutOfViewport,
+            containersStates[containerIndex].isQueryOutOfViewport,
         }
       )}
     >
       <div className="tw-flex tw-items-center tw-gap-2 tw-w-full">
-        {!debouncedContainers[containerIndex].states.isQueryOutOfViewport &&
+        {!containersStates[containerIndex].isHidden &&
+          !containersStates[containerIndex].isQueryOutOfViewport &&
           markdownVisualDiff && (
             <TooltipWrapper
               content={
-                containers[containerIndex].states.isMarkdown
+                containersStates[containerIndex].isMarkdown
                   ? 'Convert Query to Plain Text'
                   : 'Convert Query to Markdown'
               }
@@ -147,29 +128,35 @@ export default function ThreadMessageToolbar({
               <div
                 className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in tw-slide-in-from-top active:tw-scale-95 tw-opacity-10 hover:tw-opacity-100"
                 onClick={() => {
-                  setContainers((draft) => {
-                    $(draft[containerIndex].query)
+                  if (
+                    $(containers[containerIndex].query).find('textarea').length
+                  ) {
+                    $messageEditButton.trigger('click');
+                  }
+
+                  setContainersStates((draft) => {
+                    $(containers[containerIndex].query)
                       .find('.whitespace-pre-line.break-words')
                       .toggleClass(
                         '!tw-hidden',
-                        !draft[containerIndex].states.isMarkdown
+                        !draft[containerIndex].isMarkdown
                       );
-                    $(draft[containerIndex].query)
+                    $(containers[containerIndex].query)
                       .find('#markdown-query-wrapper')
                       .toggleClass(
                         '!tw-hidden',
-                        draft[containerIndex].states.isMarkdown
+                        draft[containerIndex].isMarkdown
                       );
-                    draft[containerIndex].states.isMarkdown =
-                      !draft[containerIndex].states.isMarkdown;
+                    draft[containerIndex].isMarkdown =
+                      !draft[containerIndex].isMarkdown;
                     scrollToElement(
-                      $(draft[containerIndex].query as unknown as Element),
+                      $(containers[containerIndex].query as unknown as Element),
                       -60
                     );
                   });
                 }}
               >
-                {containers[containerIndex].states.isMarkdown ? (
+                {containersStates[containerIndex].isMarkdown ? (
                   <FaMarkdown className="tw-w-4 tw-h-4" />
                 ) : (
                   <Text className="tw-w-4 tw-h-4" />
@@ -190,12 +177,17 @@ export default function ThreadMessageToolbar({
             scrollToElement($(containers[containerIndex].query), -60);
           }}
           isOutOfViewport={
-            debouncedContainers[containerIndex].states.isQueryOutOfViewport
+            containersStates[containerIndex].isQueryOutOfViewport
           }
         />
       </div>
 
-      <div className="tw-ml-auto tw-flex tw-items-center tw-gap-2">
+      <div
+        className={cn('tw-ml-auto tw-flex tw-items-center tw-gap-2', {
+          'tw-invisible tw-opacity-0':
+            containersStates[containerIndex].isHidden,
+        })}
+      >
         {isMessageEditable && (
           <RewriteDropdown container={containers[containerIndex]} />
         )}
@@ -211,11 +203,6 @@ export default function ThreadMessageToolbar({
               className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
               onClick={() => {
                 $messageEditButton.trigger('click');
-
-                setContainers((draft) => {
-                  draft[containerIndex].states.isEditing =
-                    !draft[containerIndex].states.isEditing;
-                });
               }}
             >
               <PiNotePencil className="tw-w-4 tw-h-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />

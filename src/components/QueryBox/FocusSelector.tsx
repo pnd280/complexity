@@ -5,21 +5,16 @@ import {
 } from 'react';
 
 import clsx from 'clsx';
-import $ from 'jquery';
 import { Cpu } from 'lucide-react';
 import { PiGlobeX } from 'react-icons/pi';
 
 import { webAccessFocus } from '@/consts/model-selector';
 import { queryBoxStore } from '@/content-script/session-store/query-box';
 import { WebAccessFocus } from '@/types/ModelSelector';
-import { UserSettingsApiResponse } from '@/types/PPLXApi';
 import { ui } from '@/utils/ui';
-import { SelectLabel } from '@radix-ui/react-select';
-import { useQuery } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 
-import LabeledSwitch from '../LabeledSwitch';
-import TooltipWrapper from '../TooltipWrapper';
+import TooltipWrapper from '../Tooltip';
 import {
   Select,
   SelectContent,
@@ -29,13 +24,6 @@ import {
 } from '../ui/select';
 
 export default function FocusSelector() {
-  const { data: userSettings } = useQuery<UserSettingsApiResponse>({
-    queryKey: ['userSettings'],
-    enabled: false,
-  });
-
-  const hasActivePPLXSub = userSettings?.subscription_status === 'active';
-
   const items = useMemo(() => {
     return [...webAccessFocus] as WebAccessFocus[];
   }, []);
@@ -44,14 +32,9 @@ export default function FocusSelector() {
 
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const {
-    focus,
-    setFocus,
-    allowWebAccess,
-    toggleWebAccess,
-    proSearch,
-    toggleProSearch,
-  } = queryBoxStore((state) => state.webAccess);
+  const { focus, setFocus, allowWebAccess, toggleWebAccess } = queryBoxStore(
+    (state) => state.webAccess
+  );
 
   useEffect(() => {
     if (allowWebAccess && !focus) {
@@ -60,11 +43,6 @@ export default function FocusSelector() {
 
     ui.findActiveQueryBoxTextarea({}).trigger('focus');
   }, [allowWebAccess, focus, setFocus]);
-
-  $('body').toggleClass(
-    'pro-search',
-    !!hasActivePPLXSub && !!proSearch && !!allowWebAccess
-  );
 
   return (
     <>
@@ -163,19 +141,6 @@ export default function FocusSelector() {
                 </SelectItem>
               </TooltipWrapper>
             ))}
-            {hasActivePPLXSub && (
-              <SelectLabel className="tw-p-2">
-                <LabeledSwitch
-                  label="Pro search"
-                  id="pro-search"
-                  onCheckedChange={(checked) => {
-                    toggleProSearch(checked);
-                    checked && toggleWebAccess(true);
-                  }}
-                  checked={proSearch}
-                />
-              </SelectLabel>
-            )}
           </SelectGroup>
         </SelectContent>
       </Select>

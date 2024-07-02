@@ -1,90 +1,101 @@
-import { useEffect } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 import ReactDOM from 'react-dom';
 
-import clsx from 'clsx';
 import $ from 'jquery';
-import {
-  LoaderCircle,
-  Zap,
-} from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 
 import { useGlobalStore } from '@/content-script/session-store/global';
+import { cn } from '@/lib/utils';
 import background from '@/utils/background';
+import DOMObserver from '@/utils/dom-observer';
+import {
+  useDebounce,
+  useToggle,
+} from '@uidotdev/usehooks';
 
-import useElementObserver from '../hooks/useElementObserver';
 import useUpdate from '../hooks/useUpdate';
 
 export default function Slogan() {
   const { newVersionAvailable } = useUpdate({});
 
+  const [container, setContainer] = useState<Element>();
+
   const isReady = useGlobalStore(
     (state) => state.isWebSocketCaptured || state.isLongPollingCaptured
   );
+  
+  const [visible, toggleVisibility] = useToggle(!isReady);
+
+  const debouncedIsReady = useDebounce(isReady, 1000);
 
   const slogan =
     useGlobalStore((state) => state.customTheme.slogan) ||
     'Where knowledge begins';
 
-  const container = useElementObserver({
-    selector: '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center',
-    observedIdentifier: 'complexity-main-page',
-    callback: ({ element }) =>
-      $(element)
-        .toggleClass('tw-animate-pulse', !isReady)
-        .find('> div:first-child')
-        .addClass('tw-relative tw-fade-in tw-animate-in')
-        .find('span')
-        .addClass(
-          'hover:tw-tracking-wide tw-transition-all tw-duration-300 tw-ease-in-out text-shadow-hover tw-select-none !tw-leading-[1.2rem]'
-        )
-        .text(slogan)
-        .on('mouseenter', () => {
-          $(element)
-            .find('#slogan-decoration')
-            .addClass('tw-translate-x-1/2 tw-right-1/2');
-        })
-        .on('mouseleave', () => {
-          $(element)
-            .find('#slogan-decoration')
-            .removeClass('tw-translate-x-1/2 tw-right-1/2');
-        }),
-  });
-
   useEffect(() => {
-    container && $(container).toggleClass('tw-animate-pulse', !isReady);
-  }, [isReady, container]);
+    DOMObserver.create('alternate-slogan', {
+      target: document.querySelector('body > div'),
+      config: { childList: true, subtree: true },
+      onAdd() {
+        const $nativeSlogan = $(
+          '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center'
+        );
+
+        if (!$nativeSlogan.length) return;
+
+        $nativeSlogan
+          .find('> div:first-child')
+          .addClass('tw-relative')
+          .find('span:first')
+          .addClass(
+            'hover:tw-tracking-wide tw-transition-all tw-duration-300 tw-ease-in-out text-shadow-hover tw-select-none !tw-leading-[1.2rem]'
+          )
+          .text(slogan);
+
+        setContainer($nativeSlogan[0]);
+
+        DOMObserver.destroy('alternate-slogan');
+      },
+    });
+
+    return () => {
+      DOMObserver.destroy('alternate-slogan');
+    };
+  }, [debouncedIsReady, slogan]);
 
   if (!container) return null;
 
   return (
     <>
       {ReactDOM.createPortal(
-        <div
-          id="slogan-decoration"
-          className="!tw-h-0 !tw-leading-[0px] tw-flex tw-items-center tw-gap-1 tw-justify-center tw-absolute tw-right-0 tw-top-[-1rem] tw-w-fit tw-font-sans tw-text-[.8rem] tw-text-accent-foreground tw-transition-all tw-duration-300 tw-fade-in tw-animate-in tw-select-none"
-        >
-          {slogan.length > 5 && (
-            <>
-              <span
-                className={clsx({
-                  'tw-text-muted-foreground tw-text-sha': !isReady,
-                })}
-              >
-                {isReady ? (
-                  'enhanced'
-                ) : (
-                  <div className="tw-flex tw-items-center tw-gap-1">
-                    <LoaderCircle className="tw-w-2 tw-h-2 tw-animate-spin" />
-                    <span>loading..</span>
-                  </div>
-                )}
-              </span>
-              {isReady && (
-                <Zap className="tw-w-2 tw-h-2 tw-text-accent-foreground" />
+        <>
+          {visible && (
+            <div
+              className={cn(
+                'tw-flex tw-items-center tw-gap-1 tw-justify-center tw-absolute -tw-top-[2rem] tw-left-1/2 -tw-translate-x-1/2  tw-w-fit tw-font-sans tw-text-[.8rem] tw-text-accent-foreground tw-transition-all tw-duration-300 tw-fade-in tw-animate-in tw-select-none',
+                {
+                  'tw-animate-out tw-zoom-out tw-fade-out tw-slide-out-to-top tw-fill-mode-forwards':
+                    debouncedIsReady,
+                }
               )}
-            </>
+              onAnimationEnd={() => {
+                if (debouncedIsReady) {
+                  toggleVisibility(false);
+                }
+              }}
+            >
+              {slogan.length > 5 && (
+                <div className="tw-flex tw-items-center tw-gap-1">
+                  <LoaderCircle className="tw-w-2 tw-h-2 tw-animate-spin" />
+                  <span>Complexity</span>
+                </div>
+              )}
+            </div>
           )}
-        </div>,
+        </>,
         $(container).find('> div:first-child')[0]
       )}
       {newVersionAvailable &&

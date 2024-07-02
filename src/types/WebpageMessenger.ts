@@ -84,7 +84,6 @@ export interface EventHandlers {
   longPollingCaptured(): void;
   getActiveWebSocketType(): Nullable<'WebSocket' | 'Long-polling'>;
   webSocketError(data: Event): void;
-  runMermaid(querySelector: string): boolean;
   routeToPage(
     data:
       | string
@@ -93,4 +92,5 @@ export interface EventHandlers {
           scroll: boolean;
         }
   ): void;
+  routeChange(route: string): void;
 }

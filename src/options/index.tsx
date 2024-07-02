@@ -1,4 +1,4 @@
-import '@/assets/global.css';
+import '../../public/global.css';
 
 import $ from 'jquery';
 import {
@@ -7,7 +7,6 @@ import {
 } from 'lucide-react';
 import ReactDOM from 'react-dom/client';
 
-import ArtifactsSettings from '@/components/ArtifactsSettings';
 import Changelog from '@/components/Changelog';
 import CustomTheme from '@/components/CustomTheme';
 import useUpdate from '@/components/hooks/useUpdate';
@@ -38,17 +37,13 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <div className="tw-font-sans tw-w-[800px] tw-max-w-[90vw] tw-mx-auto tw-my-4">
         <Tabs defaultValue={queryStr.get('tab') || 'popupSettings'}>
-          <TabsList className="tw-grid tw-grid-cols-4 tw-sticky tw-top-5 tw-mb-5 tw-shadow-lg">
+          <TabsList className="tw-grid tw-grid-cols-3 tw-sticky tw-top-5 tw-mb-5 tw-shadow-lg">
             <TabsTrigger value="popupSettings">Basic Settings</TabsTrigger>
-            <TabsTrigger value="artifacts">✨ Artifacts</TabsTrigger>
             <TabsTrigger value="customTheme">Custom theme</TabsTrigger>
             <TabsTrigger value="changelog">Changelog</TabsTrigger>
           </TabsList>
           <TabsContent value="popupSettings">
             <PopupSettings />
-          </TabsContent>
-          <TabsContent value="artifacts">
-            <ArtifactsSettings />
           </TabsContent>
           <TabsContent value="customTheme">
             <CustomTheme />

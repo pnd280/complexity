@@ -10,10 +10,10 @@ import {
   languageModels,
   webAccessFocus,
 } from '@/consts/model-selector';
-import { queryBoxStore } from '@/content-script/session-store/query-box';
 import webpageMessageInterceptors
-  from '@/content-script/webpage/message-interceptors';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
+  from '@/content-script/main-world/message-interceptors';
+import { webpageMessenger } from '@/content-script/main-world/messenger';
+import { queryBoxStore } from '@/content-script/session-store/query-box';
 import {
   ThreadMessageAPIResponse,
   UserSettingsApiResponse,

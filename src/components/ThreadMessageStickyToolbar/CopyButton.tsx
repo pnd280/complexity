@@ -1,9 +1,4 @@
-import {
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback } from 'react';
 
 import $ from 'jquery';
 import {
@@ -19,7 +14,8 @@ import { jsonUtils } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 
 import useCtrlDown from '../hooks/useCtrlDown';
-import TooltipWrapper from '../TooltipWrapper';
+import useToggleButtonText from '../hooks/useToggleButtonText';
+import TooltipWrapper from '../Tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { toast } from '../ui/use-toast';
-import { Container } from './';
+import { Container } from './ThreadMessageStickyHeader';
 
 type CopyButtonProps = {
   container: Container;
@@ -38,6 +34,7 @@ export default function CopyButton({
   container,
   containerIndex,
 }: CopyButtonProps) {
+  // TODO: move this up to parent component
   const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
     queryKey: ['currentThreadInfo'],
     queryFn: () =>
@@ -47,17 +44,11 @@ export default function CopyButton({
 
   const ctrlDown = useCtrlDown();
 
-  const idleSaveButtonText = useMemo(
-    () => (
-      <>
-        <Copy className="tw-w-4 tw-h-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
-      </>
+  const [copyButtonText, setCopyButtonText] = useToggleButtonText({
+    defaultText: (
+      <Copy className="tw-w-4 tw-h-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
     ),
-    []
-  );
-
-  const [copyButtonText, setCopyButtonText] =
-    useState<ReactNode>(idleSaveButtonText);
+  });
 
   const handleCopyMessage = useCallback(() => {
     const $buttonBar = $(container.messageBlock).find(
@@ -75,11 +66,7 @@ export default function CopyButton({
     $button.trigger('click');
 
     setCopyButtonText(<Check className="tw-w-4 tw-h-4" />);
-
-    setTimeout(() => {
-      setCopyButtonText(idleSaveButtonText);
-    }, 2000);
-  }, [container.messageBlock, idleSaveButtonText, setCopyButtonText]);
+  }, [container.messageBlock, setCopyButtonText]);
 
   const handleCopyStrippedMessage = useCallback(async () => {
     const answer = await processMessage(containerIndex);
@@ -88,10 +75,6 @@ export default function CopyButton({
       await navigator.clipboard.writeText(answer);
 
       setCopyButtonText(<Check className="tw-w-4 tw-h-4" />);
-
-      setTimeout(() => {
-        setCopyButtonText(idleSaveButtonText);
-      }, 2000);
     } catch (e) {
       toast({
         title: '⚠️ Error',
@@ -127,7 +110,7 @@ export default function CopyButton({
 
       return answer;
     }
-  }, [containerIndex, idleSaveButtonText, refetch, setCopyButtonText]);
+  }, [containerIndex, refetch, setCopyButtonText]);
 
   return (
     <DropdownMenu modal={false}>

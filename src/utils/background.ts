@@ -1,4 +1,4 @@
-export type BackgroundAction = 'openChangelog' | 'getTabId' | 'injectScript' | 'injectMermaid';
+export type BackgroundAction = 'openChangelog' | 'getTabId';
 
 async function sendMessage({
   action,

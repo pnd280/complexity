@@ -1,6 +1,7 @@
 import React, {
   ReactNode,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -16,15 +17,13 @@ import {
 import { FaMarkdown } from 'react-icons/fa';
 
 import { languageModels } from '@/consts/model-selector';
+import DOMObserver from '@/utils/dom-observer';
 import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
-import {
-  jsonUtils,
-  whereAmI,
-} from '@/utils/utils';
+import { jsonUtils } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 
-import useElementObserver from './hooks/useElementObserver';
+import useRouter from './hooks/useRouter';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -48,6 +47,8 @@ const exportOptions = [
 ] as const;
 
 export default function ThreadExportButton() {
+  const url = useRouter();
+
   const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
     queryKey: ['currentThreadInfo'],
     queryFn: () =>
@@ -70,17 +71,31 @@ export default function ThreadExportButton() {
   const [saveButtonText, setSaveButtonText] =
     useState<ReactNode>(idleSaveButtonText);
 
-  useElementObserver({
-    selector: () => [ui.getStickyHeader()[0]],
-    callback: ({ element }) => {
-      const myContainer = $('<div>');
+  useEffect(() => {
+    DOMObserver.create('thread-export-button', {
+      target: document.querySelector('body > div'),
+      config: { childList: true, subtree: true },
+      debounceTime: 500,
+      useRAF: true,
+      onAny() {
+        const $stickyHeader = ui.getStickyHeader();
 
-      $(element).find('>div>div:last>div:last').before(myContainer);
+        if ($stickyHeader.find('#thread-export-button').length) return;
 
-      setContainer(myContainer[0]);
-    },
-    observedIdentifier: 'thread-export-button',
-  });
+        const container = $('<div>').attr('id', 'thread-export-button');
+
+        $stickyHeader.find('>div>div:last>div:last').before(container);
+
+        setContainer(container[0]);
+
+        DOMObserver.destroy('thread-export-button');
+      },
+    });
+
+    return () => {
+      DOMObserver.destroy('thread-export-button');
+    };
+  }, [url]);
 
   const handleExportThread = useCallback(
     async ({ includeCitations }: { includeCitations?: boolean }) => {
@@ -170,7 +185,7 @@ export default function ThreadExportButton() {
     [refetch, idleSaveButtonText]
   );
 
-  if (whereAmI() !== 'thread' || !container) return null;
+  if (!container) return null;
 
   return ReactDOM.createPortal(
     <DropdownMenu>

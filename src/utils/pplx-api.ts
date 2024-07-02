@@ -1,7 +1,7 @@
 import { Collection } from '@/components/QueryBox/CollectionSelector';
 import webpageMessageInterceptors
-  from '@/content-script/webpage/message-interceptors';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
+  from '@/content-script/main-world/message-interceptors';
+import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { LanguageModel } from '@/types/ModelSelector';
 import {
   CollectionsAPIResponse,
@@ -174,28 +174,6 @@ async function setDefaultImageModel(selectedImageModel: string) {
   return false;
 }
 
-async function setDefaultProSearch(toggled: boolean) {
-  try {
-    await webpageMessenger.sendMessage({
-      event: 'sendWebSocketMessage',
-      payload: WSMessageParser.stringify({
-        messageCode: 423,
-        event: 'save_user_settings',
-        data: {
-          default_copilot: toggled,
-          is_complexity: true,
-        },
-      }),
-    });
-
-    return true;
-  } catch (e) {
-    alert('Failed to change pro search state');
-  }
-
-  return false;
-}
-
 async function updateUserProfileSettings(data: UserProfileSettingsAPIRequest) {
   const data2Send = {
     action:
@@ -233,7 +211,6 @@ const pplxApi = {
   updateUserProfileSettings,
   setDefaultLanguageModel,
   setDefaultImageModel,
-  setDefaultProSearch,
 };
 
 export default pplxApi;

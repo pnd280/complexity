@@ -30,8 +30,6 @@ type QueryBoxState = {
     setFocus: (focus: WebAccessFocus['code'] | null) => void;
     allowWebAccess: boolean;
     toggleWebAccess: (toggled?: boolean) => void;
-    proSearch: boolean;
-    toggleProSearch: (toggled?: boolean) => void;
   };
 
   selectedCollectionUuid: Collection['uuid'];
@@ -90,23 +88,6 @@ const useQueryBoxStore = create<QueryBoxState>()(
           };
         });
       },
-
-      proSearch: false,
-      toggleProSearch: async (toggled) => {
-        if (!(await pplxApi.setDefaultProSearch(!!toggled))) return;
-
-        chromeStorage.setStorageValue({
-          key: 'defaultProSearch',
-          value: !!toggled,
-        });
-
-        return set((state) => ({
-          webAccess: {
-            ...state.webAccess,
-            proSearch: toggled ?? !state.webAccess.proSearch,
-          },
-        }));
-      },
     },
 
     selectedCollectionUuid: '',
@@ -124,8 +105,7 @@ async function initQueryBoxStore({
   languageModel?: LanguageModel['code'];
   imageModel?: ImageModel['code'];
 }) {
-  const { defaultFocus, defaultWebAccess, defaultProSearch } =
-    await chromeStorage.getStore();
+  const { defaultFocus, defaultWebAccess } = await chromeStorage.getStore();
   if (isValidFocus(defaultFocus)) {
     queryBoxStore.setState((state) => {
       state.webAccess.focus = defaultFocus;
@@ -134,7 +114,6 @@ async function initQueryBoxStore({
 
   queryBoxStore.setState((state) => {
     state.webAccess.allowWebAccess = defaultWebAccess;
-    state.webAccess.proSearch = defaultProSearch;
   });
 
   queryBoxStore.setState((state) => {

@@ -1,32 +1,17 @@
 import $ from 'jquery';
-import { debounce } from 'lodash';
 
-import observer from '@/utils/observer';
+import DOMObserver from '@/utils/dom-observer';
+import prismJs from '@/utils/prism';
 import { ui } from '@/utils/ui';
 import {
-  calculateRenderLines,
   jsonUtils,
   markdown2Html,
-  sleep,
+  waitForElement,
   whereAmI,
 } from '@/utils/utils';
 
 import { globalStore } from './session-store/global';
 import { popupSettingsStore } from './session-store/popup-settings';
-import { queryBoxStore } from './session-store/query-box';
-
-function injectBaseStyles() {
-  if (whereAmI() === 'api') $('html').addClass('tw-dark dark');
-
-  $('<link>')
-    .attr({
-      rel: 'stylesheet',
-      type: 'text/css',
-      href: chrome.runtime.getURL('base.css'),
-      id: 'complexity-base-styles',
-    })
-    .appendTo('head');
-}
 
 function injectCustomStyles() {
   globalStore.subscribe(({ customTheme: { customCSS } }) => {
@@ -94,313 +79,283 @@ function alterAttachButton() {
   )
     return;
 
-  observer.onElementExist({
-    selector: () => {
-      const $element = $('button:contains("Attach"):last');
+  DOMObserver.create('alter-attach-button', {
+    target: document.querySelector('body > div'),
+    config: {
+      childList: true,
+      subtree: true,
+    },
+    useRAF: true,
+    onAny() {
+      const $attachButton = $('button:contains("Attach"):last');
 
-      if ($element.length && $element.find('>div>div').text() === 'Attach') {
-        return [$element[0]];
+      if (
+        $attachButton.length &&
+        $attachButton.find('>div>div').text() === 'Attach'
+      ) {
+        $attachButton.find('>div').removeClass('gap-xs');
+        $attachButton.find('>div>div').addClass('hidden');
       }
-
-      return [];
     },
-    callback({ element }) {
-      $(element).find('>div').removeClass('gap-xs');
-      $(element).find('>div>div').addClass('hidden');
-    },
-    observedIdentifier: 'alter-attach-button',
   });
 }
 
 function correctColorScheme() {
-  observer.onAttributeChanges({
-    targetNode: $('html')[0],
-    attributes: ['class'],
-    callback: ({ targetNode }) => {
-      $(targetNode).toggleClass('tw-dark', $(targetNode).hasClass('dark'));
+  $(() => {
+    const darkTheme = $('html').hasClass('dark');
 
-      if (document.title === "We'll be right back") {
-        $(targetNode).addClass('dark tw-dark');
-        $('h1').addClass('!tw-text-[4rem]');
-        $('p.message').addClass('tw-font-sans');
-      }
-    },
-    immediateInvoke: true,
-  });
-}
+    if (darkTheme) $('html').addClass('tw-dark');
 
-function adjustSelectorsBorderRadius() {
-  observer.onElementExist({
-    selector: () =>
-      $('textarea[placeholder="Ask anything..."]').next().toArray(),
-    callback: ({ element }) => {
-      $(element)
-        .children()
-        .each((_, child) => {
-          $(child).addClass('[&_button]:tw-rounded-md');
-        });
-    },
-    observedIdentifier: 'adjust-selectors-border-radius',
-  });
-}
-
-function adjustQueryBoxWidth() {
-  const {
-    queryBoxSelectors: { collection, focus, imageGenModel, languageModel },
-  } = popupSettingsStore.getState();
-
-  if (!collection && !focus && !imageGenModel && !languageModel) return;
-
-  observer.onElementExist({
-    selector: () => [
-      $('.pointer-events-auto.md\\:col-span-8').children().last()[0],
-    ],
-    callback: async ({ element }) => {
-      if (whereAmI() !== 'thread') return;
-
-      const $element = $(element);
-
-      while (!$element.width()) {
-        await sleep(50);
-      }
-
-      const $wrapper = $element.parent();
-
-      $wrapper.addClass('tw-transition-all tw-duration-300');
-      $wrapper.parent().addClass('tw-transition-all tw-duration-300');
-      $wrapper.removeClass('md:col-span-8').addClass('col-span-12');
-      $wrapper.parent().addClass('md:!tw-bottom-[.3rem] !tw-z-20');
-
-      observer.onAttributeChanges({
-        targetNode: $(
-          '.pointer-events-none.fixed.z-10.grid-cols-12.gap-xl.px-sm.py-sm.md\\:bottom-lg'
-        )[0],
-        attributes: ['class'],
-        callback: ({ targetNode }) => {
-          $(targetNode).addClass('md:!tw-bottom-[.3rem]');
-        },
-      });
-    },
-    observedIdentifier: 'adjust-query-box-width',
+    // downtime page
+    if (document.title === "We'll be right back") {
+      $('html').addClass('dark tw-dark');
+      $('h1').addClass('!tw-text-[4rem]');
+      $('p.message').addClass('tw-font-sans');
+    }
   });
 }
 
 function hideScrollToBottomButton() {
-  observer.onElementExist({
-    selector: '.pointer-events-auto .mb-2.flex.justify-center',
-    callback: ({ element }) => {
-      if (whereAmI() !== 'thread') return;
-
-      $(element).addClass('!tw-hidden');
-    },
-    observedIdentifier: 'hide-scroll-to-bottom-button',
-  });
+  $(document.body).addClass('hide-scroll-to-bottom-button');
 }
 
-function hideNativeProSearchSwitch() {
-  if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
-
-  observer.onElementExist({
-    selector: () => ui.getNativeProSearchSwitchWrapper().toArray(),
-    callback: ({ element }) => {
-      $(element).addClass('!tw-hidden');
-    },
-    observedIdentifier: 'hide-native-pro-search-switch',
-  });
+function calibrateMarkdownBlock() {
+  $(document.body).toggleClass(
+    'alternate-markdown-block',
+    popupSettingsStore.getState().qolTweaks.markdownBlockToolbar &&
+      whereAmI() === 'thread'
+  );
 }
 
-function correctNativeProSearchSwitch() {
-  if (!popupSettingsStore.getState().queryBoxSelectors.focus) return;
-
-  queryBoxStore.subscribe(({ webAccess: { allowWebAccess, proSearch } }) => {
-    const $nativeProSearchWrapper = ui.getNativeProSearchSwitchWrapper();
-
-    const currentState = $nativeProSearchWrapper
-      .find('button')
-      .attr('data-state');
-
-    if (currentState === 'checked' && (!allowWebAccess || !proSearch)) {
-      return $nativeProSearchWrapper.find('button').trigger('click');
-    }
-
-    if (currentState === 'unchecked' && allowWebAccess && proSearch) {
-      return $nativeProSearchWrapper.find('button').trigger('click');
-    }
-  });
+function calibrateThreadMessageStickyHeader() {
+  $(document.body).toggleClass(
+    'thread-message-sticky-toolbar',
+    popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader &&
+      whereAmI() === 'thread'
+  );
 }
 
-function collapseEmptyThreadVisualColumns() {
-  if (
-    !popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
-  )
+async function collapseEmptyThreadVisualColumns() {
+  $(document.body).toggleClass(
+    'collapse-empty-thread-visual-columns',
+    popupSettingsStore.getState().visualTweaks.collapseEmptyThreadVisualColumns
+  );
+}
+
+async function alterMessageQuery() {
+  if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader)
     return;
 
-  observer.onElementExist({
-    selector: () =>
-      ui
-        .getMessageBlocks()
-        .map(({ $messageBlock }) => $messageBlock.find('.visual-col')[0]),
-    callback: ({ element }) => {
-      const collapseExpand = debounce(() => {
-        if ($(element).find('div > div:nth-child(2)').length) {
-          $(element).removeClass('!tw-hidden');
-          $(element).prev().removeClass('col-span-12').addClass('col-span-8');
-        } else {
-          $(element).addClass('!tw-hidden');
-          $(element).prev().removeClass('col-span-8').addClass('col-span-12');
-        }
-      }, 100);
+  const id = 'alter-message-query';
 
-      requestIdleCallback(() => {
-        collapseExpand();
-
-        observer.onDOMChanges({
-          targetNode: element,
-          callback: collapseExpand,
-        });
-      });
-    },
-    observedIdentifier: 'collapse-empty-thread-visual-columns',
+  const element = await waitForElement({
+    selector: () => ui.getMessagesContainer()[0],
+    timeout: 5000,
   });
-}
 
-function alternateMessageQuery({
-  $messageBlock,
-  $query,
-}: {
-  $messageBlock: JQuery<Element>;
-  $query: JQuery<Element>;
-}) {
-  if (whereAmI() !== 'thread') return;
+  if (!element) return;
 
-  const mardownedText = markdown2Html($query.text());
+  if ($('.message-block').length === 0) ui.getMessageBlocks();
 
-  const $newQueryWrapper = $('<div>')
-    .html(mardownedText)
-    .attr('id', 'markdown-query-wrapper')
-    .addClass(
-      'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection'
+  DOMObserver.create(id, {
+    target: element,
+    config: {
+      childList: true,
+      subtree: true,
+    },
+    debounceTime: 200,
+    useRAF: true,
+    onAny: callback,
+  });
+
+  async function callback() {
+    const $messageBlocks = $(`.message-block:not([data-${id}])`);
+    let index = 0;
+
+    function processNextMessageBlock() {
+      if (index >= $messageBlocks.length) {
+        return;
+      }
+
+      const $messageBlock = $($messageBlocks[index]);
+      $messageBlock.attr(`data-${id}`, '');
+
+      const $query = $messageBlock.find('.my-md.md\\:my-lg');
+
+      rewriteQuery({ $query });
+
+      index++;
+      queueMicrotask(processNextMessageBlock);
+    }
+
+    queueMicrotask(processNextMessageBlock);
+  }
+
+  async function rewriteQuery({ $query }: { $query: JQuery<Element> }) {
+    const mardownedText = markdown2Html($query.text());
+
+    const $newQueryWrapper = $('<div>')
+      .html(mardownedText)
+      .attr('id', 'markdown-query-wrapper')
+      .addClass(
+        'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection'
+      );
+
+    $newQueryWrapper.addClass(
+      $query.text().length > 70 ? 'text-base' : 'text-3xl'
     );
 
-  const fontFamily =
-    $('h1')?.css('font-family')?.split(',')?.[0]?.trim() || 'ui-sans-serif';
-
-  const currentFontSize = parseInt($newQueryWrapper.css('font-size'));
-
-  const calculatedWrappedLines = calculateRenderLines(
-    $query.text(),
-    $query.width() || $messageBlock.width()!,
-    fontFamily,
-    currentFontSize
-  );
-
-  $newQueryWrapper.addClass(
-    calculatedWrappedLines > 1 ? 'text-base' : 'text-3xl'
-  );
-
-  $query.append($newQueryWrapper);
+    $query.append($newQueryWrapper);
+  }
 }
 
-function alterMessageQuery() {
-  if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar)
+async function displayModelNextToAnswerHeading() {
+  if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader)
     return;
 
-  observer.onElementExist({
-    selector: () => {
-      const elements: {
-        element: Element;
-        args: JQuery<Element>;
-      }[] = [];
+  const id = 'display-model-next-to-answer-heading';
 
-      const messageBlocks = ui.getMessageBlocks();
+  const element = await waitForElement({
+    selector: () => ui.getMessagesContainer()[0],
+    timeout: 5000,
+  });
 
-      messageBlocks.forEach(({ $query, $messageBlock }) => {
-        if (!$messageBlock?.length) return;
+  if (!element) return;
 
-        elements.push({ element: $query[0], args: $messageBlock });
-      });
+  if ($('.message-block').length === 0) ui.getMessageBlocks();
 
-      return elements;
+  requestIdleCallback(callback);
+
+  DOMObserver.create(id, {
+    target: element,
+    config: {
+      childList: true,
+      subtree: true,
     },
-    callback: ({ element, args }) => {
-      requestIdleCallback(() =>
-        alternateMessageQuery({ $messageBlock: args!, $query: $(element) })
+    debounceTime: 200,
+    useRAF: true,
+    onAny: callback,
+  });
+
+  async function callback() {
+    $(
+      `.message-block .mt-sm.flex.items-center.justify-between>*:last-child:not([data-${id}-observed])`
+    ).each((_, element) => {
+      $(element).attr(`data-${id}-observed`, 'true');
+
+      const { $answerHeading, $messageBlock } = ui.parseMessageBlock(
+        $(element).closest('.message-block')
       );
-    },
-    observedIdentifier: 'alter-message-query',
-  });
+
+      const $bottomButtonBar = $messageBlock.find(
+        '.mt-sm.flex.items-center.justify-between'
+      );
+
+      if (!$bottomButtonBar.length) return;
+
+      const bottomRightButtonBar = $bottomButtonBar.children().last();
+
+      const modelName =
+        bottomRightButtonBar.children().last().text() || 'CLAUDE 3 HAIKU';
+
+      $answerHeading
+        .find('div:contains("Answer"):last')
+        .text(modelName.toUpperCase())
+        .addClass(
+          '!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right'
+        );
+    });
+  }
 }
 
-function displayModelNextToAnswerHeading() {
-  if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar)
-    return;
+async function highlightMarkdownBlocks() {
+  if (!popupSettingsStore.getState().qolTweaks.markdownBlockToolbar) return;
 
-  observer.onElementExist({
-    selector: () => {
-      const elements: {
-        element: Element;
-        args: {
-          answerHeading: Element;
-          modelName: string;
-        };
-      }[] = [];
-
-      const messageBlocks = ui.getMessageBlocks();
-
-      messageBlocks.forEach(({ $answerHeading, $messageBlock }) => {
-        if (!$messageBlock?.length) return;
-
-        const bottomRightButtonBar = $messageBlock
-          .find('.mt-sm.flex.items-center.justify-between')
-          ?.children()
-          .last();
-
-        // hide the bar
-        $messageBlock
-          .find('.mt-sm.flex.items-center.justify-between')
-          .addClass('!tw-hidden');
-
-        const modelName = bottomRightButtonBar.children().last().text();
-
-        elements.push({
-          element: bottomRightButtonBar.children().last()[0],
-          args: {
-            answerHeading: $answerHeading[0],
-            modelName,
-          },
-        });
-      });
-
-      return elements;
-    },
-    callback: ({ element, args }) => {
-      if (!element || !args?.answerHeading) return;
-
-      args.modelName &&
-        $(args.answerHeading)
-          .find('div:contains("Answer"):last')
-          .text(args.modelName.toUpperCase())
-          .addClass(
-            '!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right'
-          );
-    },
-    observedIdentifier: 'display-model-next-to-answer-heading',
+  const element = await waitForElement({
+    selector: () => ui.getMessagesContainer()[0],
+    timeout: 5000,
   });
+
+  if (!element) return;
+
+  const id = 'highlight-markdown-block';
+
+  requestIdleCallback(callback);
+
+  DOMObserver.create(id, {
+    target: element,
+    config: {
+      childList: true,
+      subtree: true,
+    },
+    debounceTime: 200,
+    useRAF: true,
+    onAny: callback,
+  });
+
+  function callback() {
+    // only process the last 10 message blocks
+    const messageBlocks = ui.getMessageBlocks().slice(-10);
+
+    let blockIndex = 0;
+
+    function processNextBlock() {
+      if (blockIndex >= messageBlocks.length) {
+        return;
+      }
+
+      const { $messageBlock } = messageBlocks[blockIndex];
+      const $bottomButtonBar = $messageBlock.find(
+        '.mt-sm.flex.items-center.justify-between'
+      );
+
+      if ($bottomButtonBar.length) {
+        const $codeBlocks = $bottomButtonBar
+          .closest('.message-block')
+          .find(`pre:not([data-${id}])`);
+
+        let codeBlockIndex = 0;
+
+        const processNextCodeBlock = () => {
+          if (codeBlockIndex >= $codeBlocks.length) {
+            blockIndex++;
+            queueMicrotask(processNextBlock);
+            return;
+          }
+
+          const pre = $codeBlocks[codeBlockIndex];
+          $(pre).attr(`data-${id}`, '');
+
+          const lang = $(pre).find('.absolute').text();
+
+          prismJs.highlightBlock({ pre, lang });
+
+          codeBlockIndex++;
+          queueMicrotask(processNextCodeBlock);
+        };
+
+        queueMicrotask(processNextCodeBlock);
+      } else {
+        blockIndex++;
+        queueMicrotask(processNextBlock);
+      }
+    }
+
+    queueMicrotask(processNextBlock);
+  }
 }
 
 const uiTweaks = {
-  injectBaseStyles,
   injectCustomStyles,
   correctColorScheme,
   alterAttachButton,
-  adjustSelectorsBorderRadius,
-  adjustQueryBoxWidth,
   hideScrollToBottomButton,
-  hideNativeProSearchSwitch,
   collapseEmptyThreadVisualColumns,
   alterMessageQuery,
   displayModelNextToAnswerHeading,
-  correctNativeProSearchSwitch,
+  highlightMarkdownBlocks,
+  calibrateMarkdownBlock,
+  calibrateThreadMessageStickyHeader,
 };
 
 export default uiTweaks;

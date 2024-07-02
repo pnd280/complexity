@@ -47,12 +47,12 @@ export default function DiffViewDialog({
 
   const highlightSyntax = useCallback(
     (str: string) => {
-      if (!prismJs.isLangSupported(lang)) return <code>{str}</code>;
+      if (!prismJs.isSupportedLang(lang)) return <span>{str}</span>;
 
       return !str ? (
-        <div />
+        <span />
       ) : (
-        <pre
+        <span
           style={{ display: 'inline' }}
           dangerouslySetInnerHTML={{
             __html: Prism.highlight(str, Prism.languages[lang], lang),

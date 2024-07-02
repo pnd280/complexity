@@ -18,5 +18,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     'prefer-rest-params': 'off',
     '@typescript-eslint/no-this-alias': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
 };

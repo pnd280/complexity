@@ -2,9 +2,6 @@ import '@/utils/prismjs-components/prism-vscode.css';
 
 import {
   Fragment,
-  lazy,
-  ReactNode,
-  Suspense,
   useCallback,
   useEffect,
   useState,
@@ -12,104 +9,66 @@ import {
 import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
-import {
-  Copy,
-  X,
-} from 'lucide-react';
+import { X } from 'lucide-react';
 import { useImmer } from 'use-immer';
 
-import { updateLineCount } from '@/utils/markdown-block';
-import observer from '@/utils/observer';
 import {
   scrollToElement,
   stripHtml,
 } from '@/utils/utils';
-import { useToggle } from '@uidotdev/usehooks';
+import {
+  useDebounce,
+  useToggle,
+} from '@uidotdev/usehooks';
 
 import DiffViewDialog from '../DiffViewDialog';
-import useArtifactsSettings from './Artifacts/hooks/useArtifactsSettings';
-import useMarkdownBlockObserver
-  from './Artifacts/hooks/useMarkdownBlockObserver';
+import useMarkdownBlockObserver from '../hooks/useMarkdownBlockObserver';
 import MarkdownBlockToolbar from './MarkdownBlockToolbar';
-
-const MermaidDiagram = lazy(
-  () => import('@/components/MarkdownBlock/Artifacts/MermaidDiagram')
-);
 
 export type MarkdownBlockContainer = {
   header: Element;
   preElement: Element;
   lang: string;
-  lineCount: number;
-  lineCountObserving: boolean;
   isNative: boolean;
+  id: string;
 };
 
 export type MarkdownBlockStates = {
-  isCollapsed: boolean;
   isCopied: boolean;
-  isWrapped: boolean;
-  isShownLineNumbers: boolean;
-  isArtifact: boolean;
 };
 
 export default function MarkdownBlockHeader() {
-  const [containers, setContainers] = useImmer<MarkdownBlockContainer[]>([]);
+  const [containers, setContainers] = useState<MarkdownBlockContainer[]>([]);
+  const debouncedContainers = useDebounce(containers, 200);
+
   const [diffViewerOpen, toggleDiffViewerVis] = useToggle(false);
   const [diffTexts, setDiffTexts] = useImmer<number[]>([]);
-  const [buttonTextStates, setButtonTextStates] = useImmer<ReactNode[]>([]);
-  const [blocksStates, setBlocksStates] = useImmer<MarkdownBlockStates[]>([]);
-  const [mermaidWrappers, setMermaidWrappers] = useState<Element[]>([]);
-  const idleCopyButtonText = <Copy className="tw-w-4 tw-h-4" />;
 
   useMarkdownBlockObserver({
-    idleCopyButtonText,
-    setBlocksStates,
-    setButtonTextStates,
     setContainers,
-    setMermaidWrappers,
   });
 
-  useEffect(
-    function updateLineCountEffect() {
-      containers.forEach((container, index) => {
-        if (container.lineCountObserving) return;
+  const handleSelectForCompare = useCallback(
+    (blockIndex: number) => {
+      if (diffTexts.length === 2) {
+        setDiffTexts([]);
+        return;
+      }
 
-        updateLineCount(container.preElement, index, setContainers);
-
-        observer.onDOMChanges({
-          targetNode: $(container.preElement).find('code:first')[0],
-          callback: () => {
-            updateLineCount(container.preElement, index, setContainers);
-          },
-        });
-
-        setContainers((draft) => {
-          draft[index].lineCountObserving = true;
-        });
+      setDiffTexts((draft) => {
+        if (draft.includes(blockIndex)) {
+          draft.splice(draft.indexOf(blockIndex), 1);
+        } else {
+          draft.push(blockIndex);
+        }
       });
     },
-    [containers, setContainers]
+    [diffTexts.length, setDiffTexts]
   );
-
-  const handleSelectForCompare = (blockIndex: number) => {
-    if (diffTexts.length === 2) {
-      setDiffTexts([]);
-      return;
-    }
-
-    setDiffTexts((draft) => {
-      if (draft.includes(blockIndex)) {
-        draft.splice(draft.indexOf(blockIndex), 1);
-      } else {
-        draft.push(blockIndex);
-      }
-    });
-  };
 
   const extractTextFromBlock = (blockIndex: number) => {
     const code = stripHtml(
-      $(containers[blockIndex]?.preElement)?.find('code').html()
+      $(containers[blockIndex]?.preElement)?.find('code:first').html()
     );
 
     return code;
@@ -121,57 +80,18 @@ export default function MarkdownBlockHeader() {
     }
   }, [diffTexts, toggleDiffViewerVis]);
 
-  const artifactsSettings = useArtifactsSettings();
-
-  const renderMermaid = useCallback(
-    (pre: Element, index: number) => {
-      if (!artifactsSettings || !artifactsSettings.mermaid) return;
-
-      const $container = $(pre)
-        .closest('.markdown-block-wrapper')
-        .nextUntil('.artifact-wrapper')
-        .next();
-
-      $container.addClass(`mermaid-wrapper-${index}`);
-
-      if (!$container.length) return;
-
-      return ReactDOM.createPortal(
-        <Suspense fallback={null}>
-          <MermaidDiagram
-            key={index}
-            code={stripHtml($(pre).find('code:first').html())}
-            pre={pre}
-            containerIndex={index}
-            blockStates={blocksStates[index]}
-            setBlocksStates={setBlocksStates}
-          />
-        </Suspense>,
-        $container[0]
-      );
-    },
-    [artifactsSettings, blocksStates, setBlocksStates]
-  );
-
   return (
     <>
-      {artifactsSettings &&
-        artifactsSettings.mermaid &&
-        mermaidWrappers.map(renderMermaid)}
-      {containers.map((container, index) => (
+      {debouncedContainers.map((container, index) => (
         <Fragment key={index}>
           {ReactDOM.createPortal(
             <>
               <MarkdownBlockToolbar
-                container={container}
+                lang={container.lang}
+                preElementId={container.id}
                 index={index}
-                blocksStates={blocksStates}
-                setBlocksStates={setBlocksStates}
-                buttonTextStates={buttonTextStates}
-                setButtonTextStates={setButtonTextStates}
                 handleSelectForCompare={handleSelectForCompare}
-                diffTexts={diffTexts}
-                idleCopyButtonText={idleCopyButtonText}
+                isSelectedForComparison={diffTexts.includes(index)}
               />
             </>,
             container.header
@@ -187,7 +107,7 @@ export default function MarkdownBlockHeader() {
           setDiffTexts([]);
           return toggleDiffViewerVis(open);
         }}
-        lang={containers[diffTexts[0]]?.lang}
+        lang={containers[diffTexts[0]]?.lang ?? containers[diffTexts[1]]?.lang}
       />
 
       {!diffViewerOpen &&

@@ -136,7 +136,7 @@ export default function CustomTheme() {
                   Custom fonts
                 </FormLabel>
                 <FormControl>
-                  <Input id="ui-font" placeholder="Karla" {...field} />
+                  <Input id="ui-font" placeholder="sans" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -148,7 +148,7 @@ export default function CustomTheme() {
             render={({ field }) => (
               <FormItem className="tw-self-end tw-w-full">
                 <FormControl>
-                  <Input placeholder="JetBrains Mono" {...field} />
+                  <Input placeholder="mono" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

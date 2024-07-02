@@ -22,6 +22,7 @@ class WSHook {
 
     this.proxyXMLHttpRequest();
     this.passivelyCaptureWebSocket();
+    this.proxyHistoryState();
   }
 
   getWebSocketInstance(): Nullable<WebSocket> {
@@ -342,6 +343,44 @@ class WSHook {
       return self.webSocketOriginalSend.apply(this, arguments);
     };
   }
+
+  proxyHistoryState() {
+    let lastKnownUrl: string = location.href;
+
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+
+    history.pushState = function (
+      this: History,
+      data: any,
+      unused: string,
+      url?: string | URL | null
+    ): void {
+      originalPushState.apply(this, [data, unused, url]);
+      checkForUrlChange('pushState');
+    };
+
+    history.replaceState = function (
+      this: History,
+      data: any,
+      unused: string,
+      url?: string | URL | null
+    ): void {
+      originalReplaceState.apply(this, [data, unused, url]);
+      checkForUrlChange('replaceState');
+    };
+
+    function checkForUrlChange(trigger: 'pushState' | 'replaceState'): void {
+      if (location.href !== lastKnownUrl) {
+        lastKnownUrl = location.href;
+
+        WSHook.contentScriptMessenger.sendMessage({
+          event: 'routeChange',
+          payload: lastKnownUrl,
+        });
+      }
+    }
+  }
 }
 
 (() => {
@@ -376,20 +415,4 @@ class WSHook {
       scroll: data.payload !== window.location.pathname,
     });
   });
-
-  WSHook.contentScriptMessenger.onMessage(
-    'runMermaid',
-    async ({ payload: querySelector }) => {
-      try {
-        // @ts-expect-error
-        await window.mermaid.run({
-          querySelector,
-        });
-
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-  );
 })();

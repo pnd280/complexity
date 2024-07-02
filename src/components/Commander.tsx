@@ -30,7 +30,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
+import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { setCookie } from '@/utils/utils';
 
 export function Commander() {

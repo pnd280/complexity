@@ -1,7 +1,21 @@
+import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/components/prism-markup.min.js';
 import 'prismjs/components/prism-markup-templating.min.js';
 
-const importedLangs = new Set<string>(['markup', 'markup-templating']);
+import $ from 'jquery';
+import Prism from 'prismjs';
+
+import { Nullable } from '@/types/Utils';
+
+import { stripHtml } from './utils';
+
+const importPromises: {
+  [K: string]: Nullable<Promise<void>>;
+} = {
+  markup: Promise.resolve(),
+  'markup-templating': Promise.resolve(),
+};
 
 const supportedLangs = [
   'html',
@@ -49,12 +63,12 @@ const mappedLangs: Record<string, SupportedLang[]> = {
 
 type SupportedLang = (typeof supportedLangs)[number];
 
-function isLangSupported(lang: string): lang is SupportedLang {
+function isSupportedLang(lang: string): lang is SupportedLang {
   return supportedLangs.includes(lang);
 }
 
 async function importComponent(lang: SupportedLang) {
-  if (!isLangSupported(lang)) return;
+  if (!isSupportedLang(lang)) return;
 
   let mappedImportName = '';
 
@@ -71,18 +85,42 @@ async function importComponent(lang: SupportedLang) {
     await Promise.all(deps[mappedImportName].map(importComponent));
   }
 
-  if (importedLangs.has(mappedImportName)) return;
+  if (importPromises[mappedImportName]) {
+    return importPromises[mappedImportName];
+  }
 
-  await import(`../utils/prismjs-components/prism-${mappedImportName}.min.js`);
+  importPromises[mappedImportName] = (async () => {
+    importPromises[mappedImportName] = await import(
+      `../utils/prismjs-components/prism-${mappedImportName}.min.js`
+    );
+  })();
 
-  importedLangs.add(mappedImportName);
+  return importPromises[mappedImportName];
+}
+
+async function highlightBlock({ pre, lang }: { pre: Element; lang: string }) {
+  if (lang && prismJs.isSupportedLang(lang)) {
+    try {
+      await prismJs.importComponent(lang);
+
+      const codeElement = $(pre).find('code:first').addClass('line-numbers');
+      const code = stripHtml(codeElement.html());
+
+      const newBlock = Prism.highlight(code, Prism.languages[lang], lang);
+
+      codeElement.html(newBlock);
+    } catch (err) {
+      console.error(`Failed to load Prism language component for ${lang}`, err);
+    }
+  }
 }
 
 const prismJs = {
-  isLangSupported,
+  isSupportedLang,
   deps,
   supportedLangs,
   importComponent,
+  highlightBlock,
 };
 
 export default prismJs;

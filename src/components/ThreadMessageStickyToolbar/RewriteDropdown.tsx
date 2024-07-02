@@ -10,21 +10,21 @@ import {
 } from 'lucide-react';
 
 import { languageModels } from '@/consts/model-selector';
-import { queryBoxStore } from '@/content-script/session-store/query-box';
 import webpageMessageInterceptors
-  from '@/content-script/webpage/message-interceptors';
+  from '@/content-script/main-world/message-interceptors';
+import { queryBoxStore } from '@/content-script/session-store/query-box';
 import { LanguageModel } from '@/types/ModelSelector';
 import { sleep } from '@/utils/utils';
 
 import useCtrlDown from '../hooks/useCtrlDown';
-import TooltipWrapper from '../TooltipWrapper';
+import TooltipWrapper from '../Tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { Container } from './';
+import { Container } from './ThreadMessageStickyHeader';
 
 type RewriteDropdownProps = {
   container: Container;

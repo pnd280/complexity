@@ -1,4 +1,6 @@
-import '@/assets/global.css';
+import '../../public/global.css';
+
+import { useEffect } from 'react';
 
 import clsx from 'clsx';
 import $ from 'jquery';
@@ -9,10 +11,9 @@ import {
 import ReactDOM from 'react-dom/client';
 import { FaDiscord } from 'react-icons/fa';
 
-import TooltipWrapper from '@/components/TooltipWrapper';
+import TooltipWrapper from '@/components/Tooltip';
 import { Separator } from '@/components/ui/separator';
 import { chromeStorage } from '@/utils/chrome-store';
-import observer from '@/utils/observer';
 import { detectConsecutiveClicks } from '@/utils/utils';
 import {
   QueryClient,
@@ -73,6 +74,21 @@ function DiscordCallout() {
 }
 
 function Footer() {
+  useEffect(() => {
+    detectConsecutiveClicks({
+      element: $('#complexity-version')[0],
+      requiredClicks: 7,
+      clickInterval: 2000,
+      callback() {
+        chromeStorage.setStorageValue({
+          key: 'secretMode',
+          value: true,
+        });
+        $('#complexity-version').text('🔓');
+      },
+    });
+  }, []);
+
   return (
     <div className="tw-w-full tw-bg-secondary tw-flex tw-flex-col tw-font-sans">
       <Separator />
@@ -99,23 +115,3 @@ function Footer() {
     </div>
   );
 }
-
-observer.onElementExist({
-  selector: '#complexity-version',
-  callback: ({ element }) => {
-    detectConsecutiveClicks({
-      element,
-      requiredClicks: 7,
-      clickInterval: 2000,
-      callback() {
-        chromeStorage.setStorageValue({
-          key: 'secretMode',
-          value: true,
-        });
-        $(element).text('🔓');
-      },
-    });
-  },
-  observedIdentifier: 'secret-mode',
-  recurring: false,
-});

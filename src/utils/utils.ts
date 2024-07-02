@@ -226,26 +226,92 @@ export function setCookie(name: string, value: any, days: number) {
   }
   document.cookie = name + '=' + (value || '') + expires + '; path=/';
 }
+type ParsedUrl = {
+  hostname: string;
+  pathname: string;
+  search: string;
+  hash: string;
+  queryParams: Record<string, string>;
+};
 
-export function whereAmI() {
-  const location = window.location.href;
+export function parseUrl(url: string): ParsedUrl {
+  const parsedUrl: ParsedUrl = {
+    hostname: '',
+    pathname: '',
+    search: '',
+    hash: '',
+    queryParams: {},
+  };
 
-  switch (true) {
-    case location.startsWith('https://www.perplexity.ai/p/api/'):
-      return 'api';
-    case location.startsWith('https://www.perplexity.ai/collections'):
-      return 'collection';
-    case location.startsWith('https://www.perplexity.ai/search'):
-      return 'thread';
-    case location.startsWith('https://www.perplexity.ai/page'):
-      return 'page';
-    case location.startsWith('https://www.perplexity.ai/'):
-      return 'home';
-    case location.startsWith('https://labs.perplexity.ai/'):
-      return 'lab';
-    default:
-      return 'unknown';
+  try {
+    const urlObject = new URL(url);
+
+    parsedUrl.hostname = urlObject.hostname;
+    parsedUrl.pathname = urlObject.pathname;
+    parsedUrl.search = urlObject.search;
+    parsedUrl.hash = urlObject.hash.slice(1);
+
+    urlObject.searchParams.forEach((value, key) => {
+      parsedUrl.queryParams[key] = value;
+    });
+  } catch (error) {
+    console.error('Invalid URL:', error);
   }
+
+  return parsedUrl;
+}
+
+export function whereAmI(providedUrl?: string) {
+  const url = parseUrl(providedUrl || window.location.href);
+
+  const hostname = url.hostname;
+  const pathname = url.pathname;
+
+  if (hostname === 'www.perplexity.ai') {
+    switch (true) {
+      case pathname.startsWith('/p/api/'):
+        return 'api';
+      case pathname.startsWith('/collections'):
+        return 'collection';
+      case pathname.startsWith('/search'):
+        return 'thread';
+      case pathname.startsWith('/page'):
+        return 'page';
+      case pathname.startsWith('/library'):
+        return 'library';
+      case pathname === '/':
+        return 'home';
+      default:
+        return 'unknown';
+    }
+  }
+
+  return 'unknown';
+}
+
+export function waitForElement({
+  selector,
+  timeout = 5000,
+}: {
+  selector: string | (() => HTMLElement | Element);
+  timeout: number;
+}): Promise<HTMLElement | Element | null> {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      const element =
+        typeof selector === 'string' ? $(selector)[0] : selector();
+
+      if (element) {
+        clearInterval(interval);
+        resolve(element);
+      }
+    }, 100);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      resolve(null);
+    }, timeout);
+  });
 }
 
 export async function getPPLXBuildId() {
@@ -260,4 +326,17 @@ export async function getNEXTDATA() {
   }
 
   return jsonUtils.safeParse($('script#__NEXT_DATA__').text());
+}
+
+export async function injectMainWorldScript(url: string) {
+  return new Promise((resolve, reject) => {
+    $('<script>')
+      .attr({
+        type: 'module',
+        src: url,
+        onload: () => resolve(null),
+        onerror: () => reject(new Error(`Failed to load script: ${url}`)),
+      })
+      .appendTo('body');
+  });
 }

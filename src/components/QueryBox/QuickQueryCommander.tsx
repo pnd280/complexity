@@ -11,7 +11,6 @@ import clsx from 'clsx';
 import { CommandEmpty } from 'cmdk';
 import $ from 'jquery';
 
-import observer from '@/utils/observer';
 import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
 import { useQuery } from '@tanstack/react-query';
@@ -23,6 +22,7 @@ import {
 import { KeyCombo } from '../Commander';
 import useQuickQueryCommanderParams
   from '../hooks/useQuickQueryCommanderParams';
+import useRouter from '../hooks/useRouter';
 import {
   Command,
   CommandGroup,
@@ -46,6 +46,8 @@ export default function QuickQueryCommander({
   searchValue,
   setQuickCommandSearchValue,
 }: QuickCommanderProps) {
+  const url = useRouter();
+
   useWindowSize();
 
   const commanderRef = useRef<HTMLDivElement>(null);
@@ -198,16 +200,12 @@ export default function QuickQueryCommander({
     queryKey: ['currentThreadInfo'],
     queryFn: () =>
       pplxApi.fetchThreadInfo(window.location.pathname.split('/').pop() || ''),
-    enabled: window.location.pathname.includes('/search/'),
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    observer.onShallowRouteChange(() => {
-      if (!window.location.pathname.includes('/search/')) return;
-      refetchThreadInfo();
-    });
-  }, [refetchThreadInfo]);
+    refetchThreadInfo();
+  }, [url, refetchThreadInfo]);
 
   return (
     <Command

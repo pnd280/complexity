@@ -1,59 +1,98 @@
-import '../assets/global.css';
-import '@/content-script/webpage/ws-hook';
+import '../../public/global.css';
 
 import $ from 'jquery';
 
-import background from '@/utils/background';
+import DOMObserver from '@/utils/dom-observer';
 import {
   getPPLXBuildId,
+  injectMainWorldScript,
   waitForNextjsHydration,
+  whereAmI,
 } from '@/utils/utils';
 
+import webpageListeners from './main-world/listeners';
+import webpageMessageInterceptors from './main-world/message-interceptors';
+import { webpageMessenger } from './main-world/messenger';
+// @ts-expect-error
+import messenger from './main-world/messenger?script&module';
+// @ts-expect-error
+import wsHook from './main-world/ws-hook?script&module';
 import Root from './Root';
 import uiTweaks from './ui-tweaks';
-import webpageListeners from './webpage/listeners';
-import webpageMessageInterceptors from './webpage/message-interceptors';
 
-(async function () {
+$(async (): Promise<void> => {
   await init();
 
-  Root();
+  setupInterceptors();
 
+  setupDOMObservers();
+
+  Root();
+});
+
+function setupInterceptors() {
   webpageListeners.onWebSocketCaptured();
+
   webpageMessageInterceptors.trackQueryLimits();
   webpageMessageInterceptors.alterQueries();
-  webpageMessageInterceptors.blockNativeProSearchMessages();
   webpageMessageInterceptors.blockTelemetry();
   webpageMessageInterceptors.removeComplexityIdentifier();
+}
 
-  uiTweaks.alterAttachButton();
-  uiTweaks.adjustSelectorsBorderRadius();
-  uiTweaks.adjustQueryBoxWidth();
+function setupDOMObservers() {
+  // bind ctrl + shift + Q to destroy all observers
+  $(document).on('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'Q') {
+      DOMObserver.destroyAll();
+      alert('All observers destroyed!');
+    }
+  });
+
+  // DOMObserver.enableLogging();
+
   uiTweaks.hideScrollToBottomButton();
-  uiTweaks.correctNativeProSearchSwitch();
-  uiTweaks.hideNativeProSearchSwitch();
   uiTweaks.collapseEmptyThreadVisualColumns();
-  uiTweaks.displayModelNextToAnswerHeading();
-  uiTweaks.alterMessageQuery();
 
-  // webpageMessageInterceptors.inspectWebSocketEvents();
-  // webpageMessageInterceptors.inspectLongPollingEvents();
-})();
+  const observe = (url: string) => {
+    DOMObserver.pauseAll();
+
+    uiTweaks.alterAttachButton();
+    uiTweaks.calibrateMarkdownBlock();
+    uiTweaks.calibrateThreadMessageStickyHeader();
+
+    $(() => {
+      switch (whereAmI(url)) {
+        case 'thread':
+          uiTweaks.alterMessageQuery();
+          uiTweaks.displayModelNextToAnswerHeading();
+          uiTweaks.highlightMarkdownBlocks();
+          break;
+      }
+    });
+  };
+
+  observe(window.location.href);
+
+  webpageMessenger.onMessage('routeChange', async ({ payload: url }) => {
+    observe(url);
+  });
+}
 
 async function init() {
+  injectMainWorldScript(chrome.runtime.getURL(messenger)).then(() =>
+    injectMainWorldScript(chrome.runtime.getURL(wsHook))
+  );
+
+  uiTweaks.correctColorScheme();
+  uiTweaks.injectCustomStyles();
+
   await waitForNextjsHydration();
 
   $('html').attr({
     'data-dev': `${import.meta.env.DEV}`,
   });
 
-  uiTweaks.correctColorScheme();
-  uiTweaks.injectBaseStyles();
-  uiTweaks.injectCustomStyles();
-
   softUpdateCheck();
-
-  await background.sendMessage({ action: 'injectScript' });
 }
 
 async function softUpdateCheck() {
@@ -63,7 +102,7 @@ async function softUpdateCheck() {
 
   if (latestPPLXBuildId && pplxBuildId !== latestPPLXBuildId) {
     console.warn(
-      "COMPLEXITY: Perplexity web app's new build id detected! The extension maybe outdated and some features may not work as expected. Please report any issues by joining the Discord server: https://discord.gg/fxzqdkwmWx.",
+      "COMPLEXITY: Perplexity web app's new build id detected! The extension maybe outdated and some features may not work as expected. Report issues by joining the Discord server: https://discord.gg/fxzqdkwmWx.",
       'BUILD_ID:',
       latestPPLXBuildId
     );

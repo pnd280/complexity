@@ -8,7 +8,6 @@ export type ChromeStoreKey = keyof ChromeStore;
 export type ChromeStore = {
   defaultFocus: Nullable<WebAccessFocus['code']>;
   defaultWebAccess: boolean;
-  defaultProSearch: boolean;
   secretMode: boolean;
   popupSettings: {
     queryBoxSelectors: {
@@ -20,17 +19,14 @@ export type ChromeStore = {
     qolTweaks: {
       threadTOC: boolean;
       quickQueryCommander: boolean;
-      threadMessageStickyToolbar: boolean;
-      MarkdownBlockToolbar: boolean;
+      threadMessageStickyHeader: boolean;
+      markdownBlockToolbar: boolean;
       autoRefreshSessionTimeout: boolean;
       blockTelemetry: boolean;
     };
     visualTweaks: {
       collapseEmptyThreadVisualColumns: boolean;
     };
-  };
-  artifacts: {
-    mermaid?: boolean;
   };
   customTheme: {
     slogan?: string;

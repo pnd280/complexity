@@ -7,6 +7,7 @@ import {
 import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
+import { LoaderCircle } from 'lucide-react';
 
 import { useGlobalStore } from '@/content-script/session-store/global';
 import {
@@ -93,18 +94,16 @@ export default function QueryBox() {
     enabled: isReady,
   });
 
-  const { refetch: refetchCollections } = useQuery({
+  useQuery({
     queryKey: ['collections'],
     queryFn: pplxApi.fetchCollections,
-    enabled: false,
   });
 
   const { setQueryLimit, setOpusLimit, setImageCreateLimit } = useQueryBoxStore(
     (state) => state
   );
 
-  const { toggleProSearch, toggleWebAccess, allowWebAccess, proSearch } =
-    useQueryBoxStore((state) => state.webAccess);
+  const { toggleWebAccess } = useQueryBoxStore((state) => state.webAccess);
 
   const { focus, imageGenModel, languageModel, collection } =
     usePopupSettingsStore((state) => state.queryBoxSelectors);
@@ -139,12 +138,19 @@ export default function QueryBox() {
   const [quickCommandSearchValue, setQuickCommandSearchValue] = useState('');
 
   useQueryBoxObserver({
-    setContainers: (newContainer) =>
-      setContainers([...containers, newContainer]),
-    setFollowUpContainers: (newContainer) =>
-      setFollowUpContainers([...followUpContainers, newContainer]),
+    setContainers: (newContainer) => {
+      setContainers(
+        [...containers, newContainer].filter((x) => document.contains(x))
+      );
+    },
+    setFollowUpContainers: (newContainer) => {
+      setFollowUpContainers(
+        [...followUpContainers, newContainer].filter((x) =>
+          document.contains(x)
+        )
+      );
+    },
     refetchUserSettings,
-    refetchCollections,
     disabled: !focus && !languageModel && !imageGenModel && !collection,
   });
 
@@ -158,40 +164,25 @@ export default function QueryBox() {
   }, [hasActivePPLXSub, toast]);
 
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
+    const down = (
+      e: JQuery.TriggeredEvent<Document, undefined, Document, Document>
+    ) => {
       if (e.altKey && e.key === '.') {
         e.preventDefault();
         toggleWebAccess();
       }
-
-      if (hasActivePPLXSub && e.ctrlKey && e.key === '.') {
-        e.preventDefault();
-        toggleProSearch(!proSearch);
-
-        if (!allowWebAccess) {
-          toggleWebAccess(true);
-          toggleProSearch(true);
-        }
-      }
     };
 
-    document.addEventListener('keydown', down);
+    $(document).on('keydown.toggleWebAccess', down);
 
     return () => {
-      document.removeEventListener('keydown', down);
+      $(document).off('keydown.toggleWebAccess', down);
     };
-  }, [
-    hasActivePPLXSub,
-    proSearch,
-    allowWebAccess,
-    toggleProSearch,
-    toggleWebAccess,
-  ]);
-
-  if (!userSettings || isLoadingUserSettings) return null;
+  }, [toggleWebAccess]);
 
   const selectors = (
     <CommonSelectors
+      isReady={isReady && !!userSettings && !isLoadingUserSettings}
       hasActivePPLXSub={!!hasActivePPLXSub}
       focus={focus}
       collection={collection}
@@ -202,6 +193,7 @@ export default function QueryBox() {
 
   const followUpSelectors = (
     <CommonSelectors
+      isReady={isReady && !!userSettings && !isLoadingUserSettings}
       hasActivePPLXSub={!!hasActivePPLXSub}
       focus={focus}
       languageModel={languageModel}
@@ -263,12 +255,14 @@ export default function QueryBox() {
 }
 
 const CommonSelectors = ({
+  isReady,
   hasActivePPLXSub,
   focus,
   collection,
   languageModel,
   imageGenModel,
 }: {
+  isReady: boolean;
   hasActivePPLXSub: boolean;
   focus: boolean;
   collection?: boolean;
@@ -277,22 +271,30 @@ const CommonSelectors = ({
 }) => {
   return (
     <>
-      {(focus || collection) && (
+      {isReady ? (
         <>
-          {focus && <FocusSelector />}
-          {collection && <CollectionSelector />}
-          {hasActivePPLXSub && (languageModel || imageGenModel) && (
-            <div className="tw-h-8 tw-flex tw-items-center tw-my-auto">
-              <Separator
-                orientation="vertical"
-                className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-zoom-in"
-              />
-            </div>
+          {(focus || collection) && (
+            <>
+              {focus && <FocusSelector />}
+              {collection && <CollectionSelector />}
+              {hasActivePPLXSub && (languageModel || imageGenModel) && (
+                <div className="tw-h-8 tw-flex tw-items-center tw-my-auto">
+                  <Separator
+                    orientation="vertical"
+                    className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-fade-in"
+                  />
+                </div>
+              )}
+            </>
           )}
+          {hasActivePPLXSub && languageModel && <LanguageModelSelector />}
+          {hasActivePPLXSub && imageGenModel && <ImageModelSelector />}
         </>
+      ) : (
+        <div className="tw-flex tw-items-center tw-mx-2">
+          <LoaderCircle className="tw-text-muted-foreground tw-animate-spin tw-w-4 tw-h-4" />
+        </div>
       )}
-      {hasActivePPLXSub && languageModel && <LanguageModelSelector />}
-      {hasActivePPLXSub && imageGenModel && <ImageModelSelector />}
     </>
   );
 };

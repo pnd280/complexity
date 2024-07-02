@@ -28,20 +28,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
-import { webpageMessenger } from '@/content-script/webpage/messenger';
 import { cn } from '@/lib/utils';
 import { UserProfileSettingsAPIResponse } from '@/types/PPLXApi';
-import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
 import { whereAmI } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 
 import CollectionEditDialog from '../CollectionEditDialog';
+import useRouter from '../hooks/useRouter';
 import useUpdateUserProfileSettings
   from '../hooks/useUpdateUserProfileSettings';
-import TooltipWrapper from '../TooltipWrapper';
+import TooltipWrapper from '../Tooltip';
 import UserProfileEditDialog from '../UserProfileEditDialog';
 
 export type Collection = {
@@ -54,10 +54,13 @@ export type Collection = {
 };
 
 export default function CollectionSelector() {
+  const url = useRouter();
+
   const { data: collections, isLoading: isLoadingCollections } = useQuery<
     Collection[]
   >({
     queryKey: ['collections'],
+    enabled: false,
   });
 
   const { data: userProfileSettings, isLoading: isUserProfileSettingsLoading } =
@@ -99,11 +102,7 @@ export default function CollectionSelector() {
     };
 
     autoSelect();
-
-    const stopObserving = observer.onShallowRouteChange(autoSelect);
-
-    return () => stopObserving();
-  }, [collections, setSelectedCollectionUuid]);
+  }, [url, collections, setSelectedCollectionUuid]);
 
   return (
     <>

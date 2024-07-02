@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select';
 import { ui } from '@/utils/ui';
 
-import TooltipWrapper from '../TooltipWrapper';
+import TooltipWrapper from '../Tooltip';
 
 type ModelItem = {
   label: string;

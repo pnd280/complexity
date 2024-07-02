@@ -13,8 +13,8 @@ type PopupSettingsState = {
   qolTweaks: {
     threadTOC: boolean;
     quickQueryCommander: boolean;
-    threadMessageStickyToolbar: boolean;
-    MarkdownBlockToolbar: boolean;
+    threadMessageStickyHeader: boolean;
+    markdownBlockToolbar: boolean;
     autoRefreshSessionTimeout: boolean;
     blockTelemetry: boolean;
   };
@@ -35,8 +35,8 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
     qolTweaks: {
       threadTOC: false,
       quickQueryCommander: false,
-      threadMessageStickyToolbar: false,
-      MarkdownBlockToolbar: false,
+      threadMessageStickyHeader: false,
+      markdownBlockToolbar: false,
       autoRefreshSessionTimeout: false,
       blockTelemetry: false,
     },
@@ -64,8 +64,8 @@ const popupSettingsStore = usePopupSettingsStore;
         qolTweaks: {
           threadTOC: false,
           quickQueryCommander: false,
-          threadMessageStickyToolbar: false,
-          MarkdownBlockToolbar: false,
+          threadMessageStickyHeader: false,
+          markdownBlockToolbar: false,
           autoRefreshSessionTimeout: false,
           blockTelemetry: false,
         },

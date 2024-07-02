@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
       crx({ manifest }),
       react(),
       viteTouchGlobalCss({
-        cssFilePath: path.resolve(__dirname, 'src/assets/global.css'),
+        cssFilePath: path.resolve(__dirname, 'public/global.css'),
         watchFiles: [path.resolve(__dirname, 'src/')],
       }),
       vitePluginRunCommandOnDemand({
@@ -38,13 +38,8 @@ export default defineConfig(({ mode }) => {
           os.platform() === 'win32' ? 'mkdir build' : 'mkdir -p build',
       }),
       vitePluginRunCommandOnDemand({
-        afterServerStart: 'cp -f ./src/content-script/base.css ./build/',
-        onHotUpdate: 'cp -f ./src/content-script/base.css ./build/',
-        closeBundle: 'cp -f ./src/content-script/base.css ./build/',
-      }),
-      vitePluginRunCommandOnDemand({
-        closeBundle:
-          'tsc --outDir ./build/inject -p tsconfig.webpage.json && uglifyjs ./build/inject/content-script/webpage/messenger.js ./build/inject/content-script/webpage/ws-hook.js -o ./build/assets/chunk-webpage.min.js -c -m && rm -rf ./build/inject',
+        afterServerStart: 'cp -f ./public/base.css ./build/',
+        onHotUpdate: 'cp -f ./public/base.css ./build/',
       }),
     ],
 

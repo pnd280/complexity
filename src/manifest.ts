@@ -1,4 +1,3 @@
-// @ts-ignore
 import { defineManifest } from '@crxjs/vite-plugin';
 
 import packageData from '../package.json';
@@ -28,6 +27,7 @@ export default defineManifest({
     {
       matches: ['https://www.perplexity.ai/*', 'https://perplexity.ai/*'],
       js: ['src/content-script/index.tsx'],
+      css: ['global.css', 'base.css'],
       run_at: 'document_start',
     },
   ],
@@ -41,7 +41,8 @@ export default defineManifest({
         'img/logo-48.png',
         'img/logo-128.png',
         '*.js',
-        '*.css',
+        'global.css',
+        'base.css',
       ],
       matches: ['*://*.perplexity.ai/*'],
     },

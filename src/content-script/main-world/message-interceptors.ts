@@ -154,6 +154,10 @@ function alterQueries() {
         return { match: false };
       }
 
+      if (parsedPayload.data[1].query_source === 'default_search') {
+        return { match: false };
+      }
+
       const newModelPreference =
         popupSettingsStore.getState().queryBoxSelectors.languageModel &&
         parsedPayload.data?.[1].query_source !== 'retry'
@@ -167,14 +171,6 @@ function alterQueries() {
           : 'writing'
         : parsedPayload.data[1].search_focus;
 
-      const newProSearchState = popupSettingsStore.getState().queryBoxSelectors
-        .focus
-        ? queryBoxStore.getState().webAccess.proSearch &&
-          queryBoxStore.getState().webAccess.allowWebAccess
-          ? 'copilot'
-          : 'concise'
-        : parsedPayload.data[1].mode;
-
       const newTargetCollectionUuid = popupSettingsStore.getState()
         .queryBoxSelectors.collection
         ? parsedPayload.data[1].query_source === 'home' ||
@@ -187,7 +183,6 @@ function alterQueries() {
         ...parsedPayload.data[1],
         model_preference: newModelPreference,
         search_focus: newSearchFocus,
-        mode: newProSearchState,
         target_collection_uuid: newTargetCollectionUuid,
       };
 
@@ -259,31 +254,6 @@ function alterNextQuery({
       return { ...messageData, payload: { payload: args[0].newPayload } };
     },
     stopCondition: () => true,
-  });
-}
-
-function blockNativeProSearchMessages() {
-  webpageMessenger.addInterceptor({
-    matchCondition: (messageData: MessageData<any>) => {
-      const webSocketMessageData = messageData as MessageData<
-        WebSocketEventData | LongPollingEventData
-      >;
-
-      const parsedPayload: WSParsedMessage | null | string =
-        WSMessageParser.parse(webSocketMessageData.payload.payload);
-
-      if (!isParsedWSMessage(parsedPayload)) return { match: false };
-
-      return {
-        match:
-          parsedPayload.event === 'save_user_settings' &&
-          !parsedPayload.data[0]?.is_complexity,
-      };
-    },
-    callback: async () => {
-      return null;
-    },
-    stopCondition: () => false,
   });
 }
 
@@ -427,7 +397,6 @@ const webpageMessageInterceptors = {
   inspectLongPollingEvents,
   alterQueries,
   alterNextQuery,
-  blockNativeProSearchMessages,
   waitForUpsertThreadCollection,
   waitForUserProfileSettings,
   blockTelemetry,

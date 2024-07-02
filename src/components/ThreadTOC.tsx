@@ -6,7 +6,7 @@ import {
 
 import clsx from 'clsx';
 import $ from 'jquery';
-import { throttle } from 'lodash';
+import { throttle } from 'lodash-es';
 import {
   ChevronLeft,
   X,
@@ -15,15 +15,12 @@ import {
 import {
   popupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
-import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
-import {
-  scrollToElement,
-  whereAmI,
-} from '@/utils/utils';
+import { scrollToElement } from '@/utils/utils';
 import { useToggle } from '@uidotdev/usehooks';
 
-import TooltipWrapper from './TooltipWrapper';
+import useRouter from './hooks/useRouter';
+import TooltipWrapper from './Tooltip';
 import { ScrollArea } from './ui/scroll-area';
 
 export default function ThreadTOC() {
@@ -44,7 +41,7 @@ export default function ThreadTOC() {
     setWrapperWidth($('#thread-toc')?.outerWidth() || 0);
   });
 
-  if (!anchorsProps || !wrapperPos || whereAmI() !== 'thread') return null;
+  if (!anchorsProps || !wrapperPos) return null;
 
   return (
     <>
@@ -70,7 +67,7 @@ export default function ThreadTOC() {
             id="thread-toc"
           >
             <ScrollArea scrollHideDelay={0}>
-              <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[500px]">
+              <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[50dvh]">
                 {anchorsProps?.map((anchorProps, index) => (
                   <div
                     key={index}
@@ -157,6 +154,8 @@ type AnchorProps = {
 };
 
 const useThreadTOCObserver = () => {
+  const url = useRouter();
+
   const [visibleMessageIndex, setVisibleMessageIndex] = useState<number>(0);
 
   const [anchorsProps, setAnchorsProps] = useState<AnchorProps[]>();
@@ -169,8 +168,7 @@ const useThreadTOCObserver = () => {
   const myObserver = useCallback(() => {
     const documentNotOverflowing = $(document).height()! <= $(window).height()!;
 
-    if (whereAmI() !== 'thread' || documentNotOverflowing)
-      return setAnchorsProps([]);
+    if (documentNotOverflowing) return setAnchorsProps([]);
 
     setVisibleMessageIndex(
       ui.findMostVisibleElementIndex(
@@ -203,14 +201,14 @@ const useThreadTOCObserver = () => {
           scrollToElement($messageBlock, -10);
         },
         onContextMenu: () => {
-          const threadMessageStickyToolbar =
-            popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar;
+          const threadMessageStickyHeader =
+            popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader;
 
           const isScrollingUp =
             ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
 
           const offset =
-            isScrollingUp && threadMessageStickyToolbar ? -110 : -60;
+            isScrollingUp && threadMessageStickyHeader ? -110 : -60;
 
           scrollToElement($answer, offset);
         },
@@ -226,16 +224,18 @@ const useThreadTOCObserver = () => {
     requestIdleCallback(() => throttledObserver());
 
     $(window).on('scroll', () => throttledObserver());
-    observer.onShallowRouteChange(() => {
-      requestIdleCallback(() => throttledObserver());
-    });
 
     $(window)
       .off('resize.ThreadTOC')
       .on('resize.ThreadTOC', () => {
         throttledObserver();
       });
-  }, [myObserver]);
+
+    return () => {
+      $(window).off('scroll');
+      $(window).off('resize.ThreadTOC');
+    };
+  }, [url, myObserver]);
 
   return { visibleMessageIndex, anchorsProps, wrapperPos };
 };

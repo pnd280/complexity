@@ -49,11 +49,6 @@ export const ui = {
   getStickyHeader() {
     return $('.sticky.left-0.right-0.top-0.z-20.border-b');
   },
-  getNativeProSearchSwitchWrapper() {
-    return $(
-      '.gap-sm.group\\/switch.flex.cursor-default.items-center.cursor-pointer[data-testid="copilot-toggle"]'
-    );
-  },
   getWordOnCaret(element: HTMLTextAreaElement) {
     const text = element.value;
     const caret = element.selectionStart;
@@ -156,6 +151,20 @@ export const ui = {
 
     return $messagesContainer;
   },
+  parseMessageBlock($messageBlock: JQuery<Element>) {
+    const $query = $messageBlock.find('.my-md.md\\:my-lg');
+    const $answer = $messageBlock.find('.relative.default.font-sans.text-base');
+    const $answerHeading = $messageBlock.find(
+      '.mb-sm.flex.w-full.items-center.justify-between:contains("Answer")'
+    );
+
+    return {
+      $messageBlock,
+      $query,
+      $answer,
+      $answerHeading,
+    };
+  },
   getMessageBlocks() {
     if (whereAmI() !== 'thread') return [];
 
@@ -170,13 +179,11 @@ export const ui = {
 
     $messagesContainer.children().each((_, messageBlock) => {
       const $messageBlock = $(messageBlock);
-      const $query = $messageBlock.find('.my-md.md\\:my-lg');
-      const $answer = $messageBlock.find(
-        '.relative.default.font-sans.text-base'
-      );
-      const $answerHeading = $messageBlock.find(
-        '.mb-sm.flex.w-full.items-center.justify-between:contains("Answer")'
-      );
+
+      $messageBlock.addClass('message-block');
+
+      const { $query, $answer, $answerHeading } =
+        this.parseMessageBlock($messageBlock);
 
       $messageBlock.find('.col-span-8:last').addClass('message-col');
       $messageBlock.find('.col-span-4:last').addClass('visual-col');
