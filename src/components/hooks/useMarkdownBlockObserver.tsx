@@ -11,6 +11,7 @@ import $ from 'jquery';
 import useRouter from '@/components/hooks/useRouter';
 import DOMObserver from '@/utils/dom-observer';
 import { rewritePreBlock } from '@/utils/markdown-block';
+import { isDOMNode } from '@/utils/utils';
 
 import { MarkdownBlockContainer } from '../MarkdownBlock/MarkdownBlockHeader';
 import useWaitForMessagesContainer from './useWaitForMessagesContainer';
@@ -55,7 +56,7 @@ export default function useMarkdownBlockObserver({
   const { messagesContainer, isWaiting } = useWaitForMessagesContainer();
 
   useEffect(() => {
-    if (isWaiting || !messagesContainer) return;
+    if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
 
     requestAnimationFrame(callback);
 

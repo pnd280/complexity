@@ -18,6 +18,7 @@ import {
 import DOMObserver from '@/utils/dom-observer';
 import observer from '@/utils/observer';
 import { ui } from '@/utils/ui';
+import { isDOMNode } from '@/utils/utils';
 import { useDebounce } from '@uidotdev/usehooks';
 
 import useRouter from '../hooks/useRouter';
@@ -112,7 +113,7 @@ export default function ThreadMessageStickyHeader() {
   const { messagesContainer, isWaiting } = useWaitForMessagesContainer();
 
   useEffect(() => {
-    if (isWaiting || !messagesContainer) return;
+    if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
 
     requestAnimationFrame(callback);
 

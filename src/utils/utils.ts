@@ -318,6 +318,10 @@ export function waitForElement({
   });
 }
 
+export function isDOMNode(element: any): element is HTMLElement | Element {
+  return element instanceof HTMLElement || element instanceof Element;
+}
+
 export async function getPPLXBuildId() {
   const NEXTDATA = await getNEXTDATA();
 

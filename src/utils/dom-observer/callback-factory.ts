@@ -9,6 +9,8 @@ import {
   MutationCallback,
 } from '@/types/DOMObserver';
 
+import { batchMutations } from './mutation-batcher';
+
 const handleError = (error: unknown, context: string): void => {
   console.error(
     `Error in ${context}: ${error instanceof Error ? error.message : String(error)}`
@@ -34,7 +36,9 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
     mutations: MutationRecord[],
     observer: MutationObserver
   ) => {
-    for (const mutation of mutations) {
+    const batchedMutations = batchMutations(mutations);
+
+    for (const mutation of batchedMutations) {
       if (mutation.type === 'childList') {
         if (config.onAdd) {
           for (const node of mutation.addedNodes) {
@@ -66,7 +70,7 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
     if (config.onAny) {
       await safeExecute<Parameters<MutationCallback>>(
         config.onAny,
-        mutations,
+        batchedMutations,
         observer
       );
     }

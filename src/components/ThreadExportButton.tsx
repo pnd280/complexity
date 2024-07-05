@@ -19,7 +19,10 @@ import { FaMarkdown } from 'react-icons/fa';
 import { languageModels } from '@/consts/model-selector';
 import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
-import { jsonUtils } from '@/utils/utils';
+import {
+  isDOMNode,
+  jsonUtils,
+} from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 
 import useWaitForElement from './hooks/useWaitForElement';
@@ -74,7 +77,7 @@ export default function ThreadExportButton() {
   });
 
   useEffect(() => {
-    if (isWaiting || !element) return;
+    if (!isDOMNode(element) || !$(element).length) return;
 
     requestIdleCallback(() => {
       const $stickyHeader = $(element);

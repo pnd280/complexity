@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import $ from 'jquery';
 
 import { useToast } from '@/components/ui/use-toast';
+import { isDOMNode } from '@/utils/utils';
 
 import useWaitForElement from './hooks/useWaitForElement';
 
@@ -15,7 +16,7 @@ export function IncompatibleInterfaceLanguageNotice() {
   });
 
   useEffect(() => {
-    if (isWaiting || !element) return;
+    if (!isDOMNode(element) || !$(element).length) return;
 
     const $select = $(element);
     if ($select.length) {

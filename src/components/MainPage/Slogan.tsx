@@ -10,6 +10,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useGlobalStore } from '@/content-script/session-store/global';
 import { cn } from '@/lib/utils';
 import background from '@/utils/background';
+import { isDOMNode } from '@/utils/utils';
 import {
   useDebounce,
   useToggle,
@@ -41,7 +42,7 @@ export default function Slogan() {
   });
 
   useEffect(() => {
-    if (isWaiting || !element) return;
+    if (!isDOMNode(element) || !$(element).length) return;
 
     const $nativeSlogan = $(element);
 

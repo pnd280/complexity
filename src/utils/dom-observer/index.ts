@@ -1,5 +1,3 @@
-import { debounce } from 'lodash-es';
-
 import {
   DOMObserverConfig,
   DOMObserverInstance,
@@ -7,7 +5,7 @@ import {
 } from '@/types/DOMObserver';
 import { UpdateQueue } from '@/utils/dom-observer/update-queue';
 
-import { createCallback } from './callback-creator';
+import { createCallback } from './callback-factory';
 
 class DOMObserver {
   private static instances: Map<string, DOMObserverInstance> = new Map();
