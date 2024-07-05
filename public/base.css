@@ -229,6 +229,11 @@ html {
   overflow: unset !important;
 }
 
+/* Math */
+.math .katex .frac-line {
+  border-bottom-color: var(--accent-foreground-darker) !important;
+}
+
 /* Markdown Query Wrapper */
 .my-md.md\:my-lg:has(textarea) #markdown-query-wrapper {
   display: none;
