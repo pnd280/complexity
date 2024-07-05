@@ -41,7 +41,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '../Popover';
-import TooltipWrapper from '../Tooltip';
+import Tooltip from '../Tooltip';
 import UserProfileEditDialog from '../UserProfileEditDialog';
 
 export type Collection = {
@@ -107,7 +107,7 @@ export default function CollectionSelector() {
   return (
     <>
       <Popover open={open} onOpenChange={toggleOpen} modal={false}>
-        <TooltipWrapper
+        <Tooltip
           content={!selectedCollectionUuid ? 'Chat with a collection' : ''}
         >
           <PopoverTrigger asChild>
@@ -137,8 +137,8 @@ export default function CollectionSelector() {
               ) : null}
             </div>
           </PopoverTrigger>
-        </TooltipWrapper>
-        <PopoverContent className="!tw-w-max !tw-p-0">
+        </Tooltip>
+        <PopoverContent className="!tw-w-max !tw-p-0 tw-shadow-md">
           <Command
             key={selectedCollectionUuid}
             className="!tw-min-w-[150px] tw-bg-background tw-font-sans"
@@ -174,7 +174,7 @@ export default function CollectionSelector() {
                   title="Your AI Profile"
                 >
                   <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
-                    <TooltipWrapper
+                    <Tooltip
                       content={userProfileSettings?.bio || ''}
                       contentOptions={{
                         side: 'right',
@@ -191,9 +191,9 @@ export default function CollectionSelector() {
                       >
                         <Pencil className="tw-w-3 tw-h-3" />
                       </div>
-                    </TooltipWrapper>
+                    </Tooltip>
 
-                    <TooltipWrapper
+                    <Tooltip
                       content={
                         userProfileSettings?.disabled
                           ? 'Enable AI profile'
@@ -234,7 +234,7 @@ export default function CollectionSelector() {
                           </>
                         )}
                       </div>
-                    </TooltipWrapper>
+                    </Tooltip>
                   </div>
                 </Selection>
               </CommandGroup>
@@ -275,7 +275,7 @@ export default function CollectionSelector() {
                       title={collection.title}
                     >
                       <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
-                        <TooltipWrapper
+                        <Tooltip
                           content={
                             collection.instructions || collection.description
                           }
@@ -295,7 +295,7 @@ export default function CollectionSelector() {
                           >
                             <Pencil className="tw-w-3 tw-h-3" />
                           </div>
-                        </TooltipWrapper>
+                        </Tooltip>
 
                         <div
                           className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"

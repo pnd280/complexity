@@ -15,7 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import useCtrlDown from '../hooks/useCtrlDown';
 import useToggleButtonText from '../hooks/useToggleButtonText';
-import TooltipWrapper from '../Tooltip';
+import Tooltip from '../Tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -122,7 +122,7 @@ export default function CopyButton({
           }
         }}
       >
-        <TooltipWrapper content="Copy Message">
+        <Tooltip content="Copy Message">
           <div className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group">
             {isFetchingCurrentThreadInfo ? (
               <LoaderCircle className="tw-w-4 tw-h-4 tw-animate-spin" />
@@ -130,7 +130,7 @@ export default function CopyButton({
               copyButtonText
             )}
           </div>
-        </TooltipWrapper>
+        </Tooltip>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem

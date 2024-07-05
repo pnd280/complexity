@@ -102,13 +102,6 @@ export default function ThreadMessageStickyHeader() {
 
       if (containersStates[index]?.isHidden === hide) return;
 
-      if (!hide) {
-        $(messageBlock).css(
-          '--markdownBlockToolbarTop',
-          (ui.getStickyHeader()?.outerHeight() || 3.35 * 16) + 3.1 * 16 + 'px'
-        );
-      }
-
       setContainersStates((draft) => {
         if (draft[index]) draft[index].isHidden = hide;
       });

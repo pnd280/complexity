@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { stripHtml } from '@/utils/utils';
 
 import useToggleButtonText from '../hooks/useToggleButtonText';
-import TooltipWrapper from '../Tooltip';
+import Tooltip from '../Tooltip';
 
 type MarkdownBlockToolbarProps = {
   lang: string;
@@ -36,7 +36,7 @@ export default (function MarkdownBlockToolbar({
         {lang || 'plain-text'}
       </div>
       <div className="tw-ml-auto tw-flex tw-gap-3">
-        <TooltipWrapper content="Select for Compare">
+        <Tooltip content="Select for Compare">
           <div
             className={cn(
               'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95',
@@ -51,7 +51,7 @@ export default (function MarkdownBlockToolbar({
           >
             <GitCompare className="tw-w-4 tw-h-4" />
           </div>
-        </TooltipWrapper>
+        </Tooltip>
 
         <div
           className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"

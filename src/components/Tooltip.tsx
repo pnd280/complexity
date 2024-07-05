@@ -1,5 +1,6 @@
 import {
   ReactNode,
+  useCallback,
   useState,
 } from 'react';
 
@@ -27,7 +28,7 @@ export type TooltipProps = {
   children: ReactNode;
   content: ReactNode;
   contentClassName?: string;
-}
+};
 
 export default function Tooltip({
   children,
@@ -41,17 +42,19 @@ export default function Tooltip({
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
+  const handleOpenChange = useCallback((open: boolean) => {
+    if (!open) {
+      setIsVisible(false);
+      setTimeout(() => setIsOpen(false), 140);
+    } else {
+      setIsOpen(true);
+      setIsVisible(true);
+    }
+  }, []);
+
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
-    onOpenChange: (open) => {
-      if (!open) {
-        setIsVisible(false);
-        setTimeout(() => setIsOpen(false), 140);
-      } else {
-        setIsOpen(true);
-        setIsVisible(true);
-      }
-    },
+    onOpenChange: handleOpenChange,
     placement: side || 'top',
     whileElementsMounted: autoUpdate,
     middleware: [
@@ -75,9 +78,17 @@ export default function Tooltip({
     role,
   ]);
 
+  const handleClick = useCallback(() => {
+    handleOpenChange(false);
+  }, [handleOpenChange]);
+
   return (
     <>
-      <div ref={refs.setReference} {...getReferenceProps()}>
+      <div
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        onClick={handleClick}
+      >
         {children}
       </div>
       <FloatingPortal>

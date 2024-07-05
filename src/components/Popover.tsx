@@ -1,4 +1,18 @@
-import * as React from 'react';
+import {
+  ButtonHTMLAttributes,
+  cloneElement,
+  createContext,
+  Dispatch,
+  forwardRef,
+  HTMLProps,
+  isValidElement,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -18,13 +32,13 @@ import {
   useRole,
 } from '@floating-ui/react';
 
-interface PopoverOptions {
+type PopoverOptions = {
   initialOpen?: boolean;
   placement?: Placement;
   modal?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-}
+};
 
 function usePopover({
   initialOpen = false,
@@ -33,11 +47,9 @@ function usePopover({
   open: controlledOpen,
   onOpenChange: setControlledOpen,
 }: PopoverOptions = {}) {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
-  const [labelId, setLabelId] = React.useState<string | undefined>();
-  const [descriptionId, setDescriptionId] = React.useState<
-    string | undefined
-  >();
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen);
+  const [labelId, setLabelId] = useState<string | undefined>();
+  const [descriptionId, setDescriptionId] = useState<string | undefined>();
 
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = setControlledOpen ?? setUncontrolledOpen;
@@ -68,7 +80,7 @@ function usePopover({
 
   const interactions = useInteractions([click, dismiss, role]);
 
-  return React.useMemo(
+  return useMemo(
     () => ({
       open,
       setOpen,
@@ -86,17 +98,15 @@ function usePopover({
 
 type ContextType =
   | (ReturnType<typeof usePopover> & {
-      setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
-      setDescriptionId: React.Dispatch<
-        React.SetStateAction<string | undefined>
-      >;
+      setLabelId: Dispatch<SetStateAction<string | undefined>>;
+      setDescriptionId: Dispatch<SetStateAction<string | undefined>>;
     })
   | null;
 
-const PopoverContext = React.createContext<ContextType>(null);
+const PopoverContext = createContext<ContextType>(null);
 
 const usePopoverContext = () => {
-  const context = React.useContext(PopoverContext);
+  const context = useContext(PopoverContext);
 
   if (context == null) {
     throw new Error('Popover components must be wrapped in <Popover />');
@@ -110,10 +120,8 @@ export function Popover({
   modal = false,
   ...restOptions
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 } & PopoverOptions) {
-  // This can accept any props as options, e.g. `placement`,
-  // or other positioning options.
   const popover = usePopover({ modal, ...restOptions });
   return (
     <PopoverContext.Provider value={popover}>
@@ -122,88 +130,86 @@ export function Popover({
   );
 }
 
-interface PopoverTriggerProps {
-  children: React.ReactNode;
+type PopoverTriggerProps = {
+  children: ReactNode;
   asChild?: boolean;
-}
+} & HTMLProps<HTMLElement>;
 
-export const PopoverTrigger = React.forwardRef<
-  HTMLElement,
-  React.HTMLProps<HTMLElement> & PopoverTriggerProps
->(function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
-  const context = usePopoverContext();
-  const childrenRef = (children as any).ref;
-  const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
+export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerProps>(
+  function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
+    const context = usePopoverContext();
+    const childrenRef = (children as any).ref;
+    const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(
-      children,
-      context.getReferenceProps({
-        ref,
-        ...props,
-        ...children.props,
-        'data-state': context.open ? 'open' : 'closed',
-        onClick: () => context.setOpen(!context.open),
-      })
+    if (asChild && isValidElement(children)) {
+      return cloneElement(
+        children,
+        context.getReferenceProps({
+          ref,
+          ...props,
+          ...children.props,
+          'data-state': context.open ? 'open' : 'closed',
+          onClick: () => context.setOpen(!context.open),
+        })
+      );
+    }
+
+    return (
+      <button
+        ref={ref}
+        type="button"
+        data-state={context.open ? 'open' : 'closed'}
+        {...context.getReferenceProps(props)}
+        onClick={() => context.setOpen(!context.open)}
+      >
+        {children}
+      </button>
     );
   }
+);
 
-  return (
-    <button
-      ref={ref}
-      type="button"
-      data-state={context.open ? 'open' : 'closed'}
-      {...context.getReferenceProps(props)}
-      onClick={() => context.setOpen(!context.open)}
-    >
-      {children}
-    </button>
-  );
-});
+type PopoverContentProps = HTMLProps<HTMLDivElement> & { className?: string };
 
-export const PopoverContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLProps<HTMLDivElement> & { className?: string }
->(function PopoverContent({ style, className, ...props }, propRef) {
-  const { context: floatingContext, ...context } = usePopoverContext();
-  const ref = useMergeRefs([context.refs.setFloating, propRef]);
+export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
+  function PopoverContent({ style, className, ...props }, propRef) {
+    const { context: floatingContext, ...context } = usePopoverContext();
+    const ref = useMergeRefs([context.refs.setFloating, propRef]);
 
-  if (!floatingContext.open) return null;
+    if (!floatingContext.open) return null;
 
-  return (
-    <FloatingPortal>
-      <FloatingFocusManager context={floatingContext} modal={context.modal}>
-        <div
-          ref={ref}
-          style={{ ...context.floatingStyles, ...style }}
-          aria-labelledby={context.labelId}
-          aria-describedby={context.descriptionId}
-          {...context.getFloatingProps(props)}
-          className={cn('tw-z-50 tw-w-72 tw-p-4', className)}
-        >
+    return (
+      <FloatingPortal>
+        <FloatingFocusManager context={floatingContext} modal={context.modal}>
           <div
-            className="tw-rounded-md tw-border tw-bg-popover tw-text-popover-foreground tw-shadow-md tw-outline-none data-[state=open]:tw-animate-in data-[state=closed]:tw-animate-out data-[state=closed]:tw-fade-out-0 data-[state=open]:tw-fade-in-0 data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95 data-[side=bottom]:tw-slide-in-from-top-2 data-[side=left]:tw-slide-in-from-right-2 data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2"
-            data-state={floatingContext.open ? 'open' : 'closed'}
-            data-side={floatingContext.placement ?? 'bottom'}
+            ref={ref}
+            style={{ ...context.floatingStyles, ...style }}
+            aria-labelledby={context.labelId}
+            aria-describedby={context.descriptionId}
+            {...context.getFloatingProps(props)}
+            className={cn('tw-z-50 tw-w-72 tw-p-4', className)}
           >
-            {props.children}
+            <div
+              className="tw-rounded-md tw-border tw-bg-popover tw-text-popover-foreground tw-shadow-md tw-outline-none data-[state=open]:tw-animate-in data-[state=closed]:tw-animate-out data-[state=closed]:tw-fade-out-0 data-[state=open]:tw-fade-in-0 data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95 data-[side=bottom]:tw-slide-in-from-top-2 data-[side=left]:tw-slide-in-from-right-2 data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2"
+              data-state={floatingContext.open ? 'open' : 'closed'}
+              data-side={floatingContext.placement ?? 'bottom'}
+            >
+              {props.children}
+            </div>
           </div>
-        </div>
-      </FloatingFocusManager>
-    </FloatingPortal>
-  );
-});
+        </FloatingFocusManager>
+      </FloatingPortal>
+    );
+  }
+);
 
-export const PopoverHeading = React.forwardRef<
+export const PopoverHeading = forwardRef<
   HTMLHeadingElement,
-  React.HTMLProps<HTMLHeadingElement>
+  HTMLProps<HTMLHeadingElement>
 >(function PopoverHeading(props, ref) {
   const { setLabelId } = usePopoverContext();
   const id = useId();
 
-  // Only sets `aria-labelledby` on the Popover root element
-  // if this component is mounted inside it.
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     setLabelId(id);
     return () => setLabelId(undefined);
   }, [id, setLabelId]);
@@ -215,16 +221,14 @@ export const PopoverHeading = React.forwardRef<
   );
 });
 
-export const PopoverDescription = React.forwardRef<
+export const PopoverDescription = forwardRef<
   HTMLParagraphElement,
-  React.HTMLProps<HTMLParagraphElement>
+  HTMLProps<HTMLParagraphElement>
 >(function PopoverDescription(props, ref) {
   const { setDescriptionId } = usePopoverContext();
   const id = useId();
 
-  // Only sets `aria-describedby` on the Popover root element
-  // if this component is mounted inside it.
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     setDescriptionId(id);
     return () => setDescriptionId(undefined);
   }, [id, setDescriptionId]);
@@ -232,9 +236,9 @@ export const PopoverDescription = React.forwardRef<
   return <p {...props} ref={ref} id={id} />;
 });
 
-export const PopoverClose = React.forwardRef<
+export const PopoverClose = forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
+  ButtonHTMLAttributes<HTMLButtonElement>
 >(function PopoverClose(props, ref) {
   const { setOpen } = usePopoverContext();
   return (

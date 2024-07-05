@@ -104,14 +104,14 @@ export default function useQueryBoxObserver({
 
           const $container = $('<div>')
             .addClass(
-              'tw-flex tw-justify-center tw-mb-2 tw-mx-auto [&>div>*]:tw-h-full [&_button_span]:!tw-font-sans'
+              'tw-flex tw-justify-center tw-mb-2 tw-mx-auto [&_button_span]:!tw-font-sans'
             )
             .attr('id', 'query-box-follow-up-container');
 
           $followUpQueryBoxContainer.children().last().before($container);
 
           const $selectorContainer = $('<div>').addClass(
-            'tw-w-fit tw-p-1 tw-rounded-[.5rem] tw-border tw-border-border tw-shadow-lg tw-bg-background dark:tw-bg-secondary tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-h-10 tw-animate-in tw-slide-in-from-bottom tw-zoom-in tw-transition-all tw-duration-300 tw-min-w-[100px]'
+            'tw-w-fit tw-p-1 tw-rounded-[.5rem] tw-border tw-border-border tw-shadow-lg tw-bg-background dark:tw-bg-secondary tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-h-10 tw-animate-in tw-slide-in-from-bottom tw-zoom-in tw-transition-all tw-duration-300 tw-min-w-[100px] tw-min-h-8'
           );
 
           $followUpQueryBoxContainer

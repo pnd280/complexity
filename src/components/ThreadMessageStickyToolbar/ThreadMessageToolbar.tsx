@@ -24,7 +24,7 @@ import {
   stripHtml,
 } from '@/utils/utils';
 
-import TooltipWrapper from '../Tooltip';
+import Tooltip from '../Tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -111,7 +111,7 @@ export default function ThreadMessageToolbar({
         {!containersStates[containerIndex].isHidden &&
           !containersStates[containerIndex].isQueryOutOfViewport &&
           markdownVisualDiff && (
-            <TooltipWrapper
+            <Tooltip
               content={
                 containersStates[containerIndex].isMarkdown
                   ? 'Convert Query to Plain Text'
@@ -159,7 +159,7 @@ export default function ThreadMessageToolbar({
                   <Text className="tw-w-4 tw-h-4" />
                 )}
               </div>
-            </TooltipWrapper>
+            </Tooltip>
           )}
 
         <ThreadTitle
@@ -195,7 +195,7 @@ export default function ThreadMessageToolbar({
         />
 
         {isMessageEditable && (
-          <TooltipWrapper content="Edit Query">
+          <Tooltip content="Edit Query">
             <div
               className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
               onClick={() => {
@@ -204,7 +204,7 @@ export default function ThreadMessageToolbar({
             >
               <PiNotePencil className="tw-w-4 tw-h-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
             </div>
-          </TooltipWrapper>
+          </Tooltip>
         )}
 
         <DropdownMenu modal={false}>

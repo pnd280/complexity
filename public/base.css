@@ -288,6 +288,10 @@ pre code.line:before {
   --markdownBlockToolbarTop: 3.35rem;
 }
 
+body.thread-message-sticky-toolbar {
+  --markdownBlockToolbarTop: 6.45rem;
+}
+
 [data-popper-reference-hidden="true"] {
   display: none;
 }

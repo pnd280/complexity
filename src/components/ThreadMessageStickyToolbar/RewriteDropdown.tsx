@@ -17,7 +17,7 @@ import { LanguageModel } from '@/types/ModelSelector';
 import { sleep } from '@/utils/utils';
 
 import useCtrlDown from '../hooks/useCtrlDown';
-import TooltipWrapper from '../Tooltip';
+import Tooltip from '../Tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,14 +93,14 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
           }
         }}
       >
-        <TooltipWrapper content="Rewrite Message">
+        <Tooltip content="Rewrite Message">
           <div
             className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
             onClick={() => {}}
           >
             <RefreshCcw className="tw-w-4 tw-h-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
           </div>
-        </TooltipWrapper>
+        </Tooltip>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem

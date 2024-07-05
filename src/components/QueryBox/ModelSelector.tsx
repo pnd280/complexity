@@ -10,10 +10,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/Select';
 import { ui } from '@/utils/ui';
 
-import TooltipWrapper from '../Tooltip';
+import Tooltip from '../Tooltip';
 
 type ModelItem = {
   label: string;
@@ -48,38 +48,31 @@ export default function ModelSelector<T extends ModelItem>({
           }, 100);
         }}
       >
-        <TooltipWrapper
-          content={`Choose ${type} model`}
-          contentOptions={{
-            sideOffset: 8,
-          }}
-        >
-          <SelectTrigger
-            variant="ghost"
-            className="tw-font-medium tw-min-h-8 !tw-py-0 tw-flex tw-justify-center tw-items-center tw-gap-2 !tw-w-fit tw-max-w-[150px] tw-select-none active:!tw-scale-95 [&_span]:tw-max-w-[100px] !tw-px-2 tw-animate-in tw-zoom-in tw-transition-all tw-duration-300"
+        <SelectTrigger variant="ghost" className="!tw-py-0 !tw-px-0">
+          <Tooltip
+            content={`Choose ${type} model`}
+            contentOptions={{
+              sideOffset: 8,
+            }}
           >
-            {type === 'language' ? (
-              <Cpu className="tw-w-4 tw-h-4" />
-            ) : (
-              <Image className="tw-w-4 tw-h-4" />
-            )}
-            <SelectValue>
-              {items.find((model) => model.code === value)?.shortLabel}
-            </SelectValue>
-            <span className="tw-text-accent-foreground tw-text-[.5rem] !tw-self-start">
-              {items.find((model) => model.code === value)?.tooltip}
-            </span>
-          </SelectTrigger>
-        </TooltipWrapper>
-        <SelectContent
-          position="popper"
-          className="tw-font-sans [&_span]:tw-truncate tw-max-w-[200px] tw-max-h-[500px]"
-          onCloseAutoFocus={(e: Event) => {
-            e.preventDefault();
-          }}
-        >
+            <div className="tw-font-medium tw-min-h-8 tw-flex tw-justify-center tw-items-center tw-gap-2 !tw-w-fit tw-max-w-[150px] tw-select-none active:!tw-scale-95 [&_span]:tw-max-w-[100px] !tw-px-2 tw-animate-in tw-zoom-in tw-transition-all tw-duration-300">
+              {type === 'language' ? (
+                <Cpu className="tw-w-4 tw-h-4" />
+              ) : (
+                <Image className="tw-w-4 tw-h-4" />
+              )}
+              <SelectValue>
+                {items.find((model) => model.code === value)?.shortLabel}
+              </SelectValue>
+              <span className="tw-text-accent-foreground tw-text-[.5rem] !tw-self-start">
+                {items.find((model) => model.code === value)?.tooltip}
+              </span>
+            </div>
+          </Tooltip>
+        </SelectTrigger>
+        <SelectContent className="tw-font-sans [&_span]:tw-truncate tw-max-w-[200px] tw-max-h-[500px]">
           {items.map((model) => (
-            <TooltipWrapper
+            <Tooltip
               content={value !== model.code ? model.tooltip : undefined}
               contentOptions={{
                 side: 'right',
@@ -103,7 +96,7 @@ export default function ModelSelector<T extends ModelItem>({
                   <span>{model.label}</span>
                 </div>
               </SelectItem>
-            </TooltipWrapper>
+            </Tooltip>
           ))}
         </SelectContent>
       </Select>

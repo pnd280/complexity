@@ -11,7 +11,7 @@ import {
 import ReactDOM from 'react-dom/client';
 import { FaDiscord } from 'react-icons/fa';
 
-import TooltipWrapper from '@/components/Tooltip';
+import Tooltip from '@/components/Tooltip';
 import { Separator } from '@/components/ui/separator';
 import { chromeStorage } from '@/utils/chrome-store';
 import { detectConsecutiveClicks } from '@/utils/utils';
@@ -96,11 +96,11 @@ function Footer() {
         <div className="tw-py-2 tw-text-sm tw-font-bold tw-flex tw-items-center">
           <span>Complexity</span>
           <Zap className="tw-h-3 tw-w-3 tw-mx-1 tw-text-accent-foreground" />
-          <TooltipWrapper content="Discord: feline9655">
+          <Tooltip content="Discord: feline9655">
             <div className="tw-text-secondary-foreground !tw-min-w-max tw-truncate">
               by <span className="tw-underline">pnd280</span>
             </div>
-          </TooltipWrapper>
+          </Tooltip>
         </div>
         <div
           id="complexity-version"

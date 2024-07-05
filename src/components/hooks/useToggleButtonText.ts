@@ -36,7 +36,7 @@ export default function useToggleButtonText({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [_default, text]);
+  }, []);
 
   return [text, setNewText] as const;
 }

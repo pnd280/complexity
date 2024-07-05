@@ -20,7 +20,7 @@ import { scrollToElement } from '@/utils/utils';
 import { useToggle } from '@uidotdev/usehooks';
 
 import useRouter from './hooks/useRouter';
-import TooltipWrapper from './Tooltip';
+import Tooltip from './Tooltip';
 import { ScrollArea } from './ui/scroll-area';
 
 export default function ThreadTOC() {
@@ -133,14 +133,14 @@ export default function ThreadTOC() {
             toggleVisibility(true);
           }}
         >
-          <TooltipWrapper
+          <Tooltip
             content="Show Table of Content"
             contentOptions={{
               side: 'left',
             }}
           >
             <ChevronLeft className="tw-w-5 tw-h-5 tw-text-muted-foreground tw-cursor-pointer hover:!tw-text-foreground tw-transition-colors" />
-          </TooltipWrapper>
+          </Tooltip>
         </div>
       </div>
     </>
