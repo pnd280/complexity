@@ -97,7 +97,11 @@ export function markdown2Html(markdown: string) {
   return DOMPurify.sanitize($tag.html());
 }
 
-export function stripHtml(html: string) {
+export function stripHtml(html: string | undefined) {
+  if (!html) {
+    return '';
+  }
+
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   return doc.body.textContent || '';

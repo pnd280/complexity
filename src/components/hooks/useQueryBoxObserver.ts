@@ -8,6 +8,9 @@ import {
 import { cn } from '@/lib/utils';
 import DOMObserver from '@/utils/dom-observer';
 import { ui } from '@/utils/ui';
+import { whereAmI } from '@/utils/utils';
+
+import useRouter from './useRouter';
 
 type UseQueryBoxObserverProps = {
   setContainers: (containers: Element) => void;
@@ -22,47 +25,53 @@ export default function useQueryBoxObserver({
   refetchUserSettings,
   disabled,
 }: UseQueryBoxObserverProps) {
+  const location = whereAmI(useRouter());
+
   useEffect(() => {
     const mainId = 'main-query-box-selectors';
     const followUpId = 'follow-up-query-box-selectors';
 
-    DOMObserver.create(mainId, {
-      target: document.body,
-      config: { childList: true, subtree: true },
+    if (location === 'home') {
+      DOMObserver.create(mainId, {
+        target: document.body,
+        config: { childList: true, subtree: true },
 
-      onAny() {
-        if (disabled) return;
+        onAny() {
+          if (disabled) return;
 
-        const $buttonBar = ui
-          .findActiveQueryBoxTextarea({ type: 'main' })
-          .parent()
-          .next();
+          const $buttonBar = ui
+            .findActiveQueryBoxTextarea({ type: 'main' })
+            .parent()
+            .next();
 
-        if (!$buttonBar.length || $buttonBar.attr(`data-${mainId}`)) return;
+          if (!$buttonBar.length || $buttonBar.attr(`data-${mainId}`)) return;
 
-        $buttonBar.attr(`data-${mainId}`, 'true');
+          $buttonBar.attr(`data-${mainId}`, 'true');
 
-        $buttonBar.addClass(() =>
-          cn('tw-col-span-3 tw-col-start-1 tw-flex-wrap tw-gap-y-1', {
-            'tw-mr-[7rem]':
-              !popupSettingsStore.getState().queryBoxSelectors.focus,
-            'tw-mr-10': popupSettingsStore.getState().queryBoxSelectors.focus,
-          })
-        );
+          $buttonBar.addClass(() =>
+            cn('tw-col-span-3 tw-col-start-1 tw-flex-wrap tw-gap-y-1', {
+              'tw-mr-[7rem]':
+                !popupSettingsStore.getState().queryBoxSelectors.focus,
+              'tw-mr-10': popupSettingsStore.getState().queryBoxSelectors.focus,
+            })
+          );
 
-        const $buttonBarChildren = $buttonBar.children(
-          ':not(.mr-xs.flex.shrink-0.items-center)'
-        );
+          const $buttonBarChildren = $buttonBar.children(
+            ':not(.mr-xs.flex.shrink-0.items-center)'
+          );
 
-        if (popupSettingsStore.getState().queryBoxSelectors.focus) {
-          $buttonBarChildren.first().addClass('hidden');
-        }
+          if (popupSettingsStore.getState().queryBoxSelectors.focus) {
+            $buttonBarChildren.first().addClass('hidden');
+          }
 
-        setContainers($buttonBar[0]);
+          setContainers($buttonBar[0]);
 
-        refetchUserSettings();
-      },
-    });
+          refetchUserSettings();
+        },
+      });
+    } else {
+      DOMObserver.destroy(mainId);
+    }
 
     DOMObserver.create(followUpId, {
       target: document.body,
@@ -127,5 +136,11 @@ export default function useQueryBoxObserver({
       DOMObserver.destroy(mainId);
       DOMObserver.destroy(followUpId);
     };
-  }, [disabled, refetchUserSettings, setContainers, setFollowUpContainers]);
+  }, [
+    disabled,
+    location,
+    refetchUserSettings,
+    setContainers,
+    setFollowUpContainers,
+  ]);
 }

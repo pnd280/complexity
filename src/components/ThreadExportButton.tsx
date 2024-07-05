@@ -17,13 +17,12 @@ import {
 import { FaMarkdown } from 'react-icons/fa';
 
 import { languageModels } from '@/consts/model-selector';
-import DOMObserver from '@/utils/dom-observer';
 import pplxApi from '@/utils/pplx-api';
 import { ui } from '@/utils/ui';
 import { jsonUtils } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 
-import useRouter from './hooks/useRouter';
+import useWaitForElement from './hooks/useWaitForElement';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -47,8 +46,6 @@ const exportOptions = [
 ] as const;
 
 export default function ThreadExportButton() {
-  const url = useRouter();
-
   const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
     queryKey: ['currentThreadInfo'],
     queryFn: () =>
@@ -71,31 +68,24 @@ export default function ThreadExportButton() {
   const [saveButtonText, setSaveButtonText] =
     useState<ReactNode>(idleSaveButtonText);
 
+  const { element, isWaiting } = useWaitForElement({
+    id: 'threadExportButton',
+    selector: () => ui.getStickyHeader()[0],
+  });
+
   useEffect(() => {
-    DOMObserver.create('thread-export-button', {
-      target: document.querySelector('body > div'),
-      config: { childList: true, subtree: true },
-      debounceTime: 500,
-      useRAF: true,
-      onAny() {
-        const $stickyHeader = ui.getStickyHeader();
+    if (isWaiting || !element) return;
 
-        if ($stickyHeader.find('#thread-export-button').length) return;
+    const $stickyHeader = $(element);
 
-        const container = $('<div>').attr('id', 'thread-export-button');
+    if ($stickyHeader.find('#thread-export-button').length) return;
 
-        $stickyHeader.find('>div>div:last>div:last').before(container);
+    const container = $('<div>').attr('id', 'thread-export-button');
 
-        setContainer(container[0]);
+    $stickyHeader.find('>div>div:last>div:last').before(container);
 
-        DOMObserver.destroy('thread-export-button');
-      },
-    });
-
-    return () => {
-      DOMObserver.destroy('thread-export-button');
-    };
-  }, [url]);
+    setContainer(container[0]);
+  }, [element, isWaiting]);
 
   const handleExportThread = useCallback(
     async ({ includeCitations }: { includeCitations?: boolean }) => {

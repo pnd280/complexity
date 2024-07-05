@@ -73,7 +73,11 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
   };
 
   if (config.debounceTime) {
-    callback = debounce(callback, config.debounceTime);
+    callback = debounce(callback, config.debounceTime, {
+      leading: true,
+      trailing: true,
+      maxWait: 1000,
+    });
   } else if (config.throttleTime) {
     callback = throttle(callback, config.throttleTime);
   }

@@ -3,9 +3,11 @@ import '../../public/global.css';
 import $ from 'jquery';
 
 import DOMObserver from '@/utils/dom-observer';
+import { ui } from '@/utils/ui';
 import {
   getPPLXBuildId,
   injectMainWorldScript,
+  waitForElement,
   waitForNextjsHydration,
   whereAmI,
 } from '@/utils/utils';
@@ -40,13 +42,14 @@ function setupInterceptors() {
 }
 
 function setupDOMObservers() {
-  // bind ctrl + shift + Q to destroy all observers
-  $(document).on('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'Q') {
-      DOMObserver.destroyAll();
-      alert('All observers destroyed!');
-    }
-  });
+  if (import.meta.env.DEV) {
+    $(document).on('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'Q') {
+        DOMObserver.destroyAll();
+        alert('All observers destroyed!');
+      }
+    });
+  }
 
   // DOMObserver.enableLogging();
 
@@ -63,9 +66,19 @@ function setupDOMObservers() {
     $(() => {
       switch (whereAmI(url)) {
         case 'thread':
-          uiTweaks.alterMessageQuery();
-          uiTweaks.displayModelNextToAnswerHeading();
-          uiTweaks.highlightMarkdownBlocks();
+          (async () => {
+            const messagesContainer = await waitForElement({
+              selector: () => ui.getMessagesContainer()[0],
+              timeout: 5000,
+            });
+
+            if (!messagesContainer) return;
+
+            uiTweaks.alterMessageQuery(messagesContainer);
+            uiTweaks.displayModelNextToAnswerHeading(messagesContainer);
+            uiTweaks.highlightMarkdownBlocks(messagesContainer);
+          })();
+
           break;
       }
     });

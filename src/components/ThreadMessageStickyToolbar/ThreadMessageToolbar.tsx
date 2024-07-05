@@ -55,8 +55,6 @@ export default function ThreadMessageToolbar({
   const [markdownVisualDiff, setMarkdownVisualDiff] = useState(false);
 
   const handleVisualDiff = useCallback(() => {
-    const $textarea = $(containers[containerIndex].query).find('textarea');
-
     const markdownText = stripHtml(
       $(containers[containerIndex].query)
         .find('>#markdown-query-wrapper')
@@ -72,8 +70,7 @@ export default function ThreadMessageToolbar({
     setMarkdownVisualDiff(
       !!markdownText.length &&
         !!originalText.length &&
-        markdownText !== originalText &&
-        !$textarea.length
+        markdownText !== originalText
     );
   }, [containerIndex, containers]);
 

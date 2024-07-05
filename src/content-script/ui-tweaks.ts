@@ -6,7 +6,6 @@ import { ui } from '@/utils/ui';
 import {
   jsonUtils,
   markdown2Html,
-  waitForElement,
   whereAmI,
 } from '@/utils/utils';
 
@@ -80,7 +79,7 @@ function alterAttachButton() {
     return;
 
   DOMObserver.create('alter-attach-button', {
-    target: document.querySelector('body > div'),
+    target: document.body,
     config: {
       childList: true,
       subtree: true,
@@ -142,23 +141,16 @@ async function collapseEmptyThreadVisualColumns() {
   );
 }
 
-async function alterMessageQuery() {
+async function alterMessageQuery(messagesContainer: Element) {
   if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader)
     return;
 
   const id = 'alter-message-query';
 
-  const element = await waitForElement({
-    selector: () => ui.getMessagesContainer()[0],
-    timeout: 5000,
-  });
-
-  if (!element) return;
-
   if ($('.message-block').length === 0) ui.getMessageBlocks();
 
   DOMObserver.create(id, {
-    target: element,
+    target: messagesContainer,
     config: {
       childList: true,
       subtree: true,
@@ -209,25 +201,18 @@ async function alterMessageQuery() {
   }
 }
 
-async function displayModelNextToAnswerHeading() {
+async function displayModelNextToAnswerHeading(messagesContainer: Element) {
   if (!popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader)
     return;
 
   const id = 'display-model-next-to-answer-heading';
-
-  const element = await waitForElement({
-    selector: () => ui.getMessagesContainer()[0],
-    timeout: 5000,
-  });
-
-  if (!element) return;
 
   if ($('.message-block').length === 0) ui.getMessageBlocks();
 
   requestIdleCallback(callback);
 
   DOMObserver.create(id, {
-    target: element,
+    target: messagesContainer,
     config: {
       childList: true,
       subtree: true,
@@ -268,22 +253,15 @@ async function displayModelNextToAnswerHeading() {
   }
 }
 
-async function highlightMarkdownBlocks() {
+async function highlightMarkdownBlocks(messagesContainer: Element) {
   if (!popupSettingsStore.getState().qolTweaks.markdownBlockToolbar) return;
-
-  const element = await waitForElement({
-    selector: () => ui.getMessagesContainer()[0],
-    timeout: 5000,
-  });
-
-  if (!element) return;
 
   const id = 'highlight-markdown-block';
 
   requestIdleCallback(callback);
 
   DOMObserver.create(id, {
-    target: element,
+    target: messagesContainer,
     config: {
       childList: true,
       subtree: true,

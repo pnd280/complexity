@@ -11,8 +11,10 @@ import $ from 'jquery';
 import useRouter from '@/components/hooks/useRouter';
 import DOMObserver from '@/utils/dom-observer';
 import { rewritePreBlock } from '@/utils/markdown-block';
+import { ui } from '@/utils/ui';
 
 import { MarkdownBlockContainer } from '../MarkdownBlock/MarkdownBlockHeader';
+import useWaitForMessagesContainer from './useWaitForMessagesContainer';
 
 type useMarkdownBlockObserverProps = {
   setContainers: Dispatch<SetStateAction<MarkdownBlockContainer[]>>;
@@ -51,48 +53,56 @@ export default function useMarkdownBlockObserver({
     [setContainers]
   );
 
+  const { messagesContainer, isWaiting } = useWaitForMessagesContainer();
+
   useEffect(() => {
+    if (isWaiting || !messagesContainer) return;
+
+    callback();
+
     const id = 'markdown-block-observer';
 
     DOMObserver.create(id, {
-      target: document.querySelector('body > div'),
+      target: messagesContainer,
       config: { childList: true, subtree: true },
       priority: 1,
       throttleTime: 200,
       useRAF: true,
-      onAny: async () => {
-        const $preElements = $(`.message-block pre`);
-        const newContainers: MarkdownBlockContainer[] = [];
-
-        const processElement = (index: number = 0) => {
-          if (index >= $preElements.length) {
-            updateContainers(newContainers);
-            return;
-          }
-
-          const pre = $preElements[index];
-          const result = rewritePreBlock(pre);
-          const { $container, lang } = result || {};
-
-          if ($container?.length) {
-            newContainers.push({
-              header: $container[0],
-              preElement: pre,
-              lang: lang || '',
-              isNative: true,
-              id: pre.id,
-            });
-          }
-
-          queueMicrotask(() => processElement(index + 1));
-        };
-
-        processElement();
-      },
+      onAny: callback,
     });
+
+    function callback() {
+      const $preElements = $(`.message-block pre`);
+      const newContainers: MarkdownBlockContainer[] = [];
+
+      const processElement = (index: number = 0) => {
+        if (index >= $preElements.length) {
+          updateContainers(newContainers);
+          return;
+        }
+
+        const pre = $preElements[index];
+        const result = rewritePreBlock(pre);
+        const { $container, lang } = result || {};
+
+        if ($container?.length) {
+          newContainers.push({
+            header: $container[0],
+            preElement: pre,
+            lang: lang || '',
+            isNative: true,
+            id: pre.id,
+          });
+        }
+
+        queueMicrotask(() => processElement(index + 1));
+      };
+
+      processElement();
+    }
 
     return () => {
       DOMObserver.destroy(id);
     };
-  }, [url, updateContainers]);
+  }, [url, updateContainers, isWaiting, messagesContainer]);
 }

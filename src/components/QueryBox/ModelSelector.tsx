@@ -72,6 +72,7 @@ export default function ModelSelector<T extends ModelItem>({
           </SelectTrigger>
         </TooltipWrapper>
         <SelectContent
+          position="popper"
           className="tw-font-sans [&_span]:tw-truncate tw-max-w-[200px] tw-max-h-[500px]"
           onCloseAutoFocus={(e: Event) => {
             e.preventDefault();

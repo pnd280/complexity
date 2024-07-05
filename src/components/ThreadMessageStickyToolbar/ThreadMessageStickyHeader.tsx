@@ -21,6 +21,7 @@ import { ui } from '@/utils/ui';
 import { useDebounce } from '@uidotdev/usehooks';
 
 import useRouter from '../hooks/useRouter';
+import useWaitForMessagesContainer from '../hooks/useWaitForMessagesContainer';
 import ThreadMessageToolbar from './ThreadMessageToolbar';
 
 export type Container = {
@@ -115,69 +116,77 @@ export default function ThreadMessageStickyHeader() {
     [containersStates, setContainersStates]
   );
 
+  const { messagesContainer, isWaiting } = useWaitForMessagesContainer();
+
   useEffect(() => {
+    if (isWaiting || !messagesContainer) return;
+
+    callback();
+
     DOMObserver.create('toggle-thread-message-sticky-toolbar-visibility', {
-      target: document.querySelector('body > div'),
+      target: messagesContainer,
       config: { childList: true, subtree: true },
       debounceTime: 200,
       useRAF: true,
-      onAny: () => {
-        const $messageBlocks = ui.getMessageBlocks();
+      onAny: callback,
+    });
 
-        const newContainers: Container[] = [];
+    function callback() {
+      const $messageBlocks = ui.getMessageBlocks();
 
-        function processNextMessageBlock(index: number = 0) {
-          if (index >= $messageBlocks.length) {
-            updateContainers(newContainers);
-            return;
-          }
+      const newContainers: Container[] = [];
 
-          $($messageBlocks[index].$query[0]).addClass('tw-relative');
-
-          let $container = $messageBlocks[index].$messageBlock.find(
-            '.thread-message-toolbar-container'
-          );
-
-          if (!$container.length) {
-            $container = $('<div>')
-              .addClass(
-                'thread-message-toolbar-container tw-sticky tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]'
-              )
-              .css({
-                top:
-                  (ui.getStickyHeader().find('>*')?.outerHeight() ||
-                    3.35 * 16) + 'px',
-              });
-
-            $($messageBlocks[index].$query[0]).before($container);
-          }
-
-          newContainers.push({
-            container: $container[0],
-            query: $messageBlocks[index].$query[0],
-            messageBlock: $messageBlocks[index].$messageBlock[0],
-            answer: $messageBlocks[index].$answer[0],
-          });
-
-          toggleVisibility({
-            bottomButtonBar: $messageBlocks[index].$messageBlock.find(
-              '.mt-sm.flex.items-center.justify-between'
-            )[0],
-            index,
-            messageBlock: $messageBlocks[index].$messageBlock[0],
-          });
-
-          queueMicrotask(() => processNextMessageBlock(index + 1));
+      function processNextMessageBlock(index: number = 0) {
+        if (index >= $messageBlocks.length) {
+          updateContainers(newContainers);
+          return;
         }
 
-        processNextMessageBlock();
-      },
-    });
+        $($messageBlocks[index].$query[0]).addClass('tw-relative');
+
+        let $container = $messageBlocks[index].$messageBlock.find(
+          '.thread-message-toolbar-container'
+        );
+
+        if (!$container.length) {
+          $container = $('<div>')
+            .addClass(
+              'thread-message-toolbar-container tw-sticky tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]'
+            )
+            .css({
+              top:
+                (ui.getStickyHeader().find('>*')?.outerHeight() || 3.35 * 16) +
+                'px',
+            });
+
+          $($messageBlocks[index].$query[0]).before($container);
+        }
+
+        newContainers.push({
+          container: $container[0],
+          query: $messageBlocks[index].$query[0],
+          messageBlock: $messageBlocks[index].$messageBlock[0],
+          answer: $messageBlocks[index].$answer[0],
+        });
+
+        toggleVisibility({
+          bottomButtonBar: $messageBlocks[index].$messageBlock.find(
+            '.mt-sm.flex.items-center.justify-between'
+          )[0],
+          index,
+          messageBlock: $messageBlocks[index].$messageBlock[0],
+        });
+
+        queueMicrotask(() => processNextMessageBlock(index + 1));
+      }
+
+      processNextMessageBlock();
+    }
 
     return () => {
       DOMObserver.destroy('toggle-thread-message-sticky-toolbar-visibility');
     };
-  }, [url, toggleVisibility, updateContainers]);
+  }, [url, toggleVisibility, updateContainers, messagesContainer, isWaiting]);
 
   useScrollDirection(debouncedContainers, setContainersStates);
 

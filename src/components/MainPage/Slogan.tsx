@@ -10,13 +10,13 @@ import { LoaderCircle } from 'lucide-react';
 import { useGlobalStore } from '@/content-script/session-store/global';
 import { cn } from '@/lib/utils';
 import background from '@/utils/background';
-import DOMObserver from '@/utils/dom-observer';
 import {
   useDebounce,
   useToggle,
 } from '@uidotdev/usehooks';
 
 import useUpdate from '../hooks/useUpdate';
+import useWaitForElement from '../hooks/useWaitForElement';
 
 export default function Slogan() {
   const { newVersionAvailable } = useUpdate({});
@@ -26,7 +26,7 @@ export default function Slogan() {
   const isReady = useGlobalStore(
     (state) => state.isWebSocketCaptured || state.isLongPollingCaptured
   );
-  
+
   const [visible, toggleVisibility] = useToggle(!isReady);
 
   const debouncedIsReady = useDebounce(isReady, 1000);
@@ -35,36 +35,29 @@ export default function Slogan() {
     useGlobalStore((state) => state.customTheme.slogan) ||
     'Where knowledge begins';
 
+  const { element, isWaiting } = useWaitForElement({
+    id: 'slogan',
+    selector: '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center',
+  });
+
   useEffect(() => {
-    DOMObserver.create('alternate-slogan', {
-      target: document.querySelector('body > div'),
-      config: { childList: true, subtree: true },
-      onAdd() {
-        const $nativeSlogan = $(
-          '.mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center'
-        );
+    if (isWaiting || !element) return;
 
-        if (!$nativeSlogan.length) return;
+    const $nativeSlogan = $(element);
 
-        $nativeSlogan
-          .find('> div:first-child')
-          .addClass('tw-relative')
-          .find('span:first')
-          .addClass(
-            'hover:tw-tracking-wide tw-transition-all tw-duration-300 tw-ease-in-out text-shadow-hover tw-select-none !tw-leading-[1.2rem]'
-          )
-          .text(slogan);
+    if (!$nativeSlogan.length) return;
 
-        setContainer($nativeSlogan[0]);
+    $nativeSlogan
+      .find('> div:first-child')
+      .addClass('tw-relative')
+      .find('span:first')
+      .addClass(
+        'hover:tw-tracking-wide tw-transition-all tw-duration-300 tw-ease-in-out text-shadow-hover tw-select-none !tw-leading-[1.2rem]'
+      )
+      .text(slogan);
 
-        DOMObserver.destroy('alternate-slogan');
-      },
-    });
-
-    return () => {
-      DOMObserver.destroy('alternate-slogan');
-    };
-  }, [debouncedIsReady, slogan]);
+    setContainer($nativeSlogan[0]);
+  }, [element, isWaiting, slogan]);
 
   if (!container) return null;
 

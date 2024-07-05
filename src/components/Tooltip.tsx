@@ -55,7 +55,7 @@ export default function Tooltip({
     placement: side || 'top',
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(sideOffset || 5),
+      offset(sideOffset),
       flip({
         fallbackAxisSideDirection: 'start',
       }),

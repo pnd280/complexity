@@ -1,3 +1,5 @@
+import { debounce } from 'lodash-es';
+
 import {
   DOMObserverConfig,
   DOMObserverInstance,
@@ -18,7 +20,9 @@ class DOMObserver {
       return;
     }
 
-    const observer = new MutationObserver(DOMObserver.handleMutations(id, config));
+    const observer = new MutationObserver(
+      DOMObserver.handleMutations(id, config)
+    );
     const instance: DOMObserverInstance = { observer, config, isPaused: false };
 
     DOMObserver.instances.set(id, instance);
