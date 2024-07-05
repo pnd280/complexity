@@ -76,15 +76,17 @@ export default function ThreadExportButton() {
   useEffect(() => {
     if (isWaiting || !element) return;
 
-    const $stickyHeader = $(element);
+    requestIdleCallback(() => {
+      const $stickyHeader = $(element);
 
-    if ($stickyHeader.find('#thread-export-button').length) return;
+      if ($stickyHeader.find('#thread-export-button').length) return;
 
-    const container = $('<div>').attr('id', 'thread-export-button');
+      const container = $('<div>').attr('id', 'thread-export-button');
 
-    $stickyHeader.find('>div>div:last>div:last').before(container);
+      $stickyHeader.find('>div>div:last>div:last').before(container);
 
-    setContainer(container[0]);
+      setContainer(container[0]);
+    });
   }, [element, isWaiting]);
 
   const handleExportThread = useCallback(

@@ -121,7 +121,7 @@ export default function ThreadMessageStickyHeader() {
   useEffect(() => {
     if (isWaiting || !messagesContainer) return;
 
-    callback();
+    requestAnimationFrame(callback);
 
     DOMObserver.create('toggle-thread-message-sticky-toolbar-visibility', {
       target: messagesContainer,

@@ -23,11 +23,6 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
 import { cn } from '@/lib/utils';
@@ -41,6 +36,11 @@ import CollectionEditDialog from '../CollectionEditDialog';
 import useRouter from '../hooks/useRouter';
 import useUpdateUserProfileSettings
   from '../hooks/useUpdateUserProfileSettings';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../Popover';
 import TooltipWrapper from '../Tooltip';
 import UserProfileEditDialog from '../UserProfileEditDialog';
 
@@ -106,7 +106,7 @@ export default function CollectionSelector() {
 
   return (
     <>
-      <Popover open={open} onOpenChange={toggleOpen}>
+      <Popover open={open} onOpenChange={toggleOpen} modal={false}>
         <TooltipWrapper
           content={!selectedCollectionUuid ? 'Chat with a collection' : ''}
         >
