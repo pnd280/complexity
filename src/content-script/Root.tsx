@@ -15,11 +15,9 @@ import { Toaster } from '@/components/ui/toaster';
 import {
   popupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
+import { queryClient } from '@/utils/queryClient';
 import { whereAmI } from '@/utils/utils';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import {
@@ -32,7 +30,6 @@ export default function Root() {
   const $root = $('<div>').attr('id', 'complexity-root').appendTo('body');
 
   const root = createRoot($root[0]);
-  const queryClient = new QueryClient();
 
   root.render(
     <QueryClientProvider client={queryClient}>

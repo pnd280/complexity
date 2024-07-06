@@ -3,6 +3,7 @@ import '../../public/global.css';
 import $ from 'jquery';
 
 import DOMObserver from '@/utils/dom-observer';
+import { queryClient } from '@/utils/queryClient';
 import { ui } from '@/utils/ui';
 import {
   getPPLXBuildId,
@@ -57,7 +58,13 @@ function setupDOMObservers() {
   uiTweaks.collapseEmptyThreadVisualColumns();
 
   const observe = (url: string) => {
-    DOMObserver.pauseAll();
+    queryClient.resetQueries({
+      predicate(query) {
+        return query.queryKey[0] === 'domNode';
+      },
+    });
+
+    DOMObserver.destroyAll();
 
     uiTweaks.alterAttachButton();
     uiTweaks.calibrateMarkdownBlock();

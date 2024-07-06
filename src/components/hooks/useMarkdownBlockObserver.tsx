@@ -58,7 +58,7 @@ export default function useMarkdownBlockObserver({
   useEffect(() => {
     if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
 
-    requestIdleCallback(callback);
+    requestAnimationFrame(callback);
 
     const id = 'markdown-block-observer';
 
@@ -100,9 +100,5 @@ export default function useMarkdownBlockObserver({
 
       processElement();
     }
-
-    return () => {
-      DOMObserver.destroy(id);
-    };
   }, [url, updateContainers, isWaiting, messagesContainer]);
 }

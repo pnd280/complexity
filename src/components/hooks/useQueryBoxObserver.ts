@@ -130,11 +130,6 @@ export default function useQueryBoxObserver({
     } else {
       DOMObserver.destroy(followUpId);
     }
-
-    return () => {
-      DOMObserver.destroy(mainId);
-      DOMObserver.destroy(followUpId);
-    };
   }, [
     disabled,
     location,

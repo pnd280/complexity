@@ -338,7 +338,7 @@ class WSHook {
 
     const router = window.next.router;
     const originalPush = router.push;
-    const originalReplace = router.replace;
+    const originalReplaceState = history.replaceState;
 
     router.push = async function (
       url: string,
@@ -350,17 +350,21 @@ class WSHook {
       return result;
     };
 
-    router.replace = async function (
-      url: string,
-      as?: string,
-      options?: any
-    ): Promise<boolean> {
-      const result = await originalReplace.apply(this, [url, as, options]);
+    history.replaceState = function (
+      this: History,
+      data: any,
+      unused: string,
+      url?: string | URL | null
+    ): void {
+      originalReplaceState.apply(this, [data, unused, url]);
       dispatch('replace');
-      return result;
     };
 
-    const dispatch = (trigger: 'push' | 'replace') => {
+    window.addEventListener('popstate', () => {
+      dispatch('popstate');
+    });
+
+    const dispatch = (trigger: 'push' | 'replace' | 'popstate') => {
       WSHook.contentScriptMessenger.sendMessage({
         event: 'routeChange',
         payload: window.location.href,

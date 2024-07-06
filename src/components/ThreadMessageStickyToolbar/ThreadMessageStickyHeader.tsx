@@ -101,7 +101,7 @@ export default function ThreadMessageStickyHeader() {
     }) => {
       const hide = !messageBlock.contains(bottomButtonBar);
 
-      if (containersStates[index]?.isHidden === hide) return;
+      if (hide && containersStates[index]?.isHidden === hide) return;
 
       setContainersStates((draft) => {
         if (draft[index]) draft[index].isHidden = hide;
@@ -143,16 +143,9 @@ export default function ThreadMessageStickyHeader() {
         );
 
         if (!$container.length) {
-          $container = $('<div>')
-            .addClass(
-              'thread-message-toolbar-container tw-sticky tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]'
-            )
-            .css({
-              top:
-                (ui.getStickyHeader().find('>*')?.outerHeight() || 3.35 * 16) +
-                'px',
-            });
-
+          $container = $('<div>').addClass(
+            'thread-message-toolbar-container tw-sticky tw-top-[3.35rem] tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]'
+          );
           $($messageBlocks[index].$query[0]).before($container);
         }
 
@@ -176,10 +169,6 @@ export default function ThreadMessageStickyHeader() {
 
       processNextMessageBlock();
     }
-
-    return () => {
-      DOMObserver.destroy('toggle-thread-message-sticky-toolbar-visibility');
-    };
   }, [url, toggleVisibility, updateContainers, messagesContainer, isWaiting]);
 
   useScrollDirection(debouncedContainers, setContainersStates);
