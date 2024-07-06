@@ -1,8 +1,4 @@
 import { Nullable } from '@/types/Utils';
-import {
-  MessageListener,
-  SendMessage,
-} from '@/types/WebpageMessenger';
 
 class WSHook {
   private webSocketInstance: Nullable<WebSocket>;
@@ -10,11 +6,7 @@ class WSHook {
 
   private webSocketOriginalSend = WebSocket.prototype.send;
 
-  public static contentScriptMessenger: {
-    onMessage: MessageListener;
-    sendMessage: SendMessage;
-    // @ts-expect-error
-  } = { ...window.Messenger };
+  public static contentScriptMessenger = { ...window.Messenger };
 
   constructor() {
     this.webSocketInstance = null;
@@ -22,7 +14,7 @@ class WSHook {
 
     this.proxyXMLHttpRequest();
     this.passivelyCaptureWebSocket();
-    this.proxyHistoryState();
+    this.proxyNextRouter();
   }
 
   getWebSocketInstance(): Nullable<WebSocket> {
@@ -35,7 +27,6 @@ class WSHook {
     this.webSocketInstance = instance;
     this.proxyWebSocketInstance(instance);
 
-    // @ts-expect-error
     window.capturedSocket = this.getActiveInstance();
   }
 
@@ -58,9 +49,7 @@ class WSHook {
       event: 'longPollingCaptured',
     });
 
-    // @ts-expect-error
     window.capturedSocket = this.getActiveInstance();
-    // @ts-expect-error
     window.longPollingInstance = this.getLongPollingInstance();
   }
 
@@ -344,42 +333,39 @@ class WSHook {
     };
   }
 
-  proxyHistoryState() {
-    let lastKnownUrl: string = location.href;
+  proxyNextRouter() {
+    if (window.next === undefined) return;
 
-    const originalPushState = history.pushState;
-    const originalReplaceState = history.replaceState;
+    const router = window.next.router;
+    const originalPush = router.push;
+    const originalReplace = router.replace;
 
-    history.pushState = function (
-      this: History,
-      data: any,
-      unused: string,
-      url?: string | URL | null
-    ): void {
-      originalPushState.apply(this, [data, unused, url]);
-      checkForUrlChange('pushState');
+    router.push = async function (
+      url: string,
+      as?: string,
+      options?: any
+    ): Promise<boolean> {
+      const result = await originalPush.apply(this, [url, as, options]);
+      dispatch('push');
+      return result;
     };
 
-    history.replaceState = function (
-      this: History,
-      data: any,
-      unused: string,
-      url?: string | URL | null
-    ): void {
-      originalReplaceState.apply(this, [data, unused, url]);
-      checkForUrlChange('replaceState');
+    router.replace = async function (
+      url: string,
+      as?: string,
+      options?: any
+    ): Promise<boolean> {
+      const result = await originalReplace.apply(this, [url, as, options]);
+      dispatch('replace');
+      return result;
     };
 
-    function checkForUrlChange(trigger: 'pushState' | 'replaceState'): void {
-      if (location.href !== lastKnownUrl) {
-        lastKnownUrl = location.href;
-
-        WSHook.contentScriptMessenger.sendMessage({
-          event: 'routeChange',
-          payload: lastKnownUrl,
-        });
-      }
-    }
+    const dispatch = (trigger: 'push' | 'replace') => {
+      WSHook.contentScriptMessenger.sendMessage({
+        event: 'routeChange',
+        payload: window.location.href,
+      });
+    };
   }
 }
 
@@ -403,16 +389,15 @@ class WSHook {
   );
 
   WSHook.contentScriptMessenger.onMessage('routeToPage', async (data) => {
+    if (window.next === undefined) return;
+
     if (typeof data.payload === 'object') {
-      // @ts-expect-error
-      return window.next.router.push(data.payload.url, undefined, {
+      window.next.router.push(data.payload.url, undefined, {
         scroll: data.payload.scroll,
       });
-    }
-
-    // @ts-expect-error
-    window.next.router.push(data.payload, undefined, {
-      scroll: data.payload !== window.location.pathname,
-    });
+    } else
+      window.next.router.push(data.payload, undefined, {
+        scroll: data.payload !== window.location.pathname,
+      });
   });
 })();

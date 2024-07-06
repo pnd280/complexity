@@ -92,5 +92,5 @@ export interface EventHandlers {
           scroll: boolean;
         }
   ): void;
-  routeChange(route: string): void;
+  routeChange(url: string): void;
 }
