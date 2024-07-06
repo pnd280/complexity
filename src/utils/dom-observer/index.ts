@@ -10,7 +10,7 @@ import { createCallback } from './callback-factory';
 class DOMObserver {
   private static instances: Map<string, DOMObserverInstance> = new Map();
   private static isLogging = false;
-  private static updateQueue: UpdateQueue = new UpdateQueue();
+  public static updateQueue: UpdateQueue = new UpdateQueue();
 
   public static create(id: string, config: DOMObserverConfig): void {
     if (DOMObserver.instances.has(id)) {
@@ -120,9 +120,7 @@ class DOMObserver {
   ): MutationCallback {
     const callback = createCallback(config);
     return (mutations: MutationRecord[], observer: MutationObserver) => {
-      DOMObserver.updateQueue.enqueue(async () => {
-        return callback(mutations, observer);
-      });
+      callback(mutations, observer);
     };
   }
 

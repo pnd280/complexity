@@ -9,6 +9,7 @@ import {
   MutationCallback,
 } from '@/types/DOMObserver';
 
+import DOMObserver from './';
 import { batchMutations } from './mutation-batcher';
 
 const handleError = (error: unknown, context: string): void => {
@@ -32,11 +33,11 @@ const safeExecute = async <T extends unknown[]>(
 };
 
 export const createCallback = (config: DOMObserverConfig): MutationCallback => {
-  let callback: MutationCallback = async (
-    mutations: MutationRecord[],
+  const processChunk = async (
+    chunk: MutationRecord[],
     observer: MutationObserver
   ) => {
-    const batchedMutations = batchMutations(mutations);
+    const batchedMutations = batchMutations(chunk);
 
     for (const mutation of batchedMutations) {
       if (mutation.type === 'childList') {
@@ -76,6 +77,13 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
     }
   };
 
+  let callback: MutationCallback = (
+    mutations: MutationRecord[],
+    observer: MutationObserver
+  ) => {
+    DOMObserver.updateQueue.enqueue(() => processChunk(mutations, observer));
+  };
+
   if (config.debounceTime) {
     callback = debounce(callback, config.debounceTime, {
       leading: true,
@@ -84,22 +92,6 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
     });
   } else if (config.throttleTime) {
     callback = throttle(callback, config.throttleTime);
-  }
-
-  if (config.useRAF) {
-    return (mutations: MutationRecord[], observer: MutationObserver) => {
-      requestAnimationFrame(() => {
-        void callback(mutations, observer);
-      });
-    };
-  }
-
-  if (config.useIdleCallback && 'requestIdleCallback' in window) {
-    return (mutations: MutationRecord[], observer: MutationObserver) => {
-      requestIdleCallback(() => {
-        void callback(mutations, observer);
-      });
-    };
   }
 
   return callback;

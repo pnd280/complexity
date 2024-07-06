@@ -1,78 +1,97 @@
 interface BatchedMutationInfo {
-  addedNodes: Node[];
-  removedNodes: Node[];
-  oldValue: string | null;
+  addedNodes: Set<Node>;
+  removedNodes: Set<Node>;
+  attributes: Map<string, string | null>;
+  characterData: string | null;
 }
 
-function createNodeList(nodes: Node[]): NodeList {
+function createNodeList(nodes: Set<Node>): NodeList {
   const fragment = document.createDocumentFragment();
   nodes.forEach((node) => fragment.appendChild(node.cloneNode(true)));
   return fragment.childNodes;
 }
 
 export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
-  const batchMap = new Map<Node, Map<string, BatchedMutationInfo>>();
+  const batchMap = new Map<Node, BatchedMutationInfo>();
 
   for (const mutation of mutations) {
     if (!batchMap.has(mutation.target)) {
-      batchMap.set(mutation.target, new Map());
-    }
-    const targetMap = batchMap.get(mutation.target)!;
-
-    if (!targetMap.has(mutation.type)) {
-      targetMap.set(mutation.type, {
-        addedNodes: [],
-        removedNodes: [],
-        oldValue: null,
+      batchMap.set(mutation.target, {
+        addedNodes: new Set(),
+        removedNodes: new Set(),
+        attributes: new Map(),
+        characterData: null,
       });
     }
-    const batchInfo = targetMap.get(mutation.type)!;
+    const batchInfo = batchMap.get(mutation.target)!;
 
     switch (mutation.type) {
       case 'childList':
-        batchInfo.addedNodes.push(...Array.from(mutation.addedNodes));
-        batchInfo.removedNodes.push(...Array.from(mutation.removedNodes));
+        mutation.addedNodes.forEach((node) => {
+          batchInfo.removedNodes.delete(node);
+          batchInfo.addedNodes.add(node);
+        });
+        mutation.removedNodes.forEach((node) => {
+          if (!batchInfo.addedNodes.delete(node)) {
+            batchInfo.removedNodes.add(node);
+          }
+        });
         break;
       case 'attributes':
+        batchInfo.attributes.set(mutation.attributeName!, mutation.oldValue);
+        break;
       case 'characterData':
-        batchInfo.oldValue = mutation.oldValue;
+        batchInfo.characterData = mutation.oldValue;
         break;
     }
   }
 
   const batchedMutations: MutationRecord[] = [];
 
-  batchMap.forEach((targetMap, target) => {
-    targetMap.forEach((batchInfo, type) => {
-      const batchedMutation: MutationRecord = {
-        type: type as MutationRecordType,
+  batchMap.forEach((batchInfo, target) => {
+    if (batchInfo.addedNodes.size > 0 || batchInfo.removedNodes.size > 0) {
+      batchedMutations.push({
+        type: 'childList',
         target,
-        addedNodes:
-          type === 'childList'
-            ? createNodeList(batchInfo.addedNodes)
-            : createNodeList([]),
-        removedNodes:
-          type === 'childList'
-            ? createNodeList(batchInfo.removedNodes)
-            : createNodeList([]),
-        attributeName:
-          type === 'attributes'
-            ? mutations.find(
-                (m) => m.target === target && m.type === 'attributes'
-              )?.attributeName || null
-            : null,
-        attributeNamespace:
-          type === 'attributes'
-            ? mutations.find(
-                (m) => m.target === target && m.type === 'attributes'
-              )?.attributeNamespace || null
-            : null,
-        oldValue: batchInfo.oldValue,
-        nextSibling: null,
+        addedNodes: createNodeList(batchInfo.addedNodes),
+        removedNodes: createNodeList(batchInfo.removedNodes),
         previousSibling: null,
-      };
-      batchedMutations.push(batchedMutation);
-    });
+        nextSibling: null,
+        attributeName: null,
+        attributeNamespace: null,
+        oldValue: null,
+      });
+    }
+
+    if (batchInfo.attributes.size > 0) {
+      batchInfo.attributes.forEach((oldValue, attributeName) => {
+        batchedMutations.push({
+          type: 'attributes',
+          target,
+          attributeName,
+          attributeNamespace: null,
+          oldValue,
+          addedNodes: createNodeList(new Set()),
+          removedNodes: createNodeList(new Set()),
+          previousSibling: null,
+          nextSibling: null,
+        });
+      });
+    }
+
+    if (batchInfo.characterData !== null) {
+      batchedMutations.push({
+        type: 'characterData',
+        target,
+        oldValue: batchInfo.characterData,
+        addedNodes: createNodeList(new Set()),
+        removedNodes: createNodeList(new Set()),
+        previousSibling: null,
+        nextSibling: null,
+        attributeName: null,
+        attributeNamespace: null,
+      });
+    }
   });
 
   return batchedMutations;
