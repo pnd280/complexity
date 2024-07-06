@@ -46,7 +46,7 @@ export default function QuickQueryCommander({
   searchValue,
   setQuickCommandSearchValue,
 }: QuickCommanderProps) {
-  const url = useRouter();
+  const { url } = useRouter();
 
   useWindowSize();
 
@@ -132,6 +132,8 @@ export default function QuickQueryCommander({
   }, [value, handleSetVisible]);
 
   useEffect(() => {
+    if (!$textarea.length) return;
+
     const textarea = $textarea[0];
 
     const down = (e: JQuery.TriggeredEvent) => {

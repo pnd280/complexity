@@ -54,7 +54,7 @@ export type Collection = {
 };
 
 export default function CollectionSelector() {
-  const url = useRouter();
+  const { url } = useRouter();
 
   const { data: collections, isLoading: isLoadingCollections } = useQuery<
     Collection[]

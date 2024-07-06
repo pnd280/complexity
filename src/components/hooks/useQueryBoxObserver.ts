@@ -25,7 +25,9 @@ export default function useQueryBoxObserver({
   refetchUserSettings,
   disabled,
 }: UseQueryBoxObserverProps) {
-  const location = whereAmI(useRouter());
+  const { url } = useRouter();
+
+  const location = whereAmI(url);
 
   useEffect(() => {
     const mainId = 'main-query-box-selectors';

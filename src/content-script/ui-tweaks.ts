@@ -162,25 +162,17 @@ async function alterMessageQuery(messagesContainer: Element) {
 
   async function callback() {
     const $messageBlocks = $(`.message-block:not([data-${id}])`);
-    let index = 0;
 
-    function processNextMessageBlock() {
-      if (index >= $messageBlocks.length) {
-        return;
-      }
+    $messageBlocks.each((_, messageBlock) => {
+      queueMicrotask(() => {
+        const $messageBlock = $(messageBlock);
+        $messageBlock.attr(`data-${id}`, '');
 
-      const $messageBlock = $($messageBlocks[index]);
-      $messageBlock.attr(`data-${id}`, '');
+        const $query = $messageBlock.find('.my-md.md\\:my-lg');
 
-      const $query = $messageBlock.find('.my-md.md\\:my-lg');
-
-      rewriteQuery({ $query });
-
-      index++;
-      queueMicrotask(processNextMessageBlock);
-    }
-
-    queueMicrotask(processNextMessageBlock);
+        rewriteQuery({ $query });
+      });
+    });
   }
 
   async function rewriteQuery({ $query }: { $query: JQuery<Element> }) {
@@ -272,54 +264,29 @@ async function highlightMarkdownBlocks(messagesContainer: Element) {
   });
 
   function callback() {
-    // only process the last 10 message blocks
     const messageBlocks = ui.getMessageBlocks().slice(-10);
 
-    let blockIndex = 0;
+    messageBlocks.forEach(({ $messageBlock }) => {
+      queueMicrotask(() => {
+        const $bottomButtonBar = $messageBlock.find(
+          '.mt-sm.flex.items-center.justify-between'
+        );
 
-    function processNextBlock() {
-      if (blockIndex >= messageBlocks.length) {
-        return;
-      }
+        if ($bottomButtonBar.length) {
+          const $codeBlocks = $bottomButtonBar
+            .closest('.message-block')
+            .find(`pre:not([data-${id}])`);
 
-      const { $messageBlock } = messageBlocks[blockIndex];
-      const $bottomButtonBar = $messageBlock.find(
-        '.mt-sm.flex.items-center.justify-between'
-      );
-
-      if ($bottomButtonBar.length) {
-        const $codeBlocks = $bottomButtonBar
-          .closest('.message-block')
-          .find(`pre:not([data-${id}])`);
-
-        let codeBlockIndex = 0;
-
-        const processNextCodeBlock = () => {
-          if (codeBlockIndex >= $codeBlocks.length) {
-            blockIndex++;
-            queueMicrotask(processNextBlock);
-            return;
-          }
-
-          const pre = $codeBlocks[codeBlockIndex];
-          $(pre).attr(`data-${id}`, '');
-
-          const lang = $(pre).find('.absolute').text();
-
-          prismJs.highlightBlock({ pre, lang });
-
-          codeBlockIndex++;
-          queueMicrotask(processNextCodeBlock);
-        };
-
-        queueMicrotask(processNextCodeBlock);
-      } else {
-        blockIndex++;
-        queueMicrotask(processNextBlock);
-      }
-    }
-
-    queueMicrotask(processNextBlock);
+          $codeBlocks.each((_, pre) => {
+            queueMicrotask(() => {
+              $(pre).attr(`data-${id}`, '');
+              const lang = $(pre).find('.absolute').text();
+              prismJs.highlightBlock({ pre, lang });
+            });
+          });
+        }
+      });
+    });
   }
 }
 

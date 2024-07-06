@@ -41,7 +41,7 @@ export default function DiffViewDialog({
   lang,
 }: DiffViewDialog) {
   const [diffMethod, setDiffMethod] = useState<MyDiffMethod>('lines');
-  const [splitView, toggleSplitView] = useToggle(true);
+  const [unifiedView, toggleUnifiedView] = useToggle(false);
 
   const isDiff = oldText !== newText;
 
@@ -65,8 +65,8 @@ export default function DiffViewDialog({
 
   useEffect(() => {
     setDiffMethod('lines');
-    toggleSplitView(!!lang);
-  }, [open, setDiffMethod, toggleSplitView, lang]);
+    toggleUnifiedView(!lang);
+  }, [open, setDiffMethod, toggleUnifiedView, lang]);
 
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
@@ -76,10 +76,10 @@ export default function DiffViewDialog({
           {isDiff && (
             <div className="tw-ml-auto tw-flex tw-flex-col tw-gap-2 tw-p-2">
               <div className="tw-flex tw-gap-2 tw-items-center tw-ml-auto">
-                <Label>Split view</Label>
+                <Label>Unified view</Label>
                 <Checkbox
-                  checked={splitView}
-                  onCheckedChange={(checked) => toggleSplitView(!!checked)}
+                  checked={unifiedView}
+                  onCheckedChange={(checked) => toggleUnifiedView(!!checked)}
                 />
               </div>
               <RadioGroup
@@ -113,7 +113,7 @@ export default function DiffViewDialog({
               <ReactDiffViewer
                 oldValue={oldText}
                 newValue={newText}
-                splitView={splitView}
+                splitView={!unifiedView}
                 compareMethod={mapDiffMethod(diffMethod)}
                 useDarkTheme={$('html').hasClass('dark')}
                 styles={{

@@ -92,5 +92,11 @@ export interface EventHandlers {
           scroll: boolean;
         }
   ): void;
-  routeChange(url: string): void;
+  routeChange({
+    url,
+    trigger,
+  }: {
+    url: string;
+    trigger: 'push' | 'replace' | 'popstate';
+  }): void;
 }

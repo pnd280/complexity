@@ -41,7 +41,7 @@ export default function ThreadTOC() {
     setWrapperWidth($('#thread-toc')?.outerWidth() || 0);
   });
 
-  if (!anchorsProps || !wrapperPos) return null;
+  if (!anchorsProps || !wrapperPos || !anchorsProps.length) return null;
 
   return (
     <>
@@ -154,7 +154,7 @@ type AnchorProps = {
 };
 
 const useThreadTOCObserver = () => {
-  const url = useRouter();
+  const { url } = useRouter();
 
   const [visibleMessageIndex, setVisibleMessageIndex] = useState<number>(0);
 
@@ -190,31 +190,35 @@ const useThreadTOCObserver = () => {
     setAnchorsProps([]);
 
     $messageBlocks.forEach(({ $query, $answer, $messageBlock }) => {
-      const anchorProps = {
-        title:
-          $query.find('textarea').text() ||
-          $query
-            .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
-            .first()
-            .text(),
-        onClick: () => {
-          scrollToElement($messageBlock, -10);
-        },
-        onContextMenu: () => {
-          const threadMessageStickyHeader =
-            popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader;
+      queueMicrotask(() => {
+        const title = $query
+          .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
+          .first()
+          .text();
 
-          const isScrollingUp =
-            ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
+        if (!title.length) return;
 
-          const offset =
-            isScrollingUp && threadMessageStickyHeader ? -110 : -60;
+        const anchorProps = {
+          title,
+          onClick: () => {
+            scrollToElement($messageBlock, -10);
+          },
+          onContextMenu: () => {
+            const threadMessageStickyHeader =
+              popupSettingsStore.getState().qolTweaks.threadMessageStickyHeader;
 
-          scrollToElement($answer, offset);
-        },
-      } as AnchorProps;
+            const isScrollingUp =
+              ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
 
-      setAnchorsProps((prev) => [...(prev || []), anchorProps]);
+            const offset =
+              isScrollingUp && threadMessageStickyHeader ? -110 : -60;
+
+            scrollToElement($answer, offset);
+          },
+        } as AnchorProps;
+
+        setAnchorsProps((prev) => [...(prev || []), anchorProps]);
+      });
     });
   }, []);
 

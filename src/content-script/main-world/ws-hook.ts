@@ -367,7 +367,10 @@ class WSHook {
     const dispatch = (trigger: 'push' | 'replace' | 'popstate') => {
       WSHook.contentScriptMessenger.sendMessage({
         event: 'routeChange',
-        payload: window.location.href,
+        payload: {
+          url: window.location.href,
+          trigger,
+        },
       });
     };
   }

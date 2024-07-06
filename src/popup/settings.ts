@@ -55,14 +55,12 @@ const qolTweaks: PopupSetting<
     id: 'thread-message-sticky-toolbar',
     label: 'Thread message sticky toolbar',
     storeKey: 'threadMessageStickyHeader',
-    experimental: true,
     versionRelease: '0.0.0.12',
   },
   {
     id: 'auto-refresh-session-timeout',
     label: 'Auto-refresh Cloudflare session timeout',
     storeKey: 'autoRefreshSessionTimeout',
-    experimental: true,
     versionRelease: '0.0.0.12',
   },
   {

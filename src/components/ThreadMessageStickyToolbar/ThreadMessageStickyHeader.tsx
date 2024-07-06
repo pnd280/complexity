@@ -54,7 +54,7 @@ const compare = (prev: Container[], next: Container[]): boolean => {
 };
 
 export default function ThreadMessageStickyHeader() {
-  const url = useRouter();
+  const { url } = useRouter();
 
   const [containers, setContainers] = useState<Container[]>([]);
   const containersRef = useRef<Container[]>([]);
@@ -126,48 +126,45 @@ export default function ThreadMessageStickyHeader() {
     });
 
     function callback() {
-      const $messageBlocks = ui.getMessageBlocks();
-
       const newContainers: Container[] = [];
 
-      function processNextMessageBlock(index: number = 0) {
-        if (index >= $messageBlocks.length) {
-          updateContainers(newContainers);
-          return;
-        }
+      const $messageBlocks = ui.getMessageBlocks();
 
-        $($messageBlocks[index].$query[0]).addClass('tw-relative');
+      $messageBlocks.forEach(({ $query, $messageBlock, $answer }, index) => {
+        queueMicrotask(() => {
+          $($query[0]).addClass('tw-relative');
 
-        let $container = $messageBlocks[index].$messageBlock.find(
-          '.thread-message-toolbar-container'
-        );
-
-        if (!$container.length) {
-          $container = $('<div>').addClass(
-            'thread-message-toolbar-container tw-sticky tw-top-[3.35rem] tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]'
+          let $container = $messageBlock.find(
+            '.thread-message-toolbar-container'
           );
-          $($messageBlocks[index].$query[0]).before($container);
-        }
 
-        newContainers.push({
-          container: $container[0],
-          query: $messageBlocks[index].$query[0],
-          messageBlock: $messageBlocks[index].$messageBlock[0],
-          answer: $messageBlocks[index].$answer[0],
+          if (!$container.length) {
+            $container = $('<div>').addClass(
+              'thread-message-toolbar-container tw-sticky tw-top-[3.35rem] tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]'
+            );
+            $($query[0]).before($container);
+          }
+
+          newContainers.push({
+            container: $container[0],
+            query: $query[0],
+            messageBlock: $messageBlock[0],
+            answer: $answer[0],
+          });
+
+          toggleVisibility({
+            bottomButtonBar: $messageBlock.find(
+              '.mt-sm.flex.items-center.justify-between'
+            )[0],
+            index,
+            messageBlock: $messageBlock[0],
+          });
+
+          if (index === $messageBlocks.length - 1) {
+            updateContainers(newContainers);
+          }
         });
-
-        toggleVisibility({
-          bottomButtonBar: $messageBlocks[index].$messageBlock.find(
-            '.mt-sm.flex.items-center.justify-between'
-          )[0],
-          index,
-          messageBlock: $messageBlocks[index].$messageBlock[0],
-        });
-
-        queueMicrotask(() => processNextMessageBlock(index + 1));
-      }
-
-      processNextMessageBlock();
+      });
     }
   }, [url, toggleVisibility, updateContainers, messagesContainer, isWaiting]);
 
@@ -198,7 +195,7 @@ const useScrollDirection = (
   containers: Container[],
   setContainersStates: Updater<ContainerStates[]>
 ) => {
-  const url = useRouter();
+  const { url } = useRouter();
 
   const stickyNavHeight = useMemo(
     () => ui.getStickyHeader()?.outerHeight() || 3 * 16,

@@ -93,9 +93,14 @@ function setupDOMObservers() {
 
   observe(window.location.href);
 
-  webpageMessenger.onMessage('routeChange', async ({ payload: url }) => {
-    observe(url);
-  });
+  webpageMessenger.onMessage(
+    'routeChange',
+    async ({ payload: { url, trigger } }) => {
+      if (trigger === 'popstate') return;
+
+      observe(url);
+    }
+  );
 }
 
 async function init() {

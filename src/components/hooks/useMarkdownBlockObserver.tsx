@@ -40,7 +40,7 @@ const compare = (
 export default function useMarkdownBlockObserver({
   setContainers,
 }: useMarkdownBlockObserverProps) {
-  const url = useRouter();
+  const { url } = useRouter();
   const containersRef = useRef<MarkdownBlockContainer[]>([]);
 
   const updateContainers = useCallback(
@@ -75,30 +75,26 @@ export default function useMarkdownBlockObserver({
       const $preElements = $(`.message-block pre`);
       const newContainers: MarkdownBlockContainer[] = [];
 
-      const processElement = (index: number = 0) => {
-        if (index >= $preElements.length) {
-          updateContainers(newContainers);
-          return;
-        }
+      $preElements.each((index, pre) => {
+        queueMicrotask(() => {
+          const result = rewritePreBlock(pre);
+          const { $container, lang } = result || {};
 
-        const pre = $preElements[index];
-        const result = rewritePreBlock(pre);
-        const { $container, lang } = result || {};
+          if ($container?.length) {
+            newContainers.push({
+              header: $container[0],
+              preElement: pre,
+              lang: lang || '',
+              isNative: true,
+              id: pre.id,
+            });
+          }
 
-        if ($container?.length) {
-          newContainers.push({
-            header: $container[0],
-            preElement: pre,
-            lang: lang || '',
-            isNative: true,
-            id: pre.id,
-          });
-        }
-
-        queueMicrotask(() => processElement(index + 1));
-      };
-
-      processElement();
+          if (index === $preElements.length - 1) {
+            updateContainers(newContainers);
+          }
+        });
+      });
     }
   }, [url, updateContainers, isWaiting, messagesContainer]);
 }
