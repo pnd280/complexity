@@ -114,10 +114,6 @@ function correctColorScheme() {
   });
 }
 
-function hideScrollToBottomButton() {
-  $(document.body).addClass('hide-scroll-to-bottom-button');
-}
-
 function calibrateMarkdownBlock() {
   $(document.body).toggleClass(
     'alternate-markdown-block',
@@ -294,7 +290,6 @@ const uiTweaks = {
   injectCustomStyles,
   correctColorScheme,
   alterAttachButton,
-  hideScrollToBottomButton,
   collapseEmptyThreadVisualColumns,
   alterMessageQuery,
   displayModelNextToAnswerHeading,

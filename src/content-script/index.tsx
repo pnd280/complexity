@@ -54,7 +54,6 @@ function setupDOMObservers() {
 
   // DOMObserver.enableLogging();
 
-  uiTweaks.hideScrollToBottomButton();
   uiTweaks.collapseEmptyThreadVisualColumns();
 
   const observe = (url: string) => {

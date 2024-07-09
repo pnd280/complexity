@@ -99,7 +99,7 @@
   }
 
   body {
-    @apply tw-bg-background tw-text-foreground !important;
+    @apply tw-border tw-bg-background tw-text-foreground !important;
   }
 }
 

@@ -68,7 +68,7 @@ export const getLang = ($pre: JQuery<HTMLElement>): string => {
     $pre
       .find('code:first')
       .attr('class')
-      ?.match(/language-(\w+)/)?.[1] ||
+      ?.match(/language-(\S+)/)?.[1] ||
     ''
   );
 };
@@ -83,9 +83,11 @@ const createContainer = (isNative: boolean): JQuery<HTMLElement> => {
 };
 
 const createWrapper = (): JQuery<HTMLElement> => {
-  return $('<div>').addClass(
-    'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
-  );
+  return $('<div>')
+    .addClass(
+      'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
+    )
+    .attr('id', 'markdown-block-wrapper');
 };
 
 const applyStyles = (
@@ -116,6 +118,7 @@ const setupCodeBlock = (
   isNative: boolean
 ): void => {
   const $code = $pre.find('code:first');
+  $code.attr('data-lang', lang);
   if (isNative) {
     if (!$code.hasClass(`language-${lang}`)) {
       $code.addClass(`${lang} language-${lang} !tw-whitespace-pre !tw-px-3`);

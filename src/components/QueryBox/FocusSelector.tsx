@@ -76,7 +76,7 @@ export default function FocusSelector() {
           <Tooltip
             content={`Web access: ${allowWebAccess ? 'ON' : 'OFF'}${allowWebAccess && focus ? ` | Focus: ${items.find((model) => model.code === focus)?.label}` : ''}`}
             contentOptions={{
-              sideOffset: 8,
+              sideOffset: 15,
             }}
           >
             <div

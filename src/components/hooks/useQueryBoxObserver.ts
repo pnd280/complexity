@@ -80,49 +80,19 @@ export default function useQueryBoxObserver({
         onAdd() {
           if (disabled) return;
 
-          const $followUpQueryBoxContainer = $(
-            'textarea[placeholder="Ask follow-up"]'
-          )
-            .parents()
-            .eq(6);
+          const $toolbar = $('textarea[placeholder="Ask follow-up"]')
+            .parent()
+            .next();
 
-          if (
-            !$followUpQueryBoxContainer.length ||
-            $followUpQueryBoxContainer.attr(`data-${followUpId}`)
-          )
-            return;
+          if (!$toolbar.length || $toolbar.attr(`data-${followUpId}`)) return;
 
-          $followUpQueryBoxContainer.attr(`data-${followUpId}`, 'true');
-
-          if (
-            $followUpQueryBoxContainer &&
-            $followUpQueryBoxContainer.children().eq(1).attr('class') ===
-              'mb-2 flex justify-center'
-          ) {
-            $('.mb-2.flex.justify-center').prependTo(
-              $followUpQueryBoxContainer as JQuery<HTMLElement>
-            );
-          }
-
-          const $container = $('<div>')
-            .addClass(
-              'tw-flex tw-justify-center tw-mb-2 tw-mx-auto [&_button_span]:!tw-font-sans'
-            )
-            .attr('id', 'query-box-follow-up-container');
-
-          $followUpQueryBoxContainer.children().last().before($container);
+          $toolbar.attr(`data-${followUpId}`, 'true');
 
           const $selectorContainer = $('<div>').addClass(
-            'tw-w-fit tw-p-1 tw-rounded-[.5rem] tw-border tw-border-border tw-shadow-lg tw-bg-background dark:tw-bg-secondary tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-h-10 tw-animate-in tw-slide-in-from-bottom tw-zoom-in tw-transition-all tw-duration-300 tw-min-w-[100px] tw-min-h-8'
+            'tw-flex tw-flex-wrap tw-items-center tw-zoom-in'
           );
 
-          $followUpQueryBoxContainer
-            .children()
-            .last()
-            .prev()
-            .append($selectorContainer);
-
-          $followUpQueryBoxContainer.children().last().before($container);
+          $toolbar.append($selectorContainer);
 
           setFollowUpContainers($selectorContainer[0]);
 
