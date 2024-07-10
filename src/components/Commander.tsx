@@ -33,7 +33,9 @@ import {
 import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { setCookie } from '@/utils/utils';
 
-export function Commander() {
+import KeyCombo from './KeyCombo';
+
+export default function Commander() {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [kbEvent, setKbEvent] = useState<KeyboardEvent>();
@@ -90,10 +92,6 @@ export function Commander() {
       document.removeEventListener('keyup', up);
     };
   }, [handleNavigate]);
-
-  if (!import.meta.env.DEV) {
-    return null;
-  }
 
   return (
     <>
@@ -243,20 +241,5 @@ export function Commander() {
         </CommandList>
       </CommandDialog>
     </>
-  );
-}
-
-export function KeyCombo({ keys }: { keys: string[] }) {
-  return (
-    <span className="tw-flex tw-gap-1">
-      {keys.map((key) => (
-        <span
-          key={key}
-          className="tw-border tw-px-1 tw-rounded-sm tw-text-[.7rem] tw-font-mono"
-        >
-          {key}
-        </span>
-      ))}
-    </span>
   );
 }

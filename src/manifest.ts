@@ -47,5 +47,5 @@ export default defineManifest({
       matches: ['*://*.perplexity.ai/*'],
     },
   ],
-  permissions: ['storage', 'scripting'],
+  permissions: ['storage'],
 });

@@ -16,9 +16,7 @@ import {
 import webpageListeners from './main-world/listeners';
 import webpageMessageInterceptors from './main-world/message-interceptors';
 import { webpageMessenger } from './main-world/messenger';
-// @ts-expect-error
 import messenger from './main-world/messenger?script&module';
-// @ts-expect-error
 import wsHook from './main-world/ws-hook?script&module';
 import Root from './Root';
 import uiTweaks from './ui-tweaks';

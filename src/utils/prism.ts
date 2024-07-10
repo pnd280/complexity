@@ -1,5 +1,3 @@
-import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/components/prism-markup.min.js';
 import 'prismjs/components/prism-markup-templating.min.js';
 

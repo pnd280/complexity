@@ -1,7 +1,8 @@
+import { lazy } from 'react';
+
 import $ from 'jquery';
 import { createRoot } from 'react-dom/client';
 
-import { Commander } from '@/components/Commander';
 import useRouter from '@/components/hooks/useRouter';
 import MainPage from '@/components/MainPage';
 import MarkdownBlockHeader
@@ -24,6 +25,8 @@ import {
   IncompatibleInterfaceLanguageNotice,
 } from '../components/IncompatibleInterfaceLanguageNotice';
 
+const Commander = lazy(() => import('@/components/Commander'));
+
 export default function Root() {
   $('body').addClass('!tw-mr-0');
 
@@ -44,7 +47,7 @@ function ReactRoot() {
   return (
     <>
       <QueryBox />
-      <Commander />
+      {import.meta.env.DEV && <Commander />}
 
       {location === 'home' && <MainPageComponents />}
 

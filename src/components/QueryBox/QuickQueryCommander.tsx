@@ -19,10 +19,10 @@ import {
   useWindowSize,
 } from '@uidotdev/usehooks';
 
-import { KeyCombo } from '../Commander';
 import useQuickQueryCommanderParams
   from '../hooks/useQuickQueryCommanderParams';
 import useRouter from '../hooks/useRouter';
+import KeyCombo from '../KeyCombo';
 import {
   Command,
   CommandGroup,
