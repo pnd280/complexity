@@ -20,7 +20,6 @@ import { scrollToElement } from '@/utils/utils';
 import { useToggle } from '@uidotdev/usehooks';
 
 import Tooltip from './Tooltip';
-import { ScrollArea } from './ui/scroll-area';
 
 export default function ThreadTOC() {
   const { visibleMessageIndex, anchorsProps, wrapperPos } =
@@ -65,46 +64,44 @@ export default function ThreadTOC() {
             )}
             id="thread-toc"
           >
-            <ScrollArea scrollHideDelay={0}>
-              <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[50dvh]">
-                {anchorsProps?.map((anchorProps, index) => (
+            <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[50dvh] tw-overflow-auto custom-scrollbar">
+              {anchorsProps?.map((anchorProps, index) => (
+                <div
+                  key={index}
+                  className={clsx(
+                    'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
+                    {
+                      'tw-mr-6': visible && isFloat && index === 0,
+                    }
+                  )}
+                  onClick={anchorProps.onClick}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    anchorProps.onContextMenu();
+                  }}
+                >
                   <div
-                    key={index}
                     className={clsx(
-                      'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
+                      'tw-w-[.1rem] tw-h-5 tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out',
                       {
-                        'tw-mr-6': visible && isFloat && index === 0,
+                        '!tw-bg-accent-foreground':
+                          index === visibleMessageIndex,
                       }
                     )}
-                    onClick={anchorProps.onClick}
-                    onContextMenu={(e) => {
-                      e.preventDefault();
-                      anchorProps.onContextMenu();
-                    }}
+                  />
+                  <div
+                    className={clsx(
+                      'tw-truncate tw-w-full tw-cursor-pointer tw-text-foreground-darker group-hover:tw-text-muted-foreground tw-transition-colors tw-duration-300 tw-ease-in-out tw-select-none',
+                      {
+                        '!tw-text-foreground': index === visibleMessageIndex,
+                      }
+                    )}
                   >
-                    <div
-                      className={clsx(
-                        'tw-w-[.1rem] tw-h-5 tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out',
-                        {
-                          '!tw-bg-accent-foreground':
-                            index === visibleMessageIndex,
-                        }
-                      )}
-                    />
-                    <div
-                      className={clsx(
-                        'tw-truncate tw-w-full tw-cursor-pointer tw-text-foreground-darker group-hover:tw-text-muted-foreground tw-transition-colors tw-duration-300 tw-ease-in-out tw-select-none',
-                        {
-                          '!tw-text-foreground': index === visibleMessageIndex,
-                        }
-                      )}
-                    >
-                      {anchorProps.title}
-                    </div>
+                    {anchorProps.title}
                   </div>
-                ))}
-              </div>
-            </ScrollArea>
+                </div>
+              ))}
+            </div>
             {isFloat && visible && (
               <div
                 className={clsx(

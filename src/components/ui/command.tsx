@@ -10,8 +10,6 @@ import {
 import { cn } from '@/lib/utils';
 import { type DialogProps } from '@radix-ui/react-dialog';
 
-import { ScrollArea } from './scroll-area';
-
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>
@@ -78,13 +76,11 @@ const CommandList = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>
 >(({ className, ...props }, ref) => (
-  <ScrollArea className="" scrollHideDelay={0}>
-    <CommandPrimitive.List
-      ref={ref}
-      className={cn('tw-max-h-[300px]', className)}
-      {...props}
-    />
-  </ScrollArea>
+  <CommandPrimitive.List
+    ref={ref}
+    className={cn('tw-max-h-[300px] tw-overflow-y-auto tw-overflow-x-hidden custom-scrollbar', className)}
+    {...props}
+  />
 ));
 
 CommandList.displayName = CommandPrimitive.List.displayName;

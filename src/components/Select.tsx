@@ -38,8 +38,6 @@ import {
   useTypeahead,
 } from '@floating-ui/react';
 
-import { ScrollArea } from './ui/scroll-area';
-
 type SelectContextValue = {
   activeIndex: number | null;
   selectedIndex: number | null;
@@ -229,11 +227,9 @@ export function Select({
               className="tw-z-50"
             >
               <div className="tw-relative tw-min-w-[8rem] tw-rounded-md">
-                <ScrollArea
-                  scrollHideDelay={0}
-                  type="auto"
+                <div
                   className={cn(
-                    'tw-rounded-md tw-border tw-bg-popover tw-text-popover-foreground tw-shadow-md',
+                    'tw-rounded-md tw-border tw-bg-popover tw-text-popover-foreground tw-shadow-md tw-overflow-auto custom-scrollbar',
                     'data-[state=open]:tw-animate-in data-[state=closed]:tw-animate-out',
                     'data-[state=closed]:tw-fade-out-0 data-[state=open]:tw-fade-in-0',
                     'data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95',
@@ -254,7 +250,7 @@ export function Select({
                       )}
                     </FloatingList>
                   </div>
-                </ScrollArea>
+                </div>
               </div>
             </div>
           </FloatingFocusManager>

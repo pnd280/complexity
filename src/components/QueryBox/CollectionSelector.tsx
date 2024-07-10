@@ -359,7 +359,7 @@ function Selection({
         onSelect(currentValue);
       }}
     >
-      <div className="!tw-text-sm !tw-py-1 tw-truncate">{title}</div>
+      <div className="tw-max-w-[250px] !tw-text-sm !tw-py-1 tw-truncate">{title}</div>
       {children}
     </CommandItem>
   );
