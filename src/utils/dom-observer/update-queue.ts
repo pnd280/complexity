@@ -1,8 +1,8 @@
 import { UpdateTask } from '@/types/DOMObserver';
 
-const MIN_CHUNK_SIZE = 10;
+const MIN_CHUNK_SIZE = 50;
 const MAX_CHUNK_SIZE = 500;
-const INITIAL_CHUNK_SIZE = 50;
+const INITIAL_CHUNK_SIZE = 100;
 
 export class UpdateQueue {
   private tasks: UpdateTask[] = [];
