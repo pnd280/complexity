@@ -10,6 +10,10 @@ declare global {
       router: {
         push: (url: string, as?: string, options?: any) => Promise<boolean>;
         replace: (url: string, as?: string, options?: any) => Promise<boolean>;
+        events: {
+          on: (event: string, callback: () => void) => void;
+          off: (event: string, callback: () => void) => void;
+        };
       };
     };
 

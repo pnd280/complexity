@@ -8,7 +8,6 @@ import {
 
 import $ from 'jquery';
 
-import useRouter from '@/components/hooks/useRouter';
 import DOMObserver from '@/utils/dom-observer';
 import { rewritePreBlock } from '@/utils/markdown-block';
 import { isDOMNode } from '@/utils/utils';
@@ -40,7 +39,6 @@ const compare = (
 export default function useMarkdownBlockObserver({
   setContainers,
 }: useMarkdownBlockObserverProps) {
-  const { url } = useRouter();
   const containersRef = useRef<MarkdownBlockContainer[]>([]);
 
   const updateContainers = useCallback(
@@ -53,7 +51,7 @@ export default function useMarkdownBlockObserver({
     [setContainers]
   );
 
-  const { messagesContainer, isWaiting } = useWaitForMessagesContainer();
+  const { messagesContainer } = useWaitForMessagesContainer();
 
   useEffect(() => {
     if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
@@ -96,5 +94,5 @@ export default function useMarkdownBlockObserver({
         });
       });
     }
-  }, [url, updateContainers, isWaiting, messagesContainer]);
+  }, [updateContainers, messagesContainer]);
 }

@@ -97,6 +97,6 @@ export interface EventHandlers {
     trigger,
   }: {
     url: string;
-    trigger: 'push' | 'replace' | 'popstate';
+    trigger: 'push' | 'replace' | 'popstate' | 'routeChangeComplete';
   }): void;
 }

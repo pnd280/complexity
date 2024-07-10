@@ -95,7 +95,7 @@ function setupDOMObservers() {
   webpageMessenger.onMessage(
     'routeChange',
     async ({ payload: { url, trigger } }) => {
-      if (trigger === 'popstate') return;
+      if (trigger !== 'routeChangeComplete') return;
 
       observe(url);
     }

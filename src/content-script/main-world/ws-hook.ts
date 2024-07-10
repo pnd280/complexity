@@ -364,7 +364,13 @@ class WSHook {
       dispatch('popstate');
     });
 
-    const dispatch = (trigger: 'push' | 'replace' | 'popstate') => {
+    router.events.on('routeChangeComplete', () => {
+      dispatch('routeChangeComplete');
+    });
+
+    const dispatch = (
+      trigger: 'push' | 'replace' | 'popstate' | 'routeChangeComplete'
+    ) => {
       WSHook.contentScriptMessenger.sendMessage({
         event: 'routeChange',
         payload: {

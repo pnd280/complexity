@@ -54,8 +54,6 @@ const compare = (prev: Container[], next: Container[]): boolean => {
 };
 
 export default function ThreadMessageStickyHeader() {
-  const { url } = useRouter();
-
   const [containers, setContainers] = useState<Container[]>([]);
   const containersRef = useRef<Container[]>([]);
 
@@ -110,7 +108,7 @@ export default function ThreadMessageStickyHeader() {
     [containersStates, setContainersStates]
   );
 
-  const { messagesContainer, isWaiting } = useWaitForMessagesContainer();
+  const { messagesContainer } = useWaitForMessagesContainer();
 
   useEffect(() => {
     if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
@@ -166,7 +164,7 @@ export default function ThreadMessageStickyHeader() {
         });
       });
     }
-  }, [url, toggleVisibility, updateContainers, messagesContainer, isWaiting]);
+  }, [toggleVisibility, updateContainers, messagesContainer]);
 
   useScrollDirection(debouncedContainers, setContainersStates);
 
