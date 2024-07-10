@@ -1,4 +1,5 @@
 import { Nullable } from '@/types/Utils';
+import { RouterEvent } from '@/types/WS';
 
 class WSHook {
   private webSocketInstance: Nullable<WebSocket>;
@@ -368,9 +369,7 @@ class WSHook {
       dispatch('routeChangeComplete');
     });
 
-    const dispatch = (
-      trigger: 'push' | 'replace' | 'popstate' | 'routeChangeComplete'
-    ) => {
+    const dispatch = (trigger: RouterEvent) => {
       WSHook.contentScriptMessenger.sendMessage({
         event: 'routeChange',
         payload: {

@@ -4,12 +4,11 @@ import {
 } from 'react';
 
 import { webpageMessenger } from '@/content-script/main-world/messenger';
+import { RouterEvent } from '@/types/WS';
 
 export default function useRouter() {
   const [url, setUrl] = useState(window.location.href);
-  const [trigger, setTrigger] = useState<
-    'push' | 'replace' | 'popstate' | 'routeChangeComplete'
-  >();
+  const [trigger, setTrigger] = useState<RouterEvent>();
 
   useEffect(() => {
     const stopListen = webpageMessenger.onMessage(

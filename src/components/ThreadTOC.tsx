@@ -19,7 +19,6 @@ import { ui } from '@/utils/ui';
 import { scrollToElement } from '@/utils/utils';
 import { useToggle } from '@uidotdev/usehooks';
 
-import useRouter from './hooks/useRouter';
 import Tooltip from './Tooltip';
 import { ScrollArea } from './ui/scroll-area';
 
@@ -154,8 +153,6 @@ type AnchorProps = {
 };
 
 const useThreadTOCObserver = () => {
-  const { url } = useRouter();
-
   const [visibleMessageIndex, setVisibleMessageIndex] = useState<number>(0);
 
   const [anchorsProps, setAnchorsProps] = useState<AnchorProps[]>();
@@ -239,7 +236,7 @@ const useThreadTOCObserver = () => {
       $(window).off('scroll');
       $(window).off('resize.ThreadTOC');
     };
-  }, [url, myObserver]);
+  }, [myObserver]);
 
   return { visibleMessageIndex, anchorsProps, wrapperPos };
 };

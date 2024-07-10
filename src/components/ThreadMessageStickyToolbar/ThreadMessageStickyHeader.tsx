@@ -21,7 +21,6 @@ import { ui } from '@/utils/ui';
 import { isDOMNode } from '@/utils/utils';
 import { useDebounce } from '@uidotdev/usehooks';
 
-import useRouter from '../hooks/useRouter';
 import useWaitForMessagesContainer from '../hooks/useWaitForMessagesContainer';
 import ThreadMessageToolbar from './ThreadMessageToolbar';
 
@@ -193,8 +192,6 @@ const useScrollDirection = (
   containers: Container[],
   setContainersStates: Updater<ContainerStates[]>
 ) => {
-  const { url } = useRouter();
-
   const stickyNavHeight = useMemo(
     () => ui.getStickyHeader()?.outerHeight() || 3 * 16,
     []
@@ -231,7 +228,6 @@ const useScrollDirection = (
       stopObserving();
     };
   }, [
-    url,
     containers,
     stickyNavHeight,
     setContainersStates,

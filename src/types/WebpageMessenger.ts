@@ -1,4 +1,5 @@
 import { Nullable } from './Utils';
+import { RouterEvent } from './WS';
 
 export type MessageData<T> = {
   messageId: string;
@@ -92,11 +93,5 @@ export interface EventHandlers {
           scroll: boolean;
         }
   ): void;
-  routeChange({
-    url,
-    trigger,
-  }: {
-    url: string;
-    trigger: 'push' | 'replace' | 'popstate' | 'routeChangeComplete';
-  }): void;
+  routeChange({ url, trigger }: { url: string; trigger: RouterEvent }): void;
 }

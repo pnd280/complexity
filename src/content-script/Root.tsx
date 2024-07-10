@@ -39,9 +39,7 @@ export default function Root() {
 }
 
 function ReactRoot() {
-  const { url } = useRouter();
-
-  const location = whereAmI(url);
+  const location = whereAmI(useRouter().url);
 
   return (
     <>
