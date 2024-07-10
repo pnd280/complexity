@@ -114,11 +114,14 @@ export default function ThreadMessageStickyHeader() {
 
     requestAnimationFrame(callback);
 
-    DOMObserver.create('toggle-thread-message-sticky-toolbar-visibility', {
+    const id = 'thread-message-sticky-toolbar';
+
+    DOMObserver.create(id, {
       target: messagesContainer,
       config: { childList: true, subtree: true },
       debounceTime: 200,
       useRAF: true,
+      source: 'hook',
       onAny: callback,
     });
 
@@ -163,6 +166,10 @@ export default function ThreadMessageStickyHeader() {
         });
       });
     }
+
+    return () => {
+      DOMObserver.destroy(id);
+    };
   }, [toggleVisibility, updateContainers, messagesContainer]);
 
   useScrollDirection(debouncedContainers, setContainersStates);

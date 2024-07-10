@@ -1,5 +1,6 @@
 import {
   Fragment,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -137,19 +138,23 @@ export default function QueryBox() {
   const [followUpContainers, setFollowUpContainers] = useState<Element[]>([]);
   const [quickCommandSearchValue, setQuickCommandSearchValue] = useState('');
 
+  const memoizedSetContainers = useCallback((newContainer: Element) => {
+    setContainers((prevContainers) =>
+      [...prevContainers, newContainer].filter((x) => document.contains(x))
+    );
+  }, []);
+
+  const memoizedSetFollowUpContainers = useCallback((newContainer: Element) => {
+    setFollowUpContainers((prevFollowUpContainers) =>
+      [...prevFollowUpContainers, newContainer].filter((x) =>
+        document.contains(x)
+      )
+    );
+  }, []);
+
   useQueryBoxObserver({
-    setContainers: (newContainer) => {
-      setContainers(
-        [...containers, newContainer].filter((x) => document.contains(x))
-      );
-    },
-    setFollowUpContainers: (newContainer) => {
-      setFollowUpContainers(
-        [...followUpContainers, newContainer].filter((x) =>
-          document.contains(x)
-        )
-      );
-    },
+    setContainers: memoizedSetContainers,
+    setFollowUpContainers: memoizedSetFollowUpContainers,
     refetchUserSettings,
     disabled: !focus && !languageModel && !imageGenModel && !collection,
   });

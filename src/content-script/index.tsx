@@ -55,13 +55,13 @@ function setupDOMObservers() {
   uiTweaks.collapseEmptyThreadVisualColumns();
 
   const observe = (url: string) => {
+    DOMObserver.destroyAll('default');
+
     queryClient.resetQueries({
       predicate(query) {
         return query.queryKey[0] === 'domNode';
       },
     });
-
-    DOMObserver.destroyAll();
 
     uiTweaks.alterAttachButton();
     uiTweaks.calibrateMarkdownBlock();

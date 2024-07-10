@@ -23,6 +23,10 @@ class DOMObserver {
     );
     const instance: DOMObserverInstance = { observer, config, isPaused: false };
 
+    if (!config.source) {
+      config.source = 'default';
+    }
+
     DOMObserver.instances.set(id, instance);
     DOMObserver.observe(id);
   }
@@ -55,10 +59,12 @@ class DOMObserver {
     }
   }
 
-  public static destroyAll(): void {
-    for (const id of DOMObserver.instances.keys()) {
-      DOMObserver.destroy(id);
-    }
+  public static destroyAll(source?: DOMObserverConfig['source']): void {
+    DOMObserver.instances.forEach((instance, id) => {
+      if (instance.config.source === source || !source) {
+        DOMObserver.destroy(id);
+      }
+    });
   }
 
   public static pause(id: string): void {

@@ -27,7 +27,7 @@ export type DOMObserverConfig = {
   throttleTime?: number;
   useRAF?: boolean;
   useIdleCallback?: boolean;
-  priority?: number;
+  source?: 'hook' | 'default';
 };
 
 export type DOMObserverInstance = {

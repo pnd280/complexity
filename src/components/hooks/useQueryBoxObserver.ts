@@ -34,7 +34,7 @@ export default function useQueryBoxObserver({
     DOMObserver.create(mainId, {
       target: document.body,
       config: { childList: true, subtree: true },
-
+      source: 'hook',
       onAny() {
         if (disabled) return;
 
@@ -68,13 +68,14 @@ export default function useQueryBoxObserver({
         refetchUserSettings();
       },
     });
+
     if (location === 'thread') {
       DOMObserver.create(followUpId, {
         target: document.body,
         config: { childList: true, subtree: true },
         throttleTime: 200,
-        priority: 999,
         useRAF: true,
+        source: 'hook',
         onAdd() {
           if (disabled) return;
 
@@ -100,6 +101,11 @@ export default function useQueryBoxObserver({
     } else {
       DOMObserver.destroy(followUpId);
     }
+
+    return () => {
+      DOMObserver.destroy(mainId);
+      DOMObserver.destroy(followUpId);
+    };
   }, [
     disabled,
     location,

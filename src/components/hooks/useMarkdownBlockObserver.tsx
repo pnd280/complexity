@@ -58,14 +58,14 @@ export default function useMarkdownBlockObserver({
 
     requestAnimationFrame(callback);
 
-    const id = 'markdown-block-observer';
+    const id = 'alternate-markdown-block';
 
     DOMObserver.create(id, {
       target: messagesContainer,
       config: { childList: true, subtree: true },
-      priority: 1,
       throttleTime: 200,
       useRAF: true,
+      source: 'hook',
       onAny: callback,
     });
 
@@ -94,5 +94,9 @@ export default function useMarkdownBlockObserver({
         });
       });
     }
+
+    return () => {
+      DOMObserver.destroy(id);
+    };
   }, [updateContainers, messagesContainer]);
 }
