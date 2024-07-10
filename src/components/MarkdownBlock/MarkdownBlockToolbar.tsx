@@ -32,7 +32,7 @@ export default (function MarkdownBlockToolbar({
 
   return (
     <div className="tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
-      <div className="tw-text-background dark:tw-text-foreground">
+      <div className="tw-text-background dark:tw-text-foreground tw-font-mono tw-font-medium tw-text-sm">
         {lang || 'plain-text'}
       </div>
       <div className="tw-ml-auto tw-flex tw-gap-3">

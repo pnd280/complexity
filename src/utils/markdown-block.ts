@@ -76,7 +76,7 @@ export const getLang = ($pre: JQuery<HTMLElement>): string => {
 const createContainer = (isNative: boolean): JQuery<HTMLElement> => {
   const baseClasses =
     'tw-sticky tw-top-[var(--markdownBlockToolbarTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border';
-  const nativeClasses = 'markdown-block-toolbar !tw-h-[2.5rem]';
+  const nativeClasses = 'markdown-block-toolbar !tw-h-[2.5rem] tw-bg-[#1d1f21]';
   return $('<div>').addClass(
     baseClasses + (isNative ? ` ${nativeClasses}` : '')
   );
@@ -85,7 +85,7 @@ const createContainer = (isNative: boolean): JQuery<HTMLElement> => {
 const createWrapper = (): JQuery<HTMLElement> => {
   return $('<div>')
     .addClass(
-      'tw-rounded-md tw-relative tw-bg-[#1d1f21] tw-rounded-md tw-border tw-border-border'
+      'tw-rounded-md tw-relative tw-rounded-md tw-border tw-border-border'
     )
     .attr('id', 'markdown-block-wrapper');
 };
