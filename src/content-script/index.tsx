@@ -13,6 +13,7 @@ import {
   whereAmI,
 } from '@/utils/utils';
 
+import domHook from './main-world/dom-hook?script&module';
 import webpageListeners from './main-world/listeners';
 import webpageMessageInterceptors from './main-world/message-interceptors';
 import { webpageMessenger } from './main-world/messenger';
@@ -100,6 +101,8 @@ function setupDOMObservers() {
 }
 
 async function init() {
+  injectMainWorldScript(chrome.runtime.getURL(domHook));
+
   injectMainWorldScript(chrome.runtime.getURL(messenger)).then(() =>
     injectMainWorldScript(chrome.runtime.getURL(wsHook))
   );

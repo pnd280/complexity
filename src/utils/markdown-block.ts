@@ -4,19 +4,6 @@ import { Nullable } from '@/types/Utils';
 
 import { stripHtml } from './utils';
 
-export const lineNumbersWrapper = (pre: Element) => {
-  // FIXME: replace with prism plugin
-  if ($(pre).find('code>code').length) return;
-
-  const code = $(pre).find('code').html();
-
-  const wrappedCode = code
-    .replace(/^(.*)$/gm, '<code>$1</code>')
-    .replace(/<code><\/code>$/g, '');
-
-  $(pre).find('code').html(wrappedCode);
-};
-
 type RewritePreBlockResult = {
   $container: JQuery<HTMLElement>;
   lang: string;
@@ -121,12 +108,10 @@ const setupCodeBlock = (
   isNative: boolean
 ): void => {
   const $code = $pre.find('code:first');
-  $code.attr('data-lang', lang);
-  if (isNative) {
-    if (!$code.hasClass(`language-${lang}`)) {
-      $code.addClass(`${lang} language-${lang} !tw-whitespace-pre !tw-px-3`);
-    }
-  } else {
+
+  if (!$pre.attr('data-lang')) $pre.attr('data-lang', lang);
+
+  if (!isNative) {
     $code.addClass('!tw-p-0');
   }
 };

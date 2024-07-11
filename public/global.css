@@ -99,7 +99,7 @@
   }
 
   body {
-    @apply tw-border tw-bg-background tw-text-foreground !important;
+    @apply tw-bg-background tw-text-foreground !important;
   }
 
   .custom-scrollbar {
@@ -157,4 +157,5 @@
 
 code {
   font-family: var(--mono-font) !important;
+  font-weight: normal !important;
 }

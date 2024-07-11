@@ -19,6 +19,7 @@ import { ui } from '@/utils/ui';
 import { scrollToElement } from '@/utils/utils';
 import { useToggle } from '@uidotdev/usehooks';
 
+import useRouter from './hooks/useRouter';
 import Tooltip from './Tooltip';
 
 export default function ThreadTOC() {
@@ -35,8 +36,10 @@ export default function ThreadTOC() {
     ? wrapperPos.left + wrapperWidth + 50 > window.innerWidth
     : false;
 
-  requestIdleCallback(() => {
-    setWrapperWidth($('#thread-toc')?.outerWidth() || 0);
+  useEffect(() => {
+    requestIdleCallback(() => {
+      setWrapperWidth($('#thread-toc')?.outerWidth() || 0);
+    });
   });
 
   if (!anchorsProps || !wrapperPos || !anchorsProps.length) return null;
@@ -150,6 +153,8 @@ type AnchorProps = {
 };
 
 const useThreadTOCObserver = () => {
+  const { url } = useRouter();
+
   const [visibleMessageIndex, setVisibleMessageIndex] = useState<number>(0);
 
   const [anchorsProps, setAnchorsProps] = useState<AnchorProps[]>();
@@ -233,7 +238,7 @@ const useThreadTOCObserver = () => {
       $(window).off('scroll');
       $(window).off('resize.ThreadTOC');
     };
-  }, [myObserver]);
+  }, [url, myObserver]);
 
   return { visibleMessageIndex, anchorsProps, wrapperPos };
 };

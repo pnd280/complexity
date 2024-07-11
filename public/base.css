@@ -319,19 +319,18 @@ html.dark {
 }
 
 body {
-
   &.alternate-markdown-block {
+
+    & pre[data-lang="text"] code,
+    & pre[data-lang="markdown"] code {
+      white-space: pre-wrap;
+    }
+
     & div.w-full.max-w-\[90vw\]:has(> pre) {
       border       : 1px solid var(--foreground-darker) !important;
       margin       : 1rem 0;
       background   : var(--secondary);
       border-radius: calc(var(--radius) - 2px);
-    }
-
-    /* FIXME: */
-    & pre:has(.absolute:empty) code:first-of-type {
-      white-space: pre-wrap !important;
-      white-space: pre-line !important;
     }
 
     .codeWrapper {
