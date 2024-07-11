@@ -88,7 +88,7 @@ const createContainer = (isNative: boolean): JQuery<HTMLElement> => {
 const createWrapper = (): JQuery<HTMLElement> => {
   return $('<div>')
     .addClass(
-      'tw-rounded-md tw-relative tw-rounded-md'
+      'tw-rounded-md tw-relative tw-rounded-md tw-border !tw-border-muted'
     )
     .attr('id', 'markdown-block-wrapper');
 };

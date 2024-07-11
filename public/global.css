@@ -47,7 +47,7 @@
     --ring-darker  : #13343b80;
 
     --selection           : #13343b60;
-    --selection-foreground: #fcfcf9;
+    --selection-foreground: #13343b;
 
     --radius: 0.5rem;
 
@@ -88,8 +88,8 @@
     --ring         : #72aefd;
     --ring-darker  : #72aefd80;
 
-    --selection           : #202222;
-    --selection-foreground: #72aefd;
+    --selection           : #72aefd60;
+    --selection-foreground: #e8e8e6;
   }
 }
 

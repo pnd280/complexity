@@ -152,9 +152,7 @@ html.dark .dark\:\!text-backgroundDark {
 .text-super,
 .group:hover .md\:group-hover\:text-super,
 .prose :where(a):not(:where([class~='not-prose'] *)),
-:is(.dark .dark\:md\:hover\:text-textMainDark:hover),
-.selection\:text-textMain::selection,
-.selection\:bg-superDuper ::selection {
+:is(.dark .dark\:md\:hover\:text-textMainDark:hover) {
   color: var(--accent-foreground) !important;
 }
 
@@ -162,24 +160,34 @@ html.dark {
 
   & .selection\:text-textMain::selection,
   & .selection\:bg-superDuper ::selection {
-    color           : var(--accent-foreground) !important;
-    background-color: var(--background) !important;
+    background-color: var(--selection) !important;
+    color           : var(--selection-foreground) !important;
   }
 }
 
-& .selection\:text-textMain::selection,
-& .selection\:bg-superDuper ::selection {
-  color           : var(--accent-foreground) !important;
-  background-color: var(--secondary) !important;
+.selection\:text-textMain::selection,
+.selection\:bg-superDuper ::selection {
+  background-color: var(--selection) !important;
+  color           : var(--selection-foreground) !important;
 }
 
 html.dark {
 
   & code::selection,
   & code *::selection {
-    color     : var(--accent-foreground) !important;
-    background: var(--accent-foreground-darker) !important;
+    background-color: var(--selection) !important;
+    color           : var(--selection-foreground) !important;
   }
+}
+
+html:not(.dark) {
+
+  & code::selection,
+  & code *::selection {
+    background-color: var(--selection) !important;
+    color           : var(--selection-foreground) !important;
+  }
+
 }
 
 .mb-sm.flex.w-full.items-center.justify-between svg {
@@ -349,14 +357,6 @@ body {
     }
   }
 
-}
-
-/* Hide unnecessary elements */
-body {
-
-  &.hide-native-pro-search-switch .gap-sm.group\/switch.flex.cursor-default.items-center.cursor-pointer[data-testid="copilot-toggle"] {
-    display: none !important;
-  }
 }
 
 /* adjust-selectors-border-radius */

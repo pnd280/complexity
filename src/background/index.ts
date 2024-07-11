@@ -1,7 +1,4 @@
-import { registerPromptsLibraryRepo } from '@/services/database/repository';
 import { BackgroundAction } from '@/utils/background';
-
-registerPromptsLibraryRepo();
 
 if (!import.meta.env.DEV) {
   chrome.runtime.onInstalled.addListener(() => {
