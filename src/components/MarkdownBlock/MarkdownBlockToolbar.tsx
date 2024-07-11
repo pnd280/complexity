@@ -2,59 +2,34 @@ import $ from 'jquery';
 import {
   Check,
   Copy,
-  GitCompare,
 } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import { stripHtml } from '@/utils/utils';
 
 import useToggleButtonText from '../hooks/useToggleButtonText';
-import Tooltip from '../Tooltip';
 
 type MarkdownBlockToolbarProps = {
   lang: string;
   preElementId: string;
-  index: number;
-  isSelectedForComparison: boolean;
-  handleSelectForCompare: (index: number) => void;
 };
 
 export default (function MarkdownBlockToolbar({
   lang,
   preElementId,
-  index,
-  isSelectedForComparison,
-  handleSelectForCompare,
 }: MarkdownBlockToolbarProps) {
   const [copyButtonText, setCopyButtonText] = useToggleButtonText({
     defaultText: <Copy className="tw-w-4 tw-h-4" />,
   });
 
   return (
-    <div className="tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-[#1d1f21] tw-font-sans">
-      <div className="tw-text-background dark:tw-text-foreground tw-font-mono tw-font-medium tw-text-sm">
-        {lang || 'plain-text'}
+    <div className="tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-secondary tw-font-sans tw-border-b !tw-border-foreground-darker dark:!tw-border-muted tw-border-b-px">
+      <div className="tw-text-foreground tw-font-mono tw-font-medium tw-text-sm">
+        {lang || 'text'}
       </div>
       <div className="tw-ml-auto tw-flex tw-gap-3">
-        <Tooltip content="Select for Compare">
-          <div
-            className={cn(
-              'tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95',
-              {
-                '!tw-text-background dark:!tw-text-accent-foreground':
-                  isSelectedForComparison,
-              }
-            )}
-            onClick={() => {
-              handleSelectForCompare(index);
-            }}
-          >
-            <GitCompare className="tw-w-4 tw-h-4" />
-          </div>
-        </Tooltip>
 
         <div
-          className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-background dark:hover:tw-text-foreground tw-transition-all active:tw-scale-95"
+          className="tw-cursor-pointer tw-text-muted-foreground hover:tw-text-foreground tw-transition-all active:tw-scale-95"
           onClick={() => {
             const $preElement = $(`pre#${preElementId}`);
 

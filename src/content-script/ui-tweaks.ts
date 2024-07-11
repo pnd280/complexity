@@ -1,7 +1,6 @@
 import $ from 'jquery';
 
 import DOMObserver from '@/utils/dom-observer';
-import prismJs from '@/utils/prism';
 import { ui } from '@/utils/ui';
 import {
   jsonUtils,
@@ -241,51 +240,6 @@ async function displayModelNextToAnswerHeading(messagesContainer: Element) {
   }
 }
 
-async function highlightMarkdownBlocks(messagesContainer: Element) {
-  if (!popupSettingsStore.getState().qolTweaks.markdownBlockToolbar) return;
-
-  const id = 'highlight-markdown-block';
-
-  requestIdleCallback(callback);
-
-  DOMObserver.create(id, {
-    target: messagesContainer,
-    config: {
-      childList: true,
-      subtree: true,
-    },
-    debounceTime: 200,
-    useRAF: true,
-    onAny: callback,
-  });
-
-  function callback() {
-    const messageBlocks = ui.getMessageBlocks().slice(-10);
-
-    messageBlocks.forEach(({ $messageBlock }) => {
-      queueMicrotask(() => {
-        const $bottomButtonBar = $messageBlock.find(
-          '.mt-sm.flex.items-center.justify-between'
-        );
-
-        if ($bottomButtonBar.length) {
-          const $codeBlocks = $bottomButtonBar
-            .closest('.message-block')
-            .find(`pre:not([data-${id}])`);
-
-          $codeBlocks.each((_, pre) => {
-            queueMicrotask(() => {
-              $(pre).attr(`data-${id}`, '');
-              const lang = $(pre).find('.absolute').text();
-              prismJs.highlightBlock({ pre, lang });
-            });
-          });
-        }
-      });
-    });
-  }
-}
-
 const uiTweaks = {
   injectCustomStyles,
   correctColorScheme,
@@ -293,7 +247,6 @@ const uiTweaks = {
   collapseEmptyThreadVisualColumns,
   alterMessageQuery,
   displayModelNextToAnswerHeading,
-  highlightMarkdownBlocks,
   calibrateMarkdownBlock,
   calibrateThreadMessageStickyHeader,
 };

@@ -10,7 +10,7 @@ import {
   WebSocketEventData,
 } from '@/types/WebpageMessenger';
 
-export const isWorldContext = () => !chrome.storage?.local;
+export const isMainWorldContext = () => !chrome.storage?.local;
 
 class WebpageMessenger {
   public static instance: WebpageMessenger;
@@ -29,8 +29,7 @@ class WebpageMessenger {
 
     WebpageMessenger.instance = this;
 
-    if (isWorldContext()) {
-      // @ts-ignore
+    if (isMainWorldContext()) {
       window.Messenger = {
         sendMessage: this.sendMessage,
         onMessage: this.onMessage,
@@ -200,7 +199,7 @@ class WebpageMessenger {
 
     window.addEventListener('message', listeners);
 
-    const instance = isWorldContext() ? WebpageMessenger.instance : this;
+    const instance = isMainWorldContext() ? WebpageMessenger.instance : this;
 
     instance.trackListeners(eventName, listeners);
 

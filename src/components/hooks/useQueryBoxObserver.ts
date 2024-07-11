@@ -48,7 +48,7 @@ export default function useQueryBoxObserver({
         $buttonBar.attr(`data-${mainId}`, 'true');
 
         $buttonBar.addClass(() =>
-          cn('tw-col-span-3 tw-col-start-1 tw-flex-wrap tw-gap-y-1', {
+          cn('tw-col-span-3 tw-col-start-1 !tw-col-end-4 tw-flex-wrap tw-gap-y-1', {
             'tw-mr-[7rem]':
               !popupSettingsStore.getState().queryBoxSelectors.focus,
             'tw-mr-10': popupSettingsStore.getState().queryBoxSelectors.focus,

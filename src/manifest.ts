@@ -40,6 +40,7 @@ export default defineManifest({
         'img/logo-34.png',
         'img/logo-48.png',
         'img/logo-128.png',
+        '*.css',
         '*.js',
         'global.css',
         'base.css',

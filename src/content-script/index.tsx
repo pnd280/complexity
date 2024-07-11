@@ -80,7 +80,6 @@ function setupDOMObservers() {
 
             uiTweaks.alterMessageQuery(messagesContainer);
             uiTweaks.displayModelNextToAnswerHeading(messagesContainer);
-            uiTweaks.highlightMarkdownBlocks(messagesContainer);
           })();
 
           break;

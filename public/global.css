@@ -27,13 +27,13 @@
     --primary           : #13343B;
     --primary-foreground: #e8e8e6;
 
-    --secondary           : #e8e8e3;
+    --secondary           : #f3f3ee;
     --secondary-foreground: #13343B;
 
-    --muted           : #e8e8e3;
+    --muted           : #f3f3ee;
     --muted-foreground: #64645f;
 
-    --accent                  : #e8e8e3;
+    --accent                  : #f3f3ee;
     --accent-foreground       : #13343B;
     --accent-foreground-darker: #13343b80;
 

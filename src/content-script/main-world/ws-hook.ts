@@ -7,7 +7,7 @@ class WSHook {
 
   private webSocketOriginalSend = WebSocket.prototype.send;
 
-  public static contentScriptMessenger = { ...window.Messenger };
+  public static contentScriptMessenger = { ...window.Messenger }; // TODO: directly import methods from './messenger.ts'
 
   constructor() {
     this.webSocketInstance = null;

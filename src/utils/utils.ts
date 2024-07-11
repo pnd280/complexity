@@ -348,3 +348,17 @@ export async function injectMainWorldScript(url: string) {
       .appendTo('body');
   });
 }
+
+export async function injectCSS(url: string) {
+  return new Promise((resolve, reject) => {
+    $('<link>')
+      .attr({
+        class: 'complexity-custom-styles',
+        rel: 'stylesheet',
+        href: url,
+        onload: () => resolve(null),
+        onerror: () => reject(new Error(`Failed to load CSS: ${url}`)),
+      })
+      .appendTo('head');
+  });
+}

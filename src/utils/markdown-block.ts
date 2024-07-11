@@ -2,6 +2,8 @@ import $ from 'jquery';
 
 import { Nullable } from '@/types/Utils';
 
+import { stripHtml } from './utils';
+
 export const lineNumbersWrapper = (pre: Element) => {
   // FIXME: replace with prism plugin
   if ($(pre).find('code>code').length) return;
@@ -64,7 +66,7 @@ export const rewritePreBlock = (
 
 export const getLang = ($pre: JQuery<HTMLElement>): string => {
   return (
-    $pre.find('.absolute').text() ||
+    $pre.find('.border-b.border-r.font-thin').text() ||
     $pre
       .find('code:first')
       .attr('class')
@@ -75,8 +77,9 @@ export const getLang = ($pre: JQuery<HTMLElement>): string => {
 
 const createContainer = (isNative: boolean): JQuery<HTMLElement> => {
   const baseClasses =
-    'tw-sticky tw-top-[var(--markdownBlockToolbarTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all tw-border-b tw-border-border';
-  const nativeClasses = 'markdown-block-toolbar !tw-h-[2.5rem] tw-bg-[#1d1f21]';
+    'tw-sticky tw-top-[var(--markdownBlockToolbarTop)] tw-bottom-[4rem] tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all';
+  const nativeClasses =
+    'markdown-block-toolbar !tw-h-[2.3125rem] tw-bg-secondary';
   return $('<div>').addClass(
     baseClasses + (isNative ? ` ${nativeClasses}` : '')
   );
@@ -85,7 +88,7 @@ const createContainer = (isNative: boolean): JQuery<HTMLElement> => {
 const createWrapper = (): JQuery<HTMLElement> => {
   return $('<div>')
     .addClass(
-      'tw-rounded-md tw-relative tw-rounded-md tw-border tw-border-border'
+      'tw-rounded-md tw-relative tw-rounded-md'
     )
     .attr('id', 'markdown-block-wrapper');
 };
@@ -104,7 +107,7 @@ const applyStyles = (
     $pre
       .find('div:nth-child(2)')
       .addClass('tw-rounded-none tw-rounded-b-md !tw-p-0');
-    $pre.find('.absolute, button').addClass('!tw-hidden');
+    $pre.find('.border-b.border-r.font-thin, button').addClass('!tw-hidden');
   } else {
     $pre.addClass(
       '!tw-rounded-none !tw-m-0 !tw-px-[.7rem] !tw-py-2 !tw-rounded-b-md'
@@ -126,4 +129,10 @@ const setupCodeBlock = (
   } else {
     $code.addClass('!tw-p-0');
   }
+};
+
+export const extractTextFromBlock = (preElement: Element) => {
+  const code = stripHtml($(preElement)?.find('code:first').html());
+
+  return code;
 };
