@@ -70,7 +70,7 @@ export default function useMarkdownBlockObserver({
     });
 
     function callback() {
-      const $preElements = $(`.message-block pre`);
+      const $preElements = $(`#message-block pre`);
       const newContainers: MarkdownBlockContainer[] = [];
 
       $preElements.each((index, pre) => {

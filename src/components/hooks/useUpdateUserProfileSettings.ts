@@ -1,9 +1,6 @@
+import pplxApi from '@/services/pplx-api';
 import { UserProfileSettingsAPIResponse } from '@/types/PPLXApi';
-import pplxApi from '@/utils/pplx-api';
-import {
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function useUpdateUserProfileSettings() {
   const queryClient = useQueryClient();
@@ -42,5 +39,5 @@ export default function useUpdateUserProfileSettings() {
   return {
     updateUserProfileSettings: mutateAsync,
     isUpdatingUserProfileSettings: isPending,
-  }
+  };
 }

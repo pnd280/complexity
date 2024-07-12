@@ -19,7 +19,7 @@ import {
   VariantProps,
 } from 'class-variance-authority';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import {
   autoUpdate,
   flip,

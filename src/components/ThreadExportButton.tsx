@@ -16,8 +16,8 @@ import {
 } from 'lucide-react';
 import { FaMarkdown } from 'react-icons/fa';
 
-import { languageModels } from '@/consts/model-selector';
-import pplxApi from '@/utils/pplx-api';
+import { languageModels } from '@/consts/ai-models';
+import pplxApi from '@/services/pplx-api';
 import { ui } from '@/utils/ui';
 import {
   isDOMNode,

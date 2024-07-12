@@ -1,17 +1,13 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
-
 import { LoaderCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import showdown from 'showdown';
 
 import { escapeHtmlTags } from '@/utils/utils';
 
-import useUpdate from './hooks/useUpdate';
+import useExtensionUpdate from './hooks/useExtensionUpdate';
 
 export default function Changelog() {
-  const { changelog: rawData, isChangelogFetching } = useUpdate({
+  const { changelog: rawData, isChangelogFetching } = useExtensionUpdate({
     forceFetchChangelog: true,
   });
 
@@ -26,7 +22,6 @@ export default function Changelog() {
 
     setContent(converter.makeHtml(escapeHtmlTags(rawData)));
   }, [rawData]);
-
 
   return (
     <>

@@ -1,8 +1,6 @@
 import { WebAccessFocus } from './ModelSelector';
 import { Nullable } from './Utils';
 
-export type ChromeSessionStoreKey = keyof ChromeSessionStore;
-
 export type ChromeStoreKey = keyof ChromeStore;
 
 export type ChromeStore = {
@@ -35,11 +33,7 @@ export type ChromeStore = {
     accentColor?: string;
     customCSS?: string;
   };
-} & {
-  [key: `sessionStore-${number}`]: ChromeSessionStore;
 };
-
-export type ChromeSessionStore = object;
 
 type NestedKeys<T> = {
   [K in keyof T]: T[K] extends object ? keyof T[K] : never;

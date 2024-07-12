@@ -1,23 +1,15 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 
-import pplxApi from '@/utils/pplx-api';
+import pplxApi from '@/services/pplx-api';
 import { useQuery } from '@tanstack/react-query';
 
-import useUpdateUserProfileSettings from './hooks/useUpdateUserProfileSettings';
 import TextareaWithLimit from './TextareaWithLimit';
 import { Button } from './ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-} from './ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from './ui/dialog';
 import { Label } from './ui/label';
 import { Separator } from './ui/separator';
 import { useToast } from './ui/use-toast';
+import useUpdateUserProfileSettings from './hooks/useUpdateUserProfileSettings';
 
 type UserProfileEditProps = {
   open: boolean;

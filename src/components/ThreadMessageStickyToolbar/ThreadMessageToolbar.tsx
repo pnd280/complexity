@@ -17,7 +17,7 @@ import { FaMarkdown } from 'react-icons/fa';
 import { PiNotePencil } from 'react-icons/pi';
 import { Updater } from 'use-immer';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import {
   scrollToElement,
   sleep,

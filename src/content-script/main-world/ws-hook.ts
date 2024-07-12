@@ -1,21 +1,38 @@
 import { Nullable } from '@/types/Utils';
-import { RouterEvent } from '@/types/WS';
+
+import { webpageMessenger } from './messenger';
+import { isMainWorldContext } from '@/utils/utils';
 
 class WSHook {
+  private static instance: WSHook;
   private webSocketInstance: Nullable<WebSocket>;
   private longPollingInstance: Nullable<XMLHttpRequest>;
 
   private webSocketOriginalSend = WebSocket.prototype.send;
 
-  public static contentScriptMessenger = { ...window.Messenger }; // TODO: directly import methods from './messenger.ts'
-
-  constructor() {
+  private constructor() {
     this.webSocketInstance = null;
     this.longPollingInstance = null;
+  }
 
-    this.proxyXMLHttpRequest();
+  static getInstance(): WSHook {
+    if (!WSHook.instance) {
+      WSHook.instance = new WSHook();
+    }
+    return WSHook.instance;
+  }
+
+  initialize(): void {
+    this.proxyXMLHttpRequest(); // TODO: needs to be investigated to see if it's causing issues with search params
     this.passivelyCaptureWebSocket();
-    this.proxyNextRouter();
+
+    webpageMessenger.onMessage('sendWebSocketMessage', async (data) => {
+      this.sendWebSocketMessage(data.payload, !!data.forceLongPolling);
+    });
+
+    webpageMessenger.onMessage('getActiveWebSocketType', async () => {
+      return this.getActiveInstanceType();
+    });
   }
 
   getWebSocketInstance(): Nullable<WebSocket> {
@@ -46,7 +63,7 @@ class WSHook {
 
     this.longPollingInstance = instance;
 
-    WSHook.contentScriptMessenger.sendMessage({
+    webpageMessenger.sendMessage({
       event: 'longPollingCaptured',
     });
 
@@ -112,7 +129,7 @@ class WSHook {
       url: string,
       data: any
     ): Promise<Response> {
-      const newData = await WSHook.contentScriptMessenger.sendMessage({
+      const newData = await webpageMessenger.sendMessage({
         event: 'longPollingEvent',
         payload: { event: 'request', payload: data },
         timeout: 1000,
@@ -190,7 +207,7 @@ class WSHook {
     // "onopen"
     const originalOpen = instance.onopen;
     instance.onopen = (event: Event) => {
-      WSHook.contentScriptMessenger.sendMessage({
+      webpageMessenger.sendMessage({
         event: 'webSocketEvent',
         payload: { event: 'open', payload: event },
       });
@@ -200,7 +217,7 @@ class WSHook {
     // "onmessage"
     const originalMessage = instance.onmessage;
     instance.onmessage = (event: MessageEvent) => {
-      WSHook.contentScriptMessenger.sendMessage({
+      webpageMessenger.sendMessage({
         event: 'webSocketEvent',
         payload: { event: 'message', payload: event.data },
       });
@@ -211,7 +228,7 @@ class WSHook {
     // "onclose"
     const originalClose = instance.onclose;
     instance.onclose = (event: CloseEvent) => {
-      WSHook.contentScriptMessenger.sendMessage({
+      webpageMessenger.sendMessage({
         event: 'webSocketEvent',
         payload: { event: 'close', payload: 'closed' },
       });
@@ -222,7 +239,7 @@ class WSHook {
     // "send" method
     const originalSend = instance.send;
     instance.send = async (data: any) => {
-      const modifiedData = await WSHook.contentScriptMessenger.sendMessage({
+      const modifiedData = await webpageMessenger.sendMessage({
         event: 'webSocketEvent',
         payload: { event: 'send', payload: data },
         timeout: 5000,
@@ -259,7 +276,7 @@ class WSHook {
               if (!Array.isArray(messages)) return;
 
               for (const message of messages) {
-                WSHook.contentScriptMessenger.sendMessage({
+                webpageMessenger.sendMessage({
                   event: 'longPollingEvent',
                   payload: { event: 'response', payload: message },
                 });
@@ -294,7 +311,7 @@ class WSHook {
 
         for (const message of messages) {
           newData +=
-            ((await WSHook.contentScriptMessenger.sendMessage({
+            ((await webpageMessenger.sendMessage({
               event: 'longPollingEvent',
               payload: { event: 'request', payload: message },
               timeout: 1000,
@@ -316,7 +333,7 @@ class WSHook {
     const self = this;
 
     WebSocket.prototype.send = function (data: any): void {
-      WSHook.contentScriptMessenger.sendMessage({
+      webpageMessenger.sendMessage({
         event: 'webSocketEvent',
         payload: { event: 'send', payload: data },
       });
@@ -325,7 +342,7 @@ class WSHook {
 
       self.setWebSocketInstance(this);
 
-      WSHook.contentScriptMessenger.sendMessage({
+      webpageMessenger.sendMessage({
         event: 'webSocketCaptured',
       });
 
@@ -333,83 +350,8 @@ class WSHook {
       return self.webSocketOriginalSend.apply(this, arguments);
     };
   }
-
-  proxyNextRouter() {
-    if (window.next === undefined) return;
-
-    const router = window.next.router;
-    const originalPush = router.push;
-    const originalReplaceState = history.replaceState;
-
-    router.push = async function (
-      url: string,
-      as?: string,
-      options?: any
-    ): Promise<boolean> {
-      const result = await originalPush.apply(this, [url, as, options]);
-      dispatch('push');
-      return result;
-    };
-
-    history.replaceState = function (
-      this: History,
-      data: any,
-      unused: string,
-      url?: string | URL | null
-    ): void {
-      originalReplaceState.apply(this, [data, unused, url]);
-      dispatch('replace');
-    };
-
-    window.addEventListener('popstate', () => {
-      dispatch('popstate');
-    });
-
-    router.events.on('routeChangeComplete', () => {
-      dispatch('routeChangeComplete');
-    });
-
-    const dispatch = (trigger: RouterEvent) => {
-      WSHook.contentScriptMessenger.sendMessage({
-        event: 'routeChange',
-        payload: {
-          url: window.location.href,
-          trigger,
-        },
-      });
-    };
-  }
 }
 
-(() => {
-  if (typeof chrome.storage !== 'undefined') return;
-
-  const wsHook = new WSHook();
-
-  WSHook.contentScriptMessenger.onMessage(
-    'sendWebSocketMessage',
-    async (data) => {
-      wsHook.sendWebSocketMessage(data.payload, !!data.forceLongPolling);
-    }
-  );
-
-  WSHook.contentScriptMessenger.onMessage(
-    'getActiveWebSocketType',
-    async () => {
-      return wsHook.getActiveInstanceType();
-    }
-  );
-
-  WSHook.contentScriptMessenger.onMessage('routeToPage', async (data) => {
-    if (window.next === undefined) return;
-
-    if (typeof data.payload === 'object') {
-      window.next.router.push(data.payload.url, undefined, {
-        scroll: data.payload.scroll,
-      });
-    } else
-      window.next.router.push(data.payload, undefined, {
-        scroll: data.payload !== window.location.pathname,
-      });
-  });
-})();
+if (isMainWorldContext()) {
+  WSHook.getInstance().initialize();
+}

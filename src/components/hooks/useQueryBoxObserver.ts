@@ -5,7 +5,7 @@ import $ from 'jquery';
 import {
   popupSettingsStore,
 } from '@/content-script/session-store/popup-settings';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import DOMObserver from '@/utils/dom-observer';
 import { ui } from '@/utils/ui';
 import { whereAmI } from '@/utils/utils';

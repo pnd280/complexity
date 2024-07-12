@@ -3,7 +3,7 @@ import { BackgroundAction } from '@/utils/background';
 if (!import.meta.env.DEV) {
   chrome.runtime.onInstalled.addListener(() => {
     chrome.tabs.create({
-      url: chrome.runtime.getURL('options.html') + '?tab=changelog',
+      url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
     });
   });
 }
@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener(
     switch (action) {
       case 'openChangelog':
         chrome.tabs.create({
-          url: chrome.runtime.getURL('options.html') + '?tab=changelog',
+          url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
         });
         break;
       case 'getTabId':
@@ -31,18 +31,3 @@ chrome.runtime.onMessage.addListener(
     return true;
   }
 );
-
-chrome.tabs.onRemoved.addListener((tabId: number) => {
-  const keyToRemove = `sessionStore-${tabId}`;
-
-  chrome.storage.local.remove(keyToRemove, () => {
-    if (chrome.runtime.lastError) {
-      console.error(
-        `Error removing key ${keyToRemove}:`,
-        chrome.runtime.lastError
-      );
-    } else {
-      console.log(`Key ${keyToRemove} removed successfully.`);
-    }
-  });
-});

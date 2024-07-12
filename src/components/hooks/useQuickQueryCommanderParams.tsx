@@ -1,17 +1,10 @@
 import { useMemo } from 'react';
 
-import {
-  Grid2x2X,
-  LayoutGrid,
-} from 'lucide-react';
+import { Grid2x2X, LayoutGrid } from 'lucide-react';
 import { PiGlobeX } from 'react-icons/pi';
 
-import {
-  languageModels,
-  webAccessFocus,
-} from '@/consts/model-selector';
-import webpageMessageInterceptors
-  from '@/content-script/main-world/message-interceptors';
+import { languageModels } from '@/consts/ai-models';
+import webpageMessageInterceptors from '@/content-script/main-world/message-interceptors';
 import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { queryBoxStore } from '@/content-script/session-store/query-box';
 import {
@@ -19,12 +12,10 @@ import {
   UserSettingsApiResponse,
 } from '@/types/PPLXApi';
 import { WSMessageParser } from '@/utils/ws';
-import {
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Collection } from '../QueryBox/CollectionSelector';
+import { webAccessFocus } from '@/consts/web-access-focus';
 
 type UseQuickQueryCommanderParamsProps = {
   context: 'main' | 'follow-up';

@@ -3,7 +3,7 @@ import {
   useRef,
 } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import { useToggle } from '@uidotdev/usehooks';
 
 type ThreadTitleProps = {

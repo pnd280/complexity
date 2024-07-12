@@ -4,7 +4,7 @@ import {
 } from 'react';
 
 import { globalStore } from '@/content-script/session-store/global';
-import pplxApi from '@/utils/pplx-api';
+import pplxApi from '@/services/pplx-api';
 import {
   useMutation,
   useQuery,

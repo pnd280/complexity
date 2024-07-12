@@ -2,14 +2,13 @@ import $ from 'jquery';
 
 import DOMObserver from '@/utils/dom-observer';
 import { ui } from '@/utils/ui';
-import {
-  jsonUtils,
-  markdown2Html,
-  whereAmI,
-} from '@/utils/utils';
+import { jsonUtils, markdown2Html, whereAmI } from '@/utils/utils';
 
-import { globalStore } from './session-store/global';
-import { popupSettingsStore } from './session-store/popup-settings';
+import { globalStore } from '../content-script/session-store/global';
+import { popupSettingsStore } from '../content-script/session-store/popup-settings';
+import { extractCodeFromPreBlock, getLang } from '@/utils/markdown-block';
+import { webpageMessenger } from '../content-script/main-world/messenger';
+import { shikiContentScript } from '@/content-script/main-world/shiki';
 
 function injectCustomStyles() {
   globalStore.subscribe(({ customTheme: { customCSS } }) => {
@@ -28,9 +27,7 @@ function injectCustomStyles() {
       .appendTo('head');
   });
 
-  const darkTheme = $('html').hasClass('dark');
-
-  if (!darkTheme) return;
+  const darkTheme = ui.isDarkTheme();
 
   globalStore.subscribe(
     ({ customTheme: { uiFont, monoFont, accentColor } }) => {
@@ -64,6 +61,14 @@ function injectCustomStyles() {
         delete css['--selection'];
       }
 
+      if (!darkTheme) {
+        delete css['--accent-foreground'];
+        delete css['--accent-foreground-darker'];
+        delete css['--ring'];
+        delete css['--ring-darker'];
+        delete css['--selection'];
+      }
+
       $('html').css(css);
     }
   );
@@ -75,6 +80,8 @@ function alterAttachButton() {
     !popupSettingsStore.getState().queryBoxSelectors.collection
   )
     return;
+
+  $(document.body).toggleClass('alter-attach-button', true);
 
   DOMObserver.create('alter-attach-button', {
     target: document.body,
@@ -99,7 +106,7 @@ function alterAttachButton() {
 
 function correctColorScheme() {
   $(() => {
-    const darkTheme = $('html').hasClass('dark');
+    const darkTheme = ui.isDarkTheme();
 
     if (darkTheme) $('html').addClass('tw-dark');
 
@@ -141,7 +148,7 @@ async function alterMessageQuery(messagesContainer: Element) {
 
   const id = 'alter-message-query';
 
-  if ($('.message-block').length === 0) ui.getMessageBlocks();
+  if ($('#message-block').length === 0) ui.getMessageBlocks();
 
   DOMObserver.create(id, {
     target: messagesContainer,
@@ -155,7 +162,7 @@ async function alterMessageQuery(messagesContainer: Element) {
   });
 
   async function callback() {
-    const $messageBlocks = $(`.message-block:not([data-${id}])`);
+    const $messageBlocks = $(`#message-block:not([data-${id}])`);
 
     $messageBlocks.each((_, messageBlock) => {
       queueMicrotask(() => {
@@ -193,7 +200,7 @@ async function displayModelNextToAnswerHeading(messagesContainer: Element) {
 
   const id = 'display-model-next-to-answer-heading';
 
-  if ($('.message-block').length === 0) ui.getMessageBlocks();
+  if ($('#message-block').length === 0) ui.getMessageBlocks();
 
   requestIdleCallback(callback);
 
@@ -210,12 +217,12 @@ async function displayModelNextToAnswerHeading(messagesContainer: Element) {
 
   async function callback() {
     $(
-      `.message-block .mt-sm.flex.items-center.justify-between>*:last-child:not([data-${id}-observed])`
+      `#message-block .mt-sm.flex.items-center.justify-between>*:last-child:not([data-${id}-observed])`
     ).each((_, element) => {
       $(element).attr(`data-${id}-observed`, 'true');
 
       const { $answerHeading, $messageBlock } = ui.parseMessageBlock(
-        $(element).closest('.message-block')
+        $(element).closest('#message-block')
       );
 
       const $bottomButtonBar = $messageBlock.find(
@@ -239,6 +246,64 @@ async function displayModelNextToAnswerHeading(messagesContainer: Element) {
   }
 }
 
+async function highlightMarkdownBlocks(messagesContainer: Element) {
+  if (!popupSettingsStore.getState().qolTweaks.markdownBlockToolbar) return;
+
+  const id = 'highlight-markdown-block';
+
+  await shikiContentScript.waitForInitialization();
+
+  requestIdleCallback(callback);
+
+  DOMObserver.create(id, {
+    target: messagesContainer,
+    config: {
+      childList: true,
+      subtree: true,
+    },
+    debounceTime: 200,
+    useRAF: true,
+    onAny: callback,
+  });
+
+  function callback() {
+    const messageBlocks = ui.getMessageBlocks().slice(-10);
+
+    messageBlocks.forEach(({ $messageBlock }) => {
+      queueMicrotask(() => {
+        const $bottomButtonBar = $messageBlock.find(
+          '.mt-sm.flex.items-center.justify-between'
+        );
+
+        if ($bottomButtonBar.length) {
+          const $codeBlocks = $bottomButtonBar
+            .closest('#message-block')
+            .find(`pre:not([data-${id}])`);
+
+          $codeBlocks.each((_, pre) => {
+            queueMicrotask(async () => {
+              $(pre).attr(`data-${id}`, '');
+
+              const html = await webpageMessenger.sendMessage({
+                event: 'getHighlightedCodeAsHtml',
+                payload: {
+                  code: extractCodeFromPreBlock(pre),
+                  lang: getLang($(pre)),
+                },
+                timeout: 5000,
+              });
+
+              if (!html) return;
+
+              $(pre).find('code:first').html($(html).find('code').html());
+            });
+          });
+        }
+      });
+    });
+  }
+}
+
 const uiTweaks = {
   injectCustomStyles,
   correctColorScheme,
@@ -248,6 +313,7 @@ const uiTweaks = {
   displayModelNextToAnswerHeading,
   calibrateMarkdownBlock,
   calibrateThreadMessageStickyHeader,
+  highlightMarkdownBlocks,
 };
 
 export default uiTweaks;

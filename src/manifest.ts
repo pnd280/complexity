@@ -16,7 +16,7 @@ export default defineManifest({
     128: 'img/logo-128.png',
   },
   action: {
-    default_popup: 'popup.html',
+    default_popup: 'page/popup.html',
     default_icon: 'img/logo-48.png',
   },
   background: {
@@ -27,11 +27,11 @@ export default defineManifest({
     {
       matches: ['https://www.perplexity.ai/*', 'https://perplexity.ai/*'],
       js: ['src/content-script/index.tsx'],
-      css: ['global.css', 'base.css'],
+      css: ['global.css', 'overrides.css', 'components.css'],
       run_at: 'document_start',
     },
   ],
-  options_page: 'options.html',
+  options_page: 'page/options.html',
   host_permissions: ['*://*.perplexity.ai/*'],
   web_accessible_resources: [
     {
@@ -40,10 +40,9 @@ export default defineManifest({
         'img/logo-34.png',
         'img/logo-48.png',
         'img/logo-128.png',
-        '*.css',
-        '*.js',
         'global.css',
-        'base.css',
+        'overrides.css',
+        'components.css',
       ],
       matches: ['*://*.perplexity.ai/*'],
     },

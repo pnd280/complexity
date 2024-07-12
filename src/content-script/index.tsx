@@ -1,10 +1,11 @@
-import '../../public/global.css';
-
 import $ from 'jquery';
 
+import webpageListeners from '@/content-script/main-world/listeners';
+import webpageMessageInterceptors from '@/content-script/main-world/message-interceptors';
 import DOMObserver from '@/utils/dom-observer';
 import { queryClient } from '@/utils/queryClient';
 import { ui } from '@/utils/ui';
+import uiTweaks from '@/utils/ui-tweaks';
 import {
   getPPLXBuildId,
   injectMainWorldScript,
@@ -13,26 +14,38 @@ import {
   whereAmI,
 } from '@/utils/utils';
 
-import domHook from './main-world/dom-hook?script&module';
-import webpageListeners from './main-world/listeners';
-import webpageMessageInterceptors from './main-world/message-interceptors';
-import { webpageMessenger } from './main-world/messenger';
-import messenger from './main-world/messenger?script&module';
-import wsHook from './main-world/ws-hook?script&module';
-import Root from './Root';
-import uiTweaks from './ui-tweaks';
+import { webpageMessenger } from '@/content-script/main-world/messenger';
+import ReactRoot from '@/content-script/ReactRoot';
 
-$(async (): Promise<void> => {
-  await init();
+import domHook from '@/content-script/main-world/dom-hook?script&module';
+import nextRouter from '@/content-script/main-world/next-router?script&module';
+import shiki from '@/content-script/main-world/shiki?script&module';
+import wsHook from '@/content-script/main-world/ws-hook?script&module';
 
-  setupInterceptors();
+$(async () => {
+  await initDependencies();
 
-  setupDOMObservers();
+  initTrafficInterceptors();
 
-  Root();
+  initDOMObserversWatchdog();
+
+  ReactRoot();
 });
 
-function setupInterceptors() {
+async function initDependencies() {
+  uiTweaks.correctColorScheme();
+  uiTweaks.injectCustomStyles();
+
+  await Promise.all([
+    injectMainWorldScript(chrome.runtime.getURL(wsHook)),
+    injectMainWorldScript(chrome.runtime.getURL(nextRouter)),
+    injectMainWorldScript(chrome.runtime.getURL(domHook)),
+    injectMainWorldScript(chrome.runtime.getURL(shiki)),
+    softUpdateCheck(),
+  ]);
+}
+
+function initTrafficInterceptors() {
   webpageListeners.onWebSocketCaptured();
 
   webpageMessageInterceptors.trackQueryLimits();
@@ -41,7 +54,7 @@ function setupInterceptors() {
   webpageMessageInterceptors.removeComplexityIdentifier();
 }
 
-function setupDOMObservers() {
+function initDOMObserversWatchdog() {
   if (import.meta.env.DEV) {
     $(document).on('keydown', (e) => {
       if (e.ctrlKey && e.shiftKey && e.key === 'Q') {
@@ -81,6 +94,7 @@ function setupDOMObservers() {
 
             uiTweaks.alterMessageQuery(messagesContainer);
             uiTweaks.displayModelNextToAnswerHeading(messagesContainer);
+            uiTweaks.highlightMarkdownBlocks(messagesContainer);
           })();
 
           break;
@@ -100,32 +114,15 @@ function setupDOMObservers() {
   );
 }
 
-async function init() {
-  injectMainWorldScript(chrome.runtime.getURL(domHook));
-
-  injectMainWorldScript(chrome.runtime.getURL(messenger)).then(() =>
-    injectMainWorldScript(chrome.runtime.getURL(wsHook))
-  );
-
-  uiTweaks.correctColorScheme();
-  uiTweaks.injectCustomStyles();
-
+async function softUpdateCheck() {
   await waitForNextjsHydration();
 
-  $('html').attr({
-    'data-dev': `${import.meta.env.DEV}`,
-  });
-
-  softUpdateCheck();
-}
-
-async function softUpdateCheck() {
   const pplxBuildId = 'cfzuIprv6N1qK8_fikAkn';
 
   const latestPPLXBuildId = await getPPLXBuildId();
 
   if (latestPPLXBuildId && pplxBuildId !== latestPPLXBuildId) {
-    console.warn(
+    console.log(
       "COMPLEXITY: Perplexity web app's new build id detected! The extension maybe outdated and some features may not work as expected. Report issues by joining the Discord server: https://discord.gg/fxzqdkwmWx.",
       'BUILD_ID:',
       latestPPLXBuildId

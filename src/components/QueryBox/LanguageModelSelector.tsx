@@ -6,7 +6,7 @@ import {
 import { Infinity } from 'lucide-react';
 import { useImmer } from 'use-immer';
 
-import { languageModels } from '@/consts/model-selector';
+import { languageModels } from '@/consts/ai-models';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
 import { LanguageModel } from '@/types/ModelSelector';
 

@@ -6,7 +6,7 @@ import {
   Circle,
 } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 
 const DropdownMenu = DropdownMenuPrimitive.Root

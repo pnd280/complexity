@@ -1,3 +1,5 @@
+import '@@/public/global.css';
+
 import { lazy } from 'react';
 
 import $ from 'jquery';
@@ -5,29 +7,23 @@ import { createRoot } from 'react-dom/client';
 
 import useRouter from '@/components/hooks/useRouter';
 import MainPage from '@/components/MainPage';
-import MarkdownBlockHeader
-  from '@/components/MarkdownBlock/MarkdownBlockHeader';
+import MarkdownBlockHeader from '@/components/MarkdownBlock/MarkdownBlockHeader';
 import QueryBox from '@/components/QueryBox';
 import ThreadExportButton from '@/components/ThreadExportButton';
-import ThreadMessageStickyHeader
-  from '@/components/ThreadMessageStickyToolbar/ThreadMessageStickyHeader';
+import ThreadMessageStickyHeader from '@/components/ThreadMessageStickyToolbar/ThreadMessageStickyHeader';
 import ThreadTOC from '@/components/ThreadTOC';
 import { Toaster } from '@/components/ui/toaster';
-import {
-  popupSettingsStore,
-} from '@/content-script/session-store/popup-settings';
+import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
 import { queryClient } from '@/utils/queryClient';
 import { whereAmI } from '@/utils/utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import {
-  IncompatibleInterfaceLanguageNotice,
-} from '../components/IncompatibleInterfaceLanguageNotice';
+import { IncompatibleInterfaceLanguageNotice } from '../components/IncompatibleInterfaceLanguageNotice';
 
 const Commander = lazy(() => import('@/components/Commander'));
 
-export default function Root() {
+export default function ReactRoot() {
   $('body').addClass('!tw-mr-0');
 
   const $root = $('<div>').attr('id', 'complexity-root').appendTo('body');
@@ -36,12 +32,12 @@ export default function Root() {
 
   root.render(
     <QueryClientProvider client={queryClient}>
-      <ReactRoot />
+      <Root />
     </QueryClientProvider>
   );
 }
 
-function ReactRoot() {
+function Root() {
   const location = whereAmI(useRouter().url);
 
   return (

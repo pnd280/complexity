@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import {
@@ -25,7 +22,7 @@ import {
 } from '@/components/ui/command';
 import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { useQueryBoxStore } from '@/content-script/session-store/query-box';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import { UserProfileSettingsAPIResponse } from '@/types/PPLXApi';
 import { ui } from '@/utils/ui';
 import { whereAmI } from '@/utils/utils';
@@ -34,15 +31,10 @@ import { useToggle } from '@uidotdev/usehooks';
 
 import CollectionEditDialog from '../CollectionEditDialog';
 import useRouter from '../hooks/useRouter';
-import useUpdateUserProfileSettings
-  from '../hooks/useUpdateUserProfileSettings';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '../Popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
 import Tooltip from '../Tooltip';
 import UserProfileEditDialog from '../UserProfileEditDialog';
+import useUpdateUserProfileSettings from '../hooks/useUpdateUserProfileSettings';
 
 export type Collection = {
   title: string;
@@ -359,7 +351,9 @@ function Selection({
         onSelect(currentValue);
       }}
     >
-      <div className="tw-max-w-[250px] !tw-text-sm !tw-py-1 tw-truncate">{title}</div>
+      <div className="tw-max-w-[250px] !tw-text-sm !tw-py-1 tw-truncate">
+        {title}
+      </div>
       {children}
     </CommandItem>
   );

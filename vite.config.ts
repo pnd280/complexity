@@ -1,4 +1,3 @@
-import * as os from 'os';
 import * as path from 'path';
 import { defineConfig } from 'vite';
 
@@ -8,12 +7,10 @@ import react from '@vitejs/plugin-react';
 
 // @ts-ignore
 import manifest from './src/manifest';
-import vitePluginRunCommandOnDemand
-  from './vite-plugins/vite-plugin-run-command-on-demand';
+import vitePluginRunCommandOnDemand from './vite-plugins/vite-plugin-run-command-on-demand';
 import viteTouchGlobalCss from './vite-plugins/vite-plugin-touch-global-css';
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
   return {
     base: './',
     build: {
@@ -34,12 +31,8 @@ export default defineConfig(({ mode }) => {
         watchFiles: [path.resolve(__dirname, 'src/')],
       }),
       vitePluginRunCommandOnDemand({
-        beforeServerStart:
-          os.platform() === 'win32' ? 'mkdir build' : 'mkdir -p build',
-      }),
-      vitePluginRunCommandOnDemand({
-        afterServerStart: 'cp -f ./public/base.css ./build/',
-        onHotUpdate: 'cp -f ./public/base.css ./build/',
+        onHotUpdate:
+          'cp -f ./public/overrides.css ./public/components.css ./build/',
       }),
     ],
 
@@ -53,6 +46,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
+        '@@': path.resolve(__dirname, './'),
       },
     },
   };

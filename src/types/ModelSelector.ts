@@ -1,7 +1,5 @@
-import {
-  languageModels,
-  webAccessFocus,
-} from '@/consts/model-selector';
+import { languageModels } from '@/consts/ai-models';
+import { webAccessFocus } from '@/consts/web-access-focus';
 
 export type WebAccessFocus = (typeof webAccessFocus)[number] & {
   tooltip?: string;

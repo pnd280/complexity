@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { CommandEmpty } from 'cmdk';
 import $ from 'jquery';
 
-import pplxApi from '@/utils/pplx-api';
+import pplxApi from '@/services/pplx-api';
 import { ui } from '@/utils/ui';
 import { useQuery } from '@tanstack/react-query';
 import {

@@ -6,7 +6,7 @@ import {
 
 import clsx from 'clsx';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 
 export type TextareaProps =
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & {

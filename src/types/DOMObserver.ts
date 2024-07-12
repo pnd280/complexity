@@ -35,5 +35,3 @@ export type DOMObserverInstance = {
   config: DOMObserverConfig;
   isPaused: boolean;
 };
-
-export type UpdateTask = () => Promise<void>;

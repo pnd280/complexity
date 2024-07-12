@@ -1,7 +1,7 @@
 {
   "name": "complexity",
   "displayName": "Complexity",
-  "version": "0.0.0.22",
+  "version": "0.0.0.24",
   "author": "pnd280",
   "description": "⚡ Supercharge your Perplexity.ai",
   "type": "module",
@@ -85,6 +85,7 @@
     "gulp-zip": "^6.0.0",
     "postcss": "^8.4.38",
     "prettier": "^3.0.3",
+    "shiki": "^1.10.3",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.5.3",
     "uglify-js": "^3.17.4",

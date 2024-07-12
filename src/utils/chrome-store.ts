@@ -1,11 +1,7 @@
 import {
-  ChromeSessionStore,
-  ChromeSessionStoreKey,
   ChromeStore,
-  ChromeStoreKey,
+  ChromeStoreKey
 } from '@/types/ChromeStore';
-
-import { getTabId } from './utils';
 
 export const chromeStorage = {
   async getStorageValue<T extends ChromeStoreKey>(key: T) {
@@ -28,25 +24,3 @@ export const chromeStorage = {
     await chrome.storage.local.set(store);
   },
 };
-
-async function getSessionStore(): Promise<ChromeSessionStore> {
-  return await chromeStorage.getStorageValue(
-    `sessionStore-${await getTabId()}`
-  );
-}
-
-export async function setSessionStoreValue<K extends ChromeSessionStoreKey>({
-  key,
-  value,
-}: {
-  key: K;
-  value: ChromeSessionStore[K];
-}) {
-  const tabId = await getTabId();
-  const sessionStore = await getSessionStore();
-  sessionStore[key] = value;
-  await chromeStorage.setStorageValue({
-    key: `sessionStore-${tabId}`,
-    value: sessionStore,
-  });
-}

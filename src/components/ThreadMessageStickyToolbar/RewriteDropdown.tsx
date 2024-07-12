@@ -9,7 +9,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-import { languageModels } from '@/consts/model-selector';
+import { languageModels } from '@/consts/ai-models';
 import webpageMessageInterceptors
   from '@/content-script/main-world/message-interceptors';
 import { queryBoxStore } from '@/content-script/session-store/query-box';

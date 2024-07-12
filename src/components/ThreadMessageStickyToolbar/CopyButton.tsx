@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { FaMarkdown } from 'react-icons/fa';
 
-import pplxApi from '@/utils/pplx-api';
+import pplxApi from '@/services/pplx-api';
 import { jsonUtils } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 

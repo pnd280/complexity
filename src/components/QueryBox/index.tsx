@@ -1,5 +1,6 @@
 import {
   Fragment,
+  ReactNode,
   useCallback,
   useEffect,
   useRef,
@@ -11,20 +12,15 @@ import $ from 'jquery';
 import { LoaderCircle } from 'lucide-react';
 
 import { useGlobalStore } from '@/content-script/session-store/global';
-import {
-  usePopupSettingsStore,
-} from '@/content-script/session-store/popup-settings';
+import { usePopupSettingsStore } from '@/content-script/session-store/popup-settings';
 import {
   initQueryBoxStore,
   useQueryBoxStore,
 } from '@/content-script/session-store/query-box';
 import { LanguageModel } from '@/types/ModelSelector';
-import pplxApi from '@/utils/pplx-api';
+import pplxApi from '@/services/pplx-api';
 import { ui } from '@/utils/ui';
-import {
-  UndefinedInitialDataOptions,
-  useQuery,
-} from '@tanstack/react-query';
+import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
 
 import useQueryBoxObserver from '../hooks/useQueryBoxObserver';
 import { Separator } from '../ui/separator';
@@ -34,6 +30,7 @@ import FocusSelector from './FocusSelector';
 import ImageModelSelector, { ImageModel } from './ImageModelSelector';
 import LanguageModelSelector from './LanguageModelSelector';
 import QuickQueryCommander from './QuickQueryCommander';
+import KeyCombo from '../KeyCombo';
 
 export default function QueryBox() {
   const isReady = useGlobalStore(
@@ -274,6 +271,21 @@ const CommonSelectors = ({
   languageModel: boolean;
   imageGenModel: boolean;
 }) => {
+  const [hint, setHint] = useState<ReactNode>('');
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isReady) {
+        setHint(
+          <span className="tw-flex tw-items-center tw-gap-1 tw-flex-wrap">
+            Manually trigger Pro Search (
+            <KeyCombo keys={['Ctrl/Cmd', 'i']} />) to speed up the loading.
+          </span>
+        );
+      }
+    }, 5000);
+  }, [isReady]);
+
   return (
     <>
       {isReady ? (
@@ -296,8 +308,13 @@ const CommonSelectors = ({
           {hasActivePPLXSub && imageGenModel && <ImageModelSelector />}
         </>
       ) : (
-        <div className="tw-flex tw-items-center tw-mx-2">
+        <div className="tw-flex tw-items-center tw-mx-2 tw-gap-2">
           <LoaderCircle className="tw-text-muted-foreground tw-animate-spin tw-w-4 tw-h-4" />
+          {hint && (
+            <span className="tw-text-xs tw-text-muted-foreground tw-animate-in tw-fade-in tw-slide-in-from-right">
+              {hint}
+            </span>
+          )}
         </div>
       )}
     </>

@@ -8,7 +8,7 @@ import $ from 'jquery';
 import { LoaderCircle } from 'lucide-react';
 
 import { useGlobalStore } from '@/content-script/session-store/global';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import background from '@/utils/background';
 import { isDOMNode } from '@/utils/utils';
 import {
@@ -16,11 +16,11 @@ import {
   useToggle,
 } from '@uidotdev/usehooks';
 
-import useUpdate from '../hooks/useUpdate';
+import useExtensionUpdate from '../hooks/useExtensionUpdate';
 import useWaitForElement from '../hooks/useWaitForElement';
 
 export default function Slogan() {
-  const { newVersionAvailable } = useUpdate({});
+  const { newVersionAvailable } = useExtensionUpdate({});
 
   const [container, setContainer] = useState<Element>();
 

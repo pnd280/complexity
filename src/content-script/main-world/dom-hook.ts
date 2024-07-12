@@ -1,26 +1,6 @@
 import $ from 'jquery';
 
-// currently only used for preventing layout shift
-// TODO: extend this to plugin system
-
-$(() => {
-  populateDataAttrs();
-
-  const originalAppendChild = Node.prototype.appendChild;
-
-  Node.prototype.appendChild = function <T extends Node>(newNode: T): T {
-    if (newNode instanceof HTMLPreElement) {
-      addDataAttr(newNode);
-    } else if (
-      newNode instanceof HTMLElement &&
-      newNode.tagName.toLowerCase() === 'code' &&
-      this instanceof HTMLPreElement
-    ) {
-      addDataAttr(newNode);
-    }
-    return originalAppendChild.call(this, newNode) as T;
-  };
-});
+import { isMainWorldContext } from '@/utils/utils';
 
 function getReactPropsKey(element: Element) {
   return Object.keys(element).find((key) => key.startsWith('__reactProps$'));
@@ -28,11 +8,14 @@ function getReactPropsKey(element: Element) {
 
 function populateDataAttrs() {
   $('pre').each((_, pre) => {
-    addDataAttr(pre);
+    queueMicrotask(() => addDataAttr(pre));
   });
 }
 
 function addDataAttr(pre: HTMLElement) {
+  if (!pre.querySelector('&>div.codeWrapper') || pre.hasAttribute('data-lang'))
+    return;
+
   const propsKey = getReactPropsKey(pre);
 
   if (!propsKey) return;
@@ -53,4 +36,23 @@ function extractLanguage(props: any) {
   } catch (e) {
     return 'text';
   }
+}
+
+// currently only used for preventing layout shift
+// TODO: extend this to plugin system
+
+if (isMainWorldContext()) {
+  $(() => {
+    populateDataAttrs();
+
+    const originalAppendChild = Node.prototype.appendChild;
+
+    Node.prototype.appendChild = function <T extends Node>(newNode: T): T {
+      if (newNode instanceof HTMLPreElement) {
+        addDataAttr(newNode);
+      }
+
+      return originalAppendChild.call(this, newNode) as T;
+    };
+  });
 }

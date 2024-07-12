@@ -4,7 +4,7 @@ import { ExternalLink } from 'lucide-react';
 
 import LabeledSwitch from '@/components/LabeledSwitch';
 import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn-ui-utils';
 import {
   ChromeStore,
   PopupSettingKeys,

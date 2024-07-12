@@ -10,10 +10,6 @@
     "**/*.code-search": true,
     "**/build/**/*": true,
     "**/package/**/*": true,
-    "**/src/utils/prismjs-components/**/*": true,
-  },
-  "tsImportSorter.configuration.exclude": [
-    "node_modules",
-    "src\\\\components\\\\DiffViewDialog.tsx"
-  ]
+    "**/src/utils/prismjs-components/**/*": true
+  }
 }

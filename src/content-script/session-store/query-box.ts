@@ -9,7 +9,7 @@ import {
   WebAccessFocus,
 } from '@/types/ModelSelector';
 import { chromeStorage } from '@/utils/chrome-store';
-import pplxApi from '@/utils/pplx-api';
+import pplxApi from '@/services/pplx-api';
 
 type QueryBoxState = {
   selectedLanguageModel: LanguageModel['code'];

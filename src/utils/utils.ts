@@ -336,6 +336,8 @@ export async function getNEXTDATA() {
   return jsonUtils.safeParse($('script#__NEXT_DATA__').text());
 }
 
+export const isMainWorldContext = () => !chrome.storage?.local;
+
 export async function injectMainWorldScript(url: string) {
   return new Promise((resolve, reject) => {
     $('<script>')
@@ -349,16 +351,47 @@ export async function injectMainWorldScript(url: string) {
   });
 }
 
-export async function injectCSS(url: string) {
+export async function injectMainWorldScriptBlock({
+  scriptContent,
+  waitForExecution = false,
+}: {
+  scriptContent: string;
+  waitForExecution?: boolean;
+}): Promise<void> {
   return new Promise((resolve, reject) => {
-    $('<link>')
-      .attr({
-        class: 'complexity-custom-styles',
-        rel: 'stylesheet',
-        href: url,
-        onload: () => resolve(null),
-        onerror: () => reject(new Error(`Failed to load CSS: ${url}`)),
-      })
-      .appendTo('head');
+    const script = document.createElement('script');
+    script.type = 'module';
+
+    const executionId = `__script_execution_${Date.now()}`;
+    let executionCompleted = false;
+
+    const markExecutionComplete = () => {
+      executionCompleted = true;
+      delete (window as unknown as Record<string, () => void>)[executionId];
+      if (waitForExecution) {
+        resolve();
+      }
+    };
+
+    (window as unknown as Record<string, () => void>)[executionId] =
+      markExecutionComplete;
+
+    script.textContent = `
+      ${scriptContent}
+      window['${executionId}']();
+    `;
+
+    script.onload = () => {
+      if (!waitForExecution || executionCompleted) {
+        resolve();
+      }
+    };
+
+    script.onerror = (event) =>
+      reject(
+        new Error(`Failed to load script: ${(event as ErrorEvent).message}`)
+      );
+
+    document.body.appendChild(script);
   });
 }

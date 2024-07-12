@@ -1,51 +1,10 @@
-import {
-  BadgePercent,
-  Library,
-} from 'lucide-react';
 import { AiOutlineOpenAI } from 'react-icons/ai';
-import { PiGlobe } from 'react-icons/pi';
 import {
   SiAnthropic,
   SiGooglegemini,
-  SiPerplexity,
-  SiReddit,
-  SiWikipedia,
-  SiYoutube,
+  SiPerplexity
 } from 'react-icons/si';
 import { TbLetterM } from 'react-icons/tb';
-
-export const webAccessFocus = [
-  {
-    label: 'All',
-    code: 'internet',
-    icon: <PiGlobe className="tw-text-[1rem]" />,
-  },
-  {
-    label: 'Wikipedia',
-    code: 'wikipedia',
-    icon: <SiWikipedia className="tw-text-[1rem]" />,
-  },
-  {
-    label: 'Academic',
-    code: 'scholar',
-    icon: <Library className="tw-w-4 tw-h-4" />,
-  },
-  {
-    label: 'Wolfram|Alpha',
-    code: 'wolfram',
-    icon: <BadgePercent className="tw-w-4 tw-h-4" />,
-  },
-  {
-    label: 'Youtube',
-    code: 'youtube',
-    icon: <SiYoutube className="tw-text-[1rem]" />,
-  },
-  {
-    label: 'Reddit',
-    code: 'reddit',
-    icon: <SiReddit className="tw-text-[1rem]" />,
-  },
-] as const;
 
 export const languageModels = [
   {

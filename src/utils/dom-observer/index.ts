@@ -3,14 +3,14 @@ import {
   DOMObserverInstance,
   MutationCallback,
 } from '@/types/DOMObserver';
-import { UpdateQueue } from '@/utils/dom-observer/update-queue';
+import { TaskQueue } from '@/utils/task-queue';
 
 import { createCallback } from './callback-factory';
 
 class DOMObserver {
   private static instances: Map<string, DOMObserverInstance> = new Map();
   private static isLogging = false;
-  public static updateQueue: UpdateQueue = new UpdateQueue();
+  public static updateQueue: TaskQueue = TaskQueue.getInstance();
 
   public static create(id: string, config: DOMObserverConfig): void {
     if (DOMObserver.instances.has(id)) {

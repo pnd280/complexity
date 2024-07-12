@@ -78,6 +78,7 @@ export type Interceptor<
 
 export interface EventHandlers {
   log(data: string): string;
+
   sendWebSocketMessage(data: string): void;
   webSocketEvent(data: WebSocketEventData): WebSocketEventData['payload'];
   longPollingEvent(data: LongPollingEventData): LongPollingEventData['payload'];
@@ -85,6 +86,7 @@ export interface EventHandlers {
   longPollingCaptured(): void;
   getActiveWebSocketType(): Nullable<'WebSocket' | 'Long-polling'>;
   webSocketError(data: Event): void;
+
   routeToPage(
     data:
       | string
@@ -94,4 +96,13 @@ export interface EventHandlers {
         }
   ): void;
   routeChange({ url, trigger }: { url: string; trigger: RouterEvent }): void;
+
+  isShikiHighlighterInitialized(): boolean;
+  getHighlightedCodeAsHtml({
+    code,
+    lang,
+  }: {
+    code: string;
+    lang: string;
+  }): Nullable<string>;
 }

@@ -1,4 +1,4 @@
-import '../../public/global.css';
+import '@@/public/global.css';
 
 import $ from 'jquery';
 import {
@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom/client';
 
 import Changelog from '@/components/Changelog';
 import CustomTheme from '@/components/CustomTheme';
-import useUpdate from '@/components/hooks/useUpdate';
+import useExtensionUpdate from '@/components/hooks/useExtensionUpdate';
 import {
   Tabs,
   TabsContent,
@@ -61,7 +61,7 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 );
 
 function NewVersionAvailable() {
-  const { newVersionAvailable, newVersion } = useUpdate({});
+  const { newVersionAvailable, newVersion } = useExtensionUpdate({});
 
   if (!newVersionAvailable) return null;
 

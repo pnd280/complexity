@@ -1,10 +1,10 @@
-import updateService from '@/services/update';
+import updateService from '@/services/complexity';
 import { compareVersions } from '@/utils/utils';
 import { useQuery } from '@tanstack/react-query';
 
 import packageData from '../../../package.json';
 
-export default function useUpdate({
+export default function useExtensionUpdate({
   forceFetchChangelog,
 }: {
   forceFetchChangelog?: boolean;

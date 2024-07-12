@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import clsx from 'clsx';
 import { Cpu } from 'lucide-react';
@@ -15,13 +11,13 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/Select';
-import { webAccessFocus } from '@/consts/model-selector';
 import { queryBoxStore } from '@/content-script/session-store/query-box';
 import { WebAccessFocus } from '@/types/ModelSelector';
 import { ui } from '@/utils/ui';
 import { useToggle } from '@uidotdev/usehooks';
 
 import Tooltip from '../Tooltip';
+import { webAccessFocus } from '@/consts/web-access-focus';
 
 export default function FocusSelector() {
   const items = useMemo(() => {
@@ -52,6 +48,8 @@ export default function FocusSelector() {
           setFocus(value as WebAccessFocus['code']);
           toggleWebAccess(true);
           toggleOpen();
+
+          ui.findActiveQueryBoxTextarea({}).trigger('focus');
         }}
         onPointerDownOutside={() => toggleOpen(false)}
         open={open}

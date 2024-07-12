@@ -1,14 +1,7 @@
 import { LanguageModel } from '@/types/ModelSelector';
-import {
-  LongPollingEventData,
-  MessageData,
-  WebSocketEventData,
-} from '@/types/WebpageMessenger';
+import { LongPollingEventData, MessageData, WebSocketEventData } from '@/types/WebpageMessenger';
 import { TrackQueryLimits } from '@/types/WebpageMessengerInterceptors';
-import {
-  isParsedWSMessage,
-  WSParsedMessage,
-} from '@/types/WS';
+import { isParsedWSMessage, WSParsedMessage } from '@/types/WS';
 import { WSMessageParser } from '@/utils/ws';
 
 import { popupSettingsStore } from '../session-store/popup-settings';

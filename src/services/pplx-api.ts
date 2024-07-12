@@ -1,6 +1,5 @@
 import { Collection } from '@/components/QueryBox/CollectionSelector';
-import webpageMessageInterceptors
-  from '@/content-script/main-world/message-interceptors';
+import webpageMessageInterceptors from '@/content-script/main-world/message-interceptors';
 import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { LanguageModel } from '@/types/ModelSelector';
 import {
@@ -11,12 +10,8 @@ import {
   UserSettingsApiResponse,
 } from '@/types/PPLXApi';
 
-import {
-  fetchResource,
-  getPPLXBuildId,
-  jsonUtils,
-} from './utils';
-import { WSMessageParser } from './ws';
+import { fetchResource, getPPLXBuildId, jsonUtils } from '@/utils/utils';
+import { WSMessageParser } from '@/utils/ws';
 
 async function fetchUserSettings(): Promise<UserSettingsApiResponse> {
   const resp = await fetchResource(

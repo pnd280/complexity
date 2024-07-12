@@ -9,8 +9,7 @@ import {
   SendMessageOptions,
   WebSocketEventData,
 } from '@/types/WebpageMessenger';
-
-export const isMainWorldContext = () => !chrome.storage?.local;
+import { isMainWorldContext } from '@/utils/utils';
 
 class WebpageMessenger {
   public static instance: WebpageMessenger;
@@ -22,21 +21,14 @@ class WebpageMessenger {
     (event: MessageEvent) => any
   >[] = [];
 
-  constructor() {
-    if (WebpageMessenger.instance) {
-      return WebpageMessenger.instance;
+  private constructor() {}
+
+  static getInstance() {
+    if (!WebpageMessenger.instance) {
+      WebpageMessenger.instance = new WebpageMessenger();
     }
 
-    WebpageMessenger.instance = this;
-
-    if (isMainWorldContext()) {
-      window.Messenger = {
-        sendMessage: this.sendMessage,
-        onMessage: this.onMessage,
-      };
-    } else {
-      this.listen();
-    }
+    return WebpageMessenger.instance;
   }
 
   private trackListeners(
@@ -52,7 +44,7 @@ class WebpageMessenger {
     return this.registeredEventListeners;
   }
 
-  private listen() {
+  setupContentScriptListeners() {
     this.onMessage('webSocketEvent', async (messageData) => {
       const newMessageData = (await this.executeInterceptors(
         messageData
@@ -232,4 +224,10 @@ class WebpageMessenger {
   }
 }
 
-export const webpageMessenger = new WebpageMessenger();
+const webpageMessenger = WebpageMessenger.getInstance();
+
+if (!isMainWorldContext()) {
+  webpageMessenger.setupContentScriptListeners();
+}
+
+export { webpageMessenger };
