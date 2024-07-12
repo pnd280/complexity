@@ -21,7 +21,7 @@ export const rewritePreBlock = (
   const isNative = !$pre.parent('#markdown-query-wrapper').length;
   const lang = getLang($pre);
 
-  if ($pre.hasClass('processed')) {
+  if ($pre.attr('data-processed')) {
     return {
       $container: $pre.prev() as JQuery<HTMLElement>,
       lang,
@@ -46,14 +46,14 @@ export const rewritePreBlock = (
     $wrapper.append(pre).prepend($container);
   }
 
-  $pre.addClass('processed');
+  $pre.attr('data-processed', 'true');
 
   return { $container, lang, isNative, id: randomId };
 };
 
 export const getLang = ($pre: JQuery<HTMLElement>): string => {
   return (
-    $pre.find('.border-b.border-r.font-thin').text() ||
+    $pre.attr('data-lang') ||
     $pre
       .find('code:first')
       .attr('class')
@@ -75,7 +75,7 @@ const createContainer = (isNative: boolean): JQuery<HTMLElement> => {
 const createWrapper = (): JQuery<HTMLElement> => {
   return $('<div>')
     .addClass(
-      'tw-rounded-md tw-relative tw-rounded-md tw-border !tw-border-muted'
+      'tw-rounded-md tw-relative tw-rounded-md tw-border !tw-border-accent-foreground-darker dark:!tw-border-muted'
     )
     .attr('id', 'markdown-block-wrapper');
 };
@@ -108,8 +108,6 @@ const setupCodeBlock = (
   isNative: boolean
 ): void => {
   const $code = $pre.find('code:first');
-
-  if (!$pre.attr('data-lang')) $pre.attr('data-lang', lang);
 
   if (!isNative) {
     $code.addClass('!tw-p-0');

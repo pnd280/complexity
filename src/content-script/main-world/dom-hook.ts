@@ -4,15 +4,9 @@ import $ from 'jquery';
 // TODO: extend this to plugin system
 
 $(() => {
-  const originalAppendChild = Node.prototype.appendChild;
+  populateDataAttrs();
 
-  function addDataAttr(preElement: HTMLElement): void {
-    if (preElement.hasAttribute('data-lang')) {
-      return;
-    }
-    const lang = $(preElement).find('.border-b.border-r.font-thin').text();
-    preElement.setAttribute('data-lang', lang || 'text');
-  }
+  const originalAppendChild = Node.prototype.appendChild;
 
   Node.prototype.appendChild = function <T extends Node>(newNode: T): T {
     if (newNode instanceof HTMLPreElement) {
@@ -27,3 +21,36 @@ $(() => {
     return originalAppendChild.call(this, newNode) as T;
   };
 });
+
+function getReactPropsKey(element: Element) {
+  return Object.keys(element).find((key) => key.startsWith('__reactProps$'));
+}
+
+function populateDataAttrs() {
+  $('pre').each((_, pre) => {
+    addDataAttr(pre);
+  });
+}
+
+function addDataAttr(pre: HTMLElement) {
+  const propsKey = getReactPropsKey(pre);
+
+  if (!propsKey) return;
+
+  const props = (pre as any)[propsKey];
+
+  if (typeof props !== 'object') return;
+
+  const lang = extractLanguage(props);
+  pre.setAttribute('data-lang', lang);
+}
+
+function extractLanguage(props: any) {
+  try {
+    const className = props.children?.[0]?.props?.className;
+    const lang = className?.split('-')[1];
+    return lang || 'text';
+  } catch (e) {
+    return 'text';
+  }
+}
