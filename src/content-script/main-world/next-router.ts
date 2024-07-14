@@ -4,7 +4,13 @@ import { MessageData } from '@/types/WebpageMessenger';
 import { RouterEvent } from '@/types/WS';
 
 import { webpageMessenger } from './messenger';
-import { isMainWorldContext } from '@/utils/utils';
+import {
+  isMainWorldContext,
+  sleep,
+  waitForNextjsHydration,
+} from '@/utils/utils';
+
+type NextRouter = typeof window.next;
 
 class NextRouterProxy {
   private static instance: NextRouterProxy;
@@ -18,10 +24,15 @@ class NextRouterProxy {
     return NextRouterProxy.instance;
   }
 
-  initialize(): void {
+  async initialize() {
+    await waitForNextjsHydration();
+
     if (typeof window.next === 'undefined') {
-      console.warn('Next.js router not found. Skipping proxy initialization.');
-      return;
+      await sleep(100);
+
+      this.initialize();
+
+      return console.warn('Next.js router not found. Retrying...');
     }
 
     this.proxyRouterMethods();
@@ -30,7 +41,7 @@ class NextRouterProxy {
   }
 
   private proxyRouterMethods(): void {
-    const router = window.next.router;
+    const router = window.next!.router;
     const originalPush = router.push;
     const originalReplaceState = history.replaceState;
 
@@ -38,9 +49,11 @@ class NextRouterProxy {
     history.replaceState = this.createProxiedReplaceState(originalReplaceState);
   }
 
-  private createProxiedPush(originalPush: typeof window.next.router.push) {
+  private createProxiedPush(
+    originalPush: NonNullable<NextRouter>['router']['push']
+  ) {
     return async function (
-      this: typeof window.next.router,
+      this: NextRouter,
       url: string,
       as?: string,
       options?: any
@@ -69,7 +82,7 @@ class NextRouterProxy {
     window.addEventListener('popstate', () =>
       this.dispatchRouteChange('popstate')
     );
-    window.next.router.events.on('routeChangeComplete', () =>
+    window.next!.router.events.on('routeChangeComplete', () =>
       this.dispatchRouteChange('routeChangeComplete')
     );
   }

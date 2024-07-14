@@ -7,7 +7,7 @@ import $ from 'jquery';
 
 declare global {
   interface Window {
-    next: {
+    next?: {
       router: {
         push: (url: string, as?: string, options?: any) => Promise<boolean>;
         replace: (url: string, as?: string, options?: any) => Promise<boolean>;
