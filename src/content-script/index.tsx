@@ -3,7 +3,6 @@ import $ from 'jquery';
 import webpageListeners from '@/content-script/main-world/listeners';
 import webpageMessageInterceptors from '@/content-script/main-world/message-interceptors';
 import DOMObserver from '@/utils/dom-observer';
-import { queryClient } from '@/utils/queryClient';
 import { ui } from '@/utils/ui';
 import uiTweaks from '@/utils/ui-tweaks';
 import {
@@ -54,7 +53,7 @@ function initTrafficInterceptors() {
   webpageMessageInterceptors.removeComplexityIdentifier();
 }
 
-function initDOMObserversWatchdog() {
+async function initDOMObserversWatchdog() {
   if (import.meta.env.DEV) {
     $(document).on('keydown', (e) => {
       if (e.ctrlKey && e.shiftKey && e.key === 'Q') {
@@ -68,14 +67,8 @@ function initDOMObserversWatchdog() {
 
   uiTweaks.collapseEmptyThreadVisualColumns();
 
-  const observe = (url: string) => {
+  const observe = async (url: string) => {
     DOMObserver.destroyAll('default');
-
-    queryClient.resetQueries({
-      predicate(query) {
-        return query.queryKey[0] === 'domNode';
-      },
-    });
 
     uiTweaks.alterAttachButton();
     uiTweaks.calibrateMarkdownBlock();
@@ -90,7 +83,7 @@ function initDOMObserversWatchdog() {
               timeout: 5000,
             });
 
-            if (!messagesContainer) return;
+            if (!messagesContainer) return observe(url);
 
             uiTweaks.alterMessageQuery(messagesContainer);
             uiTweaks.displayModelNextToAnswerHeading(messagesContainer);

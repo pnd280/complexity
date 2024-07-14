@@ -1,6 +1,6 @@
 import '@@/public/global.css';
 
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
 
 import $ from 'jquery';
 import { createRoot } from 'react-dom/client';
@@ -19,7 +19,7 @@ import { whereAmI } from '@/utils/utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { IncompatibleInterfaceLanguageNotice } from '../components/IncompatibleInterfaceLanguageNotice';
+import { IncompatibleInterfaceLanguageNotice } from '@/components/IncompatibleInterfaceLanguageNotice';
 
 const Commander = lazy(() => import('@/components/Commander'));
 
@@ -39,6 +39,16 @@ export default function ReactRoot() {
 
 function Root() {
   const location = whereAmI(useRouter().url);
+
+  useEffect(() => {
+    return () => {
+      queryClient.resetQueries({
+        predicate(query) {
+          return query.queryKey[0] === 'domNode';
+        },
+      });
+    };
+  });
 
   return (
     <>

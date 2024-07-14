@@ -24,7 +24,7 @@ export default function useExtensionUpdate({
       updateService.fetchChangelog({
         type: 'public',
       }),
-    enabled: newVersionAvailable || !!forceFetchChangelog,
+    enabled: newVersionAvailable || forceFetchChangelog,
   });
 
   return {

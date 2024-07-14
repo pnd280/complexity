@@ -39,7 +39,7 @@ type QueryBoxState = {
 };
 
 const useQueryBoxStore = create<QueryBoxState>()(
-  immer((set) => ({
+  immer((set, get) => ({
     selectedLanguageModel: 'turbo',
     setSelectedLanguageModel: async (selectedLanguageModel) => {
       if (await pplxApi.setDefaultLanguageModel(selectedLanguageModel))
@@ -70,23 +70,21 @@ const useQueryBoxStore = create<QueryBoxState>()(
       },
 
       allowWebAccess: false,
-      toggleWebAccess: (toggled) => {
-        return set((state) => {
-          if (typeof toggled === 'undefined')
-            toggled = !state.webAccess.allowWebAccess;
+      toggleWebAccess: async (toggled?: boolean) => {
+        const state = get();
+        const newValue = toggled ?? !state.webAccess.allowWebAccess;
 
-          chromeStorage.setStorageValue({
-            key: 'defaultWebAccess',
-            value: !!toggled,
-          });
-
-          return {
-            webAccess: {
-              ...state.webAccess,
-              allowWebAccess: toggled ?? !state.webAccess.allowWebAccess,
-            },
-          };
+        await chromeStorage.setStorageValue({
+          key: 'defaultWebAccess',
+          value: newValue,
         });
+
+        set((state) => ({
+          webAccess: {
+            ...state.webAccess,
+            allowWebAccess: newValue,
+          },
+        }));
       },
     },
 

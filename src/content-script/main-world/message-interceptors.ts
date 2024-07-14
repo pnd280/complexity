@@ -205,7 +205,7 @@ function alterNextQuery({
   languageModel: LanguageModel['code'];
   proSearchState?: boolean;
 }) {
-  webpageMessenger.addInterceptor({
+  return webpageMessenger.addInterceptor({
     matchCondition: (messageData: MessageData<any>) => {
       const webSocketMessageData = messageData as MessageData<
         WebSocketEventData | LongPollingEventData
@@ -286,15 +286,9 @@ function waitForUpsertThreadCollection() {
 
     if (!parsedPayload) return false;
 
-    if (
-      parsedPayload.messageCode !== 431 &&
+    return !(parsedPayload.messageCode !== 431 &&
       parsedPayload.data?.length === 1 &&
-      parsedPayload.data[0].status === 'completed'
-    ) {
-      return false;
-    }
-
-    return true;
+      parsedPayload.data[0].status === 'completed');
   };
 
   return new Promise((resolve) => {
@@ -322,13 +316,8 @@ function waitForUserProfileSettings() {
 
     if (parsedPayload.data?.length !== 1) return false;
 
-    if (
-      'has_profile' in parsedPayload.data[0] &&
-      'bio' in parsedPayload.data[0]
-    )
-      return true;
-
-    return false;
+    return 'has_profile' in parsedPayload.data[0] &&
+      'bio' in parsedPayload.data[0];
   };
 
   return new Promise((resolve) => {

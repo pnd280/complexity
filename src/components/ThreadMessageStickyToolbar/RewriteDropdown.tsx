@@ -1,17 +1,10 @@
-import {
-  useCallback,
-  useState,
-} from 'react';
+import { useCallback, useRef } from 'react';
 
 import $ from 'jquery';
-import {
-  RefreshCcw,
-  Sparkles,
-} from 'lucide-react';
+import { RefreshCcw, Sparkles } from 'lucide-react';
 
 import { languageModels } from '@/consts/ai-models';
-import webpageMessageInterceptors
-  from '@/content-script/main-world/message-interceptors';
+import webpageMessageInterceptors from '@/content-script/main-world/message-interceptors';
 import { queryBoxStore } from '@/content-script/session-store/query-box';
 import { LanguageModel } from '@/types/ModelSelector';
 import { sleep } from '@/utils/utils';
@@ -31,8 +24,7 @@ type RewriteDropdownProps = {
 };
 
 export default function RewriteDropdown({ container }: RewriteDropdownProps) {
-  const [stopOnGoingInterceptor, setStopOnGoingInterceptor] =
-    useState<() => void>();
+  const stopOnGoingInterceptor = useRef<() => void>();
 
   const ctrlDown = useCtrlDown();
 
@@ -44,14 +36,14 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
       model?: LanguageModel['code'];
       proSearch?: boolean;
     }) => {
-      stopOnGoingInterceptor?.();
+      stopOnGoingInterceptor.current?.();
 
-      const stop = webpageMessageInterceptors.alterNextQuery({
-        languageModel: model || queryBoxStore.getState().selectedLanguageModel,
-        proSearchState: proSearch,
-      });
-
-      setStopOnGoingInterceptor(() => stop);
+      stopOnGoingInterceptor.current =
+        webpageMessageInterceptors.alterNextQuery({
+          languageModel:
+            model || queryBoxStore.getState().selectedLanguageModel,
+          proSearchState: proSearch,
+        });
 
       const $buttonBar = $(container.messageBlock).find(
         '.mt-sm.flex.items-center.justify-between'

@@ -83,7 +83,7 @@ export default function ThreadMessageToolbar({
     .children()
     .last()
     .children()
-    .find('div:has([data-icon="pen-to-square"]');
+    .find('div:has([data-icon="pen-to-square"])');
 
   const isMessageEditable = !!$messageEditButton.length;
 

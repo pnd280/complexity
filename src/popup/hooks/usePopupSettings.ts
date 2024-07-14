@@ -11,8 +11,7 @@ export default function usePopupSettings() {
   const { data: store, refetch } = useQuery({
     queryKey: ['store'],
     queryFn: async () => {
-      const store = await chromeStorage.getStore();
-      return store;
+      return await chromeStorage.getStore();
     },
   });
 

@@ -4,10 +4,6 @@ import { jsonUtils } from './utils';
 
 const WSMessageParser = {
   parse(message: string): WSParsedMessage | string | null {
-    if (typeof message !== 'string') {
-      return message;
-    }
-
     if (isNaN(parseInt(message[0], 10))) {
       return message;
     }

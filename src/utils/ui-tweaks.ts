@@ -4,10 +4,10 @@ import DOMObserver from '@/utils/dom-observer';
 import { ui } from '@/utils/ui';
 import { jsonUtils, markdown2Html, whereAmI } from '@/utils/utils';
 
-import { globalStore } from '../content-script/session-store/global';
-import { popupSettingsStore } from '../content-script/session-store/popup-settings';
+import { globalStore } from '@/content-script/session-store/global';
+import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
 import { extractCodeFromPreBlock, getLang } from '@/utils/markdown-block';
-import { webpageMessenger } from '../content-script/main-world/messenger';
+import { webpageMessenger } from '@/content-script/main-world/messenger';
 import { shikiContentScript } from '@/content-script/main-world/shiki';
 
 function injectCustomStyles() {

@@ -123,7 +123,5 @@ const setupCodeBlock = (
 };
 
 export const extractCodeFromPreBlock = (preElement: Element) => {
-  const code = stripHtml($(preElement)?.find('code:first').html());
-
-  return code;
+  return stripHtml($(preElement)?.find('code:first').html());
 };
