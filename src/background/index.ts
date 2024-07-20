@@ -1,12 +1,48 @@
 import { BackgroundAction } from '@/utils/background';
+import ChromeStorage from '@/utils/ChromeStorage';
 
 if (!import.meta.env.DEV) {
   chrome.runtime.onInstalled.addListener(() => {
     chrome.tabs.create({
-      url: chrome.runtime.getURL('/page/options-page.html') + '?tab=changelog',
+      url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
     });
   });
 }
+
+chrome.runtime.onInstalled.addListener(async () => {
+  const settings = await ChromeStorage.getStore();
+
+  if (!settings || Object.keys(settings).length === 0) {
+    console.log('First time install detected, setting default values');
+
+    ChromeStorage.setStorageValue({
+      key: 'popupSettings',
+      value: {
+        queryBoxSelectors: {
+          focus: false,
+          languageModel: false,
+          imageGenModel: false,
+          collection: false,
+        },
+        qolTweaks: {
+          threadTOC: false,
+          quickQueryCommander: false,
+          threadMessageStickyToolbar: false,
+          alternateMarkdownBlock: false,
+          canvas: {
+            enabled: false,
+            mask: {},
+          },
+          autoRefreshSessionTimeout: false,
+          blockTelemetry: false,
+        },
+        visualTweaks: {
+          collapseEmptyThreadVisualColumns: false,
+        },
+      },
+    });
+  }
+});
 
 chrome.runtime.onMessage.addListener(
   async (
@@ -19,12 +55,12 @@ chrome.runtime.onMessage.addListener(
     switch (action) {
       case 'openChangelog':
         chrome.tabs.create({
-          url: chrome.runtime.getURL('/page/options-page.html') + '?tab=changelog',
+          url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
         });
         break;
       case 'openCustomTheme':
         chrome.tabs.create({
-          url: chrome.runtime.getURL('/page/options-page.html') + '?tab=customTheme',
+          url: chrome.runtime.getURL('/page/options.html') + '?tab=customTheme',
         });
         break;
       case 'getTabId':

@@ -59,38 +59,7 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
 const popupSettingsStore = usePopupSettingsStore;
 
 extensionExec(async function initPopupSettingsStore() {
-  let settings = await ChromeStorage.getStorageValue('popupSettings');
-
-  if (!settings) {
-    await ChromeStorage.setStorageValue({
-      key: 'popupSettings',
-      value: {
-        queryBoxSelectors: {
-          focus: false,
-          languageModel: false,
-          imageGenModel: false,
-          collection: false,
-        },
-        qolTweaks: {
-          threadTOC: false,
-          quickQueryCommander: false,
-          threadMessageStickyToolbar: false,
-          alternateMarkdownBlock: false,
-          canvas: {
-            enabled: false,
-            mask: {},
-          },
-          autoRefreshSessionTimeout: false,
-          blockTelemetry: false,
-        },
-        visualTweaks: {
-          collapseEmptyThreadVisualColumns: false,
-        },
-      },
-    });
-
-    settings = await ChromeStorage.getStorageValue('popupSettings');
-  }
+  const settings = await ChromeStorage.getStorageValue('popupSettings');
 
   if (!settings) return;
 
