@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import { extensionOnly, mainWorldExec } from '@/utils/hoc';
 import UIUtils from '@/utils/UI';
 import { injectMainWorldScriptBlock, sleep } from '@/utils/utils';

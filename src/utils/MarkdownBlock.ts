@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
 import { ReactNodeActionReturnType } from '@/content-script/main-world/react-node';
+import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
 import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
 import { cn } from '@/utils/shadcn-ui-utils';
 
@@ -89,17 +89,17 @@ export default class MarkdownBlockUtils {
   ): void {
     if (isNative) {
       $wrapper.addClass('tw-relative');
-      $pre.addClass('!tw-m-0 !tw-rounded-none !tw-rounded-b-md');
+      $pre.addClass('!tw-m-0 !tw-rounded-md');
       $pre
         .find('div:nth-child(2)')[0]
         ?.style.setProperty('padding-top', '0', 'important');
       $pre
         .find('div:nth-child(2)')
-        .addClass('tw-rounded-none tw-rounded-b-md !tw-p-0');
+        .addClass('tw-rounded-none tw-rounded-md !tw-p-0');
       $pre.find('.rounded-br, button').addClass('!tw-hidden');
     } else {
       $pre.addClass(
-        '!tw-rounded-none !tw-m-0 !tw-px-[.7rem] !tw-py-2 !tw-rounded-b-md tw-overflow-auto'
+        '!tw-m-0 !tw-px-[.7rem] !tw-py-2 !tw-rounded-md tw-overflow-auto'
       );
     }
   }
@@ -122,26 +122,26 @@ export default class MarkdownBlockUtils {
   };
 
   static extractCodeFromPreReactNode = async (preElement: Element) => {
-    try {
-      return (await webpageMessenger.sendMessage({
-        event: 'getReactNodeData',
-        payload: {
-          querySelector: `#${preElement.id}`,
-          action: 'getCodeFromPreBlock',
-        },
-        timeout: 5000,
-      })) as string;
-    } catch (error) {
-      return MarkdownBlockUtils.extractCodeFromPreBlock(preElement);
-    }
+    const highlightedCode = (await webpageMessenger.sendMessage({
+      event: 'getReactNodeData',
+      payload: {
+        querySelector: `#${preElement.id}`,
+        action: 'getCodeFromPreBlock',
+      },
+      timeout: 5000,
+    })) as ReactNodeActionReturnType['getCodeFromPreBlock'];
+
+    if (highlightedCode) return highlightedCode;
+
+    return MarkdownBlockUtils.extractCodeFromPreBlock(preElement);
   };
 
   static getPreBlockLocalIndex = ($pre: JQuery<HTMLElement>): number => {
-    const $messageBlock = $pre.closest('.message-block');
+    const messageBlock = $pre[0].closest('.message-block');
 
-    if (!$messageBlock.length) return -1;
+    if (!messageBlock) return -1;
 
-    return $messageBlock.find('pre').index($pre);
+    return $(messageBlock).find('pre').index($pre);
   };
 
   static extractLanguage = (pre: HTMLElement) => {
@@ -163,11 +163,11 @@ export default class MarkdownBlockUtils {
   };
 
   static async isInFlight(pre: HTMLElement) {
-    if (
-      $(pre)
-        .closest('.message-block')
-        .find('.mt-sm.flex.items-center.justify-between').length
-    )
+    const messageBlock = pre.closest('.message-block');
+
+    if (!messageBlock) return false;
+
+    if ($(messageBlock).find('.mt-sm.flex.items-center.justify-between').length)
       return false;
 
     return getInFlightStateFromReactNode(pre);
@@ -212,25 +212,25 @@ export default class MarkdownBlockUtils {
   }
 
   static async handleInFlightState(pre: HTMLElement) {
-    const $pre = $(pre);
+    const messageBlock = pre.closest('.message-block');
 
-    const inFlight = await MarkdownBlockUtils.isInFlight(pre);
+    if (!messageBlock) return false;
 
-    $pre
-      .closest('.message-block')
+    const isInFlight = popupSettingsStore.getState().qolTweaks.canvas.enabled
+      ? await MarkdownBlockUtils.isInFlight(pre)
+      : false;
+
+    $(messageBlock)
       .find(`.${pre.id}-inflight-indicator`)
-      .attr('data-inflight', (!!inFlight).toString());
+      .attr('data-inflight', (!!isInFlight).toString());
 
-    return inFlight;
+    return isInFlight;
   }
 
   static async highlightNativelyUnsupportedLang(pre: HTMLElement) {
-    const supportedLangs = ['csharp', 'gdscript', 'blade'];
+    const supportedLangs = ['gdscript', 'blade'];
 
-    if (
-      $(pre).attr('data-mask') === 'true' ||
-      $(pre).attr('data-highlighted')
-    )
+    if ($(pre).attr('data-mask') === 'true' || $(pre).attr('data-highlighted'))
       return true;
 
     if (supportedLangs.includes(MarkdownBlockUtils.getLang($(pre)))) {

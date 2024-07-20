@@ -352,8 +352,4 @@ class WSHook {
   }
 }
 
-mainWorldExec(() =>
-  $(() => {
-    WSHook.getInstance().initialize();
-  })
-)();
+mainWorldExec(() => WSHook.getInstance().initialize())();

@@ -4,7 +4,7 @@ import {
   MessageData,
   WebSocketEventData,
 } from '@/types/WebpageMessenger';
-import { TrackQueryLimits } from '@/types/WebpageMessengerInterceptors';
+import { TrackQueryLimits } from '@/types/WebpageMessageInterceptors';
 import { isParsedWSMessage, WSParsedMessage } from '@/types/WS';
 import WSMessageParser from '@/utils/WSMessageParser';
 

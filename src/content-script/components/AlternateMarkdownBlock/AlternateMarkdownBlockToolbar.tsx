@@ -23,6 +23,10 @@ export default (function AlternateMarkdownBlockToolbar({
 
   if ($pre.attr('data-mask') === 'true') {
     if (!Canvas.isCanvasLang(lang)) return null;
+    
+    const portalInsertionNode = $pre[0]?.closest('div.w-full.max-w-\\[90vw\\]');
+
+    if (!portalInsertionNode) return null;
 
     return ReactDOM.createPortal(
       <CanvasPlaceholder
@@ -30,7 +34,7 @@ export default (function AlternateMarkdownBlockToolbar({
         preBlockIndex={preBlockIndex}
         lang={lang as CanvasLang}
       />,
-      $pre.closest('div.w-full.max-w-\\[90vw\\]')[0]
+      portalInsertionNode
     );
   }
 

@@ -67,6 +67,7 @@ export default function ThreadMessageStickyToolbarComponents({
     handleVisualDiff();
   }, [containersStates, handleVisualDiff]);
 
+  // TODO: prone to changes, needs refactoring
   const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
     .find('.mt-sm.flex.items-center.justify-between')
     .children()

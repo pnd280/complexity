@@ -265,7 +265,7 @@ function JumpToSource() {
   return (
     <div
       ref={ref}
-      className="tw-cursor-pointer tw-text-sm tw-p-1 tw-text-muted-foreground hover:tw-text-foreground active:tw-scale-95 tw-transition-all tw-duration-300 tw-animate-in tw-fade-in"
+      className="tw-cursor-pointer tw-text-sm tw-p-1 tw-text-muted-foreground hover:tw-text-foreground active:tw-scale-95 tw-transition-all tw-duration-300 tw-animate-in tw-fade-in tw-font-sans"
       onClick={() => {
         const $preBlock = $(`pre`).eq(metaData.preBlockIndex);
 

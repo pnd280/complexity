@@ -89,8 +89,6 @@ export default class PPLXApi {
   }
 
   static async fetchThreadInfo(threadSlug: string) {
-    console.log('fetching thread info', threadSlug);
-
     if (!threadSlug) return null;
 
     const pplxBuildId = await getPPLXBuildId();

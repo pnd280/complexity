@@ -113,8 +113,12 @@ export default function useThreadMessageStickyToolbarObserver({
         ).each((_, element) => {
           $(element).attr(`data-${id}-observed`, 'true');
 
+          const messageBlock = element.closest('.message-block');
+
+          if (!messageBlock) return;
+
           const { $answerHeading, $messageBlock } = UIUtils.parseMessageBlock(
-            $(element).closest('.message-block')
+            $(messageBlock)
           );
 
           const $bottomButtonBar = $messageBlock.find(

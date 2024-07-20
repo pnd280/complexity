@@ -44,7 +44,7 @@ export default function ThreadTOC() {
     });
   });
 
-  if (!anchorsProps || !wrapperPos || !anchorsProps.length) return null;
+  if (!anchorsProps || anchorsProps.length < 2 || !wrapperPos) return null;
 
   return (
     <>
@@ -57,71 +57,67 @@ export default function ThreadTOC() {
             : '2rem',
         }}
       >
-        {anchorsProps && anchorsProps.length > 1 && (
-          <div
-            className={cn(
-              'tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans',
-              {
-                'tw-relative tw-bg-background tw-p-3 tw-rounded-md tw-border tw-border-border tw-shadow-lg':
-                  isFloat,
-                'tw-hidden': !visible && isFloat,
-              }
-            )}
-            id="thread-toc"
-          >
-            <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[50dvh] tw-overflow-auto custom-scrollbar">
-              {anchorsProps?.map((anchorProps, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
-                    {
-                      'tw-mr-6': visible && isFloat && index === 0,
-                    }
-                  )}
-                  onClick={anchorProps.onClick}
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    anchorProps.onContextMenu();
-                  }}
-                >
-                  <div
-                    className={cn(
-                      'tw-w-[.1rem] tw-h-5 tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out',
-                      {
-                        '!tw-bg-accent-foreground':
-                          index === visibleMessageIndex,
-                      }
-                    )}
-                  />
-                  <div
-                    className={cn(
-                      'tw-truncate tw-w-full tw-cursor-pointer tw-text-foreground-darker group-hover:tw-text-muted-foreground tw-transition-colors tw-duration-300 tw-ease-in-out tw-select-none',
-                      {
-                        '!tw-text-foreground': index === visibleMessageIndex,
-                      }
-                    )}
-                  >
-                    {anchorProps.title}
-                  </div>
-                </div>
-              ))}
-            </div>
-            {isFloat && visible && (
+        <div
+          className={cn(
+            'tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans',
+            {
+              'tw-relative tw-bg-background tw-p-3 tw-rounded-md tw-border tw-border-border tw-shadow-lg':
+                isFloat,
+              'tw-hidden': !visible && isFloat,
+            }
+          )}
+          id="thread-toc"
+        >
+          <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[50dvh] tw-overflow-auto custom-scrollbar">
+            {anchorsProps?.map((anchorProps, index) => (
               <div
+                key={index}
                 className={cn(
-                  'tw-absolute tw-top-1 tw-right-1 active:tw-scale-95 tw-transition-colors tw-duration-300'
+                  'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
+                  {
+                    'tw-mr-6': visible && isFloat && index === 0,
+                  }
                 )}
-                onClick={() => {
-                  toggleVisibility(false);
+                onClick={anchorProps.onClick}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  anchorProps.onContextMenu();
                 }}
               >
-                <X className="tw-w-5 tw-h-5 tw-text-muted-foreground tw-cursor-pointer hover:!tw-text-foreground tw-transition-colors" />
+                <div
+                  className={cn(
+                    'tw-w-[.1rem] tw-h-5 tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out',
+                    {
+                      '!tw-bg-accent-foreground': index === visibleMessageIndex,
+                    }
+                  )}
+                />
+                <div
+                  className={cn(
+                    'tw-truncate tw-w-full tw-cursor-pointer tw-text-foreground-darker group-hover:tw-text-muted-foreground tw-transition-colors tw-duration-300 tw-ease-in-out tw-select-none',
+                    {
+                      '!tw-text-foreground': index === visibleMessageIndex,
+                    }
+                  )}
+                >
+                  {anchorProps.title}
+                </div>
               </div>
-            )}
+            ))}
           </div>
-        )}
-
+          {isFloat && visible && (
+            <div
+              className={cn(
+                'tw-absolute tw-top-1 tw-right-1 active:tw-scale-95 tw-transition-colors tw-duration-300'
+              )}
+              onClick={() => {
+                toggleVisibility(false);
+              }}
+            >
+              <X className="tw-w-5 tw-h-5 tw-text-muted-foreground tw-cursor-pointer hover:!tw-text-foreground tw-transition-colors" />
+            </div>
+          )}
+        </div>
         <div
           className={cn(
             'tw-absolute -tw-top-2 -tw-right-10 tw-bg-secondary tw-rounded-full tw-h-20 active:tw-scale-95 tw-transition-all tw-border tw-border-border tw-shadow-lg tw-cursor-pointer tw-animate-in tw-slide-in-from-left',
@@ -230,7 +226,7 @@ const useThreadTOCObserver = () => {
   }, []);
 
   useEffect(() => {
-    !isCanvasOpen && requestIdleCallback(() => myObserver());
+    requestIdleCallback(() => myObserver());
   }, [url, isCanvasOpen, wndSize, scrollY, myObserver]);
 
   return { visibleMessageIndex, anchorsProps, wrapperPos };

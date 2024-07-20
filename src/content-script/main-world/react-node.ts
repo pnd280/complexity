@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import { getReactFiberKey } from '@/utils/utils';
+import { getReactFiberKey, jsonUtils } from '@/utils/utils';
 import { webpageMessenger } from './webpage-messenger';
 import { mainWorldExec, mainWorldOnly } from '@/utils/hoc';
 
@@ -19,18 +19,18 @@ export type PPLXThreadMessageReactFiberResult = {
 
 const actions = {
   getCodeFromPreBlock: mainWorldOnly((pre: Element): string => {
-    return (pre as any)[getReactFiberKey(pre)].memoizedProps.children[0].props
-      .children[0];
+    return (pre as any)[getReactFiberKey(pre)]?.memoizedProps?.children[0]
+      ?.props?.children[0];
   }),
   getMessageData: mainWorldOnly(
     (messageBlock: Element): PPLXThreadMessageReactFiberResult => {
-      const result = JSON.parse(
-        (messageBlock as any)[getReactFiberKey(messageBlock)].memoizedProps
-          .children.props.result.text
+      const result = jsonUtils.safeParse(
+        (messageBlock as any)[getReactFiberKey(messageBlock)]?.memoizedProps
+          ?.children?.props?.result?.text
       );
 
       return Array.isArray(result)
-        ? JSON.parse(result[result.length - 1].content.answer)
+        ? jsonUtils.safeParse(result[result.length - 1]?.content?.answer)
         : result;
     }
   ),
