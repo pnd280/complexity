@@ -1,7 +1,10 @@
+import { CanvasLang } from '@/utils/Canvas';
 import { WebAccessFocus } from './ModelSelector';
 import { Nullable } from './Utils';
 
 export type ChromeStoreKey = keyof ChromeStore;
+
+export type A = ChromeStore['popupSettings']['qolTweaks']['canvas']
 
 export type ChromeStore = {
   defaultFocus: Nullable<WebAccessFocus['code']>;
@@ -17,8 +20,12 @@ export type ChromeStore = {
     qolTweaks: {
       threadTOC: boolean;
       quickQueryCommander: boolean;
-      threadMessageStickyHeader: boolean;
-      markdownBlockToolbar: boolean;
+      threadMessageStickyToolbar: boolean;
+      alternateMarkdownBlock: boolean;
+      canvas: {
+        enabled: boolean;
+        mask: Partial<Record<CanvasLang, boolean>>;
+      };
       autoRefreshSessionTimeout: boolean;
       blockTelemetry: boolean;
     };

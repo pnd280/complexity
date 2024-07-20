@@ -1,15 +1,16 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-import { Collection } from '@/components/QueryBox/CollectionSelector';
-import { ImageModel } from '@/components/QueryBox/ImageModelSelector';
+import { Collection } from '@/content-script/components/QueryBox/CollectionSelector';
+import { ImageModel } from '@/content-script/components/QueryBox/ImageModelSelector';
+import PPLXApi from '@/services/PPLXApi';
 import {
   isValidFocus,
   LanguageModel,
   WebAccessFocus,
 } from '@/types/ModelSelector';
-import { chromeStorage } from '@/utils/chrome-store';
-import pplxApi from '@/services/pplx-api';
+import ChromeStorage from '@/utils/ChromeStorage';
+import { extensionExec } from '@/utils/hoc';
 
 type QueryBoxState = {
   selectedLanguageModel: LanguageModel['code'];
@@ -42,12 +43,12 @@ const useQueryBoxStore = create<QueryBoxState>()(
   immer((set, get) => ({
     selectedLanguageModel: 'turbo',
     setSelectedLanguageModel: async (selectedLanguageModel) => {
-      if (await pplxApi.setDefaultLanguageModel(selectedLanguageModel))
+      if (await PPLXApi.setDefaultLanguageModel(selectedLanguageModel))
         return set({ selectedLanguageModel });
     },
     selectedImageModel: 'default',
     setSelectedImageModel: async (selectedImageModel) => {
-      if (await pplxApi.setDefaultImageModel(selectedImageModel))
+      if (await PPLXApi.setDefaultImageModel(selectedImageModel))
         return set({ selectedImageModel });
     },
     queryLimit: 0,
@@ -61,7 +62,7 @@ const useQueryBoxStore = create<QueryBoxState>()(
     webAccess: {
       focus: null,
       setFocus: (focus) => {
-        chromeStorage.setStorageValue({
+        ChromeStorage.setStorageValue({
           key: 'defaultFocus',
           value: focus,
         });
@@ -74,7 +75,7 @@ const useQueryBoxStore = create<QueryBoxState>()(
         const state = get();
         const newValue = toggled ?? !state.webAccess.allowWebAccess;
 
-        await chromeStorage.setStorageValue({
+        await ChromeStorage.setStorageValue({
           key: 'defaultWebAccess',
           value: newValue,
         });
@@ -103,7 +104,7 @@ async function initQueryBoxStore({
   languageModel?: LanguageModel['code'];
   imageModel?: ImageModel['code'];
 }) {
-  const { defaultFocus, defaultWebAccess } = await chromeStorage.getStore();
+  const { defaultFocus, defaultWebAccess } = await ChromeStorage.getStore();
   if (isValidFocus(defaultFocus)) {
     queryBoxStore.setState((state) => {
       state.webAccess.focus = defaultFocus;
@@ -120,6 +121,6 @@ async function initQueryBoxStore({
   });
 }
 
-initQueryBoxStore({});
+extensionExec(() => initQueryBoxStore({}))();
 
 export { initQueryBoxStore, queryBoxStore, useQueryBoxStore };

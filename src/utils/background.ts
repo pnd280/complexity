@@ -1,4 +1,4 @@
-export type BackgroundAction = 'openChangelog' | 'getTabId';
+export type BackgroundAction = 'openChangelog' | 'openCustomTheme' | 'getTabId';
 
 async function sendMessage({
   action,

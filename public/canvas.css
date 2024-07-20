@@ -1,0 +1,13 @@
+body.alternate-markdown-block pre[data-mask="true"] code {
+  height: 30px !important;
+}
+
+body.alternate-markdown-block div.w-full.max-w-\[90vw\] {
+  visibility: hidden;
+  opacity: 0;
+}
+
+body.alternate-markdown-block div.w-full.max-w-\[90vw\] > * {
+  visibility: hidden;
+  opacity: 0;
+}

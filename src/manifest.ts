@@ -27,7 +27,7 @@ export default defineManifest({
     {
       matches: ['https://www.perplexity.ai/*', 'https://perplexity.ai/*'],
       js: ['src/content-script/index.tsx'],
-      css: ['global.css', 'overrides.css', 'components.css'],
+      css: ['global.css', 'overrides.css', 'components.css', 'canvas.css'],
       run_at: 'document_start',
     },
   ],
@@ -43,6 +43,7 @@ export default defineManifest({
         'global.css',
         'overrides.css',
         'components.css',
+        'canvas.css',
       ],
       matches: ['*://*.perplexity.ai/*'],
     },

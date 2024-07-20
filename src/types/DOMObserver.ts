@@ -25,8 +25,6 @@ export type DOMObserverConfig = {
   onAny?: MutationCallback;
   debounceTime?: number;
   throttleTime?: number;
-  useRAF?: boolean;
-  useIdleCallback?: boolean;
   source?: 'hook' | 'default';
 };
 

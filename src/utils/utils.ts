@@ -3,7 +3,7 @@ import $ from 'jquery';
 import showdown from 'showdown';
 
 import background from './background';
-import { ui } from './ui';
+import UIUtils from './UI';
 
 export const jsonUtils = {
   unescape(escapedJson: string) {
@@ -61,6 +61,8 @@ export function waitForNextjsHydration() {
       const nextContainer = $('#__next');
 
       if (nextDataElement && nextContainer) {
+        if (isMainWorldContext() && !window?.next?.router?.push) return;
+
         clearInterval(checkInterval);
         resolve(null);
       }
@@ -181,7 +183,7 @@ export function scrollToElement(
   offset = 0,
   duration = 500
 ) {
-  const $stickyHeader = ui.getStickyHeader();
+  const $stickyHeader = UIUtils.getStickyNavbar();
 
   if ($stickyHeader.length) {
     offset -= $stickyHeader.height() || 0;
@@ -197,7 +199,6 @@ export function scrollToElement(
     duration
   );
 }
-
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -338,7 +339,12 @@ export async function getNEXTDATA() {
 
 export const isMainWorldContext = () => !chrome.storage?.local;
 
-export async function injectMainWorldScript(url: string) {
+export async function injectMainWorldScript(
+  url: string,
+  inject: boolean = true
+) {
+  if (!inject) return;
+
   return new Promise((resolve, reject) => {
     $('<script>')
       .attr({
@@ -347,11 +353,11 @@ export async function injectMainWorldScript(url: string) {
         onload: () => resolve(null),
         onerror: () => reject(new Error(`Failed to load script: ${url}`)),
       })
-      .appendTo('body');
+      .appendTo(document.body);
   });
 }
 
-export async function injectMainWorldScriptBlock({
+export function injectMainWorldScriptBlock({
   scriptContent,
   waitForExecution = false,
 }: {
@@ -378,7 +384,7 @@ export async function injectMainWorldScriptBlock({
 
     script.textContent = `
       ${scriptContent}
-      window['${executionId}']();
+      window?.['${executionId}']();
     `;
 
     script.onload = () => {
@@ -394,4 +400,44 @@ export async function injectMainWorldScriptBlock({
 
     document.body.appendChild(script);
   });
+}
+
+export function getReactPropsKey(element: Element) {
+  return (
+    Object.keys(element).find((key) => key.startsWith('__reactProps$')) || ''
+  );
+}
+
+export function getReactFiberKey(element: Element) {
+  return (
+    Object.keys(element).find((key) => key.startsWith('__reactFiber$')) || ''
+  );
+}
+
+export function onScrollDirectionChange({
+  up,
+  down,
+  identifier,
+}: {
+  up?: () => void;
+  down?: () => void;
+  identifier: string;
+}) {
+  let lastScrollTop = 0;
+
+  $(window).on(`scroll.${identifier}`, function () {
+    const currentScrollTop = $(this).scrollTop();
+
+    if (typeof currentScrollTop === 'undefined') return;
+
+    if (currentScrollTop > lastScrollTop) {
+      down?.();
+    } else {
+      up?.();
+    }
+
+    lastScrollTop = currentScrollTop;
+  });
+
+  return () => $(window).off(`scroll.${identifier}`);
 }

@@ -1,9 +1,11 @@
+import $ from 'jquery';
+
 import { Nullable } from './Utils';
 import { MessageListener, SendMessage } from './WebpageMessenger';
 
-import { type codeToHtml } from 'shiki';
-
-import $ from 'jquery';
+import type * as shiki from 'shiki';
+import type { Mermaid } from 'mermaid';
+import type * as svgPanZoom from 'svg-pan-zoom';
 
 declare global {
   interface Window {
@@ -28,8 +30,8 @@ declare global {
     capturedSocket: Nullable<WebSocket | XMLHttpRequest>;
     longPollingInstance: Nullable<XMLHttpRequest>;
 
-    shiki: {
-      codeToHtml: typeof codeToHtml;
-    };
+    shiki?: typeof shiki;
+    mermaid?: Mermaid;
+    svgPanZoom?: typeof svgPanZoom;
   }
 }

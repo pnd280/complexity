@@ -2,13 +2,10 @@ import $ from 'jquery';
 
 import { MessageData } from '@/types/WebpageMessenger';
 import { RouterEvent } from '@/types/WS';
+import { mainWorldExec } from '@/utils/hoc';
+import { waitForNextjsHydration } from '@/utils/utils';
 
-import { webpageMessenger } from './messenger';
-import {
-  isMainWorldContext,
-  sleep,
-  waitForNextjsHydration,
-} from '@/utils/utils';
+import { webpageMessenger } from './webpage-messenger';
 
 type NextRouter = typeof window.next;
 
@@ -26,14 +23,6 @@ class NextRouterProxy {
 
   async initialize() {
     await waitForNextjsHydration();
-
-    if (typeof window.next === 'undefined') {
-      await sleep(100);
-
-      this.initialize();
-
-      return console.warn('Next.js router not found. Retrying...');
-    }
 
     this.proxyRouterMethods();
     this.setupEventListeners();
@@ -129,8 +118,8 @@ class NextRouterProxy {
   }
 }
 
-$(() => {
-  if (!isMainWorldContext()) return;
-
-  NextRouterProxy.getInstance().initialize();
-});
+mainWorldExec(() =>
+  $(() => {
+    NextRouterProxy.getInstance().initialize();
+  })
+)();

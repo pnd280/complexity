@@ -1,5 +1,9 @@
+import { HTMLCanvasAction } from '@/content-script/main-world/canvas/html';
 import { Nullable } from './Utils';
 import { RouterEvent } from './WS';
+import {
+  ReactNodeAction
+} from '@/content-script/main-world/react-node';
 
 export type MessageData<T> = {
   messageId: string;
@@ -11,9 +15,9 @@ export type MessageData<T> = {
 
 export type SendMessageOptions<K extends keyof EventHandlers> = {
   event: K;
-  timeout?: number;
   payload?: EventPayloads[K];
   forceLongPolling?: boolean;
+  suppressTimeoutError?: boolean;
 };
 
 export type ResponseData<T> = {
@@ -105,4 +109,23 @@ export interface EventHandlers {
     code: string;
     lang: string;
   }): Nullable<string>;
+
+  isMermaidInitialized(): boolean;
+  mermaidCanvasAction({
+    action,
+    payload,
+  }: {
+    action: 'render' | 'resetZoomPan';
+    payload: string;
+  }): boolean;
+
+  htmlCanvasAction({ action, payload }: HTMLCanvasAction): boolean;
+
+  getReactNodeData({
+    querySelector,
+    action,
+  }: {
+    querySelector: string;
+    action: ReactNodeAction;
+  }): unknown;
 }

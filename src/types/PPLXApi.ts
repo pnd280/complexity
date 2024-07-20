@@ -1,4 +1,4 @@
-import { Collection } from '@/components/QueryBox/CollectionSelector';
+import { Collection } from '@/content-script/components/QueryBox/CollectionSelector';
 
 import { LanguageModel } from './ModelSelector';
 
@@ -17,7 +17,7 @@ export type UserSettingsApiResponse = {
   upload_limit: number;
 };
 
-export type CollectionsAPIResponse = {
+export type CollectionsApiResponse = {
   title: string;
   uuid: string;
   instructions: string;
@@ -26,7 +26,7 @@ export type CollectionsAPIResponse = {
   access: 1 | 2;
 }[];
 
-export type ThreadMessageAPIResponse = {
+export type ThreadMessageApiResponse = {
   query_str: string;
   text: string;
   backend_uuid: string;
@@ -37,11 +37,11 @@ export type ThreadMessageAPIResponse = {
   display_model: LanguageModel['code'];
 };
 
-export type UserProfileSettingsAPIResponse = {
+export type UserProfileSettingsApiResponse = {
   has_profile: boolean;
   disabled: boolean;
   bio: string;
 };
 
-export type UserProfileSettingsAPIRequest =
-  Partial<UserProfileSettingsAPIResponse>;
+export type UserProfileSettingsApiRequest =
+  Partial<UserProfileSettingsApiResponse>;

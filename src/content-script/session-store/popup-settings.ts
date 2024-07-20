@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-import { chromeStorage } from '@/utils/chrome-store';
+import { CanvasLang } from '@/utils/Canvas';
+import ChromeStorage from '@/utils/ChromeStorage';
+import { extensionExec } from '@/utils/hoc';
 
 type PopupSettingsState = {
   queryBoxSelectors: {
@@ -13,8 +15,12 @@ type PopupSettingsState = {
   qolTweaks: {
     threadTOC: boolean;
     quickQueryCommander: boolean;
-    threadMessageStickyHeader: boolean;
-    markdownBlockToolbar: boolean;
+    threadMessageStickyToolbar: boolean;
+    alternateMarkdownBlock: boolean;
+    canvas: {
+      enabled: boolean;
+      mask: Partial<Record<CanvasLang, boolean>>;
+    };
     autoRefreshSessionTimeout: boolean;
     blockTelemetry: boolean;
   };
@@ -25,7 +31,7 @@ type PopupSettingsState = {
 
 const usePopupSettingsStore = create<PopupSettingsState>()(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  immer((set) => ({
+  immer((set, get) => ({
     queryBoxSelectors: {
       focus: false,
       languageModel: false,
@@ -35,8 +41,12 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
     qolTweaks: {
       threadTOC: false,
       quickQueryCommander: false,
-      threadMessageStickyHeader: false,
-      markdownBlockToolbar: false,
+      threadMessageStickyToolbar: false,
+      alternateMarkdownBlock: false,
+      canvas: {
+        enabled: false,
+        mask: {},
+      },
       autoRefreshSessionTimeout: false,
       blockTelemetry: false,
     },
@@ -48,11 +58,11 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
 
 const popupSettingsStore = usePopupSettingsStore;
 
-(async function initPopupSettingsStore() {
-  let settings = await chromeStorage.getStorageValue('popupSettings');
+extensionExec(async function initPopupSettingsStore() {
+  let settings = await ChromeStorage.getStorageValue('popupSettings');
 
   if (!settings) {
-    await chromeStorage.setStorageValue({
+    await ChromeStorage.setStorageValue({
       key: 'popupSettings',
       value: {
         queryBoxSelectors: {
@@ -64,8 +74,12 @@ const popupSettingsStore = usePopupSettingsStore;
         qolTweaks: {
           threadTOC: false,
           quickQueryCommander: false,
-          threadMessageStickyHeader: false,
-          markdownBlockToolbar: false,
+          threadMessageStickyToolbar: false,
+          alternateMarkdownBlock: false,
+          canvas: {
+            enabled: false,
+            mask: {},
+          },
           autoRefreshSessionTimeout: false,
           blockTelemetry: false,
         },
@@ -75,8 +89,10 @@ const popupSettingsStore = usePopupSettingsStore;
       },
     });
 
-    settings = await chromeStorage.getStorageValue('popupSettings');
+    settings = await ChromeStorage.getStorageValue('popupSettings');
   }
+
+  if (!settings) return;
 
   const queryBoxSelectors = settings.queryBoxSelectors;
   const qolTweaks = settings.qolTweaks;
@@ -100,7 +116,7 @@ const popupSettingsStore = usePopupSettingsStore;
   }
 
   popupSettingsStore.subscribe((state) => {
-    chromeStorage.setStorageValue({ key: 'popupSettings', value: state });
+    ChromeStorage.setStorageValue({ key: 'popupSettings', value: state });
   });
 })();
 

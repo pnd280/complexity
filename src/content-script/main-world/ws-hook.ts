@@ -1,7 +1,7 @@
 import { Nullable } from '@/types/Utils';
+import { mainWorldExec } from '@/utils/hoc';
 
-import { webpageMessenger } from './messenger';
-import { isMainWorldContext } from '@/utils/utils';
+import { webpageMessenger } from './webpage-messenger';
 
 class WSHook {
   private static instance: WSHook;
@@ -352,6 +352,8 @@ class WSHook {
   }
 }
 
-if (isMainWorldContext()) {
-  WSHook.getInstance().initialize();
-}
+mainWorldExec(() =>
+  $(() => {
+    WSHook.getInstance().initialize();
+  })
+)();

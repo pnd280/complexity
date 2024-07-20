@@ -1,17 +1,12 @@
-import { ui } from '@/utils/ui';
-import {
-  injectMainWorldScriptBlock,
-  isMainWorldContext,
-  sleep,
-} from '@/utils/utils';
+import { extensionOnly, mainWorldExec } from '@/utils/hoc';
+import UIUtils from '@/utils/UI';
+import { injectMainWorldScriptBlock, sleep } from '@/utils/utils';
 
-import { webpageMessenger } from './messenger';
+import { webpageMessenger } from './webpage-messenger';
 
 class ShikiHighlighter {
   private static instance: ShikiHighlighter;
   private importPromise: Promise<void> | null = null;
-
-  // private supportedLangs = ['csharp', 'gdscript', 'blade'];
 
   private constructor() {}
 
@@ -32,8 +27,8 @@ class ShikiHighlighter {
 
     if (!this.importPromise) {
       const scriptContent = `
-        import { codeToHtml } from 'https://esm.sh/shiki@1.10.3';
-        window.shiki = { codeToHtml };
+        import * as shiki from 'https://esm.sh/shiki@1.10.3';
+        window.shiki = shiki;
       `;
 
       this.importPromise = injectMainWorldScriptBlock({
@@ -67,14 +62,19 @@ class ShikiHighlighter {
     const { code, lang } = payload;
 
     if (!code) {
-      console.warn('Received empty code for highlighting');
-      return null;
+      throw new Error('Received empty code for highlighting');
     }
 
     try {
       await this.importShiki();
-      const theme = ui.isDarkTheme() ? 'dark-plus' : 'light-plus';
-      return await window.shiki.codeToHtml(code, { lang, theme });
+      const theme = UIUtils.isDarkTheme() ? 'dark-plus' : 'light-plus';
+
+      if (!(lang in window.shiki!.bundledLanguages)) return null;
+
+      return await window.shiki!.codeToHtml(code, {
+        lang,
+        theme,
+      });
     } catch (error) {
       console.error('Error highlighting code:', error);
       return null;
@@ -82,18 +82,17 @@ class ShikiHighlighter {
   }
 }
 
-const waitForInitialization = (() => {
+const waitForInitialization = () => {
   let initializationPromise: Promise<void>;
 
-  return (): Promise<void> => {
-    if (isMainWorldContext()) return Promise.resolve();
-
+  return extensionOnly((): Promise<void> => {
     if (initializationPromise) return initializationPromise;
 
     const checkForInitialization = async (): Promise<void> => {
       const isInitialized = await webpageMessenger.sendMessage({
         event: 'isShikiHighlighterInitialized',
         timeout: 1000,
+        suppressTimeoutError: true,
       });
 
       if (!isInitialized) {
@@ -104,12 +103,14 @@ const waitForInitialization = (() => {
 
     initializationPromise = checkForInitialization();
     return initializationPromise;
-  };
-})();
+  })();
+};
 
-if (isMainWorldContext()) {
-  ShikiHighlighter.getInstance().initialize();
-}
+mainWorldExec(() =>
+  $(() => {
+    ShikiHighlighter.getInstance().initialize();
+  })
+)();
 
 export const shikiContentScript = {
   waitForInitialization,

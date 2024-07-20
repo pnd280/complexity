@@ -3,7 +3,7 @@ import { BackgroundAction } from '@/utils/background';
 if (!import.meta.env.DEV) {
   chrome.runtime.onInstalled.addListener(() => {
     chrome.tabs.create({
-      url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
+      url: chrome.runtime.getURL('/page/options-page.html') + '?tab=changelog',
     });
   });
 }
@@ -19,7 +19,12 @@ chrome.runtime.onMessage.addListener(
     switch (action) {
       case 'openChangelog':
         chrome.tabs.create({
-          url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
+          url: chrome.runtime.getURL('/page/options-page.html') + '?tab=changelog',
+        });
+        break;
+      case 'openCustomTheme':
+        chrome.tabs.create({
+          url: chrome.runtime.getURL('/page/options-page.html') + '?tab=customTheme',
         });
         break;
       case 'getTabId':
@@ -31,3 +36,13 @@ chrome.runtime.onMessage.addListener(
     return true;
   }
 );
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.action === 'downloadSVG') {
+    chrome.downloads.download({
+      filename: message.fileName,
+      url: `data:image/svg+xml;base64,${message.data}`,
+      saveAs: true,
+    });
+  }
+});
