@@ -5,7 +5,7 @@ import { webpageMessenger } from '@/content-script/main-world/webpage-messenger'
 import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
 import { cn } from '@/utils/shadcn-ui-utils';
 
-import { getReactPropsKey, stripHtml } from './utils';
+import { getReactPropsKey, isMainWorldContext, stripHtml } from './utils';
 
 type PreBlockTransformResult = {
   $wrapper: JQuery<HTMLElement>;
@@ -23,7 +23,7 @@ export default class MarkdownBlockUtils {
 
     const $pre = $(pre) as JQuery<HTMLElement>;
     const isNative = !$pre.parent('#markdown-query-wrapper').length;
-    const lang = this.getLang($pre);
+    const lang = MarkdownBlockUtils.getLang($pre) || 'text';
 
     if ($pre.attr('data-toolbar')) {
       return this.handleExistingToolbar($pre, lang, isNative);
@@ -80,18 +80,6 @@ export default class MarkdownBlockUtils {
       $wrapper.append($pre).prepend($container);
     }
   }
-
-  static getLang = ($pre: JQuery<HTMLElement>): string => {
-    return (
-      $pre.attr('data-lang') ||
-      $pre
-        .find('code')
-        .attr('class')
-        ?.match(/language-(\S+)/)?.[1] ||
-      $pre.find('.rounded-br').text() ||
-      ''
-    );
-  };
 
   private static createContainer(isNative: boolean): JQuery<HTMLElement> {
     const baseClasses = cn(
@@ -177,8 +165,10 @@ export default class MarkdownBlockUtils {
     return $(messageBlock).find('pre').index($pre);
   };
 
-  static extractLanguage = (pre: HTMLElement) => {
+  static getLangFromReactNode = (pre: HTMLElement) => {
     try {
+      if (!isMainWorldContext()) return MarkdownBlockUtils.getLang($(pre));
+
       const propsKey = getReactPropsKey(pre);
 
       if (!propsKey) return;
@@ -191,8 +181,20 @@ export default class MarkdownBlockUtils {
       const lang = className?.split('-').slice(1).join('-');
       return lang || 'text';
     } catch (e) {
-      return 'text';
+      return MarkdownBlockUtils.getLang($(pre));
     }
+  };
+
+  static getLang = ($pre: JQuery<HTMLElement>): string => {
+    return (
+      $pre.attr('data-lang') ||
+      $pre
+        .find('code')
+        .attr('class')
+        ?.match(/language-(\S+)/)?.[1] ||
+      $pre.find('.rounded-br').text() ||
+      ''
+    );
   };
 
   static async isInFlight(pre: HTMLElement) {

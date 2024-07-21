@@ -14,7 +14,7 @@ function addDataAttrs(pre: HTMLElement) {
   if (!pre.querySelector('&>div.codeWrapper') || pre.hasAttribute('data-lang'))
     return;
 
-  const lang = MarkdownBlockUtils.extractLanguage(pre);
+  const lang = MarkdownBlockUtils.getLangFromReactNode(pre);
   pre.setAttribute('data-lang', lang);
   pre.setAttribute('data-mask', Canvas.isMaskableLang(lang) ? 'true' : 'false');
 }

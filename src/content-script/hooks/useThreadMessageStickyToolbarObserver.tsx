@@ -183,11 +183,18 @@ export default function useThreadMessageStickyToolbarObserver({
       async function rewriteQuery({ $query }: { $query: JQuery<Element> }) {
         const mardownedText = markdown2Html($query.text());
 
+        const textSize = $query
+          .find('>*:not(#markdown-query-wrapper)')
+          .attr('class')
+          ?.split(' ')
+          .find((c) => c === 'text-3xl' || c === 'text-base');
+
         const $newQueryWrapper = $('<div>')
           .html(mardownedText)
           .attr('id', 'markdown-query-wrapper')
           .addClass(
-            $query.find('>*:not(#markdown-query-wrapper)').attr('class') || ''
+            'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection ' +
+              textSize
           );
 
         $query.append($newQueryWrapper);

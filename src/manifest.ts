@@ -40,6 +40,8 @@ export default defineManifest({
         'img/logo-34.png',
         'img/logo-48.png',
         'img/logo-128.png',
+        '*.js',
+        '*.css',
         'global.css',
         'overrides.css',
         'components.css',
