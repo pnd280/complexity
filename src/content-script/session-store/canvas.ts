@@ -3,7 +3,6 @@ import { immer } from 'zustand/middleware/immer';
 
 type CanvasMetaData = {
   messageBlockIndex: number;
-  preBlockIndex: number;
   preBlockId: string;
   content: string;
 };

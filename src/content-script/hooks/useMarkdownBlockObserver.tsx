@@ -11,7 +11,6 @@ import { MarkdownBlockContainer } from '@/content-script/components/AlternateMar
 import { shikiContentScript } from '@/content-script/main-world/shiki';
 import DOMObserver from '@/utils/DOMObserver';
 import MarkdownBlockUtils from '@/utils/MarkdownBlock';
-import UIUtils from '@/utils/UI';
 import { isDOMNode } from '@/utils/utils';
 
 import useWaitForMessagesContainer from './useWaitForMessagesContainer';
@@ -26,11 +25,7 @@ const compare = (
 ): boolean => {
   if (prev.length !== next.length) return false;
   for (let i = prev.length - 1; i >= 0; i--) {
-    if (
-      prev[i].id !== next[i].id ||
-      prev[i].lang !== next[i].lang ||
-      prev[i].isNative !== next[i].isNative
-    ) {
+    if (prev[i].preElement !== next[i].preElement) {
       return false;
     }
   }
@@ -71,35 +66,28 @@ export default function useMarkdownBlockObserver({
       });
 
       function callback() {
-        const $messageBlocks = $(`.message-block`);
-
         const promises: Promise<MarkdownBlockContainer | null>[] = [];
 
-        $messageBlocks.each((_, messageBlock) => {
-          $(messageBlock)
-            .find('pre')
-            .each((_, pre) => {
-              promises.push(
-                new Promise<MarkdownBlockContainer | null>((resolve) => {
-                  queueMicrotask(() => {
-                    const { $wrapper, $container, lang } =
-                      MarkdownBlockUtils.transformPreBlock(pre) || {};
+        $('.message-block pre').each((index, pre) => {
+          promises.push(
+            new Promise<MarkdownBlockContainer | null>((resolve) => {
+              queueMicrotask(() => {
+                const { $wrapper, $container, lang } =
+                  MarkdownBlockUtils.transformPreBlock(pre) || {};
 
-                    if (!$container?.length || !$wrapper?.length || !lang)
-                      return resolve(null);
+                if (!$container?.length || !$wrapper?.length || !lang)
+                  return resolve(null);
 
-                    resolve({
-                      wrapper: $wrapper[0],
-                      header: $container[0],
-                      preElement: pre,
-                      lang: lang || '',
-                      isNative: true,
-                      id: pre.id,
-                    });
-                  });
-                })
-              );
-            });
+                resolve({
+                  wrapper: $wrapper[0],
+                  header: $container[0],
+                  preElement: pre,
+                  lang,
+                  isNative: true,
+                });
+              });
+            })
+          );
         });
 
         Promise.all(promises).then((results) => {
@@ -142,25 +130,17 @@ export default function useMarkdownBlockObserver({
       })();
 
       function callback() {
-        const messageBlocks = UIUtils.getMessageBlocks();
+        $('.message-block pre').each((_, pre) => {
+          queueMicrotask(async () => {
+            MarkdownBlockUtils.handleVisibility(pre);
 
-        messageBlocks.forEach(({ $messageBlock }) => {
-          queueMicrotask(() => {
-            const $codeBlocks = $messageBlock.find('pre');
+            if (!$(pre).attr('id')) return;
 
-            $codeBlocks.each((_, pre) => {
-              queueMicrotask(async () => {
-                MarkdownBlockUtils.handleVisibility(pre);
+            const isInFlight =
+              await MarkdownBlockUtils.handleInFlightState(pre);
 
-                if (!$(pre).attr('id')) return;
-
-                const isInFlight =
-                  await MarkdownBlockUtils.handleInFlightState(pre);
-
-                if (!isInFlight)
-                  MarkdownBlockUtils.highlightNativelyUnsupportedLang(pre);
-              });
-            });
+            if (!isInFlight)
+              MarkdownBlockUtils.highlightNativelyUnsupportedLang(pre);
           });
         });
       }

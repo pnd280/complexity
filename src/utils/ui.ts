@@ -63,7 +63,7 @@ export default class UIUtils {
     $messagesContainer.children().each((index, messageBlock) => {
       const $messageBlock = $(messageBlock);
 
-      $messageBlock.addClass('message-block').attr({ 'data-index': index });
+      $messageBlock.addClass('message-block').attr({ 'data-index': index + 1 });
 
       const { $query, $answer, $answerHeading } =
         UIUtils.parseMessageBlock($messageBlock);

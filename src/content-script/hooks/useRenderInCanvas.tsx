@@ -1,23 +1,23 @@
 import $ from 'jquery';
+import { useEffect } from 'react';
 
 import { useCanvasStore } from '@/content-script/session-store/canvas';
 import MarkdownBlockUtils from '@/utils/MarkdownBlock';
+import { queryClient } from '@/utils/ts-query-query-client';
 import { useQuery } from '@tanstack/react-query';
 
 type useRenderInCanvasProps = {
   preBlockId: string;
-  preBlockIndex: number;
 };
 
 export default function useRenderInCanvas({
   preBlockId,
-  preBlockIndex,
 }: useRenderInCanvasProps) {
   const { metaData: canvasMetaData, setMetaData: setCanvasMetaData } =
     useCanvasStore();
 
   const { data: content, refetch: extractContent } = useQuery({
-    queryKey: ['canvasCode'],
+    queryKey: ['canvasCode', preBlockId],
     queryFn: () =>
       MarkdownBlockUtils.extractCodeFromPreReactNode($(`#${preBlockId}`)[0]),
     refetchOnWindowFocus: false,
@@ -28,9 +28,8 @@ export default function useRenderInCanvas({
   );
 
   const isActive =
-    canvasMetaData?.messageBlockIndex === messageBlockIndex &&
     canvasMetaData?.content === (content ?? '') &&
-    canvasMetaData.preBlockIndex === preBlockIndex;
+    canvasMetaData.preBlockId === preBlockId;
 
   const handleRender = async () => {
     const { data: content } = await extractContent();
@@ -44,20 +43,21 @@ export default function useRenderInCanvas({
     )
       return;
 
-    if (
-      canvasMetaData &&
-      canvasMetaData.preBlockIndex === preBlockIndex &&
-      canvasMetaData.content === content
-    )
-      return setCanvasMetaData();
+    if (isActive) return setCanvasMetaData();
 
     setCanvasMetaData({
       messageBlockIndex,
-      preBlockIndex,
-      preBlockId: preBlockId,
+      preBlockId,
       content,
     });
   };
+
+  useEffect(() => {
+    return () =>
+      queryClient.removeQueries({
+        queryKey: ['canvasCode', preBlockId],
+      });
+  }, [preBlockId]);
 
   return {
     isActive,

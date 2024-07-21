@@ -18,7 +18,7 @@ import { useMediaQuery, useWindowScroll } from '@uidotdev/usehooks';
 import { canvasComponents } from './';
 
 export default function CanvasPanel() {
-  const { isOpen, toggleOpen, metaData } = useCanvasStore();
+  const { isOpen, toggleOpen, metaData, setMetaData } = useCanvasStore();
 
   const [canvasComponent, setCanvasComponent] = useState<ReactNode>();
 
@@ -31,13 +31,11 @@ export default function CanvasPanel() {
   });
 
   const checkIfCanvasIsOpen = useCallback(() => {
-    const { preBlockIndex } = metaData || {
-      preBlockIndex: -1,
-    };
+    const { preBlockId } = metaData || {};
 
-    if (preBlockIndex < 0) return false;
+    if (!preBlockId) return false;
 
-    const $pre = $('pre').eq(preBlockIndex);
+    const $pre = $(`#${preBlockId}`);
     const lang = MarkdownBlockUtils.getLang($pre);
     if (!Canvas.isCanvasLang(lang)) return false;
 
@@ -85,6 +83,12 @@ export default function CanvasPanel() {
     toggleOpen,
     updateThreadWrapperClasses,
   ]);
+
+  useEffect(() => {
+    return () => {
+      setMetaData();
+    };
+  }, [setMetaData]);
 
   const handleAnimationEnd = () => {
     if (!isOpen) {
@@ -267,7 +271,7 @@ function JumpToSource() {
       ref={ref}
       className="tw-cursor-pointer tw-text-sm tw-p-1 tw-text-muted-foreground hover:tw-text-foreground active:tw-scale-95 tw-transition-all tw-duration-300 tw-animate-in tw-fade-in tw-font-sans"
       onClick={() => {
-        const $preBlock = $(`pre`).eq(metaData.preBlockIndex);
+        const $preBlock = $(`#${metaData.preBlockId}`);
 
         if (
           !$preBlock.length ||

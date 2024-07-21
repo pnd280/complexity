@@ -12,7 +12,6 @@ type PreBlockTransformResult = {
   $container: JQuery<HTMLElement>;
   lang: string;
   isNative: boolean;
-  id: string;
 };
 
 export default class MarkdownBlockUtils {
@@ -29,9 +28,6 @@ export default class MarkdownBlockUtils {
       return this.handleExistingToolbar($pre, lang, isNative);
     }
 
-    const id = this.generateId();
-    $pre.attr('id', `md-block-${id}`);
-
     const { $container, $wrapper } = this.createElements(isNative, $pre);
 
     this.applyStyles($pre, $wrapper, isNative);
@@ -40,7 +36,7 @@ export default class MarkdownBlockUtils {
 
     $pre.attr('data-toolbar', 'true');
 
-    return { $wrapper, $container, id, lang, isNative };
+    return { $wrapper, $container, lang, isNative };
   }
 
   private static handleExistingToolbar(
@@ -53,12 +49,7 @@ export default class MarkdownBlockUtils {
       $container: $pre.prev() as JQuery<HTMLElement>,
       lang,
       isNative,
-      id: $pre.attr('id') || '',
     };
-  }
-
-  private static generateId(): string {
-    return Math.random().toString(36).slice(2, 9);
   }
 
   private static createElements(isNative: boolean, $pre: JQuery<HTMLElement>) {

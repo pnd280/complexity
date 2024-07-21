@@ -8,13 +8,11 @@ import { canvasPlaceholders } from './';
 
 type CanvasPlaceholderProps = React.HTMLAttributes<HTMLDivElement> & {
   preBlockId: string;
-  preBlockIndex: number;
   lang: CanvasLang;
 };
 
 export default function CanvasPlaceholder({
   preBlockId,
-  preBlockIndex,
   lang,
   className,
   ...props
@@ -23,7 +21,6 @@ export default function CanvasPlaceholder({
 
   const { isActive, handleRender } = useRenderInCanvas({
     preBlockId,
-    preBlockIndex,
   });
 
   return (

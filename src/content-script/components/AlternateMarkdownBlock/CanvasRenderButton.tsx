@@ -5,16 +5,13 @@ import { cn } from '@/utils/shadcn-ui-utils';
 
 type CanvasRenderButtonProps = {
   preBlockId: string;
-  preBlockIndex: number;
 };
 
 export default function CanvasRenderButton({
   preBlockId,
-  preBlockIndex,
 }: CanvasRenderButtonProps) {
   const { isActive, handleRender } = useRenderInCanvas({
     preBlockId,
-    preBlockIndex,
   });
 
   return (

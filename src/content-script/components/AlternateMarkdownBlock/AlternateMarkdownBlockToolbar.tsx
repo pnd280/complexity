@@ -7,13 +7,11 @@ import CanvasRenderButton from './CanvasRenderButton';
 import CopyButton from './CopyButton';
 
 type MarkdownBlockToolbarProps = {
-  preBlockIndex: number;
   lang: string;
   preBlockId: string;
 };
 
-export default (function AlternateMarkdownBlockToolbar({
-  preBlockIndex,
+export default function AlternateMarkdownBlockToolbar({
   lang,
   preBlockId,
 }: MarkdownBlockToolbarProps) {
@@ -35,10 +33,7 @@ export default (function AlternateMarkdownBlockToolbar({
 
         {Canvas.isCanvasLang(lang) && (
           <div className="tw-hidden group-data-[inflight=false]:tw-block">
-            <CanvasRenderButton
-              preBlockId={preBlockId}
-              preBlockIndex={preBlockIndex}
-            />
+            <CanvasRenderButton preBlockId={preBlockId} />
           </div>
         )}
 
@@ -46,4 +41,4 @@ export default (function AlternateMarkdownBlockToolbar({
       </div>
     </div>
   );
-});
+}
