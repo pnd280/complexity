@@ -1,9 +1,7 @@
 import $ from 'jquery';
 import { LoaderCircle } from 'lucide-react';
-import ReactDOM from 'react-dom';
 
-import CanvasPlaceholder from '@/content-script/components/Canvas/CanvasPlaceholder';
-import Canvas, { CanvasLang } from '@/utils/Canvas';
+import Canvas from '@/utils/Canvas';
 
 import CanvasRenderButton from './CanvasRenderButton';
 import CopyButton from './CopyButton';
@@ -20,23 +18,6 @@ export default (function AlternateMarkdownBlockToolbar({
   preBlockId,
 }: MarkdownBlockToolbarProps) {
   const $pre = $(`pre#${preBlockId}`);
-
-  if ($pre.attr('data-mask') === 'true') {
-    if (!Canvas.isCanvasLang(lang)) return null;
-    
-    const portalInsertionNode = $pre[0]?.closest('div.w-full.max-w-\\[90vw\\]');
-
-    if (!portalInsertionNode) return null;
-
-    return ReactDOM.createPortal(
-      <CanvasPlaceholder
-        preBlockId={preBlockId}
-        preBlockIndex={preBlockIndex}
-        lang={lang as CanvasLang}
-      />,
-      portalInsertionNode
-    );
-  }
 
   return (
     <div

@@ -35,9 +35,11 @@ class MermaidCanvas {
         document.documentElement
       ).getPropertyValue('--accent');
 
-      const uiFont = getComputedStyle(
-        document.documentElement
-      ).getPropertyValue('--ui-font');
+      const uiFont =
+        getComputedStyle(document.body).getPropertyValue('--ui-font') ||
+        getComputedStyle(document.documentElement).getPropertyValue(
+          '--ui-font'
+        );
 
       const config: MermaidConfig = {
         startOnLoad: false,

@@ -82,20 +82,20 @@ export default function useMarkdownBlockObserver({
               promises.push(
                 new Promise<MarkdownBlockContainer | null>((resolve) => {
                   queueMicrotask(() => {
-                    const { $container, lang } =
+                    const { $wrapper, $container, lang } =
                       MarkdownBlockUtils.transformPreBlock(pre) || {};
 
-                    if ($container?.length) {
-                      resolve({
-                        header: $container[0],
-                        preElement: pre,
-                        lang: lang || '',
-                        isNative: true,
-                        id: pre.id,
-                      });
-                    } else {
-                      resolve(null);
-                    }
+                    if (!$container?.length || !$wrapper?.length || !lang)
+                      return resolve(null);
+
+                    resolve({
+                      wrapper: $wrapper[0],
+                      header: $container[0],
+                      preElement: pre,
+                      lang: lang || '',
+                      isNative: true,
+                      id: pre.id,
+                    });
                   });
                 })
               );

@@ -113,8 +113,7 @@ export default class UITweaks {
       .toggleClass(
         'cplx-canvas',
         popupSettingsStore.getState().qolTweaks.alternateMarkdownBlock &&
-          popupSettingsStore.getState().qolTweaks.canvas.enabled &&
-          location === 'thread'
+          popupSettingsStore.getState().qolTweaks.canvas.enabled
       );
 
     (function setMaskableMarkdownBlocks() {

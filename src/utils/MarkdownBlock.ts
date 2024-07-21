@@ -7,46 +7,79 @@ import { cn } from '@/utils/shadcn-ui-utils';
 
 import { getReactPropsKey, stripHtml } from './utils';
 
+type PreBlockTransformResult = {
+  $wrapper: JQuery<HTMLElement>;
+  $container: JQuery<HTMLElement>;
+  lang: string;
+  isNative: boolean;
+  id: string;
+};
+
 export default class MarkdownBlockUtils {
-  static transformPreBlock = (pre: Element) => {
+  static transformPreBlock(
+    pre: Element | null
+  ): PreBlockTransformResult | null {
     if (!pre) return null;
 
     const $pre = $(pre) as JQuery<HTMLElement>;
-
     const isNative = !$pre.parent('#markdown-query-wrapper').length;
-    const lang = MarkdownBlockUtils.getLang($pre);
+    const lang = this.getLang($pre);
 
     if ($pre.attr('data-toolbar')) {
-      return {
-        $container: $pre.prev() as JQuery<HTMLElement>,
-        lang,
-        isNative,
-        id: $pre.attr('id') || '',
-      };
+      return this.handleExistingToolbar($pre, lang, isNative);
     }
 
-    const id = Math.random().toString(36).slice(2, 9);
+    const id = this.generateId();
     $pre.attr('id', `md-block-${id}`);
 
-    const $container = MarkdownBlockUtils.createContainer(isNative);
-    const $wrapper = isNative
-      ? $pre.parent()
-      : MarkdownBlockUtils.createWrapper(isNative);
+    const { $container, $wrapper } = this.createElements(isNative, $pre);
 
-    MarkdownBlockUtils.applyStyles($pre, $wrapper, isNative);
-    MarkdownBlockUtils.setupCodeBlock($pre, lang, isNative);
+    this.applyStyles($pre, $wrapper, isNative);
+    this.setupCodeBlock($pre, lang, isNative);
+    this.appendElements($pre, $wrapper, $container, isNative);
 
+    $pre.attr('data-toolbar', 'true');
+
+    return { $wrapper, $container, id, lang, isNative };
+  }
+
+  private static handleExistingToolbar(
+    $pre: JQuery<HTMLElement>,
+    lang: string,
+    isNative: boolean
+  ): PreBlockTransformResult {
+    return {
+      $wrapper: $pre.parent() as JQuery<HTMLElement>,
+      $container: $pre.prev() as JQuery<HTMLElement>,
+      lang,
+      isNative,
+      id: $pre.attr('id') || '',
+    };
+  }
+
+  private static generateId(): string {
+    return Math.random().toString(36).slice(2, 9);
+  }
+
+  private static createElements(isNative: boolean, $pre: JQuery<HTMLElement>) {
+    const $container = this.createContainer(isNative);
+    const $wrapper = isNative ? $pre.parent() : this.createWrapper(isNative);
+    return { $container, $wrapper };
+  }
+
+  private static appendElements(
+    $pre: JQuery<HTMLElement>,
+    $wrapper: JQuery<HTMLElement>,
+    $container: JQuery<HTMLElement>,
+    isNative: boolean
+  ) {
     if (isNative) {
       $wrapper.prepend($container);
     } else {
       $pre.before($wrapper);
-      $wrapper.append(pre).prepend($container);
+      $wrapper.append($pre).prepend($container);
     }
-
-    $pre.attr('data-toolbar', 'true');
-
-    return { $container, lang, isNative, id };
-  };
+  }
 
   static getLang = ($pre: JQuery<HTMLElement>): string => {
     return (

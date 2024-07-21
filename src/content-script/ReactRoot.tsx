@@ -4,14 +4,10 @@ import $ from 'jquery';
 import { lazy, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import AlternateMarkdownBlock from '@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock';
-import CanvasPanel from '@/content-script/components/Canvas/CanvasPanel';
 import { IncompatibleInterfaceLanguageNotice } from '@/content-script/components/IncompatibleInterfaceLanguageNotice';
 import MainPage from '@/content-script/components/MainPage';
 import QueryBox from '@/content-script/components/QueryBox/QueryBox';
 import ThreadExportButton from '@/content-script/components/ThreadExportButton';
-import ThreadMessageStickyToolbar from '@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar';
-import ThreadTOC from '@/content-script/components/ThreadTOC';
 import useRouter from '@/content-script/hooks/useRouter';
 import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
 import { Toaster } from '@/shared/components/shadcn/ui/toaster';
@@ -21,6 +17,22 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const Commander = lazy(() => import('@/content-script/components/Commander'));
+const CanvasPanel = lazy(
+  () => import('@/content-script/components/Canvas/CanvasPanel')
+);
+const ThreadMessageStickyToolbar = lazy(
+  () =>
+    import(
+      '@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar'
+    )
+);
+const AlternateMarkdownBlock = lazy(
+  () =>
+    import(
+      '@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock'
+    )
+);
+const ThreadTOC = lazy(() => import('@/content-script/components/ThreadTOC'));
 
 export default function ReactRoot() {
   const $root = $('<div>')
@@ -84,7 +96,9 @@ function ThreadComponents() {
       {popupSettingsStore.getState().qolTweaks.alternateMarkdownBlock && (
         <AlternateMarkdownBlock />
       )}
-      <CanvasPanel />
+      {popupSettingsStore.getState().qolTweaks.canvas.enabled && (
+        <CanvasPanel />
+      )}
     </>
   );
 }

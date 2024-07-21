@@ -4,13 +4,13 @@ import Canvas from '@/utils/Canvas';
 import { mainWorldExec } from '@/utils/hoc';
 import MarkdownBlockUtils from '@/utils/MarkdownBlock';
 
-function populateDataAttrs() {
+function applyDataAttrs() {
   $('pre').each((_, pre) => {
-    queueMicrotask(() => addDataAttr(pre));
+    queueMicrotask(() => addDataAttrs(pre));
   });
 }
 
-function addDataAttr(pre: HTMLElement) {
+function addDataAttrs(pre: HTMLElement) {
   if (!pre.querySelector('&>div.codeWrapper') || pre.hasAttribute('data-lang'))
     return;
 
@@ -19,18 +19,24 @@ function addDataAttr(pre: HTMLElement) {
   pre.setAttribute('data-mask', Canvas.isMaskableLang(lang) ? 'true' : 'false');
 }
 
-mainWorldExec(() =>
+mainWorldExec(() => {
   $(() => {
-    populateDataAttrs();
+    applyDataAttrs();
+    proxyDOMMethods();
+  });
+})();
 
-    const originalAppendChild = Node.prototype.appendChild;
+function proxyDOMMethods() {
+  // Why override native methods?
+  // To prevent layout shift: current DOMObserver implementation doesnt guarantee to react to DOM changes before they are painted on the screen => layout shift when apply new styles.
 
-    Node.prototype.appendChild = function <T extends Node>(newNode: T): T {
-      if (newNode instanceof HTMLPreElement) {
-        addDataAttr(newNode);
-      }
+  const originalAppendChild = Node.prototype.appendChild;
 
-      return originalAppendChild.call(this, newNode) as T;
-    };
-  })
-)();
+  Node.prototype.appendChild = function <T extends Node>(newNode: T): T {
+    if (newNode instanceof HTMLPreElement) {
+      addDataAttrs(newNode);
+    }
+
+    return originalAppendChild.call(this, newNode) as T;
+  };
+}
