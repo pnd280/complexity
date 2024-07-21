@@ -1,47 +1,44 @@
-interface BatchedMutationInfo {
+type BatchedMutationInfo = {
   addedNodes: Set<Node>;
   removedNodes: Set<Node>;
-  attributes: Map<string, string | null>;
-  characterData: string | null;
-}
-
-function createNodeList(nodes: Set<Node>): NodeList {
-  const fragment = document.createDocumentFragment();
-  nodes.forEach((node) => fragment.appendChild(node.cloneNode(true)));
-  return fragment.childNodes;
-}
+  attributes: Set<string>;
+  characterData: boolean;
+};
 
 export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
   const batchMap = new Map<Node, BatchedMutationInfo>();
 
   for (const mutation of mutations) {
-    if (!batchMap.has(mutation.target)) {
-      batchMap.set(mutation.target, {
+    let batchInfo = batchMap.get(mutation.target);
+    if (!batchInfo) {
+      batchInfo = {
         addedNodes: new Set(),
         removedNodes: new Set(),
-        attributes: new Map(),
-        characterData: null,
-      });
+        attributes: new Set(),
+        characterData: false,
+      };
+      batchMap.set(mutation.target, batchInfo);
     }
-    const batchInfo = batchMap.get(mutation.target)!;
 
     switch (mutation.type) {
       case 'childList':
-        mutation.addedNodes.forEach((node) => {
+        for (const node of mutation.addedNodes) {
           batchInfo.removedNodes.delete(node);
           batchInfo.addedNodes.add(node);
-        });
-        mutation.removedNodes.forEach((node) => {
+        }
+        for (const node of mutation.removedNodes) {
           if (!batchInfo.addedNodes.delete(node)) {
             batchInfo.removedNodes.add(node);
           }
-        });
+        }
         break;
       case 'attributes':
-        batchInfo.attributes.set(mutation.attributeName!, mutation.oldValue);
+        if (mutation.attributeName) {
+          batchInfo.attributes.add(mutation.attributeName);
+        }
         break;
       case 'characterData':
-        batchInfo.characterData = mutation.oldValue;
+        batchInfo.characterData = true;
         break;
     }
   }
@@ -53,44 +50,28 @@ export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
       batchedMutations.push({
         type: 'childList',
         target,
-        addedNodes: createNodeList(batchInfo.addedNodes),
-        removedNodes: createNodeList(batchInfo.removedNodes),
-        previousSibling: null,
-        nextSibling: null,
+        addedNodes: Array.from(batchInfo.addedNodes),
+        removedNodes: Array.from(batchInfo.removedNodes),
         attributeName: null,
-        attributeNamespace: null,
         oldValue: null,
-      });
+      } as unknown as MutationRecord);
     }
 
     if (batchInfo.attributes.size > 0) {
-      batchInfo.attributes.forEach((oldValue, attributeName) => {
-        batchedMutations.push({
-          type: 'attributes',
-          target,
-          attributeName,
-          attributeNamespace: null,
-          oldValue,
-          addedNodes: createNodeList(new Set()),
-          removedNodes: createNodeList(new Set()),
-          previousSibling: null,
-          nextSibling: null,
-        });
-      });
+      batchedMutations.push({
+        type: 'attributes',
+        target,
+        attributeName: Array.from(batchInfo.attributes),
+        oldValue: null,
+      } as unknown as MutationRecord);
     }
 
-    if (batchInfo.characterData !== null) {
+    if (batchInfo.characterData) {
       batchedMutations.push({
         type: 'characterData',
         target,
-        oldValue: batchInfo.characterData,
-        addedNodes: createNodeList(new Set()),
-        removedNodes: createNodeList(new Set()),
-        previousSibling: null,
-        nextSibling: null,
-        attributeName: null,
-        attributeNamespace: null,
-      });
+        oldValue: null,
+      } as unknown as MutationRecord);
     }
   });
 
