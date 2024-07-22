@@ -14,6 +14,6 @@ export const canvasLangs = [
     pplxSearch: '',
     trigger: 'html',
     description:
-      'JavaScript is enabled. For keyboard interactions, open the canvas in a new tab/popup.',
+      'JavaScript is enabled.',
   },
 ] as const;

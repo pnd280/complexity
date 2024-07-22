@@ -59,7 +59,7 @@ export default function CanvasPanel() {
           .toggleClass('max-w-threadWidth tw-mx-auto', isOpen);
 
         $(threadWrapper!).attr({
-          'data-mask-panel-state': isOpen ? 'open' : 'closed',
+          'data-canvas-panel-state': isOpen ? 'open' : 'closed',
         });
 
         $(threadWrapper).toggleClass(
@@ -102,7 +102,7 @@ export default function CanvasPanel() {
     <div
       id="canvas-panel"
       className={cn(
-        'tw-bg-accent tw-top-[5rem] tw-border tw-rounded-md tw-overflow-hidden tw-flex-col tw-flex',
+        'tw-transition-all tw-bg-accent tw-top-[5rem] tw-border tw-rounded-md tw-overflow-hidden tw-flex-col tw-flex',
         'tw-animate-in tw-slide-in-from-right tw-fade-in',
         {
           'tw-sticky': !isFloat,

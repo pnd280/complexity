@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { mainWorldExec } from '@/utils/hoc';
 
 import { webpageMessenger } from '../webpage-messenger';
+import UIUtils from '@/utils/UI';
 
 type RenderAction = {
   action: 'render';
@@ -20,6 +21,8 @@ class HTMLCanvas {
   private static instance: HTMLCanvas;
 
   blobUrl: string | null = null;
+
+  $lastFocusedElement: JQuery<Element> | null = null;
 
   private constructor() {}
 
@@ -58,35 +61,44 @@ class HTMLCanvas {
   }
 
   private async handleRenderAction(rawHTML: string) {
-    const $iframe = $('<iframe>')
-      .attr('id', 'html-wrapper')
-      .addClass('tw-size-full tw-opacity-0');
-
-    $('#complexity-canvas').empty().append($iframe);
-
     try {
       return await new Promise<boolean>((resolve) => {
-        $iframe.on('load', function () {
-          const thisElement = this as HTMLIFrameElement;
-
-          const iframeDocument =
-            thisElement.contentDocument || thisElement.contentWindow?.document;
-
-          if (!iframeDocument) {
-            return resolve(false);
-          }
-
-          $iframe
-            .removeClass('tw-opacity-0')
-            .addClass('tw-animate-in tw-fade-in');
-
-          resolve(true);
-        });
-
         const blob = new Blob([rawHTML], { type: 'text/html' });
-        $iframe.attr('src', URL.createObjectURL(blob));
-
         this.blobUrl = URL.createObjectURL(blob);
+
+        const $iframe = $('<iframe>')
+          .attr({ id: 'html-wrapper', src: this.blobUrl })
+          .addClass('tw-size-full tw-animate-in tw-fade-in');
+
+        $iframe
+          .on('mouseenter', () => {
+            if (document.activeElement)
+              this.$lastFocusedElement = $(document.activeElement);
+
+            UIUtils.getActiveQueryBoxTextarea({ type: 'follow-up' }).prop(
+              'disabled',
+              true
+            );
+
+            $('#canvas-panel').addClass('tw-ring tw-ring-accent-foreground');
+          })
+          .on('mouseleave', () => {
+            UIUtils.getActiveQueryBoxTextarea({ type: 'follow-up' }).prop(
+              'disabled',
+              false
+            );
+
+            $('#canvas-panel').removeClass('tw-ring tw-ring-accent-foreground')
+
+            if (this.$lastFocusedElement) {
+              this.$lastFocusedElement.trigger('focus');
+              this.$lastFocusedElement = null;
+            }
+          });
+
+        $('#complexity-canvas').empty().append($iframe);
+
+        resolve(true);
       });
     } catch (error) {
       console.error('Error rendering HTML canvas:', error);

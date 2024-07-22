@@ -183,20 +183,25 @@ const useThreadTOCObserver = () => {
 
     if (!$messageBlocks.length || !$messagesContainer.length) return;
 
-    setWrapperPos({
-      top: $messagesContainer.offset()?.top || 0,
-      left:
-        $messagesContainer.width()! + ($messagesContainer.offset()?.left || 0),
-    });
+    if (!isCanvasOpen) {
+      setWrapperPos({
+        top: $messagesContainer.offset()?.top || 0,
+        left:
+          $messagesContainer.width()! +
+          ($messagesContainer.offset()?.left || 0),
+      });
+    }
 
     setAnchorsProps([]);
 
     $messageBlocks.forEach(({ $query, $answer, $messageBlock }) => {
       queueMicrotask(() => {
-        const title = $query
-          .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
-          .first()
-          .text();
+        const title =
+          $query.find('textarea').val() ||
+          $query
+            .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
+            .first()
+            .text();
 
         if (!title.length) return;
 
@@ -223,7 +228,7 @@ const useThreadTOCObserver = () => {
         setAnchorsProps((prev) => [...(prev || []), anchorProps]);
       });
     });
-  }, []);
+  }, [isCanvasOpen]);
 
   useEffect(() => {
     requestIdleCallback(() => myObserver());
