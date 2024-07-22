@@ -1,13 +1,13 @@
-import { CanvasLang } from '@/utils/Canvas';
-import { WebAccessFocus } from './ModelSelector';
-import { Nullable } from './Utils';
+import { CanvasLang } from "@/utils/Canvas";
+import { WebAccessFocus } from "./ModelSelector";
+import { Nullable } from "./Utils";
 
 export type ChromeStoreKey = keyof ChromeStore;
 
-export type A = ChromeStore['popupSettings']['qolTweaks']['canvas']
+export type A = ChromeStore["popupSettings"]["qolTweaks"]["canvas"];
 
 export type ChromeStore = {
-  defaultFocus: Nullable<WebAccessFocus['code']>;
+  defaultFocus: Nullable<WebAccessFocus["code"]>;
   defaultWebAccess: boolean;
   secretMode: boolean;
   popupSettings: {
@@ -46,4 +46,4 @@ type NestedKeys<T> = {
   [K in keyof T]: T[K] extends object ? keyof T[K] : never;
 }[keyof T];
 
-export type PopupSettingKeys = NestedKeys<ChromeStore['popupSettings']>;
+export type PopupSettingKeys = NestedKeys<ChromeStore["popupSettings"]>;

@@ -1,10 +1,10 @@
-import { BackgroundAction } from '@/utils/background';
-import ChromeStorage from '@/utils/ChromeStorage';
+import { BackgroundAction } from "@/utils/background";
+import ChromeStorage from "@/utils/ChromeStorage";
 
 if (!import.meta.env.DEV) {
   chrome.runtime.onInstalled.addListener(() => {
     chrome.tabs.create({
-      url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
+      url: chrome.runtime.getURL("/page/options.html") + "?tab=changelog",
     });
   });
 }
@@ -13,10 +13,10 @@ chrome.runtime.onInstalled.addListener(async () => {
   const settings = await ChromeStorage.getStore();
 
   if (!settings || Object.keys(settings).length === 0) {
-    console.log('First time install detected, setting default values');
+    console.log("First time install detected, setting default values");
 
     ChromeStorage.setStorageValue({
-      key: 'popupSettings',
+      key: "popupSettings",
       value: {
         queryBoxSelectors: {
           focus: false,
@@ -48,33 +48,33 @@ chrome.runtime.onMessage.addListener(
   async (
     message: any,
     sender: chrome.runtime.MessageSender,
-    sendResponse: (response: any) => void
+    sendResponse: (response: any) => void,
   ) => {
     const action: BackgroundAction = message.action;
 
     switch (action) {
-      case 'openChangelog':
+      case "openChangelog":
         chrome.tabs.create({
-          url: chrome.runtime.getURL('/page/options.html') + '?tab=changelog',
+          url: chrome.runtime.getURL("/page/options.html") + "?tab=changelog",
         });
         break;
-      case 'openCustomTheme':
+      case "openCustomTheme":
         chrome.tabs.create({
-          url: chrome.runtime.getURL('/page/options.html') + '?tab=customTheme',
+          url: chrome.runtime.getURL("/page/options.html") + "?tab=customTheme",
         });
         break;
-      case 'getTabId':
+      case "getTabId":
         if (sender.tab) {
           sendResponse({ tabId: sender.tab.id });
         }
         break;
     }
     return true;
-  }
+  },
 );
 
 chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === 'downloadSVG') {
+  if (message.action === "downloadSVG") {
     chrome.downloads.download({
       filename: message.fileName,
       url: `data:image/svg+xml;base64,${message.data}`,

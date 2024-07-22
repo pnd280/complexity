@@ -1,38 +1,38 @@
-import { CircleHelp, HelpCircle } from 'lucide-react';
+import { CircleHelp, HelpCircle } from "lucide-react";
 
-import { canvasLangs } from '@/content-script/components/Canvas/langs';
-import { usePopupSettingsStore } from '@/content-script/session-store/popup-settings';
-import usePopupSettings from '@/popup-page/hooks/usePopupSettings';
-import LabeledSwitch from '@/shared/components/LabeledSwitch';
-import Tooltip from '@/shared/components/Tooltip';
-import { CanvasLang } from '@/utils/Canvas';
+import { canvasLangs } from "@/content-script/components/Canvas/langs";
+import { usePopupSettingsStore } from "@/content-script/session-store/popup-settings";
+import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
+import LabeledSwitch from "@/shared/components/LabeledSwitch";
+import Tooltip from "@/shared/components/Tooltip";
+import { CanvasLang } from "@/utils/Canvas";
 
 export default function CanvasSettings() {
   const { handleSettingsChange } = usePopupSettings();
 
   const isAlternateMarkdownBlockSettingEnabled = usePopupSettingsStore(
-    ({ qolTweaks: { alternateMarkdownBlock } }) => alternateMarkdownBlock
+    ({ qolTweaks: { alternateMarkdownBlock } }) => alternateMarkdownBlock,
   );
 
   const canvasSettings = usePopupSettingsStore(
-    ({ qolTweaks: { canvas } }) => canvas
+    ({ qolTweaks: { canvas } }) => canvas,
   );
 
   if (!isAlternateMarkdownBlockSettingEnabled)
     return (
       <div className="tw-w-full tw-text-center">
-        This feature requires{' '}
+        This feature requires{" "}
         <span className="tw-font-bold tw-text-accent-foreground">
           Alternate Markdown Block
-        </span>{' '}
+        </span>{" "}
         to be enabled.
       </div>
     );
 
   return (
-    <div className="tw-flex tw-flex-col tw-gap-2 ">
-      <h1 className="tw-text-xl tw-text-yellow-300 tw-mx-auto">
-        ⚠️ This is a <span className="tw-underline">highly experimental</span>{' '}
+    <div className="tw-flex tw-flex-col tw-gap-2">
+      <h1 className="tw-mx-auto tw-text-xl tw-text-yellow-300">
+        ⚠️ This is a <span className="tw-underline">highly experimental</span>{" "}
         feature!
       </h1>
       <div className="tw-text-center">
@@ -46,10 +46,10 @@ export default function CanvasSettings() {
         <LabeledSwitch
           id="canvas-enable"
           label="Enable"
-          className="tw-w-fit tw-mx-auto tw-mt-4"
+          className="tw-mx-auto tw-mt-4 tw-w-fit"
           checked={canvasSettings.enabled}
           onCheckedChange={(checked) => {
-            handleSettingsChange('qolTweaks', 'canvas', {
+            handleSettingsChange("qolTweaks", "canvas", {
               ...canvasSettings,
               enabled: checked,
             });
@@ -58,7 +58,7 @@ export default function CanvasSettings() {
       </div>
 
       {canvasSettings.enabled && (
-        <div className="tw-flex tw-flex-col tw-gap-2 tw-mt-4 tw-animate-in tw-fade-in">
+        <div className="tw-mt-4 tw-flex tw-flex-col tw-gap-2 tw-animate-in tw-fade-in">
           <div className="tw-flex tw-items-baseline tw-gap-2">
             <div className="tw-text-lg tw-font-semibold">
               Supported languages:
@@ -67,7 +67,7 @@ export default function CanvasSettings() {
               All languages below will be enabled.
             </div>
           </div>
-          <div className="tw-flex tw-gap-2 tw-flex-wrap">
+          <div className="tw-flex tw-flex-wrap tw-gap-2">
             {canvasLangs.map(
               ({ title, description, trigger, pplxSearch }, index) => (
                 <CanvasSettingBlock
@@ -77,7 +77,7 @@ export default function CanvasSettings() {
                   trigger={trigger}
                   description={description}
                 />
-              )
+              ),
             )}
           </div>
         </div>
@@ -102,18 +102,18 @@ function CanvasSettingBlock({
   const { handleSettingsChange } = usePopupSettings();
 
   const canvasSettings = usePopupSettingsStore(
-    ({ qolTweaks: { canvas } }) => canvas
+    ({ qolTweaks: { canvas } }) => canvas,
   );
 
   return (
-    <div className="tw-relative tw-flex tw-flex-col tw-gap-4 tw-w-[300px] tw-border tw-p-4 tw-rounded-md tw-shadow-lg">
+    <div className="tw-relative tw-flex tw-w-[300px] tw-flex-col tw-gap-4 tw-rounded-md tw-border tw-p-4 tw-shadow-lg">
       {pplxSearch && (
         <a
-          className="tw-absolute tw-top-2 tw-right-2"
+          className="tw-absolute tw-right-2 tw-top-2"
           href={`https://perplexity.ai/search?q=${encodeURIComponent(pplxSearch)}&focus=internet&copilot=true`}
           target="_blank"
         >
-          <CircleHelp className="tw-size-3 tw-text-muted hover:tw-text-muted-foreground tw-transition-all" />
+          <CircleHelp className="tw-size-3 tw-text-muted tw-transition-all hover:tw-text-muted-foreground" />
         </a>
       )}
 
@@ -121,9 +121,9 @@ function CanvasSettingBlock({
         <div className="tw-text-base tw-font-semibold tw-text-accent-foreground">
           {title}
         </div>
-        <div className="tw-flex tw-gap-1 tw-items-center">
+        <div className="tw-flex tw-items-center tw-gap-1">
           <div>Trigger:</div>
-          <div className="tw-bg-secondary tw-w-fit tw-p-1 tw-px-2 tw-rounded-md">
+          <div className="tw-w-fit tw-rounded-md tw-bg-secondary tw-p-1 tw-px-2">
             {trigger}
           </div>
         </div>
@@ -131,7 +131,7 @@ function CanvasSettingBlock({
 
       <div className="tw-text-xs tw-text-muted-foreground">{description}</div>
 
-      <div className="tw-flex tw-flex-col tw-gap-2 tw-mt-auto">
+      <div className="tw-mt-auto tw-flex tw-flex-col tw-gap-2">
         <div className="tw-flex tw-items-center tw-gap-4">
           <LabeledSwitch
             id={`canvas-lang-${trigger}`}
@@ -139,7 +139,7 @@ function CanvasSettingBlock({
             className="!tw-w-max"
             defaultChecked={canvasSettings.mask?.[trigger]}
             onCheckedChange={(checked) => {
-              handleSettingsChange('qolTweaks', 'canvas', {
+              handleSettingsChange("qolTweaks", "canvas", {
                 ...canvasSettings,
                 mask: {
                   ...canvasSettings.mask,
@@ -151,11 +151,11 @@ function CanvasSettingBlock({
           <Tooltip
             content="Show a compact box instead of the entire code block"
             contentOptions={{
-              side: 'right',
+              side: "right",
               sideOffset: 10,
             }}
           >
-            <HelpCircle className="tw-size-3 tw-text-muted hover:tw-text-muted-foreground tw-transition-all" />
+            <HelpCircle className="tw-size-3 tw-text-muted tw-transition-all hover:tw-text-muted-foreground" />
           </Tooltip>
         </div>
       </div>

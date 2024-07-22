@@ -1,31 +1,36 @@
-import $ from 'jquery';
-import { Check, CodeXml, Copy, LoaderCircle, X } from 'lucide-react';
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import $ from "jquery";
+import { Check, CodeXml, Copy, LoaderCircle, X } from "lucide-react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 
-import useWaitForElement from '@/content-script/hooks/useWaitForElement';
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
-import { useCanvasStore } from '@/content-script/session-store/canvas';
-import useToggleButtonText from '@/shared/hooks/useToggleButtonText';
-import Canvas from '@/utils/Canvas';
-import MarkdownBlockUtils from '@/utils/MarkdownBlock';
-import { cn } from '@/utils/shadcn-ui-utils';
-import UIUtils from '@/utils/UI';
-import { scrollToElement } from '@/utils/utils';
-import { useQuery } from '@tanstack/react-query';
-import { useMediaQuery, useWindowScroll } from '@uidotdev/usehooks';
+import useWaitForElement from "@/content-script/hooks/useWaitForElement";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { useCanvasStore } from "@/content-script/session-store/canvas";
+import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
+import Canvas from "@/utils/Canvas";
+import MarkdownBlockUtils from "@/utils/MarkdownBlock";
+import { cn } from "@/utils/cn";
+import UIUtils from "@/utils/UI";
+import { scrollToElement } from "@/utils/utils";
+import { useQuery } from "@tanstack/react-query";
+import {
+  useDebounce,
+  useMediaQuery,
+  usePrevious,
+  useWindowScroll,
+} from "@uidotdev/usehooks";
 
-import { canvasComponents } from './';
+import { canvasComponents } from "./";
 
 export default function CanvasPanel() {
   const { isOpen, toggleOpen, metaData, setMetaData } = useCanvasStore();
 
   const [canvasComponent, setCanvasComponent] = useState<ReactNode>();
 
-  const isFloat = useMediaQuery('(max-width: 1500px)');
+  const isFloat = useMediaQuery("(max-width: 1500px)");
 
   const { element: threadWrapper, isWaiting } = useWaitForElement({
-    id: 'thread-wrapper',
+    id: "thread-wrapper",
     selector: () => UIUtils.getThreadWrapper()[0],
     timeout: 5000,
   });
@@ -56,19 +61,19 @@ export default function CanvasPanel() {
           .first()
           .children()
           .first()
-          .toggleClass('max-w-threadWidth tw-mx-auto', isOpen);
+          .toggleClass("max-w-threadWidth tw-mx-auto", isOpen);
 
         $(threadWrapper!).attr({
-          'data-canvas-panel-state': isOpen ? 'open' : 'closed',
+          "data-canvas-panel-state": isOpen ? "open" : "closed",
         });
 
         $(threadWrapper).toggleClass(
-          'tw-grid tw-grid-cols-2 tw-gap-8 !tw-max-w-[2500px]',
-          isOpen && !isFloat
+          "tw-grid tw-grid-cols-2 tw-gap-8 !tw-max-w-[2500px]",
+          isOpen && !isFloat,
         );
       });
     },
-    [isFloat, threadWrapper]
+    [isFloat, threadWrapper],
   );
 
   useEffect(() => {
@@ -102,26 +107,26 @@ export default function CanvasPanel() {
     <div
       id="canvas-panel"
       className={cn(
-        'tw-transition-all tw-bg-accent tw-top-[5rem] tw-border tw-rounded-md tw-overflow-hidden tw-flex-col tw-flex',
-        'tw-animate-in tw-slide-in-from-right tw-fade-in',
+        "tw-top-[5rem] tw-flex tw-flex-col tw-overflow-hidden tw-rounded-md tw-border tw-bg-accent tw-transition-all",
+        "tw-animate-in tw-fade-in tw-slide-in-from-right",
         {
-          'tw-sticky': !isFloat,
-          'tw-fixed tw-right-8 tw-w-[80%] tw-z-[20] tw-shadow-lg': isFloat,
-        }
+          "tw-sticky": !isFloat,
+          "tw-fixed tw-right-8 tw-z-[20] tw-w-[80%] tw-shadow-lg": isFloat,
+        },
       )}
       onAnimationEnd={handleAnimationEnd}
       style={{
         height: `calc(100vh - ${UIUtils.getStickyNavbar().outerHeight()}px - 3rem)`,
       }}
     >
-      <div className="tw-size-full tw-relative">
-        <div className="tw-absolute tw-inset-2 tw-size-max tw-z-10">
+      <div className="tw-relative tw-size-full">
+        <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max">
           <CanvasOptions />
         </div>
-        <div className="tw-absolute tw-top-2 tw-left-1/2 -tw-translate-x-1/2 tw-size-max tw-z-10">
-          <JumpToSource />
+        <div className="tw-absolute tw-left-1/2 tw-top-2 tw-z-10 tw-size-max -tw-translate-x-1/2">
+          <JumpToSource key={metaData?.preBlockId} />
         </div>
-        <div className="tw-absolute tw-top-2 tw-right-2 tw-size-max tw-z-10">
+        <div className="tw-absolute tw-right-2 tw-top-2 tw-z-10 tw-size-max">
           <CloseButton />
         </div>
         <div id="complexity-canvas" className="tw-size-full" />
@@ -129,7 +134,7 @@ export default function CanvasPanel() {
         <Code />
       </div>
     </div>,
-    threadWrapper
+    threadWrapper,
   );
 }
 
@@ -141,10 +146,10 @@ function Code() {
     refetch,
     isFetching: isFetchingHighlightedCode,
   } = useQuery({
-    queryKey: ['canvasHighlightedCode'],
+    queryKey: ["canvasHighlightedCode"],
     queryFn: async () => {
       const highligtedCode = await webpageMessenger.sendMessage({
-        event: 'getHighlightedCodeAsHtml',
+        event: "getHighlightedCodeAsHtml",
         payload: {
           code: metaData!.content,
           lang: MarkdownBlockUtils.getLang($(`pre#${metaData!.preBlockId}`)),
@@ -160,7 +165,7 @@ function Code() {
     select(data) {
       if (!data) return;
 
-      return $(data).find('code').html();
+      return $(data).find("code").html();
     },
     refetchOnWindowFocus: false,
   });
@@ -172,14 +177,14 @@ function Code() {
   if (!showCode || !metaData) return null;
 
   return (
-    <div className="tw-absolute tw-inset-0 tw-bg-secondary tw-size-full tw-overflow-auto">
+    <div className="tw-absolute tw-inset-0 tw-size-full tw-overflow-auto tw-bg-secondary">
       {isFetchingHighlightedCode || !highlightedCode ? (
-        <div className="tw-size-full tw-flex tw-items-center tw-justify-center">
+        <div className="tw-flex tw-size-full tw-items-center tw-justify-center">
           <LoaderCircle className="tw-size-8 tw-animate-spin" />
         </div>
       ) : (
-        <pre className="tw-font-mono tw-p-4 tw-pt-[4rem] line-numbers">
-          <code dangerouslySetInnerHTML={{ __html: highlightedCode || '' }} />
+        <pre className="line-numbers tw-p-4 tw-pt-[4rem] tw-font-mono">
+          <code dangerouslySetInnerHTML={{ __html: highlightedCode || "" }} />
         </pre>
       )}
     </div>
@@ -188,7 +193,7 @@ function Code() {
 
 function CanvasOptions() {
   const { metaData, showCode, toggleShowCode } = useCanvasStore(
-    (state) => state
+    (state) => state,
   );
 
   const [copyButtonText, setCopyButtonText] = useToggleButtonText({
@@ -199,13 +204,13 @@ function CanvasOptions() {
 
   return (
     <div className="tw-flex tw-items-center">
-      <div className="tw-flex tw-text-xs tw-bg-background tw-font-sans tw-p-1 tw-rounded-lg tw-m-2">
+      <div className="tw-m-2 tw-flex tw-rounded-lg tw-bg-background tw-p-1 tw-font-sans tw-text-xs">
         <div
           className={cn(
-            'tw-p-1 tw-px-2 tw-rounded-md tw-cursor-pointer tw-select-none tw-transition-all',
+            "tw-cursor-pointer tw-select-none tw-rounded-md tw-p-1 tw-px-2 tw-transition-all",
             {
-              'tw-bg-accent': !showCode,
-            }
+              "tw-bg-accent": !showCode,
+            },
           )}
           onClick={() => toggleShowCode()}
         >
@@ -213,10 +218,10 @@ function CanvasOptions() {
         </div>
         <div
           className={cn(
-            'tw-flex tw-gap-1 tw-items-center tw-p-1 tw-px-2 tw-rounded-md tw-cursor-pointer tw-select-none tw-transition-all',
+            "tw-flex tw-cursor-pointer tw-select-none tw-items-center tw-gap-1 tw-rounded-md tw-p-1 tw-px-2 tw-transition-all",
             {
-              'tw-bg-accent': showCode,
-            }
+              "tw-bg-accent": showCode,
+            },
           )}
           onClick={() => toggleShowCode()}
         >
@@ -226,7 +231,7 @@ function CanvasOptions() {
       </div>
       {showCode && (
         <div
-          className="tw-p-2 tw-rounded-md tw-h-fit hover:tw-bg-background tw-cursor-pointer active:tw-scale-95 tw-transition-all tw-animate-in tw-fade-in"
+          className="tw-h-fit tw-cursor-pointer tw-rounded-md tw-p-2 tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-background active:tw-scale-95"
           onClick={() => {
             navigator.clipboard.writeText(metaData.content);
 
@@ -242,25 +247,13 @@ function CanvasOptions() {
 
 function JumpToSource() {
   const [{ y }] = useWindowScroll();
-  const [prevY, setPrevY] = useState<number | null>(null);
+  const prevY = usePrevious(y);
 
-  const { metaData } = useCanvasStore();
+  const { metaData } = useDebounce(useCanvasStore(), 200);
 
   const [buttonText, setCopyButtonText] = useToggleButtonText({
-    defaultText: 'Jump to source',
+    defaultText: "Jump to source",
   });
-
-  useEffect(() => {
-    if (metaData) {
-      setPrevY(y);
-    }
-  }, [y, metaData]);
-
-  useEffect(() => {
-    if (metaData) {
-      setPrevY(null);
-    }
-  }, [metaData]);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -269,7 +262,7 @@ function JumpToSource() {
   return (
     <div
       ref={ref}
-      className="tw-cursor-pointer tw-text-sm tw-p-1 tw-text-muted-foreground hover:tw-text-foreground active:tw-scale-95 tw-transition-all tw-duration-300 tw-animate-in tw-fade-in tw-font-sans"
+      className="tw-cursor-pointer tw-p-1 tw-font-sans tw-text-sm tw-text-muted-foreground tw-transition-all tw-duration-300 tw-animate-in tw-fade-in hover:tw-text-foreground active:tw-scale-95"
       onClick={() => {
         const $preBlock = $(`#${metaData.preBlockId}`);
 
@@ -278,15 +271,11 @@ function JumpToSource() {
           MarkdownBlockUtils.extractCodeFromPreBlock($preBlock[0]) !==
             metaData.content
         ) {
-          setCopyButtonText('The block no longer exists');
+          setCopyButtonText("The block no longer exists");
           return;
         }
 
         scrollToElement($preBlock, -100, 200);
-
-        setTimeout(() => {
-          setPrevY(null);
-        }, 250);
       }}
     >
       {buttonText}
@@ -299,7 +288,7 @@ function CloseButton() {
 
   return (
     <div
-      className="tw-cursor-pointer tw-p-1 hover:tw-bg-background tw-rounded-md tw-text-muted-foreground hover:tw-text-foreground active:tw-scale-95 tw-transition-all tw-duration-300"
+      className="tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-muted-foreground tw-transition-all tw-duration-300 hover:tw-bg-background hover:tw-text-foreground active:tw-scale-95"
       onClick={() => {
         toggleOpen(false);
         setMetaData();

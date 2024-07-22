@@ -1,10 +1,7 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from "react";
 
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
-import { RouterEvent } from '@/types/WS';
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { RouterEvent } from "@/types/WS";
 
 export default function useRouter() {
   const [url, setUrl] = useState(window.location.href);
@@ -12,13 +9,13 @@ export default function useRouter() {
 
   useEffect(() => {
     const stopListen = webpageMessenger.onMessage(
-      'routeChange',
+      "routeChange",
       async ({ payload: { url, trigger } }) => {
-        if (trigger !== 'routeChangeComplete') return;
+        if (trigger !== "routeChangeComplete") return;
 
         setUrl(url);
         setTrigger(trigger);
-      }
+      },
     );
 
     return () => stopListen?.();

@@ -1,16 +1,16 @@
-import { LanguageModel } from '@/types/ModelSelector';
+import { LanguageModel } from "@/types/ModelSelector";
 import {
   LongPollingEventData,
   MessageData,
   WebSocketEventData,
-} from '@/types/WebpageMessenger';
-import { TrackQueryLimits } from '@/types/WebpageMessageInterceptors';
-import { isParsedWSMessage, WSParsedMessage } from '@/types/WS';
-import WSMessageParser from '@/utils/WSMessageParser';
+} from "@/types/WebpageMessenger";
+import { TrackQueryLimits } from "@/types/WebpageMessageInterceptors";
+import { isParsedWSMessage, WSParsedMessage } from "@/types/WS";
+import WSMessageParser from "@/utils/WSMessageParser";
 
-import { popupSettingsStore } from '../session-store/popup-settings';
-import { queryBoxStore } from '../session-store/query-box';
-import { webpageMessenger } from './webpage-messenger';
+import { popupSettingsStore } from "../session-store/popup-settings";
+import { queryBoxStore } from "../session-store/query-box";
+import { webpageMessenger } from "./webpage-messenger";
 
 export default class WebpageMessageInterceptor {
   static updateQueryLimits() {
@@ -27,10 +27,10 @@ export default class WebpageMessageInterceptor {
 
           if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
-          const isRateLimitRequest = parsedPayload.event === 'get_rate_limit';
+          const isRateLimitRequest = parsedPayload.event === "get_rate_limit";
 
           const isOpusRateLimitRequest =
-            parsedPayload.event === 'get_opus_rate_limit';
+            parsedPayload.event === "get_opus_rate_limit";
 
           const isRateLimitResponse =
             Array.isArray(parsedPayload.data) &&
@@ -80,7 +80,7 @@ export default class WebpageMessageInterceptor {
               queryLimit: parsedPayload.data[0].remaining,
             });
 
-            console.log('queryLimit:', parsedPayload.data[0].remaining);
+            console.log("queryLimit:", parsedPayload.data[0].remaining);
           } else if (
             parsedPayload.messageCode - 10 ===
               getRateLimitIdentifier.opusRateLimit ||
@@ -91,7 +91,7 @@ export default class WebpageMessageInterceptor {
               opusLimit: parsedPayload.data[0].remaining,
             });
 
-            console.log('opusLimit:', parsedPayload.data[0].remaining);
+            console.log("opusLimit:", parsedPayload.data[0].remaining);
           }
         }
 
@@ -104,17 +104,17 @@ export default class WebpageMessageInterceptor {
   static inspectWebSocketEvents() {
     webpageMessenger.addInterceptor({
       matchCondition: (messageData) => {
-        if (messageData.event !== 'webSocketEvent') return { match: false };
+        if (messageData.event !== "webSocketEvent") return { match: false };
 
         const webSocketMessageData =
           messageData as MessageData<WebSocketEventData>;
 
         return {
-          match: webSocketMessageData.event === 'webSocketEvent',
+          match: webSocketMessageData.event === "webSocketEvent",
         };
       },
       callback: async (messageData: MessageData<WebSocketEventData>) => {
-        console.log('web socket:', messageData.payload.payload);
+        console.log("web socket:", messageData.payload.payload);
         return messageData;
       },
       stopCondition: () => false,
@@ -128,11 +128,11 @@ export default class WebpageMessageInterceptor {
           messageData as MessageData<LongPollingEventData>;
 
         return {
-          match: webSocketMessageData.event === 'longPollingEvent',
+          match: webSocketMessageData.event === "longPollingEvent",
         };
       },
       callback: async (messageData: MessageData<LongPollingEventData>) => {
-        console.log('long polling:', messageData.payload);
+        console.log("long polling:", messageData.payload);
         return messageData;
       },
       stopCondition: () => false,
@@ -151,17 +151,17 @@ export default class WebpageMessageInterceptor {
 
         if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
-        if (parsedPayload.event !== 'perplexity_ask') {
+        if (parsedPayload.event !== "perplexity_ask") {
           return { match: false };
         }
 
-        if (parsedPayload.data[1].query_source === 'default_search') {
+        if (parsedPayload.data[1].query_source === "default_search") {
           return { match: false };
         }
 
         const newModelPreference =
           popupSettingsStore.getState().queryBoxSelectors.languageModel &&
-          parsedPayload.data?.[1].query_source !== 'retry'
+          parsedPayload.data?.[1].query_source !== "retry"
             ? queryBoxStore.getState().selectedLanguageModel
             : parsedPayload.data[1].model_preference;
 
@@ -169,13 +169,13 @@ export default class WebpageMessageInterceptor {
           .focus
           ? queryBoxStore.getState().webAccess.allowWebAccess
             ? queryBoxStore.getState().webAccess.focus
-            : 'writing'
+            : "writing"
           : parsedPayload.data[1].search_focus;
 
         const newTargetCollectionUuid = popupSettingsStore.getState()
           .queryBoxSelectors.collection
-          ? parsedPayload.data[1].query_source === 'home' ||
-            parsedPayload.data[1].query_source === 'modal'
+          ? parsedPayload.data[1].query_source === "home" ||
+            parsedPayload.data[1].query_source === "modal"
             ? queryBoxStore.getState().selectedCollectionUuid
             : parsedPayload.data[1].target_collection_uuid
           : undefined;
@@ -188,7 +188,7 @@ export default class WebpageMessageInterceptor {
         };
 
         return {
-          match: parsedPayload.event === 'perplexity_ask',
+          match: parsedPayload.event === "perplexity_ask",
           args: [
             {
               newPayload: WSMessageParser.stringify(parsedPayload),
@@ -198,7 +198,7 @@ export default class WebpageMessageInterceptor {
       },
       callback: async (
         messageData: MessageData<WebSocketEventData | LongPollingEventData>,
-        args
+        args,
       ) => {
         return { ...messageData, payload: { payload: args[0].newPayload } };
       },
@@ -210,7 +210,7 @@ export default class WebpageMessageInterceptor {
     languageModel,
     proSearchState,
   }: {
-    languageModel: LanguageModel['code'];
+    languageModel: LanguageModel["code"];
     proSearchState?: boolean;
   }) {
     return webpageMessenger.addInterceptor({
@@ -224,14 +224,14 @@ export default class WebpageMessageInterceptor {
 
         if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
-        if (parsedPayload.event !== 'perplexity_ask') {
+        if (parsedPayload.event !== "perplexity_ask") {
           return { match: false };
         }
 
         parsedPayload.data[1] = {
           ...parsedPayload.data[1],
           model_preference: languageModel,
-          mode: proSearchState ? 'copilot' : parsedPayload.data[1].mode,
+          mode: proSearchState ? "copilot" : parsedPayload.data[1].mode,
           search_focus: proSearchState
             ? queryBoxStore.getState().webAccess.focus
             : parsedPayload.data[1].search_focus,
@@ -239,8 +239,8 @@ export default class WebpageMessageInterceptor {
 
         return {
           match:
-            parsedPayload.event === 'perplexity_ask' &&
-            parsedPayload.data?.[1].query_source === 'retry',
+            parsedPayload.event === "perplexity_ask" &&
+            parsedPayload.data?.[1].query_source === "retry",
           args: [
             {
               newPayload: WSMessageParser.stringify(parsedPayload),
@@ -250,7 +250,7 @@ export default class WebpageMessageInterceptor {
       },
       callback: async (
         messageData: MessageData<WebSocketEventData | LongPollingEventData>,
-        args
+        args,
       ) => {
         return { ...messageData, payload: { payload: args[0].newPayload } };
       },
@@ -298,7 +298,7 @@ export default class WebpageMessageInterceptor {
       return !(
         parsedPayload.messageCode !== 431 &&
         parsedPayload.data?.length === 1 &&
-        parsedPayload.data[0].status === 'completed'
+        parsedPayload.data[0].status === "completed"
       );
     };
 
@@ -328,7 +328,7 @@ export default class WebpageMessageInterceptor {
       if (parsedPayload.data?.length !== 1) return false;
 
       return (
-        'has_profile' in parsedPayload.data[0] && 'bio' in parsedPayload.data[0]
+        "has_profile" in parsedPayload.data[0] && "bio" in parsedPayload.data[0]
       );
     };
 
@@ -361,7 +361,7 @@ export default class WebpageMessageInterceptor {
         if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
         return {
-          match: parsedPayload.event === 'analytics_event',
+          match: parsedPayload.event === "analytics_event",
         };
       },
       callback: async () => {

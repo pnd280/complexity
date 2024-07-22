@@ -1,14 +1,11 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Command as CommandPrimitive } from 'cmdk';
-import { Search } from 'lucide-react';
+import { Command as CommandPrimitive } from "cmdk";
+import { Search } from "lucide-react";
 
-import {
-  Dialog,
-  DialogContent,
-} from '@/shared/components/shadcn/ui/dialog';
-import { cn } from '@/utils/shadcn-ui-utils';
-import { type DialogProps } from '@radix-ui/react-dialog';
+import { Dialog, DialogContent } from "@/shared/components/shadcn/ui/dialog";
+import { cn } from "@/utils/cn";
+import { type DialogProps } from "@radix-ui/react-dialog";
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -17,8 +14,8 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      'tw-flex tw-h-full tw-w-full tw-flex-col tw-overflow-hidden tw-rounded-md tw-bg-popover tw-text-popover-foreground',
-      className
+      "tw-flex tw-h-full tw-w-full tw-flex-col tw-overflow-hidden tw-rounded-md tw-bg-popover tw-text-popover-foreground",
+      className,
     )}
     {...props}
   />
@@ -34,7 +31,7 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
         <Command
           className="[&_[cmdk-group-heading]]:tw-px-2 [&_[cmdk-group-heading]]:tw-font-medium [&_[cmdk-group-heading]]:tw-text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:tw-pt-0 [&_[cmdk-group]]:tw-px-2 [&_[cmdk-input-wrapper]_svg]:tw-h-4 [&_[cmdk-input-wrapper]_svg]:tw-w-4 [&_[cmdk-input]]:tw-h-12 [&_[cmdk-item]]:tw-px-2 [&_[cmdk-item]]:tw-py-2 [&_[cmdk-item]_svg]:tw-h-4 [&_[cmdk-item]_svg]:tw-w-4"
           filter={(value, search, keywords) => {
-            const extendValue = value + ' ' + (keywords?.join(' ') || '');
+            const extendValue = value + " " + (keywords?.join(" ") || "");
             if (extendValue.includes(search)) return 1;
             return 0;
           }}
@@ -62,8 +59,8 @@ const CommandInput = React.forwardRef<
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        'tw-flex tw-h-11 tw-w-full tw-rounded-md tw-bg-transparent tw-py-3 tw-text-sm tw-outline-none placeholder:tw-text-muted-foreground disabled:tw-cursor-not-allowed disabled:tw-opacity-50',
-        className
+        "tw-flex tw-h-11 tw-w-full tw-rounded-md tw-bg-transparent tw-py-3 tw-text-sm tw-outline-none placeholder:tw-text-muted-foreground disabled:tw-cursor-not-allowed disabled:tw-opacity-50",
+        className,
       )}
       {...props}
     />
@@ -78,7 +75,10 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn('tw-max-h-[300px] tw-overflow-y-auto tw-overflow-x-hidden custom-scrollbar', className)}
+    className={cn(
+      "custom-scrollbar tw-max-h-[300px] tw-overflow-y-auto tw-overflow-x-hidden",
+      className,
+    )}
     {...props}
   />
 ));
@@ -105,8 +105,8 @@ const CommandGroup = React.forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      'tw-overflow-hidden tw-p-1 tw-text-foreground [&_[cmdk-group-heading]]:tw-px-2 [&_[cmdk-group-heading]]:tw-py-1.5 [&_[cmdk-group-heading]]:tw-text-xs [&_[cmdk-group-heading]]:tw-font-medium [&_[cmdk-group-heading]]:tw-text-muted-foreground',
-      className
+      "tw-overflow-hidden tw-p-1 tw-text-foreground [&_[cmdk-group-heading]]:tw-px-2 [&_[cmdk-group-heading]]:tw-py-1.5 [&_[cmdk-group-heading]]:tw-text-xs [&_[cmdk-group-heading]]:tw-font-medium [&_[cmdk-group-heading]]:tw-text-muted-foreground",
+      className,
     )}
     {...props}
   />
@@ -120,7 +120,7 @@ const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Separator
     ref={ref}
-    className={cn('tw--mx-1 tw-h-px tw-bg-border', className)}
+    className={cn("tw--mx-1 tw-h-px tw-bg-border", className)}
     {...props}
   />
 ));
@@ -133,8 +133,8 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      'tw-relative tw-flex tw-cursor-pointer tw-select-none tw-items-center tw-rounded-sm tw-px-2 tw-py-1.5 tw-text-xs tw-outline-none aria-selected:tw-bg-accent aria-selected:tw-text-accent-foreground data-[disabled=true]:tw-pointer-events-none data-[disabled=true]:tw-opacity-50 tw-text-muted-foreground',
-      className
+      "tw-relative tw-flex tw-cursor-pointer tw-select-none tw-items-center tw-rounded-sm tw-px-2 tw-py-1.5 tw-text-xs tw-text-muted-foreground tw-outline-none aria-selected:tw-bg-accent aria-selected:tw-text-accent-foreground data-[disabled=true]:tw-pointer-events-none data-[disabled=true]:tw-opacity-50",
+      className,
     )}
     {...props}
   />
@@ -149,14 +149,14 @@ const CommandShortcut = ({
   return (
     <span
       className={cn(
-        'tw-ml-auto tw-text-xs tw-tracking-widest tw-text-muted-foreground',
-        className
+        "tw-ml-auto tw-text-xs tw-tracking-widest tw-text-muted-foreground",
+        className,
       )}
       {...props}
     />
   );
 };
-CommandShortcut.displayName = 'CommandShortcut';
+CommandShortcut.displayName = "CommandShortcut";
 
 export {
   Command,

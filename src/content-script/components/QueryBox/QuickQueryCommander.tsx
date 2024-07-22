@@ -1,21 +1,32 @@
-import { cn } from '@/utils/shadcn-ui-utils';
-import { CommandEmpty } from 'cmdk';
-import $ from 'jquery';
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-import useQuickQueryCommanderParams from '@/content-script/hooks/useQuickQueryCommanderParams';
-import useRouter from '@/content-script/hooks/useRouter';
-import PPLXApi from '@/services/PPLXApi';
-import KeyCombo from '@/shared/components/KeyCombo';
+import { cn } from "@/utils/cn";
+import { CommandEmpty } from "cmdk";
+import $ from "jquery";
 import {
-    Command, CommandGroup, CommandInput, CommandItem, CommandList
-} from '@/shared/components/shadcn/ui/command';
-import UIUtils from '@/utils/UI';
-import { useQuery } from '@tanstack/react-query';
-import { useToggle, useWindowSize } from '@uidotdev/usehooks';
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import useQuickQueryCommanderParams from "@/content-script/hooks/useQuickQueryCommanderParams";
+import useRouter from "@/content-script/hooks/useRouter";
+import PPLXApi from "@/services/PPLXApi";
+import KeyCombo from "@/shared/components/KeyCombo";
+import {
+  Command,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/shared/components/shadcn/ui/command";
+import UIUtils from "@/utils/UI";
+import { useQuery } from "@tanstack/react-query";
+import { useToggle, useWindowSize } from "@uidotdev/usehooks";
 
 export type QuickCommanderProps = {
-  context: 'main' | 'follow-up';
+  context: "main" | "follow-up";
   $trigger: JQuery<HTMLElement>;
   $textarea: JQuery<HTMLTextAreaElement>;
   searchValue?: string;
@@ -39,11 +50,11 @@ export default function QuickQueryCommander({
   const { quickQueryParams } = useQuickQueryCommanderParams({
     context,
   });
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   const sortedQuickQueryParams = useMemo(() => {
     const top = quickQueryParams.find((param) =>
-      ('@' + searchValue).startsWith(param.prefix)
+      ("@" + searchValue).startsWith(param.prefix),
     );
 
     if (top) {
@@ -59,10 +70,10 @@ export default function QuickQueryCommander({
         window.innerHeight -
         Math.round($trigger?.offset()?.top || 0) +
         5 +
-        'px';
-      commanderRef.current.style.left = $trigger?.offset()?.left + 'px';
+        "px";
+      commanderRef.current.style.left = $trigger?.offset()?.left + "px";
       commanderRef.current.style.width =
-        Math.round($trigger.outerWidth()!) + 'px';
+        Math.round($trigger.outerWidth()!) + "px";
     }
   };
 
@@ -71,28 +82,28 @@ export default function QuickQueryCommander({
   const handleSetVisible = useCallback(
     (state?: boolean) => {
       toggleVisibility(state);
-      $('html').toggleClass('!tw-overflow-y-hidden', state);
+      $("html").toggleClass("!tw-overflow-y-hidden", state);
     },
-    [toggleVisibility]
+    [toggleVisibility],
   );
 
   const dispatchKeydown = useCallback(
     (e: KeyboardEvent) => {
       if (visible) {
-        commanderRef.current?.dispatchEvent(new KeyboardEvent('keydown', e));
+        commanderRef.current?.dispatchEvent(new KeyboardEvent("keydown", e));
       }
     },
-    [visible, commanderRef]
+    [visible, commanderRef],
   );
 
   const isInterceptableNavigationKey = useCallback(
     (e: JQuery.TriggeredEvent) =>
-      (e.key === 'ArrowUp' ||
-        e.key === 'ArrowDown' ||
-        e.key === 'Enter' ||
-        e.key === 'Escape') &&
+      (e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "Enter" ||
+        e.key === "Escape") &&
       visible,
-    [visible]
+    [visible],
   );
 
   const postSelection = ({
@@ -107,7 +118,7 @@ export default function QuickQueryCommander({
     UIUtils.setReactTextareaValue(textarea as HTMLTextAreaElement, newText);
     textarea.setSelectionRange(start, start);
     handleSetVisible(false);
-    UIUtils.getActiveQueryBoxTextarea({})?.trigger('focus');
+    UIUtils.getActiveQueryBoxTextarea({})?.trigger("focus");
   };
 
   useEffect(() => {
@@ -128,7 +139,7 @@ export default function QuickQueryCommander({
       }
 
       if (isInterceptableNavigationKey(e)) {
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
           return handleSetVisible(false);
         }
 
@@ -138,8 +149,8 @@ export default function QuickQueryCommander({
       }
 
       if (
-        (e.key === '@' || (e.ctrlKey && e.key === ' ')) &&
-        wordAtCaret.startsWith('@')
+        (e.key === "@" || (e.ctrlKey && e.key === " ")) &&
+        wordAtCaret.startsWith("@")
       ) {
         handleSetVisible(true);
       }
@@ -147,7 +158,7 @@ export default function QuickQueryCommander({
       setQuickCommandSearchValue(wordAtCaret);
     };
 
-    $(textarea).on('keydown', (e) => {
+    $(textarea).on("keydown", (e) => {
       if (isInterceptableNavigationKey(e)) {
         e.preventDefault();
         e.stopPropagation();
@@ -156,20 +167,20 @@ export default function QuickQueryCommander({
       setTimeout(down.bind(null, e), 0);
     });
 
-    $(textarea).on('blur', (e) => {
+    $(textarea).on("blur", (e) => {
       if (e.relatedTarget === commanderRef.current) return;
 
       handleSetVisible(false);
     });
 
-    $(document).on('click', (e) => {
+    $(document).on("click", (e) => {
       if (textarea.contains(e.target)) return;
 
       handleSetVisible(false);
     });
 
     return () => {
-      $(textarea).off('keydown');
+      $(textarea).off("keydown");
     };
   }, [
     $textarea,
@@ -182,9 +193,9 @@ export default function QuickQueryCommander({
   ]);
 
   const { refetch: refetchThreadInfo } = useQuery({
-    queryKey: ['currentThreadInfo'],
+    queryKey: ["currentThreadInfo"],
     queryFn: () =>
-      PPLXApi.fetchThreadInfo(window.location.pathname.split('/').pop() || ''),
+      PPLXApi.fetchThreadInfo(window.location.pathname.split("/").pop() || ""),
     refetchOnWindowFocus: false,
   });
 
@@ -195,10 +206,10 @@ export default function QuickQueryCommander({
   return (
     <Command
       className={cn(
-        '!tw-absolute tw-rounded-lg tw-border tw-shadow-md tw-w-max tw-h-max tw-z-30 tw-animate-in tw-fade-in tw-max-h-[200px] !tw-outline-none tw-font-sans',
+        "!tw-absolute tw-z-30 tw-h-max tw-max-h-[200px] tw-w-max tw-rounded-lg tw-border tw-font-sans tw-shadow-md !tw-outline-none tw-animate-in tw-fade-in",
         {
-          'tw-hidden': !visible,
-        }
+          "tw-hidden": !visible,
+        },
       )}
       id="quick-commander"
       ref={commanderRef}
@@ -214,7 +225,7 @@ export default function QuickQueryCommander({
         <CommandInput value={searchValue} />
       </div>
       <CommandList>
-        <CommandEmpty className="tw-text-center tw-text-muted-foreground tw-font-sans tw-text-sm tw-p-2">
+        <CommandEmpty className="tw-p-2 tw-text-center tw-font-sans tw-text-sm tw-text-muted-foreground">
           No results found.
         </CommandEmpty>
         {!searchValue &&
@@ -232,7 +243,7 @@ export default function QuickQueryCommander({
               <Fragment key={param.type}>
                 <CommandGroup
                   heading={
-                    <div className="tw-flex tw-gap-2 tw-items-center tw-text-accent-foreground">
+                    <div className="tw-flex tw-items-center tw-gap-2 tw-text-accent-foreground">
                       {param.heading}
                       <KeyCombo keys={[param.prefix]} />
                     </div>
@@ -248,12 +259,12 @@ export default function QuickQueryCommander({
                           keywords={[
                             param.prefix,
                             ...optionItem.keywords.map(
-                              (keyword) => param.prefix + keyword
+                              (keyword) => param.prefix + keyword,
                             ),
                           ]}
                           onSelect={() => {
                             const { newText, start } = UIUtils.getWordOnCaret(
-                              $textarea[0]
+                              $textarea[0],
                             );
 
                             postSelection({
@@ -266,14 +277,14 @@ export default function QuickQueryCommander({
                             handleSetVisible(false);
                           }}
                         >
-                          <div className="tw-flex tw-gap-2 tw-min-w-max">
-                            <div className="tw-h-4 tw-w-4 tw-flex tw-items-center">
+                          <div className="tw-flex tw-min-w-max tw-gap-2">
+                            <div className="tw-flex tw-h-4 tw-w-4 tw-items-center">
                               {optionItem.icon}
                             </div>
                             <div>{optionItem.label}</div>
                           </div>
                           {optionItem.hint && (
-                            <div className="tw-ml-2 tw-text-xs tw-text-muted-foreground tw-truncate tw-max-w-[500px]">
+                            <div className="tw-ml-2 tw-max-w-[500px] tw-truncate tw-text-xs tw-text-muted-foreground">
                               {optionItem.hint}
                             </div>
                           )}

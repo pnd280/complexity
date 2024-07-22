@@ -11,11 +11,11 @@ export type WSParsedMessage = {
   data: any[] | any;
 };
 export type RouterEvent =
-  | 'push'
-  | 'replace'
-  | 'popstate'
-  | 'routeChangeComplete';
+  | "push"
+  | "replace"
+  | "popstate"
+  | "routeChangeComplete";
 
 export function isParsedWSMessage(data: any): data is WSParsedMessage {
-  return data && typeof data === 'object' && 'messageCode' in data;
+  return data && typeof data === "object" && "messageCode" in data;
 }

@@ -1,10 +1,6 @@
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useEffect, useMemo, useState } from "react";
 
-import $ from 'jquery';
+import $ from "jquery";
 
 export default function useCtrlDown() {
   const [ctrlDown, setCtrlDown] = useState(false);
@@ -13,13 +9,13 @@ export default function useCtrlDown() {
 
   useEffect(() => {
     $(document).on(`keydown.${id}`, (e) => {
-      if (e.key === 'Control') {
+      if (e.key === "Control") {
         setCtrlDown(true);
       }
     });
 
     $(document).on(`keyup.${id}`, (e) => {
-      if (e.key === 'Control') {
+      if (e.key === "Control") {
         setCtrlDown(false);
       }
     });

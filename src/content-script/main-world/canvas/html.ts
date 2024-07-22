@@ -1,18 +1,18 @@
-import $ from 'jquery';
+import $ from "jquery";
 
-import { mainWorldExec } from '@/utils/hoc';
+import { mainWorldExec } from "@/utils/hoc";
 
-import { webpageMessenger } from '../webpage-messenger';
-import UIUtils from '@/utils/UI';
+import { webpageMessenger } from "../webpage-messenger";
+import UIUtils from "@/utils/UI";
 
 type RenderAction = {
-  action: 'render';
+  action: "render";
   payload: string;
 };
 
 type PopoutAction = {
-  action: 'popOut';
-  payload: '_blank' | 'PopupWindow';
+  action: "popOut";
+  payload: "_blank" | "PopupWindow";
 };
 
 export type HTMLCanvasAction = RenderAction | PopoutAction;
@@ -39,69 +39,69 @@ class HTMLCanvas {
 
   private setupContentScriptRequestListeners() {
     webpageMessenger.onMessage(
-      'htmlCanvasAction',
+      "htmlCanvasAction",
       async ({ payload: { action, payload } }) => {
         switch (action) {
-          case 'render':
+          case "render":
             return this.handleRenderAction(payload);
-          case 'popOut':
+          case "popOut":
             if (!this.blobUrl) return false;
             window.open(
               this.blobUrl,
               payload,
-              payload === 'PopupWindow' ? 'width=600,height=600' : ''
+              payload === "PopupWindow" ? "width=600,height=600" : "",
             );
             return true;
           default:
-            console.log('Unknown action:', action);
+            console.log("Unknown action:", action);
             return false;
         }
-      }
+      },
     );
   }
 
   private async handleRenderAction(rawHTML: string) {
     try {
       return await new Promise<boolean>((resolve) => {
-        const blob = new Blob([rawHTML], { type: 'text/html' });
+        const blob = new Blob([rawHTML], { type: "text/html" });
         this.blobUrl = URL.createObjectURL(blob);
 
-        const $iframe = $('<iframe>')
-          .attr({ id: 'html-wrapper', src: this.blobUrl })
-          .addClass('tw-size-full tw-animate-in tw-fade-in');
+        const $iframe = $("<iframe>")
+          .attr({ id: "html-wrapper", src: this.blobUrl })
+          .addClass("tw-size-full tw-animate-in tw-fade-in");
 
         $iframe
-          .on('mouseenter', () => {
+          .on("mouseenter", () => {
             if (document.activeElement)
               this.$lastFocusedElement = $(document.activeElement);
 
-            UIUtils.getActiveQueryBoxTextarea({ type: 'follow-up' }).prop(
-              'disabled',
-              true
+            UIUtils.getActiveQueryBoxTextarea({ type: "follow-up" }).prop(
+              "disabled",
+              true,
             );
 
-            $('#canvas-panel').addClass('tw-ring tw-ring-accent-foreground');
+            $("#canvas-panel").addClass("tw-ring tw-ring-accent-foreground");
           })
-          .on('mouseleave', () => {
-            UIUtils.getActiveQueryBoxTextarea({ type: 'follow-up' }).prop(
-              'disabled',
-              false
+          .on("mouseleave", () => {
+            UIUtils.getActiveQueryBoxTextarea({ type: "follow-up" }).prop(
+              "disabled",
+              false,
             );
 
-            $('#canvas-panel').removeClass('tw-ring tw-ring-accent-foreground')
+            $("#canvas-panel").removeClass("tw-ring tw-ring-accent-foreground");
 
             if (this.$lastFocusedElement) {
-              this.$lastFocusedElement.trigger('focus');
+              this.$lastFocusedElement.trigger("focus");
               this.$lastFocusedElement = null;
             }
           });
 
-        $('#complexity-canvas').empty().append($iframe);
+        $("#complexity-canvas").empty().append($iframe);
 
         resolve(true);
       });
     } catch (error) {
-      console.error('Error rendering HTML canvas:', error);
+      console.error("Error rendering HTML canvas:", error);
       return false;
     }
   }
@@ -110,5 +110,5 @@ class HTMLCanvas {
 mainWorldExec(() =>
   $(() => {
     HTMLCanvas.getInstance().initialize();
-  })
+  }),
 )();

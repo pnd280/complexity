@@ -3,17 +3,16 @@
 
 export const canvasLangs = [
   {
-    title: 'Charts & Diagrams',
-    pplxSearch: 'Mermaid Diagramming and charting tool',
-    trigger: 'mermaid',
+    title: "Charts & Diagrams",
+    pplxSearch: "Mermaid Diagramming and charting tool",
+    trigger: "mermaid",
     description:
-      'Flowcharts, Sequence Diagrams, Gantt Charts, Class Diagrams, State Diagrams, Entity Relationship Diagrams, User Journey Diagrams, Pie Charts, Requirement Diagrams, Gitgraph Diagrams, etc.',
+      "Flowcharts, Sequence Diagrams, Gantt Charts, Class Diagrams, State Diagrams, Entity Relationship Diagrams, User Journey Diagrams, Pie Charts, Requirement Diagrams, Gitgraph Diagrams, etc.",
   },
   {
-    title: 'Webpages',
-    pplxSearch: '',
-    trigger: 'html',
-    description:
-      'JavaScript is enabled.',
+    title: "Webpages",
+    pplxSearch: "",
+    trigger: "html",
+    description: "JavaScript is enabled.",
   },
 ] as const;

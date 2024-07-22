@@ -1,24 +1,24 @@
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
-import { Collection } from '@/content-script/components/QueryBox/CollectionSelector';
-import { ImageModel } from '@/content-script/components/QueryBox/ImageModelSelector';
-import PPLXApi from '@/services/PPLXApi';
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
+import { ImageModel } from "@/content-script/components/QueryBox/ImageModelSelector";
+import PPLXApi from "@/services/PPLXApi";
 import {
   isValidFocus,
   LanguageModel,
   WebAccessFocus,
-} from '@/types/ModelSelector';
-import ChromeStorage from '@/utils/ChromeStorage';
-import { extensionExec } from '@/utils/hoc';
+} from "@/types/ModelSelector";
+import ChromeStorage from "@/utils/ChromeStorage";
+import { extensionExec } from "@/utils/hoc";
 
 type QueryBoxState = {
-  selectedLanguageModel: LanguageModel['code'];
+  selectedLanguageModel: LanguageModel["code"];
   setSelectedLanguageModel: (
-    selectedLanguageModel: LanguageModel['code']
+    selectedLanguageModel: LanguageModel["code"],
   ) => void;
-  selectedImageModel: ImageModel['code'];
-  setSelectedImageModel: (selectedImageModel: ImageModel['code']) => void;
+  selectedImageModel: ImageModel["code"];
+  setSelectedImageModel: (selectedImageModel: ImageModel["code"]) => void;
   queryLimit: number;
   setQueryLimit: (queryLimit: number) => void;
   opusLimit: number;
@@ -27,26 +27,26 @@ type QueryBoxState = {
   setImageCreateLimit: (createLimit: number) => void;
 
   webAccess: {
-    focus: WebAccessFocus['code'] | null;
-    setFocus: (focus: WebAccessFocus['code'] | null) => void;
+    focus: WebAccessFocus["code"] | null;
+    setFocus: (focus: WebAccessFocus["code"] | null) => void;
     allowWebAccess: boolean;
     toggleWebAccess: (toggled?: boolean) => void;
   };
 
-  selectedCollectionUuid: Collection['uuid'];
+  selectedCollectionUuid: Collection["uuid"];
   setSelectedCollectionUuid: (
-    selectedCollectionUuid: Collection['uuid']
+    selectedCollectionUuid: Collection["uuid"],
   ) => void;
 };
 
 const useQueryBoxStore = create<QueryBoxState>()(
   immer((set, get) => ({
-    selectedLanguageModel: 'turbo',
+    selectedLanguageModel: "turbo",
     setSelectedLanguageModel: async (selectedLanguageModel) => {
       if (await PPLXApi.setDefaultLanguageModel(selectedLanguageModel))
         return set({ selectedLanguageModel });
     },
-    selectedImageModel: 'default',
+    selectedImageModel: "default",
     setSelectedImageModel: async (selectedImageModel) => {
       if (await PPLXApi.setDefaultImageModel(selectedImageModel))
         return set({ selectedImageModel });
@@ -63,7 +63,7 @@ const useQueryBoxStore = create<QueryBoxState>()(
       focus: null,
       setFocus: (focus) => {
         ChromeStorage.setStorageValue({
-          key: 'defaultFocus',
+          key: "defaultFocus",
           value: focus,
         });
 
@@ -76,7 +76,7 @@ const useQueryBoxStore = create<QueryBoxState>()(
         const newValue = toggled ?? !state.webAccess.allowWebAccess;
 
         await ChromeStorage.setStorageValue({
-          key: 'defaultWebAccess',
+          key: "defaultWebAccess",
           value: newValue,
         });
 
@@ -89,10 +89,10 @@ const useQueryBoxStore = create<QueryBoxState>()(
       },
     },
 
-    selectedCollectionUuid: '',
+    selectedCollectionUuid: "",
     setSelectedCollectionUuid: (selectedCollectionUuid) =>
       set({ selectedCollectionUuid }),
-  }))
+  })),
 );
 
 const queryBoxStore = useQueryBoxStore;
@@ -101,8 +101,8 @@ async function initQueryBoxStore({
   languageModel,
   imageModel,
 }: {
-  languageModel?: LanguageModel['code'];
-  imageModel?: ImageModel['code'];
+  languageModel?: LanguageModel["code"];
+  imageModel?: ImageModel["code"];
 }) {
   const { defaultFocus, defaultWebAccess } = await ChromeStorage.getStore();
   if (isValidFocus(defaultFocus)) {

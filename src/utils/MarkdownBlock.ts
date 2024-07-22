@@ -1,11 +1,11 @@
-import $ from 'jquery';
+import $ from "jquery";
 
-import { ReactNodeActionReturnType } from '@/content-script/main-world/react-node';
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
-import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
-import { cn } from '@/utils/shadcn-ui-utils';
+import { ReactNodeActionReturnType } from "@/content-script/main-world/react-node";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import { cn } from "@/utils/cn";
 
-import { getReactPropsKey, isMainWorldContext, stripHtml } from './utils';
+import { getReactPropsKey, isMainWorldContext, stripHtml } from "./utils";
 
 type PreBlockTransformResult = {
   $wrapper: JQuery<HTMLElement>;
@@ -16,15 +16,15 @@ type PreBlockTransformResult = {
 
 export default class MarkdownBlockUtils {
   static transformPreBlock(
-    pre: Element | null
+    pre: Element | null,
   ): PreBlockTransformResult | null {
     if (!pre) return null;
 
     const $pre = $(pre) as JQuery<HTMLElement>;
-    const isNative = !$pre.parent('#markdown-query-wrapper').length;
-    const lang = MarkdownBlockUtils.getLang($pre) || 'text';
+    const isNative = !$pre.parent("#markdown-query-wrapper").length;
+    const lang = MarkdownBlockUtils.getLang($pre) || "text";
 
-    if ($pre.attr('data-toolbar')) {
+    if ($pre.attr("data-toolbar")) {
       return this.handleExistingToolbar($pre, lang, isNative);
     }
 
@@ -34,7 +34,7 @@ export default class MarkdownBlockUtils {
     this.setupCodeBlock($pre, lang, isNative);
     this.appendElements($pre, $wrapper, $container, isNative);
 
-    $pre.attr('data-toolbar', 'true');
+    $pre.attr("data-toolbar", "true");
 
     return { $wrapper, $container, lang, isNative };
   }
@@ -42,7 +42,7 @@ export default class MarkdownBlockUtils {
   private static handleExistingToolbar(
     $pre: JQuery<HTMLElement>,
     lang: string,
-    isNative: boolean
+    isNative: boolean,
   ): PreBlockTransformResult {
     return {
       $wrapper: $pre.parent() as JQuery<HTMLElement>,
@@ -62,7 +62,7 @@ export default class MarkdownBlockUtils {
     $pre: JQuery<HTMLElement>,
     $wrapper: JQuery<HTMLElement>,
     $container: JQuery<HTMLElement>,
-    isNative: boolean
+    isNative: boolean,
   ) {
     if (isNative) {
       $wrapper.prepend($container);
@@ -74,44 +74,44 @@ export default class MarkdownBlockUtils {
 
   private static createContainer(isNative: boolean): JQuery<HTMLElement> {
     const baseClasses = cn(
-      'tw-sticky tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all',
+      "tw-sticky tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all",
       {
-        'tw-top-[3.35rem]':
+        "tw-top-[3.35rem]":
           !popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar,
-        'tw-top-[6.45rem]':
+        "tw-top-[6.45rem]":
           popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar,
-      }
+      },
     );
-    const nativeClasses = '!tw-h-[2.3125rem] tw-bg-secondary';
-    return $('<div>').addClass(
-      baseClasses + (isNative ? ` ${nativeClasses}` : '')
+    const nativeClasses = "!tw-h-[2.3125rem] tw-bg-secondary";
+    return $("<div>").addClass(
+      baseClasses + (isNative ? ` ${nativeClasses}` : ""),
     );
   }
 
   private static createWrapper(isNative: boolean): JQuery<HTMLElement> {
-    return $('<div>')
-      .addClass('tw-rounded-md tw-relative tw-rounded-md')
-      .toggleClass('tw-border !tw-border-border', !isNative);
+    return $("<div>")
+      .addClass("tw-rounded-md tw-relative tw-rounded-md")
+      .toggleClass("tw-border !tw-border-border", !isNative);
   }
 
   private static applyStyles(
     $pre: JQuery<HTMLElement>,
     $wrapper: JQuery<HTMLElement>,
-    isNative: boolean
+    isNative: boolean,
   ): void {
     if (isNative) {
-      $wrapper.addClass('tw-relative');
-      $pre.addClass('!tw-m-0 !tw-rounded-md');
+      $wrapper.addClass("tw-relative");
+      $pre.addClass("!tw-m-0 !tw-rounded-md");
       $pre
-        .find('div:nth-child(2)')[0]
-        ?.style.setProperty('padding-top', '0', 'important');
+        .find("div:nth-child(2)")[0]
+        ?.style.setProperty("padding-top", "0", "important");
       $pre
-        .find('div:nth-child(2)')
-        .addClass('tw-rounded-none tw-rounded-md !tw-p-0');
-      $pre.find('.rounded-br, button').addClass('!tw-hidden');
+        .find("div:nth-child(2)")
+        .addClass("tw-rounded-none tw-rounded-md !tw-p-0");
+      $pre.find(".rounded-br, button").addClass("!tw-hidden");
     } else {
       $pre.addClass(
-        '!tw-m-0 !tw-px-[.7rem] !tw-py-2 !tw-rounded-md tw-overflow-auto'
+        "!tw-m-0 !tw-px-[.7rem] !tw-py-2 !tw-rounded-md tw-overflow-auto",
       );
     }
   }
@@ -119,29 +119,29 @@ export default class MarkdownBlockUtils {
   private static setupCodeBlock(
     $pre: JQuery<HTMLElement>,
     lang: string,
-    isNative: boolean
+    isNative: boolean,
   ): void {
     $pre
-      .find('code')
+      .find("code")
       .css({
-        padding: '0.5rem 0.75rem',
+        padding: "0.5rem 0.75rem",
       })
-      .toggleClass('!tw-p-0', !isNative);
+      .toggleClass("!tw-p-0", !isNative);
   }
 
   static extractCodeFromPreBlock = (preElement: Element) => {
-    return stripHtml($(preElement)?.find('code').html());
+    return stripHtml($(preElement)?.find("code").html());
   };
 
   static extractCodeFromPreReactNode = async (preElement: Element) => {
     const highlightedCode = (await webpageMessenger.sendMessage({
-      event: 'getReactNodeData',
+      event: "getReactNodeData",
       payload: {
         querySelector: `#${preElement.id}`,
-        action: 'getCodeFromPreBlock',
+        action: "getCodeFromPreBlock",
       },
       timeout: 5000,
-    })) as ReactNodeActionReturnType['getCodeFromPreBlock'];
+    })) as ReactNodeActionReturnType["getCodeFromPreBlock"];
 
     if (highlightedCode) return highlightedCode;
 
@@ -149,11 +149,11 @@ export default class MarkdownBlockUtils {
   };
 
   static getPreBlockLocalIndex = ($pre: JQuery<HTMLElement>): number => {
-    const messageBlock = $pre[0].closest('.message-block');
+    const messageBlock = $pre[0].closest(".message-block");
 
     if (!messageBlock) return -1;
 
-    return $(messageBlock).find('pre').index($pre);
+    return $(messageBlock).find("pre").index($pre);
   };
 
   static getLangFromReactNode = (pre: HTMLElement) => {
@@ -166,11 +166,11 @@ export default class MarkdownBlockUtils {
 
       const props = (pre as any)[propsKey];
 
-      if (typeof props !== 'object') return;
+      if (typeof props !== "object") return;
 
       const className = props.children?.[0]?.props?.className;
-      const lang = className?.split('-').slice(1).join('-');
-      return lang || 'text';
+      const lang = className?.split("-").slice(1).join("-");
+      return lang || "text";
     } catch (e) {
       return MarkdownBlockUtils.getLang($(pre));
     }
@@ -178,46 +178,46 @@ export default class MarkdownBlockUtils {
 
   static getLang = ($pre: JQuery<HTMLElement>): string => {
     return (
-      $pre.attr('data-lang') ||
+      $pre.attr("data-lang") ||
       $pre
-        .find('code')
-        .attr('class')
+        .find("code")
+        .attr("class")
         ?.match(/language-(\S+)/)?.[1] ||
-      $pre.find('.rounded-br').text() ||
-      ''
+      $pre.find(".rounded-br").text() ||
+      ""
     );
   };
 
   static async isInFlight(pre: HTMLElement) {
-    const messageBlock = pre.closest('.message-block');
+    const messageBlock = pre.closest(".message-block");
 
     if (!messageBlock) return false;
 
-    if ($(messageBlock).find('.mt-sm.flex.items-center.justify-between').length)
+    if ($(messageBlock).find(".mt-sm.flex.items-center.justify-between").length)
       return false;
 
     return getInFlightStateFromReactNode(pre);
 
     async function getInFlightStateFromReactNode(pre: HTMLElement) {
       const messageContent = (await webpageMessenger.sendMessage({
-        event: 'getReactNodeData',
+        event: "getReactNodeData",
         payload: {
           querySelector: `.message-block:has(#${pre.id})`,
-          action: 'getMessageData',
+          action: "getMessageData",
         },
         timeout: 5000,
-      })) as ReactNodeActionReturnType['getMessageData'];
+      })) as ReactNodeActionReturnType["getMessageData"];
 
       if (!messageContent) return false;
 
       const preBlockCodeContent = (await webpageMessenger.sendMessage({
-        event: 'getReactNodeData',
+        event: "getReactNodeData",
         payload: {
           querySelector: `#${pre.id}`,
-          action: 'getCodeFromPreBlock',
+          action: "getCodeFromPreBlock",
         },
         timeout: 5000,
-      })) as ReactNodeActionReturnType['getCodeFromPreBlock'];
+      })) as ReactNodeActionReturnType["getCodeFromPreBlock"];
 
       return !messageContent.answer.includes(`${preBlockCodeContent}\`\`\``);
     }
@@ -227,18 +227,18 @@ export default class MarkdownBlockUtils {
     const $pre = $(pre);
 
     $pre
-      .closest('div.w-full.max-w-\\[90vw\\]')
+      .closest("div.w-full.max-w-\\[90vw\\]")
       .addClass(
-        '!tw-visible !tw-opacity-100 [&>*]:!tw-visible [&>*]:!tw-opacity-100 tw-transition-all'
+        "!tw-visible !tw-opacity-100 [&>*]:!tw-visible [&>*]:!tw-opacity-100 tw-transition-all",
       )
       .toggleClass(
-        '[&>:not(.canvas-placeholder)]:!tw-invisible',
-        $pre.attr('data-mask') === 'true'
+        "[&>:not(.canvas-placeholder)]:!tw-invisible",
+        $pre.attr("data-mask") === "true",
       );
   }
 
   static async handleInFlightState(pre: HTMLElement) {
-    const messageBlock = pre.closest('.message-block');
+    const messageBlock = pre.closest(".message-block");
 
     if (!messageBlock) return false;
 
@@ -248,23 +248,23 @@ export default class MarkdownBlockUtils {
 
     $(messageBlock)
       .find(`.${pre.id}-inflight-indicator`)
-      .attr('data-inflight', (!!isInFlight).toString());
+      .attr("data-inflight", (!!isInFlight).toString());
 
     return isInFlight;
   }
 
   static async highlightNativelyUnsupportedLang(pre: HTMLElement) {
-    const supportedLangs = ['gdscript', 'blade'];
+    const supportedLangs = ["gdscript", "blade"];
 
-    if ($(pre).attr('data-mask') === 'true' || $(pre).attr('data-highlighted'))
+    if ($(pre).attr("data-mask") === "true" || $(pre).attr("data-highlighted"))
       return true;
 
     if (supportedLangs.includes(MarkdownBlockUtils.getLang($(pre)))) {
       const html = await webpageMessenger.sendMessage({
-        event: 'getHighlightedCodeAsHtml',
+        event: "getHighlightedCodeAsHtml",
         payload: {
           code: await MarkdownBlockUtils.extractCodeFromPreReactNode(
-            $(`#${pre.id}`)[0]
+            $(`#${pre.id}`)[0],
           ),
           lang: MarkdownBlockUtils.getLang($(pre)),
         },
@@ -272,9 +272,9 @@ export default class MarkdownBlockUtils {
         suppressTimeoutError: true,
       });
 
-      if (html) $(pre).find('code').html($(html).find('code').html());
+      if (html) $(pre).find("code").html($(html).find("code").html());
     }
 
-    $(pre).attr('data-highlighted', 'true');
+    $(pre).attr("data-highlighted", "true");
   }
 }

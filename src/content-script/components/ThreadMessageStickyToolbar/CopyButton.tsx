@@ -1,23 +1,23 @@
-import $ from 'jquery';
-import { Check, Copy, LoaderCircle, Unlink } from 'lucide-react';
-import { useCallback } from 'react';
-import { FaMarkdown } from 'react-icons/fa';
+import $ from "jquery";
+import { Check, Copy, LoaderCircle, Unlink } from "lucide-react";
+import { useCallback } from "react";
+import { FaMarkdown } from "react-icons/fa";
 
-import PPLXApi from '@/services/PPLXApi';
+import PPLXApi from "@/services/PPLXApi";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/shared/components/shadcn/ui/dropdown-menu';
-import { toast } from '@/shared/components/shadcn/ui/use-toast';
-import Tooltip from '@/shared/components/Tooltip';
-import useCtrlDown from '@/shared/hooks/useCtrlDown';
-import useToggleButtonText from '@/shared/hooks/useToggleButtonText';
-import { jsonUtils } from '@/utils/utils';
-import { useQuery } from '@tanstack/react-query';
+} from "@/shared/components/shadcn/ui/dropdown-menu";
+import { toast } from "@/shared/components/shadcn/ui/use-toast";
+import Tooltip from "@/shared/components/Tooltip";
+import useCtrlDown from "@/shared/hooks/useCtrlDown";
+import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
+import { jsonUtils } from "@/utils/utils";
+import { useQuery } from "@tanstack/react-query";
 
-import { Container } from './ThreadMessageStickyToolbar';
+import { Container } from "./ThreadMessageStickyToolbar";
 
 type CopyButtonProps = {
   container: Container;
@@ -29,9 +29,9 @@ export default function CopyButton({
   containerIndex,
 }: CopyButtonProps) {
   const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
-    queryKey: ['currentThreadInfo'],
+    queryKey: ["currentThreadInfo"],
     queryFn: () =>
-      PPLXApi.fetchThreadInfo(window.location.pathname.split('/').pop() || ''),
+      PPLXApi.fetchThreadInfo(window.location.pathname.split("/").pop() || ""),
     enabled: false,
   });
 
@@ -39,13 +39,13 @@ export default function CopyButton({
 
   const [copyButtonText, setCopyButtonText] = useToggleButtonText({
     defaultText: (
-      <Copy className="tw-size-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
+      <Copy className="tw-size-4 tw-text-muted-foreground tw-transition-all group-hover:tw-text-foreground" />
     ),
   });
 
   const handleCopyMessage = useCallback(() => {
     const $buttonBar = $(container.messageBlock).find(
-      '.mt-sm.flex.items-center.justify-between'
+      ".mt-sm.flex.items-center.justify-between",
     );
 
     const $button = $buttonBar
@@ -56,7 +56,7 @@ export default function CopyButton({
 
     if (!$button.length) return;
 
-    $button.trigger('click');
+    $button.trigger("click");
 
     setCopyButtonText(<Check className="tw-size-4" />);
   }, [container.messageBlock, setCopyButtonText]);
@@ -70,8 +70,8 @@ export default function CopyButton({
       setCopyButtonText(<Check className="tw-size-4" />);
     } catch (e) {
       toast({
-        title: '⚠️ Error',
-        description: 'The document must be focused to copy the text.',
+        title: "⚠️ Error",
+        description: "The document must be focused to copy the text.",
         timeout: 1000,
       });
     }
@@ -79,7 +79,7 @@ export default function CopyButton({
     async function processMessage(containerIndex: number): Promise<string> {
       const result = await refetch();
 
-      if (!result.data || !result.data[containerIndex]) return '';
+      if (!result.data || !result.data[containerIndex]) return "";
 
       const message = result.data[containerIndex];
       const messageText = jsonUtils.safeParse(message.text);
@@ -88,17 +88,17 @@ export default function CopyButton({
       let answer =
         messageText?.answer ||
         jsonUtils.safeParse(
-          messageText?.[messageText.length - 1]?.content?.answer
+          messageText?.[messageText.length - 1]?.content?.answer,
         )?.answer;
 
       const webResults = isProSearch
-        ? messageText.find((x) => x.step_type === 'SEARCH_RESULTS')?.content
+        ? messageText.find((x) => x.step_type === "SEARCH_RESULTS")?.content
             ?.web_results
         : jsonUtils.safeParse(message.text)?.web_results;
 
       webResults?.forEach((_: unknown, index: number) => {
         const findText = `\\[${index + 1}\\]`;
-        answer = answer.replace(new RegExp(findText, 'g'), '');
+        answer = answer.replace(new RegExp(findText, "g"), "");
       });
 
       return answer;
@@ -116,7 +116,7 @@ export default function CopyButton({
         }}
       >
         <Tooltip content="Copy Message">
-          <div className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group">
+          <div className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95">
             {isFetchingCurrentThreadInfo ? (
               <LoaderCircle className="tw-size-4 tw-animate-spin" />
             ) : (
@@ -130,7 +130,7 @@ export default function CopyButton({
           onSelect={() => {
             handleCopyMessage();
           }}
-          className="tw-flex tw-gap-2 tw-items-center"
+          className="tw-flex tw-items-center tw-gap-2"
         >
           <FaMarkdown className="tw-size-4" />
           Default
@@ -139,7 +139,7 @@ export default function CopyButton({
           onSelect={() => {
             handleCopyStrippedMessage();
           }}
-          className="tw-flex tw-gap-2 tw-items-center"
+          className="tw-flex tw-items-center tw-gap-2"
         >
           <Unlink className="tw-size-4" />
           Without citations

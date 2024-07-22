@@ -1,22 +1,22 @@
-import $ from 'jquery';
+import $ from "jquery";
 
-import Canvas from '@/utils/Canvas';
-import { mainWorldExec } from '@/utils/hoc';
-import MarkdownBlockUtils from '@/utils/MarkdownBlock';
+import Canvas from "@/utils/Canvas";
+import { mainWorldExec } from "@/utils/hoc";
+import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 
 function applyDataAttrs() {
-  $('pre').each((_, pre) => {
+  $("pre").each((_, pre) => {
     queueMicrotask(() => addDataAttrs(pre));
   });
 }
 
 function addDataAttrs(pre: HTMLElement) {
-  if (!pre.querySelector('&>div.codeWrapper') || pre.hasAttribute('data-lang'))
+  if (!pre.querySelector("&>div.codeWrapper") || pre.hasAttribute("data-lang"))
     return;
 
   const lang = MarkdownBlockUtils.getLangFromReactNode(pre);
-  pre.setAttribute('data-lang', lang);
-  pre.setAttribute('data-mask', Canvas.isMaskableLang(lang) ? 'true' : 'false');
+  pre.setAttribute("data-lang", lang);
+  pre.setAttribute("data-mask", Canvas.isMaskableLang(lang) ? "true" : "false");
 }
 
 mainWorldExec(() => {

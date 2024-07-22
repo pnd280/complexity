@@ -1,4 +1,4 @@
-import { debounce } from 'lodash-es';
+import { debounce } from "lodash-es";
 import {
   Fragment,
   useCallback,
@@ -6,16 +6,16 @@ import {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import ReactDOM from 'react-dom';
-import { Updater, useImmer } from 'use-immer';
+} from "react";
+import ReactDOM from "react-dom";
+import { Updater, useImmer } from "use-immer";
 
-import useThreadMessageStickyToolbarObserver from '@/content-script/hooks/useThreadMessageStickyToolbarObserver';
-import UIUtils from '@/utils/UI';
-import { onScrollDirectionChange } from '@/utils/utils';
-import { useDebounce } from '@uidotdev/usehooks';
+import useThreadMessageStickyToolbarObserver from "@/content-script/hooks/useThreadMessageStickyToolbarObserver";
+import UIUtils from "@/utils/UI";
+import { onScrollDirectionChange } from "@/utils/utils";
+import { useDebounce } from "@uidotdev/usehooks";
 
-import ThreadMessageStickyToolbarComponents from './ThreadMessageStickyToolbarComponents';
+import ThreadMessageStickyToolbarComponents from "./ThreadMessageStickyToolbarComponents";
 
 export type Container = {
   messageBlock: Element;
@@ -55,7 +55,7 @@ export default function ThreadMessageStickyToolbar() {
   const [containers, setContainers] = useState<Container[]>([]);
   const debouncedContainers = useDebounce(containers, 200);
   const [containersStates, setContainersStates] = useImmer<ContainerStates[]>(
-    []
+    [],
   );
 
   const containersRef = useRef<Container[]>([]);
@@ -81,7 +81,7 @@ export default function ThreadMessageStickyToolbar() {
         });
       }
     },
-    [setContainers, setContainersStates]
+    [setContainers, setContainersStates],
   );
 
   const toggleVisibility = useCallback(
@@ -98,7 +98,7 @@ export default function ThreadMessageStickyToolbar() {
         if (draft[index]) draft[index].isHidden = hide;
       });
     },
-    [containersStates, setContainersStates]
+    [containersStates, setContainersStates],
   );
 
   useThreadMessageStickyToolbarObserver({ toggleVisibility, updateContainers });
@@ -116,11 +116,11 @@ export default function ThreadMessageStickyToolbar() {
               containerIndex={index}
               setContainersStates={setContainersStates}
             />,
-            container.container
+            container.container,
           )}
       </Fragment>
     ),
-    [containers, containersStates, setContainersStates]
+    [containers, containersStates, setContainersStates],
   );
 
   return debouncedContainers.map(renderToolbar);
@@ -128,11 +128,11 @@ export default function ThreadMessageStickyToolbar() {
 
 const useScrollDirection = (
   containers: Container[],
-  setContainersStates: Updater<ContainerStates[]>
+  setContainersStates: Updater<ContainerStates[]>,
 ) => {
   const stickyNavHeight = useMemo(
     () => UIUtils.getStickyNavbar()?.outerHeight() || 3 * 16,
-    []
+    [],
   );
 
   const handleScrollDirectionChange = useCallback(() => {
@@ -151,13 +151,13 @@ const useScrollDirection = (
   useEffect(() => {
     const debouncedHandleScrollDirectionChange = debounce(
       handleScrollDirectionChange,
-      100
+      100,
     );
 
     const stopObserving = onScrollDirectionChange({
       up: () => debouncedHandleScrollDirectionChange(),
       down: () => debouncedHandleScrollDirectionChange(),
-      identifier: 'threadMessageStickyToolbar',
+      identifier: "threadMessageStickyToolbar",
     });
 
     requestIdleCallback(() => debouncedHandleScrollDirectionChange());

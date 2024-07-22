@@ -1,22 +1,22 @@
-import { cn } from '@/utils/shadcn-ui-utils';
-import { Cpu } from 'lucide-react';
-import { useEffect, useMemo, useRef } from 'react';
-import { PiGlobeX } from 'react-icons/pi';
+import { cn } from "@/utils/cn";
+import { Cpu } from "lucide-react";
+import { useEffect, useMemo, useRef } from "react";
+import { PiGlobeX } from "react-icons/pi";
 
-import { queryBoxStore } from '@/content-script/session-store/query-box';
+import { queryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
-} from '@/shared/components/Select';
-import { WebAccessFocus } from '@/types/ModelSelector';
-import UIUtils from '@/utils/UI';
-import { useToggle } from '@uidotdev/usehooks';
+} from "@/shared/components/Select";
+import { WebAccessFocus } from "@/types/ModelSelector";
+import UIUtils from "@/utils/UI";
+import { useToggle } from "@uidotdev/usehooks";
 
-import Tooltip from '@/shared/components/Tooltip';
-import { webAccessFocus } from './';
+import Tooltip from "@/shared/components/Tooltip";
+import { webAccessFocus } from "./";
 
 export default function FocusSelector() {
   const items = useMemo(() => {
@@ -28,27 +28,27 @@ export default function FocusSelector() {
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   const { focus, setFocus, allowWebAccess, toggleWebAccess } = queryBoxStore(
-    (state) => state.webAccess
+    (state) => state.webAccess,
   );
 
   useEffect(() => {
     if (allowWebAccess && !focus) {
-      setFocus('internet');
+      setFocus("internet");
     }
 
-    UIUtils.getActiveQueryBoxTextarea({}).trigger('focus');
+    UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
   }, [allowWebAccess, focus, setFocus]);
 
   return (
     <>
       <Select
-        value={focus || ''}
+        value={focus || ""}
         onValueChange={(value) => {
-          setFocus(value as WebAccessFocus['code']);
+          setFocus(value as WebAccessFocus["code"]);
           toggleWebAccess(true);
           toggleOpen();
 
-          UIUtils.getActiveQueryBoxTextarea({}).trigger('focus');
+          UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
         }}
         onPointerDownOutside={() => toggleOpen(false)}
         open={open}
@@ -56,10 +56,10 @@ export default function FocusSelector() {
         <SelectTrigger
           variant="ghost"
           className={cn(
-            'tw-font-medium !tw-py-0 tw-flex tw-justify-center tw-items-center gap-1 !tw-w-fit tw-max-w-[150px] tw-select-none active:!tw-scale-95 [&_span]:tw-max-w-[100px] tw-min-h-8 !tw-px-2 tw-animate-in tw-zoom-in tw-transition-all tw-duration-300 tw-h-full',
+            "gap-1 tw-flex tw-h-full tw-min-h-8 !tw-w-fit tw-max-w-[150px] tw-select-none tw-items-center tw-justify-center !tw-px-2 !tw-py-0 tw-font-medium tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in active:!tw-scale-95 [&_span]:tw-max-w-[100px]",
             {
-              '!tw-bg-accent': allowWebAccess,
-            }
+              "!tw-bg-accent": allowWebAccess,
+            },
           )}
           onContextMenu={(e) => {
             e.preventDefault();
@@ -71,14 +71,14 @@ export default function FocusSelector() {
           ref={triggerRef}
         >
           <Tooltip
-            content={`Web access: ${allowWebAccess ? 'ON' : 'OFF'}${allowWebAccess && focus ? ` | Focus: ${items.find((model) => model.code === focus)?.label}` : ''}`}
+            content={`Web access: ${allowWebAccess ? "ON" : "OFF"}${allowWebAccess && focus ? ` | Focus: ${items.find((model) => model.code === focus)?.label}` : ""}`}
             contentOptions={{
               sideOffset: 15,
             }}
           >
             <div
               className={cn({
-                'tw-text-accent-foreground': allowWebAccess,
+                "tw-text-accent-foreground": allowWebAccess,
               })}
             >
               {allowWebAccess && focus ? (
@@ -91,13 +91,13 @@ export default function FocusSelector() {
             </div>
           </Tooltip>
         </SelectTrigger>
-        <SelectContent className="tw-font-sans [&_span]:tw-truncate tw-max-w-[200px] tw-max-h-[500px]">
+        <SelectContent className="tw-max-h-[500px] tw-max-w-[200px] tw-font-sans [&_span]:tw-truncate">
           <SelectGroup>
             {items.map((item) => (
               <Tooltip
                 content={focus !== item.code ? item.tooltip : undefined}
                 contentOptions={{
-                  side: 'right',
+                  side: "right",
                   sideOffset: 10,
                 }}
                 key={item.code}
@@ -106,10 +106,10 @@ export default function FocusSelector() {
                   key={item.code}
                   value={item.code}
                   className={cn({
-                    'tw-text-accent-foreground': item.code === focus,
+                    "tw-text-accent-foreground": item.code === focus,
                   })}
                 >
-                  <div className="tw-flex tw-items-center tw-justify-around gap-2">
+                  <div className="gap-2 tw-flex tw-items-center tw-justify-around">
                     {item.icon ? (
                       <div>{item.icon}</div>
                     ) : (

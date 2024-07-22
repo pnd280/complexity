@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
-import { CanvasLang } from '@/utils/Canvas';
-import ChromeStorage from '@/utils/ChromeStorage';
-import { extensionExec } from '@/utils/hoc';
+import { CanvasLang } from "@/utils/Canvas";
+import ChromeStorage from "@/utils/ChromeStorage";
+import { extensionExec } from "@/utils/hoc";
 
 type PopupSettingsState = {
   queryBoxSelectors: {
@@ -53,13 +53,13 @@ const usePopupSettingsStore = create<PopupSettingsState>()(
     visualTweaks: {
       collapseEmptyThreadVisualColumns: false,
     },
-  }))
+  })),
 );
 
 const popupSettingsStore = usePopupSettingsStore;
 
 extensionExec(async function initPopupSettingsStore() {
-  const settings = await ChromeStorage.getStorageValue('popupSettings');
+  const settings = await ChromeStorage.getStorageValue("popupSettings");
 
   if (!settings) return;
 
@@ -85,7 +85,7 @@ extensionExec(async function initPopupSettingsStore() {
   }
 
   popupSettingsStore.subscribe((state) => {
-    ChromeStorage.setStorageValue({ key: 'popupSettings', value: state });
+    ChromeStorage.setStorageValue({ key: "popupSettings", value: state });
   });
 })();
 

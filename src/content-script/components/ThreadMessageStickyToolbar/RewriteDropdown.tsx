@@ -1,22 +1,22 @@
-import $ from 'jquery';
-import { RefreshCcw, Sparkles } from 'lucide-react';
-import { useCallback, useRef } from 'react';
+import $ from "jquery";
+import { RefreshCcw, Sparkles } from "lucide-react";
+import { useCallback, useRef } from "react";
 
-import WebpageMessageInterceptor from '@/content-script/main-world/WebpageMessageInterceptors';
-import { queryBoxStore } from '@/content-script/session-store/query-box';
+import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
+import { queryBoxStore } from "@/content-script/session-store/query-box";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/shared/components/shadcn/ui/dropdown-menu';
-import Tooltip from '@/shared/components/Tooltip';
-import useCtrlDown from '@/shared/hooks/useCtrlDown';
-import { LanguageModel } from '@/types/ModelSelector';
-import { sleep } from '@/utils/utils';
+} from "@/shared/components/shadcn/ui/dropdown-menu";
+import Tooltip from "@/shared/components/Tooltip";
+import useCtrlDown from "@/shared/hooks/useCtrlDown";
+import { LanguageModel } from "@/types/ModelSelector";
+import { sleep } from "@/utils/utils";
 
-import { languageModels } from '../QueryBox';
-import { Container } from './ThreadMessageStickyToolbar';
+import { languageModels } from "../QueryBox";
+import { Container } from "./ThreadMessageStickyToolbar";
 
 type RewriteDropdownProps = {
   container: Container;
@@ -32,7 +32,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
       model,
       proSearch,
     }: {
-      model?: LanguageModel['code'];
+      model?: LanguageModel["code"];
       proSearch?: boolean;
     }) => {
       stopOnGoingInterceptor.current?.();
@@ -42,11 +42,11 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
           languageModel:
             model || queryBoxStore.getState().selectedLanguageModel,
           proSearchState: proSearch,
-        }
+        },
       );
 
       const $buttonBar = $(container.messageBlock).find(
-        '.mt-sm.flex.items-center.justify-between'
+        ".mt-sm.flex.items-center.justify-between",
       );
 
       const $rewriteButton = $buttonBar
@@ -57,7 +57,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
 
       if (!$rewriteButton.length) return;
 
-      $rewriteButton.trigger('click');
+      $rewriteButton.trigger("click");
 
       while (
         !$(`[data-popper-reference-hidden="true"]:contains("Sonar Large 32K")`)
@@ -67,12 +67,12 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
       }
 
       $(
-        `[data-popper-reference-hidden="true"] .md\\:h-full:contains("Sonar Large 32K")`
+        `[data-popper-reference-hidden="true"] .md\\:h-full:contains("Sonar Large 32K")`,
       )
         .last()
-        .trigger('click');
+        .trigger("click");
     },
-    [container.messageBlock, stopOnGoingInterceptor]
+    [container.messageBlock, stopOnGoingInterceptor],
   );
 
   return (
@@ -87,16 +87,16 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
       >
         <Tooltip content="Rewrite Message">
           <div
-            className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
+            className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95"
             onClick={() => {}}
           >
-            <RefreshCcw className="tw-size-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
+            <RefreshCcw className="tw-size-4 tw-text-muted-foreground tw-transition-all group-hover:tw-text-foreground" />
           </div>
         </Tooltip>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem
-          className="tw-flex tw-gap-2 tw-items-center"
+          className="tw-flex tw-items-center tw-gap-2"
           onSelect={() => {
             handleRewrite({
               proSearch: true,
@@ -116,7 +116,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
                 model: model.code,
               });
             }}
-            className="tw-flex tw-gap-2 tw-items-center"
+            className="tw-flex tw-items-center tw-gap-2"
           >
             {model.icon}
             {model.label}

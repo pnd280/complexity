@@ -21,7 +21,7 @@ export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
     }
 
     switch (mutation.type) {
-      case 'childList':
+      case "childList":
         for (const node of mutation.addedNodes) {
           batchInfo.removedNodes.delete(node);
           batchInfo.addedNodes.add(node);
@@ -32,12 +32,12 @@ export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
           }
         }
         break;
-      case 'attributes':
+      case "attributes":
         if (mutation.attributeName) {
           batchInfo.attributes.add(mutation.attributeName);
         }
         break;
-      case 'characterData':
+      case "characterData":
         batchInfo.characterData = true;
         break;
     }
@@ -48,7 +48,7 @@ export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
   batchMap.forEach((batchInfo, target) => {
     if (batchInfo.addedNodes.size > 0 || batchInfo.removedNodes.size > 0) {
       batchedMutations.push({
-        type: 'childList',
+        type: "childList",
         target,
         addedNodes: Array.from(batchInfo.addedNodes),
         removedNodes: Array.from(batchInfo.removedNodes),
@@ -59,7 +59,7 @@ export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
 
     if (batchInfo.attributes.size > 0) {
       batchedMutations.push({
-        type: 'attributes',
+        type: "attributes",
         target,
         attributeName: Array.from(batchInfo.attributes),
         oldValue: null,
@@ -68,7 +68,7 @@ export function batchMutations(mutations: MutationRecord[]): MutationRecord[] {
 
     if (batchInfo.characterData) {
       batchedMutations.push({
-        type: 'characterData',
+        type: "characterData",
         target,
         oldValue: null,
       } as unknown as MutationRecord);

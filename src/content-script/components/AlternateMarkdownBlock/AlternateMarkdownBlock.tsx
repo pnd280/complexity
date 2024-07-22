@@ -1,13 +1,13 @@
-import $ from 'jquery';
-import { Fragment, useState } from 'react';
-import ReactDOM from 'react-dom';
+import $ from "jquery";
+import { Fragment, useState } from "react";
+import ReactDOM from "react-dom";
 
-import useMarkdownBlockObserver from '@/content-script/hooks/useMarkdownBlockObserver';
-import Canvas, { CanvasLang } from '@/utils/Canvas';
-import { useDebounce } from '@uidotdev/usehooks';
+import useMarkdownBlockObserver from "@/content-script/hooks/useMarkdownBlockObserver";
+import Canvas, { CanvasLang } from "@/utils/Canvas";
+import { useDebounce } from "@uidotdev/usehooks";
 
-import CanvasPlaceholder from '../Canvas/CanvasPlaceholder';
-import AlternateMarkdownBlockToolbar from './AlternateMarkdownBlockToolbar';
+import CanvasPlaceholder from "../Canvas/CanvasPlaceholder";
+import AlternateMarkdownBlockToolbar from "./AlternateMarkdownBlockToolbar";
 
 export type MarkdownBlockContainer = {
   wrapper: Element;
@@ -28,9 +28,9 @@ export default function AlternateMarkdownBlock() {
   return debouncedContainers.map((container, index) => {
     const id = `md-block-${index + 1}`;
 
-    $(container.preElement).attr('id', id);
+    $(container.preElement).attr("id", id);
 
-    const isMasked = $(container.preElement).attr('data-mask') === 'true';
+    const isMasked = $(container.preElement).attr("data-mask") === "true";
     const isCanvasLang = Canvas.isCanvasLang(container.lang);
 
     if (!isMasked) {
@@ -41,7 +41,7 @@ export default function AlternateMarkdownBlock() {
               lang={container.lang}
               preBlockId={id}
             />,
-            container.header
+            container.header,
           )}
         </Fragment>
       );
@@ -51,7 +51,7 @@ export default function AlternateMarkdownBlock() {
           preBlockId={id}
           lang={container.lang as CanvasLang}
         />,
-        container.wrapper
+        container.wrapper,
       );
     }
 

@@ -1,5 +1,5 @@
-import { waitForElement } from '@/utils/utils';
-import { useQuery } from '@tanstack/react-query';
+import { waitForElement } from "@/utils/utils";
+import { useQuery } from "@tanstack/react-query";
 
 export default function useWaitForElement({
   id,
@@ -11,14 +11,14 @@ export default function useWaitForElement({
   timeout?: number;
 }) {
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: ['domNode', id],
+    queryKey: ["domNode", id],
     queryFn: async () => {
       const messagesContainer = await waitForElement({
         selector,
         timeout,
       });
 
-      if (!messagesContainer) throw new Error('DOM node not found: ' + id);
+      if (!messagesContainer) throw new Error("DOM node not found: " + id);
 
       return messagesContainer;
     },

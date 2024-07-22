@@ -1,8 +1,5 @@
-import { cn } from '@/utils/shadcn-ui-utils';
-import {
-  Cpu,
-  Image,
-} from 'lucide-react';
+import { cn } from "@/utils/cn";
+import { Cpu, Image } from "lucide-react";
 
 import {
   Select,
@@ -10,10 +7,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/Select';
-import UIUtils from '@/utils/UI';
+} from "@/shared/components/Select";
+import UIUtils from "@/utils/UI";
 
-import Tooltip from '@/shared/components/Tooltip';
+import Tooltip from "@/shared/components/Tooltip";
 
 type ModelItem = {
   label: string;
@@ -24,10 +21,10 @@ type ModelItem = {
 };
 
 type ModelSelectorProps<T extends ModelItem> = {
-  type: 'language' | 'image';
+  type: "language" | "image";
   items: T[];
-  onValueChange?: (value: T['code']) => void;
-  value?: T['code'];
+  onValueChange?: (value: T["code"]) => void;
+  value?: T["code"];
 };
 
 export default function ModelSelector<T extends ModelItem>({
@@ -40,23 +37,23 @@ export default function ModelSelector<T extends ModelItem>({
     <>
       <Select
         value={value}
-        onValueChange={(value: T['code']) => {
+        onValueChange={(value: T["code"]) => {
           onValueChange?.(value);
 
           setTimeout(() => {
-            UIUtils.getActiveQueryBoxTextarea({}).trigger('focus');
+            UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
           }, 100);
         }}
       >
-        <SelectTrigger variant="ghost" className="!tw-py-0 !tw-px-0">
+        <SelectTrigger variant="ghost" className="!tw-px-0 !tw-py-0">
           <Tooltip
             content={`Choose ${type} model`}
             contentOptions={{
               sideOffset: 8,
             }}
           >
-            <div className="tw-font-medium tw-min-h-8 tw-flex tw-justify-center tw-items-center tw-gap-2 !tw-w-fit tw-max-w-[150px] tw-select-none active:!tw-scale-95 [&_span]:tw-max-w-[100px] !tw-px-2 tw-animate-in tw-zoom-in tw-transition-all tw-duration-300">
-              {type === 'language' ? (
+            <div className="tw-flex tw-min-h-8 !tw-w-fit tw-max-w-[150px] tw-select-none tw-items-center tw-justify-center tw-gap-2 !tw-px-2 tw-font-medium tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in active:!tw-scale-95 [&_span]:tw-max-w-[100px]">
+              {type === "language" ? (
                 <Cpu className="tw-size-4" />
               ) : (
                 <Image className="tw-size-4" />
@@ -64,18 +61,18 @@ export default function ModelSelector<T extends ModelItem>({
               <SelectValue>
                 {items.find((model) => model.code === value)?.shortLabel}
               </SelectValue>
-              <span className="tw-text-accent-foreground tw-text-[.5rem] !tw-self-start">
+              <span className="!tw-self-start tw-text-[.5rem] tw-text-accent-foreground">
                 {items.find((model) => model.code === value)?.tooltip}
               </span>
             </div>
           </Tooltip>
         </SelectTrigger>
-        <SelectContent className="tw-font-sans [&_span]:tw-truncate tw-max-w-[200px] tw-max-h-[500px]">
+        <SelectContent className="tw-max-h-[500px] tw-max-w-[200px] tw-font-sans [&_span]:tw-truncate">
           {items.map((model) => (
             <Tooltip
               content={value !== model.code ? model.tooltip : undefined}
               contentOptions={{
-                side: 'right',
+                side: "right",
                 sideOffset: 10,
               }}
               key={model.code}
@@ -84,10 +81,10 @@ export default function ModelSelector<T extends ModelItem>({
                 key={model.code}
                 value={model.code}
                 className={cn({
-                  'tw-text-accent-foreground': model.code === value,
+                  "tw-text-accent-foreground": model.code === value,
                 })}
               >
-                <div className="tw-flex tw-items-center tw-justify-around gap-2">
+                <div className="gap-2 tw-flex tw-items-center tw-justify-around">
                   {model.icon ? (
                     <div className="tw-text-[1.1rem]">{model.icon}</div>
                   ) : (

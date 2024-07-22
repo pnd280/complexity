@@ -1,8 +1,8 @@
-import $ from 'jquery';
+import $ from "jquery";
 
-import { getReactFiberKey, jsonUtils } from '@/utils/utils';
-import { webpageMessenger } from './webpage-messenger';
-import { mainWorldExec, mainWorldOnly } from '@/utils/hoc';
+import { getReactFiberKey, jsonUtils } from "@/utils/utils";
+import { webpageMessenger } from "./webpage-messenger";
+import { mainWorldExec, mainWorldOnly } from "@/utils/hoc";
 
 export type ReactNodeAction = keyof typeof actions;
 export type ReactNodeActionReturnType = {
@@ -26,25 +26,25 @@ const actions = {
     (messageBlock: Element): PPLXThreadMessageReactFiberResult => {
       const result = jsonUtils.safeParse(
         (messageBlock as any)[getReactFiberKey(messageBlock)]?.memoizedProps
-          ?.children?.props?.result?.text
+          ?.children?.props?.result?.text,
       );
 
       return Array.isArray(result)
         ? jsonUtils.safeParse(result[result.length - 1]?.content?.answer)
         : result;
-    }
+    },
   ),
 } as const;
 
 mainWorldExec(() => {
   webpageMessenger.onMessage(
-    'getReactNodeData',
+    "getReactNodeData",
     async ({ payload: { querySelector, action } }) => {
       const $node = $(querySelector);
 
       if (!$node.length) return;
 
       return actions[action]($node[0]);
-    }
+    },
   );
 })();

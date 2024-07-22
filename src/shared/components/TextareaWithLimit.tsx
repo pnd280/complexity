@@ -1,6 +1,6 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from "react";
 
-import { cn } from '@/utils/shadcn-ui-utils';
+import { cn } from "@/utils/cn";
 
 export type TextareaProps =
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -11,11 +11,11 @@ export type TextareaProps =
 const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, limit, triggerCounterLimitOffset = 0, ...props }, ref) => {
     const [value, setValue] = useState(
-      ((props.defaultValue || props.value) as string) || ''
+      ((props.defaultValue || props.value) as string) || "",
     );
 
     useEffect(() => {
-      setValue(((props.defaultValue || props.value) as string) || '');
+      setValue(((props.defaultValue || props.value) as string) || "");
     }, [props.value, props.defaultValue]);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -23,11 +23,11 @@ const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
     };
 
     return (
-      <div className="tw-w-full tw-h-full tw-relative">
+      <div className="tw-relative tw-h-full tw-w-full">
         <textarea
           className={cn(
-            'tw-flex tw-min-h-[80px] tw-h-full tw-w-full tw-rounded-md tw-border tw-border-input tw-bg-background tw-px-3 tw-py-2 tw-text-sm tw-ring-offset-background placeholder:tw-text-muted-foreground focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-cursor-not-allowed disabled:tw-opacity-50',
-            className
+            "tw-flex tw-h-full tw-min-h-[80px] tw-w-full tw-rounded-md tw-border tw-border-input tw-bg-background tw-px-3 tw-py-2 tw-text-sm tw-ring-offset-background placeholder:tw-text-muted-foreground focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-cursor-not-allowed disabled:tw-opacity-50",
+            className,
           )}
           ref={ref}
           {...props}
@@ -39,21 +39,21 @@ const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {limit && value.length > limit - triggerCounterLimitOffset && (
           <div
             className={cn(
-              'tw-gap-sm tw-bg-background tw-right-1 tw-absolute tw-flex tw-items-center tw-rounded-full tw-pb-xs tw-mb-xs tw-bottom-0',
+              "tw-gap-sm tw-pb-xs tw-mb-xs tw-absolute tw-bottom-0 tw-right-1 tw-flex tw-items-center tw-rounded-full tw-bg-background",
               {
-                'tw-text-red-500':
+                "tw-text-red-500":
                   value.length > limit - triggerCounterLimitOffset,
-              }
+              },
             )}
           >
-            <div className="tw-font-sans tw-text-xs tw-font-medium ">
+            <div className="tw-font-sans tw-text-xs tw-font-medium">
               {limit - value.length}
             </div>
           </div>
         )}
       </div>
     );
-  }
+  },
 );
 
 export default TextareaWithLimit;

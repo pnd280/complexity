@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
-import $ from 'jquery';
+import $ from "jquery";
 import {
   Ellipsis,
   ListOrdered,
@@ -8,25 +8,25 @@ import {
   Share2,
   Text,
   X,
-} from 'lucide-react';
-import { FaMarkdown } from 'react-icons/fa';
-import { PiNotePencil } from 'react-icons/pi';
-import { Updater } from 'use-immer';
+} from "lucide-react";
+import { FaMarkdown } from "react-icons/fa";
+import { PiNotePencil } from "react-icons/pi";
+import { Updater } from "use-immer";
 
-import { cn } from '@/utils/shadcn-ui-utils';
-import { scrollToElement, sleep, stripHtml } from '@/utils/utils';
+import { cn } from "@/utils/cn";
+import { scrollToElement, sleep, stripHtml } from "@/utils/utils";
 
-import Tooltip from '@/shared/components/Tooltip';
+import Tooltip from "@/shared/components/Tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/shared/components/shadcn/ui/dropdown-menu';
-import CopyButton from './CopyButton';
-import RewriteDropdown from './RewriteDropdown';
-import { Container, ContainerStates } from './ThreadMessageStickyToolbar';
-import ThreadTitle from './ThreadTitle';
+} from "@/shared/components/shadcn/ui/dropdown-menu";
+import CopyButton from "./CopyButton";
+import RewriteDropdown from "./RewriteDropdown";
+import { Container, ContainerStates } from "./ThreadMessageStickyToolbar";
+import ThreadTitle from "./ThreadTitle";
 
 type ThreadMessageStickyToolbarComponents = {
   containerIndex: number;
@@ -46,20 +46,20 @@ export default function ThreadMessageStickyToolbarComponents({
   const handleVisualDiff = useCallback(() => {
     const markdownText = stripHtml(
       $(containers[containerIndex].query)
-        .find('>#markdown-query-wrapper')
-        .html()
+        .find(">#markdown-query-wrapper")
+        .html(),
     );
 
     const originalText = stripHtml(
       $(containers[containerIndex].query)
-        .find('>*:not(#markdown-query-wrapper)')
-        .html()
+        .find(">*:not(#markdown-query-wrapper)")
+        .html(),
     );
 
     setMarkdownVisualDiff(
       !!markdownText.length &&
         !!originalText.length &&
-        markdownText !== originalText
+        markdownText !== originalText,
     );
   }, [containerIndex, containers]);
 
@@ -69,7 +69,7 @@ export default function ThreadMessageStickyToolbarComponents({
 
   // TODO: prone to changes, needs refactoring
   const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
-    .find('.mt-sm.flex.items-center.justify-between')
+    .find(".mt-sm.flex.items-center.justify-between")
     .children()
     .last()
     .children()
@@ -78,34 +78,34 @@ export default function ThreadMessageStickyToolbarComponents({
   const isMessageEditable = !!$messageEditButton.length;
 
   const $messageShareButton = $(containers?.[containerIndex]?.messageBlock)
-    .find('.mt-sm.flex.items-center.justify-between')
+    .find(".mt-sm.flex.items-center.justify-between")
     .children()
     .first()
     .children()
     .find('div:contains("Share"):last')
-    .closest('button');
+    .closest("button");
 
   const isMessageShareable = !!$messageShareButton.length;
 
   return (
     <div
       className={cn(
-        'thread-message-toolbar w-w-full tw-py-[.8rem] tw-px-2 tw-border-b tw-border-border tw-bg-background tw-flex tw-items-center tw-gap-2',
+        "thread-message-toolbar w-w-full tw-flex tw-items-center tw-gap-2 tw-border-b tw-border-border tw-bg-background tw-px-2 tw-py-[.8rem]",
         {
-          'tw-shadow-bottom-lg':
+          "tw-shadow-bottom-lg":
             containersStates[containerIndex].isQueryOutOfViewport,
-        }
+        },
       )}
     >
-      <div className="tw-flex tw-items-center tw-gap-2 tw-w-full">
+      <div className="tw-flex tw-w-full tw-items-center tw-gap-2">
         {!containersStates[containerIndex].isHidden &&
           !containersStates[containerIndex].isQueryOutOfViewport &&
           markdownVisualDiff && (
             <Tooltip
               content={
                 containersStates[containerIndex].isMarkdown
-                  ? 'Convert Query to Plain Text'
-                  : 'Convert Query to Markdown'
+                  ? "Convert Query to Plain Text"
+                  : "Convert Query to Markdown"
               }
               contentOptions={{
                 sideOffset: 15,
@@ -113,32 +113,32 @@ export default function ThreadMessageStickyToolbarComponents({
               contentClassName="tw-w-max"
             >
               <div
-                className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in tw-slide-in-from-top active:tw-scale-95 tw-opacity-10 hover:tw-opacity-100"
+                className="tw-cursor-pointer tw-text-secondary-foreground tw-opacity-10 tw-transition-all tw-animate-in tw-fade-in tw-slide-in-from-top hover:tw-opacity-100 active:tw-scale-95"
                 onClick={() => {
                   if (
-                    $(containers[containerIndex].query).find('textarea').length
+                    $(containers[containerIndex].query).find("textarea").length
                   ) {
-                    $messageEditButton.trigger('click');
+                    $messageEditButton.trigger("click");
                   }
 
                   setContainersStates((draft) => {
                     $(containers[containerIndex].query)
-                      .find('.whitespace-pre-line.break-words')
+                      .find(".whitespace-pre-line.break-words")
                       .toggleClass(
-                        '!tw-hidden',
-                        !draft[containerIndex].isMarkdown
+                        "!tw-hidden",
+                        !draft[containerIndex].isMarkdown,
                       );
                     $(containers[containerIndex].query)
-                      .find('#markdown-query-wrapper')
+                      .find("#markdown-query-wrapper")
                       .toggleClass(
-                        '!tw-hidden',
-                        draft[containerIndex].isMarkdown
+                        "!tw-hidden",
+                        draft[containerIndex].isMarkdown,
                       );
                     draft[containerIndex].isMarkdown =
                       !draft[containerIndex].isMarkdown;
                     scrollToElement(
                       $(containers[containerIndex].query as unknown as Element),
-                      -60
+                      -60,
                     );
                   });
                 }}
@@ -154,9 +154,9 @@ export default function ThreadMessageStickyToolbarComponents({
 
         <ThreadTitle
           query={
-            $(containers[containerIndex].query).find('textarea').text() ||
+            $(containers[containerIndex].query).find("textarea").text() ||
             $(containers[containerIndex].query)
-              .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
+              .find(">*:not(#markdown-query-wrapper):not(.tw-sticky)")
               .first()
               .text()
           }
@@ -170,8 +170,8 @@ export default function ThreadMessageStickyToolbarComponents({
       </div>
 
       <div
-        className={cn('tw-ml-auto tw-flex tw-items-center tw-gap-2', {
-          'tw-invisible tw-opacity-0':
+        className={cn("tw-ml-auto tw-flex tw-items-center tw-gap-2", {
+          "tw-invisible tw-opacity-0":
             containersStates[containerIndex].isHidden,
         })}
       >
@@ -187,12 +187,12 @@ export default function ThreadMessageStickyToolbarComponents({
         {isMessageEditable && (
           <Tooltip content="Edit Query">
             <div
-              className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
+              className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95"
               onClick={() => {
-                $messageEditButton.trigger('click');
+                $messageEditButton.trigger("click");
               }}
             >
-              <PiNotePencil className="tw-size-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
+              <PiNotePencil className="tw-size-4 tw-text-muted-foreground tw-transition-all group-hover:tw-text-foreground" />
             </div>
           </Tooltip>
         )}
@@ -200,24 +200,24 @@ export default function ThreadMessageStickyToolbarComponents({
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger>
             <div
-              className="tw-text-secondary-foreground tw-cursor-pointer tw-transition-all tw-animate-in tw-fade-in active:tw-scale-95 hover:tw-bg-secondary tw-rounded-md tw-p-1 tw-group"
+              className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95"
               onClick={() => {}}
             >
-              <Ellipsis className="tw-size-4 tw-text-muted-foreground group-hover:tw-text-foreground tw-transition-all" />
+              <Ellipsis className="tw-size-4 tw-text-muted-foreground tw-transition-all group-hover:tw-text-foreground" />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {!!$(containers[containerIndex].messageBlock).find(
-              '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")'
+              '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")',
             ).length && (
               <DropdownMenuItem
                 onSelect={async () => {
                   moreMenuItemClick({
                     container: containers[containerIndex],
-                    item: 'View Sources',
+                    item: "View Sources",
                   });
                 }}
-                className="tw-flex tw-gap-2 tw-items-center"
+                className="tw-flex tw-items-center tw-gap-2"
               >
                 <ListOrdered className="tw-size-4" />
                 View Sources
@@ -227,9 +227,9 @@ export default function ThreadMessageStickyToolbarComponents({
             {isMessageShareable && (
               <DropdownMenuItem
                 onSelect={() => {
-                  $messageShareButton.trigger('click');
+                  $messageShareButton.trigger("click");
                 }}
-                className="tw-flex tw-gap-2 tw-items-center"
+                className="tw-flex tw-items-center tw-gap-2"
               >
                 <Share2 className="tw-size-4" />
                 Share
@@ -241,10 +241,10 @@ export default function ThreadMessageStickyToolbarComponents({
                 onSelect={async () => {
                   moreMenuItemClick({
                     container: containers[containerIndex],
-                    item: 'Report',
+                    item: "Report",
                   });
                 }}
-                className="tw-flex tw-gap-2 tw-items-center"
+                className="tw-flex tw-items-center tw-gap-2"
               >
                 <LucideThumbsDown className="tw-size-4" />
                 Report
@@ -257,10 +257,10 @@ export default function ThreadMessageStickyToolbarComponents({
                   onSelect={async () => {
                     await moreMenuItemClick({
                       container: containers[containerIndex],
-                      item: 'Delete',
+                      item: "Delete",
                     });
                   }}
-                  className="tw-flex tw-gap-2 tw-items-center"
+                  className="tw-flex tw-items-center tw-gap-2"
                 >
                   <X className="tw-size-4" />
                   Delete
@@ -278,10 +278,10 @@ async function moreMenuItemClick({
   item,
 }: {
   container: Container;
-  item: 'Report' | 'Delete' | 'View Sources';
+  item: "Report" | "Delete" | "View Sources";
 }) {
   const $buttonBar = $(container.messageBlock).find(
-    '.mt-sm.flex.items-center.justify-between'
+    ".mt-sm.flex.items-center.justify-between",
   );
 
   const $button = $buttonBar
@@ -292,7 +292,7 @@ async function moreMenuItemClick({
 
   if (!$button.length) return;
 
-  $button.trigger('click');
+  $button.trigger("click");
 
   let acc = 0;
 
@@ -308,5 +308,5 @@ async function moreMenuItemClick({
 
   $(`[data-popper-reference-hidden="true"] .md\\:h-full:contains("${item}")`)
     .last()
-    .trigger('click');
+    .trigger("click");
 }

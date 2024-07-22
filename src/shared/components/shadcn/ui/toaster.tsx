@@ -5,8 +5,8 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '@/shared/components/shadcn/ui/toast';
-import { useToast } from '@/shared/components/shadcn/ui/use-toast';
+} from "@/shared/components/shadcn/ui/toast";
+import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 
 export function Toaster() {
   const { toasts } = useToast();
@@ -15,7 +15,7 @@ export function Toaster() {
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
-          <Toast key={id} {...props} className="tw-w-max tw-mt-2 tw-font-sans">
+          <Toast key={id} {...props} className="tw-mt-2 tw-w-max tw-font-sans">
             <div className="tw-grid tw-gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && (

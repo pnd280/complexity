@@ -4,7 +4,7 @@ export default function KeyCombo({ keys }: { keys: string[] }) {
       {keys.map((key) => (
         <span
           key={key}
-          className="tw-border tw-px-1 tw-rounded-sm tw-text-[.7rem] tw-font-mono"
+          className="tw-rounded-sm tw-border tw-px-1 tw-font-mono tw-text-[.7rem]"
         >
           {key}
         </span>

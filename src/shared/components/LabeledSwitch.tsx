@@ -1,7 +1,7 @@
-import { cn } from '@/utils/shadcn-ui-utils';
+import { cn } from "@/utils/cn";
 
-import { Label } from './shadcn/ui/label';
-import { Switch } from './shadcn/ui/switch';
+import { Label } from "./shadcn/ui/label";
+import { Switch } from "./shadcn/ui/switch";
 
 type LabeledSwitchProps = {
   label?: string;
@@ -25,7 +25,7 @@ export default function LabeledSwitch({
   defaultChecked,
 }: LabeledSwitchProps) {
   return (
-    <div className={cn('tw-flex tw-items-center tw-space-x-2', className)}>
+    <div className={cn("tw-flex tw-items-center tw-space-x-2", className)}>
       <Switch
         id={id}
         className="[&+label]:data-[state=checked]:tw-text-accent-foreground"
@@ -37,10 +37,7 @@ export default function LabeledSwitch({
       {label && (
         <Label
           htmlFor={id}
-          className={cn(
-            'tw-transition-colors tw-duration-150',
-            labelClassName
-          )}
+          className={cn("tw-transition-colors tw-duration-150", labelClassName)}
         >
           {label}
         </Label>

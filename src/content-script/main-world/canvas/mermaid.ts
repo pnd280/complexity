@@ -1,12 +1,12 @@
-import $ from 'jquery';
+import $ from "jquery";
 
-import { extensionOnly, mainWorldExec } from '@/utils/hoc';
-import UIUtils from '@/utils/UI';
-import { injectMainWorldScriptBlock, sleep } from '@/utils/utils';
+import { extensionOnly, mainWorldExec } from "@/utils/hoc";
+import UIUtils from "@/utils/UI";
+import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 
-import { webpageMessenger } from '../webpage-messenger';
+import { webpageMessenger } from "../webpage-messenger";
 
-import type { MermaidConfig } from 'mermaid';
+import type { MermaidConfig } from "mermaid";
 class MermaidCanvas {
   private static instance: MermaidCanvas;
   private importPromise: Promise<void> | null = null;
@@ -32,18 +32,18 @@ class MermaidCanvas {
       const isDarkTheme = UIUtils.isDarkTheme();
 
       const background = getComputedStyle(
-        document.documentElement
-      ).getPropertyValue('--accent');
+        document.documentElement,
+      ).getPropertyValue("--accent");
 
       const uiFont =
-        getComputedStyle(document.body).getPropertyValue('--ui-font') ||
+        getComputedStyle(document.body).getPropertyValue("--ui-font") ||
         getComputedStyle(document.documentElement).getPropertyValue(
-          '--ui-font'
+          "--ui-font",
         );
 
       const config: MermaidConfig = {
         startOnLoad: false,
-        theme: isDarkTheme ? 'dark' : 'base',
+        theme: isDarkTheme ? "dark" : "base",
         themeVariables: {
           edgeLabelBackground: background,
         },
@@ -66,7 +66,7 @@ class MermaidCanvas {
         scriptContent,
         waitForExecution: true,
       }).catch((error) => {
-        console.error('Failed to import Mermaid:', error);
+        console.error("Failed to import Mermaid:", error);
         throw error;
       });
     }
@@ -76,11 +76,11 @@ class MermaidCanvas {
 
   private setupContentScriptRequestListeners() {
     webpageMessenger.onMessage(
-      'isMermaidInitialized',
-      async () => !!window.mermaid && !!window.svgPanZoom
+      "isMermaidInitialized",
+      async () => !!window.mermaid && !!window.svgPanZoom,
     );
 
-    webpageMessenger.onMessage('mermaidCanvasAction', async (messageData) => {
+    webpageMessenger.onMessage("mermaidCanvasAction", async (messageData) => {
       if (!window.mermaid || !window.svgPanZoom) {
         await this.importMermaid();
       }
@@ -88,14 +88,14 @@ class MermaidCanvas {
       const { action } = messageData.payload;
 
       switch (action) {
-        case 'render':
+        case "render":
           return await this.handleRenderRequest(messageData.payload.payload);
-        case 'resetZoomPan':
+        case "resetZoomPan":
           return !!$(messageData.payload.payload)
-            .trigger('resetZoom')
-            .trigger('resetPan');
+            .trigger("resetZoom")
+            .trigger("resetPan");
         default:
-          console.warn('Unknown Mermaid canvas action:', action);
+          console.warn("Unknown Mermaid canvas action:", action);
           break;
       }
 
@@ -107,7 +107,7 @@ class MermaidCanvas {
     const $target = $(querySelector);
 
     if ($target.length === 0) {
-      console.warn('No elements found for rendering Mermaid canvas');
+      console.warn("No elements found for rendering Mermaid canvas");
       return false;
     }
 
@@ -118,10 +118,10 @@ class MermaidCanvas {
         nodes: [$target[0]],
       });
 
-      const $svg = $target.find('svg');
+      const $svg = $target.find("svg");
 
-      $svg.addClass('!tw-size-full').css({
-        'max-width': '100%',
+      $svg.addClass("!tw-size-full").css({
+        "max-width": "100%",
       });
 
       const svgPanZoomInstance = window.svgPanZoom!($svg[0], {
@@ -131,17 +131,17 @@ class MermaidCanvas {
         dblClickZoomEnabled: true,
       });
 
-      $target.on('resetZoom', () => {
+      $target.on("resetZoom", () => {
         svgPanZoomInstance.resetZoom();
       });
 
-      $target.on('resetPan', () => {
+      $target.on("resetPan", () => {
         svgPanZoomInstance.resetPan();
       });
 
       return true;
     } catch (error) {
-      console.error('Error rendering Mermaid canvas:', error);
+      console.error("Error rendering Mermaid canvas:", error);
       return false;
     }
   }
@@ -155,7 +155,7 @@ const waitForInitialization = () => {
 
     const checkForInitialization = async (): Promise<void> => {
       const isInitialized = await webpageMessenger.sendMessage({
-        event: 'isMermaidInitialized',
+        event: "isMermaidInitialized",
         timeout: 1000,
       });
 
@@ -173,7 +173,7 @@ const waitForInitialization = () => {
 mainWorldExec(() =>
   $(() => {
     MermaidCanvas.getInstance().initialize();
-  })
+  }),
 )();
 
 export const mermaidContentScript = {

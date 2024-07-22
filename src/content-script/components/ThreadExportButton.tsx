@@ -1,49 +1,49 @@
-import $ from 'jquery';
-import { Check, Download, LoaderCircle, Unlink } from 'lucide-react';
+import $ from "jquery";
+import { Check, Download, LoaderCircle, Unlink } from "lucide-react";
 import React, {
   ReactNode,
   useCallback,
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import ReactDOM from 'react-dom';
-import { FaMarkdown } from 'react-icons/fa';
+} from "react";
+import ReactDOM from "react-dom";
+import { FaMarkdown } from "react-icons/fa";
 
-import PPLXApi from '@/services/PPLXApi';
-import { Button } from '@/shared/components/shadcn/ui/button';
+import PPLXApi from "@/services/PPLXApi";
+import { Button } from "@/shared/components/shadcn/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/shared/components/shadcn/ui/dropdown-menu';
-import { toast } from '@/shared/components/shadcn/ui/use-toast';
-import UIUtils from '@/utils/UI';
-import { isDOMNode, jsonUtils } from '@/utils/utils';
-import { useQuery } from '@tanstack/react-query';
+} from "@/shared/components/shadcn/ui/dropdown-menu";
+import { toast } from "@/shared/components/shadcn/ui/use-toast";
+import UIUtils from "@/utils/UI";
+import { isDOMNode, jsonUtils } from "@/utils/utils";
+import { useQuery } from "@tanstack/react-query";
 
-import useWaitForElement from '../hooks/useWaitForElement';
-import { languageModels } from './QueryBox';
+import useWaitForElement from "../hooks/useWaitForElement";
+import { languageModels } from "./QueryBox";
 
 const exportOptions = [
   {
-    label: 'Default',
-    value: 'citations',
+    label: "Default",
+    value: "citations",
     icon: <FaMarkdown className="tw-size-4" />,
   },
   {
-    label: 'Without citations',
-    value: 'no-citations',
+    label: "Without citations",
+    value: "no-citations",
     icon: <Unlink className="tw-size-4" />,
   },
 ] as const;
 
 export default function ThreadExportButton() {
   const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
-    queryKey: ['currentThreadInfo'],
+    queryKey: ["currentThreadInfo"],
     queryFn: () =>
-      PPLXApi.fetchThreadInfo(window.location.pathname.split('/').pop() || ''),
+      PPLXApi.fetchThreadInfo(window.location.pathname.split("/").pop() || ""),
     enabled: false,
   });
 
@@ -56,14 +56,14 @@ export default function ThreadExportButton() {
         <span className="tw-font-sans">Export</span>
       </>
     ),
-    []
+    [],
   );
 
   const [saveButtonText, setSaveButtonText] =
     useState<ReactNode>(idleSaveButtonText);
 
   const { element, isWaiting } = useWaitForElement({
-    id: 'threadExportButton',
+    id: "threadExportButton",
     selector: () => UIUtils.getStickyNavbar()[0],
   });
 
@@ -73,11 +73,11 @@ export default function ThreadExportButton() {
     requestIdleCallback(() => {
       const $stickyHeader = $(element);
 
-      if ($stickyHeader.find('#thread-export-button').length) return;
+      if ($stickyHeader.find("#thread-export-button").length) return;
 
-      const container = $('<div>').attr('id', 'thread-export-button');
+      const container = $("<div>").attr("id", "thread-export-button");
 
-      $stickyHeader.find('>div>div:last>div:last').before(container);
+      $stickyHeader.find(">div>div:last>div:last").before(container);
 
       setContainer(container[0]);
     });
@@ -94,7 +94,7 @@ export default function ThreadExportButton() {
           <>
             <Check className="tw-mr-1 tw-size-4" />
             <span>Copied</span>
-          </>
+          </>,
         );
 
         setTimeout(() => {
@@ -102,8 +102,8 @@ export default function ThreadExportButton() {
         }, 2000);
       } catch (e) {
         toast({
-          title: '⚠️ Error',
-          description: 'The document must be focused to copy the text.',
+          title: "⚠️ Error",
+          description: "The document must be focused to copy the text.",
           timeout: 1000,
         });
       }
@@ -111,9 +111,9 @@ export default function ThreadExportButton() {
       async function processMessages(): Promise<string> {
         const result = await refetch();
 
-        if (!result.data) return '';
+        if (!result.data) return "";
 
-        let outputText = '';
+        let outputText = "";
 
         result.data?.map((message) => {
           outputText += `**Question**:  \n${message.query_str}\n\n`;
@@ -125,13 +125,13 @@ export default function ThreadExportButton() {
             jsonUtils.safeParse(message.text)?.answer ||
             jsonUtils.safeParse(
               jsonUtils.safeParse(message.text)?.[messageText.length - 1]
-                .content.answer
+                .content.answer,
             )?.answer;
 
-          let webResults = '';
+          let webResults = "";
 
           const extractedWebResults = isProSearch
-            ? messageText.find((x) => x.step_type === 'SEARCH_RESULTS')?.content
+            ? messageText.find((x) => x.step_type === "SEARCH_RESULTS")?.content
                 ?.web_results
             : jsonUtils.safeParse(message.text)?.web_results;
 
@@ -141,15 +141,15 @@ export default function ThreadExportButton() {
                 name: string;
                 url: string;
               },
-              index: number
+              index: number,
             ) => {
               if (includeCitations) {
                 webResults += `[${index + 1}] [${webResult.name}](${webResult.url})  \n`;
               } else {
                 const findText = `\\[${index + 1}\\]`;
-                answer = answer.replace(new RegExp(findText, 'g'), '');
+                answer = answer.replace(new RegExp(findText, "g"), "");
               }
-            }
+            },
           );
 
           const modelName =
@@ -162,13 +162,13 @@ export default function ThreadExportButton() {
             outputText += `**Web Results**:  \n${webResults}\n\n`;
           }
 
-          outputText += '\n---\n\n\n';
+          outputText += "\n---\n\n\n";
         });
 
         return outputText;
       }
     },
-    [refetch, idleSaveButtonText]
+    [refetch, idleSaveButtonText],
   );
 
   if (!container) return null;
@@ -178,7 +178,7 @@ export default function ThreadExportButton() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="!tw-p-2 tw-h-[2rem] tw-rounded-sm tw-text-muted-foreground hover:tw-text-foreground tw-flex tw-items-center tw-transition-all"
+          className="tw-flex tw-h-[2rem] tw-items-center tw-rounded-sm !tw-p-2 tw-text-muted-foreground tw-transition-all hover:tw-text-foreground"
           disabled={isFetchingCurrentThreadInfo}
         >
           {isFetchingCurrentThreadInfo ? (
@@ -194,10 +194,10 @@ export default function ThreadExportButton() {
             key={index}
             onSelect={() => {
               handleExportThread({
-                includeCitations: option.value === 'citations',
+                includeCitations: option.value === "citations",
               });
             }}
-            className="tw-flex tw-gap-2 tw-items-center"
+            className="tw-flex tw-items-center tw-gap-2"
           >
             {option.icon}
             {option.label}
@@ -205,6 +205,6 @@ export default function ThreadExportButton() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>,
-    container
+    container,
   );
 }

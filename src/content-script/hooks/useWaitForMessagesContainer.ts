@@ -1,6 +1,6 @@
-import UIUtils from '@/utils/UI';
+import UIUtils from "@/utils/UI";
 
-import useWaitForElement from './useWaitForElement';
+import useWaitForElement from "./useWaitForElement";
 
 export default function useWaitForMessagesContainer(
   {
@@ -9,10 +9,10 @@ export default function useWaitForMessagesContainer(
     timeout: number;
   } = {
     timeout: 5000,
-  }
+  },
 ) {
   const { element, isWaiting } = useWaitForElement({
-    id: 'messagesContainer',
+    id: "messagesContainer",
     selector: () => UIUtils.getMessagesContainer()[0],
     timeout,
   });

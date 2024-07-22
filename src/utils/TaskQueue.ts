@@ -80,7 +80,7 @@ export class TaskQueue {
       try {
         await task();
       } catch (error) {
-        console.error('Error processing task:', error);
+        console.error("Error processing task:", error);
       }
     }
   }
@@ -90,7 +90,7 @@ export class TaskQueue {
     if (processingTime > targetTime * 1.2) {
       this.chunkSize = Math.max(
         MIN_CHUNK_SIZE,
-        Math.floor(this.chunkSize * 0.8)
+        Math.floor(this.chunkSize * 0.8),
       );
     } else if (
       processingTime < targetTime * 0.8 &&
@@ -98,7 +98,7 @@ export class TaskQueue {
     ) {
       this.chunkSize = Math.min(
         MAX_CHUNK_SIZE,
-        Math.floor(this.chunkSize * 1.2)
+        Math.floor(this.chunkSize * 1.2),
       );
     }
     this.lastProcessingTime = processingTime;

@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 import {
   BookOpenText,
   Compass,
@@ -10,11 +10,11 @@ import {
   Settings,
   Sun,
   TestTubeDiagonal,
-} from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { SiPerplexity } from 'react-icons/si';
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { SiPerplexity } from "react-icons/si";
 
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import {
   CommandDialog,
   CommandEmpty,
@@ -24,14 +24,14 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from '@/shared/components/shadcn/ui/command';
-import { setCookie } from '@/utils/utils';
+} from "@/shared/components/shadcn/ui/command";
+import { setCookie } from "@/utils/utils";
 
-import KeyCombo from '@/shared/components/KeyCombo';
+import KeyCombo from "@/shared/components/KeyCombo";
 
 export default function Commander() {
   const [open, setOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [kbEvent, setKbEvent] = useState<KeyboardEvent>();
 
   const ref = useRef<HTMLInputElement>(null);
@@ -42,33 +42,33 @@ export default function Commander() {
 
       if (shallow) {
         webpageMessenger.sendMessage({
-          event: 'routeToPage',
+          event: "routeToPage",
           payload: path,
         });
       } else {
-        window.open(path, '_blank');
+        window.open(path, "_blank");
       }
 
       setOpen(false);
       setTimeout(() => {
-        setSearchValue('');
+        setSearchValue("");
       }, 100);
     },
-    [kbEvent]
+    [kbEvent],
   );
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         e.stopImmediatePropagation();
         setOpen((open) => !open);
       }
 
-      if (e.key === 'i' && e.altKey) {
+      if (e.key === "i" && e.altKey) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        handleNavigate('/', true);
+        handleNavigate("/", true);
       }
 
       setKbEvent(e);
@@ -78,12 +78,12 @@ export default function Commander() {
       setKbEvent(e);
     };
 
-    document.addEventListener('keydown', down);
-    document.addEventListener('keyup', up);
+    document.addEventListener("keydown", down);
+    document.addEventListener("keyup", up);
 
     return () => {
-      document.removeEventListener('keydown', down);
-      document.removeEventListener('keyup', up);
+      document.removeEventListener("keydown", down);
+      document.removeEventListener("keyup", up);
     };
   }, [handleNavigate]);
 
@@ -99,9 +99,9 @@ export default function Commander() {
         />
         <CommandList className="tw-font-sans">
           <CommandEmpty>
-            No results found for{' '}
+            No results found for{" "}
             {
-              <span className="tw-font-mono tw-border rounded-md tw-bg-secondary tw-text-secondary-foreground tw-px-1 tw-text-[.7rem]">
+              <span className="rounded-md tw-border tw-bg-secondary tw-px-1 tw-font-mono tw-text-[.7rem] tw-text-secondary-foreground">
                 {searchValue}
               </span>
             }
@@ -109,18 +109,18 @@ export default function Commander() {
           </CommandEmpty>
 
           <CommandGroup heading="Search">
-            <CommandItem keywords={['threads', 'search']}>
+            <CommandItem keywords={["threads", "search"]}>
               <NotebookText className="tw-mr-2" />
               Threads
               <CommandShortcut className="tw-flex tw-gap-1">
-                <KeyCombo keys={['Ctrl', 'Alt', 'T']} />
+                <KeyCombo keys={["Ctrl", "Alt", "T"]} />
               </CommandShortcut>
             </CommandItem>
-            <CommandItem keywords={['collections', 'search']}>
+            <CommandItem keywords={["collections", "search"]}>
               <Layers3 className="tw-mr-2" />
               Collections
               <CommandShortcut>
-                <KeyCombo keys={['Ctrl', 'Alt', 'C']} />
+                <KeyCombo keys={["Ctrl", "Alt", "C"]} />
               </CommandShortcut>
             </CommandItem>
           </CommandGroup>
@@ -128,50 +128,50 @@ export default function Commander() {
           <CommandSeparator />
 
           <CommandGroup heading="Quick navigations">
-            <CommandItem keywords={['prompt', 'library', 'navigate']}>
+            <CommandItem keywords={["prompt", "library", "navigate"]}>
               <BookOpenText className="tw-mr-2" />
               Prompt Library
               <CommandShortcut>
-                <KeyCombo keys={['Ctrl', 'Alt', 'P']} />
+                <KeyCombo keys={["Ctrl", "Alt", "P"]} />
               </CommandShortcut>
             </CommandItem>
             <CommandItem
-              keywords={['home', 'navigate']}
+              keywords={["home", "navigate"]}
               onSelect={() => {
-                handleNavigate('/');
+                handleNavigate("/");
               }}
             >
               <SiPerplexity className="tw-mr-2" />
               Home
               <CommandShortcut>
-                <KeyCombo keys={['Alt', 'I']} />
+                <KeyCombo keys={["Alt", "I"]} />
               </CommandShortcut>
             </CommandItem>
             <CommandItem
-              keywords={['discover', 'navigate']}
-              onSelect={() => handleNavigate('/discover')}
+              keywords={["discover", "navigate"]}
+              onSelect={() => handleNavigate("/discover")}
             >
               <Compass className="tw-mr-2" />
               Discover
             </CommandItem>
             <CommandItem
-              keywords={['library', 'navigate']}
-              onSelect={() => handleNavigate('/library')}
+              keywords={["library", "navigate"]}
+              onSelect={() => handleNavigate("/library")}
             >
               <GalleryHorizontalEnd className="tw-mr-2" />
               Library
             </CommandItem>
             <CommandItem
-              keywords={['user settings', 'navigate']}
-              onSelect={() => handleNavigate('/settings/account')}
+              keywords={["user settings", "navigate"]}
+              onSelect={() => handleNavigate("/settings/account")}
             >
               <Settings className="tw-mr-2" />
               User settings
             </CommandItem>
             <CommandItem
-              keywords={['labs', 'navigate']}
+              keywords={["labs", "navigate"]}
               onSelect={() =>
-                handleNavigate('https://labs.perplexity.ai/', false)
+                handleNavigate("https://labs.perplexity.ai/", false)
               }
             >
               <TestTubeDiagonal className="tw-mr-2" />
@@ -181,12 +181,12 @@ export default function Commander() {
           <CommandSeparator />
           <CommandGroup heading="Color scheme">
             <CommandItem
-              keywords={['dark', 'theme', 'change']}
+              keywords={["dark", "theme", "change"]}
               onSelect={() => {
-                $('html').toggleClass('dark tw-dark', true);
+                $("html").toggleClass("dark tw-dark", true);
 
-                localStorage.setItem('colorScheme', 'dark');
-                setCookie('colorScheme', 'dark', 0);
+                localStorage.setItem("colorScheme", "dark");
+                setCookie("colorScheme", "dark", 0);
 
                 setOpen(false);
               }}
@@ -195,12 +195,12 @@ export default function Commander() {
               Dark
             </CommandItem>
             <CommandItem
-              keywords={['light', 'theme', 'change']}
+              keywords={["light", "theme", "change"]}
               onSelect={() => {
-                $('html').toggleClass('dark tw-dark', false);
+                $("html").toggleClass("dark tw-dark", false);
 
-                localStorage.setItem('colorScheme', 'light');
-                setCookie('colorScheme', 'light', 0);
+                localStorage.setItem("colorScheme", "light");
+                setCookie("colorScheme", "light", 0);
 
                 setOpen(false);
               }}
@@ -209,21 +209,21 @@ export default function Commander() {
               Light
             </CommandItem>
             <CommandItem
-              keywords={['system', 'theme', 'change']}
+              keywords={["system", "theme", "change"]}
               onSelect={() => {
                 const preferredColorScheme = window.matchMedia(
-                  '(prefers-color-scheme: dark)'
+                  "(prefers-color-scheme: dark)",
                 ).matches
-                  ? 'dark'
-                  : 'light';
+                  ? "dark"
+                  : "light";
 
-                $('html').toggleClass(
-                  'dark tw-dark',
-                  preferredColorScheme === 'dark'
+                $("html").toggleClass(
+                  "dark tw-dark",
+                  preferredColorScheme === "dark",
                 );
 
-                localStorage.setItem('colorScheme', preferredColorScheme);
-                setCookie('colorScheme', preferredColorScheme, 0);
+                localStorage.setItem("colorScheme", preferredColorScheme);
+                setCookie("colorScheme", preferredColorScheme, 0);
 
                 setOpen(false);
               }}

@@ -1,15 +1,15 @@
-import $ from 'jquery';
-import { useEffect } from 'react';
+import $ from "jquery";
+import { useEffect } from "react";
 
 import {
   Container,
   ToggleToolbarVisibilityProps,
-} from '@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar';
-import DOMObserver from '@/utils/DOMObserver';
-import UIUtils from '@/utils/UI';
-import { isDOMNode, markdown2Html } from '@/utils/utils';
+} from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+import DOMObserver from "@/utils/DOMObserver";
+import UIUtils from "@/utils/UI";
+import { isDOMNode, markdown2Html } from "@/utils/utils";
 
-import useWaitForMessagesContainer from './useWaitForMessagesContainer';
+import useWaitForMessagesContainer from "./useWaitForMessagesContainer";
 
 type UseThreadMessageStickyToolbarObserverProps = {
   toggleVisibility: (args: ToggleToolbarVisibilityProps) => void;
@@ -28,13 +28,13 @@ export default function useThreadMessageStickyToolbarObserver({
 
       requestAnimationFrame(callback);
 
-      const id = 'thread-message-sticky-toolbar';
+      const id = "thread-message-sticky-toolbar";
 
       DOMObserver.create(id, {
         target: messagesContainer,
         config: { childList: true, subtree: true },
         debounceTime: 200,
-        source: 'hook',
+        source: "hook",
         onAny: callback,
       });
 
@@ -45,15 +45,15 @@ export default function useThreadMessageStickyToolbarObserver({
 
         $messageBlocks.forEach(({ $query, $messageBlock, $answer }, index) => {
           queueMicrotask(() => {
-            $($query[0]).addClass('tw-relative');
+            $($query[0]).addClass("tw-relative");
 
             let $container = $messageBlock.find(
-              '.thread-message-toolbar-container'
+              ".thread-message-toolbar-container",
             );
 
             if (!$container.length) {
-              $container = $('<div>').addClass(
-                'thread-message-toolbar-container tw-sticky tw-top-[3.35rem] tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]'
+              $container = $("<div>").addClass(
+                "thread-message-toolbar-container tw-sticky tw-top-[3.35rem] tw-w-full tw-z-[11] tw-mt-4 !tw-h-[3.125rem]",
               );
               $($query[0]).before($container);
             }
@@ -67,7 +67,7 @@ export default function useThreadMessageStickyToolbarObserver({
 
             toggleVisibility({
               bottomButtonBar: $messageBlock.find(
-                '.mt-sm.flex.items-center.justify-between'
+                ".mt-sm.flex.items-center.justify-between",
               )[0],
               index,
               messageBlock: $messageBlock[0],
@@ -84,7 +84,7 @@ export default function useThreadMessageStickyToolbarObserver({
         DOMObserver.destroy(id);
       };
     },
-    [messagesContainer, toggleVisibility, updateContainers]
+    [messagesContainer, toggleVisibility, updateContainers],
   );
 
   useEffect(
@@ -92,7 +92,7 @@ export default function useThreadMessageStickyToolbarObserver({
     function modelBadgeObserver() {
       if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
 
-      const id = 'display-model-next-to-answer-heading';
+      const id = "display-model-next-to-answer-heading";
 
       requestIdleCallback(callback);
 
@@ -103,26 +103,26 @@ export default function useThreadMessageStickyToolbarObserver({
           subtree: true,
         },
         debounceTime: 200,
-        source: 'hook',
+        source: "hook",
         onAny: callback,
       });
 
       async function callback() {
         $(
-          `.message-block .mt-sm.flex.items-center.justify-between>*:last-child:not([data-${id}-observed])`
+          `.message-block .mt-sm.flex.items-center.justify-between>*:last-child:not([data-${id}-observed])`,
         ).each((_, element) => {
-          $(element).attr(`data-${id}-observed`, 'true');
+          $(element).attr(`data-${id}-observed`, "true");
 
-          const messageBlock = element.closest('.message-block');
+          const messageBlock = element.closest(".message-block");
 
           if (!messageBlock) return;
 
           const { $answerHeading, $messageBlock } = UIUtils.parseMessageBlock(
-            $(messageBlock)
+            $(messageBlock),
           );
 
           const $bottomButtonBar = $messageBlock.find(
-            '.mt-sm.flex.items-center.justify-between'
+            ".mt-sm.flex.items-center.justify-between",
           );
 
           if (!$bottomButtonBar.length) return;
@@ -130,13 +130,13 @@ export default function useThreadMessageStickyToolbarObserver({
           const bottomRightButtonBar = $bottomButtonBar.children().last();
 
           const modelName =
-            bottomRightButtonBar.children().last().text() || 'CLAUDE 3 HAIKU';
+            bottomRightButtonBar.children().last().text() || "CLAUDE 3 HAIKU";
 
           $answerHeading
             .find('div:contains("Answer"):last')
             .text(modelName.toUpperCase())
             .addClass(
-              '!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right'
+              "!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right",
             );
         });
       }
@@ -145,14 +145,14 @@ export default function useThreadMessageStickyToolbarObserver({
         DOMObserver.destroy(id);
       };
     },
-    [messagesContainer]
+    [messagesContainer],
   );
 
   useEffect(
     function markdownQueryObserver() {
       if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
 
-      const id = 'alter-message-query';
+      const id = "alter-message-query";
 
       DOMObserver.create(id, {
         target: messagesContainer,
@@ -161,7 +161,7 @@ export default function useThreadMessageStickyToolbarObserver({
           subtree: true,
         },
         debounceTime: 200,
-        source: 'hook',
+        source: "hook",
         onAny: callback,
       });
 
@@ -171,9 +171,9 @@ export default function useThreadMessageStickyToolbarObserver({
         $messageBlocks.each((_, messageBlock) => {
           queueMicrotask(() => {
             const $messageBlock = $(messageBlock);
-            $messageBlock.attr(`data-${id}`, '');
+            $messageBlock.attr(`data-${id}`, "");
 
-            const $query = $messageBlock.find('.my-md.md\\:my-lg');
+            const $query = $messageBlock.find(".my-md.md\\:my-lg");
 
             rewriteQuery({ $query });
           });
@@ -184,17 +184,17 @@ export default function useThreadMessageStickyToolbarObserver({
         const mardownedText = markdown2Html($query.text());
 
         const textSize = $query
-          .find('>*:not(#markdown-query-wrapper)')
-          .attr('class')
-          ?.split(' ')
-          .find((c) => c === 'text-3xl' || c === 'text-base');
+          .find(">*:not(#markdown-query-wrapper)")
+          .attr("class")
+          ?.split(" ")
+          .find((c) => c === "text-3xl" || c === "text-base");
 
-        const $newQueryWrapper = $('<div>')
+        const $newQueryWrapper = $("<div>")
           .html(mardownedText)
-          .attr('id', 'markdown-query-wrapper')
+          .attr("id", "markdown-query-wrapper")
           .addClass(
-            'prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection ' +
-              textSize
+            "prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection " +
+              textSize,
           );
 
         $query.append($newQueryWrapper);
@@ -204,6 +204,6 @@ export default function useThreadMessageStickyToolbarObserver({
         DOMObserver.destroy(id);
       };
     },
-    [messagesContainer]
+    [messagesContainer],
   );
 }

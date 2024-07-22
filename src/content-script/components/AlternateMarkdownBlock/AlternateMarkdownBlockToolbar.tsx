@@ -1,10 +1,10 @@
-import $ from 'jquery';
-import { LoaderCircle } from 'lucide-react';
+import $ from "jquery";
+import { LoaderCircle } from "lucide-react";
 
-import Canvas from '@/utils/Canvas';
+import Canvas from "@/utils/Canvas";
 
-import CanvasRenderButton from './CanvasRenderButton';
-import CopyButton from './CopyButton';
+import CanvasRenderButton from "./CanvasRenderButton";
+import CopyButton from "./CopyButton";
 
 type MarkdownBlockToolbarProps = {
   lang: string;
@@ -19,10 +19,10 @@ export default function AlternateMarkdownBlockToolbar({
 
   return (
     <div
-      className={`tw-p-2 tw-px-3 tw-flex tw-items-center tw-bg-secondary tw-font-sans tw-border-b !tw-border-border ${preBlockId}-inflight-indicator tw-group`}
+      className={`tw-flex tw-items-center tw-border-b !tw-border-border tw-bg-secondary tw-p-2 tw-px-3 tw-font-sans ${preBlockId}-inflight-indicator tw-group`}
     >
-      <div className="tw-text-foreground tw-font-mono tw-font-medium tw-text-sm">
-        {lang || 'text'}
+      <div className="tw-font-mono tw-text-sm tw-font-medium tw-text-foreground">
+        {lang || "text"}
       </div>
       <div className="tw-ml-auto tw-flex tw-gap-3">
         <div

@@ -1,6 +1,6 @@
-import { Collection } from '@/content-script/components/QueryBox/CollectionSelector';
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 
-import { LanguageModel } from './ModelSelector';
+import { LanguageModel } from "./ModelSelector";
 
 export type UserSettingsApiResponse = {
   create_limit: number;
@@ -34,7 +34,7 @@ export type ThreadMessageApiResponse = {
   author_username: string;
   collection_info: Collection;
   thread_url_slug: string;
-  display_model: LanguageModel['code'];
+  display_model: LanguageModel["code"];
 };
 
 export type UserProfileSettingsApiResponse = {

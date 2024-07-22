@@ -12,9 +12,9 @@ import {
   useLayoutEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
-import { cn } from '@/utils/shadcn-ui-utils';
+import { cn } from "@/utils/cn";
 import {
   autoUpdate,
   flip,
@@ -30,7 +30,7 @@ import {
   useInteractions,
   useMergeRefs,
   useRole,
-} from '@floating-ui/react';
+} from "@floating-ui/react";
 
 type PopoverOptions = {
   initialOpen?: boolean;
@@ -42,7 +42,7 @@ type PopoverOptions = {
 
 function usePopover({
   initialOpen = false,
-  placement = 'bottom',
+  placement = "bottom",
   modal,
   open: controlledOpen,
   onOpenChange: setControlledOpen,
@@ -62,8 +62,8 @@ function usePopover({
     middleware: [
       offset(5),
       flip({
-        crossAxis: placement.includes('-'),
-        fallbackAxisSideDirection: 'end',
+        crossAxis: placement.includes("-"),
+        fallbackAxisSideDirection: "end",
         padding: 5,
       }),
       shift({ padding: 5 }),
@@ -92,7 +92,7 @@ function usePopover({
       setLabelId,
       setDescriptionId,
     }),
-    [open, setOpen, interactions, data, modal, labelId, descriptionId]
+    [open, setOpen, interactions, data, modal, labelId, descriptionId],
   );
 }
 
@@ -109,7 +109,7 @@ const usePopoverContext = () => {
   const context = useContext(PopoverContext);
 
   if (context == null) {
-    throw new Error('Popover components must be wrapped in <Popover />');
+    throw new Error("Popover components must be wrapped in <Popover />");
   }
 
   return context;
@@ -148,9 +148,9 @@ export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerProps>(
           ref,
           ...props,
           ...children.props,
-          'data-state': context.open ? 'open' : 'closed',
+          "data-state": context.open ? "open" : "closed",
           onClick: () => context.setOpen(!context.open),
-        })
+        }),
       );
     }
 
@@ -158,14 +158,14 @@ export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerProps>(
       <button
         ref={ref}
         type="button"
-        data-state={context.open ? 'open' : 'closed'}
+        data-state={context.open ? "open" : "closed"}
         {...context.getReferenceProps(props)}
         onClick={() => context.setOpen(!context.open)}
       >
         {children}
       </button>
     );
-  }
+  },
 );
 
 type PopoverContentProps = HTMLProps<HTMLDivElement> & { className?: string };
@@ -186,12 +186,12 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
             aria-labelledby={context.labelId}
             aria-describedby={context.descriptionId}
             {...context.getFloatingProps(props)}
-            className={cn('tw-z-50 tw-w-72 tw-p-4', className)}
+            className={cn("tw-z-50 tw-w-72 tw-p-4", className)}
           >
             <div
               className="tw-rounded-md tw-border tw-bg-popover tw-text-popover-foreground tw-shadow-md tw-outline-none data-[state=open]:tw-animate-in data-[state=closed]:tw-animate-out data-[state=closed]:tw-fade-out-0 data-[state=open]:tw-fade-in-0 data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95 data-[side=bottom]:tw-slide-in-from-top-2 data-[side=left]:tw-slide-in-from-right-2 data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2"
-              data-state={floatingContext.open ? 'open' : 'closed'}
-              data-side={floatingContext.placement ?? 'bottom'}
+              data-state={floatingContext.open ? "open" : "closed"}
+              data-side={floatingContext.placement ?? "bottom"}
             >
               {props.children}
             </div>
@@ -199,7 +199,7 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
         </FloatingFocusManager>
       </FloatingPortal>
     );
-  }
+  },
 );
 
 export const PopoverHeading = forwardRef<

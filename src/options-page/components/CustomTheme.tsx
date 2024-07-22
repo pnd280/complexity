@@ -1,9 +1,9 @@
-import { Check } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { Check } from "lucide-react";
+import { ReactNode, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from '@/shared/components/shadcn/ui/button';
+import { Button } from "@/shared/components/shadcn/ui/button";
 import {
   Form,
   FormControl,
@@ -11,13 +11,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/components/shadcn/ui/form';
-import { Input } from '@/shared/components/shadcn/ui/input';
-import { Textarea } from '@/shared/components/shadcn/ui/textarea';
-import ChromeStorage from '@/utils/ChromeStorage';
-import { jsonUtils } from '@/utils/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery } from '@tanstack/react-query';
+} from "@/shared/components/shadcn/ui/form";
+import { Input } from "@/shared/components/shadcn/ui/input";
+import { Textarea } from "@/shared/components/shadcn/ui/textarea";
+import ChromeStorage from "@/utils/ChromeStorage";
+import { jsonUtils } from "@/utils/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 
 const schema = z.object({
   slogan: z.string().optional(),
@@ -32,8 +32,8 @@ const schema = z.object({
         return /^#[0-9A-F]{6}$/i.test(value);
       },
       {
-        message: 'Invalid hex color',
-      }
+        message: "Invalid hex color",
+      },
     ),
   customCSS: z.string().optional(),
 });
@@ -42,18 +42,18 @@ type FormData = z.infer<typeof schema>;
 
 export default function CustomTheme() {
   const { data: savedSettings, isLoading } = useQuery({
-    queryKey: ['customTheme'],
-    queryFn: () => ChromeStorage.getStorageValue('customTheme'),
+    queryKey: ["customTheme"],
+    queryFn: () => ChromeStorage.getStorageValue("customTheme"),
   });
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      slogan: '',
-      uiFont: '',
-      monoFont: '',
-      accentColor: '',
-      customCSS: '',
+      slogan: "",
+      uiFont: "",
+      monoFont: "",
+      accentColor: "",
+      customCSS: "",
     },
   });
 
@@ -63,21 +63,21 @@ export default function CustomTheme() {
     reset,
   } = form;
 
-  const [saveButtonText, setSaveButtonText] = useState<ReactNode>('Save');
+  const [saveButtonText, setSaveButtonText] = useState<ReactNode>("Save");
 
   const onSubmit = async (data: FormData) => {
     ChromeStorage.setStorageValue({
-      key: 'customTheme',
+      key: "customTheme",
       value: {
         ...data,
         customCSS: JSON.stringify(data.customCSS),
       },
     });
 
-    setSaveButtonText(<Check className="tw-h-4 tw-w-4 tw-mr-2" />);
+    setSaveButtonText(<Check className="tw-mr-2 tw-h-4 tw-w-4" />);
 
     setTimeout(() => {
-      setSaveButtonText('Save');
+      setSaveButtonText("Save");
     }, 2000);
   };
 
@@ -86,11 +86,11 @@ export default function CustomTheme() {
 
     if (savedSettings) {
       reset({
-        slogan: savedSettings.slogan || '',
-        uiFont: savedSettings.uiFont || '',
-        monoFont: savedSettings.monoFont || '',
-        accentColor: savedSettings.accentColor || '',
-        customCSS: jsonUtils.safeParse(savedSettings.customCSS || '') || '',
+        slogan: savedSettings.slogan || "",
+        uiFont: savedSettings.uiFont || "",
+        monoFont: savedSettings.monoFont || "",
+        accentColor: savedSettings.accentColor || "",
+        customCSS: jsonUtils.safeParse(savedSettings.customCSS || "") || "",
       });
     }
   }, [savedSettings, isLoading, reset]);
@@ -140,7 +140,7 @@ export default function CustomTheme() {
             control={form.control}
             name="monoFont"
             render={({ field }) => (
-              <FormItem className="tw-self-end tw-w-full">
+              <FormItem className="tw-w-full tw-self-end">
                 <FormControl>
                   <Input placeholder="mono" {...field} />
                 </FormControl>
@@ -162,7 +162,7 @@ export default function CustomTheme() {
                   <div
                     className="tw-w-[30%] tw-self-stretch tw-rounded-md tw-border tw-border-border tw-transition-all"
                     style={{
-                      backgroundColor: field.value || '#72aefd',
+                      backgroundColor: field.value || "#72aefd",
                     }}
                   />
                   <Input
@@ -188,7 +188,7 @@ export default function CustomTheme() {
                 <Textarea
                   id="custom-css"
                   placeholder="Put your CSS code here..."
-                  className="!tw-font-mono tw-h-[300px] tw-resize-none"
+                  className="tw-h-[300px] tw-resize-none !tw-font-mono"
                   {...field}
                 />
               </FormControl>

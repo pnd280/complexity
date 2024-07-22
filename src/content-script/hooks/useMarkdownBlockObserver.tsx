@@ -1,19 +1,19 @@
-import $ from 'jquery';
+import $ from "jquery";
 import {
   Dispatch,
   SetStateAction,
   useCallback,
   useEffect,
   useRef,
-} from 'react';
+} from "react";
 
-import { MarkdownBlockContainer } from '@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock';
-import { shikiContentScript } from '@/content-script/main-world/shiki';
-import DOMObserver from '@/utils/DOMObserver';
-import MarkdownBlockUtils from '@/utils/MarkdownBlock';
-import { isDOMNode } from '@/utils/utils';
+import { MarkdownBlockContainer } from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock";
+import { shikiContentScript } from "@/content-script/main-world/shiki";
+import DOMObserver from "@/utils/DOMObserver";
+import MarkdownBlockUtils from "@/utils/MarkdownBlock";
+import { isDOMNode } from "@/utils/utils";
 
-import useWaitForMessagesContainer from './useWaitForMessagesContainer';
+import useWaitForMessagesContainer from "./useWaitForMessagesContainer";
 
 type useMarkdownBlockObserverProps = {
   setContainers: Dispatch<SetStateAction<MarkdownBlockContainer[]>>;
@@ -21,7 +21,7 @@ type useMarkdownBlockObserverProps = {
 
 const compare = (
   prev: MarkdownBlockContainer[],
-  next: MarkdownBlockContainer[]
+  next: MarkdownBlockContainer[],
 ): boolean => {
   if (prev.length !== next.length) return false;
   for (let i = prev.length - 1; i >= 0; i--) {
@@ -44,7 +44,7 @@ export default function useMarkdownBlockObserver({
         setContainers(newContainers);
       }
     },
-    [setContainers]
+    [setContainers],
   );
 
   const { messagesContainer } = useWaitForMessagesContainer();
@@ -55,20 +55,20 @@ export default function useMarkdownBlockObserver({
 
       requestAnimationFrame(callback);
 
-      const id = 'markdown-block-toolbar';
+      const id = "markdown-block-toolbar";
 
       DOMObserver.create(id, {
         target: messagesContainer,
         config: { childList: true, subtree: true },
         throttleTime: 200,
-        source: 'hook',
+        source: "hook",
         onAny: callback,
       });
 
       function callback() {
         const promises: Promise<MarkdownBlockContainer | null>[] = [];
 
-        $('.message-block pre').each((index, pre) => {
+        $(".message-block pre").each((index, pre) => {
           promises.push(
             new Promise<MarkdownBlockContainer | null>((resolve) => {
               queueMicrotask(() => {
@@ -86,13 +86,13 @@ export default function useMarkdownBlockObserver({
                   isNative: true,
                 });
               });
-            })
+            }),
           );
         });
 
         Promise.all(promises).then((results) => {
           const newContainers = results.filter(
-            (result): result is MarkdownBlockContainer => result !== null
+            (result): result is MarkdownBlockContainer => result !== null,
           );
 
           updateContainers(newContainers);
@@ -103,14 +103,14 @@ export default function useMarkdownBlockObserver({
         DOMObserver.destroy(id);
       };
     },
-    [updateContainers, messagesContainer]
+    [updateContainers, messagesContainer],
   );
 
   useEffect(
     function alternateMarkdownBlockObservers() {
       if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
 
-      const id = 'alternate-markdown-block';
+      const id = "alternate-markdown-block";
 
       (async () => {
         await shikiContentScript.waitForInitialization();
@@ -124,17 +124,17 @@ export default function useMarkdownBlockObserver({
             subtree: true,
           },
           throttleTime: 200,
-          source: 'hook',
+          source: "hook",
           onAny: callback,
         });
       })();
 
       function callback() {
-        $('.message-block pre').each((_, pre) => {
+        $(".message-block pre").each((_, pre) => {
           queueMicrotask(async () => {
             MarkdownBlockUtils.handleVisibility(pre);
 
-            if (!$(pre).attr('id')) return;
+            if (!$(pre).attr("id")) return;
 
             const isInFlight =
               await MarkdownBlockUtils.handleInFlightState(pre);
@@ -149,6 +149,6 @@ export default function useMarkdownBlockObserver({
         DOMObserver.destroy(id);
       };
     },
-    [messagesContainer]
+    [messagesContainer],
   );
 }

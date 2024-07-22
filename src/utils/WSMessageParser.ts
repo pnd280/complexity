@@ -1,6 +1,6 @@
-import { WSParsedMessage } from '@/types/WS';
+import { WSParsedMessage } from "@/types/WS";
 
-import { jsonUtils } from './utils';
+import { jsonUtils } from "./utils";
 
 export default class WSMessageParser {
   static parse(message: string): WSParsedMessage | string | null {
@@ -10,13 +10,13 @@ export default class WSMessageParser {
 
     message = message.trim();
 
-    const unexpectedSeparator = '';
+    const unexpectedSeparator = "";
     const weirdCharIndex = message.indexOf(unexpectedSeparator);
     if (weirdCharIndex !== -1) {
       message = message.substring(0, weirdCharIndex);
     }
 
-    const startIndex = message.indexOf('[');
+    const startIndex = message.indexOf("[");
     if (startIndex === -1) {
       return message;
     }
@@ -28,7 +28,7 @@ export default class WSMessageParser {
     data = jsonUtils.safeParse(jsonString);
 
     if (!Array.isArray(data)) {
-      console.error('Parsed data is not in the expected format');
+      console.error("Parsed data is not in the expected format");
       return null;
     }
 
@@ -37,7 +37,7 @@ export default class WSMessageParser {
     if (data.length < 2) {
       output = {
         messageCode,
-        event: '',
+        event: "",
         data,
       };
     } else {
@@ -53,7 +53,7 @@ export default class WSMessageParser {
   }
 
   static stringify(parsedMessage: WSParsedMessage | string): string {
-    if (!parsedMessage || typeof parsedMessage !== 'object') {
+    if (!parsedMessage || typeof parsedMessage !== "object") {
       return parsedMessage as string;
     }
 

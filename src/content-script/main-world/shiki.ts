@@ -1,10 +1,10 @@
-import $ from 'jquery';
+import $ from "jquery";
 
-import { extensionOnly, mainWorldExec } from '@/utils/hoc';
-import UIUtils from '@/utils/UI';
-import { injectMainWorldScriptBlock, sleep } from '@/utils/utils';
+import { extensionOnly, mainWorldExec } from "@/utils/hoc";
+import UIUtils from "@/utils/UI";
+import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 
-import { webpageMessenger } from './webpage-messenger';
+import { webpageMessenger } from "./webpage-messenger";
 
 class ShikiHighlighter {
   private static instance: ShikiHighlighter;
@@ -37,7 +37,7 @@ class ShikiHighlighter {
         scriptContent,
         waitForExecution: true,
       }).catch((error) => {
-        console.error('Failed to import Shiki:', error);
+        console.error("Failed to import Shiki:", error);
         throw error;
       });
     }
@@ -47,12 +47,12 @@ class ShikiHighlighter {
 
   private setupCodeBlockHighlightListener(): void {
     webpageMessenger.onMessage(
-      'isShikiHighlighterInitialized',
-      async () => !!window.shiki
+      "isShikiHighlighterInitialized",
+      async () => !!window.shiki,
     );
     webpageMessenger.onMessage(
-      'getHighlightedCodeAsHtml',
-      this.handleHighlightRequest.bind(this)
+      "getHighlightedCodeAsHtml",
+      this.handleHighlightRequest.bind(this),
     );
   }
 
@@ -64,12 +64,12 @@ class ShikiHighlighter {
     const { code, lang } = payload;
 
     if (!code) {
-      throw new Error('Received empty code for highlighting');
+      throw new Error("Received empty code for highlighting");
     }
 
     try {
       await this.importShiki();
-      const theme = UIUtils.isDarkTheme() ? 'dark-plus' : 'light-plus';
+      const theme = UIUtils.isDarkTheme() ? "dark-plus" : "light-plus";
 
       if (!(lang in window.shiki!.bundledLanguages)) return null;
 
@@ -78,7 +78,7 @@ class ShikiHighlighter {
         theme,
       });
     } catch (error) {
-      console.error('Error highlighting code:', error);
+      console.error("Error highlighting code:", error);
       return null;
     }
   }
@@ -92,7 +92,7 @@ const waitForInitialization = () => {
 
     const checkForInitialization = async (): Promise<void> => {
       const isInitialized = await webpageMessenger.sendMessage({
-        event: 'isShikiHighlighterInitialized',
+        event: "isShikiHighlighterInitialized",
         timeout: 1000,
         suppressTimeoutError: true,
       });
@@ -111,7 +111,7 @@ const waitForInitialization = () => {
 mainWorldExec(() =>
   $(() => {
     ShikiHighlighter.getInstance().initialize();
-  })
+  }),
 )();
 
 export const shikiContentScript = {

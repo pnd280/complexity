@@ -1,29 +1,29 @@
-import { Collection } from '@/content-script/components/QueryBox/CollectionSelector';
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
-import WebpageMessageInterceptor from '@/content-script/main-world/WebpageMessageInterceptors';
-import { LanguageModel } from '@/types/ModelSelector';
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
+import { LanguageModel } from "@/types/ModelSelector";
 import {
   CollectionsApiResponse,
   ThreadMessageApiResponse,
   UserProfileSettingsApiRequest,
   UserProfileSettingsApiResponse,
   UserSettingsApiResponse,
-} from '@/types/PPLXApi';
-import { fetchResource, getPPLXBuildId, jsonUtils } from '@/utils/utils';
-import WSMessageParser from '@/utils/WSMessageParser';
+} from "@/types/PPLXApi";
+import { fetchResource, getPPLXBuildId, jsonUtils } from "@/utils/utils";
+import WSMessageParser from "@/utils/WSMessageParser";
 
 export default class PPLXApi {
   static async fetchUserSettings(): Promise<UserSettingsApiResponse> {
     const resp = await fetchResource(
-      'https://www.perplexity.ai/p/api/v1/user/settings'
+      "https://www.perplexity.ai/p/api/v1/user/settings",
     );
 
     if (
       resp.startsWith(
-        '<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...'
+        '<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...',
       )
     )
-      throw new Error('Cloudflare timeout');
+      throw new Error("Cloudflare timeout");
 
     return jsonUtils.safeParse(resp);
   }
@@ -36,7 +36,7 @@ export default class PPLXApi {
     const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/library.json`;
     const jsonData = await fetch(url);
 
-    if (!jsonData.ok) throw new Error('Failed to fetch collections');
+    if (!jsonData.ok) throw new Error("Failed to fetch collections");
 
     const parsedJson = jsonUtils.safeParse(await jsonData.text());
 
@@ -70,10 +70,10 @@ export default class PPLXApi {
     const { collection, newTitle, newDescription, newInstructions } = args;
 
     await webpageMessenger.sendMessage({
-      event: 'sendWebSocketMessage',
+      event: "sendWebSocketMessage",
       payload: WSMessageParser.stringify({
         messageCode: 420,
-        event: 'edit_collection',
+        event: "edit_collection",
         data: [
           {
             collection_uuid: collection.uuid,
@@ -124,14 +124,14 @@ export default class PPLXApi {
   }
 
   static async setDefaultLanguageModel(
-    selectedLanguageModel: LanguageModel['code']
+    selectedLanguageModel: LanguageModel["code"],
   ) {
     try {
       await webpageMessenger.sendMessage({
-        event: 'sendWebSocketMessage',
+        event: "sendWebSocketMessage",
         payload: WSMessageParser.stringify({
           messageCode: 423,
-          event: 'save_user_settings',
+          event: "save_user_settings",
           data: {
             default_model: selectedLanguageModel,
             is_complexity: true,
@@ -142,7 +142,7 @@ export default class PPLXApi {
 
       return true;
     } catch (e) {
-      alert('Failed to change language model');
+      alert("Failed to change language model");
     }
 
     return false;
@@ -151,10 +151,10 @@ export default class PPLXApi {
   static async setDefaultImageModel(selectedImageModel: string) {
     try {
       await webpageMessenger.sendMessage({
-        event: 'sendWebSocketMessage',
+        event: "sendWebSocketMessage",
         payload: WSMessageParser.stringify({
           messageCode: 423,
-          event: 'save_user_settings',
+          event: "save_user_settings",
           data: {
             default_image_generation_model: selectedImageModel,
             is_complexity: true,
@@ -165,7 +165,7 @@ export default class PPLXApi {
 
       return true;
     } catch (e) {
-      alert('Failed to change image model');
+      alert("Failed to change image model");
     }
 
     return false;
@@ -174,19 +174,19 @@ export default class PPLXApi {
   static async updateUserProfileSettings(data: UserProfileSettingsApiRequest) {
     const data2Send = {
       action:
-        typeof data.disabled === 'undefined'
-          ? 'save_profile'
-          : 'toggle_disabled',
+        typeof data.disabled === "undefined"
+          ? "save_profile"
+          : "toggle_disabled",
       disabled: data.disabled ?? undefined,
       bio: data.bio ?? undefined,
     };
 
     try {
       await webpageMessenger.sendMessage({
-        event: 'sendWebSocketMessage',
+        event: "sendWebSocketMessage",
         payload: WSMessageParser.stringify({
           messageCode: 421,
-          event: 'save_user_ai_profile',
+          event: "save_user_ai_profile",
           data: data2Send,
         }),
         timeout: 5000,
@@ -196,7 +196,7 @@ export default class PPLXApi {
 
       return true;
     } catch (e) {
-      alert('Failed to update profile settings');
+      alert("Failed to update profile settings");
     }
 
     return false;

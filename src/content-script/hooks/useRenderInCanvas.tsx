@@ -1,10 +1,10 @@
-import $ from 'jquery';
-import { useEffect } from 'react';
+import $ from "jquery";
+import { useEffect } from "react";
 
-import { useCanvasStore } from '@/content-script/session-store/canvas';
-import MarkdownBlockUtils from '@/utils/MarkdownBlock';
-import { queryClient } from '@/utils/ts-query-query-client';
-import { useQuery } from '@tanstack/react-query';
+import { useCanvasStore } from "@/content-script/session-store/canvas";
+import MarkdownBlockUtils from "@/utils/MarkdownBlock";
+import { queryClient } from "@/utils/ts-query-query-client";
+import { useQuery } from "@tanstack/react-query";
 
 type useRenderInCanvasProps = {
   preBlockId: string;
@@ -17,18 +17,18 @@ export default function useRenderInCanvas({
     useCanvasStore();
 
   const { data: content, refetch: extractContent } = useQuery({
-    queryKey: ['canvasCode', preBlockId],
+    queryKey: ["canvasCode", preBlockId],
     queryFn: () =>
       MarkdownBlockUtils.extractCodeFromPreReactNode($(`#${preBlockId}`)[0]),
     refetchOnWindowFocus: false,
   });
 
   const messageBlockIndex = +(
-    $(`#${preBlockId}`).closest('.message-block').attr('data-index') || 0
+    $(`#${preBlockId}`).closest(".message-block").attr("data-index") || 0
   );
 
   const isActive =
-    canvasMetaData?.content === (content ?? '') &&
+    canvasMetaData?.content === (content ?? "") &&
     canvasMetaData.preBlockId === preBlockId;
 
   const handleRender = async () => {
@@ -37,9 +37,9 @@ export default function useRenderInCanvas({
     if (
       !content ||
       $(`#${preBlockId}`)
-        .closest('.message-block')
+        .closest(".message-block")
         .find(`.${preBlockId}-inflight-indicator`)
-        .attr('data-inflight') !== 'false'
+        .attr("data-inflight") !== "false"
     )
       return;
 
@@ -55,7 +55,7 @@ export default function useRenderInCanvas({
   useEffect(() => {
     return () =>
       queryClient.removeQueries({
-        queryKey: ['canvasCode', preBlockId],
+        queryKey: ["canvasCode", preBlockId],
       });
   }, [preBlockId]);
 

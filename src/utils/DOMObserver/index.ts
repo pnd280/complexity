@@ -2,10 +2,10 @@ import {
   DOMObserverConfig,
   DOMObserverInstance,
   MutationCallback,
-} from '@/types/DOMObserver';
-import { TaskQueue } from '@/utils/TaskQueue';
+} from "@/types/DOMObserver";
+import { TaskQueue } from "@/utils/TaskQueue";
 
-import { createCallback } from './callback-factory';
+import { createCallback } from "./callback-factory";
 
 class DOMObserver {
   private static instances: Map<string, DOMObserverInstance> = new Map();
@@ -19,12 +19,12 @@ class DOMObserver {
     }
 
     const observer = new MutationObserver(
-      DOMObserver.handleMutations(id, config)
+      DOMObserver.handleMutations(id, config),
     );
     const instance: DOMObserverInstance = { observer, config, isPaused: false };
 
     if (!config.source) {
-      config.source = 'default';
+      config.source = "default";
     }
 
     DOMObserver.instances.set(id, instance);
@@ -33,7 +33,7 @@ class DOMObserver {
 
   public static update(
     id: string,
-    newConfig: Partial<DOMObserverConfig>
+    newConfig: Partial<DOMObserverConfig>,
   ): void {
     const instance = DOMObserver.instances.get(id);
     if (!instance) {
@@ -44,7 +44,7 @@ class DOMObserver {
     instance.config = { ...instance.config, ...newConfig };
     instance.observer.disconnect();
     instance.observer = new MutationObserver(
-      DOMObserver.handleMutations(id, instance.config)
+      DOMObserver.handleMutations(id, instance.config),
     );
     DOMObserver.observe(id);
     DOMObserver.log(`Updated observer with id "${id}"`);
@@ -59,7 +59,7 @@ class DOMObserver {
     }
   }
 
-  public static destroyAll(source?: DOMObserverConfig['source']): void {
+  public static destroyAll(source?: DOMObserverConfig["source"]): void {
     DOMObserver.instances.forEach((instance, id) => {
       if (instance.config.source === source || !source) {
         DOMObserver.destroy(id);
@@ -90,7 +90,7 @@ class DOMObserver {
         instance.isPaused = false;
       } else {
         DOMObserver.log(
-          `Cannot resume observer with id "${id}": target is not in the DOM.`
+          `Cannot resume observer with id "${id}": target is not in the DOM.`,
         );
       }
     }
@@ -110,11 +110,11 @@ class DOMObserver {
       if (document.contains(instance.config.target)) {
         instance.observer.observe(
           instance.config.target,
-          instance.config.config
+          instance.config.config,
         );
       } else {
         DOMObserver.log(
-          `Cannot observe with id "${id}": target is not in the DOM.`
+          `Cannot observe with id "${id}": target is not in the DOM.`,
         );
       }
     }
@@ -122,7 +122,7 @@ class DOMObserver {
 
   private static handleMutations(
     id: string,
-    config: DOMObserverConfig
+    config: DOMObserverConfig,
   ): MutationCallback {
     const callback = createCallback(config);
     return (mutations: MutationRecord[], observer: MutationObserver) => {

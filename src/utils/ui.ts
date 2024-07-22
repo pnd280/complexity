@@ -1,10 +1,10 @@
-import $ from 'jquery';
+import $ from "jquery";
 
-import { whereAmI } from './utils';
+import { whereAmI } from "./utils";
 
 export default class UIUtils {
   static isDarkTheme() {
-    return $('html').hasClass('dark');
+    return $("html").hasClass("dark");
   }
 
   static isChildrenNodeOverflowing({
@@ -29,19 +29,19 @@ export default class UIUtils {
   }
 
   static getThreadWrapper() {
-    return $('.max-w-threadWidth');
+    return $(".max-w-threadWidth");
   }
 
   static getMessagesContainer() {
     // user's thread
     let $messagesContainer = $(
-      '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child'
+      ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child",
     );
 
     // branched thread
     if (!$messagesContainer.length) {
       $messagesContainer = $(
-        '.h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:nth-child(2)'
+        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:nth-child(2)",
       );
     }
 
@@ -49,7 +49,7 @@ export default class UIUtils {
   }
 
   static getMessageBlocks() {
-    if (whereAmI() !== 'thread') return [];
+    if (whereAmI() !== "thread") return [];
 
     const $messagesContainer = UIUtils.getMessagesContainer();
 
@@ -63,13 +63,13 @@ export default class UIUtils {
     $messagesContainer.children().each((index, messageBlock) => {
       const $messageBlock = $(messageBlock);
 
-      $messageBlock.addClass('message-block').attr({ 'data-index': index + 1 });
+      $messageBlock.addClass("message-block").attr({ "data-index": index + 1 });
 
       const { $query, $answer, $answerHeading } =
         UIUtils.parseMessageBlock($messageBlock);
 
-      $messageBlock.find('.col-span-8:last').addClass('text-col');
-      $messageBlock.find('.col-span-4:last').addClass('visual-col');
+      $messageBlock.find(".col-span-8:last").addClass("text-col");
+      $messageBlock.find(".col-span-4:last").addClass("visual-col");
 
       const messageBlockData = {
         $messageBlock,
@@ -85,10 +85,10 @@ export default class UIUtils {
   }
 
   static parseMessageBlock($messageBlock: JQuery<Element>) {
-    const $query = $messageBlock.find('.my-md.md\\:my-lg');
-    const $answer = $messageBlock.find('.relative.default.font-sans.text-base');
+    const $query = $messageBlock.find(".my-md.md\\:my-lg");
+    const $answer = $messageBlock.find(".relative.default.font-sans.text-base");
     const $answerHeading = $messageBlock.find(
-      '.mb-sm.flex.w-full.items-center.justify-between:contains("Answer")'
+      '.mb-sm.flex.w-full.items-center.justify-between:contains("Answer")',
     );
 
     return {
@@ -102,17 +102,17 @@ export default class UIUtils {
   static getActiveQueryBoxTextarea({
     type,
   }: {
-    type?: 'main' | 'follow-up';
+    type?: "main" | "follow-up";
   }): JQuery<HTMLTextAreaElement> {
     const $parents = $('button[aria-label="Submit"]:last').parents();
 
-    if (type === 'main') {
+    if (type === "main") {
       const $main = $parents.find(
-        'textarea[placeholder="Ask anything..."]:last'
+        'textarea[placeholder="Ask anything..."]:last',
       );
 
       const $collection = $parents.find(
-        'textarea[placeholder="New Thread"]:last'
+        'textarea[placeholder="New Thread"]:last',
       );
 
       return (
@@ -120,25 +120,25 @@ export default class UIUtils {
       ) as JQuery<HTMLTextAreaElement>;
     }
 
-    if (type === 'follow-up') {
+    if (type === "follow-up") {
       return $parents.find(
-        'textarea[placeholder="Ask follow-up"]:last'
+        'textarea[placeholder="Ask follow-up"]:last',
       ) as JQuery<HTMLTextAreaElement>;
     }
 
     return $parents.find(
-      'textarea[placeholder]:last'
+      "textarea[placeholder]:last",
     ) as JQuery<HTMLTextAreaElement>;
   }
 
-  static getActiveQueryBox({ type }: { type?: 'main' | 'follow-up' }) {
+  static getActiveQueryBox({ type }: { type?: "main" | "follow-up" }) {
     return UIUtils.getActiveQueryBoxTextarea({
       type,
-    }).parents('.grow.block');
+    }).parents(".grow.block");
   }
 
   static getStickyNavbar() {
-    return $('.sticky.left-0.right-0.top-0.z-20.border-b');
+    return $(".sticky.left-0.right-0.top-0.z-20.border-b");
   }
 
   static getWordOnCaret(element: HTMLTextAreaElement) {
@@ -147,10 +147,10 @@ export default class UIUtils {
 
     if (!text || caret === undefined) {
       return {
-        word: '',
+        word: "",
         start: 0,
         end: 0,
-        newText: '',
+        newText: "",
       };
     }
 
@@ -181,20 +181,20 @@ export default class UIUtils {
 
   static setReactTextareaValue(
     textarea: HTMLTextAreaElement,
-    newValue: string
+    newValue: string,
   ) {
     if (!textarea) return;
 
     const nativeTextareaValueSetter = Object.getOwnPropertyDescriptor(
       HTMLTextAreaElement.prototype,
-      'value'
+      "value",
     )?.set;
 
     if (nativeTextareaValueSetter) {
       nativeTextareaValueSetter.call(textarea, newValue);
     }
 
-    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    textarea.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
   static getMostVisibleElementIndex(elements: Element[]) {
@@ -221,11 +221,11 @@ export default class UIUtils {
       // Calculate the visible part of the element
       const visibleWidth = Math.max(
         0,
-        Math.min(rect.right, windowWidth) - Math.max(rect.left, 0)
+        Math.min(rect.right, windowWidth) - Math.max(rect.left, 0),
       );
       const visibleHeight = Math.max(
         0,
-        Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)
+        Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0),
       );
       const visibleArea = visibleWidth * visibleHeight;
       const totalArea = rect.width * rect.height;

@@ -1,30 +1,30 @@
-import '@/content-script/session-store/popup-settings';
+import "@/content-script/session-store/popup-settings";
 
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink } from "lucide-react";
 
-import LabeledSwitch from '@/shared/components/LabeledSwitch';
-import { Separator } from '@/shared/components/shadcn/ui/separator';
-import { ChromeStore, PopupSettingKeys } from '@/types/ChromeStore';
-import { cn } from '@/utils/shadcn-ui-utils';
+import LabeledSwitch from "@/shared/components/LabeledSwitch";
+import { Separator } from "@/shared/components/shadcn/ui/separator";
+import { ChromeStore, PopupSettingKeys } from "@/types/ChromeStore";
+import { cn } from "@/utils/cn";
 
-import packageData from '../../../package.json';
-import usePopupSettings from '../hooks/usePopupSettings';
-import popupSettings, { PopupSetting } from '../settings';
+import packageData from "../../../package.json";
+import usePopupSettings from "../hooks/usePopupSettings";
+import popupSettings, { PopupSetting } from "../settings";
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 
 export const PopupSettings = ({
   context,
 }: {
-  context?: 'popup' | 'options';
+  context?: "popup" | "options";
 }) => {
   return (
-    <main className="tw-relative tw-font-sans tw-bg-background tw-text-foreground tw-flex-col tw-w-full tw-h-full !tw-text-[1em] tw-overflow-auto">
-      <div className="tw-px-4 tw-py-2 tw-overflow-auto">
-        <div className="tw-text-yellow-300 tw-mb-4 tw-mt-2 tw-w-full tw-text-sm">
+    <main className="tw-relative tw-h-full tw-w-full tw-flex-col tw-overflow-auto tw-bg-background tw-font-sans !tw-text-[1em] tw-text-foreground">
+      <div className="tw-overflow-auto tw-px-4 tw-py-2">
+        <div className="tw-mb-4 tw-mt-2 tw-w-full tw-text-sm tw-text-yellow-300">
           Change(s) requires a full page reload!
         </div>
-        <div className="tw-flex tw-flex-col tw-gap-4 tw-mb-4">
+        <div className="tw-mb-4 tw-flex tw-flex-col tw-gap-4">
           <div className="tw-flex tw-flex-col tw-gap-2">
             <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
               Query box Selectors
@@ -54,9 +54,9 @@ export const PopupSettings = ({
           </div>
         </div>
 
-        {context === 'popup' ? (
+        {context === "popup" ? (
           <div
-            className="tw-flex tw-gap-1 tw-items-center tw-ml-auto tw-w-max hover:tw-underline tw-cursor-pointer"
+            className="tw-ml-auto tw-flex tw-w-max tw-cursor-pointer tw-items-center tw-gap-1 hover:tw-underline"
             onClick={() => {
               chrome.runtime.openOptionsPage();
               window.close();
@@ -66,7 +66,7 @@ export const PopupSettings = ({
             <ExternalLink className="tw-size-3" />
           </div>
         ) : (
-          <div className="tw-text-muted-foreground tw-text-lg">
+          <div className="tw-text-lg tw-text-muted-foreground">
             ...more to come
           </div>
         )}
@@ -77,7 +77,7 @@ export const PopupSettings = ({
 
 function RenderSettings<
   T extends PopupSetting<PopupSettingKeys>,
-  K extends keyof ChromeStore['popupSettings'],
+  K extends keyof ChromeStore["popupSettings"],
 >({ settings, settingStoreKey }: { settings: T[]; settingStoreKey: K }) {
   const { store, handleSettingsChange } = usePopupSettings();
 
@@ -87,14 +87,14 @@ function RenderSettings<
     ({ id, label, storeKey, experimental, versionRelease, onClick }) => {
       const defaultChecked =
         !!store.popupSettings[settingStoreKey]?.[
-          storeKey as keyof ChromeStore['popupSettings'][K]
+          storeKey as keyof ChromeStore["popupSettings"][K]
         ];
 
       return (
         <div
           key={id}
           className={cn({
-            'tw-mb-4 tw-flex tw-flex-col tw-gap-1':
+            "tw-mb-4 tw-flex tw-flex-col tw-gap-1":
               experimental || versionRelease === packageData.version,
           })}
         >
@@ -102,8 +102,8 @@ function RenderSettings<
             key={id}
             id={id}
             label={label}
-            labelClassName={cn('tw-max-w-full', {
-              'tw-cursor-pointer': !!onClick,
+            labelClassName={cn("tw-max-w-full", {
+              "tw-cursor-pointer": !!onClick,
             })}
             defaultChecked={!storeKey ? true : defaultChecked}
             checked={!storeKey ? true : undefined}
@@ -112,26 +112,26 @@ function RenderSettings<
 
               handleSettingsChange(
                 settingStoreKey,
-                storeKey as keyof ChromeStore['popupSettings'][K],
-                checked as ChromeStore['popupSettings'][K][keyof ChromeStore['popupSettings'][K]]
+                storeKey as keyof ChromeStore["popupSettings"][K],
+                checked as ChromeStore["popupSettings"][K][keyof ChromeStore["popupSettings"][K]],
               );
             }}
           />
-          <div className="tw-flex tw-gap-2 tw-ml-12">
+          <div className="tw-ml-12 tw-flex tw-gap-2">
             {versionRelease === packageData.version && (
-              <div className="tw-text-xs tw-bg-accent-foreground tw-w-max tw-p-1 tw-px-2 tw-rounded-md tw-font-bold">
+              <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-p-1 tw-px-2 tw-text-xs tw-font-bold">
                 New
               </div>
             )}
             {experimental && (
-              <div className="tw-text-xs tw-bg-destructive tw-text-destructive-foreground tw-w-max tw-p-1 tw-px-2 tw-rounded-md tw-font-bold">
+              <div className="tw-w-max tw-rounded-md tw-bg-destructive tw-p-1 tw-px-2 tw-text-xs tw-font-bold tw-text-destructive-foreground">
                 Experimental
               </div>
             )}
           </div>
         </div>
       );
-    }
+    },
   );
 }
 

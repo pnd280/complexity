@@ -1,17 +1,17 @@
-import { debounce, throttle } from 'lodash-es';
+import { debounce, throttle } from "lodash-es";
 
 import {
   CustomCallback,
   DOMObserverConfig,
   MutationCallback,
-} from '@/types/DOMObserver';
+} from "@/types/DOMObserver";
 
-import DOMObserver from './';
-import { batchMutations } from './mutation-batcher';
+import DOMObserver from "./";
+import { batchMutations } from "./mutation-batcher";
 
 const handleError = (error: unknown, context: string): void => {
   console.error(
-    `Error in ${context}: ${error instanceof Error ? error.message : String(error)}`
+    `Error in ${context}: ${error instanceof Error ? error.message : String(error)}`,
   );
 };
 
@@ -32,12 +32,12 @@ const safeExecute = async <T extends unknown[]>(
 export const createCallback = (config: DOMObserverConfig): MutationCallback => {
   const processChunk = async (
     chunk: MutationRecord[],
-    observer: MutationObserver
+    observer: MutationObserver,
   ) => {
     const batchedMutations = batchMutations(chunk);
 
     for (const mutation of batchedMutations) {
-      if (mutation.type === 'childList') {
+      if (mutation.type === "childList") {
         if (config.onAdd) {
           for (const node of mutation.addedNodes) {
             if (node instanceof Element) {
@@ -51,16 +51,16 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
             if (node instanceof Element) {
               await safeExecute<Parameters<CustomCallback>>(
                 config.onRemove,
-                node
+                node,
               );
             }
           }
         }
-      } else if (mutation.type === 'attributes' && config.onAttrChange) {
+      } else if (mutation.type === "attributes" && config.onAttrChange) {
         await safeExecute<[Element, string | null]>(
           config.onAttrChange,
           mutation.target as Element,
-          mutation.attributeName
+          mutation.attributeName,
         );
       }
     }
@@ -69,14 +69,14 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
       await safeExecute<Parameters<MutationCallback>>(
         config.onAny,
         batchedMutations,
-        observer
+        observer,
       );
     }
   };
 
   let callback: MutationCallback = (
     mutations: MutationRecord[],
-    observer: MutationObserver
+    observer: MutationObserver,
   ) => {
     DOMObserver.updateQueue.enqueue(() => processChunk(mutations, observer));
   };

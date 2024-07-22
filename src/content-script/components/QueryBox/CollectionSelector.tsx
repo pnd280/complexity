@@ -6,18 +6,18 @@ import {
   Pencil,
   Play,
   X,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
+} from "lucide-react";
+import { useEffect, useState } from "react";
 
-import useRouter from '@/content-script/hooks/useRouter';
-import useUpdateUserProfileSettings from '@/content-script/hooks/useUpdateUserProfileSettings';
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
-import { useQueryBoxStore } from '@/content-script/session-store/query-box';
+import useRouter from "@/content-script/hooks/useRouter";
+import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/shared/components/Popover';
+} from "@/shared/components/Popover";
 import {
   Command,
   CommandEmpty,
@@ -26,17 +26,17 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/shared/components/shadcn/ui/command';
-import Tooltip from '@/shared/components/Tooltip';
-import { UserProfileSettingsApiResponse } from '@/types/PPLXApi';
-import { cn } from '@/utils/shadcn-ui-utils';
-import UIUtils from '@/utils/UI';
-import { whereAmI } from '@/utils/utils';
-import { useQuery } from '@tanstack/react-query';
-import { useToggle } from '@uidotdev/usehooks';
+} from "@/shared/components/shadcn/ui/command";
+import Tooltip from "@/shared/components/Tooltip";
+import { UserProfileSettingsApiResponse } from "@/types/PPLXApi";
+import { cn } from "@/utils/cn";
+import UIUtils from "@/utils/UI";
+import { whereAmI } from "@/utils/utils";
+import { useQuery } from "@tanstack/react-query";
+import { useToggle } from "@uidotdev/usehooks";
 
-import CollectionEditDialog from '../CollectionEditDialog';
-import UserProfileEditDialog from '../UserProfileEditDialog';
+import CollectionEditDialog from "../CollectionEditDialog";
+import UserProfileEditDialog from "../UserProfileEditDialog";
 
 export type Collection = {
   title: string;
@@ -53,13 +53,13 @@ export default function CollectionSelector() {
   const { data: collections, isLoading: isLoadingCollections } = useQuery<
     Collection[]
   >({
-    queryKey: ['collections'],
+    queryKey: ["collections"],
     enabled: false,
   });
 
   const { data: userProfileSettings, isLoading: isUserProfileSettingsLoading } =
     useQuery<UserProfileSettingsApiResponse>({
-      queryKey: ['userProfileSettings'],
+      queryKey: ["userProfileSettings"],
       enabled: false,
     });
 
@@ -72,21 +72,21 @@ export default function CollectionSelector() {
   const [editCollection, setEditCollection] = useState<Collection>();
 
   const selectedCollectionUuid = useQueryBoxStore(
-    (state) => state.selectedCollectionUuid
+    (state) => state.selectedCollectionUuid,
   );
   const setSelectedCollectionUuid = useQueryBoxStore(
-    (state) => state.setSelectedCollectionUuid
+    (state) => state.setSelectedCollectionUuid,
   );
 
   useEffect(() => {
-    UIUtils.getActiveQueryBoxTextarea({}).trigger('focus');
+    UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
   }, [selectedCollectionUuid]);
 
   useEffect(() => {
     const autoSelect = () => {
-      if (whereAmI() !== 'collection') return;
+      if (whereAmI() !== "collection") return;
 
-      const collectionSlug = window.location.pathname.split('/').pop();
+      const collectionSlug = window.location.pathname.split("/").pop();
 
       const collection = collections?.find((x) => x.url === collectionSlug);
 
@@ -102,29 +102,30 @@ export default function CollectionSelector() {
     <>
       <Popover open={open} onOpenChange={toggleOpen} modal={false}>
         <Tooltip
-          content={!selectedCollectionUuid ? 'Chat with a collection' : ''}
+          content={!selectedCollectionUuid ? "Chat with a collection" : ""}
         >
           <PopoverTrigger asChild>
-            <div className="tw-relative tw-flex tw-items-center tw-rounded-md tw-px-2 tw-text-sm [&>span]:tw-select-none [&>span]:!tw-truncate tw-transition-all tw-duration-300 tw-text-muted-foreground hover:tw-text-accent-foreground hover:tw-bg-accent text-center tw-max-w-[150px] tw-gap-2 cursor-pointer active:tw-scale-95 tw-animate-in tw-zoom-in tw-group tw-h-full">
+            <div className="text-center cursor-pointer tw-group tw-relative tw-flex tw-h-full tw-max-w-[150px] tw-items-center tw-gap-2 tw-rounded-md tw-px-2 tw-text-sm tw-text-muted-foreground tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in hover:tw-bg-accent hover:tw-text-accent-foreground active:tw-scale-95 [&>span]:tw-select-none [&>span]:!tw-truncate">
               {selectedCollectionUuid && (
                 <X
-                  className="tw-size-4 !tw-hidden group-hover:!tw-block"
+                  className="!tw-hidden tw-size-4 group-hover:!tw-block"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedCollectionUuid('');
+                    setSelectedCollectionUuid("");
                   }}
                 />
               )}
               <LayoutGrid
-                className={cn('tw-size-4', {
-                  'group-hover:!tw-hidden': selectedCollectionUuid,
+                className={cn("tw-size-4", {
+                  "group-hover:!tw-hidden": selectedCollectionUuid,
                 })}
               />
               {collections && selectedCollectionUuid ? (
-                <span className="tw-items-center tw-max-w-[110px]">
+                <span className="tw-max-w-[110px] tw-items-center">
                   {
                     collections.find(
-                      (collection) => collection.uuid === selectedCollectionUuid
+                      (collection) =>
+                        collection.uuid === selectedCollectionUuid,
                     )?.title
                   }
                 </span>
@@ -144,7 +145,7 @@ export default function CollectionSelector() {
           >
             <CommandInput
               placeholder="Search..."
-              className="!tw-py-2 !tw-h-max !tw-min-w-[80px] !tw-text-sm"
+              className="!tw-h-max !tw-min-w-[80px] !tw-py-2 !tw-text-sm"
               searchIcon={false}
             />
             <CommandEmpty>No collection found.</CommandEmpty>
@@ -152,13 +153,13 @@ export default function CollectionSelector() {
             <CommandList>
               <CommandGroup>
                 <Selection
-                  keywords={['', 'Default', 'Your AI Profile']}
+                  keywords={[""]}
                   className={cn(
-                    'tw-w-full tw-max-w-full hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
+                    "tw-group tw-w-full tw-max-w-full tw-overflow-hidden tw-rounded-md tw-transition-colors tw-duration-100 tw-ease-in-out hover:!tw-text-accent-foreground",
                     {
-                      '!tw-text-accent-foreground': !selectedCollectionUuid,
-                      '!tw-text-foreground': selectedCollectionUuid,
-                    }
+                      "!tw-text-accent-foreground": !selectedCollectionUuid,
+                      "!tw-text-foreground": selectedCollectionUuid,
+                    },
                   )}
                   value=""
                   onSelect={(currentValue) => {
@@ -167,16 +168,16 @@ export default function CollectionSelector() {
                   }}
                   title="Your AI Profile"
                 >
-                  <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
+                  <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
                     <Tooltip
-                      content={userProfileSettings?.bio || ''}
+                      content={userProfileSettings?.bio || ""}
                       contentOptions={{
-                        side: 'right',
+                        side: "right",
                         sideOffset: 60,
                       }}
                     >
                       <div
-                        className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
+                        className="tw-hidden tw-rounded-md tw-border !tw-bg-background tw-p-2 tw-transition-all tw-duration-100 tw-ease-in-out active:tw-scale-95 group-hover:tw-block"
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleOpen(false);
@@ -190,17 +191,17 @@ export default function CollectionSelector() {
                     <Tooltip
                       content={
                         userProfileSettings?.disabled
-                          ? 'Enable AI profile'
-                          : 'Disable AI profile'
+                          ? "Enable AI profile"
+                          : "Disable AI profile"
                       }
                     >
                       <div
                         className={cn(
-                          'tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95',
+                          "tw-hidden tw-rounded-md tw-border !tw-bg-background tw-p-2 tw-transition-all tw-duration-100 tw-ease-in-out active:tw-scale-95 group-hover:tw-block",
                           {
-                            '!tw-text-muted-foreground':
+                            "!tw-text-muted-foreground":
                               isUpdatingUserProfileSettings,
-                          }
+                          },
                         )}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -237,13 +238,13 @@ export default function CollectionSelector() {
 
               <CommandGroup heading="Collections">
                 {isLoadingCollections && (
-                  <div className="tw-flex tw-gap-2 tw-justify-center tw-items-center tw-my-4">
+                  <div className="tw-my-4 tw-flex tw-items-center tw-justify-center tw-gap-2">
                     <LoaderCircle className="tw-size-4 tw-animate-spin" />
                     <span>Loading...</span>
                   </div>
                 )}
                 {collections && collections.length === 0 && (
-                  <div className="tw-text-sm tw-text-center tw-text-muted-foreground tw-my-4 tw-w-full">
+                  <div className="tw-my-4 tw-w-full tw-text-center tw-text-sm tw-text-muted-foreground">
                     No collection found.
                   </div>
                 )}
@@ -253,13 +254,13 @@ export default function CollectionSelector() {
                       key={collection.uuid}
                       keywords={[collection.title]}
                       className={cn(
-                        'hover:!tw-text-accent-foreground tw-transition-colors tw-duration-100 tw-ease-in-out tw-group tw-rounded-md tw-overflow-hidden',
+                        "tw-group tw-overflow-hidden tw-rounded-md tw-transition-colors tw-duration-100 tw-ease-in-out hover:!tw-text-accent-foreground",
                         {
-                          '!tw-text-accent-foreground':
+                          "!tw-text-accent-foreground":
                             selectedCollectionUuid === collection.uuid,
-                          '!tw-text-foreground':
+                          "!tw-text-foreground":
                             selectedCollectionUuid !== collection.uuid,
-                        }
+                        },
                       )}
                       value={collection.uuid}
                       onSelect={(currentValue) => {
@@ -268,18 +269,18 @@ export default function CollectionSelector() {
                       }}
                       title={collection.title}
                     >
-                      <div className="tw-absolute tw-right-0 tw-w-full tw-h-full tw-flex tw-gap-1 tw-justify-end tw-items-center tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
+                      <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
                         <Tooltip
                           content={
                             collection.instructions || collection.description
                           }
                           contentOptions={{
-                            side: 'right',
+                            side: "right",
                             sideOffset: 60,
                           }}
                         >
                           <div
-                            className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
+                            className="tw-hidden tw-rounded-md tw-border !tw-bg-background tw-p-2 tw-transition-all tw-duration-100 tw-ease-in-out active:tw-scale-95 group-hover:tw-block"
                             onClick={(e) => {
                               e.stopPropagation();
                               toggleOpen(false);
@@ -292,12 +293,12 @@ export default function CollectionSelector() {
                         </Tooltip>
 
                         <div
-                          className="tw-hidden group-hover:tw-block tw-p-2 !tw-bg-background tw-rounded-md tw-transition-all tw-duration-100 tw-ease-in-out tw-border active:tw-scale-95"
+                          className="tw-hidden tw-rounded-md tw-border !tw-bg-background tw-p-2 tw-transition-all tw-duration-100 tw-ease-in-out active:tw-scale-95 group-hover:tw-block"
                           onClick={(e) => {
                             e.stopPropagation();
                             toggleOpen(false);
                             webpageMessenger.sendMessage({
-                              event: 'routeToPage',
+                              event: "routeToPage",
                               payload: `/collections/${collection.url}`,
                             });
                           }}
@@ -353,7 +354,7 @@ function Selection({
         onSelect(currentValue);
       }}
     >
-      <div className="tw-max-w-[250px] !tw-text-sm !tw-py-1 tw-truncate">
+      <div className="tw-max-w-[250px] tw-truncate !tw-py-1 !tw-text-sm">
         {title}
       </div>
       {children}

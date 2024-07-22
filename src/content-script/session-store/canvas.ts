@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
 type CanvasMetaData = {
   messageBlockIndex: number;
@@ -24,7 +24,7 @@ const useCanvasStore = create<CanvasState>()(
     showCode: false,
     toggleShowCode: (showCode?: boolean) =>
       set({ showCode: showCode ?? !get().showCode }),
-  }))
+  })),
 );
 
 const canvasStore = useCanvasStore;

@@ -1,10 +1,4 @@
-import {
-  ReactNode,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 type UseToggleButtonTextProps = {
   defaultText: ReactNode;

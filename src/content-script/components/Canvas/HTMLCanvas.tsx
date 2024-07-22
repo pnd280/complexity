@@ -1,14 +1,14 @@
-import $ from 'jquery';
-import { ExternalLink } from 'lucide-react';
-import { useCallback, useEffect } from 'react';
+import $ from "jquery";
+import { ExternalLink } from "lucide-react";
+import { useCallback, useEffect } from "react";
 
-import { webpageMessenger } from '@/content-script/main-world/webpage-messenger';
-import { useCanvasStore } from '@/content-script/session-store/canvas';
-import KeyCombo from '@/shared/components/KeyCombo';
-import Tooltip from '@/shared/components/Tooltip';
-import useCtrlDown from '@/shared/hooks/useCtrlDown';
-import { CanvasLang } from '@/utils/Canvas';
-import MarkdownBlockUtils from '@/utils/MarkdownBlock';
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { useCanvasStore } from "@/content-script/session-store/canvas";
+import KeyCombo from "@/shared/components/KeyCombo";
+import Tooltip from "@/shared/components/Tooltip";
+import useCtrlDown from "@/shared/hooks/useCtrlDown";
+import { CanvasLang } from "@/utils/Canvas";
+import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 
 export default function HTMLCanvas() {
   const { metaData, toggleShowCode } = useCanvasStore();
@@ -24,16 +24,16 @@ export default function HTMLCanvas() {
 
     const $pre = $(`#${preBlockId}`);
 
-    if ((MarkdownBlockUtils.getLang($pre) as CanvasLang) !== 'html') return;
+    if ((MarkdownBlockUtils.getLang($pre) as CanvasLang) !== "html") return;
 
     const code = await MarkdownBlockUtils.extractCodeFromPreReactNode($pre[0]);
 
     if (!code) return;
 
     webpageMessenger.sendMessage({
-      event: 'htmlCanvasAction',
+      event: "htmlCanvasAction",
       payload: {
-        action: 'render',
+        action: "render",
         payload: code,
       },
     });
@@ -44,28 +44,28 @@ export default function HTMLCanvas() {
   }, [render]);
 
   return (
-    <div className="tw-absolute tw-right-2 tw-bottom-2">
+    <div className="tw-absolute tw-bottom-2 tw-right-2">
       <Tooltip
         content={
           <div className="tw-flex tw-items-center tw-gap-1">
-            Open in new tab. Hold <KeyCombo keys={['Ctrl']} /> to open in a
+            Open in new tab. Hold <KeyCombo keys={["Ctrl"]} /> to open in a
             popup.
           </div>
         }
         contentClassName="!tw-bg-background !tw-text-foreground"
         contentOptions={{
-          side: 'left',
+          side: "left",
           sideOffset: 10,
         }}
       >
         <div
-          className="tw-cursor-pointer tw-p-2 hover:tw-bg-background tw-transition-all tw-duration-300 active:tw-scale-95 tw-rounded-md"
+          className="tw-cursor-pointer tw-rounded-md tw-p-2 tw-transition-all tw-duration-300 hover:tw-bg-background active:tw-scale-95"
           onClick={() => {
             webpageMessenger.sendMessage({
-              event: 'htmlCanvasAction',
+              event: "htmlCanvasAction",
               payload: {
-                action: 'popOut',
-                payload: isCtrlDown ? 'PopupWindow' : '_blank',
+                action: "popOut",
+                payload: isCtrlDown ? "PopupWindow" : "_blank",
               },
             });
           }}

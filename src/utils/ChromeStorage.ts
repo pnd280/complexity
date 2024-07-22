@@ -1,4 +1,4 @@
-import { ChromeStore, ChromeStoreKey } from '@/types/ChromeStore';
+import { ChromeStore, ChromeStoreKey } from "@/types/ChromeStore";
 
 export default class ChromeStorage {
   static async getStorageValue<T extends ChromeStoreKey>(key: T) {

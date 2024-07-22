@@ -1,13 +1,13 @@
-import { HTMLCanvasAction } from '@/content-script/main-world/canvas/html';
-import { Nullable } from './Utils';
-import { RouterEvent } from './WS';
-import { ReactNodeAction } from '@/content-script/main-world/react-node';
+import { HTMLCanvasAction } from "@/content-script/main-world/canvas/html";
+import { Nullable } from "./Utils";
+import { RouterEvent } from "./WS";
+import { ReactNodeAction } from "@/content-script/main-world/react-node";
 
 export type MessageData<T> = {
   messageId: string;
   event: keyof EventHandlers;
   payload: T;
-  namespace: 'complexity';
+  namespace: "complexity";
   forceLongPolling?: boolean;
 };
 
@@ -19,13 +19,13 @@ export type SendMessageOptions<K extends keyof EventHandlers> = {
 };
 
 export type ResponseData<T> = {
-  event: 'response';
+  event: "response";
   payload: T;
   messageId: string;
-  namespace: 'complexity';
+  namespace: "complexity";
 };
 
-export type ResponseOptions<T> = Omit<ResponseData<T>, 'event' | 'namespace'>;
+export type ResponseOptions<T> = Omit<ResponseData<T>, "event" | "namespace">;
 
 export type EventPayloads = {
   [K in keyof EventHandlers]: Parameters<EventHandlers[K]>[0] extends undefined
@@ -34,28 +34,28 @@ export type EventPayloads = {
 };
 
 export type SendMessage = <K extends keyof EventHandlers>(
-  options: SendMessageOptions<K>
+  options: SendMessageOptions<K>,
 ) => Promise<ReturnType<EventHandlers[K]>>;
 
 export type MessageListener = <K extends keyof EventHandlers>(
   eventName: K,
   callback: (
-    messageData: MessageData<EventPayloads[K]>
-  ) => Promise<ReturnType<EventHandlers[K]>>
+    messageData: MessageData<EventPayloads[K]>,
+  ) => Promise<ReturnType<EventHandlers[K]>>,
 ) => void;
 
 export type WebSocketEventData = {
-  event: 'send' | 'open' | 'message' | 'close';
+  event: "send" | "open" | "message" | "close";
   payload: any;
 };
 
 export type LongPollingEventData = {
-  event: 'request' | 'response';
+  event: "request" | "response";
   payload: any;
 };
 
 export type AddInterceptorMatchCondition<T, K> = (
-  messageData: MessageData<T>
+  messageData: MessageData<T>,
 ) => {
   match: boolean;
   args?: K[];
@@ -65,7 +65,7 @@ export type AddInterceptorParams<K extends keyof EventHandlers, T, J> = {
   matchCondition: AddInterceptorMatchCondition<T, J>;
   callback: (
     messageData: MessageData<T>,
-    args: J[]
+    args: J[],
   ) => Promise<ReturnType<EventHandlers[K]>>;
   stopCondition: (messageData: MessageData<T>) => boolean;
 };
@@ -82,11 +82,11 @@ export interface EventHandlers {
   log(data: string): string;
 
   sendWebSocketMessage(data: string): void;
-  webSocketEvent(data: WebSocketEventData): WebSocketEventData['payload'];
-  longPollingEvent(data: LongPollingEventData): LongPollingEventData['payload'];
+  webSocketEvent(data: WebSocketEventData): WebSocketEventData["payload"];
+  longPollingEvent(data: LongPollingEventData): LongPollingEventData["payload"];
   webSocketCaptured(): void;
   longPollingCaptured(): void;
-  getActiveWebSocketType(): Nullable<'WebSocket' | 'Long-polling'>;
+  getActiveWebSocketType(): Nullable<"WebSocket" | "Long-polling">;
   webSocketError(data: Event): void;
 
   routeToPage(
@@ -95,7 +95,7 @@ export interface EventHandlers {
       | {
           url: string;
           scroll: boolean;
-        }
+        },
   ): void;
   routeChange({ url, trigger }: { url: string; trigger: RouterEvent }): void;
 
@@ -113,7 +113,7 @@ export interface EventHandlers {
     action,
     payload,
   }: {
-    action: 'render' | 'resetZoomPan';
+    action: "render" | "resetZoomPan";
     payload: string;
   }): boolean;
 

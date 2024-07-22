@@ -1,12 +1,12 @@
-import { Infinity } from 'lucide-react';
-import { useCallback, useEffect } from 'react';
-import { useImmer } from 'use-immer';
+import { Infinity } from "lucide-react";
+import { useCallback, useEffect } from "react";
+import { useImmer } from "use-immer";
 
-import { useQueryBoxStore } from '@/content-script/session-store/query-box';
-import { LanguageModel } from '@/types/ModelSelector';
+import { useQueryBoxStore } from "@/content-script/session-store/query-box";
+import { LanguageModel } from "@/types/ModelSelector";
 
-import { languageModels } from './';
-import ModelSelector from './ModelSelector';
+import { languageModels } from "./";
+import ModelSelector from "./ModelSelector";
 
 export default function LanguageModelSelector() {
   const limit = useQueryBoxStore((state) => state.queryLimit);
@@ -14,17 +14,17 @@ export default function LanguageModelSelector() {
 
   const getModelLimit = useCallback(
     (model: LanguageModel) => {
-      if (model.code === 'claude3opus') {
+      if (model.code === "claude3opus") {
         return opusLimit;
       }
 
-      if (model.code === 'turbo') {
-        return <Infinity className="tw-w-3 tw-h-4" />;
+      if (model.code === "turbo") {
+        return <Infinity className="tw-h-4 tw-w-3" />;
       }
 
       return limit;
     },
-    [limit, opusLimit]
+    [limit, opusLimit],
   );
 
   const [models, setModels] = useImmer<LanguageModel[]>(
@@ -33,7 +33,7 @@ export default function LanguageModelSelector() {
         ...model,
         tooltip: getModelLimit(model),
       };
-    })
+    }),
   );
 
   const value = useQueryBoxStore((state) => state.selectedLanguageModel);

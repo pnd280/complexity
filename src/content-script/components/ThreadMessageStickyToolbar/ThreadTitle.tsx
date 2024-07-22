@@ -1,10 +1,7 @@
-import {
-  useEffect,
-  useRef,
-} from 'react';
+import { useEffect, useRef } from "react";
 
-import { cn } from '@/utils/shadcn-ui-utils';
-import { useToggle } from '@uidotdev/usehooks';
+import { cn } from "@/utils/cn";
+import { useToggle } from "@uidotdev/usehooks";
 
 type ThreadTitleProps = {
   query: string;
@@ -33,12 +30,12 @@ export default function ThreadTitle({
     <div
       ref={ref}
       className={cn(
-        'tw-transition-all tw-max-w-[10rem] 2xl:tw-max-w-[20rem] tw-truncate tw-text-muted-foreground tw-select-none tw-cursor-pointer active:tw-scale-95 tw-font-sans tw-fade-in tw-slide-in-from-bottom tw-fade-out tw-slide-out-to-bottom tw-fill-mode-forwards',
+        "tw-max-w-[10rem] tw-cursor-pointer tw-select-none tw-truncate tw-font-sans tw-text-muted-foreground tw-transition-all tw-fade-in tw-fade-out tw-slide-in-from-bottom tw-slide-out-to-bottom tw-fill-mode-forwards active:tw-scale-95 2xl:tw-max-w-[20rem]",
         {
-          '!tw-hidden': !visible,
-          'tw-animate-in': isOutOfViewport,
-          'tw-animate-out': !isOutOfViewport,
-        }
+          "!tw-hidden": !visible,
+          "tw-animate-in": isOutOfViewport,
+          "tw-animate-out": !isOutOfViewport,
+        },
       )}
       onClick={onClick}
       onAnimationEnd={() => {

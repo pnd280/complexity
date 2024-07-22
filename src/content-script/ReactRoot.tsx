@@ -1,42 +1,42 @@
-import '@@/public/global.css';
+import "@@/public/global.css";
 
-import $ from 'jquery';
-import { lazy, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+import $ from "jquery";
+import { lazy, useEffect } from "react";
+import { createRoot } from "react-dom/client";
 
-import { IncompatibleInterfaceLanguageNotice } from '@/content-script/components/IncompatibleInterfaceLanguageNotice';
-import MainPage from '@/content-script/components/MainPage';
-import QueryBox from '@/content-script/components/QueryBox/QueryBox';
-import ThreadExportButton from '@/content-script/components/ThreadExportButton';
-import useRouter from '@/content-script/hooks/useRouter';
-import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
-import { Toaster } from '@/shared/components/shadcn/ui/toaster';
-import { queryClient } from '@/utils/ts-query-query-client';
-import { whereAmI } from '@/utils/utils';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { IncompatibleInterfaceLanguageNotice } from "@/content-script/components/IncompatibleInterfaceLanguageNotice";
+import MainPage from "@/content-script/components/MainPage";
+import QueryBox from "@/content-script/components/QueryBox/QueryBox";
+import ThreadExportButton from "@/content-script/components/ThreadExportButton";
+import useRouter from "@/content-script/hooks/useRouter";
+import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import { Toaster } from "@/shared/components/shadcn/ui/toaster";
+import { queryClient } from "@/utils/ts-query-query-client";
+import { whereAmI } from "@/utils/utils";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const Commander = lazy(() => import('@/content-script/components/Commander'));
+const Commander = lazy(() => import("@/content-script/components/Commander"));
 const CanvasPanel = lazy(
-  () => import('@/content-script/components/Canvas/CanvasPanel')
+  () => import("@/content-script/components/Canvas/CanvasPanel"),
 );
 const ThreadMessageStickyToolbar = lazy(
   () =>
     import(
-      '@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar'
-    )
+      "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar"
+    ),
 );
 const AlternateMarkdownBlock = lazy(
   () =>
     import(
-      '@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock'
-    )
+      "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock"
+    ),
 );
-const ThreadTOC = lazy(() => import('@/content-script/components/ThreadTOC'));
+const ThreadTOC = lazy(() => import("@/content-script/components/ThreadTOC"));
 
 export default function ReactRoot() {
-  const $root = $('<div>')
-    .attr('id', 'complexity-root')
+  const $root = $("<div>")
+    .attr("id", "complexity-root")
     .appendTo(document.body);
 
   const root = createRoot($root[0]);
@@ -44,7 +44,7 @@ export default function ReactRoot() {
   root.render(
     <QueryClientProvider client={queryClient}>
       <Root />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 }
 
@@ -55,7 +55,7 @@ function Root() {
     return () => {
       queryClient.resetQueries({
         predicate(query) {
-          return query.queryKey[0] === 'domNode';
+          return query.queryKey[0] === "domNode";
         },
       });
     };
@@ -66,9 +66,9 @@ function Root() {
       <QueryBox />
       {import.meta.env.DEV && <Commander />}
 
-      {location === 'home' && <MainPageComponents />}
+      {location === "home" && <MainPageComponents />}
 
-      {location === 'thread' && <ThreadComponents />}
+      {location === "thread" && <ThreadComponents />}
 
       <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />

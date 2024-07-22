@@ -1,20 +1,20 @@
-import $ from 'jquery';
-import { ChevronLeft, X } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import $ from "jquery";
+import { ChevronLeft, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-import useRouter from '@/content-script/hooks/useRouter';
-import { useCanvasStore } from '@/content-script/session-store/canvas';
-import { popupSettingsStore } from '@/content-script/session-store/popup-settings';
-import Tooltip from '@/shared/components/Tooltip';
-import { cn } from '@/utils/shadcn-ui-utils';
-import UIUtils from '@/utils/UI';
-import { scrollToElement } from '@/utils/utils';
+import useRouter from "@/content-script/hooks/useRouter";
+import { useCanvasStore } from "@/content-script/session-store/canvas";
+import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import Tooltip from "@/shared/components/Tooltip";
+import { cn } from "@/utils/cn";
+import UIUtils from "@/utils/UI";
+import { scrollToElement } from "@/utils/utils";
 import {
   useDebounce,
   useToggle,
   useWindowScroll,
   useWindowSize,
-} from '@uidotdev/usehooks';
+} from "@uidotdev/usehooks";
 
 export default function ThreadTOC() {
   const { isOpen: isCanvasOpen } = useCanvasStore();
@@ -25,7 +25,7 @@ export default function ThreadTOC() {
   const [visible, toggleVisibility] = useToggle(true);
 
   const [wrapperWidth, setWrapperWidth] = useState<number>(
-    $('#thread-toc')?.outerWidth() || 0
+    $("#thread-toc")?.outerWidth() || 0,
   );
 
   const isFloat =
@@ -40,7 +40,7 @@ export default function ThreadTOC() {
 
   useEffect(() => {
     requestAnimationFrame(() => {
-      setWrapperWidth($('#thread-toc')?.outerWidth() || 0);
+      setWrapperWidth($("#thread-toc")?.outerWidth() || 0);
     });
   });
 
@@ -49,34 +49,34 @@ export default function ThreadTOC() {
   return (
     <>
       <div
-        className="tw-fixed tw-w-max tw-z-20 tw-right-0 tw-top-0 tw-transition-all"
+        className="tw-fixed tw-right-0 tw-top-0 tw-z-20 tw-w-max tw-transition-all"
         style={{
           top: `${(UIUtils.getStickyNavbar().outerHeight() || 50) + (isFloat ? 60 : 30)}px`,
-          [!isFloat ? 'left' : 'right']: !isFloat
+          [!isFloat ? "left" : "right"]: !isFloat
             ? `${wrapperPos.left + 20}px`
-            : '2rem',
+            : "2rem",
         }}
       >
         <div
           className={cn(
-            'tw-animate-in tw-slide-in-from-right tw-transition-all tw-font-sans',
+            "tw-font-sans tw-transition-all tw-animate-in tw-slide-in-from-right",
             {
-              'tw-relative tw-bg-background tw-p-3 tw-rounded-md tw-border tw-border-border tw-shadow-lg':
+              "tw-relative tw-rounded-md tw-border tw-border-border tw-bg-background tw-p-3 tw-shadow-lg":
                 isFloat,
-              'tw-hidden': !visible && isFloat,
-            }
+              "tw-hidden": !visible && isFloat,
+            },
           )}
           id="thread-toc"
         >
-          <div className="tw-min-w-[150px] tw-max-w-[250px] tw-flex tw-flex-col tw-gap-1 tw-max-h-[50dvh] tw-overflow-auto custom-scrollbar">
+          <div className="custom-scrollbar tw-flex tw-max-h-[50dvh] tw-min-w-[150px] tw-max-w-[250px] tw-flex-col tw-gap-1 tw-overflow-auto">
             {anchorsProps?.map((anchorProps, index) => (
               <div
                 key={index}
                 className={cn(
-                  'tw-flex tw-items-center tw-space-x-2 tw-text-sm tw-cursor-pointer tw-group',
+                  "tw-group tw-flex tw-cursor-pointer tw-items-center tw-space-x-2 tw-text-sm",
                   {
-                    'tw-mr-6': visible && isFloat && index === 0,
-                  }
+                    "tw-mr-6": visible && isFloat && index === 0,
+                  },
                 )}
                 onClick={anchorProps.onClick}
                 onContextMenu={(e) => {
@@ -86,18 +86,18 @@ export default function ThreadTOC() {
               >
                 <div
                   className={cn(
-                    'tw-w-[.1rem] tw-h-5 tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out',
+                    "tw-h-5 tw-w-[.1rem] tw-rounded-md tw-bg-muted tw-transition-colors tw-duration-300 tw-ease-in-out",
                     {
-                      '!tw-bg-accent-foreground': index === visibleMessageIndex,
-                    }
+                      "!tw-bg-accent-foreground": index === visibleMessageIndex,
+                    },
                   )}
                 />
                 <div
                   className={cn(
-                    'tw-truncate tw-w-full tw-cursor-pointer tw-text-foreground-darker group-hover:tw-text-muted-foreground tw-transition-colors tw-duration-300 tw-ease-in-out tw-select-none',
+                    "tw-w-full tw-cursor-pointer tw-select-none tw-truncate tw-text-foreground-darker tw-transition-colors tw-duration-300 tw-ease-in-out group-hover:tw-text-muted-foreground",
                     {
-                      '!tw-text-foreground': index === visibleMessageIndex,
-                    }
+                      "!tw-text-foreground": index === visibleMessageIndex,
+                    },
                   )}
                 >
                   {anchorProps.title}
@@ -108,23 +108,23 @@ export default function ThreadTOC() {
           {isFloat && visible && (
             <div
               className={cn(
-                'tw-absolute tw-top-1 tw-right-1 active:tw-scale-95 tw-transition-colors tw-duration-300'
+                "tw-absolute tw-right-1 tw-top-1 tw-transition-colors tw-duration-300 active:tw-scale-95",
               )}
               onClick={() => {
                 toggleVisibility(false);
               }}
             >
-              <X className="tw-w-5 tw-h-5 tw-text-muted-foreground tw-cursor-pointer hover:!tw-text-foreground tw-transition-colors" />
+              <X className="tw-h-5 tw-w-5 tw-cursor-pointer tw-text-muted-foreground tw-transition-colors hover:!tw-text-foreground" />
             </div>
           )}
         </div>
         <div
           className={cn(
-            'tw-absolute -tw-top-2 -tw-right-10 tw-bg-secondary tw-rounded-full tw-h-20 active:tw-scale-95 tw-transition-all tw-border tw-border-border tw-shadow-lg tw-cursor-pointer tw-animate-in tw-slide-in-from-left',
-            'tw-flex tw-items-center hover:-tw-right-8',
+            "tw-absolute -tw-right-10 -tw-top-2 tw-h-20 tw-cursor-pointer tw-rounded-full tw-border tw-border-border tw-bg-secondary tw-shadow-lg tw-transition-all tw-animate-in tw-slide-in-from-left active:tw-scale-95",
+            "tw-flex tw-items-center hover:-tw-right-8",
             {
-              'tw-hidden': !isFloat || visible,
-            }
+              "tw-hidden": !isFloat || visible,
+            },
           )}
           onClick={() => {
             toggleVisibility(true);
@@ -133,10 +133,10 @@ export default function ThreadTOC() {
           <Tooltip
             content="Show Table of Content"
             contentOptions={{
-              side: 'left',
+              side: "left",
             }}
           >
-            <ChevronLeft className="tw-w-5 tw-h-5 tw-text-muted-foreground tw-cursor-pointer hover:!tw-text-foreground tw-transition-colors" />
+            <ChevronLeft className="tw-h-5 tw-w-5 tw-cursor-pointer tw-text-muted-foreground tw-transition-colors hover:!tw-text-foreground" />
           </Tooltip>
         </div>
       </div>
@@ -174,8 +174,8 @@ const useThreadTOCObserver = () => {
 
     setVisibleMessageIndex(
       UIUtils.getMostVisibleElementIndex(
-        UIUtils.getMessagesContainer().children().toArray()
-      )
+        UIUtils.getMessagesContainer().children().toArray(),
+      ),
     );
 
     const $messagesContainer = UIUtils.getMessagesContainer();
@@ -197,9 +197,9 @@ const useThreadTOCObserver = () => {
     $messageBlocks.forEach(({ $query, $answer, $messageBlock }) => {
       queueMicrotask(() => {
         const title =
-          $query.find('textarea').val() ||
+          $query.find("textarea").val() ||
           $query
-            .find('>*:not(#markdown-query-wrapper):not(.tw-sticky)')
+            .find(">*:not(#markdown-query-wrapper):not(.tw-sticky)")
             .first()
             .text();
 

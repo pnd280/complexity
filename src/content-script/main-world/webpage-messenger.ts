@@ -8,9 +8,9 @@ import {
   ResponseData,
   SendMessageOptions,
   WebSocketEventData,
-} from '@/types/WebpageMessenger';
-import { extensionExec } from '@/utils/hoc';
-import { isMainWorldContext } from '@/utils/utils';
+} from "@/types/WebpageMessenger";
+import { extensionExec } from "@/utils/hoc";
+import { isMainWorldContext } from "@/utils/utils";
 
 class WebpageMessenger {
   public static instance: WebpageMessenger;
@@ -34,7 +34,7 @@ class WebpageMessenger {
 
   private trackListeners(
     eventName: string,
-    listener: (event: MessageEvent) => any
+    listener: (event: MessageEvent) => any,
   ) {
     this.registeredEventListeners.push({
       [eventName]: listener,
@@ -46,17 +46,17 @@ class WebpageMessenger {
   }
 
   setupContentScriptListeners() {
-    this.onMessage('webSocketEvent', async (messageData) => {
+    this.onMessage("webSocketEvent", async (messageData) => {
       const newMessageData = (await this.executeInterceptors(
-        messageData
+        messageData,
       )) as MessageData<WebSocketEventData>;
 
       return newMessageData?.payload.payload;
     });
 
-    this.onMessage('longPollingEvent', async (messageData) => {
+    this.onMessage("longPollingEvent", async (messageData) => {
       const newMessageData = (await this.executeInterceptors(
-        messageData
+        messageData,
       )) as MessageData<LongPollingEventData>;
 
       return newMessageData?.payload.payload;
@@ -64,7 +64,7 @@ class WebpageMessenger {
   }
 
   private async executeInterceptors(
-    messageData: MessageData<WebSocketEventData | LongPollingEventData>
+    messageData: MessageData<WebSocketEventData | LongPollingEventData>,
   ) {
     let newMessageData = messageData;
 
@@ -76,14 +76,14 @@ class WebpageMessenger {
       if (match) {
         const responsePayload = await interceptor.callback(
           newMessageData,
-          args || []
+          args || [],
         );
 
         if (interceptor.stopCondition(newMessageData)) {
           const myInterceptorId = interceptor.identifier;
 
           this.interceptors = this.interceptors.filter(
-            (interceptor) => interceptor.identifier !== myInterceptorId
+            (interceptor) => interceptor.identifier !== myInterceptorId,
           );
         }
 
@@ -117,7 +117,7 @@ class WebpageMessenger {
         messageId: uniqueId,
         forceLongPolling,
         payload: payload as EventPayloads[K],
-        namespace: 'complexity',
+        namespace: "complexity",
       };
 
       window.postMessage(message, window.location.origin);
@@ -129,26 +129,26 @@ class WebpageMessenger {
 
           if (
             messageData &&
-            messageData.event === 'response' &&
-            messageData.namespace === 'complexity' &&
+            messageData.event === "response" &&
+            messageData.namespace === "complexity" &&
             messageData.messageId === uniqueId
           ) {
-            window.removeEventListener('message', listener);
+            window.removeEventListener("message", listener);
             resolve(messageData.payload);
           }
         };
 
-        window.addEventListener('message', listener);
+        window.addEventListener("message", listener);
 
         setTimeout(() => {
-          window.removeEventListener('message', listener);
+          window.removeEventListener("message", listener);
 
           if (suppressTimeoutError) {
             return resolve({} as ReturnType<EventHandlers[K]>);
           }
 
           reject({
-            error: 'Response timeout',
+            error: "Response timeout",
             event,
           });
         }, timeout);
@@ -159,12 +159,12 @@ class WebpageMessenger {
   onMessage<K extends keyof EventHandlers>(
     eventName: K,
     callback: (
-      messageData: MessageData<EventPayloads[K]>
-    ) => Promise<ReturnType<EventHandlers[K]>>
+      messageData: MessageData<EventPayloads[K]>,
+    ) => Promise<ReturnType<EventHandlers[K]>>,
   ) {
     switch (eventName) {
-      case 'webSocketEvent':
-      case 'longPollingEvent':
+      case "webSocketEvent":
+      case "longPollingEvent":
         if (
           this.getTrackedListeners().some((listener) => listener[eventName])
         ) {
@@ -184,15 +184,15 @@ class WebpageMessenger {
 
       if (
         messageData?.event !== eventName ||
-        messageData.namespace !== 'complexity'
+        messageData.namespace !== "complexity"
       ) {
         return;
       }
 
       const responsePayload = await callback(messageData);
       const responseMessage: ResponseData<ReturnType<EventHandlers[K]>> = {
-        event: 'response',
-        namespace: 'complexity',
+        event: "response",
+        namespace: "complexity",
         messageId: messageData.messageId,
         payload: responsePayload,
       };
@@ -200,14 +200,14 @@ class WebpageMessenger {
       window.postMessage(responseMessage, window.location.origin);
     };
 
-    window.addEventListener('message', listeners);
+    window.addEventListener("message", listeners);
 
     const instance = isMainWorldContext() ? WebpageMessenger.instance : this;
 
     instance.trackListeners(eventName, listeners);
 
     return () => {
-      window.removeEventListener('message', listeners);
+      window.removeEventListener("message", listeners);
     };
   }
 
@@ -227,7 +227,7 @@ class WebpageMessenger {
 
     const removeInterceptor = () => {
       this.interceptors = this.interceptors.filter(
-        (interceptor) => interceptor.identifier !== identifier
+        (interceptor) => interceptor.identifier !== identifier,
       );
     };
 
