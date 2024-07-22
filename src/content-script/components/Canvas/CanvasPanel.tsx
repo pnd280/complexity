@@ -1,3 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
+import {
+  useDebounce,
+  useMediaQuery,
+  usePrevious,
+  useWindowScroll,
+} from "@uidotdev/usehooks";
 import $ from "jquery";
 import { Check, CodeXml, Copy, LoaderCircle, X } from "lucide-react";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
@@ -8,17 +15,10 @@ import { webpageMessenger } from "@/content-script/main-world/webpage-messenger"
 import { useCanvasStore } from "@/content-script/session-store/canvas";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import Canvas from "@/utils/Canvas";
-import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import { cn } from "@/utils/cn";
+import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import UIUtils from "@/utils/UI";
 import { scrollToElement } from "@/utils/utils";
-import { useQuery } from "@tanstack/react-query";
-import {
-  useDebounce,
-  useMediaQuery,
-  usePrevious,
-  useWindowScroll,
-} from "@uidotdev/usehooks";
 
 import { canvasComponents } from "./";
 
@@ -68,7 +68,7 @@ export default function CanvasPanel() {
         });
 
         $(threadWrapper).toggleClass(
-          "tw-grid tw-grid-cols-2 tw-gap-8 !tw-max-w-[2500px]",
+          "tw-grid !tw-max-w-[2500px] tw-grid-cols-2 tw-gap-8",
           isOpen && !isFloat,
         );
       });
@@ -114,10 +114,10 @@ export default function CanvasPanel() {
           "tw-fixed tw-right-8 tw-z-[20] tw-w-[80%] tw-shadow-lg": isFloat,
         },
       )}
-      onAnimationEnd={handleAnimationEnd}
       style={{
         height: `calc(100vh - ${UIUtils.getStickyNavbar().outerHeight()}px - 3rem)`,
       }}
+      onAnimationEnd={handleAnimationEnd}
     >
       <div className="tw-relative tw-size-full">
         <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max">

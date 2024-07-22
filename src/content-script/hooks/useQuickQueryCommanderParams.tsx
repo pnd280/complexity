@@ -1,3 +1,4 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Grid2x2X, LayoutGrid } from "lucide-react";
 import { useMemo } from "react";
 import { PiGlobeX } from "react-icons/pi";
@@ -15,7 +16,6 @@ import {
   UserSettingsApiResponse,
 } from "@/types/PPLXApi";
 import WSMessageParser from "@/utils/WSMessageParser";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 type UseQuickQueryCommanderParamsProps = {
   context: "main" | "follow-up";

@@ -1,6 +1,5 @@
-import { CircleAlert } from "lucide-react";
-
 import { Separator } from "@radix-ui/react-separator";
+import { CircleAlert } from "lucide-react";
 
 export default function UntrustedBuildWarning() {
   return (

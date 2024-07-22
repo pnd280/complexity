@@ -1,5 +1,5 @@
+import { Separator } from "@radix-ui/react-separator";
 import $ from "jquery";
-
 import { Zap } from "lucide-react";
 import { useEffect } from "react";
 
@@ -7,7 +7,6 @@ import Tooltip from "@/shared/components/Tooltip";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { cn } from "@/utils/cn";
 import { detectConsecutiveClicks } from "@/utils/utils";
-import { Separator } from "@radix-ui/react-separator";
 
 import packageData from "../../../package.json";
 

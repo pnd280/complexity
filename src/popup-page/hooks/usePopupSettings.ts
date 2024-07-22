@@ -1,9 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import { produce } from "immer";
 
 import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
 import { ChromeStore } from "@/types/ChromeStore";
 import ChromeStorage from "@/utils/ChromeStorage";
-import { useQuery } from "@tanstack/react-query";
 
 export default function usePopupSettings() {
   const { data: store, refetch } = useQuery({

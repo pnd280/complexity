@@ -2,8 +2,8 @@ import $ from "jquery";
 import { useEffect } from "react";
 
 import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
-import DOMObserver from "@/utils/DOMObserver";
 import { cn } from "@/utils/cn";
+import DOMObserver from "@/utils/DOMObserver";
 import UIUtils from "@/utils/UI";
 import { whereAmI } from "@/utils/utils";
 

@@ -1,3 +1,4 @@
+import { useDebounce, useToggle } from "@uidotdev/usehooks";
 import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,7 +10,6 @@ import useExtensionUpdate from "@/shared/hooks/useExtensionUpdate";
 import background from "@/utils/background";
 import { cn } from "@/utils/cn";
 import { isDOMNode } from "@/utils/utils";
-import { useDebounce, useToggle } from "@uidotdev/usehooks";
 
 export default function Slogan() {
   const { newVersionAvailable } = useExtensionUpdate({});
@@ -46,9 +46,11 @@ export default function Slogan() {
       .addClass("tw-relative")
       .find("span:first")
       .addClass(
-        "hover:tw-tracking-wide tw-transition-all tw-duration-300 tw-ease-in-out text-shadow-hover tw-select-none !tw-leading-[1.2rem]",
+        "text-shadow-hover tw-select-none !tw-leading-[1.2rem] tw-transition-all tw-duration-300 tw-ease-in-out hover:tw-tracking-wide",
       )
       .text(slogan);
+
+    $nativeSlogan.addClass("!tw-opacity-100 tw-transition-all tw-duration-300");
 
     setContainer($nativeSlogan[0]);
   }, [element, isWaiting, slogan]);

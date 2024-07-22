@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
-
 import $ from "jquery";
 import {
   Ellipsis,
@@ -9,20 +7,21 @@ import {
   Text,
   X,
 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { FaMarkdown } from "react-icons/fa";
 import { PiNotePencil } from "react-icons/pi";
 import { Updater } from "use-immer";
 
-import { cn } from "@/utils/cn";
-import { scrollToElement, sleep, stripHtml } from "@/utils/utils";
-
-import Tooltip from "@/shared/components/Tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/shadcn/ui/dropdown-menu";
+import Tooltip from "@/shared/components/Tooltip";
+import { cn } from "@/utils/cn";
+import { scrollToElement, sleep, stripHtml } from "@/utils/utils";
+
 import CopyButton from "./CopyButton";
 import RewriteDropdown from "./RewriteDropdown";
 import { Container, ContainerStates } from "./ThreadMessageStickyToolbar";
@@ -160,12 +159,12 @@ export default function ThreadMessageStickyToolbarComponents({
               .first()
               .text()
           }
-          onClick={() => {
-            scrollToElement($(containers[containerIndex].query), -60);
-          }}
           isOutOfViewport={
             containersStates[containerIndex].isQueryOutOfViewport
           }
+          onClick={() => {
+            scrollToElement($(containers[containerIndex].query), -60);
+          }}
         />
       </div>
 
@@ -211,13 +210,13 @@ export default function ThreadMessageStickyToolbarComponents({
               '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")',
             ).length && (
               <DropdownMenuItem
+                className="tw-flex tw-items-center tw-gap-2"
                 onSelect={async () => {
                   moreMenuItemClick({
                     container: containers[containerIndex],
                     item: "View Sources",
                   });
                 }}
-                className="tw-flex tw-items-center tw-gap-2"
               >
                 <ListOrdered className="tw-size-4" />
                 View Sources
@@ -226,10 +225,10 @@ export default function ThreadMessageStickyToolbarComponents({
 
             {isMessageShareable && (
               <DropdownMenuItem
+                className="tw-flex tw-items-center tw-gap-2"
                 onSelect={() => {
                   $messageShareButton.trigger("click");
                 }}
-                className="tw-flex tw-items-center tw-gap-2"
               >
                 <Share2 className="tw-size-4" />
                 Share
@@ -238,13 +237,13 @@ export default function ThreadMessageStickyToolbarComponents({
 
             {isMessageEditable && (
               <DropdownMenuItem
+                className="tw-flex tw-items-center tw-gap-2"
                 onSelect={async () => {
                   moreMenuItemClick({
                     container: containers[containerIndex],
                     item: "Report",
                   });
                 }}
-                className="tw-flex tw-items-center tw-gap-2"
               >
                 <LucideThumbsDown className="tw-size-4" />
                 Report
@@ -254,13 +253,13 @@ export default function ThreadMessageStickyToolbarComponents({
             {containers.length - 1 === containerIndex &&
               containers.length > 1 && (
                 <DropdownMenuItem
+                  className="tw-flex tw-items-center tw-gap-2"
                   onSelect={async () => {
                     await moreMenuItemClick({
                       container: containers[containerIndex],
                       item: "Delete",
                     });
                   }}
-                  className="tw-flex tw-items-center tw-gap-2"
                 >
                   <X className="tw-size-4" />
                   Delete

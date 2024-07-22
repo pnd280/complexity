@@ -112,6 +112,7 @@ function CanvasSettingBlock({
           className="tw-absolute tw-right-2 tw-top-2"
           href={`https://perplexity.ai/search?q=${encodeURIComponent(pplxSearch)}&focus=internet&copilot=true`}
           target="_blank"
+          rel="noreferrer"
         >
           <CircleHelp className="tw-size-3 tw-text-muted tw-transition-all hover:tw-text-muted-foreground" />
         </a>

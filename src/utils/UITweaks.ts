@@ -3,73 +3,69 @@ import $ from "jquery";
 import { globalStore } from "@/content-script/session-store/global";
 import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
 import { jsonUtils, whereAmI } from "@/utils/utils";
+
 import UIUtils from "./UI";
 
 export default class UITweaks {
   static injectCustomStyles() {
     $(document.body).addClass("!tw-mr-0");
 
-    globalStore.subscribe(({ customTheme: { customCSS } }) => {
-      if ($("#complexity-custom-styles").length) {
-        $("#complexity-custom-styles").text(
-          jsonUtils.safeParse(customCSS || ""),
-        );
-        return;
-      }
+    const { customCSS, accentColor, monoFont, uiFont } =
+      globalStore.getState().customTheme;
 
-      $("<style>")
-        .attr({
-          id: "complexity-custom-styles",
-        })
-        .text(jsonUtils.safeParse(customCSS || ""))
-        .appendTo("head");
-    });
+    if ($("#complexity-custom-styles").length) {
+      $("#complexity-custom-styles").text(jsonUtils.safeParse(customCSS || ""));
+      return;
+    }
+
+    $("<style>")
+      .attr({
+        id: "complexity-custom-styles",
+      })
+      .text(jsonUtils.safeParse(customCSS || ""))
+      .appendTo("head");
 
     const darkTheme = UIUtils.isDarkTheme();
 
-    globalStore.subscribe(
-      ({ customTheme: { uiFont, monoFont, accentColor } }) => {
-        type CustomTheme = {
-          "--ui-font"?: string;
-          "--mono-font"?: string;
-          "--accent-foreground"?: string;
-          "--accent-foreground-darker"?: string;
-          "--ring"?: string;
-          "--ring-darker"?: string;
-          "--selection"?: string;
-        };
+    type CustomTheme = {
+      "--ui-font"?: string;
+      "--mono-font"?: string;
+      "--accent-foreground"?: string;
+      "--accent-foreground-darker"?: string;
+      "--ring"?: string;
+      "--ring-darker"?: string;
+      "--selection"?: string;
+    };
 
-        const css: CustomTheme = {
-          "--ui-font": uiFont,
-          "--mono-font": monoFont,
-          "--accent-foreground": accentColor,
-          "--accent-foreground-darker": `${accentColor}80`,
-          "--ring": accentColor,
-          "--ring-darker": `${accentColor}80`,
-          "--selection": `${accentColor}60`,
-        };
+    const css: CustomTheme = {
+      "--ui-font": uiFont,
+      "--mono-font": monoFont,
+      "--accent-foreground": accentColor,
+      "--accent-foreground-darker": `${accentColor}80`,
+      "--ring": accentColor,
+      "--ring-darker": `${accentColor}80`,
+      "--selection": `${accentColor}60`,
+    };
 
-        if (!uiFont) delete css["--ui-font"];
-        if (!monoFont) delete css["--mono-font"];
-        if (!accentColor) {
-          delete css["--accent-foreground"];
-          delete css["--accent-foreground-darker"];
-          delete css["--ring"];
-          delete css["--ring-darker"];
-          delete css["--selection"];
-        }
+    if (!uiFont) delete css["--ui-font"];
+    if (!monoFont) delete css["--mono-font"];
+    if (!accentColor) {
+      delete css["--accent-foreground"];
+      delete css["--accent-foreground-darker"];
+      delete css["--ring"];
+      delete css["--ring-darker"];
+      delete css["--selection"];
+    }
 
-        if (!darkTheme) {
-          delete css["--accent-foreground"];
-          delete css["--accent-foreground-darker"];
-          delete css["--ring"];
-          delete css["--ring-darker"];
-          delete css["--selection"];
-        }
+    if (!darkTheme) {
+      delete css["--accent-foreground"];
+      delete css["--accent-foreground-darker"];
+      delete css["--ring"];
+      delete css["--ring-darker"];
+      delete css["--selection"];
+    }
 
-        $(document.body).css(css);
-      },
-    );
+    $(document.body).css(css);
   }
 
   static correctColorScheme() {

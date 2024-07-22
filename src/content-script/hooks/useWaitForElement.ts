@@ -1,5 +1,6 @@
-import { waitForElement } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
+
+import { waitForElement } from "@/utils/utils";
 
 export default function useWaitForElement({
   id,

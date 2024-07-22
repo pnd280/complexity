@@ -33,6 +33,7 @@ export function NewVersionDialog() {
                 className="tw-flex tw-items-center tw-gap-1 tw-underline"
                 href="https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj"
                 target="_blank"
+                rel="noreferrer"
               >
                 Reinstall
                 <ExternalLink className="tw-size-3" />

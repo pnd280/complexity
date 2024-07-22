@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
@@ -13,7 +14,6 @@ import { Label } from "@/shared/components/shadcn/ui/label";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
-import { useQuery } from "@tanstack/react-query";
 
 type UserProfileEditProps = {
   open: boolean;
@@ -66,10 +66,10 @@ export default function UserProfileEditDialog({
             <Label htmlFor="prompt">Prompt</Label>
             <TextareaWithLimit
               placeholder="User profile AI Prompt"
-              onResize={(e) => e.preventDefault()}
               className="tw-h-full tw-resize-none"
               limit={1500}
               value={bio}
+              onResize={(e) => e.preventDefault()}
               onChange={(e) => setBio(e.target.value)}
             />
           </div>

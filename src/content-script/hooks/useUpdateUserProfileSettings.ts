@@ -1,6 +1,7 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import PPLXApi from "@/services/PPLXApi";
 import { UserProfileSettingsApiResponse } from "@/types/PPLXApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useUpdateUserProfileSettings() {
   const queryClient = useQueryClient();

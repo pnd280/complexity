@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import { AiOutlineOpenAI } from "react-icons/ai";
 import { TbLetterP, TbLetterS } from "react-icons/tb";
 import { useImmer } from "use-immer";
@@ -58,8 +57,8 @@ export default function ImageModelSelector() {
     <ModelSelector
       type="image"
       items={models}
-      onValueChange={setValue}
       value={value}
+      onValueChange={setValue}
     />
   );
 }

@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { Check, Copy, LoaderCircle, Unlink } from "lucide-react";
 import { useCallback } from "react";
@@ -15,7 +16,6 @@ import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import { jsonUtils } from "@/utils/utils";
-import { useQuery } from "@tanstack/react-query";
 
 import { Container } from "./ThreadMessageStickyToolbar";
 
@@ -127,19 +127,19 @@ export default function CopyButton({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem
+          className="tw-flex tw-items-center tw-gap-2"
           onSelect={() => {
             handleCopyMessage();
           }}
-          className="tw-flex tw-items-center tw-gap-2"
         >
           <FaMarkdown className="tw-size-4" />
           Default
         </DropdownMenuItem>
         <DropdownMenuItem
+          className="tw-flex tw-items-center tw-gap-2"
           onSelect={() => {
             handleCopyStrippedMessage();
           }}
-          className="tw-flex tw-items-center tw-gap-2"
         >
           <Unlink className="tw-size-4" />
           Without citations

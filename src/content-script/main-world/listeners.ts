@@ -1,4 +1,5 @@
 import { globalStore } from "../session-store/global";
+
 import { webpageMessenger } from "./webpage-messenger";
 
 export default class WebpageMessageListeners {

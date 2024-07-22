@@ -1,6 +1,3 @@
-import { ReactNode, useCallback, useState } from "react";
-
-import { cn } from "@/utils/cn";
 import {
   autoUpdate,
   flip,
@@ -15,6 +12,9 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
+import { ReactNode, useCallback, useState } from "react";
+
+import { cn } from "@/utils/cn";
 
 export type TooltipProps = {
   contentOptions?: {
@@ -90,10 +90,10 @@ export default function Tooltip({
       <FloatingPortal>
         {isOpen && (
           <div
+            ref={refs.setFloating}
             className={
               "tw-z-50 tw-max-w-[400px] tw-overflow-hidden tw-whitespace-pre-line tw-font-sans"
             }
-            ref={refs.setFloating}
             style={floatingStyles}
             {...getFloatingProps()}
           >

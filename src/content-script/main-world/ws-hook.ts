@@ -1,5 +1,5 @@
 import { Nullable } from "@/types/Utils";
-import { mainWorldExec } from "@/utils/hoc";
+import { mainWorldExec } from "@/utils/hof";
 
 import { webpageMessenger } from "./webpage-messenger";
 

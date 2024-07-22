@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-import { extensionOnly, mainWorldExec } from "@/utils/hoc";
+import { extensionOnly, mainWorldExec } from "@/utils/hof";
 import UIUtils from "@/utils/UI";
 import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 

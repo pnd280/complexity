@@ -30,9 +30,9 @@ export default function LabeledSwitch({
         id={id}
         className="[&+label]:data-[state=checked]:tw-text-accent-foreground"
         checked={checked ?? undefined}
-        onCheckedChange={onCheckedChange}
         disabled={disabled}
         defaultChecked={defaultChecked}
+        onCheckedChange={onCheckedChange}
       />
       {label && (
         <Label

@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { useEffect } from "react";
 
 import { useCanvasStore } from "@/content-script/session-store/canvas";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import { queryClient } from "@/utils/ts-query-query-client";
-import { useQuery } from "@tanstack/react-query";
 
 type useRenderInCanvasProps = {
   preBlockId: string;

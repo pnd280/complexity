@@ -1,15 +1,16 @@
 import { LanguageModel } from "@/types/ModelSelector";
+import { TrackQueryLimits } from "@/types/WebpageMessageInterceptors";
 import {
   LongPollingEventData,
   MessageData,
   WebSocketEventData,
 } from "@/types/WebpageMessenger";
-import { TrackQueryLimits } from "@/types/WebpageMessageInterceptors";
 import { isParsedWSMessage, WSParsedMessage } from "@/types/WS";
 import WSMessageParser from "@/utils/WSMessageParser";
 
 import { popupSettingsStore } from "../session-store/popup-settings";
 import { queryBoxStore } from "../session-store/query-box";
+
 import { webpageMessenger } from "./webpage-messenger";
 
 export default class WebpageMessageInterceptor {

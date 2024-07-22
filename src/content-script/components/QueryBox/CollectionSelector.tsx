@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { useToggle } from "@uidotdev/usehooks";
 import {
   ExternalLink,
   LayoutGrid,
@@ -32,8 +34,6 @@ import { UserProfileSettingsApiResponse } from "@/types/PPLXApi";
 import { cn } from "@/utils/cn";
 import UIUtils from "@/utils/UI";
 import { whereAmI } from "@/utils/utils";
-import { useQuery } from "@tanstack/react-query";
-import { useToggle } from "@uidotdev/usehooks";
 
 import CollectionEditDialog from "../CollectionEditDialog";
 import UserProfileEditDialog from "../UserProfileEditDialog";
@@ -100,7 +100,7 @@ export default function CollectionSelector() {
 
   return (
     <>
-      <Popover open={open} onOpenChange={toggleOpen} modal={false}>
+      <Popover open={open} modal={false} onOpenChange={toggleOpen}>
         <Tooltip
           content={!selectedCollectionUuid ? "Chat with a collection" : ""}
         >
@@ -162,11 +162,11 @@ export default function CollectionSelector() {
                     },
                   )}
                   value=""
+                  title="Your AI Profile"
                   onSelect={(currentValue) => {
                     toggleOpen(false);
                     setSelectedCollectionUuid(currentValue);
                   }}
-                  title="Your AI Profile"
                 >
                   <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
                     <Tooltip
@@ -263,11 +263,11 @@ export default function CollectionSelector() {
                         },
                       )}
                       value={collection.uuid}
+                      title={collection.title}
                       onSelect={(currentValue) => {
                         toggleOpen(false);
                         setSelectedCollectionUuid(currentValue);
                       }}
-                      title={collection.title}
                     >
                       <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
                         <Tooltip

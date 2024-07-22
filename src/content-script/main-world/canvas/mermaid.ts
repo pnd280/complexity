@@ -1,12 +1,12 @@
 import $ from "jquery";
+import type { MermaidConfig } from "mermaid";
 
-import { extensionOnly, mainWorldExec } from "@/utils/hoc";
+import { extensionOnly, mainWorldExec } from "@/utils/hof";
 import UIUtils from "@/utils/UI";
 import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 
 import { webpageMessenger } from "../webpage-messenger";
 
-import type { MermaidConfig } from "mermaid";
 class MermaidCanvas {
   private static instance: MermaidCanvas;
   private importPromise: Promise<void> | null = null;

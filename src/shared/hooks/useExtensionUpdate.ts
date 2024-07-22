@@ -1,6 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
 import CPLXApi from "@/services/CPLXApi";
 import { compareVersions } from "@/utils/utils";
-import { useQuery } from "@tanstack/react-query";
 
 import packageData from "../../../package.json";
 

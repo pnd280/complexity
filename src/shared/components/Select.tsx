@@ -1,23 +1,4 @@
 import {
-  ButtonHTMLAttributes,
-  Children,
-  createContext,
-  forwardRef,
-  HTMLAttributes,
-  isValidElement,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-
-import { cva, VariantProps } from "class-variance-authority";
-
-import { cn } from "@/utils/cn";
-import {
   autoUpdate,
   flip,
   FloatingFocusManager,
@@ -34,6 +15,24 @@ import {
   useRole,
   useTypeahead,
 } from "@floating-ui/react";
+import { cva, VariantProps } from "class-variance-authority";
+import {
+  ButtonHTMLAttributes,
+  Children,
+  createContext,
+  forwardRef,
+  HTMLAttributes,
+  isValidElement,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import { cn } from "@/utils/cn";
 
 type SelectContextValue = {
   activeIndex: number | null;
@@ -281,13 +280,13 @@ export type SelectTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> &
   };
 
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
-  ({ className, children, variant, ...props }, ref) => {
+  function SelectTrigger({ className, children, variant, ...props }, ref) {
     const { setIsOpen } = useContext(SelectContext);
     return (
       <button
         ref={ref}
-        onClick={() => setIsOpen((prev) => !prev)}
         className={cn(selectTriggerVariants({ variant }), className)}
+        onClick={() => setIsOpen((prev) => !prev)}
         {...props}
       >
         {children}
@@ -342,7 +341,7 @@ type SelectItemProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
-  ({ value, children, className }, forwardedRef) => {
+  function SelectItem({ value, children, className }, forwardedRef) {
     const {
       activeIndex,
       selectedIndex,

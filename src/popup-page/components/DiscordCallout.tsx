@@ -7,6 +7,7 @@ export default function DiscordCallout() {
         href="https://discord.gg/fxzqdkwmWx"
         target="_blank"
         className="tw-flex tw-max-w-max tw-items-center tw-justify-center tw-gap-1 tw-text-accent-foreground tw-underline"
+        rel="noreferrer"
       >
         <FaDiscord /> Discord
       </a>{" "}

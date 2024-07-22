@@ -1,12 +1,9 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import { globalStore } from "@/content-script/session-store/global";
 import PPLXApi from "@/services/PPLXApi";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
 import InputWithLimit from "@/shared/components/InputWithLimit";
-import { Collection } from "./QueryBox/CollectionSelector";
-import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
 import { Button } from "@/shared/components/shadcn/ui/button";
 import {
   Dialog,
@@ -17,6 +14,9 @@ import {
 import { Label } from "@/shared/components/shadcn/ui/label";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
+import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
+
+import { Collection } from "./QueryBox/CollectionSelector";
 
 type CollectionEditDialogProps = {
   collection: Collection;
@@ -138,10 +138,10 @@ export default function CollectionEditDialog({
             <Label htmlFor="description">Description</Label>
             <TextareaWithLimit
               placeholder="Collection description"
-              onResize={(e) => e.preventDefault()}
               className="tw-resize-none"
               limit={limits.description}
               value={description}
+              onResize={(e) => e.preventDefault()}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
@@ -149,10 +149,10 @@ export default function CollectionEditDialog({
             <Label htmlFor="prompt">System prompt</Label>
             <TextareaWithLimit
               placeholder="Collection prompt"
-              onResize={(e) => e.preventDefault()}
               className="tw-h-full tw-resize-none"
               limit={limits.instructions}
               value={instructions}
+              onResize={(e) => e.preventDefault()}
               onChange={(e) => setInstructions(e.target.value)}
             />
           </div>

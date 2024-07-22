@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 import { ChromeStore } from "@/types/ChromeStore";
 import ChromeStorage from "@/utils/ChromeStorage";
-import { extensionExec } from "@/utils/hoc";
+import { extensionExec } from "@/utils/hof";
 
 type GlobalState = {
   isWebSocketCaptured: boolean;
@@ -21,13 +21,10 @@ const useGlobalStore = create<GlobalState>(() => ({
 const globalStore = useGlobalStore;
 
 extensionExec(async function initGlobalStore() {
-  const secretMode = await ChromeStorage.getStorageValue("secretMode");
+  const { customTheme, secretMode } = await ChromeStorage.getStore();
 
-  globalStore.setState({ secretMode: !!secretMode });
-
-  const customTheme = await ChromeStorage.getStorageValue("customTheme");
-
-  globalStore.setState({ customTheme: customTheme || {} });
+  globalStore.setState({ secretMode });
+  globalStore.setState({ customTheme });
 })();
 
 export { globalStore, useGlobalStore };

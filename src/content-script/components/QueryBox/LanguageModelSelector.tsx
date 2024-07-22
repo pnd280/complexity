@@ -5,8 +5,9 @@ import { useImmer } from "use-immer";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import { LanguageModel } from "@/types/ModelSelector";
 
-import { languageModels } from "./";
 import ModelSelector from "./ModelSelector";
+
+import { languageModels } from "./";
 
 export default function LanguageModelSelector() {
   const limit = useQueryBoxStore((state) => state.queryLimit);
@@ -51,8 +52,8 @@ export default function LanguageModelSelector() {
     <ModelSelector
       type="language"
       items={models}
-      onValueChange={setValue}
       value={value}
+      onValueChange={setValue}
     />
   );
 }

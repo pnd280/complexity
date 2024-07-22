@@ -16,6 +16,7 @@ import { LanguageModel } from "@/types/ModelSelector";
 import { sleep } from "@/utils/utils";
 
 import { languageModels } from "../QueryBox";
+
 import { Container } from "./ThreadMessageStickyToolbar";
 
 type RewriteDropdownProps = {
@@ -111,12 +112,12 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         {languageModels.map((model) => (
           <DropdownMenuItem
             key={model.code}
+            className="tw-flex tw-items-center tw-gap-2"
             onSelect={() => {
               handleRewrite({
                 model: model.code,
               });
             }}
-            className="tw-flex tw-items-center tw-gap-2"
           >
             {model.icon}
             {model.label}

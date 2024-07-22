@@ -1,4 +1,20 @@
 import {
+  autoUpdate,
+  flip,
+  FloatingFocusManager,
+  FloatingPortal,
+  offset,
+  Placement,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useId,
+  useInteractions,
+  useMergeRefs,
+  useRole,
+} from "@floating-ui/react";
+import {
   ButtonHTMLAttributes,
   cloneElement,
   createContext,
@@ -15,22 +31,6 @@ import {
 } from "react";
 
 import { cn } from "@/utils/cn";
-import {
-  autoUpdate,
-  flip,
-  FloatingFocusManager,
-  FloatingPortal,
-  offset,
-  Placement,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useId,
-  useInteractions,
-  useMergeRefs,
-  useRole,
-} from "@floating-ui/react";
 
 type PopoverOptions = {
   initialOpen?: boolean;
@@ -243,8 +243,8 @@ export const PopoverClose = forwardRef<
   const { setOpen } = usePopoverContext();
   return (
     <button
-      type="button"
       ref={ref}
+      type="button"
       {...props}
       onClick={(event) => {
         props.onClick?.(event);

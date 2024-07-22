@@ -8,8 +8,11 @@ export type TextareaProps =
     triggerCounterLimitOffset?: number;
   };
 
-const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, limit, triggerCounterLimitOffset = 0, ...props }, ref) => {
+export default forwardRef<HTMLTextAreaElement, TextareaProps>(
+  function TextareaWithLimit(
+    { className, limit, triggerCounterLimitOffset = 0, ...props },
+    ref,
+  ) {
     const [value, setValue] = useState(
       ((props.defaultValue || props.value) as string) || "",
     );
@@ -25,11 +28,11 @@ const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="tw-relative tw-h-full tw-w-full">
         <textarea
+          ref={ref}
           className={cn(
             "tw-flex tw-h-full tw-min-h-[80px] tw-w-full tw-rounded-md tw-border tw-border-input tw-bg-background tw-px-3 tw-py-2 tw-text-sm tw-ring-offset-background placeholder:tw-text-muted-foreground focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-cursor-not-allowed disabled:tw-opacity-50",
             className,
           )}
-          ref={ref}
           {...props}
           onChange={(value) => {
             handleChange(value);
@@ -55,5 +58,3 @@ const TextareaWithLimit = forwardRef<HTMLTextAreaElement, TextareaProps>(
     );
   },
 );
-
-export default TextareaWithLimit;

@@ -279,8 +279,8 @@ html {
   transition         : all;
   transition-duration: .3s;
 
-  position  : sticky !important;
-  bottom    : 4rem !important;
+  position: sticky !important;
+  bottom  : 4rem !important;
 }
 
 .pt-md.md\:pb-\[124px\].md\:pt-0.pb-\[144px\] {
@@ -295,4 +295,8 @@ html {
   .pointer-events-none.fixed.z-10 {
     bottom: .3rem !important;
   }
+}
+
+.mb-lg.flex.items-center.justify-center.pb-xs.md\:text-center {
+  opacity: 0;
 }

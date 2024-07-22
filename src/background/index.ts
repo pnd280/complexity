@@ -13,11 +13,14 @@ chrome.runtime.onInstalled.addListener(async () => {
   const settings = await ChromeStorage.getStore();
 
   if (!settings || Object.keys(settings).length === 0) {
-    console.log("First time install detected, setting default values");
+    console.log("First time install detected, setting default values.");
 
-    ChromeStorage.setStorageValue({
-      key: "popupSettings",
-      value: {
+    ChromeStorage.setStore({
+      customTheme: {},
+      defaultFocus: "internet",
+      defaultWebAccess: false,
+      secretMode: false,
+      popupSettings: {
         queryBoxSelectors: {
           focus: false,
           languageModel: false,

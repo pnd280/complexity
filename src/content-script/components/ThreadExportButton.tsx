@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { Check, Download, LoaderCircle, Unlink } from "lucide-react";
 import React, {
@@ -21,9 +22,9 @@ import {
 import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import UIUtils from "@/utils/UI";
 import { isDOMNode, jsonUtils } from "@/utils/utils";
-import { useQuery } from "@tanstack/react-query";
 
 import useWaitForElement from "../hooks/useWaitForElement";
+
 import { languageModels } from "./QueryBox";
 
 const exportOptions = [
@@ -192,12 +193,12 @@ export default function ThreadExportButton() {
         {exportOptions.map((option, index) => (
           <DropdownMenuItem
             key={index}
+            className="tw-flex tw-items-center tw-gap-2"
             onSelect={() => {
               handleExportThread({
                 includeCitations: option.value === "citations",
               });
             }}
-            className="tw-flex tw-items-center tw-gap-2"
           >
             {option.icon}
             {option.label}

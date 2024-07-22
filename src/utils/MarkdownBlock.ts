@@ -74,7 +74,7 @@ export default class MarkdownBlockUtils {
 
   private static createContainer(isNative: boolean): JQuery<HTMLElement> {
     const baseClasses = cn(
-      "tw-sticky tw-w-full tw-z-[2] tw-rounded-t-md tw-overflow-hidden tw-transition-all",
+      "tw-sticky tw-z-[2] tw-w-full tw-overflow-hidden tw-rounded-t-md tw-transition-all",
       {
         "tw-top-[3.35rem]":
           !popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar,
@@ -90,7 +90,7 @@ export default class MarkdownBlockUtils {
 
   private static createWrapper(isNative: boolean): JQuery<HTMLElement> {
     return $("<div>")
-      .addClass("tw-rounded-md tw-relative tw-rounded-md")
+      .addClass("tw-rounded-md tw-relative")
       .toggleClass("tw-border !tw-border-border", !isNative);
   }
 
@@ -105,9 +105,7 @@ export default class MarkdownBlockUtils {
       $pre
         .find("div:nth-child(2)")[0]
         ?.style.setProperty("padding-top", "0", "important");
-      $pre
-        .find("div:nth-child(2)")
-        .addClass("tw-rounded-none tw-rounded-md !tw-p-0");
+      $pre.find("div:nth-child(2)").addClass("tw-rounded-md !tw-p-0");
       $pre.find(".rounded-br, button").addClass("!tw-hidden");
     } else {
       $pre.addClass(
@@ -229,7 +227,7 @@ export default class MarkdownBlockUtils {
     $pre
       .closest("div.w-full.max-w-\\[90vw\\]")
       .addClass(
-        "!tw-visible !tw-opacity-100 [&>*]:!tw-visible [&>*]:!tw-opacity-100 tw-transition-all",
+        "!tw-visible !tw-opacity-100 tw-transition-all [&>*]:!tw-visible [&>*]:!tw-opacity-100",
       )
       .toggleClass(
         "[&>:not(.canvas-placeholder)]:!tw-invisible",

@@ -1,5 +1,7 @@
 import "@@/public/global.css";
 
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import $ from "jquery";
 import { lazy, useEffect } from "react";
 import { createRoot } from "react-dom/client";
@@ -13,8 +15,6 @@ import { popupSettingsStore } from "@/content-script/session-store/popup-setting
 import { Toaster } from "@/shared/components/shadcn/ui/toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
 import { whereAmI } from "@/utils/utils";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const Commander = lazy(() => import("@/content-script/components/Commander"));
 const CanvasPanel = lazy(

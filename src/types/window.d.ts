@@ -1,11 +1,10 @@
 import $ from "jquery";
+import type { Mermaid } from "mermaid";
+import type * as shiki from "shiki";
+import type * as svgPanZoom from "svg-pan-zoom";
 
 import { Nullable } from "./Utils";
 import { MessageListener, SendMessage } from "./WebpageMessenger";
-
-import type * as shiki from "shiki";
-import type { Mermaid } from "mermaid";
-import type * as svgPanZoom from "svg-pan-zoom";
 
 declare global {
   interface Window {

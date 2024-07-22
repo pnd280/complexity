@@ -1,7 +1,7 @@
+import { useToggle } from "@uidotdev/usehooks";
 import { useEffect, useRef } from "react";
 
 import { cn } from "@/utils/cn";
-import { useToggle } from "@uidotdev/usehooks";
 
 type ThreadTitleProps = {
   query: string;

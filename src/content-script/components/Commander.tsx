@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { SiPerplexity } from "react-icons/si";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import KeyCombo from "@/shared/components/KeyCombo";
 import {
   CommandDialog,
   CommandEmpty,
@@ -26,8 +27,6 @@ import {
   CommandShortcut,
 } from "@/shared/components/shadcn/ui/command";
 import { setCookie } from "@/utils/utils";
-
-import KeyCombo from "@/shared/components/KeyCombo";
 
 export default function Commander() {
   const [open, setOpen] = useState(false);
@@ -88,152 +87,150 @@ export default function Commander() {
   }, [handleNavigate]);
 
   return (
-    <>
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          ref={ref}
-          value={searchValue}
-          onValueChange={setSearchValue}
-          placeholder="Type a command or search..."
-          className="tw-font-sans"
-        />
-        <CommandList className="tw-font-sans">
-          <CommandEmpty>
-            No results found for{" "}
-            {
-              <span className="rounded-md tw-border tw-bg-secondary tw-px-1 tw-font-mono tw-text-[.7rem] tw-text-secondary-foreground">
-                {searchValue}
-              </span>
+    <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandInput
+        ref={ref}
+        value={searchValue}
+        placeholder="Type a command or search..."
+        className="tw-font-sans"
+        onValueChange={setSearchValue}
+      />
+      <CommandList className="tw-font-sans">
+        <CommandEmpty>
+          No results found for{" "}
+          {
+            <span className="rounded-md tw-border tw-bg-secondary tw-px-1 tw-font-mono tw-text-[.7rem] tw-text-secondary-foreground">
+              {searchValue}
+            </span>
+          }
+          .
+        </CommandEmpty>
+
+        <CommandGroup heading="Search">
+          <CommandItem keywords={["threads", "search"]}>
+            <NotebookText className="tw-mr-2" />
+            Threads
+            <CommandShortcut className="tw-flex tw-gap-1">
+              <KeyCombo keys={["Ctrl", "Alt", "T"]} />
+            </CommandShortcut>
+          </CommandItem>
+          <CommandItem keywords={["collections", "search"]}>
+            <Layers3 className="tw-mr-2" />
+            Collections
+            <CommandShortcut>
+              <KeyCombo keys={["Ctrl", "Alt", "C"]} />
+            </CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Quick navigations">
+          <CommandItem keywords={["prompt", "library", "navigate"]}>
+            <BookOpenText className="tw-mr-2" />
+            Prompt Library
+            <CommandShortcut>
+              <KeyCombo keys={["Ctrl", "Alt", "P"]} />
+            </CommandShortcut>
+          </CommandItem>
+          <CommandItem
+            keywords={["home", "navigate"]}
+            onSelect={() => {
+              handleNavigate("/");
+            }}
+          >
+            <SiPerplexity className="tw-mr-2" />
+            Home
+            <CommandShortcut>
+              <KeyCombo keys={["Alt", "I"]} />
+            </CommandShortcut>
+          </CommandItem>
+          <CommandItem
+            keywords={["discover", "navigate"]}
+            onSelect={() => handleNavigate("/discover")}
+          >
+            <Compass className="tw-mr-2" />
+            Discover
+          </CommandItem>
+          <CommandItem
+            keywords={["library", "navigate"]}
+            onSelect={() => handleNavigate("/library")}
+          >
+            <GalleryHorizontalEnd className="tw-mr-2" />
+            Library
+          </CommandItem>
+          <CommandItem
+            keywords={["user settings", "navigate"]}
+            onSelect={() => handleNavigate("/settings/account")}
+          >
+            <Settings className="tw-mr-2" />
+            User settings
+          </CommandItem>
+          <CommandItem
+            keywords={["labs", "navigate"]}
+            onSelect={() =>
+              handleNavigate("https://labs.perplexity.ai/", false)
             }
-            .
-          </CommandEmpty>
+          >
+            <TestTubeDiagonal className="tw-mr-2" />
+            Labs
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Color scheme">
+          <CommandItem
+            keywords={["dark", "theme", "change"]}
+            onSelect={() => {
+              $("html").toggleClass("dark tw-dark", true);
 
-          <CommandGroup heading="Search">
-            <CommandItem keywords={["threads", "search"]}>
-              <NotebookText className="tw-mr-2" />
-              Threads
-              <CommandShortcut className="tw-flex tw-gap-1">
-                <KeyCombo keys={["Ctrl", "Alt", "T"]} />
-              </CommandShortcut>
-            </CommandItem>
-            <CommandItem keywords={["collections", "search"]}>
-              <Layers3 className="tw-mr-2" />
-              Collections
-              <CommandShortcut>
-                <KeyCombo keys={["Ctrl", "Alt", "C"]} />
-              </CommandShortcut>
-            </CommandItem>
-          </CommandGroup>
+              localStorage.setItem("colorScheme", "dark");
+              setCookie("colorScheme", "dark", 0);
 
-          <CommandSeparator />
+              setOpen(false);
+            }}
+          >
+            <Moon className="tw-mr-2" />
+            Dark
+          </CommandItem>
+          <CommandItem
+            keywords={["light", "theme", "change"]}
+            onSelect={() => {
+              $("html").toggleClass("dark tw-dark", false);
 
-          <CommandGroup heading="Quick navigations">
-            <CommandItem keywords={["prompt", "library", "navigate"]}>
-              <BookOpenText className="tw-mr-2" />
-              Prompt Library
-              <CommandShortcut>
-                <KeyCombo keys={["Ctrl", "Alt", "P"]} />
-              </CommandShortcut>
-            </CommandItem>
-            <CommandItem
-              keywords={["home", "navigate"]}
-              onSelect={() => {
-                handleNavigate("/");
-              }}
-            >
-              <SiPerplexity className="tw-mr-2" />
-              Home
-              <CommandShortcut>
-                <KeyCombo keys={["Alt", "I"]} />
-              </CommandShortcut>
-            </CommandItem>
-            <CommandItem
-              keywords={["discover", "navigate"]}
-              onSelect={() => handleNavigate("/discover")}
-            >
-              <Compass className="tw-mr-2" />
-              Discover
-            </CommandItem>
-            <CommandItem
-              keywords={["library", "navigate"]}
-              onSelect={() => handleNavigate("/library")}
-            >
-              <GalleryHorizontalEnd className="tw-mr-2" />
-              Library
-            </CommandItem>
-            <CommandItem
-              keywords={["user settings", "navigate"]}
-              onSelect={() => handleNavigate("/settings/account")}
-            >
-              <Settings className="tw-mr-2" />
-              User settings
-            </CommandItem>
-            <CommandItem
-              keywords={["labs", "navigate"]}
-              onSelect={() =>
-                handleNavigate("https://labs.perplexity.ai/", false)
-              }
-            >
-              <TestTubeDiagonal className="tw-mr-2" />
-              Labs
-            </CommandItem>
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Color scheme">
-            <CommandItem
-              keywords={["dark", "theme", "change"]}
-              onSelect={() => {
-                $("html").toggleClass("dark tw-dark", true);
+              localStorage.setItem("colorScheme", "light");
+              setCookie("colorScheme", "light", 0);
 
-                localStorage.setItem("colorScheme", "dark");
-                setCookie("colorScheme", "dark", 0);
+              setOpen(false);
+            }}
+          >
+            <Sun className="tw-mr-2" />
+            Light
+          </CommandItem>
+          <CommandItem
+            keywords={["system", "theme", "change"]}
+            onSelect={() => {
+              const preferredColorScheme = window.matchMedia(
+                "(prefers-color-scheme: dark)",
+              ).matches
+                ? "dark"
+                : "light";
 
-                setOpen(false);
-              }}
-            >
-              <Moon className="tw-mr-2" />
-              Dark
-            </CommandItem>
-            <CommandItem
-              keywords={["light", "theme", "change"]}
-              onSelect={() => {
-                $("html").toggleClass("dark tw-dark", false);
+              $("html").toggleClass(
+                "dark tw-dark",
+                preferredColorScheme === "dark",
+              );
 
-                localStorage.setItem("colorScheme", "light");
-                setCookie("colorScheme", "light", 0);
+              localStorage.setItem("colorScheme", preferredColorScheme);
+              setCookie("colorScheme", preferredColorScheme, 0);
 
-                setOpen(false);
-              }}
-            >
-              <Sun className="tw-mr-2" />
-              Light
-            </CommandItem>
-            <CommandItem
-              keywords={["system", "theme", "change"]}
-              onSelect={() => {
-                const preferredColorScheme = window.matchMedia(
-                  "(prefers-color-scheme: dark)",
-                ).matches
-                  ? "dark"
-                  : "light";
-
-                $("html").toggleClass(
-                  "dark tw-dark",
-                  preferredColorScheme === "dark",
-                );
-
-                localStorage.setItem("colorScheme", preferredColorScheme);
-                setCookie("colorScheme", preferredColorScheme, 0);
-
-                setOpen(false);
-              }}
-            >
-              <Computer className="tw-mr-2" />
-              System
-            </CommandItem>
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
-    </>
+              setOpen(false);
+            }}
+          >
+            <Computer className="tw-mr-2" />
+            System
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </CommandDialog>
   );
 }

@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 import Canvas from "@/utils/Canvas";
-import { mainWorldExec } from "@/utils/hoc";
+import { mainWorldExec } from "@/utils/hof";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 
 function applyDataAttrs() {

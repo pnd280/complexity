@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 
 import { CanvasLang } from "@/utils/Canvas";
 import ChromeStorage from "@/utils/ChromeStorage";
-import { extensionExec } from "@/utils/hoc";
+import { extensionExec } from "@/utils/hof";
 
 type PopupSettingsState = {
   queryBoxSelectors: {

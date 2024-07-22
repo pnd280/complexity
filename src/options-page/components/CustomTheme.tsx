@@ -1,3 +1,5 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import { Check } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,8 +18,6 @@ import { Input } from "@/shared/components/shadcn/ui/input";
 import { Textarea } from "@/shared/components/shadcn/ui/textarea";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { jsonUtils } from "@/utils/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 
 const schema = z.object({
   slogan: z.string().optional(),
@@ -98,8 +98,8 @@ export default function CustomTheme() {
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
         className="tw-flex tw-flex-col tw-gap-4"
+        onSubmit={handleSubmit(onSubmit)}
       >
         <FormField
           control={form.control}

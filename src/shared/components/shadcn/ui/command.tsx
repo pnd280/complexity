@@ -1,11 +1,10 @@
-import * as React from "react";
-
+import { type DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
+import * as React from "react";
 
 import { Dialog, DialogContent } from "@/shared/components/shadcn/ui/dialog";
 import { cn } from "@/utils/cn";
-import { type DialogProps } from "@radix-ui/react-dialog";
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -51,6 +50,7 @@ const CommandInput = React.forwardRef<
 >(({ className, searchIcon = true, ...props }, ref) => (
   <div
     className="tw-flex tw-items-center tw-border-b tw-px-3"
+    // eslint-disable-next-line react/no-unknown-property
     cmdk-input-wrapper=""
   >
     {searchIcon && (

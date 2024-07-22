@@ -1,3 +1,4 @@
+import { useDebounce } from "@uidotdev/usehooks";
 import { debounce } from "lodash-es";
 import {
   Fragment,
@@ -13,7 +14,6 @@ import { Updater, useImmer } from "use-immer";
 import useThreadMessageStickyToolbarObserver from "@/content-script/hooks/useThreadMessageStickyToolbarObserver";
 import UIUtils from "@/utils/UI";
 import { onScrollDirectionChange } from "@/utils/utils";
-import { useDebounce } from "@uidotdev/usehooks";
 
 import ThreadMessageStickyToolbarComponents from "./ThreadMessageStickyToolbarComponents";
 

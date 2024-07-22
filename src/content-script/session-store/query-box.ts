@@ -10,7 +10,7 @@ import {
   WebAccessFocus,
 } from "@/types/ModelSelector";
 import ChromeStorage from "@/utils/ChromeStorage";
-import { extensionExec } from "@/utils/hoc";
+import { extensionExec } from "@/utils/hof";
 
 type QueryBoxState = {
   selectedLanguageModel: LanguageModel["code"];

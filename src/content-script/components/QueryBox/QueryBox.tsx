@@ -1,3 +1,4 @@
+import { UndefinedInitialDataOptions, useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
 import {
@@ -23,7 +24,6 @@ import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 import { LanguageModel } from "@/types/ModelSelector";
 import UIUtils from "@/utils/UI";
-import { UndefinedInitialDataOptions, useQuery } from "@tanstack/react-query";
 
 import CollectionSelector from "./CollectionSelector";
 import FocusSelector from "./FocusSelector";
@@ -209,21 +209,19 @@ export default function QueryBox() {
           {ReactDOM.createPortal(selectors, container)}
           {quickQueryCommander &&
             ReactDOM.createPortal(
-              <>
-                <QuickCommander
-                  context="main"
-                  $trigger={$(container).parents(".grow.block")}
-                  $textarea={
-                    $(container)
-                      .parents(".grow.block")
-                      .find(
-                        'textarea[placeholder="Ask anything..."]',
-                      ) as JQuery<HTMLTextAreaElement>
-                  }
-                  searchValue={quickCommandSearchValue}
-                  setQuickCommandSearchValue={setQuickCommandSearchValue}
-                />
-              </>,
+              <QuickCommander
+                context="main"
+                $trigger={$(container).parents(".grow.block")}
+                $textarea={
+                  $(container)
+                    .parents(".grow.block")
+                    .find(
+                      'textarea[placeholder="Ask anything..."]',
+                    ) as JQuery<HTMLTextAreaElement>
+                }
+                searchValue={quickCommandSearchValue}
+                setQuickCommandSearchValue={setQuickCommandSearchValue}
+              />,
               $(container).parents(".grow.block")[0],
             )}
         </Fragment>
@@ -234,19 +232,17 @@ export default function QueryBox() {
           {quickQueryCommander &&
             !!UIUtils.getActiveQueryBox({ type: "follow-up" }).length &&
             ReactDOM.createPortal(
-              <>
-                <QuickCommander
-                  context="follow-up"
-                  $trigger={UIUtils.getActiveQueryBox({ type: "follow-up" })}
-                  $textarea={
-                    UIUtils.getActiveQueryBoxTextarea({
-                      type: "follow-up",
-                    }) as JQuery<HTMLTextAreaElement>
-                  }
-                  searchValue={quickCommandSearchValue}
-                  setQuickCommandSearchValue={setQuickCommandSearchValue}
-                />
-              </>,
+              <QuickCommander
+                context="follow-up"
+                $trigger={UIUtils.getActiveQueryBox({ type: "follow-up" })}
+                $textarea={
+                  UIUtils.getActiveQueryBoxTextarea({
+                    type: "follow-up",
+                  }) as JQuery<HTMLTextAreaElement>
+                }
+                searchValue={quickCommandSearchValue}
+                setQuickCommandSearchValue={setQuickCommandSearchValue}
+              />,
               UIUtils.getActiveQueryBox({ type: "follow-up" })[0],
             )}
         </Fragment>

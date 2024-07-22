@@ -1,4 +1,5 @@
-import { cn } from "@/utils/cn";
+import { useQuery } from "@tanstack/react-query";
+import { useToggle, useWindowSize } from "@uidotdev/usehooks";
 import { CommandEmpty } from "cmdk";
 import $ from "jquery";
 import {
@@ -21,9 +22,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/shared/components/shadcn/ui/command";
+import { cn } from "@/utils/cn";
 import UIUtils from "@/utils/UI";
-import { useQuery } from "@tanstack/react-query";
-import { useToggle, useWindowSize } from "@uidotdev/usehooks";
 
 export type QuickCommanderProps = {
   context: "main" | "follow-up";
@@ -205,6 +205,7 @@ export default function QuickQueryCommander({
 
   return (
     <Command
+      ref={commanderRef}
       className={cn(
         "!tw-absolute tw-z-30 tw-h-max tw-max-h-[200px] tw-w-max tw-rounded-lg tw-border tw-font-sans tw-shadow-md !tw-outline-none tw-animate-in tw-fade-in",
         {
@@ -212,14 +213,13 @@ export default function QuickQueryCommander({
         },
       )}
       id="quick-commander"
-      ref={commanderRef}
+      value={value}
       onValueChange={(value) => {
         if (!visible) {
           return;
         }
         setValue(value);
       }}
-      value={value}
     >
       <div className="tw-hidden">
         <CommandInput value={searchValue} />

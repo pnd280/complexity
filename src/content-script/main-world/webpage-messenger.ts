@@ -9,7 +9,7 @@ import {
   SendMessageOptions,
   WebSocketEventData,
 } from "@/types/WebpageMessenger";
-import { extensionExec } from "@/utils/hoc";
+import { extensionExec } from "@/utils/hof";
 import { isMainWorldContext } from "@/utils/utils";
 
 class WebpageMessenger {

@@ -1,8 +1,9 @@
 import $ from "jquery";
 
+import { mainWorldExec, mainWorldOnly } from "@/utils/hof";
 import { getReactFiberKey, jsonUtils } from "@/utils/utils";
+
 import { webpageMessenger } from "./webpage-messenger";
-import { mainWorldExec, mainWorldOnly } from "@/utils/hoc";
 
 export type ReactNodeAction = keyof typeof actions;
 export type ReactNodeActionReturnType = {

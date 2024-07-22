@@ -1,12 +1,13 @@
+import { useDebounce } from "@uidotdev/usehooks";
 import $ from "jquery";
 import { Fragment, useState } from "react";
 import ReactDOM from "react-dom";
 
 import useMarkdownBlockObserver from "@/content-script/hooks/useMarkdownBlockObserver";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
-import { useDebounce } from "@uidotdev/usehooks";
 
 import CanvasPlaceholder from "../Canvas/CanvasPlaceholder";
+
 import AlternateMarkdownBlockToolbar from "./AlternateMarkdownBlockToolbar";
 
 export type MarkdownBlockContainer = {

@@ -1,7 +1,9 @@
 import $ from "jquery";
 
 import WebpageMessageListeners from "@/content-script/main-world/listeners";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
+import ReactRoot from "@/content-script/ReactRoot";
 import DOMObserver from "@/utils/DOMObserver";
 import UITweaks from "@/utils/UITweaks";
 import {
@@ -11,19 +13,17 @@ import {
   whereAmI,
 } from "@/utils/utils";
 
-import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
-import ReactRoot from "@/content-script/ReactRoot";
+import packageData from "../../package.json";
 
-import wsHook from "@/content-script/main-world/ws-hook?script&module";
+import { popupSettingsStore } from "./session-store/popup-settings";
+
+import htmlCanvas from "@/content-script/main-world/canvas/html?script&module";
+import mermaidCanvas from "@/content-script/main-world/canvas/mermaid?script&module";
 import nextRouter from "@/content-script/main-world/next-router?script&module";
 import preBlockAttrs from "@/content-script/main-world/pre-block-attrs?script&module";
 import reactNode from "@/content-script/main-world/react-node?script&module";
 import shiki from "@/content-script/main-world/shiki?script&module";
-import mermaidCanvas from "@/content-script/main-world/canvas/mermaid?script&module";
-import htmlCanvas from "@/content-script/main-world/canvas/html?script&module";
-import { popupSettingsStore } from "./session-store/popup-settings";
-
-import packageData from "../../package.json";
+import wsHook from "@/content-script/main-world/ws-hook?script&module";
 
 $(async function main() {
   initConsoleMessage();
