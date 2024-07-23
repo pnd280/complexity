@@ -1,8 +1,8 @@
 import $ from "jquery";
 
-import WebpageMessageListeners from "@/content-script/main-world/listeners";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
+import WebpageMessageListeners from "@/content-script/main-world/WebpageMessageListeners";
 import ReactRoot from "@/content-script/ReactRoot";
 import DOMObserver from "@/utils/DOMObserver";
 import UITweaks from "@/utils/UITweaks";

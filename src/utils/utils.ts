@@ -337,7 +337,13 @@ export async function getNEXTDATA() {
   return jsonUtils.safeParse($("script#__NEXT_DATA__").text());
 }
 
-export const isMainWorldContext = () => !chrome.storage?.local;
+export const isMainWorldContext = () => {
+  return (
+    typeof chrome === "undefined" ||
+    typeof chrome.storage === "undefined" ||
+    typeof chrome.storage.local === "undefined"
+  );
+};
 
 export async function injectMainWorldScript(
   url: string,

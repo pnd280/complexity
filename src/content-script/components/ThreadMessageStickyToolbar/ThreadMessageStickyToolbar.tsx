@@ -1,5 +1,5 @@
 import { useDebounce } from "@uidotdev/usehooks";
-import { debounce } from "lodash-es";
+import { debounce } from "lodash";
 import {
   Fragment,
   useCallback,
