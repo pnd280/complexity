@@ -39,7 +39,7 @@ module.exports = {
       },
     ],
     "import/order": [
-      "error",
+      "warn",
       {
         groups: [
           "builtin",

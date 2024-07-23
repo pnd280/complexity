@@ -28,7 +28,7 @@ export default function CanvasPlaceholder({
       className={cn(
         `canvas-placeholder tw-absolute tw-inset-0 tw-z-10 tw-flex tw-size-full tw-w-[300px] tw-cursor-pointer tw-select-none tw-items-center tw-overflow-hidden tw-rounded-md tw-border tw-transition-all tw-duration-300 tw-animate-in tw-fade-in-50 active:tw-scale-95 ${preBlockId}-inflight-indicator tw-group`,
         {
-          "!tw-border-accent-foreground": isActive,
+          "tw-ring-1 tw-ring-accent-foreground": isActive,
           "hover:!tw-border-foreground-darker": !isActive,
         },
         className,
