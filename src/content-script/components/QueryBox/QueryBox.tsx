@@ -23,13 +23,11 @@ import KeyCombo from "@/shared/components/KeyCombo";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 import { LanguageModel } from "@/types/ModelSelector";
-import UIUtils from "@/utils/UI";
 
 import CollectionSelector from "./CollectionSelector";
 import FocusSelector from "./FocusSelector";
 import ImageModelSelector, { ImageModel } from "./ImageModelSelector";
 import LanguageModelSelector from "./LanguageModelSelector";
-import QuickQueryCommander from "./QuickQueryCommander";
 
 export default function QueryBox() {
   const isReady = useGlobalStore(
@@ -106,8 +104,6 @@ export default function QueryBox() {
   const { focus, imageGenModel, languageModel, collection } =
     settings?.queryBoxSelectors || {};
 
-  const quickQueryCommander = settings?.qolTweaks.quickQueryCommander;
-
   const hasActivePPLXSub =
     userSettings && userSettings.subscription_status === "active";
 
@@ -131,7 +127,6 @@ export default function QueryBox() {
 
   const [containers, setContainers] = useState<Element[]>([]);
   const [followUpContainers, setFollowUpContainers] = useState<Element[]>([]);
-  const [quickCommandSearchValue, setQuickCommandSearchValue] = useState("");
 
   const memoizedSetContainers = useCallback((newContainer: Element) => {
     setContainers((prevContainers) =>
@@ -206,44 +201,11 @@ export default function QueryBox() {
       {containers.map((container, index) => (
         <Fragment key={index}>
           {ReactDOM.createPortal(selectors, container)}
-          {quickQueryCommander &&
-            ReactDOM.createPortal(
-              <QuickCommander
-                context="main"
-                $trigger={$(container).parents(".grow.block")}
-                $textarea={
-                  $(container)
-                    .parents(".grow.block")
-                    .find(
-                      'textarea[placeholder="Ask anything..."]',
-                    ) as JQuery<HTMLTextAreaElement>
-                }
-                searchValue={quickCommandSearchValue}
-                setQuickCommandSearchValue={setQuickCommandSearchValue}
-              />,
-              $(container).parents(".grow.block")[0],
-            )}
         </Fragment>
       ))}
       {followUpContainers.map((container, index) => (
         <Fragment key={index}>
           {ReactDOM.createPortal(followUpSelectors, container)}
-          {quickQueryCommander &&
-            !!UIUtils.getActiveQueryBox({ type: "follow-up" }).length &&
-            ReactDOM.createPortal(
-              <QuickCommander
-                context="follow-up"
-                $trigger={UIUtils.getActiveQueryBox({ type: "follow-up" })}
-                $textarea={
-                  UIUtils.getActiveQueryBoxTextarea({
-                    type: "follow-up",
-                  }) as JQuery<HTMLTextAreaElement>
-                }
-                searchValue={quickCommandSearchValue}
-                setQuickCommandSearchValue={setQuickCommandSearchValue}
-              />,
-              UIUtils.getActiveQueryBox({ type: "follow-up" })[0],
-            )}
         </Fragment>
       ))}
     </>
@@ -310,35 +272,6 @@ const CommonSelectors = ({
             </span>
           )}
         </div>
-      )}
-    </>
-  );
-};
-
-const QuickCommander = ({
-  context,
-  $trigger,
-  $textarea,
-  searchValue,
-  setQuickCommandSearchValue,
-}: {
-  context: "main" | "follow-up";
-  $trigger: JQuery<HTMLElement>;
-  $textarea: JQuery<HTMLTextAreaElement>;
-  searchValue: string;
-  setQuickCommandSearchValue: (value: string) => void;
-}) => {
-  return (
-    <>
-      {ReactDOM.createPortal(
-        <QuickQueryCommander
-          context={context}
-          $trigger={$trigger}
-          $textarea={$textarea}
-          searchValue={searchValue.slice(1)}
-          setQuickCommandSearchValue={setQuickCommandSearchValue}
-        />,
-        $("#complexity-root")[0],
       )}
     </>
   );

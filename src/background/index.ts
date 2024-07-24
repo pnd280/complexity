@@ -29,7 +29,6 @@ chrome.runtime.onInstalled.addListener(async () => {
         },
         qolTweaks: {
           threadTOC: false,
-          quickQueryCommander: false,
           threadMessageStickyToolbar: false,
           alternateMarkdownBlock: false,
           canvas: {

@@ -44,11 +44,6 @@ const qolTweaks: PopupSetting<
     storeKey: "threadTOC",
   },
   {
-    id: "quick-query-commander",
-    label: "Inline query params invocation",
-    storeKey: "quickQueryCommander",
-  },
-  {
     id: "alternate-markdown-block",
     label: "Alternate markdown block",
     storeKey: "alternateMarkdownBlock",

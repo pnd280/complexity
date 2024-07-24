@@ -20,7 +20,6 @@ export type ChromeStore = {
     };
     qolTweaks: {
       threadTOC: boolean;
-      quickQueryCommander: boolean;
       threadMessageStickyToolbar: boolean;
       alternateMarkdownBlock: boolean;
       canvas: {
