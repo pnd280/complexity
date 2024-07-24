@@ -1,22 +1,20 @@
 import { CircleHelp, HelpCircle } from "lucide-react";
 
 import { canvasLangs } from "@/content-script/components/Canvas/langs";
-import { usePopupSettingsStore } from "@/content-script/session-store/popup-settings";
 import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
 import LabeledSwitch from "@/shared/components/LabeledSwitch";
 import Tooltip from "@/shared/components/Tooltip";
 import { CanvasLang } from "@/utils/Canvas";
 
 export default function CanvasSettings() {
-  const { handleSettingsChange } = usePopupSettings();
+  const { settings, updateSettings } = usePopupSettings();
 
-  const isAlternateMarkdownBlockSettingEnabled = usePopupSettingsStore(
-    ({ qolTweaks: { alternateMarkdownBlock } }) => alternateMarkdownBlock,
-  );
+  if (!settings) return null;
 
-  const canvasSettings = usePopupSettingsStore(
-    ({ qolTweaks: { canvas } }) => canvas,
-  );
+  const isAlternateMarkdownBlockSettingEnabled =
+    settings?.qolTweaks.alternateMarkdownBlock;
+
+  const canvasSettings = settings.qolTweaks.canvas;
 
   if (!isAlternateMarkdownBlockSettingEnabled)
     return (
@@ -49,9 +47,8 @@ export default function CanvasSettings() {
           className="tw-mx-auto tw-mt-4 tw-w-fit"
           checked={canvasSettings.enabled}
           onCheckedChange={(checked) => {
-            handleSettingsChange("qolTweaks", "canvas", {
-              ...canvasSettings,
-              enabled: checked,
+            updateSettings("qolTweaks", (draft) => {
+              draft.canvas.enabled = checked;
             });
           }}
         />
@@ -99,11 +96,11 @@ function CanvasSettingBlock({
   trigger,
   description,
 }: CanvasSettingBlockProps) {
-  const { handleSettingsChange } = usePopupSettings();
+  const { settings, updateSettings } = usePopupSettings();
 
-  const canvasSettings = usePopupSettingsStore(
-    ({ qolTweaks: { canvas } }) => canvas,
-  );
+  if (!settings) return null;
+
+  const canvasSettings = settings.qolTweaks.canvas;
 
   return (
     <div className="tw-relative tw-flex tw-w-[300px] tw-flex-col tw-gap-4 tw-rounded-md tw-border tw-p-4 tw-shadow-lg">
@@ -140,12 +137,8 @@ function CanvasSettingBlock({
             className="!tw-w-max"
             defaultChecked={canvasSettings.mask?.[trigger]}
             onCheckedChange={(checked) => {
-              handleSettingsChange("qolTweaks", "canvas", {
-                ...canvasSettings,
-                mask: {
-                  ...canvasSettings.mask,
-                  [trigger]: checked,
-                },
+              updateSettings("qolTweaks", (draft) => {
+                draft.canvas.mask[trigger] = checked;
               });
             }}
           />

@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import useRouter from "@/content-script/hooks/useRouter";
 import { useCanvasStore } from "@/content-script/session-store/canvas";
-import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 import UIUtils from "@/utils/UI";
@@ -210,7 +210,7 @@ const useThreadTOCObserver = () => {
           },
           onContextMenu: () => {
             const threadMessageStickyToolbar =
-              popupSettingsStore.getState().qolTweaks
+              CPLXUserSettings.get().popupSettings.qolTweaks
                 .threadMessageStickyToolbar;
 
             const isScrollingUp =

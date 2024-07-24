@@ -1,5 +1,3 @@
-import "@/content-script/session-store/popup-settings";
-
 import { ExternalLink } from "lucide-react";
 
 import LabeledSwitch from "@/shared/components/LabeledSwitch";
@@ -79,14 +77,14 @@ function RenderSettings<
   T extends PopupSetting<PopupSettingKeys>,
   K extends keyof ChromeStore["popupSettings"],
 >({ settings, settingStoreKey }: { settings: T[]; settingStoreKey: K }) {
-  const { store, handleSettingsChange } = usePopupSettings();
+  const { settings: userSettings, updateSettings } = usePopupSettings();
 
-  if (!store) return null;
+  if (!userSettings) return null;
 
   return settings.map(
     ({ id, label, storeKey, experimental, versionRelease, onClick }) => {
       const defaultChecked =
-        !!store.popupSettings[settingStoreKey]?.[
+        !!userSettings[settingStoreKey]?.[
           storeKey as keyof ChromeStore["popupSettings"][K]
         ];
 
@@ -110,11 +108,10 @@ function RenderSettings<
             onCheckedChange={(checked) => {
               if (!storeKey) return onClick?.();
 
-              handleSettingsChange(
-                settingStoreKey,
-                storeKey as keyof ChromeStore["popupSettings"][K],
-                checked as ChromeStore["popupSettings"][K][keyof ChromeStore["popupSettings"][K]],
-              );
+              updateSettings(settingStoreKey, (draft) => {
+                draft[storeKey as keyof ChromeStore["popupSettings"][K]] =
+                  checked as ChromeStore["popupSettings"][K][keyof ChromeStore["popupSettings"][K]];
+              });
             }}
           />
           <div className="tw-ml-12 tw-flex tw-gap-2">

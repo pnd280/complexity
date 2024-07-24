@@ -1,3 +1,4 @@
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import { LanguageModel } from "@/types/ModelSelector";
 import { TrackQueryLimits } from "@/types/WebpageMessageInterceptors";
 import {
@@ -8,7 +9,6 @@ import {
 import { isParsedWSMessage, WSParsedMessage } from "@/types/WS";
 import WSMessageParser from "@/utils/WSMessageParser";
 
-import { popupSettingsStore } from "../session-store/popup-settings";
 import { queryBoxStore } from "../session-store/query-box";
 
 import { webpageMessenger } from "./webpage-messenger";
@@ -161,19 +161,19 @@ export default class WebpageMessageInterceptor {
         }
 
         const newModelPreference =
-          popupSettingsStore.getState().queryBoxSelectors.languageModel &&
-          parsedPayload.data?.[1].query_source !== "retry"
+          CPLXUserSettings.get().popupSettings.queryBoxSelectors
+            .languageModel && parsedPayload.data?.[1].query_source !== "retry"
             ? queryBoxStore.getState().selectedLanguageModel
             : parsedPayload.data[1].model_preference;
 
-        const newSearchFocus = popupSettingsStore.getState().queryBoxSelectors
-          .focus
+        const newSearchFocus = CPLXUserSettings.get().popupSettings
+          .queryBoxSelectors.focus
           ? queryBoxStore.getState().webAccess.allowWebAccess
             ? queryBoxStore.getState().webAccess.focus
             : "writing"
           : parsedPayload.data[1].search_focus;
 
-        const newTargetCollectionUuid = popupSettingsStore.getState()
+        const newTargetCollectionUuid = CPLXUserSettings.get().popupSettings
           .queryBoxSelectors.collection
           ? parsedPayload.data[1].query_source === "home" ||
             parsedPayload.data[1].query_source === "modal"
@@ -348,7 +348,7 @@ export default class WebpageMessageInterceptor {
   }
 
   static blockTelemetry() {
-    if (!popupSettingsStore.getState().qolTweaks.blockTelemetry) return;
+    if (!CPLXUserSettings.get().popupSettings.qolTweaks.blockTelemetry) return;
 
     webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {

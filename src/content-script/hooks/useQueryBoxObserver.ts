@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { useEffect } from "react";
 
-import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import { cn } from "@/utils/cn";
 import DOMObserver from "@/utils/DOMObserver";
 import UIUtils from "@/utils/UI";
@@ -49,8 +49,9 @@ export default function useQueryBoxObserver({
             "tw-col-span-3 tw-col-start-1 !tw-col-end-4 tw-flex-wrap tw-gap-y-1",
             {
               "tw-mr-[7rem]":
-                !popupSettingsStore.getState().queryBoxSelectors.focus,
-              "tw-mr-10": popupSettingsStore.getState().queryBoxSelectors.focus,
+                !CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
+              "tw-mr-10":
+                CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
             },
           ),
         );
@@ -59,7 +60,7 @@ export default function useQueryBoxObserver({
           ":not(.mr-xs.flex.shrink-0.items-center)",
         );
 
-        if (popupSettingsStore.getState().queryBoxSelectors.focus) {
+        if (CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus) {
           $buttonBarChildren.first().addClass("hidden");
         }
 

@@ -11,7 +11,7 @@ import MainPage from "@/content-script/components/MainPage";
 import QueryBox from "@/content-script/components/QueryBox/QueryBox";
 import ThreadExportButton from "@/content-script/components/ThreadExportButton";
 import useRouter from "@/content-script/hooks/useRouter";
-import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import { Toaster } from "@/shared/components/shadcn/ui/toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
 import { whereAmI } from "@/utils/utils";
@@ -86,19 +86,15 @@ function MainPageComponents() {
 }
 
 function ThreadComponents() {
+  const settings = CPLXUserSettings.get().popupSettings.qolTweaks;
+
   return (
     <>
       <ThreadExportButton />
-      {popupSettingsStore.getState().qolTweaks.threadTOC && <ThreadTOC />}
-      {popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar && (
-        <ThreadMessageStickyToolbar />
-      )}
-      {popupSettingsStore.getState().qolTweaks.alternateMarkdownBlock && (
-        <AlternateMarkdownBlock />
-      )}
-      {popupSettingsStore.getState().qolTweaks.canvas.enabled && (
-        <CanvasPanel />
-      )}
+      {settings.threadTOC && <ThreadTOC />}
+      {settings.threadMessageStickyToolbar && <ThreadMessageStickyToolbar />}
+      {settings.alternateMarkdownBlock && <AlternateMarkdownBlock />}
+      {settings.canvas.enabled && <CanvasPanel />}
     </>
   );
 }

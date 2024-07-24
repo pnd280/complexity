@@ -4,6 +4,7 @@ import { webpageMessenger } from "@/content-script/main-world/webpage-messenger"
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import WebpageMessageListeners from "@/content-script/main-world/WebpageMessageListeners";
 import ReactRoot from "@/content-script/ReactRoot";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import DOMObserver from "@/utils/DOMObserver";
 import UITweaks from "@/utils/UITweaks";
 import {
@@ -15,8 +16,6 @@ import {
 
 import packageData from "../../package.json";
 
-import { popupSettingsStore } from "./session-store/popup-settings";
-
 import htmlCanvas from "@/content-script/main-world/canvas/html?script&module";
 import mermaidCanvas from "@/content-script/main-world/canvas/mermaid?script&module";
 import nextRouter from "@/content-script/main-world/next-router?script&module";
@@ -27,6 +26,8 @@ import wsHook from "@/content-script/main-world/ws-hook?script&module";
 
 $(async function main() {
   initConsoleMessage();
+
+  await initCPLXUserSettings();
 
   initUITweaks();
 
@@ -47,6 +48,10 @@ $(async function main() {
     });
   }
 });
+
+async function initCPLXUserSettings() {
+  await CPLXUserSettings.init();
+}
 
 async function initUITweaks() {
   UITweaks.correctColorScheme();
@@ -71,7 +76,7 @@ async function initUITweaks() {
 }
 
 async function initDependencies() {
-  const settings = popupSettingsStore.getState();
+  const settings = CPLXUserSettings.get().popupSettings;
 
   await Promise.all([
     injectMainWorldScript(chrome.runtime.getURL(wsHook)),

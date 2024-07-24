@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { globalStore } from "@/content-script/session-store/global";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import PPLXApi from "@/services/PPLXApi";
 import InputWithLimit from "@/shared/components/InputWithLimit";
 import { Button } from "@/shared/components/shadcn/ui/button";
@@ -165,7 +165,7 @@ export default function CollectionEditDialog({
               title.length > limits.title ||
               description.length > limits.description ||
               instructions.length >
-                (globalStore.getState().secretMode
+                (CPLXUserSettings.get().secretMode
                   ? 10000
                   : limits.instructions)
             }

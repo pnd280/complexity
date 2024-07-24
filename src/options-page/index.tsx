@@ -1,6 +1,6 @@
 import "@@/public/global.css";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactDOM from "react-dom/client";
 
@@ -16,8 +16,7 @@ import {
   TabsTrigger,
 } from "@/shared/components/shadcn/ui/tabs";
 import { Toaster } from "@/shared/components/shadcn/ui/toaster";
-
-const queryClient = new QueryClient();
+import { queryClient } from "@/utils/ts-query-query-client";
 
 const queryStr = new URLSearchParams(window.location.search);
 

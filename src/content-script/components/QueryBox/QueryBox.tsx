@@ -13,11 +13,11 @@ import ReactDOM from "react-dom";
 
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
 import { useGlobalStore } from "@/content-script/session-store/global";
-import { usePopupSettingsStore } from "@/content-script/session-store/popup-settings";
 import {
   initQueryBoxStore,
   useQueryBoxStore,
 } from "@/content-script/session-store/query-box";
+import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
 import PPLXApi from "@/services/PPLXApi";
 import KeyCombo from "@/shared/components/KeyCombo";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
@@ -42,9 +42,10 @@ export default function QueryBox() {
     userSettings: false,
   });
 
-  const autoRefreshSessionTimeout = usePopupSettingsStore(
-    (state) => state.qolTweaks.autoRefreshSessionTimeout,
-  );
+  const { settings } = usePopupSettings();
+
+  const autoRefreshSessionTimeout =
+    settings?.qolTweaks.autoRefreshSessionTimeout;
 
   const queryOptions: Pick<
     UndefinedInitialDataOptions,
@@ -103,11 +104,9 @@ export default function QueryBox() {
   const { toggleWebAccess } = useQueryBoxStore((state) => state.webAccess);
 
   const { focus, imageGenModel, languageModel, collection } =
-    usePopupSettingsStore((state) => state.queryBoxSelectors);
+    settings?.queryBoxSelectors || {};
 
-  const { quickQueryCommander } = usePopupSettingsStore(
-    (state) => state.qolTweaks,
-  );
+  const quickQueryCommander = settings?.qolTweaks.quickQueryCommander;
 
   const hasActivePPLXSub =
     userSettings && userSettings.subscription_status === "active";
@@ -185,10 +184,10 @@ export default function QueryBox() {
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
       hasActivePPLXSub={!!hasActivePPLXSub}
-      focus={focus}
+      focus={!!focus}
       collection={collection}
-      languageModel={languageModel}
-      imageGenModel={imageGenModel}
+      languageModel={!!languageModel}
+      imageGenModel={!!imageGenModel}
     />
   );
 
@@ -196,9 +195,9 @@ export default function QueryBox() {
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
       hasActivePPLXSub={!!hasActivePPLXSub}
-      focus={focus}
-      languageModel={languageModel}
-      imageGenModel={imageGenModel}
+      focus={!!focus}
+      languageModel={!!languageModel}
+      imageGenModel={!!imageGenModel}
     />
   );
 

@@ -1,6 +1,7 @@
 import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
 
+import Tooltip from "@/shared/components/Tooltip";
 import Canvas from "@/utils/Canvas";
 
 import CanvasRenderButton from "./CanvasRenderButton";
@@ -33,7 +34,9 @@ export default function AlternateMarkdownBlockToolbar({
 
         {Canvas.isCanvasLang(lang) && (
           <div className="tw-hidden group-data-[inflight=false]:tw-block">
-            <CanvasRenderButton preBlockId={preBlockId} />
+            <Tooltip content="Render in canvas">
+              <CanvasRenderButton preBlockId={preBlockId} />
+            </Tooltip>
           </div>
         )}
 

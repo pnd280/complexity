@@ -1,6 +1,6 @@
 import "@@/public/global.css";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";
 
 import DiscordCallout from "@/popup-page/components/DiscordCallout";
@@ -8,8 +8,7 @@ import Footer from "@/popup-page/components/Footer";
 import { PopupSettings } from "@/popup-page/components/PopupSettings";
 import UntrustedBuildWarning from "@/popup-page/components/UntrustedBuildWarning";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
-
-const queryClient = new QueryClient();
+import { queryClient } from "@/utils/ts-query-query-client";
 
 ReactDOM.createRoot(document.getElementById("app") as HTMLElement).render(
   <QueryClientProvider client={queryClient}>

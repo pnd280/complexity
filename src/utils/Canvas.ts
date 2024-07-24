@@ -1,5 +1,5 @@
 import { canvasLangs } from "@/content-script/components/Canvas/langs";
-import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 
 import { isMainWorldContext } from "./utils";
 
@@ -10,7 +10,8 @@ export default class Canvas {
     if (isMainWorldContext())
       return document.body.classList.contains("cplx-canvas");
 
-    if (!popupSettingsStore.getState().qolTweaks.canvas.enabled) return false;
+    if (!CPLXUserSettings.get().popupSettings.qolTweaks.canvas.enabled)
+      return false;
 
     return canvasLangs.some((supported) => supported.trigger === lang);
   }
@@ -25,6 +26,6 @@ export default class Canvas {
         .includes(lang);
     }
 
-    return !!popupSettingsStore.getState().qolTweaks.canvas.mask[lang];
+    return !!CPLXUserSettings.get().popupSettings.qolTweaks.canvas.mask[lang];
   }
 }

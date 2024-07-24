@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import { useGlobalStore } from "@/content-script/session-store/global";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import useExtensionUpdate from "@/shared/hooks/useExtensionUpdate";
 import background from "@/utils/background";
 import { cn } from "@/utils/cn";
@@ -26,8 +27,7 @@ export default function Slogan() {
   const [visible, toggleVisibility] = useToggle(!isReady);
 
   const slogan =
-    useGlobalStore((state) => state.customTheme.slogan) ||
-    "Where knowledge begins";
+    CPLXUserSettings.get().customTheme.slogan || "Where knowledge begins";
 
   const { element, isWaiting } = useWaitForElement({
     id: "slogan",

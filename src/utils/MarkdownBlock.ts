@@ -2,7 +2,7 @@ import $ from "jquery";
 
 import { ReactNodeActionReturnType } from "@/content-script/main-world/react-node";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
-import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import { cn } from "@/utils/cn";
 
 import { getReactPropsKey, isMainWorldContext, stripHtml } from "./utils";
@@ -77,9 +77,11 @@ export default class MarkdownBlockUtils {
       "tw-sticky tw-z-[2] tw-w-full tw-overflow-hidden tw-rounded-t-md tw-transition-all",
       {
         "tw-top-[3.35rem]":
-          !popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar,
+          !CPLXUserSettings.get().popupSettings.qolTweaks
+            .threadMessageStickyToolbar,
         "tw-top-[6.45rem]":
-          popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar,
+          CPLXUserSettings.get().popupSettings.qolTweaks
+            .threadMessageStickyToolbar,
       },
     );
     const nativeClasses = "!tw-h-[2.3125rem] tw-bg-secondary";
@@ -240,7 +242,8 @@ export default class MarkdownBlockUtils {
 
     if (!messageBlock) return false;
 
-    const isInFlight = popupSettingsStore.getState().qolTweaks.canvas.enabled
+    const isInFlight = CPLXUserSettings.get().popupSettings.qolTweaks.canvas
+      .enabled
       ? await MarkdownBlockUtils.isInFlight(pre)
       : false;
 

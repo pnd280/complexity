@@ -1,7 +1,6 @@
 import $ from "jquery";
 
-import { globalStore } from "@/content-script/session-store/global";
-import { popupSettingsStore } from "@/content-script/session-store/popup-settings";
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import { jsonUtils, whereAmI } from "@/utils/utils";
 
 import UIUtils from "./UI";
@@ -11,7 +10,7 @@ export default class UITweaks {
     $(document.body).addClass("!tw-mr-0");
 
     const { customCSS, accentColor, monoFont, uiFont } =
-      globalStore.getState().customTheme;
+      CPLXUserSettings.get().customTheme;
 
     if ($("#complexity-custom-styles").length) {
       $("#complexity-custom-styles").text(jsonUtils.safeParse(customCSS || ""));
@@ -84,13 +83,13 @@ export default class UITweaks {
   }
 
   static async applySettingsAsHTMLAttrs(location: ReturnType<typeof whereAmI>) {
-    const settings = popupSettingsStore.getState();
+    const settings = CPLXUserSettings.get().popupSettings;
 
     $(document.body)
       .toggleClass(
         "alter-attach-button",
-        popupSettingsStore.getState().queryBoxSelectors.focus ||
-          popupSettingsStore.getState().queryBoxSelectors.collection,
+        settings.queryBoxSelectors.focus ||
+          settings.queryBoxSelectors.collection,
       )
       .toggleClass(
         "collapse-empty-thread-visual-columns",
@@ -103,13 +102,12 @@ export default class UITweaks {
       )
       .toggleClass(
         "thread-message-sticky-toolbar",
-        popupSettingsStore.getState().qolTweaks.threadMessageStickyToolbar &&
-          location === "thread",
+        settings.qolTweaks.threadMessageStickyToolbar && location === "thread",
       )
       .toggleClass(
         "cplx-canvas",
-        popupSettingsStore.getState().qolTweaks.alternateMarkdownBlock &&
-          popupSettingsStore.getState().qolTweaks.canvas.enabled,
+        settings.qolTweaks.alternateMarkdownBlock &&
+          settings.qolTweaks.canvas.enabled,
       );
 
     (function setMaskableMarkdownBlocks() {
