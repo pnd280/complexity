@@ -29,7 +29,7 @@ $(async function main() {
 
   await initCPLXUserSettings();
 
-  initUITweaks();
+  initUIUXTweaks();
 
   await waitForNextjsHydration();
 
@@ -53,7 +53,7 @@ async function initCPLXUserSettings() {
   await CPLXUserSettings.init();
 }
 
-async function initUITweaks() {
+async function initUIUXTweaks() {
   UITweaks.correctColorScheme();
   UITweaks.injectCustomStyles();
 

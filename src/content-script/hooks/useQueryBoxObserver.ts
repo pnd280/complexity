@@ -24,114 +24,177 @@ export default function useQueryBoxObserver({
 }: UseQueryBoxObserverProps) {
   const location = whereAmI(useRouter().url);
 
-  useEffect(() => {
-    const mainId = "main-query-box-selectors";
-    const followUpId = "follow-up-query-box-selectors";
-    const alterAttachButtonId = "alter-attach-button";
+  useEffect(
+    function mainQueryBoxObserver() {
+      const mainId = "main-query-box-selectors";
+      const followUpId = "follow-up-query-box-selectors";
+      const alterAttachButtonId = "alter-attach-button";
 
-    DOMObserver.create(mainId, {
+      DOMObserver.create(mainId, {
+        target: document.body,
+        config: { childList: true, subtree: true },
+        source: "hook",
+        onAny: () => {
+          observeMainQueryBox({
+            id: mainId,
+            disabled,
+            setContainers,
+            refetchUserSettings,
+          });
+
+          observeFollowUpQueryBox({
+            id: followUpId,
+            location,
+            disabled,
+            setFollowUpContainers,
+            refetchUserSettings,
+          });
+
+          alterAttachButton();
+
+          interceptPasteEvent();
+        },
+      });
+
+      return () => {
+        DOMObserver.destroy(mainId);
+        DOMObserver.destroy(followUpId);
+        DOMObserver.destroy(alterAttachButtonId);
+      };
+    },
+    [
+      disabled,
+      location,
+      refetchUserSettings,
+      setContainers,
+      setFollowUpContainers,
+    ],
+  );
+}
+
+function observeMainQueryBox({
+  id,
+  disabled,
+  setContainers,
+  refetchUserSettings,
+}: {
+  id: string;
+  disabled?: boolean;
+  setContainers: (containers: Element) => void;
+  refetchUserSettings: () => void;
+}) {
+  if (disabled) return;
+
+  const $buttonBar = UIUtils.getActiveQueryBoxTextarea({ type: "main" })
+    .parent()
+    .next();
+
+  if (!$buttonBar.length || $buttonBar.attr(`data-${id}`)) return;
+
+  $buttonBar.attr(`data-${id}`, "true");
+
+  $buttonBar.addClass(() =>
+    cn("tw-col-span-3 tw-col-start-1 !tw-col-end-4 tw-flex-wrap tw-gap-y-1", {
+      "tw-mr-[7rem]":
+        !CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
+      "tw-mr-10": CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
+    }),
+  );
+
+  const $buttonBarChildren = $buttonBar.children(
+    ":not(.mr-xs.flex.shrink-0.items-center)",
+  );
+
+  if (CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus) {
+    $buttonBarChildren.first().addClass("hidden");
+  }
+
+  setContainers($buttonBar[0]);
+
+  refetchUserSettings();
+}
+
+function observeFollowUpQueryBox({
+  id,
+  location,
+  disabled,
+  setFollowUpContainers,
+  refetchUserSettings,
+}: {
+  id: string;
+  location: string;
+  disabled?: boolean;
+  setFollowUpContainers: (containers: Element) => void;
+  refetchUserSettings: () => void;
+}) {
+  if (location === "thread" || location === "page") {
+    DOMObserver.create(id, {
       target: document.body,
       config: { childList: true, subtree: true },
+      throttleTime: 200,
       source: "hook",
-      onAny() {
+      onAdd() {
         if (disabled) return;
 
-        const $buttonBar = UIUtils.getActiveQueryBoxTextarea({ type: "main" })
+        const $toolbar = $('textarea[placeholder="Ask follow-up"]')
           .parent()
           .next();
 
-        if (!$buttonBar.length || $buttonBar.attr(`data-${mainId}`)) return;
+        if (!$toolbar.length || $toolbar.attr(`data-${id}`)) return;
 
-        $buttonBar.attr(`data-${mainId}`, "true");
+        $toolbar.attr(`data-${id}`, "true");
 
-        $buttonBar.addClass(() =>
-          cn(
-            "tw-col-span-3 tw-col-start-1 !tw-col-end-4 tw-flex-wrap tw-gap-y-1",
-            {
-              "tw-mr-[7rem]":
-                !CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
-              "tw-mr-10":
-                CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
-            },
-          ),
+        const $selectorContainer = $("<div>").addClass(
+          "tw-flex tw-flex-wrap tw-items-center tw-zoom-in",
         );
 
-        const $buttonBarChildren = $buttonBar.children(
-          ":not(.mr-xs.flex.shrink-0.items-center)",
-        );
+        $toolbar.append($selectorContainer);
 
-        if (CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus) {
-          $buttonBarChildren.first().addClass("hidden");
-        }
-
-        setContainers($buttonBar[0]);
+        setFollowUpContainers($selectorContainer[0]);
 
         refetchUserSettings();
       },
     });
+  } else {
+    DOMObserver.destroy(id);
+  }
+}
 
-    if (location === "thread" || location === "page") {
-      DOMObserver.create(followUpId, {
-        target: document.body,
-        config: { childList: true, subtree: true },
-        throttleTime: 200,
-        source: "hook",
-        onAdd() {
-          if (disabled) return;
+function alterAttachButton() {
+  const $attachButton = $('button:contains("Attach"):last');
 
-          const $toolbar = $('textarea[placeholder="Ask follow-up"]')
-            .parent()
-            .next();
+  if (
+    $attachButton.length &&
+    $attachButton.find(">div>div").text() === "Attach"
+  ) {
+    $attachButton.find(">div").removeClass("gap-xs");
+    $attachButton.find(">div>div").addClass("hidden");
+  }
+}
 
-          if (!$toolbar.length || $toolbar.attr(`data-${followUpId}`)) return;
+function interceptPasteEvent() {
+  const $textarea = UIUtils.getActiveQueryBoxTextarea({});
 
-          $toolbar.attr(`data-${followUpId}`, "true");
+  if (!$textarea.length || $textarea.attr("data-paste-event-intercepted"))
+    return;
 
-          const $selectorContainer = $("<div>").addClass(
-            "tw-flex tw-flex-wrap tw-items-center tw-zoom-in",
-          );
+  $textarea.attr("data-paste-event-intercepted", "true");
 
-          $toolbar.append($selectorContainer);
+  $textarea.on("paste", (e) => {
+    const clipboardEvent = e.originalEvent as ClipboardEvent;
 
-          setFollowUpContainers($selectorContainer[0]);
+    if (clipboardEvent.clipboardData) {
+      if (clipboardEvent.clipboardData.types.includes("text/plain")) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
 
-          refetchUserSettings();
-        },
-      });
-    } else {
-      DOMObserver.destroy(followUpId);
+        const pastedText = clipboardEvent.clipboardData.getData("text/plain");
+
+        UIUtils.setReactTextareaValue(
+          $textarea[0],
+          $textarea.val() + pastedText,
+        );
+      }
     }
-
-    DOMObserver.create(alterAttachButtonId, {
-      target: document.body,
-      config: {
-        childList: true,
-        subtree: true,
-      },
-      source: "hook",
-      onAny() {
-        const $attachButton = $('button:contains("Attach"):last');
-
-        if (
-          $attachButton.length &&
-          $attachButton.find(">div>div").text() === "Attach"
-        ) {
-          $attachButton.find(">div").removeClass("gap-xs");
-          $attachButton.find(">div>div").addClass("hidden");
-        }
-      },
-    });
-
-    return () => {
-      DOMObserver.destroy(mainId);
-      DOMObserver.destroy(followUpId);
-      DOMObserver.destroy(alterAttachButtonId);
-    };
-  }, [
-    disabled,
-    location,
-    refetchUserSettings,
-    setContainers,
-    setFollowUpContainers,
-  ]);
+  });
 }
