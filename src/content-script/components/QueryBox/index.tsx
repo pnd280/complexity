@@ -3,11 +3,10 @@ import { AiOutlineOpenAI } from "react-icons/ai";
 import { BiNetworkChart } from "react-icons/bi";
 import { PiGlobe } from "react-icons/pi";
 import {
-  SiAnthropic,
-  SiGooglegemini,
+  SiAnthropic, SiMeta,
   SiPerplexity,
   SiWikipedia,
-  SiYoutube,
+  SiYoutube
 } from "react-icons/si";
 import { TbLetterM } from "react-icons/tb";
 
@@ -19,16 +18,22 @@ export const languageModels = [
     icon: <SiAnthropic />,
   },
   {
-    label: "Claude 3 Opus",
-    shortLabel: "Opus",
-    code: "claude3opus",
-    icon: <SiAnthropic />,
+    label: "Llama 3.1 405B",
+    shortLabel: "Llama 3.1 405B",
+    code: "llama_x_large",
+    icon: <SiMeta />,
   },
   {
     label: "GPT-4 Omni",
     shortLabel: "GPT-4o",
     code: "gpt4o",
     icon: <AiOutlineOpenAI />,
+  },
+  {
+    label: "Claude 3 Opus",
+    shortLabel: "Opus",
+    code: "claude3opus",
+    icon: <SiAnthropic />,
   },
   {
     label: "GPT-4 Turbo",
@@ -53,12 +58,6 @@ export const languageModels = [
     shortLabel: "Mistral",
     code: "mistral",
     icon: <TbLetterM />,
-  },
-  {
-    label: "Google Gemini",
-    shortLabel: "Gemini",
-    code: "gemini",
-    icon: <SiGooglegemini />,
   },
 ] as const;
 
