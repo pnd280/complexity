@@ -108,11 +108,11 @@ body.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl .mt-sm.flex.ite
   border-radius: 0.375rem !important;
 }
 
-body.alter-attach-button .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):not([data-testid="copilot-toggle"]).rounded-full {
+body .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):not([data-testid="copilot-toggle"]).rounded-full {
   height: 2rem !important;
 }
 
-body.alter-attach-button .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):not([data-testid="copilot-toggle"]).rounded-full svg {
+body .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):not([data-testid="copilot-toggle"]).rounded-full svg {
   width : .9rem !important;
   height: .9rem !important;
 }

@@ -13,6 +13,7 @@ import {
   waitForNextjsHydration,
   whereAmI,
 } from "@/utils/utils";
+import UXTweaks from "@/utils/UXTweaks";
 
 import packageData from "../../package.json";
 
@@ -62,6 +63,8 @@ async function initUIUXTweaks() {
 
     UITweaks.applySelectableAttrs(location);
     UITweaks.applySettingsAsHTMLAttrs(location);
+
+    UXTweaks.dropFileWithinThread(location);
   };
 
   observe(window.location.href);

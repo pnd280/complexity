@@ -66,6 +66,14 @@ const qolTweaks: PopupSetting<
     storeKey: "blockTelemetry",
     versionRelease: "0.0.0.13",
   },
+  {
+    id: "no-file-creation-on-paste",
+    label: "No file creation on paste long text",
+  },
+  {
+    id: "file-dropable-thread-wrapper",
+    label: "Drop file within thread",
+  },
 ];
 
 const visualTweaks: PopupSetting<
