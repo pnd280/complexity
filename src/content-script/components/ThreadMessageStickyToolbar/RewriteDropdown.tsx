@@ -8,6 +8,7 @@ import { useCallback, useRef } from "react";
 
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
+import ProSearchIcon from "@/shared/components/ProSearchIcon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,11 +19,7 @@ import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import { sleep } from "@/utils/utils";
 
-import {
-  groupedLanguageModelsByProvider,
-  LanguageModel,
-  ProSearchIcon,
-} from "../QueryBox";
+import { groupedLanguageModelsByProvider, LanguageModel } from "../QueryBox";
 
 import { Container } from "./ThreadMessageStickyToolbar";
 

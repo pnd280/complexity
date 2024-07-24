@@ -1,4 +1,4 @@
-import { ChromeStore } from "@/types/ChromeStore";
+import { CPLXUserSettings } from "@/types/CPLXUserSettings";
 import background from "@/utils/background";
 
 export type PopupSetting<T> = {
@@ -11,7 +11,7 @@ export type PopupSetting<T> = {
 };
 
 const queryBoxSelectors: PopupSetting<
-  keyof ChromeStore["popupSettings"]["queryBoxSelectors"]
+  keyof CPLXUserSettings["popupSettings"]["queryBoxSelectors"]
 >[] = [
   {
     id: "focus-selector",
@@ -36,7 +36,7 @@ const queryBoxSelectors: PopupSetting<
 ];
 
 const qolTweaks: PopupSetting<
-  keyof ChromeStore["popupSettings"]["qolTweaks"]
+  keyof CPLXUserSettings["popupSettings"]["qolTweaks"]
 >[] = [
   {
     id: "thread-toc",
@@ -69,7 +69,7 @@ const qolTweaks: PopupSetting<
 ];
 
 const visualTweaks: PopupSetting<
-  keyof ChromeStore["popupSettings"]["visualTweaks"]
+  keyof CPLXUserSettings["popupSettings"]["visualTweaks"]
 >[] = [
   {
     id: "collapse-empty-visual-columns",

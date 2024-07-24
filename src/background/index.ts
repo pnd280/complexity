@@ -1,3 +1,4 @@
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import { BackgroundAction } from "@/utils/background";
 import ChromeStorage from "@/utils/ChromeStorage";
 
@@ -15,34 +16,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   if (!settings || Object.keys(settings).length === 0) {
     console.log("First time install detected, setting default values.");
 
-    ChromeStorage.setStore({
-      customTheme: {},
-      defaultFocus: "internet",
-      defaultWebAccess: false,
-      secretMode: false,
-      popupSettings: {
-        queryBoxSelectors: {
-          focus: false,
-          languageModel: false,
-          imageGenModel: false,
-          collection: false,
-        },
-        qolTweaks: {
-          threadTOC: false,
-          threadMessageStickyToolbar: false,
-          alternateMarkdownBlock: false,
-          canvas: {
-            enabled: false,
-            mask: {},
-          },
-          autoRefreshSessionTimeout: false,
-          blockTelemetry: false,
-        },
-        visualTweaks: {
-          collapseEmptyThreadVisualColumns: false,
-        },
-      },
-    });
+    ChromeStorage.setStore(CPLXUserSettings.defaultUserSettings);
   }
 });
 

@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
 import useCPLXUserSettings from "@/shared/hooks/useCPLXUserSettings";
-import { ChromeStore } from "@/types/ChromeStore";
+import { CPLXUserSettings } from "@/types/CPLXUserSettings";
 
 export default function usePopupSettings() {
   const {
@@ -12,10 +12,10 @@ export default function usePopupSettings() {
   const popupSettings = settings?.popupSettings;
 
   const handleSettingsChange = async <
-    T extends keyof ChromeStore["popupSettings"],
+    T extends keyof CPLXUserSettings["popupSettings"],
   >(
     section: T,
-    updater: (draft: ChromeStore["popupSettings"][T]) => void,
+    updater: (draft: CPLXUserSettings["popupSettings"][T]) => void,
   ) => {
     if (!popupSettings) return;
 

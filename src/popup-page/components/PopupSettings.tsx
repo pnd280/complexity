@@ -2,7 +2,7 @@ import { ExternalLink } from "lucide-react";
 
 import LabeledSwitch from "@/shared/components/LabeledSwitch";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
-import { ChromeStore, PopupSettingKeys } from "@/types/ChromeStore";
+import { CPLXUserSettings, PopupSettingKeys } from "@/types/CPLXUserSettings";
 import { cn } from "@/utils/cn";
 
 import packageData from "../../../package.json";
@@ -75,7 +75,7 @@ export const PopupSettings = ({
 
 function RenderSettings<
   T extends PopupSetting<PopupSettingKeys>,
-  K extends keyof ChromeStore["popupSettings"],
+  K extends keyof CPLXUserSettings["popupSettings"],
 >({ settings, settingStoreKey }: { settings: T[]; settingStoreKey: K }) {
   const { settings: userSettings, updateSettings } = usePopupSettings();
 
@@ -85,7 +85,7 @@ function RenderSettings<
     ({ id, label, storeKey, experimental, versionRelease, onClick }) => {
       const defaultChecked =
         !!userSettings[settingStoreKey]?.[
-          storeKey as keyof ChromeStore["popupSettings"][K]
+          storeKey as keyof CPLXUserSettings["popupSettings"][K]
         ];
 
       return (
@@ -109,8 +109,8 @@ function RenderSettings<
               if (!storeKey) return onClick?.();
 
               updateSettings(settingStoreKey, (draft) => {
-                draft[storeKey as keyof ChromeStore["popupSettings"][K]] =
-                  checked as ChromeStore["popupSettings"][K][keyof ChromeStore["popupSettings"][K]];
+                draft[storeKey as keyof CPLXUserSettings["popupSettings"][K]] =
+                  checked as CPLXUserSettings["popupSettings"][K][keyof CPLXUserSettings["popupSettings"][K]];
               });
             }}
           />

@@ -6,8 +6,9 @@ import { PiGlobeX } from "react-icons/pi";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
-  SelectContent, SelectItem,
-  SelectTrigger
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
@@ -89,31 +90,22 @@ export default function FocusSelector() {
       </SelectTrigger>
       <SelectContent className="tw-max-h-[500px] tw-max-w-[200px] tw-font-sans [&_span]:tw-truncate">
         {items.map((item) => (
-          <Tooltip
+          <SelectItem
             key={item.code}
-            content={focus !== item.code ? item.tooltip : undefined}
-            contentOptions={{
-              side: "right",
-              sideOffset: 10,
-            }}
+            value={item.code}
+            className={cn({
+              "tw-text-accent-foreground": item.code === focus,
+            })}
           >
-            <SelectItem
-              key={item.code}
-              value={item.code}
-              className={cn({
-                "tw-text-accent-foreground": item.code === focus,
-              })}
-            >
-              <div className="gap-2 tw-flex tw-items-center tw-justify-around">
-                {item.icon ? (
-                  <div>{item.icon}</div>
-                ) : (
-                  <Cpu className="tw-size-4" />
-                )}
-                <span>{item.label}</span>
-              </div>
-            </SelectItem>
-          </Tooltip>
+            <div className="gap-2 tw-flex tw-items-center tw-justify-around">
+              {item.icon ? (
+                <div>{item.icon}</div>
+              ) : (
+                <Cpu className="tw-size-4" />
+              )}
+              <span>{item.label}</span>
+            </div>
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>

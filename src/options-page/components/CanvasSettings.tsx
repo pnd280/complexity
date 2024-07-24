@@ -135,7 +135,7 @@ function CanvasSettingBlock({
             id={`canvas-lang-${trigger}`}
             label="Mask"
             className="!tw-w-max"
-            defaultChecked={canvasSettings.mask?.[trigger]}
+            defaultChecked={canvasSettings.mask[trigger]}
             onCheckedChange={(checked) => {
               updateSettings("qolTweaks", (draft) => {
                 draft.canvas.mask[trigger] = checked;
