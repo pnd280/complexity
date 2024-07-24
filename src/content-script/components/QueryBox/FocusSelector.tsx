@@ -6,17 +6,14 @@ import { PiGlobeX } from "react-icons/pi";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
+  SelectContent, SelectItem,
+  SelectTrigger
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
-import { WebAccessFocus } from "@/types/ModelSelector";
 import { cn } from "@/utils/cn";
 import UIUtils from "@/utils/UI";
 
-import { webAccessFocus } from "./";
+import { type WebAccessFocus, webAccessFocus } from "./";
 
 export default function FocusSelector() {
   const items = useMemo(() => {
@@ -91,35 +88,33 @@ export default function FocusSelector() {
         </Tooltip>
       </SelectTrigger>
       <SelectContent className="tw-max-h-[500px] tw-max-w-[200px] tw-font-sans [&_span]:tw-truncate">
-        <SelectGroup>
-          {items.map((item) => (
-            <Tooltip
+        {items.map((item) => (
+          <Tooltip
+            key={item.code}
+            content={focus !== item.code ? item.tooltip : undefined}
+            contentOptions={{
+              side: "right",
+              sideOffset: 10,
+            }}
+          >
+            <SelectItem
               key={item.code}
-              content={focus !== item.code ? item.tooltip : undefined}
-              contentOptions={{
-                side: "right",
-                sideOffset: 10,
-              }}
+              value={item.code}
+              className={cn({
+                "tw-text-accent-foreground": item.code === focus,
+              })}
             >
-              <SelectItem
-                key={item.code}
-                value={item.code}
-                className={cn({
-                  "tw-text-accent-foreground": item.code === focus,
-                })}
-              >
-                <div className="gap-2 tw-flex tw-items-center tw-justify-around">
-                  {item.icon ? (
-                    <div>{item.icon}</div>
-                  ) : (
-                    <Cpu className="tw-size-4" />
-                  )}
-                  <span>{item.label}</span>
-                </div>
-              </SelectItem>
-            </Tooltip>
-          ))}
-        </SelectGroup>
+              <div className="gap-2 tw-flex tw-items-center tw-justify-around">
+                {item.icon ? (
+                  <div>{item.icon}</div>
+                ) : (
+                  <Cpu className="tw-size-4" />
+                )}
+                <span>{item.label}</span>
+              </div>
+            </SelectItem>
+          </Tooltip>
+        ))}
       </SelectContent>
     </Select>
   );

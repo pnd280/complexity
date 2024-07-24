@@ -22,12 +22,13 @@ import PPLXApi from "@/services/PPLXApi";
 import KeyCombo from "@/shared/components/KeyCombo";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
-import { LanguageModel } from "@/types/ModelSelector";
 
 import CollectionSelector from "./CollectionSelector";
 import FocusSelector from "./FocusSelector";
-import ImageModelSelector, { ImageModel } from "./ImageModelSelector";
+import ImageModelSelector from "./ImageModelSelector";
 import LanguageModelSelector from "./LanguageModelSelector";
+
+import { ImageModel, LanguageModel } from ".";
 
 export default function QueryBox() {
   const isReady = useGlobalStore(

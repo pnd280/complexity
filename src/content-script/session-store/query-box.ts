@@ -2,15 +2,16 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
-import { ImageModel } from "@/content-script/components/QueryBox/ImageModelSelector";
 import PPLXApi from "@/services/PPLXApi";
-import {
-  isValidFocus,
-  LanguageModel,
-  WebAccessFocus,
-} from "@/types/ModelSelector";
+import { isValidFocus } from "@/types/ModelSelector";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { extensionExec } from "@/utils/hof";
+
+import {
+  ImageModel,
+  LanguageModel,
+  WebAccessFocus,
+} from "../components/QueryBox";
 
 type QueryBoxState = {
   selectedLanguageModel: LanguageModel["code"];

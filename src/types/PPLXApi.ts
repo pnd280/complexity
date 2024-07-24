@@ -1,6 +1,5 @@
+import { LanguageModel } from "@/content-script/components/QueryBox";
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
-
-import { LanguageModel } from "./ModelSelector";
 
 export type UserSettingsApiResponse = {
   create_limit: number;

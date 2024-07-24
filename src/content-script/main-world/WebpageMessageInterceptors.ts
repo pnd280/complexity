@@ -1,5 +1,4 @@
 import CPLXUserSettings from "@/lib/CPLXUserSettings";
-import { LanguageModel } from "@/types/ModelSelector";
 import { TrackQueryLimits } from "@/types/WebpageMessageInterceptors";
 import {
   LongPollingEventData,
@@ -9,6 +8,7 @@ import {
 import { isParsedWSMessage, WSParsedMessage } from "@/types/WS";
 import WSMessageParser from "@/utils/WSMessageParser";
 
+import { LanguageModel } from "../components/QueryBox";
 import { queryBoxStore } from "../session-store/query-box";
 
 import { webpageMessenger } from "./webpage-messenger";

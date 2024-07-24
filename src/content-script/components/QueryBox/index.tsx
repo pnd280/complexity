@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { BadgePercent, Library } from "lucide-react";
 import { AiOutlineOpenAI } from "react-icons/ai";
 import { BiNetworkChart } from "react-icons/bi";
@@ -9,7 +10,7 @@ import {
   SiWikipedia,
   SiYoutube,
 } from "react-icons/si";
-import { TbLetterM } from "react-icons/tb";
+import { TbLetterM, TbLetterP, TbLetterS } from "react-icons/tb";
 
 export const languageModels = [
   {
@@ -17,50 +18,104 @@ export const languageModels = [
     shortLabel: "Sonnet",
     code: "claude2",
     icon: <SiAnthropic />,
-  },
-  {
-    label: "Llama 3.1 405B",
-    shortLabel: "Llama 3.1 405B",
-    code: "llama_x_large",
-    icon: <SiMeta />,
-  },
-  {
-    label: "GPT-4 Omni",
-    shortLabel: "GPT-4o",
-    code: "gpt4o",
-    icon: <AiOutlineOpenAI />,
+    provider: "Anthropic",
   },
   {
     label: "Claude 3 Opus",
     shortLabel: "Opus",
     code: "claude3opus",
     icon: <SiAnthropic />,
-  },
-  {
-    label: "GPT-4 Turbo",
-    shortLabel: "GPT-4",
-    code: "gpt4",
-    icon: <AiOutlineOpenAI />,
+    provider: "Anthropic",
   },
   {
     label: "Claude 3 Haiku",
     shortLabel: "Haiku",
     code: "turbo",
     icon: <SiAnthropic />,
+    provider: "Anthropic",
+  },
+  {
+    label: "GPT-4 Omni",
+    shortLabel: "GPT-4o",
+    code: "gpt4o",
+    icon: <AiOutlineOpenAI />,
+    provider: "OpenAI",
+  },
+  {
+    label: "GPT-4 Turbo",
+    shortLabel: "GPT-4",
+    code: "gpt4",
+    icon: <AiOutlineOpenAI />,
+    provider: "OpenAI",
+  },
+  {
+    label: "Llama 3.1 405B",
+    shortLabel: "Llama 3.1 405B",
+    code: "llama_x_large",
+    icon: <SiMeta />,
+    provider: "Meta",
   },
   {
     label: "Sonar Large 32K",
     shortLabel: "Sonar",
     code: "experimental",
     icon: <SiPerplexity />,
+    provider: "Meta",
   },
   {
     label: "Mistral Large",
     shortLabel: "Mistral",
     code: "mistral",
     icon: <TbLetterM />,
+    provider: "Mistral",
   },
 ] as const;
+
+export type LanguageModel = (typeof languageModels)[number];
+type Provider = (typeof languageModels)[number]["provider"];
+
+type GroupedLanguageModelsByProvider = [
+  Provider,
+  (typeof languageModels)[number][],
+][];
+
+export const groupedLanguageModelsByProvider: GroupedLanguageModelsByProvider =
+  Array.from(
+    languageModels.reduce((acc: Map<Provider, LanguageModel[]>, model) => {
+      const group = acc.get(model.provider) || [];
+      group.push(model);
+      return acc.set(model.provider, group);
+    }, new Map<Provider, LanguageModel[]>()),
+  );
+
+export type ImageModel = (typeof imageModels)[number] & {
+  tooltip?: number;
+};
+
+export const imageModels = [
+  {
+    label: "DALL-E 3",
+    shortLabel: "DALL-E",
+    code: "dall-e-3",
+    icon: <AiOutlineOpenAI />,
+  },
+  {
+    label: "Playground",
+    shortLabel: "Playground",
+    code: "default",
+    icon: <TbLetterP />,
+  },
+  {
+    label: "Stable Diffusion XL",
+    shortLabel: "SDXL",
+    code: "sdxl",
+    icon: <TbLetterS />,
+  },
+] as const;
+
+export type WebAccessFocus = (typeof webAccessFocus)[number] & {
+  tooltip?: string;
+};
 
 export const webAccessFocus = [
   {

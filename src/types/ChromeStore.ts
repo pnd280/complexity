@@ -1,6 +1,6 @@
+import { WebAccessFocus } from "@/content-script/components/QueryBox";
 import { CanvasLang } from "@/utils/Canvas";
 
-import { WebAccessFocus } from "./ModelSelector";
 import { Nullable } from "./Utils";
 
 export type ChromeStoreKey = keyof ChromeStore;

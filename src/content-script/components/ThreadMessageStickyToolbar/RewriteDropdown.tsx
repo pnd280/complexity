@@ -1,3 +1,7 @@
+import {
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+} from "@radix-ui/react-dropdown-menu";
 import $ from "jquery";
 import { RefreshCcw } from "lucide-react";
 import { useCallback, useRef } from "react";
@@ -12,10 +16,13 @@ import {
 } from "@/shared/components/shadcn/ui/dropdown-menu";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
-import { LanguageModel } from "@/types/ModelSelector";
 import { sleep } from "@/utils/utils";
 
-import { languageModels, ProSearchIcon } from "../QueryBox";
+import {
+  groupedLanguageModelsByProvider,
+  LanguageModel,
+  ProSearchIcon,
+} from "../QueryBox";
 
 import { Container } from "./ThreadMessageStickyToolbar";
 
@@ -106,19 +113,26 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
           Pro Search
         </DropdownMenuItem>
 
-        {languageModels.map((model) => (
-          <DropdownMenuItem
-            key={model.code}
-            className="tw-flex tw-items-center tw-gap-2"
-            onSelect={() => {
-              handleRewrite({
-                model: model.code,
-              });
-            }}
-          >
-            {model.icon}
-            {model.label}
-          </DropdownMenuItem>
+        {groupedLanguageModelsByProvider.map(([provider, models]) => (
+          <DropdownMenuGroup key={provider}>
+            <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-sm tw-text-muted-foreground">
+              {provider}
+            </DropdownMenuLabel>
+            {models.map((model) => (
+              <DropdownMenuItem
+                key={model.code}
+                className="tw-flex tw-items-center tw-gap-2"
+                onSelect={() => {
+                  handleRewrite({
+                    model: model.code,
+                  });
+                }}
+              >
+                {model.icon}
+                {model.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
