@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 import UIUtils from "./UI";
 import { whereAmI } from "./utils";
 
@@ -37,6 +39,16 @@ export default class UXTweaks {
 
       $fileInput.prop("files", dataTransfer.files);
       $fileInput[0].dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  }
+
+  static restoreLogoContextMenu() {
+    const $logo = $(".flex.items-center.mb-md.justify-between > *:first-child");
+
+    if (!$logo.length) return;
+
+    $logo.on("contextmenu", function (e) {
+      e.stopPropagation();
     });
   }
 }

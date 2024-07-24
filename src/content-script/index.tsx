@@ -58,6 +58,8 @@ async function initUIUXTweaks() {
   UITweaks.correctColorScheme();
   UITweaks.injectCustomStyles();
 
+  UXTweaks.restoreLogoContextMenu();
+
   const observe = async (url: string) => {
     const location = whereAmI(url);
 
