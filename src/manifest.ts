@@ -26,6 +26,10 @@ export default defineManifest({
   content_scripts: [
     {
       matches: ["https://www.perplexity.ai/*", "https://perplexity.ai/*"],
+      exclude_matches: [
+        "https://www.perplexity.ai/p/api/*",
+        "https://perplexity.ai/p/api/*",
+      ],
       js: ["src/content-script/index.tsx"],
       css: ["global.css", "overrides.css", "components.css", "canvas.css"],
       run_at: "document_start",

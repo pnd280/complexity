@@ -235,7 +235,7 @@ export function Select({
                   data-state={isOpen ? "open" : "closed"}
                   data-side={context.placement}
                 >
-                  <div className={cn("tw-max-h-96")}>
+                  <div className="tw-max-h-[300px]">
                     <FloatingList
                       elementsRef={elementsRef}
                       labelsRef={labelsRef}

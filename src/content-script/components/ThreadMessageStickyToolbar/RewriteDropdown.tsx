@@ -97,40 +97,41 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         </Tooltip>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem
-          className="tw-flex tw-items-center tw-gap-2"
-          onSelect={() => {
-            handleRewrite({
-              proSearch: true,
-              model: queryBoxStore.getState().selectedLanguageModel,
-            });
-          }}
-        >
-          <ProSearchIcon className="tw-size-4" />
-          Pro Search
-        </DropdownMenuItem>
-
-        {groupedLanguageModelsByProvider.map(([provider, models]) => (
-          <DropdownMenuGroup key={provider}>
-            <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-sm tw-text-muted-foreground">
-              {provider}
-            </DropdownMenuLabel>
-            {models.map((model) => (
-              <DropdownMenuItem
-                key={model.code}
-                className="tw-flex tw-items-center tw-gap-2"
-                onSelect={() => {
-                  handleRewrite({
-                    model: model.code,
-                  });
-                }}
-              >
-                {model.icon}
-                {model.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
-        ))}
+        <div className="custom-scrollbar tw-max-h-[300px] tw-overflow-auto">
+          <DropdownMenuItem
+            className="tw-flex tw-items-center tw-gap-2"
+            onSelect={() => {
+              handleRewrite({
+                proSearch: true,
+                model: queryBoxStore.getState().selectedLanguageModel,
+              });
+            }}
+          >
+            <ProSearchIcon className="tw-size-4" />
+            Pro Search
+          </DropdownMenuItem>
+          {groupedLanguageModelsByProvider.map(([provider, models]) => (
+            <DropdownMenuGroup key={provider}>
+              <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-sm tw-text-muted-foreground">
+                {provider}
+              </DropdownMenuLabel>
+              {models.map((model) => (
+                <DropdownMenuItem
+                  key={model.code}
+                  className="tw-flex tw-items-center tw-gap-2"
+                  onSelect={() => {
+                    handleRewrite({
+                      model: model.code,
+                    });
+                  }}
+                >
+                  {model.icon}
+                  {model.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+          ))}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
