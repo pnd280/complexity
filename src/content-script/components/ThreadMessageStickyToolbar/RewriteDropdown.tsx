@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { RefreshCcw, Sparkles } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { useCallback, useRef } from "react";
 
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
@@ -15,7 +15,7 @@ import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import { LanguageModel } from "@/types/ModelSelector";
 import { sleep } from "@/utils/utils";
 
-import { languageModels } from "../QueryBox";
+import { languageModels, ProSearchIcon } from "../QueryBox";
 
 import { Container } from "./ThreadMessageStickyToolbar";
 
@@ -87,10 +87,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         }}
       >
         <Tooltip content="Rewrite Message">
-          <div
-            className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95"
-            onClick={() => {}}
-          >
+          <div className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95">
             <RefreshCcw className="tw-size-4 tw-text-muted-foreground tw-transition-all group-hover:tw-text-foreground" />
           </div>
         </Tooltip>
@@ -105,7 +102,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
             });
           }}
         >
-          <Sparkles className="tw-size-4" />
+          <ProSearchIcon className="tw-size-4" />
           Pro Search
         </DropdownMenuItem>
 
