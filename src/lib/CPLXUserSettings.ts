@@ -7,7 +7,7 @@ import {
   type CPLXUserSettings as CPLXUserSettingsType,
 } from "@/types/CPLXUserSettings";
 import ChromeStorage from "@/utils/ChromeStorage";
-import { compareVersions } from "@/utils/utils";
+import { compareVersions, isValidVersionString } from "@/utils/utils";
 
 import packageData from "../../package.json";
 
@@ -51,9 +51,12 @@ export default class CPLXUserSettings {
     const result = CPLXUserSettingsSchema.safeParse(fetchedSettings);
 
     if (!result.success) {
+      const prevVersion = isValidVersionString(fetchedSettings.schemaVersion)
+        ? fetchedSettings.schemaVersion
+        : "0.0.0.0";
+
       const sameSchemaVersion =
-        compareVersions(fetchedSettings.schemaVersion, packageData.version) ===
-        0;
+        compareVersions(prevVersion, packageData.version) === 0;
 
       if (sameSchemaVersion) {
         toast({

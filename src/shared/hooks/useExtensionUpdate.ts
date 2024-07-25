@@ -17,7 +17,8 @@ export default function useExtensionUpdate({
   });
 
   const newVersionAvailable =
-    compareVersions(data?.public || "0", packageData.version) === 1;
+    data &&
+    compareVersions(data?.public || "0.0.0.0", packageData.version) === 1;
 
   const { data: changelog, isLoading: isChangelogFetching } = useQuery({
     queryKey: ["changelog"],

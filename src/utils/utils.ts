@@ -44,7 +44,10 @@ export const jsonUtils = {
  * @param {string} v2 - The second version string.
  * @returns {number} Returns 1 if v1 is greater, -1 if v2 is greater, or 0 if they are equal.
  */
-export function compareVersions(v1: string, v2: string) {
+export function compareVersions(v1: string, v2: string): number {
+  if (!isValidVersionString(v1) || !isValidVersionString(v2))
+    throw new Error("Invalid version string");
+
   const v1Parts = v1.split(".").map(Number);
   const v2Parts = v2.split(".").map(Number);
 
@@ -58,6 +61,10 @@ export function compareVersions(v1: string, v2: string) {
   }
 
   return 0;
+}
+
+export function isValidVersionString(version: string) {
+  return /^\d+\.\d+\.\d+\.\d+$/.test(version);
 }
 
 export function waitForNextjsHydration() {
