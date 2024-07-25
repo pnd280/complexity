@@ -15,7 +15,7 @@ import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
-import { jsonUtils } from "@/utils/utils";
+import ThreadExport from "@/utils/ThreadExport";
 
 import { Container } from "./ThreadMessageStickyToolbar";
 
@@ -61,11 +61,21 @@ export default function CopyButton({
     setCopyButtonText(<Check className="tw-size-4" />);
   }, [container.messageBlock, setCopyButtonText]);
 
-  const handleCopyStrippedMessage = useCallback(async () => {
-    const answer = await processMessage(containerIndex);
+  const handleCopyMessageWithoutCitations = useCallback(async () => {
+    const resp = await refetch();
+
+    if (!resp || !resp.data) return;
+
+    const threadJSON = resp.data;
+
+    const output = ThreadExport.exportThread({
+      threadJSON,
+      includeCitations: false,
+      messageIndex: containerIndex,
+    });
 
     try {
-      await navigator.clipboard.writeText(answer);
+      await navigator.clipboard.writeText(output);
 
       setCopyButtonText(<Check className="tw-size-4" />);
     } catch (e) {
@@ -74,34 +84,6 @@ export default function CopyButton({
         description: "The document must be focused to copy the text.",
         timeout: 1000,
       });
-    }
-
-    async function processMessage(containerIndex: number): Promise<string> {
-      const result = await refetch();
-
-      if (!result.data || !result.data[containerIndex]) return "";
-
-      const message = result.data[containerIndex];
-      const messageText = jsonUtils.safeParse(message.text);
-      const isProSearch = Array.isArray(messageText);
-
-      let answer =
-        messageText?.answer ||
-        jsonUtils.safeParse(
-          messageText?.[messageText.length - 1]?.content?.answer,
-        )?.answer;
-
-      const webResults = isProSearch
-        ? messageText.find((x) => x.step_type === "SEARCH_RESULTS")?.content
-            ?.web_results
-        : jsonUtils.safeParse(message.text)?.web_results;
-
-      webResults?.forEach((_: unknown, index: number) => {
-        const findText = `\\[${index + 1}\\]`;
-        answer = answer.replace(new RegExp(findText, "g"), "");
-      });
-
-      return answer;
     }
   }, [containerIndex, refetch, setCopyButtonText]);
 
@@ -138,7 +120,7 @@ export default function CopyButton({
         <DropdownMenuItem
           className="tw-flex tw-items-center tw-gap-2"
           onSelect={() => {
-            handleCopyStrippedMessage();
+            handleCopyMessageWithoutCitations();
           }}
         >
           <Unlink className="tw-size-4" />

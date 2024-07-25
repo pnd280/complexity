@@ -7,27 +7,6 @@ export default class UIUtils {
     return $("html").hasClass("dark");
   }
 
-  static isChildrenNodeOverflowing({
-    parent,
-    child,
-  }: {
-    parent: Element;
-    child: Element;
-  }) {
-    const parentRect = parent.getBoundingClientRect();
-    const childRect = child.getBoundingClientRect();
-
-    const isXOverflowing =
-      childRect.left < parentRect.left || childRect.right > parentRect.right;
-    const isYOverflowing =
-      childRect.top < parentRect.top || childRect.bottom > parentRect.bottom;
-
-    return {
-      isXOverflowing,
-      isYOverflowing,
-    };
-  }
-
   static getThreadWrapper() {
     return $(".max-w-threadWidth");
   }

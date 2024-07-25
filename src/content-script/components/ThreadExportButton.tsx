@@ -1,13 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { Check, Download, LoaderCircle, Unlink } from "lucide-react";
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { FaMarkdown } from "react-icons/fa";
 
@@ -20,12 +14,12 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/shadcn/ui/dropdown-menu";
 import { toast } from "@/shared/components/shadcn/ui/use-toast";
+import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
+import ThreadExport from "@/utils/ThreadExport";
 import UIUtils from "@/utils/UI";
-import { isDOMNode, jsonUtils } from "@/utils/utils";
+import { isDOMNode } from "@/utils/utils";
 
 import useWaitForElement from "../hooks/useWaitForElement";
-
-import { languageModels } from "./QueryBox";
 
 const exportOptions = [
   {
@@ -50,18 +44,17 @@ export default function ThreadExportButton() {
 
   const [container, setContainer] = React.useState<Element>();
 
-  const idleSaveButtonText = useMemo(
-    () => (
-      <>
-        <Download className="tw-mr-1 tw-size-4" />
-        <span className="tw-font-sans">Export</span>
-      </>
+  const [saveButtonText, setSaveButtonText] = useToggleButtonText({
+    defaultText: useMemo(
+      () => (
+        <>
+          <Download className="tw-mr-1 tw-size-4" />
+          <span className="tw-font-sans">Export</span>
+        </>
+      ),
+      [],
     ),
-    [],
-  );
-
-  const [saveButtonText, setSaveButtonText] =
-    useState<ReactNode>(idleSaveButtonText);
+  });
 
   const { element, isWaiting } = useWaitForElement({
     id: "threadExportButton",
@@ -86,10 +79,17 @@ export default function ThreadExportButton() {
 
   const handleExportThread = useCallback(
     async ({ includeCitations }: { includeCitations?: boolean }) => {
-      const outputText = await processMessages();
+      const resp = await refetch();
+
+      if (!resp || !resp.data) return;
+
+      const output = ThreadExport.exportThread({
+        threadJSON: resp.data,
+        includeCitations: !!includeCitations,
+      });
 
       try {
-        await navigator.clipboard.writeText(outputText);
+        await navigator.clipboard.writeText(output);
 
         setSaveButtonText(
           <>
@@ -97,10 +97,6 @@ export default function ThreadExportButton() {
             <span>Copied</span>
           </>,
         );
-
-        setTimeout(() => {
-          setSaveButtonText(idleSaveButtonText);
-        }, 2000);
       } catch (e) {
         toast({
           title: "⚠️ Error",
@@ -108,68 +104,8 @@ export default function ThreadExportButton() {
           timeout: 1000,
         });
       }
-
-      async function processMessages(): Promise<string> {
-        const result = await refetch();
-
-        if (!result.data) return "";
-
-        let outputText = "";
-
-        result.data?.map((message) => {
-          outputText += `**Question**:  \n${message.query_str}\n\n`;
-
-          const messageText = jsonUtils.safeParse(message.text);
-          const isProSearch = Array.isArray(messageText);
-
-          let answer =
-            jsonUtils.safeParse(message.text)?.answer ||
-            jsonUtils.safeParse(
-              jsonUtils.safeParse(message.text)?.[messageText.length - 1]
-                .content.answer,
-            )?.answer;
-
-          let webResults = "";
-
-          const extractedWebResults = isProSearch
-            ? messageText.find((x) => x.step_type === "SEARCH_RESULTS")?.content
-                ?.web_results
-            : jsonUtils.safeParse(message.text)?.web_results;
-
-          extractedWebResults?.map(
-            (
-              webResult: {
-                name: string;
-                url: string;
-              },
-              index: number,
-            ) => {
-              if (includeCitations) {
-                webResults += `[${index + 1}] [${webResult.name}](${webResult.url})  \n`;
-              } else {
-                const findText = `\\[${index + 1}\\]`;
-                answer = answer.replace(new RegExp(findText, "g"), "");
-              }
-            },
-          );
-
-          const modelName =
-            languageModels.find((model) => model.code === message.display_model)
-              ?.label || message.display_model;
-
-          outputText += `**Answer** (${modelName}):  \n${answer}\n\n`;
-
-          if (includeCitations && webResults) {
-            outputText += `**Web Results**:  \n${webResults}\n\n`;
-          }
-
-          outputText += "\n---\n\n\n";
-        });
-
-        return outputText;
-      }
     },
-    [refetch, idleSaveButtonText],
+    [refetch, setSaveButtonText],
   );
 
   if (!container) return null;
