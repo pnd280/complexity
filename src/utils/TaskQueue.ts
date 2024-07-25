@@ -1,17 +1,19 @@
-const MIN_CHUNK_SIZE = 50;
-const MAX_CHUNK_SIZE = 500;
-const INITIAL_CHUNK_SIZE = 100;
+const MIN_CHUNK_SIZE = 1;
+const MAX_CHUNK_SIZE = 10;
+const INITIAL_CHUNK_SIZE = 10;
+const TARGET_TIME = 16; // Aiming for 60fps
+const TOLERANCE = 0.2;
+const RESET_TIMEOUT = 1000;
+const CHUNK_SIZE_ADJUSTMENT = 2;
+const PROCESSING_TIME_AVERAGE_FACTOR = 2;
 
 export type Task = () => Promise<void>;
 
 class Node {
-  task: Task;
-  next: Node | null;
-
-  constructor(task: Task) {
-    this.task = task;
-    this.next = null;
-  }
+  constructor(
+    public task: Task,
+    public next: Node | null = null,
+  ) {}
 }
 
 export class TaskQueue {
@@ -21,6 +23,7 @@ export class TaskQueue {
   private isProcessing = false;
   private chunkSize = INITIAL_CHUNK_SIZE;
   private lastProcessingTime = 0;
+  private resetTimer: number | null = null;
 
   private constructor() {}
 
@@ -34,8 +37,7 @@ export class TaskQueue {
   public enqueue(task: Task): void {
     const newNode = new Node(task);
     if (!this.head) {
-      this.head = newNode;
-      this.tail = newNode;
+      this.head = this.tail = newNode;
     } else {
       this.tail!.next = newNode;
       this.tail = newNode;
@@ -43,24 +45,40 @@ export class TaskQueue {
     if (!this.isProcessing) {
       void this.processQueue();
     }
+    this.cancelResetTimer();
   }
 
   private async processQueue(): Promise<void> {
     this.isProcessing = true;
     while (this.head) {
       const start = performance.now();
-      await new Promise<void>((resolve) => {
-        requestAnimationFrame(() => {
-          const chunk = this.dequeueChunk();
-          this.processChunk(chunk).then(() => {
-            const end = performance.now();
-            this.adjustChunkSize(end - start);
-            resolve();
-          });
-        });
-      });
+      await this.processChunk();
+      const end = performance.now();
+      this.adjustChunkSize(end - start);
     }
     this.isProcessing = false;
+    this.startResetTimer();
+  }
+
+  private async processChunk(): Promise<void> {
+    return new Promise((resolve) => {
+      const scheduler =
+        document.visibilityState === "visible"
+          ? requestAnimationFrame
+          : queueMicrotask;
+
+      scheduler(async () => {
+        const chunk = this.dequeueChunk();
+        for (const task of chunk) {
+          try {
+            await task();
+          } catch (error) {
+            console.error("Error processing task:", error);
+          }
+        }
+        resolve();
+      });
+    });
   }
 
   private dequeueChunk(): Task[] {
@@ -75,32 +93,55 @@ export class TaskQueue {
     return chunk;
   }
 
-  private async processChunk(chunk: Task[]): Promise<void> {
-    for (const task of chunk) {
-      try {
-        await task();
-      } catch (error) {
-        console.error("Error processing task:", error);
-      }
-    }
+  private adjustChunkSize(processingTime: number): void {
+    const avgProcessingTime =
+      (processingTime + this.lastProcessingTime) /
+      PROCESSING_TIME_AVERAGE_FACTOR;
+    const newChunkSize = this.calculateNewChunkSize(avgProcessingTime);
+
+    if (newChunkSize !== this.chunkSize) this.chunkSize = newChunkSize;
+
+    // if (newChunkSize !== this.chunkSize) {
+    //   const color = newChunkSize > this.chunkSize ? "green" : "red";
+    //   console.log(
+    //     `%cChunk size: ${this.chunkSize} -> ${newChunkSize}; Avg: ${avgProcessingTime}ms`,
+    //     `color: ${color};`,
+    //   );
+    // } else {
+    //   console.log(
+    //     `%cChunk size: ${this.chunkSize}; Avg: ${avgProcessingTime}ms`,
+    //     "color: #0091f7;",
+    //   );
+    // }
+
+    this.lastProcessingTime = processingTime;
   }
 
-  private adjustChunkSize(processingTime: number): void {
-    const targetTime = 16; // Aiming for 60fps
-    if (processingTime > targetTime * 1.2) {
-      this.chunkSize = Math.max(
-        MIN_CHUNK_SIZE,
-        Math.floor(this.chunkSize * 0.8),
-      );
-    } else if (
-      processingTime < targetTime * 0.8 &&
-      this.head // Check if there are more tasks in the queue
-    ) {
-      this.chunkSize = Math.min(
-        MAX_CHUNK_SIZE,
-        Math.floor(this.chunkSize * 1.2),
-      );
+  private calculateNewChunkSize(avgProcessingTime: number): number {
+    if (avgProcessingTime > TARGET_TIME * (1 + TOLERANCE)) {
+      return Math.max(MIN_CHUNK_SIZE, this.chunkSize - CHUNK_SIZE_ADJUSTMENT);
+    } else if (avgProcessingTime < TARGET_TIME * (1 - TOLERANCE) && this.head) {
+      return Math.min(MAX_CHUNK_SIZE, this.chunkSize + CHUNK_SIZE_ADJUSTMENT);
     }
-    this.lastProcessingTime = processingTime;
+    return this.chunkSize;
+  }
+
+  private startResetTimer(): void {
+    this.cancelResetTimer();
+    this.resetTimer = window.setTimeout(() => {
+      if (this.chunkSize < MAX_CHUNK_SIZE) {
+        // console.log(
+        //   `Resetting chunk size to ${MAX_CHUNK_SIZE} due to inactivity`,
+        // );
+        this.chunkSize = MAX_CHUNK_SIZE;
+      }
+    }, RESET_TIMEOUT);
+  }
+
+  private cancelResetTimer(): void {
+    if (this.resetTimer !== null) {
+      clearTimeout(this.resetTimer);
+      this.resetTimer = null;
+    }
   }
 }
