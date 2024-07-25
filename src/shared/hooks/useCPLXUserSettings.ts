@@ -13,8 +13,6 @@ export default function useCPLXUserSettings() {
     mutationKey: ["updateCPLXUserSettings"],
     mutationFn: CPLXUserSettings.set,
     onSettled: () => {
-      console.log('here');
-      
       queryClient.invalidateQueries({
         queryKey: ["cplxUserSettings"],
       });

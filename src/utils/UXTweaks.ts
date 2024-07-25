@@ -1,10 +1,14 @@
 import $ from "jquery";
 
+import CPLXUserSettings from "@/lib/CPLXUserSettings";
+
 import UIUtils from "./UI";
 import { whereAmI } from "./utils";
 
 export default class UXTweaks {
   static dropFileWithinThread(location: ReturnType<typeof whereAmI>) {
+    if (!CPLXUserSettings.get().popupSettings.qolTweaks.fileDropableThreadWrapper) return;
+    
     const $threadWrapperWrapper = UIUtils.getThreadWrapper().parent();
     if (!$threadWrapperWrapper.length) return;
 

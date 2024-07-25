@@ -4,7 +4,7 @@ import background from "@/utils/background";
 export type PopupSetting<T> = {
   id: string;
   label: string;
-  storeKey?: T;
+  settingKey?: T;
   versionRelease?: string;
   experimental?: boolean;
   onClick?: () => void;
@@ -16,22 +16,22 @@ const queryBoxSelectors: PopupSetting<
   {
     id: "focus-selector",
     label: "Web search focus",
-    storeKey: "focus",
+    settingKey: "focus",
   },
   {
     id: "collection-selector",
     label: "Collection",
-    storeKey: "collection",
+    settingKey: "collection",
   },
   {
     id: "language-model-selector",
     label: "Language Model",
-    storeKey: "languageModel",
+    settingKey: "languageModel",
   },
   {
     id: "image-gen-model-selector",
     label: "Image Generation Model",
-    storeKey: "imageGenModel",
+    settingKey: "imageGenModel",
   },
 ];
 
@@ -41,38 +41,42 @@ const qolTweaks: PopupSetting<
   {
     id: "thread-toc",
     label: "Thread TOC",
-    storeKey: "threadTOC",
+    settingKey: "threadTOC",
   },
   {
     id: "alternate-markdown-block",
     label: "Alternate markdown block",
-    storeKey: "alternateMarkdownBlock",
+    settingKey: "alternateMarkdownBlock",
   },
   {
     id: "thread-message-sticky-toolbar",
     label: "Thread message sticky toolbar",
-    storeKey: "threadMessageStickyToolbar",
+    settingKey: "threadMessageStickyToolbar",
     versionRelease: "0.0.0.12",
   },
   {
     id: "auto-refresh-session-timeout",
     label: "Auto-refresh Cloudflare session timeout",
-    storeKey: "autoRefreshSessionTimeout",
+    settingKey: "autoRefreshSessionTimeout",
     versionRelease: "0.0.0.12",
   },
   {
     id: "block-telemetry",
     label: "Block Perplexity's telemetry data",
-    storeKey: "blockTelemetry",
+    settingKey: "blockTelemetry",
     versionRelease: "0.0.0.13",
   },
   {
     id: "no-file-creation-on-paste",
-    label: "No file creation on paste long text",
+    label: "No file creation on long text paste",
+    settingKey: "noFileCreationOnPaste",
+    versionRelease: "0.0.1.0",
   },
   {
     id: "file-dropable-thread-wrapper",
     label: "Drop file within thread",
+    settingKey: "fileDropableThreadWrapper",
+    versionRelease: "0.0.1.0",
   },
 ];
 
@@ -82,7 +86,7 @@ const visualTweaks: PopupSetting<
   {
     id: "collapse-empty-visual-columns",
     label: "Collapse empty thread visual columns",
-    storeKey: "collapseEmptyThreadVisualColumns",
+    settingKey: "collapseEmptyThreadVisualColumns",
   },
   {
     id: "custom-theme",

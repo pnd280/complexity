@@ -6,7 +6,10 @@ import {
 } from "@/content-script/components/QueryBox";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
 
+import packageData from '../../package.json';
+
 import { NestedKeys } from "./Utils";
+
 
 type WebAccessFocusCode = WebAccessFocus["code"];
 
@@ -19,6 +22,7 @@ const CanvasLangSchema = z.custom<CanvasLang>((val) => {
 });
 
 export const CPLXUserSettingsSchema = z.object({
+  schemaVersion: z.literal(packageData.version),
   defaultFocus: WebAccessFocusSchema.nullable(),
   defaultWebAccess: z.boolean(),
   secretMode: z.boolean(),
@@ -39,6 +43,8 @@ export const CPLXUserSettingsSchema = z.object({
       }),
       autoRefreshSessionTimeout: z.boolean(),
       blockTelemetry: z.boolean(),
+      noFileCreationOnPaste: z.boolean(),
+      fileDropableThreadWrapper: z.boolean(),
     }),
     visualTweaks: z.object({
       collapseEmptyThreadVisualColumns: z.boolean(),

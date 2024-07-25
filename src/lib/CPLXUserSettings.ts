@@ -1,4 +1,5 @@
 import { produce } from "immer";
+import { merge } from "lodash";
 
 import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import {
@@ -6,9 +7,13 @@ import {
   type CPLXUserSettings as CPLXUserSettingsType,
 } from "@/types/CPLXUserSettings";
 import ChromeStorage from "@/utils/ChromeStorage";
+import { compareVersions } from "@/utils/utils";
+
+import packageData from "../../package.json";
 
 export default class CPLXUserSettings {
   static defaultUserSettings: CPLXUserSettingsType = {
+    schemaVersion: packageData.version,
     customTheme: {},
     defaultFocus: "internet",
     defaultWebAccess: false,
@@ -30,6 +35,8 @@ export default class CPLXUserSettings {
         },
         autoRefreshSessionTimeout: false,
         blockTelemetry: false,
+        noFileCreationOnPaste: false,
+        fileDropableThreadWrapper: false,
       },
       visualTweaks: {
         collapseEmptyThreadVisualColumns: false,
@@ -39,20 +46,33 @@ export default class CPLXUserSettings {
   private static userSettings: CPLXUserSettingsType;
 
   static async init() {
-    const result = CPLXUserSettingsSchema.safeParse(
-      await CPLXUserSettings.fetch(),
-    );
+    const fetchedSettings = await CPLXUserSettings.fetch();
+
+    const result = CPLXUserSettingsSchema.safeParse(fetchedSettings);
 
     if (!result.success) {
-      toast({
-        title: "⚠️ [CPLX] User settings schema mismatch",
-        description: "Resetting to default.",
-        timeout: 999999,
-      });
+      const sameSchemaVersion =
+        compareVersions(fetchedSettings.schemaVersion, packageData.version) ===
+        0;
 
-      await ChromeStorage.setStore(CPLXUserSettings.defaultUserSettings);
+      if (sameSchemaVersion) {
+        toast({
+          title: "⚠️ [CPLX] User settings schema mismatch",
+          description: "Resetting to default.",
+        });
+      }
 
-      CPLXUserSettings.userSettings = CPLXUserSettings.defaultUserSettings;
+      const mergedSettings = !sameSchemaVersion
+        ? merge({}, CPLXUserSettings.defaultUserSettings, fetchedSettings)
+        : CPLXUserSettings.defaultUserSettings;
+
+      mergedSettings.schemaVersion = packageData.version;
+
+      await ChromeStorage.setStore(mergedSettings);
+
+      CPLXUserSettings.userSettings = mergedSettings;
+
+      console.log("[CPLX] Merged settings from previous version");
 
       return;
     }
@@ -62,6 +82,7 @@ export default class CPLXUserSettings {
 
   static async fetch() {
     CPLXUserSettings.userSettings = await ChromeStorage.getStore();
+
     return CPLXUserSettings.userSettings;
   }
 

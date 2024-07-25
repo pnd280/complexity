@@ -1,6 +1,5 @@
 import CPLXUserSettings from "@/lib/CPLXUserSettings";
 import { BackgroundAction } from "@/utils/background";
-import ChromeStorage from "@/utils/ChromeStorage";
 
 if (!import.meta.env.DEV) {
   chrome.runtime.onInstalled.addListener(() => {
@@ -11,13 +10,7 @@ if (!import.meta.env.DEV) {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
-  const settings = await ChromeStorage.getStore();
-
-  if (!settings || Object.keys(settings).length === 0) {
-    console.log("First time install detected, setting default values.");
-
-    ChromeStorage.setStore(CPLXUserSettings.defaultUserSettings);
-  }
+  CPLXUserSettings.init();
 });
 
 chrome.runtime.onMessage.addListener(

@@ -2,8 +2,10 @@ import { ExternalLink } from "lucide-react";
 
 import LabeledSwitch from "@/shared/components/LabeledSwitch";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
+import Tooltip from "@/shared/components/Tooltip";
 import { CPLXUserSettings, PopupSettingKeys } from "@/types/CPLXUserSettings";
 import { cn } from "@/utils/cn";
+import { compareVersions } from "@/utils/utils";
 
 import packageData from "../../../package.json";
 import usePopupSettings from "../hooks/usePopupSettings";
@@ -82,10 +84,10 @@ function RenderSettings<
   if (!userSettings) return null;
 
   return settings.map(
-    ({ id, label, storeKey, experimental, versionRelease, onClick }) => {
+    ({ id, label, settingKey, experimental, versionRelease, onClick }) => {
       const defaultChecked =
         !!userSettings[settingStoreKey]?.[
-          storeKey as keyof CPLXUserSettings["popupSettings"][K]
+          settingKey as keyof CPLXUserSettings["popupSettings"][K]
         ];
 
       return (
@@ -96,36 +98,43 @@ function RenderSettings<
               experimental || versionRelease === packageData.version,
           })}
         >
-          <LabeledSwitch
-            key={id}
-            id={id}
-            label={label}
-            labelClassName={cn("tw-max-w-full", {
-              "tw-cursor-pointer": !!onClick,
-            })}
-            defaultChecked={!storeKey ? true : defaultChecked}
-            checked={!storeKey ? true : undefined}
-            onCheckedChange={(checked) => {
-              if (!storeKey) return onClick?.();
-
-              updateSettings(settingStoreKey, (draft) => {
-                draft[storeKey as keyof CPLXUserSettings["popupSettings"][K]] =
-                  checked as CPLXUserSettings["popupSettings"][K][keyof CPLXUserSettings["popupSettings"][K]];
-              });
+          <Tooltip
+            content={!settingKey ? "This setting is always enabled" : ""}
+            contentOptions={{
+              side: "top-start",
+              sideOffset: 10,
             }}
-          />
-          <div className="tw-ml-12 tw-flex tw-gap-2">
-            {versionRelease === packageData.version && (
-              <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-p-1 tw-px-2 tw-text-xs tw-font-bold">
-                New
-              </div>
-            )}
-            {experimental && (
-              <div className="tw-w-max tw-rounded-md tw-bg-destructive tw-p-1 tw-px-2 tw-text-xs tw-font-bold tw-text-destructive-foreground">
-                Experimental
-              </div>
-            )}
-          </div>
+          >
+            <LabeledSwitch
+              key={id}
+              id={id}
+              label={label}
+              defaultChecked={!settingKey ? true : defaultChecked}
+              checked={!settingKey ? true : undefined}
+              onCheckedChange={(checked) => {
+                if (!settingKey) return onClick?.();
+                updateSettings(settingStoreKey, (draft) => {
+                  draft[
+                    settingKey as keyof CPLXUserSettings["popupSettings"][K]
+                  ] =
+                    checked as CPLXUserSettings["popupSettings"][K][keyof CPLXUserSettings["popupSettings"][K]];
+                });
+              }}
+            />
+            <div className="tw-ml-12 tw-flex tw-gap-2">
+              {versionRelease &&
+                compareVersions(packageData.version, versionRelease) === -1 && (
+                  <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-p-1 tw-px-2 tw-text-xs tw-font-bold">
+                    New
+                  </div>
+                )}
+              {experimental && (
+                <div className="tw-w-max tw-rounded-md tw-bg-destructive tw-p-1 tw-px-2 tw-text-xs tw-font-bold tw-text-destructive-foreground">
+                  Experimental
+                </div>
+              )}
+            </div>
+          </Tooltip>
         </div>
       );
     },

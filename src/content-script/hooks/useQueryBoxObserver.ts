@@ -35,24 +35,28 @@ export default function useQueryBoxObserver({
         config: { childList: true, subtree: true },
         source: "hook",
         onAny: () => {
-          observeMainQueryBox({
-            id: mainId,
-            disabled,
-            setContainers,
-            refetchUserSettings,
-          });
+          queueMicrotask(() =>
+            observeMainQueryBox({
+              id: mainId,
+              disabled,
+              setContainers,
+              refetchUserSettings,
+            }),
+          );
 
-          observeFollowUpQueryBox({
-            id: followUpId,
-            location,
-            disabled,
-            setFollowUpContainers,
-            refetchUserSettings,
-          });
+          queueMicrotask(() =>
+            observeFollowUpQueryBox({
+              id: followUpId,
+              location,
+              disabled,
+              setFollowUpContainers,
+              refetchUserSettings,
+            }),
+          );
 
-          alterAttachButton();
+          queueMicrotask(alterAttachButton);
 
-          interceptPasteEvent();
+          queueMicrotask(interceptPasteEvent);
         },
       });
 
@@ -173,6 +177,9 @@ function alterAttachButton() {
 }
 
 function interceptPasteEvent() {
+  if (!CPLXUserSettings.get().popupSettings.qolTweaks.noFileCreationOnPaste)
+    return;
+
   const $textarea = UIUtils.getActiveQueryBoxTextarea({});
 
   if (!$textarea.length || $textarea.attr("data-paste-event-intercepted"))
@@ -186,14 +193,6 @@ function interceptPasteEvent() {
     if (clipboardEvent.clipboardData) {
       if (clipboardEvent.clipboardData.types.includes("text/plain")) {
         e.stopImmediatePropagation();
-        e.preventDefault();
-
-        const pastedText = clipboardEvent.clipboardData.getData("text/plain");
-
-        UIUtils.setReactTextareaValue(
-          $textarea[0],
-          $textarea.val() + pastedText,
-        );
       }
     }
   });

@@ -38,6 +38,12 @@ export const jsonUtils = {
   },
 };
 
+/**
+ * Compares two version strings.
+ * @param {string} v1 - The first version string.
+ * @param {string} v2 - The second version string.
+ * @returns {number} Returns 1 if v1 is greater, -1 if v2 is greater, or 0 if they are equal.
+ */
 export function compareVersions(v1: string, v2: string) {
   const v1Parts = v1.split(".").map(Number);
   const v2Parts = v2.split(".").map(Number);
