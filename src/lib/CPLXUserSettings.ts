@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { merge } from "lodash";
+import { merge } from "lodash-es";
 
 import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import {
