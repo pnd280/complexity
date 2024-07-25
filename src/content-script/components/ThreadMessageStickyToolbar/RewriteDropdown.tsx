@@ -112,9 +112,9 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
           </DropdownMenuItem>
           {groupedLanguageModelsByProvider.map(([provider, models]) => (
             <DropdownMenuGroup key={provider}>
-              <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-xs tw-text-muted-foreground">
+              {/* <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-xs tw-text-muted-foreground">
                 {provider}
-              </DropdownMenuLabel>
+              </DropdownMenuLabel> */}
               {models.map((model) => (
                 <DropdownMenuItem
                   key={model.code}

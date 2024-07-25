@@ -8,6 +8,8 @@ function applyDataAttrs() {
   $("pre").each((_, pre) => {
     queueMicrotask(() => addDataAttrs(pre));
   });
+
+  $(document.body).attr("data-pre-block-initial-attrs-applied", "true");
 }
 
 function addDataAttrs(pre: HTMLElement) {
@@ -17,8 +19,6 @@ function addDataAttrs(pre: HTMLElement) {
   const lang = MarkdownBlockUtils.getLangFromReactNode(pre);
   pre.setAttribute("data-lang", lang);
   pre.setAttribute("data-mask", Canvas.isMaskableLang(lang) ? "true" : "false");
-
-  $(document.body).attr("data-pre-block-initial-attrs-applied", "true");
 }
 
 mainWorldExec(() => {

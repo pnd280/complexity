@@ -69,6 +69,11 @@ export default class UITweaks {
 
   static correctColorScheme() {
     $(() => {
+      // cloudflare
+      if (document.title === "Just a moment...") {
+        $("html").addClass("dark tw-dark");
+      }
+
       const darkTheme = UIUtils.isDarkTheme();
 
       if (darkTheme) $("html").addClass("tw-dark");
