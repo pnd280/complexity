@@ -6,7 +6,7 @@ import { isMainWorldContext } from "./utils";
 export type CanvasLang = (typeof canvasLangs)[number]["trigger"];
 
 export default class Canvas {
-  static isCanvasLang(lang: string): lang is CanvasLang {
+  static isActiveCanvasLang(lang: string): lang is CanvasLang {
     if (isMainWorldContext())
       return document.body.classList.contains("cplx-canvas");
 
@@ -16,8 +16,12 @@ export default class Canvas {
     return canvasLangs.some((supported) => supported.trigger === lang);
   }
 
+  static isCanvasLang(lang: string): lang is CanvasLang {
+    return canvasLangs.some((supported) => supported.trigger === lang);
+  }
+
   static isMaskableLang(lang: string): boolean {
-    if (!Canvas.isCanvasLang(lang)) return false;
+    if (!Canvas.isActiveCanvasLang(lang)) return false;
 
     if (isMainWorldContext()) {
       return !!document.body

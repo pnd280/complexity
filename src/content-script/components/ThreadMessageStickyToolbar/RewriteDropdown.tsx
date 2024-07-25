@@ -97,7 +97,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         </Tooltip>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <div className="custom-scrollbar tw-max-h-[300px] tw-overflow-auto">
+        <div className="custom-scrollbar tw-max-h-[350px] tw-overflow-auto">
           <DropdownMenuItem
             className="tw-flex tw-items-center tw-gap-2"
             onSelect={() => {
@@ -112,7 +112,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
           </DropdownMenuItem>
           {groupedLanguageModelsByProvider.map(([provider, models]) => (
             <DropdownMenuGroup key={provider}>
-              <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-sm tw-text-muted-foreground">
+              <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-xs tw-text-muted-foreground">
                 {provider}
               </DropdownMenuLabel>
               {models.map((model) => (

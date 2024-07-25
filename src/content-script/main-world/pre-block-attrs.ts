@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 import Canvas from "@/utils/Canvas";
-import { mainWorldExec } from "@/utils/hof";
+import { extensionOnly, mainWorldExec } from "@/utils/hof";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 
 function applyDataAttrs() {
@@ -17,12 +17,14 @@ function addDataAttrs(pre: HTMLElement) {
   const lang = MarkdownBlockUtils.getLangFromReactNode(pre);
   pre.setAttribute("data-lang", lang);
   pre.setAttribute("data-mask", Canvas.isMaskableLang(lang) ? "true" : "false");
+
+  $(document.body).attr("data-pre-block-initial-attrs-applied", "true");
 }
 
 mainWorldExec(() => {
   $(() => {
-    applyDataAttrs();
-    proxyDOMMethods();
+    queueMicrotask(applyDataAttrs);
+    queueMicrotask(proxyDOMMethods);
   });
 })();
 
@@ -39,4 +41,22 @@ function proxyDOMMethods() {
 
     return originalAppendChild.call(this, newNode) as T;
   };
+
+  $(document.body).attr("data-pre-block-dom-methods-overridden", "true");
 }
+
+export const preBlockAttrsContentScript = {
+  waitForInitialization: extensionOnly(function () {
+    return new Promise<void>((resolve) => {
+      const interval = setInterval(() => {
+        if (
+          document.body.getAttribute("data-pre-block-initial-attrs-applied") &&
+          document.body.getAttribute("data-pre-block-dom-methods-overridden")
+        ) {
+          interval && clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    });
+  }),
+};

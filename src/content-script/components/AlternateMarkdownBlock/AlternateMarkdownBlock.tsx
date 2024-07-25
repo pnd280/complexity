@@ -32,7 +32,7 @@ export default function AlternateMarkdownBlock() {
     $(container.preElement).attr("id", id);
 
     const isMasked = $(container.preElement).attr("data-mask") === "true";
-    const isCanvasLang = Canvas.isCanvasLang(container.lang);
+    const isCanvasLang = Canvas.isActiveCanvasLang(container.lang);
 
     if (!isMasked) {
       return (

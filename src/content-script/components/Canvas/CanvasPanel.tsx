@@ -36,7 +36,7 @@ export default function CanvasPanel() {
 
     const $pre = $(`#${preBlockId}`);
     const lang = MarkdownBlockUtils.getLang($pre);
-    if (!Canvas.isCanvasLang(lang)) return false;
+    if (!Canvas.isActiveCanvasLang(lang)) return false;
 
     const code = MarkdownBlockUtils.extractCodeFromPreBlock($pre[0]);
     if (!code) return false;

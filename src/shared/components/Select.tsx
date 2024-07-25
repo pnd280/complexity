@@ -328,7 +328,7 @@ export function SelectGroup({ children }: { children: ReactNode }) {
 
 export function SelectLabel({ children }: { children: ReactNode }) {
   return (
-    <div className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-sm tw-text-muted-foreground">
+    <div className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-xs tw-text-muted-foreground">
       {children}
     </div>
   );

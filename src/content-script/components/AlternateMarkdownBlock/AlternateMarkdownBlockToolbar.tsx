@@ -32,7 +32,7 @@ export default function AlternateMarkdownBlockToolbar({
           <LoaderCircle className="tw-size-4 tw-animate-spin" />
         </div>
 
-        {Canvas.isCanvasLang(lang) && (
+        {Canvas.isActiveCanvasLang(lang) && (
           <div className="tw-hidden group-data-[inflight=false]:tw-block">
             <Tooltip content="Render in canvas">
               <CanvasRenderButton preBlockId={preBlockId} />

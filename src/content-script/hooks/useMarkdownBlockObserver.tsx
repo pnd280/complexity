@@ -13,6 +13,8 @@ import DOMObserver from "@/utils/DOMObserver";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import { isDOMNode } from "@/utils/utils";
 
+import { preBlockAttrsContentScript } from "../main-world/pre-block-attrs";
+
 import useWaitForMessagesContainer from "./useWaitForMessagesContainer";
 
 type useMarkdownBlockObserverProps = {
@@ -53,17 +55,21 @@ export default function useMarkdownBlockObserver({
     function toolbarObserver() {
       if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
 
-      requestAnimationFrame(callback);
-
       const id = "markdown-block-toolbar";
 
-      DOMObserver.create(id, {
-        target: messagesContainer,
-        config: { childList: true, subtree: true },
-        throttleTime: 200,
-        source: "hook",
-        onAny: callback,
-      });
+      (async () => {
+        await preBlockAttrsContentScript.waitForInitialization();
+
+        requestAnimationFrame(callback);
+
+        DOMObserver.create(id, {
+          target: messagesContainer,
+          config: { childList: true, subtree: true },
+          throttleTime: 200,
+          source: "hook",
+          onAny: callback,
+        });
+      })();
 
       function callback() {
         const promises: Promise<MarkdownBlockContainer | null>[] = [];
@@ -98,7 +104,6 @@ export default function useMarkdownBlockObserver({
           updateContainers(newContainers);
         });
       }
-
       return () => {
         DOMObserver.destroy(id);
       };
@@ -113,6 +118,8 @@ export default function useMarkdownBlockObserver({
       const id = "alternate-markdown-block";
 
       (async () => {
+        await preBlockAttrsContentScript.waitForInitialization();
+
         await shikiContentScript.waitForInitialization();
 
         requestIdleCallback(callback);

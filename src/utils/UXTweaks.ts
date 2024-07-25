@@ -21,16 +21,21 @@ export default class UXTweaks {
     $threadWrapperWrapper.attr("data-dropable", "true");
 
     $threadWrapperWrapper.on("dragover", function (e) {
+      const filesTypes = e.originalEvent?.dataTransfer?.types;
+
+      if (!filesTypes?.length || !filesTypes.includes("Files")) return;
+
       e.preventDefault();
       e.stopPropagation();
     });
 
     $threadWrapperWrapper.on("drop", function (e) {
+      const files = e.originalEvent?.dataTransfer?.files;
+
+      if (!files?.length) return;
+
       e.preventDefault();
       e.stopPropagation();
-
-      const files = e.originalEvent?.dataTransfer?.files;
-      if (!files?.length) return;
 
       const $queryBox = UIUtils.getActiveQueryBox({ type: "follow-up" });
       if (!$queryBox.length) return;
