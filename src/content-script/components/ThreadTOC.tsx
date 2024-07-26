@@ -131,8 +131,8 @@ export default function ThreadTOC() {
       >
         <Tooltip
           content="Show Table of Content"
-          contentOptions={{
-            side: "left",
+          positioning={{
+            placement: "left",
           }}
         >
           <ChevronLeft className="tw-h-5 tw-w-5 tw-cursor-pointer tw-text-muted-foreground tw-transition-colors hover:!tw-text-foreground" />

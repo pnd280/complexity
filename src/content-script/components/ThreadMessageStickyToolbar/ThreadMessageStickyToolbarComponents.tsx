@@ -17,7 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/components/shadcn/ui/dropdown-menu";
+} from "@/shared/components/DropdownMenu";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 import { scrollToElement, sleep, stripHtml } from "@/utils/utils";
@@ -106,10 +106,10 @@ export default function ThreadMessageStickyToolbarComponents({
                   ? "Convert Query to Plain Text"
                   : "Convert Query to Markdown"
               }
-              contentOptions={{
-                sideOffset: 15,
+              positioning={{
+                gutter: 15,
               }}
-              contentClassName="tw-w-max"
+              className="tw-w-max"
             >
               <div
                 className="tw-cursor-pointer tw-text-secondary-foreground tw-opacity-10 tw-transition-all tw-animate-in tw-fade-in tw-slide-in-from-top hover:tw-opacity-100 active:tw-scale-95"
@@ -196,7 +196,7 @@ export default function ThreadMessageStickyToolbarComponents({
           </Tooltip>
         )}
 
-        <DropdownMenu modal={false}>
+        <DropdownMenu>
           <DropdownMenuTrigger>
             <div
               className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95"
@@ -210,8 +210,9 @@ export default function ThreadMessageStickyToolbarComponents({
               '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")',
             ).length && (
               <DropdownMenuItem
+                value="view-sources"
                 className="tw-flex tw-items-center tw-gap-2"
-                onSelect={async () => {
+                onClick={async () => {
                   moreMenuItemClick({
                     container: containers[containerIndex],
                     item: "View Sources",
@@ -225,8 +226,9 @@ export default function ThreadMessageStickyToolbarComponents({
 
             {isMessageShareable && (
               <DropdownMenuItem
+                value="share"
                 className="tw-flex tw-items-center tw-gap-2"
-                onSelect={() => {
+                onClick={() => {
                   $messageShareButton.trigger("click");
                 }}
               >
@@ -237,8 +239,9 @@ export default function ThreadMessageStickyToolbarComponents({
 
             {isMessageEditable && (
               <DropdownMenuItem
+                value="report"
                 className="tw-flex tw-items-center tw-gap-2"
-                onSelect={async () => {
+                onClick={async () => {
                   moreMenuItemClick({
                     container: containers[containerIndex],
                     item: "Report",
@@ -253,8 +256,9 @@ export default function ThreadMessageStickyToolbarComponents({
             {containers.length - 1 === containerIndex &&
               containers.length > 1 && (
                 <DropdownMenuItem
+                  value="delete"
                   className="tw-flex tw-items-center tw-gap-2"
-                  onSelect={async () => {
+                  onClick={async () => {
                     await moreMenuItemClick({
                       container: containers[containerIndex],
                       item: "Delete",

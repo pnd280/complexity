@@ -1,260 +1,40 @@
-import {
-  autoUpdate,
-  flip,
-  FloatingFocusManager,
-  FloatingList,
-  FloatingPortal,
-  offset,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useListItem,
-  useListNavigation,
-  useMergeRefs,
-  useRole,
-  useTypeahead,
-} from "@floating-ui/react";
+import { Portal, Select as ArkSelect } from "@ark-ui/react";
 import { cva, VariantProps } from "class-variance-authority";
+import { ChevronDown } from "lucide-react";
 import {
-  ButtonHTMLAttributes,
-  Children,
-  createContext,
   forwardRef,
-  HTMLAttributes,
-  isValidElement,
-  ReactNode,
-  useCallback,
+  ElementRef,
+  ComponentPropsWithoutRef,
+  createContext,
   useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
 } from "react";
 
 import { cn } from "@/utils/cn";
 
-type SelectContextValue = {
-  activeIndex: number | null;
-  selectedIndex: number | null;
-  selectedValue: string | null;
-  getItemProps: ReturnType<typeof useInteractions>["getItemProps"];
-  handleSelect: (index: number | null, value: string | null) => void;
-  isOpen: boolean;
-  setIsOpen: (open: boolean | ((prevState: boolean) => boolean)) => void;
-  registerOption: (value: string) => void;
+type SelectContext = {
+  variant: VariantProps<typeof selectTriggerVariants>["variant"];
 };
 
-const SelectContext = createContext<SelectContextValue>(
-  {} as SelectContextValue,
-);
+const SelectContext = createContext<SelectContext>({ variant: "default" });
 
-type SelectProps = {
-  children: ReactNode;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  onPointerDownOutside?: (event: Event) => void;
-};
+const SelectContextProvider = SelectContext.Provider;
 
-export function Select({
-  children,
-  open: controlledOpen,
-  onOpenChange,
-  value: controlledValue,
-  onValueChange,
-  onPointerDownOutside,
-}: SelectProps) {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
-  const [uncontrolledValue, setUncontrolledValue] = useState<string | null>(
-    null,
-  );
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [options, setOptions] = useState<string[]>([]);
-
-  const isOpen =
-    controlledOpen !== undefined ? controlledOpen : uncontrolledOpen;
-  const selectedValue =
-    controlledValue !== undefined ? controlledValue : uncontrolledValue;
-
-  const setIsOpen = useCallback(
-    (open: boolean | ((prevState: boolean) => boolean)) => {
-      const newOpenState = typeof open === "function" ? open(isOpen) : open;
-      if (controlledOpen === undefined) {
-        setUncontrolledOpen(newOpenState);
-      }
-      if (onOpenChange) {
-        onOpenChange(newOpenState);
-      }
-      if (newOpenState) {
-        setActiveIndex(selectedIndex);
-      }
-    },
-    [controlledOpen, onOpenChange, isOpen, selectedIndex],
-  );
-
-  const setSelectedValue = useCallback(
-    (value: string | null) => {
-      if (controlledValue === undefined) {
-        setUncontrolledValue(value);
-      }
-      if (onValueChange && value !== null) {
-        onValueChange(value);
-      }
-    },
-    [controlledValue, onValueChange],
-  );
-
-  const registerOption = useCallback((value: string) => {
-    setOptions((prev) => [...prev, value]);
-  }, []);
-
-  useEffect(() => {
-    if (controlledValue !== undefined) {
-      const index = options.indexOf(controlledValue);
-      setSelectedIndex(index !== -1 ? index : null);
-      setActiveIndex(index !== -1 ? index : null);
-    }
-  }, [controlledValue, options]);
-
-  const { refs, floatingStyles, context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-    whileElementsMounted: autoUpdate,
-    middleware: [
-      offset(5),
-      flip({
-        fallbackAxisSideDirection: "end",
-      }),
-    ],
-    placement: "bottom-start",
-  });
-
-  const elementsRef = useRef<(HTMLElement | null)[]>([]);
-  const labelsRef = useRef<(string | null)[]>([]);
-
-  const handleSelect = useCallback(
-    (index: number | null, value: string | null) => {
-      setSelectedIndex(index);
-      setSelectedValue(value);
-      setActiveIndex(index);
-      setIsOpen(false);
-    },
-    [setIsOpen, setSelectedValue],
-  );
-
-  const handleTypeaheadMatch = (index: number | null) => {
-    if (isOpen) {
-      setActiveIndex(index);
-    } else {
-      handleSelect(index, options[index!] || null);
-    }
-  };
-
-  const listNav = useListNavigation(context, {
-    listRef: elementsRef,
-    activeIndex,
-    selectedIndex,
-    onNavigate: setActiveIndex,
-    loop: true,
-  });
-
-  const typeahead = useTypeahead(context, {
-    listRef: labelsRef,
-    activeIndex,
-    selectedIndex,
-    onMatch: handleTypeaheadMatch,
-  });
-
-  const dismiss = useDismiss(context, {
-    outsidePress: (event) => {
-      if (onPointerDownOutside) {
-        onPointerDownOutside(event);
-      }
-      return true;
-    },
-  });
-
-  const click = useClick(context);
-
-  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
-    [click, useRole(context, { role: "listbox" }), dismiss, listNav, typeahead],
-  );
-
-  const selectContext = useMemo(
-    () => ({
-      activeIndex,
-      selectedIndex,
-      selectedValue,
-      isOpen,
-      getItemProps,
-      handleSelect,
-      setIsOpen,
-      registerOption,
-    }),
-    [
-      activeIndex,
-      selectedIndex,
-      selectedValue,
-      isOpen,
-      getItemProps,
-      handleSelect,
-      setIsOpen,
-      registerOption,
-    ],
-  );
-
+const Select = forwardRef<
+  ElementRef<typeof ArkSelect.Root>,
+  ComponentPropsWithoutRef<typeof ArkSelect.Root>
+>(({ ...props }, ref) => {
   return (
-    <SelectContext.Provider value={selectContext}>
-      <div ref={refs.setReference} {...getReferenceProps()}>
-        {Children.toArray(children).find(
-          (child) => isValidElement(child) && child.type === SelectTrigger,
-        )}
-      </div>
-      <FloatingPortal>
-        {isOpen && (
-          <FloatingFocusManager context={context} modal={false}>
-            <div
-              ref={refs.setFloating}
-              style={floatingStyles}
-              {...getFloatingProps()}
-              className="tw-z-50"
-            >
-              <div className="tw-relative tw-min-w-[8rem] tw-rounded-md">
-                <div
-                  className={cn(
-                    "custom-scrollbar tw-overflow-auto tw-rounded-md tw-border tw-bg-popover tw-text-popover-foreground tw-shadow-md",
-                    "data-[state=open]:tw-animate-in data-[state=closed]:tw-animate-out",
-                    "data-[state=closed]:tw-fade-out-0 data-[state=open]:tw-fade-in-0",
-                    "data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95",
-                    "data-[side=bottom]:tw-slide-in-from-top-2 data-[side=left]:tw-slide-in-from-right-2",
-                    "data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2",
-                  )}
-                  data-state={isOpen ? "open" : "closed"}
-                  data-side={context.placement}
-                >
-                  <div className="tw-max-h-[300px]">
-                    <FloatingList
-                      elementsRef={elementsRef}
-                      labelsRef={labelsRef}
-                    >
-                      {Children.toArray(children).find(
-                        (child) =>
-                          isValidElement(child) && child.type === SelectContent,
-                      )}
-                    </FloatingList>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FloatingFocusManager>
-        )}
-      </FloatingPortal>
-    </SelectContext.Provider>
+    <SelectContextProvider
+      value={{
+        variant: "default",
+      }}
+    >
+      <ArkSelect.Root ref={ref} unmountOnExit={false} {...props} />
+    </SelectContextProvider>
   );
-}
+});
+
+Select.displayName = "Select";
 
 const selectTriggerVariants = cva(
   "tw-flex tw-w-full tw-items-center tw-justify-between tw-rounded-md tw-px-3 tw-py-2 tw-text-sm placeholder:tw-text-muted-foreground disabled:tw-cursor-not-allowed disabled:tw-opacity-50 [&>span]:!tw-truncate tw-transition-all tw-duration-150 tw-outline-none",
@@ -273,115 +53,123 @@ const selectTriggerVariants = cva(
   },
 );
 
-export type SelectTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof selectTriggerVariants> & {
-    className?: string;
-    children: ReactNode;
-  };
+const SelectTrigger = forwardRef<
+  ElementRef<typeof ArkSelect.Trigger>,
+  ArkSelect.TriggerProps & VariantProps<typeof selectTriggerVariants>
+>(({ variant, className, children, ...props }, ref) => {
+  const { variant: contextVariant } = useContext(SelectContext);
 
-export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
-  function SelectTrigger({ className, children, variant, ...props }, ref) {
-    const { setIsOpen } = useContext(SelectContext);
-    return (
-      <button
-        ref={ref}
-        className={cn(selectTriggerVariants({ variant }), className)}
-        onClick={() => setIsOpen((prev) => !prev)}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  },
-);
+  if (contextVariant === undefined) {
+    throw new Error("SelectTrigger must be wrapped in a Select component");
+  }
 
-type SelectValueProps = {
-  children?: ReactNode;
-  placeholder?: string;
-};
-
-export function SelectValue({ children, placeholder }: SelectValueProps) {
-  const { selectedValue } = useContext(SelectContext);
   return (
-    <span className="tw-truncate">
-      {children || selectedValue || placeholder || "Select"}
-    </span>
-  );
-}
-
-type SelectContentProps = {
-  children: ReactNode;
-  className?: string;
-};
-
-export function SelectContent({ children, className }: SelectContentProps) {
-  return (
-    <div role="listbox" className={cn("!tw-z-[999] tw-p-1", className)}>
+    <ArkSelect.Trigger
+      ref={ref}
+      className={cn(selectTriggerVariants({ variant }), className)}
+      {...props}
+    >
       {children}
-    </div>
+      {variant === "default" && (
+        <ChevronDown className="tw-mr-2 tw-size-4 tw-text-muted-foreground" />
+      )}
+    </ArkSelect.Trigger>
   );
-}
+});
 
-export function SelectGroup({ children }: { children: ReactNode }) {
-  return <div>{children}</div>;
-}
+SelectTrigger.displayName = "SelectTrigger";
 
-export function SelectLabel({ children }: { children: ReactNode }) {
+const SelectValue = forwardRef<
+  ElementRef<typeof ArkSelect.ValueText>,
+  ArkSelect.ValueTextProps
+>(({ className, ...props }, ref) => {
   return (
-    <div className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-xs tw-text-muted-foreground">
-      {children}
-    </div>
+    <ArkSelect.ValueText
+      ref={ref}
+      className={cn("tw-truncate", className)}
+      {...props}
+    />
   );
-}
+});
 
-type SelectItemProps = HTMLAttributes<HTMLDivElement> & {
-  value: string;
-  children: ReactNode;
-  className?: string;
+SelectValue.displayName = "SelectValue";
+
+const SelectContent = forwardRef<
+  ElementRef<typeof ArkSelect.Content>,
+  ArkSelect.ContentProps
+>(({ className, ...props }, ref) => {
+  return (
+    <Portal>
+      <ArkSelect.Positioner>
+        <ArkSelect.Content
+          ref={ref}
+          className={cn(
+            "custom-scrollbar tw-z-50 tw-overflow-auto tw-rounded-md tw-border tw-bg-popover tw-p-1 tw-text-popover-foreground tw-shadow-md focus-visible:tw-outline-none",
+            "data-[state=open]:tw-animate-in data-[state=closed]:tw-animate-out",
+            "data-[state=closed]:tw-fade-out-0 data-[state=open]:tw-fade-in-0",
+            "data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95",
+            "data-[side=bottom]:tw-slide-in-from-top-2 data-[side=left]:tw-slide-in-from-right-2",
+            "data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2",
+            className,
+          )}
+          {...props}
+        />
+      </ArkSelect.Positioner>
+    </Portal>
+  );
+});
+
+SelectContent.displayName = "SelectContent";
+
+const SelectGroup = ArkSelect.ItemGroup;
+
+const SelectLabel = forwardRef<
+  ElementRef<typeof ArkSelect.Label>,
+  ArkSelect.LabelProps
+>(({ className, ...props }, ref) => {
+  return (
+    <ArkSelect.Label
+      ref={ref}
+      className={cn(
+        "tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-xs tw-text-muted-foreground",
+        className,
+      )}
+      {...props}
+    />
+  );
+});
+
+SelectLabel.displayName = "SelectLabel";
+
+const SelectItem = forwardRef<
+  ElementRef<typeof ArkSelect.Item>,
+  ArkSelect.ItemProps & {
+    item: string;
+  }
+>(({ className, ...props }, ref) => {
+  return (
+    <ArkSelect.Item
+      ref={ref}
+      className={cn(
+        "tw-relative tw-flex tw-w-full tw-cursor-pointer tw-select-none tw-items-center tw-rounded-sm tw-px-2 tw-py-1.5 tw-text-sm tw-outline-none",
+        "data-[disabled]:tw-pointer-events-none data-[disabled]:tw-opacity-50",
+        "data-[highlighted]:tw-bg-accent data-[highlighted]:tw-text-accent-foreground",
+        "data-[state=checked]:tw-text-accent-foreground",
+        className,
+      )}
+      {...props}
+    />
+  );
+});
+
+SelectItem.displayName = "SelectItem";
+
+export {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
 };
-
-export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
-  function SelectItem({ value, children, className }, forwardedRef) {
-    const {
-      activeIndex,
-      selectedIndex,
-      getItemProps,
-      handleSelect,
-      registerOption,
-    } = useContext(SelectContext);
-    const { ref, index } = useListItem({ label: value });
-    const isActive = activeIndex === index;
-    const isSelected = selectedIndex === index;
-    const combinedRef = useMergeRefs([ref, forwardedRef]);
-
-    useEffect(() => {
-      registerOption(value);
-    }, [registerOption, value]);
-
-    return (
-      <div
-        ref={combinedRef}
-        role="option"
-        aria-selected={isSelected}
-        tabIndex={isActive ? 0 : -1}
-        {...getItemProps({
-          onClick: () => handleSelect(index, value),
-          onKeyDown: (event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              handleSelect(index, value);
-            }
-          },
-        })}
-        className={cn(
-          "tw-relative tw-flex tw-w-full tw-cursor-pointer tw-select-none tw-items-center tw-rounded-sm tw-px-2 tw-py-1.5 tw-text-sm tw-outline-none",
-          isActive && "tw-bg-accent tw-text-accent-foreground",
-          isSelected && "tw-text-accent-foreground",
-          className,
-        )}
-      >
-        {children}
-      </div>
-    );
-  },
-);

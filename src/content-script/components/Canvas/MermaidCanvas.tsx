@@ -70,10 +70,10 @@ export default function MermaidCanvas() {
             Reset pan/zoom. Hold <KeyCombo keys={["Ctrl"]} /> to re-render.
           </div>
         }
-        contentClassName="!tw-bg-background !tw-text-foreground"
-        contentOptions={{
-          side: "left",
-          sideOffset: 10,
+        className="!tw-bg-background !tw-text-foreground"
+        positioning={{
+          placement: "left",
+          gutter: 10,
         }}
       >
         <div

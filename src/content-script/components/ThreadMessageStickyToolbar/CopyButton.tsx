@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/components/shadcn/ui/dropdown-menu";
+} from "@/shared/components/DropdownMenu";
 import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
@@ -88,7 +88,7 @@ export default function CopyButton({
   }, [containerIndex, refetch, setCopyButtonText]);
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger
         onClick={(e) => {
           if (ctrlDown) {
@@ -109,8 +109,9 @@ export default function CopyButton({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem
+          value="default"
           className="tw-flex tw-items-center tw-gap-2"
-          onSelect={() => {
+          onClick={() => {
             handleCopyMessage();
           }}
         >
@@ -118,8 +119,9 @@ export default function CopyButton({
           Default
         </DropdownMenuItem>
         <DropdownMenuItem
+          value="without-citations"
           className="tw-flex tw-items-center tw-gap-2"
-          onSelect={() => {
+          onClick={() => {
             handleCopyMessageWithoutCitations();
           }}
         >

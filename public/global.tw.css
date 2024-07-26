@@ -1,3 +1,7 @@
+@import url('./overrides.css');
+@import url('./components.css');
+@import url('./canvas.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

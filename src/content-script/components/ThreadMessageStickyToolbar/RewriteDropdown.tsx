@@ -1,20 +1,17 @@
-import {
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-} from "@radix-ui/react-dropdown-menu";
 import $ from "jquery";
 import { RefreshCcw } from "lucide-react";
 import { useCallback, useRef } from "react";
 
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
-import ProSearchIcon from "@/shared/components/ProSearchIcon";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/components/shadcn/ui/dropdown-menu";
+} from "@/shared/components/DropdownMenu";
+import ProSearchIcon from "@/shared/components/ProSearchIcon";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import { sleep } from "@/utils/utils";
@@ -81,7 +78,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
   );
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger
         onClick={(e) => {
           if (ctrlDown) {
@@ -96,42 +93,39 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
           </div>
         </Tooltip>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <div className="custom-scrollbar tw-max-h-[350px] tw-overflow-auto">
-          <DropdownMenuItem
-            className="tw-flex tw-items-center tw-gap-2"
-            onSelect={() => {
-              handleRewrite({
-                proSearch: true,
-                model: queryBoxStore.getState().selectedLanguageModel,
-              });
-            }}
-          >
-            <ProSearchIcon className="tw-size-4" />
-            Pro Search
-          </DropdownMenuItem>
-          {groupedLanguageModelsByProvider.map(([provider, models]) => (
-            <DropdownMenuGroup key={provider}>
-              {/* <DropdownMenuLabel className="tw-py-1.5 tw-pl-2 tw-pr-2 tw-text-xs tw-text-muted-foreground">
-                {provider}
-              </DropdownMenuLabel> */}
-              {models.map((model) => (
-                <DropdownMenuItem
-                  key={model.code}
-                  className="tw-flex tw-items-center tw-gap-2"
-                  onSelect={() => {
-                    handleRewrite({
-                      model: model.code,
-                    });
-                  }}
-                >
-                  {model.icon}
-                  {model.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuGroup>
-          ))}
-        </div>
+      <DropdownMenuContent className="custom-scrollbar tw-max-h-[300px] tw-overflow-y-auto">
+        <DropdownMenuItem
+          value="pro-search"
+          className="tw-flex tw-items-center tw-gap-2"
+          onClick={() => {
+            handleRewrite({
+              proSearch: true,
+              model: queryBoxStore.getState().selectedLanguageModel,
+            });
+          }}
+        >
+          <ProSearchIcon className="tw-size-4" />
+          Pro Search
+        </DropdownMenuItem>
+        {groupedLanguageModelsByProvider.map(([provider, models]) => (
+          <DropdownMenuGroup key={provider}>
+            {models.map((model) => (
+              <DropdownMenuItem
+                key={model.code}
+                value={model.code}
+                className="tw-flex tw-items-center tw-gap-2"
+                onClick={() => {
+                  handleRewrite({
+                    model: model.code,
+                  });
+                }}
+              >
+                {model.icon}
+                {model.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

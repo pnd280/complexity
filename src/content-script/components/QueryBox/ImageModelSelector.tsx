@@ -9,7 +9,6 @@ import {
   SelectValue,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
-import { cn } from "@/utils/cn";
 import UIUtils from "@/utils/UI";
 
 import { ImageModel, imageModels } from ".";
@@ -22,22 +21,23 @@ export default function ImageModelSelector() {
 
   return (
     <Select
-      value={value}
-      onValueChange={(value) => {
-        setValue(value as ImageModel["code"]);
+      items={imageModels.map((model) => model.code)}
+      value={[value]}
+      onValueChange={(details) => {
+        setValue(details.value[0] as ImageModel["code"]);
 
         setTimeout(() => {
           UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
         }, 100);
       }}
     >
-      <SelectTrigger variant="ghost" className="!tw-px-0 !tw-py-0">
-        <Tooltip
-          content="Choose image model"
-          contentOptions={{
-            sideOffset: 8,
-          }}
-        >
+      <Tooltip
+        content="Choose image model"
+        positioning={{
+          gutter: 8,
+        }}
+      >
+        <SelectTrigger variant="ghost" className="!tw-px-0 !tw-py-0">
           <div className="tw-flex tw-min-h-8 !tw-w-fit tw-max-w-[200px] tw-select-none tw-items-center tw-justify-center tw-gap-2 !tw-px-2 tw-font-medium tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in active:!tw-scale-95 [&_span]:tw-max-w-[150px]">
             <Image className="tw-size-4" />
             <SelectValue>
@@ -47,32 +47,26 @@ export default function ImageModelSelector() {
               {limit}
             </span>
           </div>
-        </Tooltip>
-      </SelectTrigger>
-      <SelectContent className="tw-max-h-[500px] tw-max-w-[200px] tw-font-sans [&_span]:tw-truncate">
+        </SelectTrigger>
+      </Tooltip>
+      <SelectContent className="custom-scrollbar tw-max-h-[500px] tw-max-w-[200px] tw-overflow-auto tw-font-sans">
         {imageModels.map((model) => (
           <Tooltip
             key={model.code}
             content={value !== model.code ? limit : undefined}
-            contentOptions={{
-              side: "right",
-              sideOffset: 10,
+            positioning={{
+              placement: "right",
+              gutter: 10,
             }}
           >
-            <SelectItem
-              key={model.code}
-              value={model.code}
-              className={cn({
-                "tw-text-accent-foreground": model.code === value,
-              })}
-            >
-              <div className="gap-2 tw-models-center tw-flex tw-justify-around">
+            <SelectItem key={model.code} item={model.code}>
+              <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
                 {model.icon ? (
                   <div className="tw-text-[1.1rem]">{model.icon}</div>
                 ) : (
                   <Cpu className="tw-size-4" />
                 )}
-                <span>{model.label}</span>
+                <span className="tw-truncate">{model.label}</span>
               </div>
             </SelectItem>
           </Tooltip>

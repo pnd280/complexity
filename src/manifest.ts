@@ -1,6 +1,6 @@
 import { defineManifest } from "@crxjs/vite-plugin";
 
-import packageData from "../package.json";
+import * as packageData from '../package.json';
 
 const isDev = process.env.NODE_ENV == "development";
 
@@ -31,7 +31,7 @@ export default defineManifest({
         "https://perplexity.ai/p/api/*",
       ],
       js: ["src/content-script/index.tsx"],
-      css: ["global.css", "overrides.css", "components.css", "canvas.css"],
+      css: ["global.tw.css"],
       run_at: "document_start",
     },
   ],
@@ -44,9 +44,8 @@ export default defineManifest({
         "img/logo-34.png",
         "img/logo-48.png",
         "img/logo-128.png",
-        "*.js",
         "*.css",
-        "global.css",
+        "global.tw.css",
         "overrides.css",
         "components.css",
         "canvas.css",

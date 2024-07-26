@@ -6,13 +6,13 @@ import ReactDOM from "react-dom";
 import { FaMarkdown } from "react-icons/fa";
 
 import PPLXApi from "@/services/PPLXApi";
-import { Button } from "@/shared/components/shadcn/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/components/shadcn/ui/dropdown-menu";
+} from "@/shared/components/DropdownMenu";
+import { Button } from "@/shared/components/shadcn/ui/button";
 import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import ThreadExport from "@/utils/ThreadExport";
@@ -129,8 +129,9 @@ export default function ThreadExportButton() {
         {exportOptions.map((option, index) => (
           <DropdownMenuItem
             key={index}
+            value={option.value}
             className="tw-flex tw-items-center tw-gap-2"
-            onSelect={() => {
+            onClick={() => {
               handleExportThread({
                 includeCitations: option.value === "citations",
               });

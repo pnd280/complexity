@@ -1,4 +1,4 @@
-import "@@/public/global.css";
+import "@@/public/global.tw.css";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";

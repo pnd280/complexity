@@ -100,7 +100,11 @@ export default function CollectionSelector() {
 
   return (
     <>
-      <Popover open={open} modal={false} onOpenChange={toggleOpen}>
+      <Popover
+        open={open}
+        modal={false}
+        onOpenChange={(details) => toggleOpen(details.open)}
+      >
         <Tooltip
           content={!selectedCollectionUuid ? "Chat with a collection" : ""}
         >
@@ -170,10 +174,11 @@ export default function CollectionSelector() {
                 >
                   <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
                     <Tooltip
+                      className="tw-max-h-[200px] tw-truncate"
                       content={userProfileSettings?.bio || ""}
-                      contentOptions={{
-                        side: "right",
-                        sideOffset: 60,
+                      positioning={{
+                        placement: "right",
+                        gutter: 60,
                       }}
                     >
                       <div
@@ -272,11 +277,14 @@ export default function CollectionSelector() {
                       <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
                         <Tooltip
                           content={
-                            collection.instructions || collection.description
+                            <div className="tw-line-clamp-5">
+                              {collection.instructions ||
+                                collection.description}
+                            </div>
                           }
-                          contentOptions={{
-                            side: "right",
-                            sideOffset: 60,
+                          positioning={{
+                            placement: "right",
+                            gutter: 60,
                           }}
                         >
                           <div

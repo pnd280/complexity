@@ -13,7 +13,6 @@ import {
   SelectValue,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
-import { cn } from "@/utils/cn";
 import UIUtils from "@/utils/UI";
 
 import {
@@ -62,22 +61,23 @@ export default function LanguageModelSelector() {
 
   return (
     <Select
-      value={value}
-      onValueChange={(value) => {
-        setValue(value as LanguageModel["code"]);
+      items={languageModels.map((model) => model.code)}
+      value={[value]}
+      onValueChange={(details) => {
+        setValue(details.value[0] as LanguageModel["code"]);
 
         setTimeout(() => {
           UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
         }, 100);
       }}
     >
-      <SelectTrigger variant="ghost" className="!tw-px-0 !tw-py-0">
-        <Tooltip
-          content="Choose language model"
-          contentOptions={{
-            sideOffset: 8,
-          }}
-        >
+      <Tooltip
+        content="Choose language model"
+        positioning={{
+          gutter: 8,
+        }}
+      >
+        <SelectTrigger variant="ghost" className="!tw-px-0 !tw-py-0">
           <div className="tw-flex tw-min-h-8 !tw-w-fit tw-max-w-[200px] tw-select-none tw-items-center tw-justify-center tw-gap-2 !tw-px-2 tw-font-medium tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in active:!tw-scale-95 [&_span]:tw-max-w-[150px]">
             <Cpu className="tw-size-4" />
             <SelectValue>
@@ -87,45 +87,37 @@ export default function LanguageModelSelector() {
               {modelsLimits[value]}
             </span>
           </div>
-        </Tooltip>
-      </SelectTrigger>
-      <SelectContent className="tw-max-h-[500px] tw-max-w-[200px] tw-font-sans [&_span]:tw-truncate">
-        {groupedLanguageModelsByProvider.map(([provider, models]) => {
-          return (
-            <SelectGroup key={provider}>
-              <SelectLabel>{provider}</SelectLabel>
-              {models.map((model) => (
-                <Tooltip
-                  key={model.code}
-                  content={
-                    value !== model.code ? modelsLimits[model.code] : undefined
-                  }
-                  contentOptions={{
-                    side: "right",
-                    sideOffset: 10,
-                  }}
-                >
-                  <SelectItem
-                    key={model.code}
-                    value={model.code}
-                    className={cn({
-                      "tw-text-accent-foreground": model.code === value,
-                    })}
-                  >
-                    <div className="gap-2 tw-flex tw-items-center tw-justify-around">
-                      {model.icon ? (
-                        <div className="tw-text-[1.1rem]">{model.icon}</div>
-                      ) : (
-                        <Cpu className="tw-size-4" />
-                      )}
-                      <span>{model.label}</span>
-                    </div>
-                  </SelectItem>
-                </Tooltip>
-              ))}
-            </SelectGroup>
-          );
-        })}
+        </SelectTrigger>
+      </Tooltip>
+      <SelectContent className="custom-scrollbar tw-max-h-[500px] tw-max-w-[200px] tw-overflow-auto tw-font-sans">
+        {groupedLanguageModelsByProvider.map(([provider, models]) => (
+          <SelectGroup key={provider}>
+            <SelectLabel>{provider}</SelectLabel>
+            {models.map((model) => (
+              <Tooltip
+                key={model.code}
+                content={
+                  value !== model.code ? modelsLimits[model.code] : undefined
+                }
+                positioning={{
+                  placement: "right",
+                  gutter: 10,
+                }}
+              >
+                <SelectItem key={model.code} item={model.code}>
+                  <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
+                    {model.icon ? (
+                      <div className="tw-text-[1.1rem]">{model.icon}</div>
+                    ) : (
+                      <Cpu className="tw-size-4" />
+                    )}
+                    <span className="tw-truncate">{model.label}</span>
+                  </div>
+                </SelectItem>
+              </Tooltip>
+            ))}
+          </SelectGroup>
+        ))}
       </SelectContent>
     </Select>
   );

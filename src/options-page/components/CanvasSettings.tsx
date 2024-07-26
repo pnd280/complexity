@@ -144,9 +144,9 @@ function CanvasSettingBlock({
           />
           <Tooltip
             content="Show a compact box instead of the entire code block"
-            contentOptions={{
-              side: "right",
-              sideOffset: 10,
+            positioning={{
+              placement: "right",
+              gutter: 10,
             }}
           >
             <HelpCircle className="tw-size-3 tw-text-muted tw-transition-all hover:tw-text-muted-foreground" />

@@ -14,5 +14,6 @@
   "tailwindCSS.experimental.classRegex": [
     ["addClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["toggleClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ]
+  ],
+  "files.associations": { "*.tw.css": "tailwindcss" }
 }

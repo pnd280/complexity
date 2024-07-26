@@ -39,10 +39,11 @@ export default function FocusSelector() {
 
   return (
     <Select
-      value={focus || ""}
+      items={items.map((model) => model.code)}
+      value={[focus || ""]}
       open={open}
-      onValueChange={(value) => {
-        setFocus(value as WebAccessFocus["code"]);
+      onValueChange={(details) => {
+        setFocus(details.value[0] as WebAccessFocus["code"]);
         toggleWebAccess(true);
         toggleOpen();
 
@@ -69,8 +70,8 @@ export default function FocusSelector() {
       >
         <Tooltip
           content={`Web access: ${allowWebAccess ? "ON" : "OFF"}${allowWebAccess && focus ? ` | Focus: ${items.find((model) => model.code === focus)?.label}` : ""}`}
-          contentOptions={{
-            sideOffset: 15,
+          positioning={{
+            gutter: 15,
           }}
         >
           <div
@@ -88,22 +89,16 @@ export default function FocusSelector() {
           </div>
         </Tooltip>
       </SelectTrigger>
-      <SelectContent className="tw-max-h-[500px] tw-max-w-[200px] tw-font-sans [&_span]:tw-truncate">
+      <SelectContent className="tw-max-h-[500px] tw-min-w-[130px] tw-max-w-[200px] tw-items-center tw-font-sans">
         {items.map((item) => (
-          <SelectItem
-            key={item.code}
-            value={item.code}
-            className={cn({
-              "tw-text-accent-foreground": item.code === focus,
-            })}
-          >
-            <div className="gap-2 tw-flex tw-items-center tw-justify-around">
+          <SelectItem key={item.code} item={item.code}>
+            <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
               {item.icon ? (
                 <div>{item.icon}</div>
               ) : (
                 <Cpu className="tw-size-4" />
               )}
-              <span>{item.label}</span>
+              <span className="tw-truncate">{item.label}</span>
             </div>
           </SelectItem>
         ))}

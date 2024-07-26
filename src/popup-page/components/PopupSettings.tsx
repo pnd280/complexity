@@ -100,9 +100,9 @@ function RenderSettings<
         >
           <Tooltip
             content={!settingKey ? "This setting is always enabled" : ""}
-            contentOptions={{
-              side: "top-start",
-              sideOffset: 10,
+            positioning={{
+              placement: "top-start",
+              gutter: 10,
             }}
           >
             <LabeledSwitch
