@@ -50,7 +50,7 @@ export default function ThreadTOC() {
     <div
       className="tw-fixed tw-right-0 tw-top-0 tw-z-20 tw-w-max tw-transition-all"
       style={{
-        top: `${(UIUtils.getStickyNavbar().outerHeight() || 50) + (isFloat ? 60 : 30)}px`,
+        top: `${(UIUtils.getThreadWrapper().offset()?.top || 70) + (isFloat ? 60 : 30)}px`,
         [!isFloat ? "left" : "right"]: !isFloat
           ? `${wrapperPos.left + 20}px`
           : "2rem",

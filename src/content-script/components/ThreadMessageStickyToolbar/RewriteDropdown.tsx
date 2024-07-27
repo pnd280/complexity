@@ -78,7 +78,11 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
   );
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      positioning={{
+        placement: "bottom",
+      }}
+    >
       <DropdownMenuTrigger
         onClick={(e) => {
           if (ctrlDown) {

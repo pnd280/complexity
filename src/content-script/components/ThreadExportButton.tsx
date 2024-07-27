@@ -111,7 +111,11 @@ export default function ThreadExportButton() {
   if (!container) return null;
 
   return ReactDOM.createPortal(
-    <DropdownMenu>
+    <DropdownMenu
+      positioning={{
+        placement: "top-end",
+      }}
+    >
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"

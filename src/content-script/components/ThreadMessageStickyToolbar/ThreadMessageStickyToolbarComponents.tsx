@@ -196,7 +196,11 @@ export default function ThreadMessageStickyToolbarComponents({
           </Tooltip>
         )}
 
-        <DropdownMenu>
+        <DropdownMenu
+          positioning={{
+            placement: "bottom-end",
+          }}
+        >
           <DropdownMenuTrigger>
             <div
               className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95"

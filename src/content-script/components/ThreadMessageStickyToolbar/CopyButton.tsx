@@ -88,7 +88,11 @@ export default function CopyButton({
   }, [containerIndex, refetch, setCopyButtonText]);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      positioning={{
+        placement: "bottom",
+      }}
+    >
       <DropdownMenuTrigger
         onClick={(e) => {
           if (ctrlDown) {
