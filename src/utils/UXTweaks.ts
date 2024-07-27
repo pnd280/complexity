@@ -52,7 +52,7 @@ export default class UXTweaks {
   }
 
   static restoreLogoContextMenu() {
-    const $logo = $(".flex.items-center.mb-md.justify-between > *:first-child");
+    const $logo = $(".flex.items-center.mb-md.justify-between > *:first-child, .mt-xs.grow > .flex.items-center.justify-center:first-child > *:first-child");
 
     if (!$logo.length) return;
 
