@@ -1,9 +1,10 @@
-import DOMPurify from "dompurify";
+import DomPurify from "dompurify";
 import $ from "jquery";
 import showdown from "showdown";
 
-import background from "./background";
-import UIUtils from "./UI";
+import UiUtils from "@/utils/UiUtils";
+
+import BackgroundScript from "./BackgroundScript";
 
 export const jsonUtils = {
   unescape(escapedJson: string) {
@@ -109,7 +110,7 @@ export function markdown2Html(markdown: string) {
     }
   });
 
-  return DOMPurify.sanitize($tag.html());
+  return DomPurify.sanitize($tag.html());
 }
 
 export function stripHtml(html: string | undefined) {
@@ -196,7 +197,7 @@ export function scrollToElement(
   offset = 0,
   duration = 500,
 ) {
-  const $stickyHeader = UIUtils.getStickyNavbar();
+  const $stickyHeader = UiUtils.getStickyNavbar();
 
   if ($stickyHeader.length) {
     offset -= $stickyHeader.height() || 0;
@@ -222,7 +223,7 @@ export async function fetchResource(url: string) {
 }
 
 export async function getTabId() {
-  const response = await background.sendMessage({ action: "getTabId" });
+  const response = await BackgroundScript.sendMessage({ action: "getTabId" });
   return response.tabId;
 }
 
@@ -330,11 +331,11 @@ export function waitForElement({
   });
 }
 
-export function isDOMNode(element: any): element is HTMLElement | Element {
+export function isDomNode(element: any): element is HTMLElement | Element {
   return element instanceof HTMLElement || element instanceof Element;
 }
 
-export async function getPPLXBuildId() {
+export async function getPplxBuildId() {
   const NEXTDATA = await getNEXTDATA();
 
   return NEXTDATA.buildId;

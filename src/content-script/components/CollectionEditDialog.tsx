@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
-import PPLXApi from "@/services/PPLXApi";
+import CplxUserSettings from "@/lib/CplxUserSettings";
+import PplxApi from "@/services/PplxApi";
 import InputWithLimit from "@/shared/components/InputWithLimit";
 import { Button } from "@/shared/components/shadcn/ui/button";
 import {
@@ -41,13 +41,13 @@ export default function CollectionEditDialog({
 
   const { refetch: refetchCollections } = useQuery({
     queryKey: ["collections"],
-    queryFn: PPLXApi.fetchCollections,
+    queryFn: PplxApi.fetchCollections,
     enabled: false,
   });
 
   const { mutateAsync } = useMutation({
     mutationKey: ["editCollection"],
-    mutationFn: PPLXApi.updateCollection,
+    mutationFn: PplxApi.updateCollection,
     onMutate: (args) => {
       const oldCollections = queryClient.getQueryData<Collection[]>([
         "collections",
@@ -165,7 +165,7 @@ export default function CollectionEditDialog({
               title.length > limits.title ||
               description.length > limits.description ||
               instructions.length >
-                (CPLXUserSettings.get().secretMode
+                (CplxUserSettings.get().secretMode
                   ? 10000
                   : limits.instructions)
             }

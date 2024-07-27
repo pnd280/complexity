@@ -1,5 +1,5 @@
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
-import { BackgroundAction } from "@/utils/background";
+import CplxUserSettings from "@/lib/CplxUserSettings";
+import { BackgroundAction } from "@/utils/BackgroundScript";
 
 if (!import.meta.env.DEV) {
   chrome.runtime.onInstalled.addListener(() => {
@@ -10,7 +10,7 @@ if (!import.meta.env.DEV) {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
-  CPLXUserSettings.init();
+  CplxUserSettings.init();
 });
 
 chrome.runtime.onMessage.addListener(

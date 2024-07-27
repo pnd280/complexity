@@ -8,11 +8,11 @@ import {
   UserProfileSettingsApiRequest,
   UserProfileSettingsApiResponse,
   UserSettingsApiResponse,
-} from "@/types/PPLXApi";
-import { fetchResource, getPPLXBuildId, jsonUtils } from "@/utils/utils";
-import WSMessageParser from "@/utils/WSMessageParser";
+} from "@/types/pplx-api.types";
+import { fetchResource, getPplxBuildId, jsonUtils } from "@/utils/utils";
+import WsMessageParser from "@/utils/WsMessageParser";
 
-export default class PPLXApi {
+export default class PplxApi {
   static async fetchUserSettings(): Promise<UserSettingsApiResponse> {
     const resp = await fetchResource(
       "https://www.perplexity.ai/p/api/v1/user/settings",
@@ -29,7 +29,7 @@ export default class PPLXApi {
   }
 
   static async fetchCollections(): Promise<Collection[]> {
-    const pplxBuildId = await getPPLXBuildId();
+    const pplxBuildId = await getPplxBuildId();
 
     if (!pplxBuildId) return [];
 
@@ -71,7 +71,7 @@ export default class PPLXApi {
 
     await webpageMessenger.sendMessage({
       event: "sendWebSocketMessage",
-      payload: WSMessageParser.stringify({
+      payload: WsMessageParser.stringify({
         messageCode: 420,
         event: "edit_collection",
         data: [
@@ -91,7 +91,7 @@ export default class PPLXApi {
   static async fetchThreadInfo(threadSlug: string) {
     if (!threadSlug) return null;
 
-    const pplxBuildId = await getPPLXBuildId();
+    const pplxBuildId = await getPplxBuildId();
 
     if (!pplxBuildId) return null;
 
@@ -108,7 +108,7 @@ export default class PPLXApi {
   }
 
   static async fetchUserProfileSettings(): Promise<UserProfileSettingsApiResponse | null> {
-    const pplxBuildId = await getPPLXBuildId();
+    const pplxBuildId = await getPplxBuildId();
 
     if (!pplxBuildId) return null;
 
@@ -129,7 +129,7 @@ export default class PPLXApi {
     try {
       await webpageMessenger.sendMessage({
         event: "sendWebSocketMessage",
-        payload: WSMessageParser.stringify({
+        payload: WsMessageParser.stringify({
           messageCode: 423,
           event: "save_user_settings",
           data: {
@@ -152,7 +152,7 @@ export default class PPLXApi {
     try {
       await webpageMessenger.sendMessage({
         event: "sendWebSocketMessage",
-        payload: WSMessageParser.stringify({
+        payload: WsMessageParser.stringify({
           messageCode: 423,
           event: "save_user_settings",
           data: {
@@ -184,7 +184,7 @@ export default class PPLXApi {
     try {
       await webpageMessenger.sendMessage({
         event: "sendWebSocketMessage",
-        payload: WSMessageParser.stringify({
+        payload: WsMessageParser.stringify({
           messageCode: 421,
           event: "save_user_ai_profile",
           data: data2Send,

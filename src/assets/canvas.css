@@ -4,10 +4,12 @@ body.alternate-markdown-block pre[data-mask="true"] code {
 
 body.alternate-markdown-block div.w-full.max-w-\[90vw\]:not(.bg-transparent) {
   visibility: hidden;
-  opacity   : 0;
+  opacity: 0;
 }
 
-body.alternate-markdown-block div.w-full.max-w-\[90vw\]:not(.bg-transparent)>* {
+body.alternate-markdown-block
+  div.w-full.max-w-\[90vw\]:not(.bg-transparent)
+  > * {
   visibility: hidden;
-  opacity   : 0;
+  opacity: 0;
 }

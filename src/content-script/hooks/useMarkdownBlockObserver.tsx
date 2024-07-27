@@ -9,9 +9,9 @@ import {
 
 import { MarkdownBlockContainer } from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock";
 import { shikiContentScript } from "@/content-script/main-world/shiki";
-import DOMObserver from "@/utils/DOMObserver";
+import DomObserver from "@/utils/DomObserver/DomObserver";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
-import { isDOMNode } from "@/utils/utils";
+import { isDomNode } from "@/utils/utils";
 
 import { preBlockAttrsContentScript } from "../main-world/pre-block-attrs";
 
@@ -53,7 +53,7 @@ export default function useMarkdownBlockObserver({
 
   useEffect(
     function toolbarObserver() {
-      if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
+      if (!isDomNode(messagesContainer) || !$(messagesContainer).length) return;
 
       const id = "markdown-block-toolbar";
 
@@ -62,7 +62,7 @@ export default function useMarkdownBlockObserver({
 
         requestAnimationFrame(callback);
 
-        DOMObserver.create(id, {
+        DomObserver.create(id, {
           target: messagesContainer,
           config: { childList: true, subtree: true },
           throttleTime: 200,
@@ -105,7 +105,7 @@ export default function useMarkdownBlockObserver({
         });
       }
       return () => {
-        DOMObserver.destroy(id);
+        DomObserver.destroy(id);
       };
     },
     [updateContainers, messagesContainer],
@@ -113,7 +113,7 @@ export default function useMarkdownBlockObserver({
 
   useEffect(
     function alternateMarkdownBlockObservers() {
-      if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
+      if (!isDomNode(messagesContainer) || !$(messagesContainer).length) return;
 
       const id = "alternate-markdown-block";
 
@@ -124,7 +124,7 @@ export default function useMarkdownBlockObserver({
 
         requestIdleCallback(callback);
 
-        DOMObserver.create(id, {
+        DomObserver.create(id, {
           target: messagesContainer,
           config: {
             childList: true,
@@ -153,7 +153,7 @@ export default function useMarkdownBlockObserver({
       }
 
       return () => {
-        DOMObserver.destroy(id);
+        DomObserver.destroy(id);
       };
     },
     [messagesContainer],

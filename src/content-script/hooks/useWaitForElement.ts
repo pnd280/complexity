@@ -19,7 +19,7 @@ export default function useWaitForElement({
         timeout,
       });
 
-      if (!messagesContainer) throw new Error("DOM node not found: " + id);
+      if (!messagesContainer) throw new Error("Dom node not found: " + id);
 
       return messagesContainer;
     },

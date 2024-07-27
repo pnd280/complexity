@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-import CPLXApi from "@/services/CPLXApi";
+import CplxApi from "@/services/CplxApi";
 import { compareVersions } from "@/utils/utils";
-
-import packageData from "../../../package.json";
+import packageData from "@@/package.json";
 
 export default function useExtensionUpdate({
   forceFetchChangelog,
@@ -12,7 +11,7 @@ export default function useExtensionUpdate({
 }) {
   const { data } = useQuery({
     queryKey: ["cplxVersions"],
-    queryFn: () => CPLXApi.fetchVersions(),
+    queryFn: () => CplxApi.fetchVersions(),
     refetchOnWindowFocus: false,
   });
 
@@ -23,7 +22,7 @@ export default function useExtensionUpdate({
   const { data: changelog, isLoading: isChangelogFetching } = useQuery({
     queryKey: ["changelog"],
     queryFn: () =>
-      CPLXApi.fetchChangelog({
+      CplxApi.fetchChangelog({
         type: "public",
       }),
     enabled: newVersionAvailable || forceFetchChangelog,

@@ -7,8 +7,7 @@ import Tooltip from "@/shared/components/Tooltip";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { cn } from "@/utils/cn";
 import { detectConsecutiveClicks } from "@/utils/utils";
-
-import packageData from "../../../package.json";
+import packageData from "@@/package.json";
 
 const version = `beta-${packageData.version}`;
 

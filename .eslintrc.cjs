@@ -10,7 +10,7 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react", "react-refresh"],
+  plugins: ["react", "react-refresh", "unicorn"],
   rules: {
     "react-refresh/only-export-components": [
       "warn",
@@ -38,6 +38,18 @@ module.exports = {
         allowExpressions: true,
       },
     ],
+    "unicorn/filename-case": [
+      "error",
+      {
+        cases: {
+          pascalCase: true,
+          kebabCase: true,
+          camelCase: true,
+        },
+        ignore: ["\\.d\\.ts$"],
+      },
+    ],
+    "import/no-cycle": "error",
     "import/order": [
       "warn",
       {

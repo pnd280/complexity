@@ -3,21 +3,24 @@ import { ExternalLink } from "lucide-react";
 import LabeledSwitch from "@/shared/components/LabeledSwitch";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import Tooltip from "@/shared/components/Tooltip";
-import { CPLXUserSettings, PopupSettingKeys } from "@/types/CPLXUserSettings";
+import {
+  CplxUserSettings,
+  PopupSettingKeys,
+} from "@/types/cplx-user-settings.types";
 import { cn } from "@/utils/cn";
 import { compareVersions } from "@/utils/utils";
+import packageData from "@@/package.json";
 
-import packageData from "../../../package.json";
 import usePopupSettings from "../hooks/usePopupSettings";
-import popupSettings, { PopupSetting } from "../settings";
+import popupSettings, { PopupSetting } from "../PopupSettings";
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 
-export const PopupSettings = ({
+export default function PopupSettings({
   context,
 }: {
   context?: "popup" | "options";
-}) => {
+}) {
   return (
     <main className="tw-relative tw-h-full tw-w-full tw-flex-col tw-overflow-auto tw-bg-background tw-font-sans !tw-text-[1em] tw-text-foreground">
       <div className="tw-overflow-auto tw-px-4 tw-py-2">
@@ -73,11 +76,11 @@ export const PopupSettings = ({
       </div>
     </main>
   );
-};
+}
 
 function RenderSettings<
   T extends PopupSetting<PopupSettingKeys>,
-  K extends keyof CPLXUserSettings["popupSettings"],
+  K extends keyof CplxUserSettings["popupSettings"],
 >({ settings, settingStoreKey }: { settings: T[]; settingStoreKey: K }) {
   const { settings: userSettings, updateSettings } = usePopupSettings();
 
@@ -87,7 +90,7 @@ function RenderSettings<
     ({ id, label, settingKey, experimental, versionRelease, onClick }) => {
       const defaultChecked =
         !!userSettings[settingStoreKey]?.[
-          settingKey as keyof CPLXUserSettings["popupSettings"][K]
+          settingKey as keyof CplxUserSettings["popupSettings"][K]
         ];
 
       return (
@@ -115,9 +118,9 @@ function RenderSettings<
                 if (!settingKey) return onClick?.();
                 updateSettings(settingStoreKey, (draft) => {
                   draft[
-                    settingKey as keyof CPLXUserSettings["popupSettings"][K]
+                    settingKey as keyof CplxUserSettings["popupSettings"][K]
                   ] =
-                    checked as CPLXUserSettings["popupSettings"][K][keyof CPLXUserSettings["popupSettings"][K]];
+                    checked as CplxUserSettings["popupSettings"][K][keyof CplxUserSettings["popupSettings"][K]];
                 });
               }}
             />
@@ -140,5 +143,3 @@ function RenderSettings<
     },
   );
 }
-
-export default PopupSettings;

@@ -2,7 +2,7 @@ import $ from "jquery";
 import { useEffect } from "react";
 
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
-import { isDOMNode } from "@/utils/utils";
+import { isDomNode } from "@/utils/utils";
 
 import useWaitForElement from "../hooks/useWaitForElement";
 
@@ -15,7 +15,7 @@ export function IncompatibleInterfaceLanguageNotice() {
   });
 
   useEffect(() => {
-    if (!isDOMNode(element) || !$(element).length) return;
+    if (!isDomNode(element) || !$(element).length) return;
 
     const $select = $(element);
     if ($select.length) {

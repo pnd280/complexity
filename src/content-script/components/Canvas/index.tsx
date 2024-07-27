@@ -3,14 +3,14 @@ import { SiHtml5, SiMermaid } from "react-icons/si";
 
 import { CanvasLang } from "@/utils/Canvas";
 
-import HTMLCanvas from "./HTMLCanvas";
+import HtmlCanvas from "./HtmlCanvas";
 import MermaidCanvas from "./MermaidCanvas";
 
 type CanvasComponents = Record<CanvasLang, ReactNode>;
 
 export const canvasComponents: CanvasComponents = {
   mermaid: <MermaidCanvas />,
-  html: <HTMLCanvas />,
+  html: <HtmlCanvas />,
 };
 
 type CanvasPlaceholders = Record<

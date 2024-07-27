@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 import { extensionOnly, mainWorldExec } from "@/utils/hof";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 
 import { webpageMessenger } from "./webpage-messenger";
@@ -69,7 +69,7 @@ class ShikiHighlighter {
 
     try {
       await this.importShiki();
-      const theme = UIUtils.isDarkTheme() ? "dark-plus" : "light-plus";
+      const theme = UiUtils.isDarkTheme() ? "dark-plus" : "light-plus";
 
       if (!(lang in window.shiki!.bundledLanguages)) return null;
 

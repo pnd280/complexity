@@ -2,7 +2,7 @@ import $ from "jquery";
 import type { MermaidConfig } from "mermaid";
 
 import { extensionOnly, mainWorldExec } from "@/utils/hof";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 
 import { webpageMessenger } from "../webpage-messenger";
@@ -29,7 +29,7 @@ class MermaidCanvas {
     if (window.mermaid && window.svgPanZoom) return;
 
     if (!this.importPromise) {
-      const isDarkTheme = UIUtils.isDarkTheme();
+      const isDarkTheme = UiUtils.isDarkTheme();
 
       const background = getComputedStyle(
         document.documentElement,

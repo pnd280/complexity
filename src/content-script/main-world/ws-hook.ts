@@ -1,4 +1,4 @@
-import { Nullable } from "@/types/Utils";
+import { Nullable } from "@/types/utils.types";
 import { mainWorldExec } from "@/utils/hof";
 
 import { webpageMessenger } from "./webpage-messenger";

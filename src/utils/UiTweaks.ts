@@ -1,16 +1,15 @@
 import $ from "jquery";
 
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
+import CplxUserSettings from "@/lib/CplxUserSettings";
+import UiUtils from "@/utils/UiUtils";
 import { jsonUtils, whereAmI } from "@/utils/utils";
 
-import UIUtils from "./UI";
-
-export default class UITweaks {
+export default class UiTweaks {
   static injectCustomStyles() {
     $(document.body).addClass("!tw-mr-0");
 
     const { customCSS, accentColor, monoFont, uiFont } =
-      CPLXUserSettings.get().customTheme;
+      CplxUserSettings.get().customTheme;
 
     if ($("#complexity-custom-styles").length) {
       $("#complexity-custom-styles").text(jsonUtils.safeParse(customCSS || ""));
@@ -64,7 +63,7 @@ export default class UITweaks {
         $("html").addClass("dark tw-dark");
       }
 
-      const darkTheme = UIUtils.isDarkTheme();
+      const darkTheme = UiUtils.isDarkTheme();
 
       if (darkTheme) $("html").addClass("tw-dark");
 
@@ -78,7 +77,7 @@ export default class UITweaks {
   }
 
   static async applySettingsAsHTMLAttrs(location: ReturnType<typeof whereAmI>) {
-    const settings = CPLXUserSettings.get().popupSettings;
+    const settings = CplxUserSettings.get().popupSettings;
 
     $(document.body)
       .toggleClass(
@@ -124,6 +123,6 @@ export default class UITweaks {
   static async applySelectableAttrs(location: ReturnType<typeof whereAmI>) {
     if (location !== "thread") return;
 
-    UIUtils.getMessageBlocks();
+    UiUtils.getMessageBlocks();
   }
 }

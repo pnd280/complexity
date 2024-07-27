@@ -1,6 +1,6 @@
-import chalk from 'chalk';
-import * as fs from 'fs';
-import { Plugin } from 'vite';
+import chalk from "chalk";
+import * as fs from "fs";
+import { Plugin } from "vite";
 
 function touchFile(filePath: string): void {
   const time = new Date();
@@ -17,15 +17,15 @@ export default function touchGlobalCSSPlugin({
   watchFiles,
 }: TouchGlobalCSSPluginOptions): Plugin {
   return {
-    name: 'touch-global-css',
+    name: "touch-global-css",
     configureServer(server) {
-      server.watcher.on('change', (file) => {
+      server.watcher.on("change", (file) => {
         if (watchFiles.some((watchFile) => file.includes(watchFile))) {
           if (file.includes(cssFilePath)) return;
 
           touchFile(cssFilePath);
           console.log(
-            `${chalk.blue(`\n[touch-global-css]`)} ${chalk.green(`Touched ${chalk.yellow(cssFilePath)} due to change in ${chalk.yellow(file)}`)}`
+            `${chalk.blue(`\n[touch-global-css]`)} ${chalk.green(`Touched ${chalk.yellow(cssFilePath)} due to change in ${chalk.yellow(file)}`)}`,
           );
         }
       });

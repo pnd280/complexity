@@ -12,7 +12,7 @@ import {
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 
 import { type WebAccessFocus, webAccessFocus } from "./";
 
@@ -34,7 +34,7 @@ export default function FocusSelector() {
       setFocus("internet");
     }
 
-    UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
+    UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
   }, [allowWebAccess, focus, setFocus]);
 
   return (
@@ -47,7 +47,7 @@ export default function FocusSelector() {
         toggleWebAccess(true);
         toggleOpen();
 
-        UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
+        UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
       }}
       onPointerDownOutside={() => toggleOpen(false)}
     >

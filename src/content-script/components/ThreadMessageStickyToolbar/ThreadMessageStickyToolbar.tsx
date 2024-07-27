@@ -8,11 +8,11 @@ import {
   useRef,
   useState,
 } from "react";
-import ReactDOM from "react-dom";
+import ReactDom from "react-dom";
 import { Updater, useImmer } from "use-immer";
 
 import useThreadMessageStickyToolbarObserver from "@/content-script/hooks/useThreadMessageStickyToolbarObserver";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 import { onScrollDirectionChange } from "@/utils/utils";
 
 import ThreadMessageStickyToolbarComponents from "./ThreadMessageStickyToolbarComponents";
@@ -109,7 +109,7 @@ export default function ThreadMessageStickyToolbar() {
     (container: Container, index: number) => (
       <Fragment key={index}>
         {containers[index] &&
-          ReactDOM.createPortal(
+          ReactDom.createPortal(
             <ThreadMessageStickyToolbarComponents
               containers={containers}
               containersStates={containersStates}
@@ -131,7 +131,7 @@ const useScrollDirection = (
   setContainersStates: Updater<ContainerStates[]>,
 ) => {
   const stickyNavHeight = useMemo(
-    () => UIUtils.getStickyNavbar()?.outerHeight() || 3 * 16,
+    () => UiUtils.getStickyNavbar()?.outerHeight() || 3 * 16,
     [],
   );
 

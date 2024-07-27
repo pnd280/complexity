@@ -3,8 +3,8 @@ import type { Mermaid } from "mermaid";
 import type * as shiki from "shiki";
 import type * as svgPanZoom from "svg-pan-zoom";
 
-import { Nullable } from "./Utils";
-import { MessageListener, SendMessage } from "./WebpageMessenger";
+import { Nullable } from "./utils.types";
+import { MessageListener, SendMessage } from "./webpage-messenger.types";
 
 declare global {
   interface Window {

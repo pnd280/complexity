@@ -5,9 +5,9 @@ import {
   Container,
   ToggleToolbarVisibilityProps,
 } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
-import DOMObserver from "@/utils/DOMObserver";
-import UIUtils from "@/utils/UI";
-import { isDOMNode, markdown2Html } from "@/utils/utils";
+import DomObserver from "@/utils/DomObserver/DomObserver";
+import UiUtils from "@/utils/UiUtils";
+import { isDomNode, markdown2Html } from "@/utils/utils";
 
 import useWaitForMessagesContainer from "./useWaitForMessagesContainer";
 
@@ -24,13 +24,13 @@ export default function useThreadMessageStickyToolbarObserver({
 
   useEffect(
     function toolbarObserver() {
-      if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
+      if (!isDomNode(messagesContainer) || !$(messagesContainer).length) return;
 
       requestAnimationFrame(callback);
 
       const id = "thread-message-sticky-toolbar";
 
-      DOMObserver.create(id, {
+      DomObserver.create(id, {
         target: messagesContainer,
         config: { childList: true, subtree: true },
         debounceTime: 200,
@@ -41,7 +41,7 @@ export default function useThreadMessageStickyToolbarObserver({
       function callback() {
         const newContainers: Container[] = [];
 
-        const $messageBlocks = UIUtils.getMessageBlocks();
+        const $messageBlocks = UiUtils.getMessageBlocks();
 
         $messageBlocks.forEach(({ $query, $messageBlock, $answer }, index) => {
           queueMicrotask(() => {
@@ -81,7 +81,7 @@ export default function useThreadMessageStickyToolbarObserver({
       }
 
       return () => {
-        DOMObserver.destroy(id);
+        DomObserver.destroy(id);
       };
     },
     [messagesContainer, toggleVisibility, updateContainers],
@@ -90,13 +90,13 @@ export default function useThreadMessageStickyToolbarObserver({
   useEffect(
     // TODO: directly access the model badge from react fiber node
     function modelBadgeObserver() {
-      if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
+      if (!isDomNode(messagesContainer) || !$(messagesContainer).length) return;
 
       const id = "display-model-next-to-answer-heading";
 
       requestIdleCallback(callback);
 
-      DOMObserver.create(id, {
+      DomObserver.create(id, {
         target: messagesContainer,
         config: {
           childList: true,
@@ -117,7 +117,7 @@ export default function useThreadMessageStickyToolbarObserver({
 
           if (!messageBlock) return;
 
-          const { $answerHeading, $messageBlock } = UIUtils.parseMessageBlock(
+          const { $answerHeading, $messageBlock } = UiUtils.parseMessageBlock(
             $(messageBlock),
           );
 
@@ -142,7 +142,7 @@ export default function useThreadMessageStickyToolbarObserver({
       }
 
       return () => {
-        DOMObserver.destroy(id);
+        DomObserver.destroy(id);
       };
     },
     [messagesContainer],
@@ -150,11 +150,11 @@ export default function useThreadMessageStickyToolbarObserver({
 
   useEffect(
     function markdownQueryObserver() {
-      if (!isDOMNode(messagesContainer) || !$(messagesContainer).length) return;
+      if (!isDomNode(messagesContainer) || !$(messagesContainer).length) return;
 
       const id = "alter-message-query";
 
-      DOMObserver.create(id, {
+      DomObserver.create(id, {
         target: messagesContainer,
         config: {
           childList: true,
@@ -201,7 +201,7 @@ export default function useThreadMessageStickyToolbarObserver({
       }
 
       return () => {
-        DOMObserver.destroy(id);
+        DomObserver.destroy(id);
       };
     },
     [messagesContainer],

@@ -1,7 +1,7 @@
 import $ from "jquery";
 
-import { MessageData } from "@/types/WebpageMessenger";
-import { RouterEvent } from "@/types/WS";
+import { MessageData } from "@/types/webpage-messenger.types";
+import { RouterEvent } from "@/types/ws.types";
 import { mainWorldExec } from "@/utils/hof";
 import { waitForNextjsHydration } from "@/utils/utils";
 

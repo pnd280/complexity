@@ -9,7 +9,7 @@ import MainPage from "@/content-script/components/MainPage";
 import QueryBox from "@/content-script/components/QueryBox/QueryBox";
 import ThreadExportButton from "@/content-script/components/ThreadExportButton";
 import useRouter from "@/content-script/hooks/useRouter";
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
+import CplxUserSettings from "@/lib/CplxUserSettings";
 import { Toaster } from "@/shared/components/shadcn/ui/toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
 import { whereAmI } from "@/utils/utils";
@@ -30,7 +30,7 @@ const AlternateMarkdownBlock = lazy(
       "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock"
     ),
 );
-const ThreadTOC = lazy(() => import("@/content-script/components/ThreadTOC"));
+const ThreadToc = lazy(() => import("@/content-script/components/ThreadToc"));
 
 export default function ReactRoot() {
   const $root = $("<div>")
@@ -84,12 +84,12 @@ function MainPageComponents() {
 }
 
 function ThreadComponents() {
-  const settings = CPLXUserSettings.get().popupSettings.qolTweaks;
+  const settings = CplxUserSettings.get().popupSettings.qolTweaks;
 
   return (
     <>
       <ThreadExportButton />
-      {settings.threadTOC && <ThreadTOC />}
+      {settings.threadToc && <ThreadToc />}
       {settings.threadMessageStickyToolbar && <ThreadMessageStickyToolbar />}
       {settings.alternateMarkdownBlock && <AlternateMarkdownBlock />}
       {settings.canvas.enabled && <CanvasPanel />}

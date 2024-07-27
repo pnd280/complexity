@@ -24,13 +24,13 @@ function addDataAttrs(pre: HTMLElement) {
 mainWorldExec(() => {
   $(() => {
     queueMicrotask(applyDataAttrs);
-    queueMicrotask(proxyDOMMethods);
+    queueMicrotask(proxyDomMethods);
   });
 })();
 
-function proxyDOMMethods() {
+function proxyDomMethods() {
   // Why override native methods?
-  // To prevent layout shift: current DOMObserver implementation doesnt guarantee to react to DOM changes before they are painted on the screen => layout shift when apply new styles.
+  // To prevent layout shift: current DomObserver implementation doesnt guarantee to react to Dom changes before they are painted on the screen => layout shift when apply new styles.
 
   const originalAppendChild = Node.prototype.appendChild;
 

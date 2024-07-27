@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import ReactDOM from "react-dom";
+import ReactDom from "react-dom";
 
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
 import { useGlobalStore } from "@/content-script/session-store/global";
@@ -18,7 +18,7 @@ import {
   useQueryBoxStore,
 } from "@/content-script/session-store/query-box";
 import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
-import PPLXApi from "@/services/PPLXApi";
+import PplxApi from "@/services/PplxApi";
 import KeyCombo from "@/shared/components/KeyCombo";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
@@ -63,7 +63,7 @@ export default function QueryBox() {
     error: userSettingsError,
   } = useQuery({
     queryKey: ["userSettings"],
-    queryFn: PPLXApi.fetchUserSettings,
+    queryFn: PplxApi.fetchUserSettings,
     refetchInterval: 10000,
     ...queryOptions,
     enabled: !$(document.body).hasClass("no-js"),
@@ -87,13 +87,13 @@ export default function QueryBox() {
 
   useQuery({
     queryKey: ["userProfileSettings"],
-    queryFn: PPLXApi.fetchUserProfileSettings,
+    queryFn: PplxApi.fetchUserProfileSettings,
     enabled: isReady,
   });
 
   useQuery({
     queryKey: ["collections"],
-    queryFn: PPLXApi.fetchCollections,
+    queryFn: PplxApi.fetchCollections,
   });
 
   const { setQueryLimit, setOpusLimit, setImageCreateLimit } = useQueryBoxStore(
@@ -105,7 +105,7 @@ export default function QueryBox() {
   const { focus, imageGenModel, languageModel, collection } =
     settings?.queryBoxSelectors || {};
 
-  const hasActivePPLXSub =
+  const hasActivePplxSub =
     userSettings && userSettings.subscription_status === "active";
 
   useEffect(() => {
@@ -151,13 +151,13 @@ export default function QueryBox() {
   });
 
   useEffect(() => {
-    hasActivePPLXSub === false &&
+    hasActivePplxSub === false &&
       toast({
         title: "⚠️ Some features are disabled!",
         description: "No active Perplexity subscription/Not logged in!",
         timeout: 3000,
       });
-  }, [hasActivePPLXSub, toast]);
+  }, [hasActivePplxSub, toast]);
 
   useEffect(() => {
     const down = (
@@ -179,7 +179,7 @@ export default function QueryBox() {
   const selectors = (
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
-      hasActivePPLXSub={!!hasActivePPLXSub}
+      hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       collection={collection}
       languageModel={!!languageModel}
@@ -190,7 +190,7 @@ export default function QueryBox() {
   const followUpSelectors = (
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
-      hasActivePPLXSub={!!hasActivePPLXSub}
+      hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       languageModel={!!languageModel}
       imageGenModel={!!imageGenModel}
@@ -201,12 +201,12 @@ export default function QueryBox() {
     <>
       {containers.map((container, index) => (
         <Fragment key={index}>
-          {ReactDOM.createPortal(selectors, container)}
+          {ReactDom.createPortal(selectors, container)}
         </Fragment>
       ))}
       {followUpContainers.map((container, index) => (
         <Fragment key={index}>
-          {ReactDOM.createPortal(followUpSelectors, container)}
+          {ReactDom.createPortal(followUpSelectors, container)}
         </Fragment>
       ))}
     </>
@@ -215,14 +215,14 @@ export default function QueryBox() {
 
 const CommonSelectors = ({
   isReady,
-  hasActivePPLXSub,
+  hasActivePplxSub,
   focus,
   collection,
   languageModel,
   imageGenModel,
 }: {
   isReady: boolean;
-  hasActivePPLXSub: boolean;
+  hasActivePplxSub: boolean;
   focus: boolean;
   collection?: boolean;
   languageModel: boolean;
@@ -251,7 +251,7 @@ const CommonSelectors = ({
             <>
               {focus && <FocusSelector />}
               {collection && <CollectionSelector />}
-              {hasActivePPLXSub && (languageModel || imageGenModel) && (
+              {hasActivePplxSub && (languageModel || imageGenModel) && (
                 <div className="tw-my-auto tw-flex tw-h-8 tw-items-center">
                   <Separator
                     orientation="vertical"
@@ -261,8 +261,8 @@ const CommonSelectors = ({
               )}
             </>
           )}
-          {hasActivePPLXSub && languageModel && <LanguageModelSelector />}
-          {hasActivePPLXSub && imageGenModel && <ImageModelSelector />}
+          {hasActivePplxSub && languageModel && <LanguageModelSelector />}
+          {hasActivePplxSub && imageGenModel && <ImageModelSelector />}
         </>
       ) : (
         <div className="tw-mx-2 tw-flex tw-items-center tw-gap-2">

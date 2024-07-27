@@ -30,9 +30,9 @@ import {
   CommandSeparator,
 } from "@/shared/components/shadcn/ui/command";
 import Tooltip from "@/shared/components/Tooltip";
-import { UserProfileSettingsApiResponse } from "@/types/PPLXApi";
+import { UserProfileSettingsApiResponse } from "@/types/pplx-api.types";
 import { cn } from "@/utils/cn";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
 
 import CollectionEditDialog from "../CollectionEditDialog";
@@ -79,7 +79,7 @@ export default function CollectionSelector() {
   );
 
   useEffect(() => {
-    UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
+    UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
   }, [selectedCollectionUuid]);
 
   useEffect(() => {

@@ -1,11 +1,8 @@
-import chalk from 'chalk';
-import { exec } from 'child_process';
-import {
-  HmrContext,
-  Plugin,
-} from 'vite';
+import chalk from "chalk";
+import { exec } from "child_process";
+import { HmrContext, Plugin } from "vite";
 
-const pluginName = 'vite-plugin-run-command-on-demand';
+const pluginName = "vite-plugin-run-command-on-demand";
 
 const log = (message: string) =>
   console.log(chalk.blue(`\n[${pluginName}]`), chalk.green(message));
@@ -36,7 +33,7 @@ type CustomCommandsPluginOptions = {
 
 const executeCommand = async (
   command: string | undefined,
-  errorMessage: string
+  errorMessage: string,
 ) => {
   if (command) {
     try {
@@ -48,31 +45,31 @@ const executeCommand = async (
 };
 
 export default function customCommandsPlugin(
-  options: CustomCommandsPluginOptions = {}
+  options: CustomCommandsPluginOptions = {},
 ): Plugin {
   return {
     name: pluginName,
     configureServer(server) {
-      server.httpServer?.once('listening', async () => {
+      server.httpServer?.once("listening", async () => {
         await executeCommand(
           options.beforeServerStart,
-          `Error running beforeServerStart command: ${options.beforeServerStart}`
+          `Error running beforeServerStart command: ${options.beforeServerStart}`,
         );
         await executeCommand(
           options.afterServerStart,
-          `Error running afterServerStart command: ${options.afterServerStart}`
+          `Error running afterServerStart command: ${options.afterServerStart}`,
         );
       });
     },
 
     async handleHotUpdate(ctx: HmrContext) {
       const isPageReload = ctx.modules.some(
-        (module) => !module.isSelfAccepting
+        (module) => !module.isSelfAccepting,
       );
       if (!isPageReload) {
         await executeCommand(
           options.onHotUpdate,
-          `Error running onHotUpdate command: ${options.onHotUpdate}`
+          `Error running onHotUpdate command: ${options.onHotUpdate}`,
         );
       }
       return ctx.modules;
@@ -81,21 +78,21 @@ export default function customCommandsPlugin(
     async buildStart() {
       await executeCommand(
         options.beforeBuild,
-        `Error running beforeBuild command: ${options.beforeBuild}`
+        `Error running beforeBuild command: ${options.beforeBuild}`,
       );
     },
 
     async buildEnd() {
       await executeCommand(
         options.afterBuild,
-        `Error running afterBuild command: ${options.afterBuild}`
+        `Error running afterBuild command: ${options.afterBuild}`,
       );
     },
 
     async closeBundle() {
       await executeCommand(
         options.closeBundle,
-        `Error running closeBundle command: ${options.closeBundle}`
+        `Error running closeBundle command: ${options.closeBundle}`,
       );
     },
   };

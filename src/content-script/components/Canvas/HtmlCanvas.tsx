@@ -10,7 +10,7 @@ import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import { CanvasLang } from "@/utils/Canvas";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 
-export default function HTMLCanvas() {
+export default function HtmlCanvas() {
   const { metaData, toggleShowCode } = useCanvasStore();
 
   const isCtrlDown = useCtrlDown();

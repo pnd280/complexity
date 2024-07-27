@@ -2,7 +2,7 @@ import $ from "jquery";
 
 import { whereAmI } from "./utils";
 
-export default class UIUtils {
+export default class UiUtils {
   static isDarkTheme() {
     return $("html").hasClass("dark");
   }
@@ -30,7 +30,7 @@ export default class UIUtils {
   static getMessageBlocks() {
     if (whereAmI() !== "thread") return [];
 
-    const $messagesContainer = UIUtils.getMessagesContainer();
+    const $messagesContainer = UiUtils.getMessagesContainer();
 
     const messageBlocks: {
       $messageBlock: JQuery<Element>;
@@ -45,7 +45,7 @@ export default class UIUtils {
       $messageBlock.addClass("message-block").attr({ "data-index": index + 1 });
 
       const { $query, $answer, $answerHeading } =
-        UIUtils.parseMessageBlock($messageBlock);
+        UiUtils.parseMessageBlock($messageBlock);
 
       $messageBlock.find(".col-span-8:last").addClass("text-col");
       $messageBlock.find(".col-span-4:last").addClass("visual-col");
@@ -111,7 +111,7 @@ export default class UIUtils {
   }
 
   static getActiveQueryBox({ type }: { type?: "main" | "follow-up" }) {
-    return UIUtils.getActiveQueryBoxTextarea({
+    return UiUtils.getActiveQueryBoxTextarea({
       type,
     }).parents(".grow.block");
   }

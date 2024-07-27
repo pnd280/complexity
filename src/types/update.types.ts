@@ -1,4 +1,4 @@
-export type CPLXVersionsApiResponse = {
+export type CplxVersionsApiResponse = {
   public: string;
   internal: string;
 };

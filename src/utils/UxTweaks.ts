@@ -1,15 +1,18 @@
 import $ from "jquery";
 
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
+import CplxUserSettings from "@/lib/CplxUserSettings";
+import UiUtils from "@/utils/UiUtils";
 
-import UIUtils from "./UI";
 import { whereAmI } from "./utils";
 
-export default class UXTweaks {
+export default class uxTweaks {
   static dropFileWithinThread(location: ReturnType<typeof whereAmI>) {
-    if (!CPLXUserSettings.get().popupSettings.qolTweaks.fileDropableThreadWrapper) return;
-    
-    const $threadWrapperWrapper = UIUtils.getThreadWrapper().parent();
+    if (
+      !CplxUserSettings.get().popupSettings.qolTweaks.fileDropableThreadWrapper
+    )
+      return;
+
+    const $threadWrapperWrapper = UiUtils.getThreadWrapper().parent();
     if (!$threadWrapperWrapper.length) return;
 
     if (location !== "thread") {
@@ -37,7 +40,7 @@ export default class UXTweaks {
       e.preventDefault();
       e.stopPropagation();
 
-      const $queryBox = UIUtils.getActiveQueryBox({ type: "follow-up" });
+      const $queryBox = UiUtils.getActiveQueryBox({ type: "follow-up" });
       if (!$queryBox.length) return;
 
       const $fileInput = $queryBox.find('input[type="file"]');
@@ -52,7 +55,9 @@ export default class UXTweaks {
   }
 
   static restoreLogoContextMenu() {
-    const $logo = $(".flex.items-center.mb-md.justify-between > *:first-child, .mt-xs.grow > .flex.items-center.justify-center:first-child > *:first-child");
+    const $logo = $(
+      ".flex.items-center.mb-md.justify-between > *:first-child, .mt-xs.grow > .flex.items-center.justify-center:first-child > *:first-child",
+    );
 
     if (!$logo.length) return;
 

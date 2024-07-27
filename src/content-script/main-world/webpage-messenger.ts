@@ -8,7 +8,7 @@ import {
   ResponseData,
   SendMessageOptions,
   WebSocketEventData,
-} from "@/types/WebpageMessenger";
+} from "@/types/webpage-messenger.types";
 import { extensionExec } from "@/utils/hof";
 import { isMainWorldContext } from "@/utils/utils";
 

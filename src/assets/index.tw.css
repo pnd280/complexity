@@ -36,8 +36,8 @@
     --muted-foreground: #64645f;
 
     --accent: #f3f3ee;
-    --accent-foreground: #0984e3;
-    --accent-foreground-darker: #0984e380;
+    --accent-foreground: #1f5e6b;
+    --accent-foreground-darker: #1f5e6b80;
 
     --destructive: #ef4444;
     --destructive-foreground: #e8e8e6;
@@ -45,11 +45,11 @@
     --border: #e5e5e5;
     --border-darker: #e5e5e580;
     --input: #e5e5e5;
-    --ring: #0984e3;
-    --ring-darker: #0984e380;
+    --ring: #1f5e6b;
+    --ring-darker: #1f5e6b80;
 
-    --selection: #0984e360;
-    --selection-foreground: #0984e3;
+    --selection: #1f5e6b60;
+    --selection-foreground: #1f5e6b;
 
     --radius: 0.5rem;
 

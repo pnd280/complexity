@@ -1,21 +1,21 @@
 import { produce } from "immer";
 
-import useCPLXUserSettings from "@/shared/hooks/useCPLXUserSettings";
-import { CPLXUserSettings } from "@/types/CPLXUserSettings";
+import useCplxUserSettings from "@/shared/hooks/useCplxUserSettings";
+import { CplxUserSettings } from "@/types/cplx-user-settings.types";
 
 export default function usePopupSettings() {
   const {
     data: { data: settings },
     mutation: { mutate: updateSettings },
-  } = useCPLXUserSettings();
+  } = useCplxUserSettings();
 
   const popupSettings = settings?.popupSettings;
 
   const handleSettingsChange = async <
-    T extends keyof CPLXUserSettings["popupSettings"],
+    T extends keyof CplxUserSettings["popupSettings"],
   >(
     section: T,
-    updater: (draft: CPLXUserSettings["popupSettings"][T]) => void,
+    updater: (draft: CplxUserSettings["popupSettings"][T]) => void,
   ) => {
     if (!popupSettings) return;
 

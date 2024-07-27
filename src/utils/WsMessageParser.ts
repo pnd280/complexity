@@ -1,8 +1,8 @@
-import { WSParsedMessage } from "@/types/WS";
+import { WSParsedMessage } from "@/types/ws.types";
 
 import { jsonUtils } from "./utils";
 
-export default class WSMessageParser {
+export default class WsMessageParser {
   static parse(message: string): WSParsedMessage | string | null {
     if (isNaN(parseInt(message[0], 10))) {
       return message;

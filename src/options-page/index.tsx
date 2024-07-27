@@ -2,7 +2,7 @@ import "@/assets/index.tw.css";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import ReactDOM from "react-dom/client";
+import ReactDom from "react-dom/client";
 
 import CanvasSettings from "@/options-page/components/CanvasSettings";
 import Changelog from "@/options-page/components/Changelog";
@@ -20,7 +20,7 @@ import { queryClient } from "@/utils/ts-query-query-client";
 
 const queryStr = new URLSearchParams(window.location.search);
 
-ReactDOM.createRoot(document.getElementById("app") as HTMLElement).render(
+ReactDom.createRoot(document.getElementById("app") as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
     <div className="tw-mx-auto tw-my-4 tw-w-[800px] tw-max-w-[90vw] tw-font-sans">
       <Tabs defaultValue={queryStr.get("tab") || "popupSettings"}>

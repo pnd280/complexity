@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 
 import { ImageModel, imageModels } from ".";
 
@@ -27,7 +27,7 @@ export default function ImageModelSelector() {
         setValue(details.value[0] as ImageModel["code"]);
 
         setTimeout(() => {
-          UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
+          UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
         }, 100);
       }}
     >

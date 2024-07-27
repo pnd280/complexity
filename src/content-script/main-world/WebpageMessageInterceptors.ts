@@ -1,12 +1,12 @@
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
-import { TrackQueryLimits } from "@/types/WebpageMessageInterceptors";
+import CplxUserSettings from "@/lib/CplxUserSettings";
+import { TrackQueryLimits } from "@/types/webpage-message-interceptors.types";
 import {
   LongPollingEventData,
   MessageData,
   WebSocketEventData,
-} from "@/types/WebpageMessenger";
-import { isParsedWSMessage, WSParsedMessage } from "@/types/WS";
-import WSMessageParser from "@/utils/WSMessageParser";
+} from "@/types/webpage-messenger.types";
+import { isParsedWSMessage, WSParsedMessage } from "@/types/ws.types";
+import WsMessageParser from "@/utils/WsMessageParser";
 
 import { LanguageModel } from "../components/QueryBox";
 import { queryBoxStore } from "../session-store/query-box";
@@ -24,7 +24,7 @@ export default class WebpageMessageInterceptor {
 
         return (messageData) => {
           const parsedPayload: WSParsedMessage | null | string =
-            WSMessageParser.parse(messageData.payload.payload);
+            WsMessageParser.parse(messageData.payload.payload);
 
           if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
@@ -148,7 +148,7 @@ export default class WebpageMessageInterceptor {
         >;
 
         const parsedPayload: WSParsedMessage | null | string =
-          WSMessageParser.parse(webSocketMessageData.payload.payload);
+          WsMessageParser.parse(webSocketMessageData.payload.payload);
 
         if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
@@ -161,19 +161,19 @@ export default class WebpageMessageInterceptor {
         }
 
         const newModelPreference =
-          CPLXUserSettings.get().popupSettings.queryBoxSelectors
+          CplxUserSettings.get().popupSettings.queryBoxSelectors
             .languageModel && parsedPayload.data?.[1].query_source !== "retry"
             ? queryBoxStore.getState().selectedLanguageModel
             : parsedPayload.data[1].model_preference;
 
-        const newSearchFocus = CPLXUserSettings.get().popupSettings
+        const newSearchFocus = CplxUserSettings.get().popupSettings
           .queryBoxSelectors.focus
           ? queryBoxStore.getState().webAccess.allowWebAccess
             ? queryBoxStore.getState().webAccess.focus
             : "writing"
           : parsedPayload.data[1].search_focus;
 
-        const newTargetCollectionUuid = CPLXUserSettings.get().popupSettings
+        const newTargetCollectionUuid = CplxUserSettings.get().popupSettings
           .queryBoxSelectors.collection
           ? parsedPayload.data[1].query_source === "home" ||
             parsedPayload.data[1].query_source === "modal"
@@ -192,7 +192,7 @@ export default class WebpageMessageInterceptor {
           match: parsedPayload.event === "perplexity_ask",
           args: [
             {
-              newPayload: WSMessageParser.stringify(parsedPayload),
+              newPayload: WsMessageParser.stringify(parsedPayload),
             },
           ],
         };
@@ -221,7 +221,7 @@ export default class WebpageMessageInterceptor {
         >;
 
         const parsedPayload: WSParsedMessage | null | string =
-          WSMessageParser.parse(webSocketMessageData.payload.payload);
+          WsMessageParser.parse(webSocketMessageData.payload.payload);
 
         if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
@@ -244,7 +244,7 @@ export default class WebpageMessageInterceptor {
             parsedPayload.data?.[1].query_source === "retry",
           args: [
             {
-              newPayload: WSMessageParser.stringify(parsedPayload),
+              newPayload: WsMessageParser.stringify(parsedPayload),
             },
           ],
         };
@@ -267,7 +267,7 @@ export default class WebpageMessageInterceptor {
         >;
 
         const parsedPayload: WSParsedMessage | null | string =
-          WSMessageParser.parse(webSocketMessageData.payload.payload);
+          WsMessageParser.parse(webSocketMessageData.payload.payload);
 
         if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
@@ -279,7 +279,7 @@ export default class WebpageMessageInterceptor {
 
         return {
           match,
-          args: [{ newPayload: WSMessageParser.stringify(parsedPayload) }],
+          args: [{ newPayload: WsMessageParser.stringify(parsedPayload) }],
         };
       },
       callback: async (messageData, args) => {
@@ -348,7 +348,7 @@ export default class WebpageMessageInterceptor {
   }
 
   static blockTelemetry() {
-    if (!CPLXUserSettings.get().popupSettings.qolTweaks.blockTelemetry) return;
+    if (!CplxUserSettings.get().popupSettings.qolTweaks.blockTelemetry) return;
 
     webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {
@@ -357,7 +357,7 @@ export default class WebpageMessageInterceptor {
         >;
 
         const parsedPayload: WSParsedMessage | null | string =
-          WSMessageParser.parse(webSocketMessageData.payload.payload);
+          WsMessageParser.parse(webSocketMessageData.payload.payload);
 
         if (!isParsedWSMessage(parsedPayload)) return { match: false };
 
@@ -378,7 +378,7 @@ export default class WebpageMessageInterceptor {
     >;
 
     const parsedPayload: WSParsedMessage | null | string =
-      WSMessageParser.parse(webSocketMessageData.payload.payload);
+      WsMessageParser.parse(webSocketMessageData.payload.payload);
 
     if (!isParsedWSMessage(parsedPayload)) return null;
 

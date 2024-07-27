@@ -2,15 +2,15 @@ import { useDebounce, useToggle } from "@uidotdev/usehooks";
 import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDom from "react-dom";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import { useGlobalStore } from "@/content-script/session-store/global";
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
+import CplxUserSettings from "@/lib/CplxUserSettings";
 import useExtensionUpdate from "@/shared/hooks/useExtensionUpdate";
-import background from "@/utils/background";
+import BackgroundScript from "@/utils/BackgroundScript";
 import { cn } from "@/utils/cn";
-import { isDOMNode } from "@/utils/utils";
+import { isDomNode } from "@/utils/utils";
 
 export default function Slogan() {
   const { newVersionAvailable } = useExtensionUpdate({});
@@ -27,7 +27,7 @@ export default function Slogan() {
   const [visible, toggleVisibility] = useToggle(!isReady);
 
   const slogan =
-    CPLXUserSettings.get().customTheme.slogan || "Where knowledge begins";
+    CplxUserSettings.get().customTheme.slogan || "Where knowledge begins";
 
   const { element, isWaiting } = useWaitForElement({
     id: "slogan",
@@ -35,7 +35,7 @@ export default function Slogan() {
   });
 
   useEffect(() => {
-    if (!isDOMNode(element) || !$(element).length) return;
+    if (!isDomNode(element) || !$(element).length) return;
 
     const $nativeSlogan = $(element);
 
@@ -59,7 +59,7 @@ export default function Slogan() {
 
   return (
     <>
-      {ReactDOM.createPortal(
+      {ReactDom.createPortal(
         <>
           {visible && (
             <div
@@ -88,11 +88,11 @@ export default function Slogan() {
         $(container).find("> div:first-child")[0],
       )}
       {newVersionAvailable &&
-        ReactDOM.createPortal(
+        ReactDom.createPortal(
           <div
             className="tw-fixed tw-bottom-20 tw-cursor-pointer tw-select-none tw-font-sans"
             onClick={() => {
-              background.sendMessage({ action: "openChangelog" });
+              BackgroundScript.sendMessage({ action: "openChangelog" });
             }}
           >
             <div>

@@ -13,7 +13,7 @@ export type MutationConfig = {
   characterData?: boolean;
 };
 
-export type DOMObserverConfig = {
+export type DomObserverConfig = {
   target: Element | null;
   config: MutationConfig;
   onAdd?: CustomCallback;
@@ -28,8 +28,8 @@ export type DOMObserverConfig = {
   source?: "hook" | "default";
 };
 
-export type DOMObserverInstance = {
+export type DomObserverInstance = {
   observer: MutationObserver;
-  config: DOMObserverConfig;
+  config: DomObserverConfig;
   isPaused: boolean;
 };

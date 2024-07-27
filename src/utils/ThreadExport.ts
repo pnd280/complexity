@@ -1,5 +1,5 @@
 import { languageModels } from "@/content-script/components/QueryBox";
-import { ThreadMessageApiResponse } from "@/types/PPLXApi";
+import { ThreadMessageApiResponse } from "@/types/pplx-api.types";
 
 import { jsonUtils } from "./utils";
 

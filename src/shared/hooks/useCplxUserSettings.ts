@@ -1,17 +1,17 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
+import CplxUserSettings from "@/lib/CplxUserSettings";
 import { queryClient } from "@/utils/ts-query-query-client";
 
-export default function useCPLXUserSettings() {
+export default function useCplxUserSettings() {
   const data = useQuery({
     queryKey: ["cplxUserSettings"],
-    queryFn: CPLXUserSettings.fetch,
+    queryFn: CplxUserSettings.fetch,
   });
 
   const mutation = useMutation({
-    mutationKey: ["updateCPLXUserSettings"],
-    mutationFn: CPLXUserSettings.set,
+    mutationKey: ["updateCplxUserSettings"],
+    mutationFn: CplxUserSettings.set,
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ["cplxUserSettings"],

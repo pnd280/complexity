@@ -4,7 +4,7 @@ import { Check, Copy, LoaderCircle, Unlink } from "lucide-react";
 import { useCallback } from "react";
 import { FaMarkdown } from "react-icons/fa";
 
-import PPLXApi from "@/services/PPLXApi";
+import PplxApi from "@/services/PplxApi";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,7 +31,7 @@ export default function CopyButton({
   const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
     queryKey: ["currentThreadInfo"],
     queryFn: () =>
-      PPLXApi.fetchThreadInfo(window.location.pathname.split("/").pop() || ""),
+      PplxApi.fetchThreadInfo(window.location.pathname.split("/").pop() || ""),
     enabled: false,
   });
 

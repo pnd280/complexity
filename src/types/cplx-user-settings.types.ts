@@ -5,11 +5,9 @@ import {
   webAccessFocus,
 } from "@/content-script/components/QueryBox";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
+import packageData from "@@/package.json";
 
-import packageData from '../../package.json';
-
-import { NestedKeys } from "./Utils";
-
+import { NestedKeys } from "./utils.types";
 
 type WebAccessFocusCode = WebAccessFocus["code"];
 
@@ -21,7 +19,7 @@ const CanvasLangSchema = z.custom<CanvasLang>((val) => {
   return Canvas.isCanvasLang(val);
 });
 
-export const CPLXUserSettingsSchema = z.object({
+export const cplxUserSettingsSchema = z.object({
   schemaVersion: z.literal(packageData.version),
   defaultFocus: WebAccessFocusSchema.nullable(),
   defaultWebAccess: z.boolean(),
@@ -34,7 +32,7 @@ export const CPLXUserSettingsSchema = z.object({
       collection: z.boolean(),
     }),
     qolTweaks: z.object({
-      threadTOC: z.boolean(),
+      threadToc: z.boolean(),
       threadMessageStickyToolbar: z.boolean(),
       alternateMarkdownBlock: z.boolean(),
       canvas: z.object({
@@ -59,6 +57,6 @@ export const CPLXUserSettingsSchema = z.object({
   }),
 });
 
-export type CPLXUserSettings = z.infer<typeof CPLXUserSettingsSchema>;
+export type CplxUserSettings = z.infer<typeof cplxUserSettingsSchema>;
 
-export type PopupSettingKeys = NestedKeys<CPLXUserSettings["popupSettings"]>;
+export type PopupSettingKeys = NestedKeys<CplxUserSettings["popupSettings"]>;

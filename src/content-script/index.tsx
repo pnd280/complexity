@@ -9,18 +9,17 @@ import { webpageMessenger } from "@/content-script/main-world/webpage-messenger"
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import WebpageMessageListeners from "@/content-script/main-world/WebpageMessageListeners";
 import ReactRoot from "@/content-script/ReactRoot";
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
-import DOMObserver from "@/utils/DOMObserver";
-import UITweaks from "@/utils/UITweaks";
+import CplxUserSettings from "@/lib/CplxUserSettings";
+import DomObserver from "@/utils/DomObserver/DomObserver";
+import UiTweaks from "@/utils/UiTweaks";
 import {
-  getPPLXBuildId,
+  getPplxBuildId,
   injectMainWorldScript,
   waitForNextjsHydration,
   whereAmI,
 } from "@/utils/utils";
-import UXTweaks from "@/utils/UXTweaks";
-
-import packageData from "../../package.json";
+import UxTweaks from "@/utils/UxTweaks";
+import packageData from "@@/package.json";
 
 import htmlCanvas from "@/content-script/main-world/canvas/html?script&module";
 import mermaidCanvas from "@/content-script/main-world/canvas/mermaid?script&module";
@@ -33,7 +32,7 @@ import wsHook from "@/content-script/main-world/ws-hook?script&module";
 $(async function main() {
   initConsoleMessage();
 
-  await initCPLXUserSettings();
+  await initCplxUserSettings();
 
   initUIUXTweaks();
 
@@ -48,30 +47,30 @@ $(async function main() {
   if (import.meta.env.DEV) {
     $(document).on("keydown", (e) => {
       if (e.ctrlKey && e.shiftKey && e.key === "Q") {
-        DOMObserver.destroyAll();
+        DomObserver.destroyAll();
         alert("All observers destroyed!");
       }
     });
   }
 });
 
-async function initCPLXUserSettings() {
-  await CPLXUserSettings.init();
+async function initCplxUserSettings() {
+  await CplxUserSettings.init();
 }
 
 async function initUIUXTweaks() {
-  UITweaks.correctColorScheme();
-  UITweaks.injectCustomStyles();
+  UiTweaks.correctColorScheme();
+  UiTweaks.injectCustomStyles();
 
-  UXTweaks.restoreLogoContextMenu();
+  UxTweaks.restoreLogoContextMenu();
 
   const observe = async (url: string) => {
     const location = whereAmI(url);
 
-    UITweaks.applySelectableAttrs(location);
-    UITweaks.applySettingsAsHTMLAttrs(location);
+    UiTweaks.applySelectableAttrs(location);
+    UiTweaks.applySettingsAsHTMLAttrs(location);
 
-    UXTweaks.dropFileWithinThread(location);
+    UxTweaks.dropFileWithinThread(location);
   };
 
   observe(window.location.href);
@@ -86,7 +85,7 @@ async function initUIUXTweaks() {
 }
 
 async function initDependencies() {
-  const settings = CPLXUserSettings.get().popupSettings;
+  const settings = CplxUserSettings.get().popupSettings;
 
   await Promise.all([
     injectMainWorldScript(chrome.runtime.getURL(wsHook)),
@@ -120,7 +119,7 @@ function initTrafficInterceptors() {
 }
 
 async function initConsoleMessage() {
-  const pplxBuildId = await getPPLXBuildId();
+  const pplxBuildId = await getPplxBuildId();
 
   console.log(
     "%cCOMPLEXITY v" +
@@ -128,7 +127,7 @@ async function initConsoleMessage() {
       "%c\n\n" +
       "Suggest new features/report issues by joining the Discord community:\n" +
       "%chttps://discord.gg/fxzqdkwmWx%c\n\n" +
-      "PPLX_BUILD_ID: " +
+      "Pplx_BUILD_ID: " +
       pplxBuildId,
     "color: #72aefd; background-color: #191a1a; padding: 0.25rem 1rem; border-radius: 0.375rem; font-family: monospace; font-weight: bold; font-size: 16px; text-shadow: 1px 1px 0 #000;",
     "color: #ff9900; font-style: italic; font-size: 14px;",

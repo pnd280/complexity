@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
-import PPLXApi from "@/services/PPLXApi";
-import { isValidFocus } from "@/types/ModelSelector";
+import PplxApi from "@/services/PplxApi";
+import { isValidFocus } from "@/types/model-selector.types";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { extensionExec } from "@/utils/hof";
 
@@ -44,12 +44,12 @@ const useQueryBoxStore = create<QueryBoxState>()(
   immer((set, get) => ({
     selectedLanguageModel: "turbo",
     setSelectedLanguageModel: async (selectedLanguageModel) => {
-      if (await PPLXApi.setDefaultLanguageModel(selectedLanguageModel))
+      if (await PplxApi.setDefaultLanguageModel(selectedLanguageModel))
         return set({ selectedLanguageModel });
     },
     selectedImageModel: "default",
     setSelectedImageModel: async (selectedImageModel) => {
-      if (await PPLXApi.setDefaultImageModel(selectedImageModel))
+      if (await PplxApi.setDefaultImageModel(selectedImageModel))
         return set({ selectedImageModel });
     },
     queryLimit: 0,

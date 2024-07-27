@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 import { mainWorldExec } from "@/utils/hof";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 
 import { webpageMessenger } from "../webpage-messenger";
 
@@ -17,8 +17,8 @@ type PopoutAction = {
 
 export type HTMLCanvasAction = RenderAction | PopoutAction;
 
-class HTMLCanvas {
-  private static instance: HTMLCanvas;
+class HtmlCanvas {
+  private static instance: HtmlCanvas;
 
   blobUrl: string | null = null;
 
@@ -27,10 +27,10 @@ class HTMLCanvas {
   private constructor() {}
 
   static getInstance() {
-    if (!HTMLCanvas.instance) {
-      HTMLCanvas.instance = new HTMLCanvas();
+    if (!HtmlCanvas.instance) {
+      HtmlCanvas.instance = new HtmlCanvas();
     }
-    return HTMLCanvas.instance;
+    return HtmlCanvas.instance;
   }
 
   initialize() {
@@ -75,7 +75,7 @@ class HTMLCanvas {
             if (document.activeElement)
               this.$lastFocusedElement = $(document.activeElement);
 
-            UIUtils.getActiveQueryBoxTextarea({ type: "follow-up" }).prop(
+            UiUtils.getActiveQueryBoxTextarea({ type: "follow-up" }).prop(
               "disabled",
               true,
             );
@@ -83,7 +83,7 @@ class HTMLCanvas {
             $("#canvas-panel").addClass("tw-ring tw-ring-accent-foreground");
           })
           .on("mouseleave", () => {
-            UIUtils.getActiveQueryBoxTextarea({ type: "follow-up" }).prop(
+            UiUtils.getActiveQueryBoxTextarea({ type: "follow-up" }).prop(
               "disabled",
               false,
             );
@@ -109,6 +109,6 @@ class HTMLCanvas {
 
 mainWorldExec(() =>
   $(() => {
-    HTMLCanvas.getInstance().initialize();
+    HtmlCanvas.getInstance().initialize();
   }),
 )();

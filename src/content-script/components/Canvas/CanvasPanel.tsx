@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@uidotdev/usehooks";
 import $ from "jquery";
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDom from "react-dom";
 
 import CloseButton from "@/content-script/components/Canvas/CanvasCloseButton";
 import CanvasCode from "@/content-script/components/Canvas/CanvasCode";
@@ -12,7 +12,7 @@ import { useCanvasStore } from "@/content-script/session-store/canvas";
 import Canvas from "@/utils/Canvas";
 import { cn } from "@/utils/cn";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 
 import { canvasComponents } from "./";
 
@@ -25,7 +25,7 @@ export default function CanvasPanel() {
 
   const { element: threadWrapper, isWaiting } = useWaitForElement({
     id: "thread-wrapper",
-    selector: () => UIUtils.getThreadWrapper()[0],
+    selector: () => UiUtils.getThreadWrapper()[0],
     timeout: 5000,
   });
 
@@ -97,7 +97,7 @@ export default function CanvasPanel() {
 
   if (!threadWrapper || !isOpen) return null;
 
-  return ReactDOM.createPortal(
+  return ReactDom.createPortal(
     <div
       id="canvas-panel"
       className={cn(
@@ -109,7 +109,7 @@ export default function CanvasPanel() {
         },
       )}
       style={{
-        height: `calc(100vh - ${UIUtils.getStickyNavbar().outerHeight()}px - 3rem)`,
+        height: `calc(100vh - ${UiUtils.getStickyNavbar().outerHeight()}px - 3rem)`,
       }}
       onAnimationEnd={handleAnimationEnd}
     >

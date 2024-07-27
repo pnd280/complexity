@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
-import PPLXApi from "@/services/PPLXApi";
+import PplxApi from "@/services/PplxApi";
 import { Button } from "@/shared/components/shadcn/ui/button";
 import {
   Dialog,
@@ -28,7 +28,7 @@ export default function UserProfileEditDialog({
 
   const { data: userProfileSettings } = useQuery({
     queryKey: ["userProfileSettings"],
-    queryFn: PPLXApi.fetchUserProfileSettings,
+    queryFn: PplxApi.fetchUserProfileSettings,
     enabled: false,
   });
 

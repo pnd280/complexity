@@ -1,7 +1,7 @@
 import { useDebounce } from "@uidotdev/usehooks";
 import $ from "jquery";
 import { Fragment, useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDom from "react-dom";
 
 import useMarkdownBlockObserver from "@/content-script/hooks/useMarkdownBlockObserver";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
@@ -37,7 +37,7 @@ export default function AlternateMarkdownBlock() {
     if (!isMasked) {
       return (
         <Fragment key={index}>
-          {ReactDOM.createPortal(
+          {ReactDom.createPortal(
             <AlternateMarkdownBlockToolbar
               lang={container.lang}
               preBlockId={id}
@@ -47,7 +47,7 @@ export default function AlternateMarkdownBlock() {
         </Fragment>
       );
     } else if (isMasked && isCanvasLang) {
-      return ReactDOM.createPortal(
+      return ReactDom.createPortal(
         <CanvasPlaceholder
           preBlockId={id}
           lang={container.lang as CanvasLang}

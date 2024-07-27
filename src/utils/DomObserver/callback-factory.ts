@@ -2,13 +2,12 @@ import { debounce, throttle } from "lodash-es";
 
 import {
   CustomCallback,
-  DOMObserverConfig,
+  DomObserverConfig,
   MutationCallback,
-} from "@/types/DOMObserver";
+} from "@/types/dom-observer.types";
 
+import DomObserver from "./DomObserver";
 import { batchMutations } from "./mutation-batcher";
-
-import DOMObserver from "./";
 
 const handleError = (error: unknown, context: string): void => {
   console.error(
@@ -30,7 +29,7 @@ const safeExecute = async <T extends unknown[]>(
   }
 };
 
-export const createCallback = (config: DOMObserverConfig): MutationCallback => {
+export const createCallback = (config: DomObserverConfig): MutationCallback => {
   const processChunk = async (
     chunk: MutationRecord[],
     observer: MutationObserver,
@@ -79,7 +78,7 @@ export const createCallback = (config: DOMObserverConfig): MutationCallback => {
     mutations: MutationRecord[],
     observer: MutationObserver,
   ) => {
-    DOMObserver.updateQueue.enqueue(() => processChunk(mutations, observer));
+    DomObserver.updateQueue.enqueue(() => processChunk(mutations, observer));
   };
 
   if (config.debounceTime) {

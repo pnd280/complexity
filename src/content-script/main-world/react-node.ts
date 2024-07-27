@@ -10,7 +10,7 @@ export type ReactNodeActionReturnType = {
   [K in ReactNodeAction]: ReturnType<(typeof actions)[K]>;
 };
 
-export type PPLXThreadMessageReactFiberResult = {
+export type PplxThreadMessageReactFiberResult = {
   answer: string;
   web_results: {
     name: string;
@@ -24,7 +24,7 @@ const actions = {
       ?.props?.children[0];
   }),
   getMessageData: mainWorldOnly(
-    (messageBlock: Element): PPLXThreadMessageReactFiberResult => {
+    (messageBlock: Element): PplxThreadMessageReactFiberResult => {
       const result = jsonUtils.safeParse(
         (messageBlock as any)[getReactFiberKey(messageBlock)]?.memoizedProps
           ?.children?.props?.result?.text,

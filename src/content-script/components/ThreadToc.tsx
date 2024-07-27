@@ -10,17 +10,17 @@ import { useCallback, useEffect, useState } from "react";
 
 import useRouter from "@/content-script/hooks/useRouter";
 import { useCanvasStore } from "@/content-script/session-store/canvas";
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
+import CplxUserSettings from "@/lib/CplxUserSettings";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 import { scrollToElement } from "@/utils/utils";
 
-export default function ThreadTOC() {
+export default function ThreadToc() {
   const { isOpen: isCanvasOpen } = useCanvasStore();
 
   const { visibleMessageIndex, anchorsProps, wrapperPos } =
-    useThreadTOCObserver();
+    useThreadTocObserver();
 
   const [visible, toggleVisibility] = useToggle(true);
 
@@ -50,7 +50,7 @@ export default function ThreadTOC() {
     <div
       className="tw-fixed tw-right-0 tw-top-0 tw-z-20 tw-w-max tw-transition-all"
       style={{
-        top: `${(UIUtils.getThreadWrapper().offset()?.top || 70) + (isFloat ? 60 : 30)}px`,
+        top: `${(UiUtils.getThreadWrapper().offset()?.top || 70) + (isFloat ? 60 : 30)}px`,
         [!isFloat ? "left" : "right"]: !isFloat
           ? `${wrapperPos.left + 20}px`
           : "2rem",
@@ -148,7 +148,7 @@ type AnchorProps = {
   onContextMenu: () => void;
 };
 
-const useThreadTOCObserver = () => {
+const useThreadTocObserver = () => {
   const { url } = useRouter();
 
   const wndSize = useDebounce(useWindowSize(), 100);
@@ -171,13 +171,13 @@ const useThreadTOCObserver = () => {
     if (documentNotOverflowing) return setAnchorsProps([]);
 
     setVisibleMessageIndex(
-      UIUtils.getMostVisibleElementIndex(
-        UIUtils.getMessagesContainer().children().toArray(),
+      UiUtils.getMostVisibleElementIndex(
+        UiUtils.getMessagesContainer().children().toArray(),
       ),
     );
 
-    const $messagesContainer = UIUtils.getMessagesContainer();
-    const $messageBlocks = UIUtils.getMessageBlocks();
+    const $messagesContainer = UiUtils.getMessagesContainer();
+    const $messageBlocks = UiUtils.getMessageBlocks();
 
     if (!$messageBlocks.length || !$messagesContainer.length) return;
 
@@ -210,7 +210,7 @@ const useThreadTOCObserver = () => {
           },
           onContextMenu: () => {
             const threadMessageStickyToolbar =
-              CPLXUserSettings.get().popupSettings.qolTweaks
+              CplxUserSettings.get().popupSettings.qolTweaks
                 .threadMessageStickyToolbar;
 
             const isScrollingUp =

@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
-import UIUtils from "@/utils/UI";
+import UiUtils from "@/utils/UiUtils";
 
 import {
   groupedLanguageModelsByProvider,
@@ -67,7 +67,7 @@ export default function LanguageModelSelector() {
         setValue(details.value[0] as LanguageModel["code"]);
 
         setTimeout(() => {
-          UIUtils.getActiveQueryBoxTextarea({}).trigger("focus");
+          UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
         }, 100);
       }}
     >

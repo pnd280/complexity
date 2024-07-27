@@ -1,111 +1,111 @@
 import {
-  DOMObserverConfig,
-  DOMObserverInstance,
+  DomObserverConfig,
+  DomObserverInstance,
   MutationCallback,
-} from "@/types/DOMObserver";
+} from "@/types/dom-observer.types";
 import { TaskQueue } from "@/utils/TaskQueue";
 
 import { createCallback } from "./callback-factory";
 
-class DOMObserver {
-  private static instances: Map<string, DOMObserverInstance> = new Map();
+export default class DomObserver {
+  private static instances: Map<string, DomObserverInstance> = new Map();
   private static isLogging = false;
   public static updateQueue: TaskQueue = TaskQueue.getInstance();
 
-  public static create(id: string, config: DOMObserverConfig): void {
-    if (DOMObserver.instances.has(id)) {
-      DOMObserver.update(id, config);
+  public static create(id: string, config: DomObserverConfig): void {
+    if (DomObserver.instances.has(id)) {
+      DomObserver.update(id, config);
       return;
     }
 
     const observer = new MutationObserver(
-      DOMObserver.handleMutations(id, config),
+      DomObserver.handleMutations(id, config),
     );
-    const instance: DOMObserverInstance = { observer, config, isPaused: false };
+    const instance: DomObserverInstance = { observer, config, isPaused: false };
 
     if (!config.source) {
       config.source = "default";
     }
 
-    DOMObserver.instances.set(id, instance);
-    DOMObserver.observe(id);
+    DomObserver.instances.set(id, instance);
+    DomObserver.observe(id);
   }
 
   public static update(
     id: string,
-    newConfig: Partial<DOMObserverConfig>,
+    newConfig: Partial<DomObserverConfig>,
   ): void {
-    const instance = DOMObserver.instances.get(id);
+    const instance = DomObserver.instances.get(id);
     if (!instance) {
-      DOMObserver.log(`Observer with id "${id}" not found.`);
+      DomObserver.log(`Observer with id "${id}" not found.`);
       return;
     }
 
     instance.config = { ...instance.config, ...newConfig };
     instance.observer.disconnect();
     instance.observer = new MutationObserver(
-      DOMObserver.handleMutations(id, instance.config),
+      DomObserver.handleMutations(id, instance.config),
     );
-    DOMObserver.observe(id);
-    DOMObserver.log(`Updated observer with id "${id}"`);
+    DomObserver.observe(id);
+    DomObserver.log(`Updated observer with id "${id}"`);
   }
 
   public static destroy(id: string): void {
-    const instance = DOMObserver.instances.get(id);
+    const instance = DomObserver.instances.get(id);
     if (instance) {
       instance.observer.disconnect();
-      DOMObserver.instances.delete(id);
-      DOMObserver.log(`Destroyed observer with id "${id}"`);
+      DomObserver.instances.delete(id);
+      DomObserver.log(`Destroyed observer with id "${id}"`);
     }
   }
 
-  public static destroyAll(source?: DOMObserverConfig["source"]): void {
-    DOMObserver.instances.forEach((instance, id) => {
+  public static destroyAll(source?: DomObserverConfig["source"]): void {
+    DomObserver.instances.forEach((instance, id) => {
       if (instance.config.source === source || !source) {
-        DOMObserver.destroy(id);
+        DomObserver.destroy(id);
       }
     });
   }
 
   public static pause(id: string): void {
-    const instance = DOMObserver.instances.get(id);
+    const instance = DomObserver.instances.get(id);
     if (instance) {
       instance.observer.disconnect();
       instance.isPaused = true;
-      DOMObserver.log(`Paused observer with id "${id}"`);
+      DomObserver.log(`Paused observer with id "${id}"`);
     }
   }
 
   public static pauseAll(): void {
-    for (const id of DOMObserver.instances.keys()) {
-      DOMObserver.pause(id);
+    for (const id of DomObserver.instances.keys()) {
+      DomObserver.pause(id);
     }
   }
 
   public static resume(id: string): void {
-    const instance = DOMObserver.instances.get(id);
+    const instance = DomObserver.instances.get(id);
     if (instance && instance.isPaused) {
       if (instance.config.target && document.contains(instance.config.target)) {
-        DOMObserver.observe(id);
+        DomObserver.observe(id);
         instance.isPaused = false;
       } else {
-        DOMObserver.log(
-          `Cannot resume observer with id "${id}": target is not in the DOM.`,
+        DomObserver.log(
+          `Cannot resume observer with id "${id}": target is not in the Dom.`,
         );
       }
     }
   }
 
   public static enableLogging(): void {
-    DOMObserver.isLogging = true;
+    DomObserver.isLogging = true;
   }
 
   public static disableLogging(): void {
-    DOMObserver.isLogging = false;
+    DomObserver.isLogging = false;
   }
 
   private static observe(id: string): void {
-    const instance = DOMObserver.instances.get(id);
+    const instance = DomObserver.instances.get(id);
     if (instance && instance.config.target) {
       if (document.contains(instance.config.target)) {
         instance.observer.observe(
@@ -113,8 +113,8 @@ class DOMObserver {
           instance.config.config,
         );
       } else {
-        DOMObserver.log(
-          `Cannot observe with id "${id}": target is not in the DOM.`,
+        DomObserver.log(
+          `Cannot observe with id "${id}": target is not in the Dom.`,
         );
       }
     }
@@ -122,7 +122,7 @@ class DOMObserver {
 
   private static handleMutations(
     id: string,
-    config: DOMObserverConfig,
+    config: DomObserverConfig,
   ): MutationCallback {
     const callback = createCallback(config);
     return (mutations: MutationRecord[], observer: MutationObserver) => {
@@ -131,10 +131,8 @@ class DOMObserver {
   }
 
   private static log(message: string): void {
-    if (DOMObserver.isLogging) {
-      console.log(`[DOMObserver] ${message}`);
+    if (DomObserver.isLogging) {
+      console.log(`[DomObserver] ${message}`);
     }
   }
 }
-
-export default DOMObserver;

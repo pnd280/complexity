@@ -1,8 +1,8 @@
 import { HTMLCanvasAction } from "@/content-script/main-world/canvas/html";
 import { ReactNodeAction } from "@/content-script/main-world/react-node";
 
-import { Nullable } from "./Utils";
-import { RouterEvent } from "./WS";
+import { Nullable } from "./utils.types";
+import { RouterEvent } from "./ws.types";
 
 export type MessageData<T> = {
   messageId: string;

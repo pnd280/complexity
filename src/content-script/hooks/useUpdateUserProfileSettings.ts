@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import PPLXApi from "@/services/PPLXApi";
-import { UserProfileSettingsApiResponse } from "@/types/PPLXApi";
+import PplxApi from "@/services/PplxApi";
+import { UserProfileSettingsApiResponse } from "@/types/pplx-api.types";
 
 export default function useUpdateUserProfileSettings() {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ["updateUserProfileSettings"],
-    mutationFn: PPLXApi.updateUserProfileSettings,
+    mutationFn: PplxApi.updateUserProfileSettings,
     onMutate: (args) => {
       const oldSettings =
         queryClient.getQueryData<UserProfileSettingsApiResponse>([

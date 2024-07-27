@@ -1,10 +1,10 @@
 import $ from "jquery";
 import { useEffect } from "react";
 
-import CPLXUserSettings from "@/lib/CPLXUserSettings";
+import CplxUserSettings from "@/lib/CplxUserSettings";
 import { cn } from "@/utils/cn";
-import DOMObserver from "@/utils/DOMObserver";
-import UIUtils from "@/utils/UI";
+import DomObserver from "@/utils/DomObserver/DomObserver";
+import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
 
 import useRouter from "./useRouter";
@@ -30,7 +30,7 @@ export default function useQueryBoxObserver({
       const followUpId = "follow-up-query-box-selectors";
       const alterAttachButtonId = "alter-attach-button";
 
-      DOMObserver.create(mainId, {
+      DomObserver.create(mainId, {
         target: document.body,
         config: { childList: true, subtree: true },
         source: "hook",
@@ -61,9 +61,9 @@ export default function useQueryBoxObserver({
       });
 
       return () => {
-        DOMObserver.destroy(mainId);
-        DOMObserver.destroy(followUpId);
-        DOMObserver.destroy(alterAttachButtonId);
+        DomObserver.destroy(mainId);
+        DomObserver.destroy(followUpId);
+        DomObserver.destroy(alterAttachButtonId);
       };
     },
     [
@@ -89,7 +89,7 @@ function observeMainQueryBox({
 }) {
   if (disabled) return;
 
-  const $buttonBar = UIUtils.getActiveQueryBoxTextarea({ type: "main" })
+  const $buttonBar = UiUtils.getActiveQueryBoxTextarea({ type: "main" })
     .parent()
     .next();
 
@@ -100,8 +100,8 @@ function observeMainQueryBox({
   $buttonBar.addClass(() =>
     cn("tw-col-span-3 tw-col-start-1 !tw-col-end-4 tw-flex-wrap tw-gap-y-1", {
       "tw-mr-[7rem]":
-        !CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
-      "tw-mr-10": CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus,
+        !CplxUserSettings.get().popupSettings.queryBoxSelectors.focus,
+      "tw-mr-10": CplxUserSettings.get().popupSettings.queryBoxSelectors.focus,
     }),
   );
 
@@ -109,7 +109,7 @@ function observeMainQueryBox({
     ":not(.mr-xs.flex.shrink-0.items-center)",
   );
 
-  if (CPLXUserSettings.get().popupSettings.queryBoxSelectors.focus) {
+  if (CplxUserSettings.get().popupSettings.queryBoxSelectors.focus) {
     $buttonBarChildren.first().addClass("hidden");
   }
 
@@ -132,7 +132,7 @@ function observeFollowUpQueryBox({
   refetchUserSettings: () => void;
 }) {
   if (location === "thread" || location === "page") {
-    DOMObserver.create(id, {
+    DomObserver.create(id, {
       target: document.body,
       config: { childList: true, subtree: true },
       throttleTime: 200,
@@ -160,7 +160,7 @@ function observeFollowUpQueryBox({
       },
     });
   } else {
-    DOMObserver.destroy(id);
+    DomObserver.destroy(id);
   }
 }
 
@@ -177,10 +177,10 @@ function alterAttachButton() {
 }
 
 function interceptPasteEvent() {
-  if (!CPLXUserSettings.get().popupSettings.qolTweaks.noFileCreationOnPaste)
+  if (!CplxUserSettings.get().popupSettings.qolTweaks.noFileCreationOnPaste)
     return;
 
-  const $textarea = UIUtils.getActiveQueryBoxTextarea({});
+  const $textarea = UiUtils.getActiveQueryBoxTextarea({});
 
   if (!$textarea.length || $textarea.attr("data-paste-event-intercepted"))
     return;
