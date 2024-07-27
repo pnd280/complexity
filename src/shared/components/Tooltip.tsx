@@ -28,7 +28,7 @@ const TooltipContent = forwardRef<
         <ArkTooltip.Content
           ref={ref}
           className={cn(
-            "tw-z-50 tw-max-w-[400px] tw-overflow-hidden tw-whitespace-pre-line tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-py-1 tw-font-sans tw-text-xs tw-text-popover tw-shadow-md tw-duration-150 dark:tw-bg-accent dark:tw-text-popover-foreground",
+            "tw-z-50 tw-max-w-[400px] tw-overflow-hidden tw-whitespace-pre-line tw-rounded-md tw-bg-foreground tw-px-2 tw-py-1 tw-font-sans tw-text-xs tw-text-popover tw-shadow-md tw-duration-150 dark:tw-bg-accent dark:tw-text-popover-foreground",
             "data-[state=open]:tw-animate-in data-[state=closed]:tw-animate-out",
             "data-[state=closed]:tw-fade-out-0 data-[state=open]:tw-fade-in-0",
             "data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95",
@@ -49,6 +49,7 @@ export { TooltipRoot, TooltipTrigger, TooltipContent };
 
 export type TooltipProps = {
   children: ReactNode;
+  disabled?: boolean;
   content: ReactNode;
   className?: string;
   positioning?: ArkTooltip.RootProps["positioning"];
@@ -56,10 +57,15 @@ export type TooltipProps = {
 
 export default function Tooltip({
   children,
+  disabled,
   content,
   className,
   positioning,
 }: TooltipProps) {
+  if (disabled) {
+    return children;
+  }
+
   return (
     <TooltipRoot
       openDelay={0}

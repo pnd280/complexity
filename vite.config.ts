@@ -31,7 +31,7 @@ export default defineConfig(() => {
       }),
       vitePluginRunCommandOnDemand({
         onHotUpdate:
-          "cp -f ./public/overrides.css ./public/components.css ./public/canvas.css ./build/",
+          "cp -f ./public/color-scheme.tw.css ./public/overrides.css ./public/components.css ./public/canvas.css ./build/",
       }),
     ],
 

@@ -63,7 +63,7 @@ html.dark #markdown-query-wrapper pre code {
   max-height: 200px;
 }
 
-/* Hide popper if their reference is hidden */
+/* Hide detached popper */
 [data-popper-reference-hidden="true"] {
   display: none;
 }
@@ -136,9 +136,6 @@ body .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):no
   grid-column: span 8 / span 8 !important;
 }
 
-/* Remove transitions and animations */
-.grow:has(.grow.block),
-#copilot-toggle,
 .grow.block>div,
 .grow.block>div>div {
   transition: none !important;

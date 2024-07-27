@@ -46,6 +46,7 @@ export default defineManifest({
         "img/logo-128.png",
         "*.css",
         "global.tw.css",
+        "color-scheme.tw.css",
         "overrides.css",
         "components.css",
         "canvas.css",

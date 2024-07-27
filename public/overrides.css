@@ -1,5 +1,4 @@
-.data-\[state\=checked\]\:dark\:before\:\!bg-superDark[data-state='checked']:before,
-.dark .data-\[state\=checked\]\:dark\:before\:\!bg-superDark[data-state='checked']:before {
+div.data-\[state\=checked\]\:before\:\!bg-super[data-state=checked]:before {
   background-color: var(--accent-foreground) !important;
 }
 

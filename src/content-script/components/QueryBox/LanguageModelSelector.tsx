@@ -96,9 +96,8 @@ export default function LanguageModelSelector() {
             {models.map((model) => (
               <Tooltip
                 key={model.code}
-                content={
-                  value !== model.code ? modelsLimits[model.code] : undefined
-                }
+                content={modelsLimits[model.code]}
+                disabled={value === model.code}
                 positioning={{
                   placement: "right",
                   gutter: 10,

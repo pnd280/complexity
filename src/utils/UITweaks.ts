@@ -24,8 +24,6 @@ export default class UITweaks {
       .text(jsonUtils.safeParse(customCSS || ""))
       .appendTo("head");
 
-    const darkTheme = UIUtils.isDarkTheme();
-
     type CustomTheme = {
       "--ui-font"?: string;
       "--mono-font"?: string;
@@ -49,14 +47,6 @@ export default class UITweaks {
     if (!uiFont) delete css["--ui-font"];
     if (!monoFont) delete css["--mono-font"];
     if (!accentColor) {
-      delete css["--accent-foreground"];
-      delete css["--accent-foreground-darker"];
-      delete css["--ring"];
-      delete css["--ring-darker"];
-      delete css["--selection"];
-    }
-
-    if (!darkTheme) {
       delete css["--accent-foreground"];
       delete css["--accent-foreground-darker"];
       delete css["--ring"];

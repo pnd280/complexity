@@ -53,7 +53,8 @@ export default function ImageModelSelector() {
         {imageModels.map((model) => (
           <Tooltip
             key={model.code}
-            content={value !== model.code ? limit : undefined}
+            content={limit}
+            disabled={value === model.code}
             positioning={{
               placement: "right",
               gutter: 10,
