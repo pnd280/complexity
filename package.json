@@ -22,7 +22,7 @@
     "build": "eslint ./src/ && tsc && vite build",
     "preview": "vite preview",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
-    "zip": "npm run build && node src/zip.js"
+    "zip": "npm run build && node src/utils/zip.js"
   },
   "dependencies": {
     "@ark-ui/react": "^3.6.0",
@@ -85,6 +85,7 @@
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.9",
+    "eslint-plugin-unicorn": "^55.0.0",
     "gulp": "^4.0.2",
     "gulp-zip": "^6.0.0",
     "mermaid": "^10.9.1",

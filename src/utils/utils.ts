@@ -401,7 +401,7 @@ export function injectMainWorldScriptBlock({
 
     script.textContent = `
       ${scriptContent}
-      window?.['${executionId}']();
+      (window['${executionId}'])?.();
     `;
 
     script.onload = () => {

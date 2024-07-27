@@ -1,4 +1,18 @@
-div.data-\[state\=checked\]\:before\:\!bg-super[data-state=checked]:before {
+/* Fonts */
+.font-sans,
+.font-display {
+  --font-fk-grotesk     : var(--ui-font) !important;
+  --font-fk-grotesk-neue: var(--ui-font) !important;
+}
+
+code {
+  font-family: var(--mono-font) !important;
+  font-weight: normal !important;
+}
+
+/* Pro search thumb */
+div.data-\[state\=checked\]\:before\:\!bg-super[data-state=checked]:before,
+div.data-\[state\=checked\]\:dark\:before\:\!bg-superDark:is(.dark *)[data-state=checked]:before {
   background-color: var(--accent-foreground) !important;
 }
 
@@ -208,11 +222,6 @@ html:not(.dark) code *::selection {
 }
 
 [data-testid="collection-preview"]:hover>div>div:first-child {
-  background-color: var(--accent-foreground) !important;
-}
-
-/* Pro search thumb */
-div.data-\[state\=checked\]\:dark\:before\:\!bg-superDark:is(.dark *)[data-state=checked]:before {
   background-color: var(--accent-foreground) !important;
 }
 

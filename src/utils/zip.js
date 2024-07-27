@@ -4,7 +4,7 @@ import gulp from "gulp";
 import zip from "gulp-zip";
 
 const require = createRequire(import.meta.url);
-const manifest = require("../build/manifest.json");
+const manifest = require("../../build/manifest.json");
 
 gulp
   .src("build/**")

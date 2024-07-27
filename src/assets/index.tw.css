@@ -106,4 +106,49 @@
   body {
     @apply tw-bg-background tw-text-foreground;
   }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 9999px;
+    border: none;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  @-moz-document url-prefix() {
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: var(--muted) transparent;
+    }
+  }
+
+  .custom-scrollbar {
+    -ms-overflow-style: none;
+  }
+
+  .reduced-motion .tw-animate-in {
+    animation: none !important;
+  }
 }

@@ -1,4 +1,4 @@
-import "@@/public/color-scheme.tw.css";
+import "@/assets/index.tw.css";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";

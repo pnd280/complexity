@@ -1,3 +1,8 @@
+import "@/assets/index.tw.css";
+import "@/assets/overrides.css";
+import "@/assets/components.css";
+import "@/assets/canvas.css";
+
 import $ from "jquery";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
