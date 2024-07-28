@@ -2,6 +2,11 @@ import $ from "jquery";
 import { RefreshCcw } from "lucide-react";
 import { useCallback, useRef } from "react";
 
+import {
+  groupedLanguageModelsByProvider,
+  LanguageModel,
+} from "@/content-script/components/QueryBox";
+import { Container } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import {
@@ -15,10 +20,6 @@ import ProSearchIcon from "@/shared/components/ProSearchIcon";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import { sleep } from "@/utils/utils";
-
-import { groupedLanguageModelsByProvider, LanguageModel } from "../QueryBox";
-
-import { Container } from "./ThreadMessageStickyToolbar";
 
 type RewriteDropdownProps = {
   container: Container;

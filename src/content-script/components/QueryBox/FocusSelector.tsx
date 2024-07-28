@@ -3,6 +3,10 @@ import { Cpu } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { PiGlobeX } from "react-icons/pi";
 
+import {
+  type WebAccessFocus,
+  webAccessFocus,
+} from "@/content-script/components/QueryBox/";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
@@ -13,8 +17,6 @@ import {
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 import UiUtils from "@/utils/UiUtils";
-
-import { type WebAccessFocus, webAccessFocus } from "./";
 
 export default function FocusSelector() {
   const items = useMemo(() => {

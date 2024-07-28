@@ -5,9 +5,8 @@ import {
   DomObserverConfig,
   MutationCallback,
 } from "@/types/dom-observer.types";
-
-import DomObserver from "./DomObserver";
-import { batchMutations } from "./mutation-batcher";
+import DomObserver from "@/utils/DomObserver/DomObserver";
+import { batchMutations } from "@/utils/DomObserver/mutation-batcher";
 
 const handleError = (error: unknown, context: string): void => {
   console.error(

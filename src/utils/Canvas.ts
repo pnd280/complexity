@@ -1,7 +1,6 @@
 import { canvasLangs } from "@/content-script/components/Canvas/langs";
 import CplxUserSettings from "@/lib/CplxUserSettings";
-
-import { isMainWorldContext } from "./utils";
+import { isMainWorldContext } from "@/utils/utils";
 
 export type CanvasLang = (typeof canvasLangs)[number]["trigger"];
 

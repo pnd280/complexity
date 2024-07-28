@@ -4,10 +4,9 @@ import {
   WebAccessFocus,
   webAccessFocus,
 } from "@/content-script/components/QueryBox";
+import { NestedKeys } from "@/types/utils.types";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
 import packageData from "@@/package.json";
-
-import { NestedKeys } from "./utils.types";
 
 type WebAccessFocusCode = WebAccessFocus["code"];
 

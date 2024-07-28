@@ -1,6 +1,5 @@
 import { WSParsedMessage } from "@/types/ws.types";
-
-import { jsonUtils } from "./utils";
+import { jsonUtils } from "@/utils/utils";
 
 export default class WsMessageParser {
   static parse(message: string): WSParsedMessage | string | null {

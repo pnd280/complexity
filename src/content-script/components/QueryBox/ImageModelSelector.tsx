@@ -1,5 +1,6 @@
 import { Cpu, Image } from "lucide-react";
 
+import { ImageModel, imageModels } from "@/content-script/components/QueryBox";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
@@ -10,8 +11,6 @@ import {
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
 import UiUtils from "@/utils/UiUtils";
-
-import { ImageModel, imageModels } from ".";
 
 export default function ImageModelSelector() {
   const limit = useQueryBoxStore((state) => state.imageCreateLimit);

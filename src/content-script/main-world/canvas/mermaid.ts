@@ -1,11 +1,10 @@
 import $ from "jquery";
 import type { MermaidConfig } from "mermaid";
 
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { extensionOnly, mainWorldExec } from "@/utils/hof";
 import UiUtils from "@/utils/UiUtils";
 import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
-
-import { webpageMessenger } from "../webpage-messenger";
 
 class MermaidCanvas {
   private static instance: MermaidCanvas;

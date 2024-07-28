@@ -11,11 +11,10 @@ import {
 import ReactDom from "react-dom";
 import { Updater, useImmer } from "use-immer";
 
+import ThreadMessageStickyToolbarComponents from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbarComponents";
 import useThreadMessageStickyToolbarObserver from "@/content-script/hooks/useThreadMessageStickyToolbarObserver";
 import UiUtils from "@/utils/UiUtils";
 import { onScrollDirectionChange } from "@/utils/utils";
-
-import ThreadMessageStickyToolbarComponents from "./ThreadMessageStickyToolbarComponents";
 
 export type Container = {
   messageBlock: Element;

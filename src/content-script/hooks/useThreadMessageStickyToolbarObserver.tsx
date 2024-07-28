@@ -5,11 +5,10 @@ import {
   Container,
   ToggleToolbarVisibilityProps,
 } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+import useWaitForMessagesContainer from "@/content-script/hooks/useWaitForMessagesContainer";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiUtils from "@/utils/UiUtils";
 import { isDomNode, markdown2Html } from "@/utils/utils";
-
-import useWaitForMessagesContainer from "./useWaitForMessagesContainer";
 
 type UseThreadMessageStickyToolbarObserverProps = {
   toggleVisibility: (args: ToggleToolbarVisibilityProps) => void;

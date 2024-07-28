@@ -127,7 +127,7 @@ async function initConsoleMessage() {
       "%c\n\n" +
       "Suggest new features/report issues by joining the Discord community:\n" +
       "%chttps://discord.gg/fxzqdkwmWx%c\n\n" +
-      "Pplx_BUILD_ID: " +
+      "PPLX_BUILD_ID: " +
       pplxBuildId,
     "color: #72aefd; background-color: #191a1a; padding: 0.25rem 1rem; border-radius: 0.375rem; font-family: monospace; font-weight: bold; font-size: 16px; text-shadow: 1px 1px 0 #000;",
     "color: #ff9900; font-style: italic; font-size: 14px;",

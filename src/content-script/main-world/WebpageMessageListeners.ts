@@ -1,6 +1,5 @@
-import { globalStore } from "../session-store/global";
-
-import { webpageMessenger } from "./webpage-messenger";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { globalStore } from "@/content-script/session-store/global";
 
 export default class WebpageMessageListeners {
   static onWebSocketCaptured() {

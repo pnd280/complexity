@@ -3,9 +3,8 @@ import {
   DomObserverInstance,
   MutationCallback,
 } from "@/types/dom-observer.types";
+import { createCallback } from "@/utils/DomObserver/callback-factory";
 import { TaskQueue } from "@/utils/TaskQueue";
-
-import { createCallback } from "./callback-factory";
 
 export default class DomObserver {
   private static instances: Map<string, DomObserverInstance> = new Map();

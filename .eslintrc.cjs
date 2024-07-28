@@ -10,7 +10,7 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react", "react-refresh", "unicorn"],
+  plugins: ["react", "react-refresh", "unicorn", "@limegrass/import-alias"],
   rules: {
     "react-refresh/only-export-components": [
       "warn",
@@ -77,6 +77,7 @@ module.exports = {
         },
       },
     ],
+    "@limegrass/import-alias/import-alias": "off",
   },
   settings: {
     react: { version: "detect" },
@@ -92,6 +93,13 @@ module.exports = {
       files: "src/shared/components/shadcn/*/**.tsx",
       rules: {
         "react/prop-types": "off",
+      },
+    },
+    {
+      files: ["src/**/*.{ts,tsx}"],
+      excludedFiles: ["src/manifest.ts"],
+      rules: {
+        "@limegrass/import-alias/import-alias": ["warn"],
       },
     },
   ],

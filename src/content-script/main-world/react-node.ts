@@ -1,9 +1,8 @@
 import $ from "jquery";
 
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { mainWorldExec, mainWorldOnly } from "@/utils/hof";
 import { getReactFiberKey, jsonUtils } from "@/utils/utils";
-
-import { webpageMessenger } from "./webpage-messenger";
 
 export type ReactNodeAction = keyof typeof actions;
 export type ReactNodeActionReturnType = {

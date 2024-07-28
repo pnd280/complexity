@@ -12,14 +12,16 @@ export default defineConfig(() => {
   return {
     base: "./",
     build: {
-      emptyOutDir: true,
+      target: ["chrome88", "edge88", "firefox109"],
       outDir: "build",
+      emptyOutDir: true,
       rollupOptions: {
         output: {
           chunkFileNames: "assets/cplx-[hash].js",
           assetFileNames: "assets/cplx-[hash][extname]",
         },
       },
+      reportCompressedSize: false,
     },
 
     plugins: [

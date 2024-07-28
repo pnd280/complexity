@@ -8,14 +8,12 @@ import {
 } from "react";
 
 import { MarkdownBlockContainer } from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock";
+import useWaitForMessagesContainer from "@/content-script/hooks/useWaitForMessagesContainer";
+import { preBlockAttrsContentScript } from "@/content-script/main-world/pre-block-attrs";
 import { shikiContentScript } from "@/content-script/main-world/shiki";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import { isDomNode } from "@/utils/utils";
-
-import { preBlockAttrsContentScript } from "../main-world/pre-block-attrs";
-
-import useWaitForMessagesContainer from "./useWaitForMessagesContainer";
 
 type useMarkdownBlockObserverProps = {
   setContainers: Dispatch<SetStateAction<MarkdownBlockContainer[]>>;

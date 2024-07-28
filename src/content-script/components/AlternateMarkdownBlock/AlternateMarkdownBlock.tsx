@@ -3,12 +3,10 @@ import $ from "jquery";
 import { Fragment, useState } from "react";
 import ReactDom from "react-dom";
 
+import AlternateMarkdownBlockToolbar from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlockToolbar";
+import CanvasPlaceholder from "@/content-script/components/Canvas/CanvasPlaceholder";
 import useMarkdownBlockObserver from "@/content-script/hooks/useMarkdownBlockObserver";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
-
-import CanvasPlaceholder from "../Canvas/CanvasPlaceholder";
-
-import AlternateMarkdownBlockToolbar from "./AlternateMarkdownBlockToolbar";
 
 export type MarkdownBlockContainer = {
   wrapper: Element;

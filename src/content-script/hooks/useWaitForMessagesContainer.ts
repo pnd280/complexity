@@ -1,6 +1,5 @@
+import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import UiUtils from "@/utils/UiUtils";
-
-import useWaitForElement from "./useWaitForElement";
 
 export default function useWaitForMessagesContainer(
   {

@@ -2,9 +2,8 @@ import DomPurify from "dompurify";
 import $ from "jquery";
 import showdown from "showdown";
 
+import BackgroundScript from "@/utils/BackgroundScript";
 import UiUtils from "@/utils/UiUtils";
-
-import BackgroundScript from "./BackgroundScript";
 
 export const jsonUtils = {
   unescape(escapedJson: string) {

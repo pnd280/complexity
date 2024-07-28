@@ -102,7 +102,8 @@ DropdownMenuSeparator.displayName = "DropdownMenuSeparator";
 function DropdownMenuSub({ ...props }: Menu.RootProps) {
   return (
     <Menu.Root
-      unmountOnExit={false} lazyMount={true}
+      unmountOnExit={false}
+      lazyMount={true}
       positioning={{
         placement: "right-start",
       }}

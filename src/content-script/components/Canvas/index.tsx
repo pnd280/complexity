@@ -1,10 +1,9 @@
 import { ReactNode } from "react";
 import { SiHtml5, SiMermaid } from "react-icons/si";
 
+import HtmlCanvas from "@/content-script/components/Canvas/HtmlCanvas";
+import MermaidCanvas from "@/content-script/components/Canvas/MermaidCanvas";
 import { CanvasLang } from "@/utils/Canvas";
-
-import HtmlCanvas from "./HtmlCanvas";
-import MermaidCanvas from "./MermaidCanvas";
 
 type CanvasComponents = Record<CanvasLang, ReactNode>;
 

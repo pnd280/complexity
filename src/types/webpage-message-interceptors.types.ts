@@ -1,8 +1,8 @@
 import {
   AddInterceptorMatchCondition,
   WebSocketEventData,
-} from "./webpage-messenger.types";
-import { WSParsedMessage } from "./ws.types";
+} from "@/types/webpage-messenger.types";
+import { WSParsedMessage } from "@/types/ws.types";
 
 export type TrackQueryLimits = AddInterceptorMatchCondition<
   WebSocketEventData,

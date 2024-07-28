@@ -1,9 +1,8 @@
 import $ from "jquery";
 
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { mainWorldExec } from "@/utils/hof";
 import UiUtils from "@/utils/UiUtils";
-
-import { webpageMessenger } from "../webpage-messenger";
 
 type RenderAction = {
   action: "render";

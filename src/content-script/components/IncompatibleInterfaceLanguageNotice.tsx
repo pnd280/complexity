@@ -1,10 +1,9 @@
 import $ from "jquery";
 import { useEffect } from "react";
 
+import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 import { isDomNode } from "@/utils/utils";
-
-import useWaitForElement from "../hooks/useWaitForElement";
 
 export function IncompatibleInterfaceLanguageNotice() {
   const { toast } = useToast();

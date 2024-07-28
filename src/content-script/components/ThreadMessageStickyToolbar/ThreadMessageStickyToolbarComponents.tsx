@@ -12,6 +12,13 @@ import { FaMarkdown } from "react-icons/fa";
 import { PiNotePencil } from "react-icons/pi";
 import { Updater } from "use-immer";
 
+import CopyButton from "@/content-script/components/ThreadMessageStickyToolbar/CopyButton";
+import RewriteDropdown from "@/content-script/components/ThreadMessageStickyToolbar/RewriteDropdown";
+import {
+  Container,
+  ContainerStates,
+} from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+import ThreadTitle from "@/content-script/components/ThreadMessageStickyToolbar/ThreadTitle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,11 +28,6 @@ import {
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 import { scrollToElement, sleep, stripHtml } from "@/utils/utils";
-
-import CopyButton from "./CopyButton";
-import RewriteDropdown from "./RewriteDropdown";
-import { Container, ContainerStates } from "./ThreadMessageStickyToolbar";
-import ThreadTitle from "./ThreadTitle";
 
 type ThreadMessageStickyToolbarComponents = {
   containerIndex: number;

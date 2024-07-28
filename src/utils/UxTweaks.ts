@@ -2,8 +2,7 @@ import $ from "jquery";
 
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";
-
-import { whereAmI } from "./utils";
+import { whereAmI } from "@/utils/utils";
 
 export default class uxTweaks {
   static dropFileWithinThread(location: ReturnType<typeof whereAmI>) {

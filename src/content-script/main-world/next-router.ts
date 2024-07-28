@@ -1,11 +1,10 @@
 import $ from "jquery";
 
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { MessageData } from "@/types/webpage-messenger.types";
 import { RouterEvent } from "@/types/ws.types";
 import { mainWorldExec } from "@/utils/hof";
 import { waitForNextjsHydration } from "@/utils/utils";
-
-import { webpageMessenger } from "./webpage-messenger";
 
 type NextRouter = typeof window.next;
 

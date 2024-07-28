@@ -1,3 +1,6 @@
+import { LanguageModel } from "@/content-script/components/QueryBox";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { queryBoxStore } from "@/content-script/session-store/query-box";
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import { TrackQueryLimits } from "@/types/webpage-message-interceptors.types";
 import {
@@ -7,11 +10,6 @@ import {
 } from "@/types/webpage-messenger.types";
 import { isParsedWSMessage, WSParsedMessage } from "@/types/ws.types";
 import WsMessageParser from "@/utils/WsMessageParser";
-
-import { LanguageModel } from "../components/QueryBox";
-import { queryBoxStore } from "../session-store/query-box";
-
-import { webpageMessenger } from "./webpage-messenger";
 
 export default class WebpageMessageInterceptor {
   static updateQueryLimits() {

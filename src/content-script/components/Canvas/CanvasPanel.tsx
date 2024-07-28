@@ -3,6 +3,7 @@ import $ from "jquery";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
+import { canvasComponents } from "@/content-script/components/Canvas/";
 import CloseButton from "@/content-script/components/Canvas/CanvasCloseButton";
 import CanvasCode from "@/content-script/components/Canvas/CanvasCode";
 import CanvasJumpToSource from "@/content-script/components/Canvas/CanvasJumpToSource";
@@ -13,8 +14,6 @@ import Canvas from "@/utils/Canvas";
 import { cn } from "@/utils/cn";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import UiUtils from "@/utils/UiUtils";
-
-import { canvasComponents } from "./";
 
 export default function CanvasPanel() {
   const { isOpen, toggleOpen, metaData, setMetaData } = useCanvasStore();

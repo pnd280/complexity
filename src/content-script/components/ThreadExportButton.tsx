@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import ReactDom from "react-dom";
 import { FaMarkdown } from "react-icons/fa";
 
+import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import PplxApi from "@/services/PplxApi";
 import {
   DropdownMenu,
@@ -18,8 +19,6 @@ import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import ThreadExport from "@/utils/ThreadExport";
 import UiUtils from "@/utils/UiUtils";
 import { isDomNode } from "@/utils/utils";
-
-import useWaitForElement from "../hooks/useWaitForElement";
 
 const exportOptions = [
   {

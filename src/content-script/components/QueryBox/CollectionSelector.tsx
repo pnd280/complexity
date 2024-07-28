@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import CollectionEditDialog from "@/content-script/components/CollectionEditDialog";
+import UserProfileEditDialog from "@/content-script/components/UserProfileEditDialog";
 import useRouter from "@/content-script/hooks/useRouter";
 import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
@@ -34,9 +36,6 @@ import { UserProfileSettingsApiResponse } from "@/types/pplx-api.types";
 import { cn } from "@/utils/cn";
 import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
-
-import CollectionEditDialog from "../CollectionEditDialog";
-import UserProfileEditDialog from "../UserProfileEditDialog";
 
 export type Collection = {
   title: string;

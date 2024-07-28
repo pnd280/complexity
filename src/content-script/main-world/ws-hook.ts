@@ -1,7 +1,6 @@
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { Nullable } from "@/types/utils.types";
 import { mainWorldExec } from "@/utils/hof";
-
-import { webpageMessenger } from "./webpage-messenger";
 
 class WSHook {
   private static instance: WSHook;

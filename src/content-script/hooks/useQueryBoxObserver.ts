@@ -1,13 +1,12 @@
 import $ from "jquery";
 import { useEffect } from "react";
 
+import useRouter from "@/content-script/hooks/useRouter";
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import { cn } from "@/utils/cn";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
-
-import useRouter from "./useRouter";
 
 type UseQueryBoxObserverProps = {
   setContainers: (containers: Element) => void;

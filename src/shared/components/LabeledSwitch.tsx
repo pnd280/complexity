@@ -1,7 +1,6 @@
+import { Label } from "@/shared/components/shadcn/ui/label";
+import { Switch } from "@/shared/components/shadcn/ui/switch";
 import { cn } from "@/utils/cn";
-
-import { Label } from "./shadcn/ui/label";
-import { Switch } from "./shadcn/ui/switch";
 
 type LabeledSwitchProps = {
   label?: string;

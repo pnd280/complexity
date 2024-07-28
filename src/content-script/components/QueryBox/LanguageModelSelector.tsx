@@ -2,6 +2,11 @@ import { Cpu, Infinity } from "lucide-react";
 import { ReactNode, useCallback, useEffect } from "react";
 import { useImmer } from "use-immer";
 
+import {
+  groupedLanguageModelsByProvider,
+  LanguageModel,
+  languageModels,
+} from "@/content-script/components/QueryBox/";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
@@ -14,12 +19,6 @@ import {
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
 import UiUtils from "@/utils/UiUtils";
-
-import {
-  groupedLanguageModelsByProvider,
-  LanguageModel,
-  languageModels,
-} from "./";
 
 export default function LanguageModelSelector() {
   const limit = useQueryBoxStore((state) => state.queryLimit);

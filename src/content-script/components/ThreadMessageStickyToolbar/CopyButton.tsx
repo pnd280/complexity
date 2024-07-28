@@ -4,6 +4,7 @@ import { Check, Copy, LoaderCircle, Unlink } from "lucide-react";
 import { useCallback } from "react";
 import { FaMarkdown } from "react-icons/fa";
 
+import { Container } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
 import PplxApi from "@/services/PplxApi";
 import {
   DropdownMenu,
@@ -16,8 +17,6 @@ import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import ThreadExport from "@/utils/ThreadExport";
-
-import { Container } from "./ThreadMessageStickyToolbar";
 
 type CopyButtonProps = {
   container: Container;

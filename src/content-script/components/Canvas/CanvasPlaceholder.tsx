@@ -1,10 +1,9 @@
 import { LoaderCircle } from "lucide-react";
 
+import { canvasPlaceholders } from "@/content-script/components/Canvas/";
 import useRenderInCanvas from "@/content-script/hooks/useRenderInCanvas";
 import { CanvasLang } from "@/utils/Canvas";
 import { cn } from "@/utils/cn";
-
-import { canvasPlaceholders } from "./";
 
 type CanvasPlaceholderProps = React.HTMLAttributes<HTMLDivElement> & {
   preBlockId: string;

@@ -1,4 +1,4 @@
-import { isMainWorldContext } from "./utils";
+import { isMainWorldContext } from "@/utils/utils";
 
 export function withGuard<P extends unknown[], R>(
   guardFn: (...args: P) => boolean,

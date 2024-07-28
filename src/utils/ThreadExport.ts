@@ -1,7 +1,6 @@
 import { languageModels } from "@/content-script/components/QueryBox";
 import { ThreadMessageApiResponse } from "@/types/pplx-api.types";
-
-import { jsonUtils } from "./utils";
+import { jsonUtils } from "@/utils/utils";
 
 type ThreadAnswer = {
   answer: string;

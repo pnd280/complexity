@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-import { whereAmI } from "./utils";
+import { whereAmI } from "@/utils/utils";
 
 export default class UiUtils {
   static isDarkTheme() {

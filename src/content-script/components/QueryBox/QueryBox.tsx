@@ -11,6 +11,14 @@ import {
 } from "react";
 import ReactDom from "react-dom";
 
+import {
+  ImageModel,
+  LanguageModel,
+} from "@/content-script/components/QueryBox";
+import CollectionSelector from "@/content-script/components/QueryBox/CollectionSelector";
+import FocusSelector from "@/content-script/components/QueryBox/FocusSelector";
+import ImageModelSelector from "@/content-script/components/QueryBox/ImageModelSelector";
+import LanguageModelSelector from "@/content-script/components/QueryBox/LanguageModelSelector";
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
 import { useGlobalStore } from "@/content-script/session-store/global";
 import {
@@ -22,13 +30,6 @@ import PplxApi from "@/services/PplxApi";
 import KeyCombo from "@/shared/components/KeyCombo";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
-
-import CollectionSelector from "./CollectionSelector";
-import FocusSelector from "./FocusSelector";
-import ImageModelSelector from "./ImageModelSelector";
-import LanguageModelSelector from "./LanguageModelSelector";
-
-import { ImageModel, LanguageModel } from ".";
 
 export default function QueryBox() {
   const isReady = useGlobalStore(

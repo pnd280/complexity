@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import PplxApi from "@/services/PplxApi";
 import InputWithLimit from "@/shared/components/InputWithLimit";
@@ -15,8 +16,6 @@ import { Label } from "@/shared/components/shadcn/ui/label";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
-
-import { Collection } from "./QueryBox/CollectionSelector";
 
 type CollectionEditDialogProps = {
   collection: Collection;

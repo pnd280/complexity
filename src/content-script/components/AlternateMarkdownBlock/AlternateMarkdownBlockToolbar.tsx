@@ -1,11 +1,10 @@
 import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
 
+import CanvasRenderButton from "@/content-script/components/AlternateMarkdownBlock/CanvasRenderButton";
+import CopyButton from "@/content-script/components/AlternateMarkdownBlock/CopyButton";
 import Tooltip from "@/shared/components/Tooltip";
 import Canvas from "@/utils/Canvas";
-
-import CanvasRenderButton from "./CanvasRenderButton";
-import CopyButton from "./CopyButton";
 
 type MarkdownBlockToolbarProps = {
   lang: string;

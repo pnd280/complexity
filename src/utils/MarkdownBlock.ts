@@ -4,8 +4,7 @@ import { ReactNodeActionReturnType } from "@/content-script/main-world/react-nod
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import { cn } from "@/utils/cn";
-
-import { getReactPropsKey, isMainWorldContext, stripHtml } from "./utils";
+import { getReactPropsKey, isMainWorldContext, stripHtml } from "@/utils/utils";
 
 type PreBlockTransformResult = {
   $wrapper: JQuery<HTMLElement>;

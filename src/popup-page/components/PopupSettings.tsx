@@ -1,5 +1,7 @@
 import { ExternalLink } from "lucide-react";
 
+import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
+import popupSettings, { PopupSetting } from "@/popup-page/PopupSettings";
 import LabeledSwitch from "@/shared/components/LabeledSwitch";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import Tooltip from "@/shared/components/Tooltip";
@@ -10,9 +12,6 @@ import {
 import { cn } from "@/utils/cn";
 import { compareVersions } from "@/utils/utils";
 import packageData from "@@/package.json";
-
-import usePopupSettings from "../hooks/usePopupSettings";
-import popupSettings, { PopupSetting } from "../PopupSettings";
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 
