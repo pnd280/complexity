@@ -4,7 +4,7 @@ import { ElementRef, FC, forwardRef, ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 const TooltipRoot: FC<ArkTooltip.RootProps> = ({ ...props }) => {
-  return <ArkTooltip.Root unmountOnExit={false} {...props} />;
+  return <ArkTooltip.Root unmountOnExit={false} lazyMount={true} {...props} />;
 };
 
 Tooltip.displayName = "Tooltip";

@@ -4,7 +4,7 @@ import { ElementRef, forwardRef } from "react";
 import { cn } from "@/utils/cn";
 
 const Popover = ({ ...props }: ArkPopover.RootProps) => {
-  return <ArkPopover.Root unmountOnExit={false} {...props} />;
+  return <ArkPopover.Root unmountOnExit={false} lazyMount={true} {...props} />;
 };
 
 Popover.displayName = "Popover";

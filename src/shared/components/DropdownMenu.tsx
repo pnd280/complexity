@@ -6,7 +6,7 @@ import type { ElementRef } from "react";
 import { cn } from "@/utils/cn";
 
 function DropdownMenu({ ...props }: Menu.RootProps) {
-  return <Menu.Root unmountOnExit={false} {...props} />;
+  return <Menu.Root unmountOnExit={false} lazyMount={true} {...props} />;
 }
 
 const DropdownMenuTrigger = forwardRef<
@@ -102,7 +102,7 @@ DropdownMenuSeparator.displayName = "DropdownMenuSeparator";
 function DropdownMenuSub({ ...props }: Menu.RootProps) {
   return (
     <Menu.Root
-      unmountOnExit={false}
+      unmountOnExit={false} lazyMount={true}
       positioning={{
         placement: "right-start",
       }}

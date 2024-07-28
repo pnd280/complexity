@@ -29,7 +29,7 @@ const Select = forwardRef<
         variant: "default",
       }}
     >
-      <ArkSelect.Root ref={ref} unmountOnExit={false} {...props} />
+      <ArkSelect.Root ref={ref} unmountOnExit={false} lazyMount={true} {...props} />
     </SelectContextProvider>
   );
 });
