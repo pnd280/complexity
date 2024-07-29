@@ -308,23 +308,25 @@ export function whereAmI(providedUrl?: string) {
 export function waitForElement({
   selector,
   timeout = 5000,
+  interval = 100,
 }: {
   selector: string | (() => HTMLElement | Element);
-  timeout: number;
+  timeout?: number;
+  interval?: number;
 }): Promise<HTMLElement | Element | null> {
   return new Promise((resolve) => {
-    const interval = setInterval(() => {
+    const intervalId = setInterval(() => {
       const element =
         typeof selector === "string" ? $(selector)[0] : selector();
 
       if (element) {
-        clearInterval(interval);
+        clearInterval(intervalId);
         resolve(element);
       }
-    }, 100);
+    }, interval);
 
     setTimeout(() => {
-      clearInterval(interval);
+      clearInterval(intervalId);
       resolve(null);
     }, timeout);
   });

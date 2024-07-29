@@ -27,7 +27,7 @@ import {
 } from "@/shared/components/DropdownMenu";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
-import { scrollToElement, sleep, stripHtml } from "@/utils/utils";
+import { scrollToElement, stripHtml, waitForElement } from "@/utils/utils";
 
 type ThreadMessageStickyToolbarComponents = {
   containerIndex: number;
@@ -264,8 +264,8 @@ export default function ThreadMessageStickyToolbarComponents({
                 <DropdownMenuItem
                   value="delete"
                   className="tw-flex tw-items-center tw-gap-2"
-                  onClick={async () => {
-                    await moreMenuItemClick({
+                  onClick={() => {
+                    moreMenuItemClick({
                       container: containers[containerIndex],
                       item: "Delete",
                     });
@@ -282,40 +282,60 @@ export default function ThreadMessageStickyToolbarComponents({
   );
 }
 
-async function moreMenuItemClick({
+function moreMenuItemClick({
   container,
   item,
 }: {
   container: Container;
   item: "Report" | "Delete" | "View Sources";
 }) {
-  const $buttonBar = $(container.messageBlock).find(
-    ".mt-sm.flex.items-center.justify-between",
-  );
+  return new Promise<void>((resolve) => {
+    const $buttonBar = $(container.messageBlock).find(
+      ".mt-sm.flex.items-center.justify-between",
+    );
 
-  const $button = $buttonBar
-    .children()
-    .last()
-    .children()
-    .find('button:has([data-icon="ellipsis"])');
+    const $button = $buttonBar
+      .children()
+      .last()
+      .children()
+      .find('button:has([data-icon="ellipsis"])');
 
-  if (!$button.length) return;
+    if (!$button.length) return resolve();
 
-  $button.trigger("click");
+    $button.trigger("click");
 
-  let acc = 0;
+    requestAnimationFrame(async () => {
+      const viewportWidth = window.innerWidth;
 
-  while (
-    !$(`[data-popper-reference-hidden="true"]:contains("${item}")`).length
-  ) {
-    await sleep(10);
+      await waitForElement({
+        selector() {
+          if (viewportWidth && viewportWidth < 768) {
+            return $(".duration-250.fill-mode-both.fixed.bottom-0.left-0")[0];
+          }
 
-    acc += 10;
+          return $(
+            `[data-popper-reference-hidden="true"]:contains("${item}")`,
+          )[0];
+        },
+        timeout: 1000,
+        interval: 100,
+      });
 
-    if (acc > 1000) return;
-  }
+      if (viewportWidth && viewportWidth < 768) {
+        $(
+          `.duration-250.fill-mode-both.fixed.bottom-0.left-0 .md\\:h-full:contains("${item}")`,
+        )
+          .last()
+          .trigger("click");
+      } else {
+        $(
+          `[data-popper-reference-hidden="true"] .md\\:h-full:contains("${item}")`,
+        )
+          .last()
+          .trigger("click");
+      }
 
-  $(`[data-popper-reference-hidden="true"] .md\\:h-full:contains("${item}")`)
-    .last()
-    .trigger("click");
+      resolve();
+    });
+  });
 }

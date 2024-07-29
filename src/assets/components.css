@@ -4,9 +4,9 @@
 
 /* Markdown block */
 body.alternate-markdown-block pre code {
-  width: 100%;
-  max-height: 500px;
-  overflow: auto;
+  width      : 100%;
+  max-height : 500px;
+  overflow   : auto;
   white-space: pre !important;
 }
 
@@ -15,21 +15,18 @@ body.alternate-markdown-block pre code span:empty:last-child {
 }
 
 body pre:not([data-lang="text"], [data-lang="markdown"]).line-numbers code {
-  counter-reset: step;
+  counter-reset    : step;
   counter-increment: step 0;
 }
 
-body
-  pre:not([data-lang="text"], [data-lang="markdown"]).line-numbers
-  code
-  .line::before {
-  content: counter(step);
+body pre:not([data-lang="text"], [data-lang="markdown"]).line-numbers code .line::before {
+  content          : counter(step);
   counter-increment: step;
-  width: 1rem;
-  margin-right: 1.5rem;
-  display: inline-block;
-  text-align: right;
-  color: var(--foreground-darker);
+  width            : 1rem;
+  margin-right     : 1.5rem;
+  display          : inline-block;
+  text-align       : right;
+  color            : var(--foreground-darker);
 }
 
 /* Markdown Query Wrapper */
@@ -38,10 +35,10 @@ body
 }
 
 #markdown-query-wrapper code {
-  color: var(--accent-foreground);
+  color           : var(--accent-foreground);
   background-color: var(--secondary);
-  padding: 0.1rem 0.3125rem;
-  border-radius: 0.375rem;
+  padding         : 0.1rem 0.3125rem;
+  border-radius   : 0.375rem;
 }
 
 html.dark #markdown-query-wrapper pre code {
@@ -49,15 +46,15 @@ html.dark #markdown-query-wrapper pre code {
 }
 
 #markdown-query-wrapper pre {
-  background: var(--secondary);
+  background  : var(--secondary);
   padding-left: 0.8rem;
-  padding-top: 0.8rem;
-  width: 100% !important;
-  max-width: 90vw !important;
+  padding-top : 0.8rem;
+  width       : 100% !important;
+  max-width   : 90vw !important;
 }
 
 #markdown-query-wrapper pre code {
-  color: var(--foreground) !important;
+  color     : var(--foreground) !important;
   background: var(--secondary);
 }
 
@@ -77,76 +74,55 @@ body.alternate-markdown-block pre[data-lang="markdown"] code {
 }
 
 body.alternate-markdown-block div.w-full.max-w-\[90vw\]:has(> pre) {
-  margin: 1rem 0;
+  margin       : 1rem 0;
   border-radius: calc(var(--radius) - 2px);
 }
 
-body.alternate-markdown-block
-  div.w-full.max-w-\[90vw\]:has(> pre:not([data-mask="true"])) {
-  border: 1px solid var(--border) !important;
+body.alternate-markdown-block div.w-full.max-w-\[90vw\]:has(> pre:not([data-mask="true"])) {
+  border    : 1px solid var(--border) !important;
   background: var(--secondary);
 }
 
 body.alternate-markdown-block .codeWrapper {
-  padding-top: 0 !important;
+  padding-top   : 0 !important;
   padding-bottom: 0 !important;
-  margin: 0 !important;
-  border: none;
+  margin        : 0 !important;
+  border        : none;
 }
 
-body.thread-message-sticky-toolbar
-  .md\:grid.grid-cols-12.gap-xl:not(:has(.thread-message-toolbar-container)) {
+body.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl:not(:has(.thread-message-toolbar-container)) {
   padding-top: auto !important;
 }
 
-body.thread-message-sticky-toolbar
-  *:has(#markdown-query-wrapper:not(.\!tw-hidden))
-  > .whitespace-pre-line.break-words:not(#markdown-query-wrapper) {
+body.thread-message-sticky-toolbar *:has(#markdown-query-wrapper:not(.\!tw-hidden))>.whitespace-pre-line.break-words:not(#markdown-query-wrapper) {
   display: none;
 }
 
-body.thread-message-sticky-toolbar
-  .md\:grid.grid-cols-12.gap-xl
-  .mt-sm.flex.items-center.justify-between {
+body.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl .mt-sm.flex.items-center.justify-between {
   display: none;
 }
 
 /* Adjust selectors border radius */
-.grow.block:has(textarea[placeholder])
-  button:not([aria-label="Submit"]):not(
-    [data-testid="copilot-toggle"]
-  ).rounded-full {
+.grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):not([data-testid="copilot-toggle"]).rounded-full {
   border-radius: 0.375rem !important;
 }
 
-body
-  .grow.block:has(textarea[placeholder])
-  button:not([aria-label="Submit"]):not(
-    [data-testid="copilot-toggle"]
-  ).rounded-full {
+body .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):not([data-testid="copilot-toggle"]).rounded-full {
   height: 2rem !important;
 }
 
-body
-  .grow.block:has(textarea[placeholder])
-  button:not([aria-label="Submit"]):not(
-    [data-testid="copilot-toggle"]
-  ).rounded-full
-  svg {
-  width: 0.9rem !important;
+body .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):not([data-testid="copilot-toggle"]).rounded-full svg {
+  width : 0.9rem !important;
   height: 0.9rem !important;
 }
 
-/* Collapse empty thread visual columns */
 .collapse-empty-thread-visual-columns .visual-col {
-  display: none !important;
+  display    : none !important;
   grid-column: unset !important;
 }
 
-.collapse-empty-thread-visual-columns
-  .message-block:has(.visual-col > div > div:nth-child(2))
-  .visual-col {
-  display: block !important;
+.collapse-empty-thread-visual-columns .message-block:has(.visual-col > div > div:nth-child(2)) .visual-col {
+  display    : block !important;
   grid-column: span 4 / span 4 !important;
 }
 
@@ -154,15 +130,13 @@ body
   grid-column: span 12 / span 12 !important;
 }
 
-.collapse-empty-thread-visual-columns
-  .message-block:has(.visual-col > div > div:nth-child(2))
-  .text-col {
+.collapse-empty-thread-visual-columns .message-block:has(.visual-col > div > div:nth-child(2)) .text-col {
   grid-column: span 8 / span 8 !important;
 }
 
-.grow.block > div,
-.grow.block > div > div {
+.grow.block>div,
+.grow.block>div>div {
   transition: none !important;
-  animation: none !important;
-  transform: none !important;
+  animation : none !important;
+  transform : none !important;
 }

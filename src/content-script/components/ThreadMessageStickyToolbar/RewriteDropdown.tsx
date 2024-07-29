@@ -19,7 +19,7 @@ import {
 import ProSearchIcon from "@/shared/components/ProSearchIcon";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
-import { sleep } from "@/utils/utils";
+import { waitForElement } from "@/utils/utils";
 
 type RewriteDropdownProps = {
   container: Container;
@@ -62,18 +62,37 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
 
       $rewriteButton.trigger("click");
 
-      while (
-        !$(`[data-popper-reference-hidden="true"]:contains("Sonar Large 32K")`)
-          .length
-      ) {
-        await sleep(10);
-      }
+      requestAnimationFrame(async () => {
+        const viewportWidth = window.innerWidth;
 
-      $(
-        `[data-popper-reference-hidden="true"] .md\\:h-full:contains("Sonar Large 32K")`,
-      )
-        .last()
-        .trigger("click");
+        await waitForElement({
+          selector() {
+            if (viewportWidth && viewportWidth < 768) {
+              return $(".duration-250.fill-mode-both.fixed.bottom-0.left-0")[0];
+            }
+
+            return $(
+              `[data-popper-reference-hidden="true"]:contains("Pro Search")`,
+            )[0];
+          },
+          timeout: 1000,
+          interval: 100,
+        });
+
+        if (viewportWidth && viewportWidth < 768) {
+          $(
+            ".duration-250.fill-mode-both.fixed.bottom-0.left-0 .md\\:h-full:nth-of-type(2)",
+          )
+            .children()
+            .last()
+            .trigger("click");
+        } else {
+          $(`[data-popper-reference-hidden="true"] .md\\:h-full:nth-child(3)`)
+            .children()
+            .last()
+            .trigger("click");
+        }
+      });
     },
     [container.messageBlock, stopOnGoingInterceptor],
   );
