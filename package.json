@@ -25,7 +25,7 @@
     "zip": "npm run build && node src/utils/zip.js"
   },
   "dependencies": {
-    "@ark-ui/react": "^3.6.0",
+    "@ark-ui/react": "^3.6.2",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -38,8 +38,8 @@
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
-    "@tanstack/react-query": "^5.51.11",
-    "@tanstack/react-query-devtools": "^5.51.11",
+    "@tanstack/react-query": "^5.51.15",
+    "@tanstack/react-query-devtools": "^5.51.15",
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -68,7 +68,7 @@
     "@types/dompurify": "^3.0.5",
     "@types/jquery": "^3.5.30",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.13",
     "@types/prismjs": "^1.26.4",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -93,12 +93,12 @@
     "postcss": "^8.4.40",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
-    "shiki": "^1.11.2",
+    "shiki": "^1.12.0",
     "svg-pan-zoom": "^3.6.1",
     "tailwindcss": "^3.4.7",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.5.4",
-    "uglify-js": "^3.19.0",
+    "uglify-js": "^3.19.1",
     "vite": "^5.3.5"
   }
 }

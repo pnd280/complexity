@@ -113,9 +113,15 @@ export default function CanvasPanel() {
       onAnimationEnd={handleAnimationEnd}
     >
       <div className="tw-relative tw-size-full">
-        <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max">
-          <CanvasViewTabToggle />
-        </div>
+        {metaData &&
+          metaData.preBlockId &&
+          Canvas.isMaskableLang(
+            MarkdownBlockUtils.getLang($(`#${metaData.preBlockId}`)),
+          ) && (
+            <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max">
+              <CanvasViewTabToggle />
+            </div>
+          )}
         <div className="tw-absolute tw-left-1/2 tw-top-2 tw-z-10 tw-size-max -tw-translate-x-1/2">
           <CanvasJumpToSource key={metaData?.preBlockId} />
         </div>

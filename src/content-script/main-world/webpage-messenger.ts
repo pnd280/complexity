@@ -153,7 +153,7 @@ class WebpageMessenger {
           });
         }, timeout);
       }
-    }) as any; // Type assertion needed due to conditional return type
+    }) as any;
   }
 
   onMessage<K extends keyof EventHandlers>(

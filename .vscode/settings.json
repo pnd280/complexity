@@ -1,7 +1,7 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "workbench.editor.customLabels.patterns": {
-    "**/src/**": "${filename} - ${dirname}"
+    "**/src/**": "${dirname}: ${filename}"
   },
   "workbench.editor.labelFormat": "medium",
   "search.exclude": {
