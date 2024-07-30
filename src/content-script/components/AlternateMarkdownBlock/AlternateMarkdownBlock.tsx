@@ -1,17 +1,17 @@
 import { useDebounce } from "@uidotdev/usehooks";
 import $ from "jquery";
-import { Fragment, useState } from "react";
-import ReactDom from "react-dom";
+import { useState } from "react";
 
 import AlternateMarkdownBlockToolbar from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlockToolbar";
 import CanvasPlaceholder from "@/content-script/components/Canvas/CanvasPlaceholder";
 import useMarkdownBlockObserver from "@/content-script/hooks/useMarkdownBlockObserver";
+import Portal from "@/shared/components/Portal";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
 
 export type MarkdownBlockContainer = {
-  wrapper: Element;
-  header: Element;
-  preElement: Element;
+  wrapper: HTMLElement;
+  header: HTMLElement;
+  preElement: HTMLElement;
   lang: string;
   isNative: boolean;
 };
@@ -34,23 +34,21 @@ export default function AlternateMarkdownBlock() {
 
     if (!isMasked) {
       return (
-        <Fragment key={index}>
-          {ReactDom.createPortal(
-            <AlternateMarkdownBlockToolbar
-              lang={container.lang}
-              preBlockId={id}
-            />,
-            container.header,
-          )}
-        </Fragment>
+        <Portal key={index} container={container.header}>
+          <AlternateMarkdownBlockToolbar
+            lang={container.lang}
+            preBlockId={id}
+          />
+        </Portal>
       );
     } else if (isMasked && isCanvasLang) {
-      return ReactDom.createPortal(
-        <CanvasPlaceholder
-          preBlockId={id}
-          lang={container.lang as CanvasLang}
-        />,
-        container.wrapper,
+      return (
+        <Portal key={index} container={container.wrapper}>
+          <CanvasPlaceholder
+            preBlockId={id}
+            lang={container.lang as CanvasLang}
+          />
+        </Portal>
       );
     }
 

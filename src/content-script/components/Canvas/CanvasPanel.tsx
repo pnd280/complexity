@@ -1,7 +1,6 @@
 import { useMediaQuery } from "@uidotdev/usehooks";
 import $ from "jquery";
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import ReactDom from "react-dom";
 
 import { canvasComponents } from "@/content-script/components/Canvas/";
 import CloseButton from "@/content-script/components/Canvas/CanvasCloseButton";
@@ -10,6 +9,7 @@ import CanvasJumpToSource from "@/content-script/components/Canvas/CanvasJumpToS
 import CanvasViewTabToggle from "@/content-script/components/Canvas/CanvasViewTabToggle";
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import { useCanvasStore } from "@/content-script/session-store/canvas";
+import Portal from "@/shared/components/Portal";
 import Canvas from "@/utils/Canvas";
 import { cn } from "@/utils/cn";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
@@ -96,43 +96,44 @@ export default function CanvasPanel() {
 
   if (!threadWrapper || !isOpen) return null;
 
-  return ReactDom.createPortal(
-    <div
-      id="canvas-panel"
-      className={cn(
-        "tw-top-[5rem] tw-flex tw-flex-col tw-overflow-hidden tw-rounded-md tw-border tw-bg-accent tw-transition-all",
-        "tw-animate-in tw-fade-in tw-slide-in-from-right",
-        {
-          "tw-sticky": !isFloat,
-          "tw-fixed tw-right-8 tw-z-[20] tw-w-[80%] tw-shadow-lg": isFloat,
-        },
-      )}
-      style={{
-        height: `calc(100vh - ${UiUtils.getStickyNavbar().outerHeight()}px - 3rem)`,
-      }}
-      onAnimationEnd={handleAnimationEnd}
-    >
-      <div className="tw-relative tw-size-full">
-        {metaData &&
-          metaData.preBlockId &&
-          Canvas.isMaskableLang(
-            MarkdownBlockUtils.getLang($(`#${metaData.preBlockId}`)),
-          ) && (
-            <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max">
-              <CanvasViewTabToggle />
-            </div>
-          )}
-        <div className="tw-absolute tw-left-1/2 tw-top-2 tw-z-10 tw-size-max -tw-translate-x-1/2">
-          <CanvasJumpToSource key={metaData?.preBlockId} />
+  return (
+    <Portal container={threadWrapper as HTMLElement}>
+      <div
+        id="canvas-panel"
+        className={cn(
+          "tw-top-[5rem] tw-flex tw-flex-col tw-overflow-hidden tw-rounded-md tw-border tw-bg-accent tw-transition-all",
+          "tw-animate-in tw-fade-in tw-slide-in-from-right",
+          {
+            "tw-sticky": !isFloat,
+            "tw-fixed tw-right-8 tw-z-[20] tw-w-[80%] tw-shadow-lg": isFloat,
+          },
+        )}
+        style={{
+          height: `calc(100vh - ${UiUtils.getStickyNavbar().outerHeight()}px - 3rem)`,
+        }}
+        onAnimationEnd={handleAnimationEnd}
+      >
+        <div className="tw-relative tw-size-full">
+          {metaData &&
+            metaData.preBlockId &&
+            Canvas.isMaskableLang(
+              MarkdownBlockUtils.getLang($(`#${metaData.preBlockId}`)),
+            ) && (
+              <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max">
+                <CanvasViewTabToggle />
+              </div>
+            )}
+          <div className="tw-absolute tw-left-1/2 tw-top-2 tw-z-10 tw-size-max -tw-translate-x-1/2">
+            <CanvasJumpToSource key={metaData?.preBlockId} />
+          </div>
+          <div className="tw-absolute tw-right-2 tw-top-2 tw-z-10 tw-size-max">
+            <CloseButton />
+          </div>
+          <div id="complexity-canvas" className="tw-size-full" />
+          {canvasComponent}
+          <CanvasCode />
         </div>
-        <div className="tw-absolute tw-right-2 tw-top-2 tw-z-10 tw-size-max">
-          <CloseButton />
-        </div>
-        <div id="complexity-canvas" className="tw-size-full" />
-        {canvasComponent}
-        <CanvasCode />
       </div>
-    </div>,
-    threadWrapper,
+    </Portal>
   );
 }

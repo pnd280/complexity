@@ -1,18 +1,11 @@
 import { useDebounce } from "@uidotdev/usehooks";
 import { debounce } from "lodash-es";
-import {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import ReactDom from "react-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Updater, useImmer } from "use-immer";
 
 import ThreadMessageStickyToolbarComponents from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbarComponents";
 import useThreadMessageStickyToolbarObserver from "@/content-script/hooks/useThreadMessageStickyToolbarObserver";
+import Portal from "@/shared/components/Portal";
 import UiUtils from "@/utils/UiUtils";
 import { onScrollDirectionChange } from "@/utils/utils";
 
@@ -105,20 +98,20 @@ export default function ThreadMessageStickyToolbar() {
   useScrollDirection(debouncedContainers, setContainersStates);
 
   const renderToolbar = useCallback(
-    (container: Container, index: number) => (
-      <Fragment key={index}>
-        {containers[index] &&
-          ReactDom.createPortal(
-            <ThreadMessageStickyToolbarComponents
-              containers={containers}
-              containersStates={containersStates}
-              containerIndex={index}
-              setContainersStates={setContainersStates}
-            />,
-            container.container,
-          )}
-      </Fragment>
-    ),
+    (container: Container, index: number) => {
+      if (!containers[index]) return null;
+
+      return (
+        <Portal key={index} container={container.container as HTMLElement}>
+          <ThreadMessageStickyToolbarComponents
+            containers={containers}
+            containersStates={containersStates}
+            containerIndex={index}
+            setContainersStates={setContainersStates}
+          />
+        </Portal>
+      );
+    },
     [containers, containersStates, setContainersStates],
   );
 

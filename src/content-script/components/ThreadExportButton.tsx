@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { Check, Download, LoaderCircle, Unlink } from "lucide-react";
-import React, { useCallback, useEffect, useMemo } from "react";
-import ReactDom from "react-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaMarkdown } from "react-icons/fa";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
@@ -13,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/DropdownMenu";
+import Portal from "@/shared/components/Portal";
 import { Button } from "@/shared/components/shadcn/ui/button";
 import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
@@ -41,7 +41,7 @@ export default function ThreadExportButton() {
     enabled: false,
   });
 
-  const [container, setContainer] = React.useState<Element>();
+  const [container, setContainer] = useState<HTMLElement>();
 
   const [saveButtonText, setSaveButtonText] = useToggleButtonText({
     defaultText: useMemo(
@@ -109,43 +109,44 @@ export default function ThreadExportButton() {
 
   if (!container) return null;
 
-  return ReactDom.createPortal(
-    <DropdownMenu
-      positioning={{
-        placement: "top-end",
-      }}
-    >
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="tw-flex tw-h-[2rem] tw-items-center tw-rounded-sm !tw-p-2 tw-text-muted-foreground tw-transition-all hover:tw-text-foreground"
-          disabled={isFetchingCurrentThreadInfo}
-        >
-          {isFetchingCurrentThreadInfo ? (
-            <LoaderCircle className="tw-size-4 tw-animate-spin" />
-          ) : (
-            saveButtonText
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {exportOptions.map((option, index) => (
-          <DropdownMenuItem
-            key={index}
-            value={option.value}
-            className="tw-flex tw-items-center tw-gap-2"
-            onClick={() => {
-              handleExportThread({
-                includeCitations: option.value === "citations",
-              });
-            }}
+  return (
+    <Portal container={container}>
+      <DropdownMenu
+        positioning={{
+          placement: "top-end",
+        }}
+      >
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className="tw-flex tw-h-[2rem] tw-items-center tw-rounded-sm !tw-p-2 tw-text-muted-foreground tw-transition-all hover:tw-text-foreground"
+            disabled={isFetchingCurrentThreadInfo}
           >
-            {option.icon}
-            {option.label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>,
-    container,
+            {isFetchingCurrentThreadInfo ? (
+              <LoaderCircle className="tw-size-4 tw-animate-spin" />
+            ) : (
+              saveButtonText
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {exportOptions.map((option, index) => (
+            <DropdownMenuItem
+              key={index}
+              value={option.value}
+              className="tw-flex tw-items-center tw-gap-2"
+              onClick={() => {
+                handleExportThread({
+                  includeCitations: option.value === "citations",
+                });
+              }}
+            >
+              {option.icon}
+              {option.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </Portal>
   );
 }

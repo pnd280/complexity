@@ -9,8 +9,8 @@ import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
 
 type UseQueryBoxObserverProps = {
-  setContainers: (containers: Element) => void;
-  setFollowUpContainers: (containers: Element) => void;
+  setContainers: (containers: HTMLElement) => void;
+  setFollowUpContainers: (containers: HTMLElement) => void;
   refetchUserSettings: () => void;
   disabled?: boolean;
 };
@@ -83,7 +83,7 @@ function observeMainQueryBox({
 }: {
   id: string;
   disabled?: boolean;
-  setContainers: (containers: Element) => void;
+  setContainers: (containers: HTMLElement) => void;
   refetchUserSettings: () => void;
 }) {
   if (disabled) return;
@@ -127,7 +127,7 @@ function observeFollowUpQueryBox({
   id: string;
   location: string;
   disabled?: boolean;
-  setFollowUpContainers: (containers: Element) => void;
+  setFollowUpContainers: (containers: HTMLElement) => void;
   refetchUserSettings: () => void;
 }) {
   if (location === "thread" || location === "page") {

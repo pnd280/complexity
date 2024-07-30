@@ -1,15 +1,7 @@
 import { UndefinedInitialDataOptions, useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
-import {
-  Fragment,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import ReactDom from "react-dom";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 import {
   ImageModel,
@@ -28,6 +20,7 @@ import {
 import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
 import PplxApi from "@/services/PplxApi";
 import KeyCombo from "@/shared/components/KeyCombo";
+import Portal from "@/shared/components/Portal";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
 import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 
@@ -127,22 +120,27 @@ export default function QueryBox() {
     }
   }, [userSettings, setQueryLimit, setOpusLimit, setImageCreateLimit]);
 
-  const [containers, setContainers] = useState<Element[]>([]);
-  const [followUpContainers, setFollowUpContainers] = useState<Element[]>([]);
+  const [containers, setContainers] = useState<HTMLElement[]>([]);
+  const [followUpContainers, setFollowUpContainers] = useState<HTMLElement[]>(
+    [],
+  );
 
-  const memoizedSetContainers = useCallback((newContainer: Element) => {
+  const memoizedSetContainers = useCallback((newContainer: HTMLElement) => {
     setContainers((prevContainers) =>
       [...prevContainers, newContainer].filter((x) => document.contains(x)),
     );
   }, []);
 
-  const memoizedSetFollowUpContainers = useCallback((newContainer: Element) => {
-    setFollowUpContainers((prevFollowUpContainers) =>
-      [...prevFollowUpContainers, newContainer].filter((x) =>
-        document.contains(x),
-      ),
-    );
-  }, []);
+  const memoizedSetFollowUpContainers = useCallback(
+    (newContainer: HTMLElement) => {
+      setFollowUpContainers((prevFollowUpContainers) =>
+        [...prevFollowUpContainers, newContainer].filter((x) =>
+          document.contains(x),
+        ),
+      );
+    },
+    [],
+  );
 
   useQueryBoxObserver({
     setContainers: memoizedSetContainers,
@@ -201,14 +199,14 @@ export default function QueryBox() {
   return (
     <>
       {containers.map((container, index) => (
-        <Fragment key={index}>
-          {ReactDom.createPortal(selectors, container)}
-        </Fragment>
+        <Portal key={index} container={container}>
+          {selectors}
+        </Portal>
       ))}
       {followUpContainers.map((container, index) => (
-        <Fragment key={index}>
-          {ReactDom.createPortal(followUpSelectors, container)}
-        </Fragment>
+        <Portal key={index} container={container}>
+          {followUpSelectors}
+        </Portal>
       ))}
     </>
   );
