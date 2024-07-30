@@ -22,6 +22,7 @@ const DropdownMenuTrigger = forwardRef<
     {...props}
   />
 ));
+
 DropdownMenuTrigger.displayName = "DropdownMenuTrigger";
 
 const DropdownMenuContent = forwardRef<
@@ -47,6 +48,7 @@ const DropdownMenuContent = forwardRef<
     </Menu.Positioner>
   </Portal>
 ));
+
 DropdownMenuContent.displayName = "DropdownMenuContent";
 
 const DropdownMenuItem = forwardRef<
@@ -65,6 +67,7 @@ const DropdownMenuItem = forwardRef<
     {...props}
   />
 ));
+
 DropdownMenuItem.displayName = "DropdownMenuItem";
 
 const DropdownMenuGroup = Menu.ItemGroup;
@@ -85,6 +88,7 @@ const DropdownMenuLabel = forwardRef<
     {...props}
   />
 ));
+
 DropdownMenuLabel.displayName = "DropdownMenuLabel";
 
 const DropdownMenuSeparator = forwardRef<
@@ -97,6 +101,7 @@ const DropdownMenuSeparator = forwardRef<
     {...props}
   />
 ));
+
 DropdownMenuSeparator.displayName = "DropdownMenuSeparator";
 
 function DropdownMenuSub({ ...props }: Menu.RootProps) {

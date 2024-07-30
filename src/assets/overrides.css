@@ -294,7 +294,8 @@ html {
 }
 
 .pt-md.md\:pb-\[124px\].md\:pt-0.pb-\[144px\]>div>div:first-child {
-  min-height: 100vh;
+  min-height    : 100vh;
+  padding-bottom: 50px;
 }
 
 @media (min-width: 768px) {

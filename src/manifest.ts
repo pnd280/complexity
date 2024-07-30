@@ -30,7 +30,10 @@ export default defineManifest({
         "https://www.perplexity.ai/p/api/*",
         "https://perplexity.ai/p/api/*",
       ],
-      js: ["src/content-script/index.tsx"],
+      js: [
+        "src/content-script/index.ts",
+        "src/content-script/main-world/index.ts",
+      ],
       run_at: "document_start",
     },
   ],

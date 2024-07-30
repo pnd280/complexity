@@ -23,11 +23,8 @@ import packageData from "@@/package.json";
 
 import htmlCanvas from "@/content-script/main-world/canvas/html?script&module";
 import mermaidCanvas from "@/content-script/main-world/canvas/mermaid?script&module";
-import nextRouter from "@/content-script/main-world/next-router?script&module";
 import preBlockAttrs from "@/content-script/main-world/pre-block-attrs?script&module";
-import reactNode from "@/content-script/main-world/react-node?script&module";
 import shiki from "@/content-script/main-world/shiki?script&module";
-import wsHook from "@/content-script/main-world/ws-hook?script&module";
 
 $(async function main() {
   initConsoleMessage();
@@ -38,7 +35,7 @@ $(async function main() {
 
   await waitForNextjsHydration();
 
-  await initDependencies();
+  await initMainWorldDeps();
 
   initTrafficInterceptors();
 
@@ -84,28 +81,29 @@ async function initUIUXTweaks() {
   );
 }
 
-async function initDependencies() {
+async function initMainWorldDeps() {
   const settings = CplxUserSettings.get().popupSettings;
 
   await Promise.all([
-    injectMainWorldScript(chrome.runtime.getURL(wsHook)),
-    injectMainWorldScript(chrome.runtime.getURL(nextRouter)),
-    injectMainWorldScript(chrome.runtime.getURL(preBlockAttrs)),
-    injectMainWorldScript(chrome.runtime.getURL(reactNode)),
-    injectMainWorldScript(
-      chrome.runtime.getURL(shiki),
-      settings.qolTweaks.alternateMarkdownBlock,
-    ),
-    injectMainWorldScript(
-      chrome.runtime.getURL(mermaidCanvas),
-      settings.qolTweaks.alternateMarkdownBlock &&
+    injectMainWorldScript({
+      url: chrome.runtime.getURL(preBlockAttrs),
+    }),
+    injectMainWorldScript({
+      url: chrome.runtime.getURL(shiki),
+      inject: settings.qolTweaks.alternateMarkdownBlock,
+    }),
+    injectMainWorldScript({
+      url: chrome.runtime.getURL(mermaidCanvas),
+      inject:
+        settings.qolTweaks.alternateMarkdownBlock &&
         settings.qolTweaks.canvas.enabled,
-    ),
-    injectMainWorldScript(
-      chrome.runtime.getURL(htmlCanvas),
-      settings.qolTweaks.alternateMarkdownBlock &&
+    }),
+    injectMainWorldScript({
+      url: chrome.runtime.getURL(htmlCanvas),
+      inject:
+        settings.qolTweaks.alternateMarkdownBlock &&
         settings.qolTweaks.canvas.enabled,
-    ),
+    }),
   ]);
 }
 

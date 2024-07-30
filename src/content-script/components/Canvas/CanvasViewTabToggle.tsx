@@ -16,7 +16,7 @@ export default function CanvasViewTabToggle() {
   if (!metaData) return null;
 
   return (
-    <div className="tw-flex tw-items-center">
+    <div className="tw-flex tw-items-center tw-opacity-50 tw-transition-opacity hover:tw-opacity-100">
       <div className="tw-m-2 tw-flex tw-rounded-lg tw-bg-background tw-p-1 tw-font-sans tw-text-xs">
         <div
           className={cn(

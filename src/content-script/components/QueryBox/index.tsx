@@ -63,7 +63,7 @@ export const languageModels = [
     provider: "Meta",
   },
   {
-    label: "Sonar Large 32K",
+    label: "Sonar Large",
     shortLabel: "Sonar",
     code: "experimental",
     icon: <SiPerplexity />,
