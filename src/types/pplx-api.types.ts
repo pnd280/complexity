@@ -2,19 +2,16 @@ import { LanguageModel } from "@/content-script/components/QueryBox";
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 
 export type UserSettingsApiResponse = {
-  create_limit: number;
-  default_copilot: boolean;
-  default_image_generation_model: string;
-  default_model: string;
-  disable_training: boolean;
-  gpt4_limit: number;
-  has_ai_profile: boolean;
-  opus_limit: number;
-  query_count: number;
-  query_count_copilot: number;
-  subscription_status: string;
-  upload_limit: number;
-};
+  defaultCopilot: boolean;
+  defaultImageGenerationModel: string;
+  defaultModel: string;
+  createLimit: number;
+  gpt4Limit: number;
+  hasAiProfile: boolean;
+  hasLoadedSettings: boolean;
+  opusLimit: number;
+  stripeStatus: string;
+}
 
 export type CollectionsApiResponse = {
   title: string;

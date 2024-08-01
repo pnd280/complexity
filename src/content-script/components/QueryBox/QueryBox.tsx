@@ -100,23 +100,23 @@ export default function QueryBox() {
     settings?.queryBoxSelectors || {};
 
   const hasActivePplxSub =
-    userSettings && userSettings.subscription_status === "active";
+    userSettings && userSettings.stripeStatus === "active";
 
   useEffect(() => {
     if (userSettings) {
       if (!isDefaultsInitialized.current.userSettings) {
         initQueryBoxStore({
           imageModel:
-            userSettings.default_image_generation_model as ImageModel["code"],
-          languageModel: userSettings.default_model as LanguageModel["code"],
+            userSettings.defaultImageGenerationModel as ImageModel["code"],
+          languageModel: userSettings.defaultModel as LanguageModel["code"],
         });
 
         isDefaultsInitialized.current.userSettings = true;
       }
 
-      setQueryLimit(userSettings.gpt4_limit);
-      setOpusLimit(userSettings.opus_limit);
-      setImageCreateLimit(userSettings.create_limit);
+      setQueryLimit(userSettings.gpt4Limit);
+      setOpusLimit(userSettings.opusLimit);
+      setImageCreateLimit(userSettings.createLimit);
     }
   }, [userSettings, setQueryLimit, setOpusLimit, setImageCreateLimit]);
 

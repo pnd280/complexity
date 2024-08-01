@@ -13,9 +13,13 @@ import { fetchResource, getPplxBuildId, jsonUtils } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class PplxApi {
-  static async fetchUserSettings(): Promise<UserSettingsApiResponse> {
+  static async fetchUserSettings(): Promise<UserSettingsApiResponse | null> {
+    const pplxBuildId = await getPplxBuildId();
+
+    if (!pplxBuildId) return null;
+
     const resp = await fetchResource(
-      "https://www.perplexity.ai/p/api/v1/user/settings",
+      `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/org.json`,
     );
 
     if (
@@ -25,7 +29,8 @@ export default class PplxApi {
     )
       throw new Error("Cloudflare timeout");
 
-    return jsonUtils.safeParse(resp);
+    return jsonUtils.safeParse(resp).pageProps.dehydratedState.queries[1].state
+      .data;
   }
 
   static async fetchCollections(): Promise<Collection[]> {
