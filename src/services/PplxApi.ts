@@ -22,15 +22,25 @@ export default class PplxApi {
       `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/org.json`,
     );
 
-    if (
-      resp.startsWith(
-        '<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...',
-      )
-    )
-      throw new Error("Cloudflare timeout");
-
     return jsonUtils.safeParse(resp).pageProps.dehydratedState.queries[1].state
       .data;
+  }
+
+  static async detectCloudflareTimeout() {
+    const resp = await fetch(
+      "https://www.perplexity.ai/p/api/v1/user/settings",
+    );
+
+    if (
+      resp.status === 403 ||
+      (await resp.text()).startsWith(
+        '<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...',
+      )
+    ) {
+      throw new Error("Cloudflare timeout");
+    }
+
+    return true;
   }
 
   static async fetchCollections(): Promise<Collection[]> {
@@ -125,7 +135,10 @@ export default class PplxApi {
 
     if (!data) return null;
 
-    return data.pageProps.profile as UserProfileSettingsApiResponse;
+    return {
+      user: data.pageProps.session.user,
+      profile: data.pageProps.profile,
+    } as UserProfileSettingsApiResponse;
   }
 
   static async setDefaultLanguageModel(

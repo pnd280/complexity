@@ -8,6 +8,7 @@ import { IncompatibleInterfaceLanguageNotice } from "@/content-script/components
 import MainPage from "@/content-script/components/MainPage";
 import QueryBox from "@/content-script/components/QueryBox/QueryBox";
 import ThreadExportButton from "@/content-script/components/ThreadExportButton";
+import useCloudflareTimeout from "@/content-script/hooks/useCloudflareTimeout";
 import useRouter from "@/content-script/hooks/useRouter";
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import { Toaster } from "@/shared/components/shadcn/ui/toaster";
@@ -48,6 +49,12 @@ export default function ReactRoot() {
 
 function Root() {
   const location = whereAmI(useRouter().url);
+
+  useCloudflareTimeout({
+    enabled:
+      CplxUserSettings.get().popupSettings.qolTweaks
+        .autoRefreshSessionTimeout && !$(document.body).hasClass("no-js"),
+  });
 
   useEffect(() => {
     return () => {

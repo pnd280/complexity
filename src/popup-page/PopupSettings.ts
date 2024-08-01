@@ -40,6 +40,12 @@ export default class PopupSettings {
     keyof CplxUserSettings["popupSettings"]["qolTweaks"]
   >[] = [
     {
+      id: "block-telemetry",
+      label: "[Privacy] Block Perplexity's telemetry",
+      settingKey: "blockTelemetry",
+      versionRelease: "0.0.0.13",
+    },
+    {
       id: "thread-toc",
       label: "Thread Toc",
       settingKey: "threadToc",
@@ -62,12 +68,6 @@ export default class PopupSettings {
       versionRelease: "0.0.0.12",
     },
     {
-      id: "block-telemetry",
-      label: "Block Perplexity's telemetry data",
-      settingKey: "blockTelemetry",
-      versionRelease: "0.0.0.13",
-    },
-    {
       id: "no-file-creation-on-paste",
       label: "No file creation on long text paste",
       settingKey: "noFileCreationOnPaste",
@@ -75,7 +75,7 @@ export default class PopupSettings {
     },
     {
       id: "file-dropable-thread-wrapper",
-      label: "Drop file within thread",
+      label: "Drop to upload files within thread",
       settingKey: "fileDropableThreadWrapper",
       versionRelease: "0.0.1.0",
     },

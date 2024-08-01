@@ -174,7 +174,7 @@ export default function CollectionSelector() {
                   <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
                     <Tooltip
                       className="tw-max-h-[200px] tw-truncate"
-                      content={userProfileSettings?.bio || ""}
+                      content={userProfileSettings?.profile.bio || ""}
                       positioning={{
                         placement: "right",
                         gutter: 60,
@@ -194,7 +194,7 @@ export default function CollectionSelector() {
 
                     <Tooltip
                       content={
-                        userProfileSettings?.disabled
+                        userProfileSettings?.profile.disabled
                           ? "Enable AI profile"
                           : "Disable AI profile"
                       }
@@ -216,7 +216,7 @@ export default function CollectionSelector() {
                           }
 
                           updateUserProfileSettings({
-                            disabled: !userProfileSettings?.disabled,
+                            disabled: !userProfileSettings?.profile.disabled,
                           });
                         }}
                       >
@@ -225,7 +225,7 @@ export default function CollectionSelector() {
                           <LoaderCircle className="tw-size-3 tw-animate-spin" />
                         ) : (
                           <>
-                            {userProfileSettings?.disabled ? (
+                            {userProfileSettings?.profile.disabled ? (
                               <Play className="tw-size-3" />
                             ) : (
                               <Pause className="tw-size-3" />

@@ -11,7 +11,7 @@ export type UserSettingsApiResponse = {
   hasLoadedSettings: boolean;
   opusLimit: number;
   stripeStatus: string;
-}
+};
 
 export type CollectionsApiResponse = {
   title: string;
@@ -34,10 +34,16 @@ export type ThreadMessageApiResponse = {
 };
 
 export type UserProfileSettingsApiResponse = {
-  has_profile: boolean;
-  disabled: boolean;
-  bio: string;
+  profile: {
+    has_profile: boolean;
+    disabled: boolean;
+    bio: string;
+  };
+  user: {
+    subscription_status: "active" | "none";
+  };
 };
 
-export type UserProfileSettingsApiRequest =
-  Partial<UserProfileSettingsApiResponse>;
+export type UserProfileSettingsApiRequest = Partial<
+  UserProfileSettingsApiResponse["profile"]
+>;

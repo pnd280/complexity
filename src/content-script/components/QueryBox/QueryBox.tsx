@@ -54,7 +54,6 @@ export default function QueryBox() {
     data: userSettings,
     isLoading: isLoadingUserSettings,
     refetch: refetchUserSettings,
-    error: userSettingsError,
   } = useQuery({
     queryKey: ["userSettings"],
     queryFn: PplxApi.fetchUserSettings,
@@ -63,23 +62,7 @@ export default function QueryBox() {
     enabled: !$(document.body).hasClass("no-js"),
   });
 
-  useEffect(() => {
-    if (!autoRefreshSessionTimeout) return;
-
-    if (userSettingsError?.message === "Cloudflare timeout") {
-      toast({
-        title: "⚠️ Cloudflare timeout!",
-        description: "Refreshing the page...",
-        timeout: 3000,
-      });
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    }
-  }, [userSettingsError, autoRefreshSessionTimeout, toast]);
-
-  useQuery({
+  const { data: userProfileSettings } = useQuery({
     queryKey: ["userProfileSettings"],
     queryFn: PplxApi.fetchUserProfileSettings,
     enabled: isReady,
@@ -100,7 +83,7 @@ export default function QueryBox() {
     settings?.queryBoxSelectors || {};
 
   const hasActivePplxSub =
-    userSettings && userSettings.stripeStatus === "active";
+    userProfileSettings && userProfileSettings.user.subscription_status;
 
   useEffect(() => {
     if (userSettings) {
@@ -150,7 +133,8 @@ export default function QueryBox() {
   });
 
   useEffect(() => {
-    hasActivePplxSub === false &&
+    hasActivePplxSub &&
+      hasActivePplxSub !== "active" &&
       toast({
         title: "⚠️ Some features are disabled!",
         description: "No active Perplexity subscription/Not logged in!",
@@ -178,7 +162,7 @@ export default function QueryBox() {
   const selectors = (
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
-      hasActivePplxSub={!!hasActivePplxSub}
+      hasActivePplxSub={hasActivePplxSub === "active"}
       focus={!!focus}
       collection={collection}
       languageModel={!!languageModel}
@@ -189,7 +173,7 @@ export default function QueryBox() {
   const followUpSelectors = (
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
-      hasActivePplxSub={!!hasActivePplxSub}
+      hasActivePplxSub={hasActivePplxSub === "active"}
       focus={!!focus}
       languageModel={!!languageModel}
       imageGenModel={!!imageGenModel}
@@ -234,8 +218,10 @@ const CommonSelectors = ({
       if (!isReady) {
         setHint(
           <span className="tw-flex tw-flex-wrap tw-items-center tw-gap-1">
-            Manually trigger Pro Search (
-            <KeyCombo keys={["Ctrl/Cmd", "i"]} />) to speed up the loading.
+            Manually trigger Pro Search{" "}
+            <span>
+              (<KeyCombo keys={["Ctrl/Cmd", "i"]} />) to speed up the loading.
+            </span>
           </span>,
         );
       }

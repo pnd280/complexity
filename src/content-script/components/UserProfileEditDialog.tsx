@@ -51,8 +51,8 @@ export default function UserProfileEditDialog({
   };
 
   useEffect(() => {
-    setBio(userProfileSettings?.bio ?? "");
-  }, [open, userProfileSettings?.bio]);
+    setBio(userProfileSettings?.profile.bio ?? "");
+  }, [open, userProfileSettings?.profile.bio]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,12 +7,6 @@
 @font-face {
   font-family: "FK Grotesk Variable";
   src: url("https://pplx-next-static-public.perplexity.ai/_next/static/media/3c0a20a48548ae37-s.p.woff2")
-    format("woff2");
-}
-
-@font-face {
-  font-family: "Berkeley Mono";
-  src: url("https://pplx-next-static-public.perplexity.ai/_next/static/media/b06d54d0a237533a-s.p.woff2")
     format("woff2");
 }
 
@@ -57,7 +53,8 @@
       BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
       "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
       "Segoe UI Symbol", "Noto Color Emoji";
-    --mono-font: "Berkeley Mono", ui-monospace;
+    --mono-font: "JetBrains Mono", "Roboto Mono", "SFMono-Regular", Menlo,
+      Monaco, Consolas, ui-monospace, monospace;
   }
 
   .dark {
