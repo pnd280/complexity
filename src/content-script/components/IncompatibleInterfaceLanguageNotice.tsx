@@ -2,7 +2,7 @@ import $ from "jquery";
 import { useEffect } from "react";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
-import { useToast } from "@/shared/components/shadcn/ui/use-toast";
+import { useToast } from "@/shared/toast";
 import { isDomNode } from "@/utils/utils";
 
 export function IncompatibleInterfaceLanguageNotice() {

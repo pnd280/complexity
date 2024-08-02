@@ -8,7 +8,7 @@ import {
   MessageData,
   WebSocketEventData,
 } from "@/types/webpage-messenger.types";
-import { isParsedWSMessage, WSParsedMessage } from "@/types/ws.types";
+import { isParsedWsMessage, WsParsedMessage } from "@/types/ws.types";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class WebpageMessageInterceptor {
@@ -21,10 +21,10 @@ export default class WebpageMessageInterceptor {
         };
 
         return (messageData) => {
-          const parsedPayload: WSParsedMessage | null | string =
+          const parsedPayload: WsParsedMessage | null | string =
             WsMessageParser.parse(messageData.payload.payload);
 
-          if (!isParsedWSMessage(parsedPayload)) return { match: false };
+          if (!isParsedWsMessage(parsedPayload)) return { match: false };
 
           const isRateLimitRequest = parsedPayload.event === "get_rate_limit";
 
@@ -145,10 +145,10 @@ export default class WebpageMessageInterceptor {
           WebSocketEventData | LongPollingEventData
         >;
 
-        const parsedPayload: WSParsedMessage | null | string =
+        const parsedPayload: WsParsedMessage | null | string =
           WsMessageParser.parse(webSocketMessageData.payload.payload);
 
-        if (!isParsedWSMessage(parsedPayload)) return { match: false };
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
 
         if (parsedPayload.event !== "perplexity_ask") {
           return { match: false };
@@ -218,10 +218,10 @@ export default class WebpageMessageInterceptor {
           WebSocketEventData | LongPollingEventData
         >;
 
-        const parsedPayload: WSParsedMessage | null | string =
+        const parsedPayload: WsParsedMessage | null | string =
           WsMessageParser.parse(webSocketMessageData.payload.payload);
 
-        if (!isParsedWSMessage(parsedPayload)) return { match: false };
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
 
         if (parsedPayload.event !== "perplexity_ask") {
           return { match: false };
@@ -264,10 +264,10 @@ export default class WebpageMessageInterceptor {
           WebSocketEventData | LongPollingEventData
         >;
 
-        const parsedPayload: WSParsedMessage | null | string =
+        const parsedPayload: WsParsedMessage | null | string =
           WsMessageParser.parse(webSocketMessageData.payload.payload);
 
-        if (!isParsedWSMessage(parsedPayload)) return { match: false };
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
 
         const match = parsedPayload.data?.[0]?.is_complexity;
 
@@ -317,7 +317,7 @@ export default class WebpageMessageInterceptor {
 
   static waitForUserProfileSettings() {
     const matchCondition = (messageData: MessageData<any>) => {
-      const parsedPayload: WSParsedMessage | null =
+      const parsedPayload: WsParsedMessage | null =
         WebpageMessageInterceptor.parseStructuredMessage(messageData);
 
       if (!parsedPayload) return false;
@@ -354,10 +354,10 @@ export default class WebpageMessageInterceptor {
           WebSocketEventData | LongPollingEventData
         >;
 
-        const parsedPayload: WSParsedMessage | null | string =
+        const parsedPayload: WsParsedMessage | null | string =
           WsMessageParser.parse(webSocketMessageData.payload.payload);
 
-        if (!isParsedWSMessage(parsedPayload)) return { match: false };
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
 
         return {
           match: parsedPayload.event === "analytics_event",
@@ -375,10 +375,10 @@ export default class WebpageMessageInterceptor {
       WebSocketEventData | LongPollingEventData
     >;
 
-    const parsedPayload: WSParsedMessage | null | string =
+    const parsedPayload: WsParsedMessage | null | string =
       WsMessageParser.parse(webSocketMessageData.payload.payload);
 
-    if (!isParsedWSMessage(parsedPayload)) return null;
+    if (!isParsedWsMessage(parsedPayload)) return null;
 
     return parsedPayload;
   }

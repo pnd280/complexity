@@ -2,8 +2,8 @@ import { ExternalLink } from "lucide-react";
 
 import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
 import popupSettings, { PopupSetting } from "@/popup-page/PopupSettings";
-import LabeledSwitch from "@/shared/components/LabeledSwitch";
-import { Separator } from "@/shared/components/shadcn/ui/separator";
+import Separator from "@/shared/components/Separator";
+import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
 import {
   CplxUserSettings,
@@ -107,13 +107,13 @@ function RenderSettings<
               gutter: 10,
             }}
           >
-            <LabeledSwitch
+            <Switch
               key={id}
               id={id}
-              label={label}
+              textLabel={label}
               defaultChecked={!settingKey ? true : defaultChecked}
               checked={!settingKey ? true : undefined}
-              onCheckedChange={(checked) => {
+              onCheckedChange={({ checked }) => {
                 if (!settingKey) return onClick?.();
                 updateSettings(settingStoreKey, (draft) => {
                   draft[

@@ -1,9 +1,7 @@
 import * as z from "zod";
 
-import {
-  WebAccessFocus,
-  webAccessFocus,
-} from "@/content-script/components/QueryBox";
+import { WebAccessFocus } from "@/content-script/components/QueryBox";
+import { webAccessFocus } from "@/content-script/components/QueryBox/consts";
 import { NestedKeys } from "@/types/utils.types";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
 import packageData from "@@/package.json";

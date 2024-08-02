@@ -2,7 +2,7 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 import PplxApi from "@/services/PplxApi";
-import { toast } from "@/shared/components/shadcn/ui/use-toast";
+import { toast } from "@/shared/toast";
 
 type UseCloudflareTimeoutProps = Pick<UseQueryOptions<boolean>, "enabled">;
 

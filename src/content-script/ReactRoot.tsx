@@ -11,7 +11,7 @@ import ThreadExportButton from "@/content-script/components/ThreadExportButton";
 import useCloudflareTimeout from "@/content-script/hooks/useCloudflareTimeout";
 import useRouter from "@/content-script/hooks/useRouter";
 import CplxUserSettings from "@/lib/CplxUserSettings";
-import { Toaster } from "@/shared/components/shadcn/ui/toaster";
+import { Toaster } from "@/shared/components/Toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
 import { whereAmI } from "@/utils/utils";
 

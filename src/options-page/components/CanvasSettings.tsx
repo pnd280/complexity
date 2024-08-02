@@ -2,7 +2,7 @@ import { CircleHelp, HelpCircle } from "lucide-react";
 
 import { canvasLangs } from "@/content-script/components/Canvas/langs";
 import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
-import LabeledSwitch from "@/shared/components/LabeledSwitch";
+import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
 import { CanvasLang } from "@/utils/Canvas";
 
@@ -41,12 +41,12 @@ export default function CanvasSettings() {
           Enabling this feature may cause performance issues/unexpected
           behavior.
         </p>
-        <LabeledSwitch
+        <Switch
           id="canvas-enable"
-          label="Enable"
+          textLabel="Enable"
           className="tw-mx-auto tw-mt-4 tw-w-fit"
           checked={canvasSettings.enabled}
-          onCheckedChange={(checked) => {
+          onCheckedChange={({ checked }) => {
             updateSettings("qolTweaks", (draft) => {
               draft.canvas.enabled = checked;
             });
@@ -131,12 +131,12 @@ function CanvasSettingBlock({
 
       <div className="tw-mt-auto tw-flex tw-flex-col tw-gap-2">
         <div className="tw-flex tw-items-center tw-gap-4">
-          <LabeledSwitch
+          <Switch
             id={`canvas-lang-${trigger}`}
-            label="Mask"
+            textLabel="Mask"
             className="!tw-w-max"
             defaultChecked={canvasSettings.mask[trigger]}
-            onCheckedChange={(checked) => {
+            onCheckedChange={({ checked }) => {
               updateSettings("qolTweaks", (draft) => {
                 draft.canvas.mask[trigger] = checked;
               });

@@ -2,8 +2,8 @@ import { webpageMessenger } from "@/content-script/main-world/webpage-messenger"
 import { Nullable } from "@/types/utils.types";
 import { mainWorldExec } from "@/utils/hof";
 
-class WSHook {
-  private static instance: WSHook;
+class WsHook {
+  private static instance: WsHook;
   private webSocketInstance: Nullable<WebSocket>;
   private longPollingInstance: Nullable<XMLHttpRequest>;
 
@@ -14,11 +14,11 @@ class WSHook {
     this.longPollingInstance = null;
   }
 
-  static getInstance(): WSHook {
-    if (!WSHook.instance) {
-      WSHook.instance = new WSHook();
+  static getInstance(): WsHook {
+    if (!WsHook.instance) {
+      WsHook.instance = new WsHook();
     }
-    return WSHook.instance;
+    return WsHook.instance;
   }
 
   initialize(): void {
@@ -351,4 +351,4 @@ class WSHook {
   }
 }
 
-mainWorldExec(() => WSHook.getInstance().initialize())();
+mainWorldExec(() => WsHook.getInstance().initialize())();

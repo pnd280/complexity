@@ -7,7 +7,7 @@ import DiscordCallout from "@/popup-page/components/DiscordCallout";
 import Footer from "@/popup-page/components/Footer";
 import PopupSettings from "@/popup-page/components/PopupSettings";
 import UntrustedBuildWarning from "@/popup-page/components/UntrustedBuildWarning";
-import { Separator } from "@/shared/components/shadcn/ui/separator";
+import Separator from "@/shared/components/Separator";
 import { queryClient } from "@/utils/ts-query-query-client";
 
 ReactDom.createRoot(document.getElementById("app") as HTMLElement).render(

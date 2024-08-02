@@ -1,4 +1,4 @@
-export type WSParsedMessage = {
+export type WsParsedMessage = {
   messageCode: number;
   event: string;
   data: any[] | any;
@@ -9,6 +9,6 @@ export type RouterEvent =
   | "popstate"
   | "routeChangeComplete";
 
-export function isParsedWSMessage(data: any): data is WSParsedMessage {
+export function isParsedWsMessage(data: any): data is WsParsedMessage {
   return data && typeof data === "object" && "messageCode" in data;
 }

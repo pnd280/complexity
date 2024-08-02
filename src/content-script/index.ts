@@ -31,7 +31,7 @@ $(async function main() {
 
   await initCplxUserSettings();
 
-  initUIUXTweaks();
+  initUiUxTweaks();
 
   await waitForNextjsHydration();
 
@@ -55,7 +55,7 @@ async function initCplxUserSettings() {
   await CplxUserSettings.init();
 }
 
-async function initUIUXTweaks() {
+async function initUiUxTweaks() {
   UiTweaks.correctColorScheme();
   UiTweaks.injectCustomStyles();
 

@@ -59,15 +59,11 @@ export default function Tooltip({
   children,
   disabled,
   content,
-  className,
   positioning,
 }: TooltipProps) {
-  if (disabled) {
-    return children;
-  }
-
   return (
     <TooltipRoot
+      lazyMount={true}
       openDelay={0}
       closeDelay={0}
       positioning={{
@@ -78,8 +74,10 @@ export default function Tooltip({
       <TooltipTrigger asChild>
         <div>{children}</div>
       </TooltipTrigger>
-      {content && (
-        <TooltipContent className={cn(className)}>{content}</TooltipContent>
+      {!(disabled || (typeof content === "string" && content.length === 0)) && (
+        <TooltipContent asChild>
+          <div>{content}</div>
+        </TooltipContent>
       )}
     </TooltipRoot>
   );

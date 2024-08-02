@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 
 import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
 import PplxApi from "@/services/PplxApi";
-import { Button } from "@/shared/components/shadcn/ui/button";
+import Button from "@/shared/components/Button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
-} from "@/shared/components/shadcn/ui/dialog";
-import { Label } from "@/shared/components/shadcn/ui/label";
-import { Separator } from "@/shared/components/shadcn/ui/separator";
-import { useToast } from "@/shared/components/shadcn/ui/use-toast";
+} from "@/shared/components/Dialog";
+import Label from "@/shared/components/Label";
+import Separator from "@/shared/components/Separator";
 import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
+import { useToast } from "@/shared/toast";
 
 type UserProfileEditProps = {
   open: boolean;
@@ -55,7 +55,7 @@ export default function UserProfileEditDialog({
   }, [open, userProfileSettings?.profile.bio]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={({ open }) => onOpenChange(open)}>
       <DialogContent className="!tw-flex tw-h-[50vh] tw-max-h-[900px] tw-max-w-full tw-flex-grow tw-flex-col tw-justify-start tw-font-sans xl:tw-max-w-[50vw]">
         <DialogHeader>
           <DialogHeader className="tw-text-3xl">Edit User Profile</DialogHeader>

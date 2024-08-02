@@ -15,7 +15,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { SiPerplexity } from "react-icons/si";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
-import KeyCombo from "@/shared/components/KeyCombo";
 import {
   CommandDialog,
   CommandEmpty,
@@ -25,7 +24,8 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/shared/components/shadcn/ui/command";
+} from "@/shared/components/Command";
+import KeyCombo from "@/shared/components/KeyCombo";
 import { setCookie } from "@/utils/utils";
 
 export default function Commander() {
@@ -87,7 +87,7 @@ export default function Commander() {
   }, [handleNavigate]);
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandDialog open={open} onOpenChange={({ open }) => setOpen(open)}>
       <CommandInput
         ref={ref}
         value={searchValue}

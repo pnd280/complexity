@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { useEffect } from "react";
 
-import { languageModels } from "@/content-script/components/QueryBox";
+import { languageModels } from "@/content-script/components/QueryBox/consts";
 import {
   Container,
   ToggleToolbarVisibilityProps,
@@ -110,7 +110,7 @@ export default function useThreadMessageStickyToolbarObserver({
 
       async function callback() {
         $(`.message-block:not([data-${id}-observed])`).each(
-          (index, messageBlock) => {
+          (_, messageBlock) => {
             queueMicrotask(async () => {
               const { $answerHeading } = UiUtils.parseMessageBlock(
                 $(messageBlock),
@@ -120,11 +120,13 @@ export default function useThreadMessageStickyToolbarObserver({
 
               $(messageBlock).attr(`data-${id}-observed`, "true");
 
+              const index = parseInt($(messageBlock).attr("data-index") ?? "0");
+
               const displayModelCode = (await webpageMessenger.sendMessage({
                 event: "getReactNodeData",
                 payload: {
                   action: "getMessageDisplayModel",
-                  querySelector: `.message-block[data-index="${index + 1}"]`,
+                  querySelector: `.message-block[data-index="${index}"]`,
                 },
                 timeout: 5000,
               })) as ReactNodeActionReturnType["getMessageDisplayModel"];

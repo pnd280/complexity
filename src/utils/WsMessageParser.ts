@@ -1,8 +1,8 @@
-import { WSParsedMessage } from "@/types/ws.types";
+import { WsParsedMessage } from "@/types/ws.types";
 import { jsonUtils } from "@/utils/utils";
 
 export default class WsMessageParser {
-  static parse(message: string): WSParsedMessage | string | null {
+  static parse(message: string): WsParsedMessage | string | null {
     if (isNaN(parseInt(message[0], 10))) {
       return message;
     }
@@ -31,7 +31,7 @@ export default class WsMessageParser {
       return null;
     }
 
-    let output: WSParsedMessage;
+    let output: WsParsedMessage;
 
     if (data.length < 2) {
       output = {
@@ -51,13 +51,13 @@ export default class WsMessageParser {
     return output;
   }
 
-  static stringify(parsedMessage: WSParsedMessage | string): string {
+  static stringify(parsedMessage: WsParsedMessage | string): string {
     if (!parsedMessage || typeof parsedMessage !== "object") {
       return parsedMessage as string;
     }
 
-    let { data } = parsedMessage as WSParsedMessage;
-    const { messageCode, event } = parsedMessage as WSParsedMessage;
+    let { data } = parsedMessage as WsParsedMessage;
+    const { messageCode, event } = parsedMessage as WsParsedMessage;
 
     if (!Array.isArray(data)) {
       data = [data];

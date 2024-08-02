@@ -4,18 +4,18 @@ import { useEffect, useState } from "react";
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import PplxApi from "@/services/PplxApi";
-import InputWithLimit from "@/shared/components/InputWithLimit";
-import { Button } from "@/shared/components/shadcn/ui/button";
+import Button from "@/shared/components/Button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
-} from "@/shared/components/shadcn/ui/dialog";
-import { Label } from "@/shared/components/shadcn/ui/label";
-import { Separator } from "@/shared/components/shadcn/ui/separator";
-import { useToast } from "@/shared/components/shadcn/ui/use-toast";
+} from "@/shared/components/Dialog";
+import InputWithLimit from "@/shared/components/InputWithLimit";
+import Label from "@/shared/components/Label";
+import Separator from "@/shared/components/Separator";
 import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
+import { useToast } from "@/shared/toast";
 
 type CollectionEditDialogProps = {
   collection: Collection;
@@ -116,7 +116,11 @@ export default function CollectionEditDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={(open) => onOpenChange(open)}>
+    <Dialog
+      closeOnInteractOutside={false}
+      open={open}
+      onOpenChange={({ open }) => onOpenChange(open)}
+    >
       <DialogContent className="!tw-flex tw-h-[90vh] tw-max-h-[900px] tw-max-w-full tw-flex-grow tw-flex-col tw-justify-start tw-font-sans xl:tw-max-w-[40vw]">
         <DialogHeader>
           <DialogHeader className="tw-text-3xl">Edit Collection</DialogHeader>

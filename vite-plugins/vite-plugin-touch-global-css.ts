@@ -1,5 +1,6 @@
-import chalk from "chalk";
 import * as fs from "fs";
+
+import chalk from "chalk";
 import { Plugin } from "vite";
 
 function touchFile(filePath: string): void {
@@ -10,11 +11,13 @@ function touchFile(filePath: string): void {
 type TouchGlobalCSSPluginOptions = {
   cssFilePath: string;
   watchFiles: string[];
+  verbose?: boolean;
 };
 
 export default function touchGlobalCSSPlugin({
   cssFilePath,
   watchFiles,
+  verbose = false,
 }: TouchGlobalCSSPluginOptions): Plugin {
   return {
     name: "touch-global-css",
@@ -24,9 +27,11 @@ export default function touchGlobalCSSPlugin({
           if (file.includes(cssFilePath)) return;
 
           touchFile(cssFilePath);
-          console.log(
-            `${chalk.blue(`\n[touch-global-css]`)} ${chalk.green(`Touched ${chalk.yellow(cssFilePath)} due to change in ${chalk.yellow(file)}`)}`,
-          );
+
+          if (verbose)
+            console.log(
+              `${chalk.blue(`\n[touch-global-css]`)} ${chalk.green(`Touched ${chalk.yellow(cssFilePath)} due to change in ${chalk.yellow(file)}`)}`,
+            );
         }
       });
     },

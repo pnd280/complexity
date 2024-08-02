@@ -15,5 +15,7 @@
     ["addClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["toggleClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "files.associations": { "*.tw.css": "tailwindcss" }
+  "files.associations": { "*.tw.css": "tailwindcss" },
+  "npm.scriptExplorerExclude": ["preinstall"],
+  "npm.exclude": ["**/build", "**/package"]
 }

@@ -3,8 +3,8 @@ import { immer } from "zustand/middleware/immer";
 
 import {
   ImageModel,
-  LanguageModel,
   WebAccessFocus,
+  LanguageModel,
 } from "@/content-script/components/QueryBox";
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import PplxApi from "@/services/PplxApi";

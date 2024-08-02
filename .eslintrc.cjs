@@ -90,12 +90,6 @@ module.exports = {
   },
   overrides: [
     {
-      files: "src/shared/components/shadcn/*/**.tsx",
-      rules: {
-        "react/prop-types": "off",
-      },
-    },
-    {
       files: ["src/**/*.{ts,tsx}"],
       excludedFiles: ["src/manifest.ts"],
       rules: {

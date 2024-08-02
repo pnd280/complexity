@@ -1,6 +1,10 @@
 import { Cpu, Image } from "lucide-react";
 
-import { ImageModel, imageModels } from "@/content-script/components/QueryBox";
+import {
+  ImageModel,
+  imageModelIcons,
+} from "@/content-script/components/QueryBox";
+import { imageModels } from "@/content-script/components/QueryBox/consts";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
@@ -61,8 +65,10 @@ export default function ImageModelSelector() {
           >
             <SelectItem key={model.code} item={model.code}>
               <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
-                {model.icon ? (
-                  <div className="tw-text-[1.1rem]">{model.icon}</div>
+                {imageModelIcons[model.code] ? (
+                  <div className="tw-text-[1.1rem]">
+                    {imageModelIcons[model.code]}
+                  </div>
                 ) : (
                   <Cpu className="tw-size-4" />
                 )}

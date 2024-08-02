@@ -5,7 +5,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { Button } from "@/shared/components/shadcn/ui/button";
+import Button from "@/shared/components/Button";
 import {
   Form,
   FormControl,
@@ -13,9 +13,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/shared/components/shadcn/ui/form";
-import { Input } from "@/shared/components/shadcn/ui/input";
-import { Textarea } from "@/shared/components/shadcn/ui/textarea";
+} from "@/shared/components/Form";
+import Input from "@/shared/components/Input";
+import Textarea from "@/shared/components/Textarea";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { jsonUtils } from "@/utils/utils";
 

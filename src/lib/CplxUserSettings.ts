@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { merge } from "lodash-es";
 
-import { toast } from "@/shared/components/shadcn/ui/use-toast";
+import { toast } from "@/shared/toast";
 import {
   cplxUserSettingsSchema,
   type CplxUserSettings as CplxUserSettingsType,

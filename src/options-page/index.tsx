@@ -14,8 +14,8 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/shared/components/shadcn/ui/tabs";
-import { Toaster } from "@/shared/components/shadcn/ui/toaster";
+} from "@/shared/components/Tabs";
+import { Toaster } from "@/shared/components/Toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
 
 const queryStr = new URLSearchParams(window.location.search);
@@ -23,7 +23,10 @@ const queryStr = new URLSearchParams(window.location.search);
 ReactDom.createRoot(document.getElementById("app") as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
     <div className="tw-mx-auto tw-my-4 tw-w-[800px] tw-max-w-[90vw] tw-font-sans">
-      <Tabs defaultValue={queryStr.get("tab") || "popupSettings"}>
+      <Tabs
+        defaultValue={queryStr.get("tab") || "popupSettings"}
+        activationMode="manual"
+      >
         <TabsList className="tw-sticky tw-top-5 tw-z-10 tw-mb-5 tw-grid tw-grid-cols-4 tw-shadow-lg">
           <TabsTrigger value="popupSettings">Basic Settings</TabsTrigger>
           <TabsTrigger value="canvas">✨ Canvas</TabsTrigger>

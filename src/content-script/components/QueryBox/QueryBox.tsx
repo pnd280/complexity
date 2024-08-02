@@ -21,10 +21,10 @@ import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
 import PplxApi from "@/services/PplxApi";
 import KeyCombo from "@/shared/components/KeyCombo";
 import Portal from "@/shared/components/Portal";
-import { Separator } from "@/shared/components/shadcn/ui/separator";
+import Separator from "@/shared/components/Separator";
 
 export default function QueryBox() {
-  const isReady = useGlobalStore(
+  const isNetworkInstanceCaptured = useGlobalStore(
     (state) => state.isWebSocketCaptured || state.isLongPollingCaptured,
   );
 
@@ -49,7 +49,7 @@ export default function QueryBox() {
   useQuery({
     queryKey: ["userProfileSettings"],
     queryFn: PplxApi.fetchUserProfileSettings,
-    enabled: isReady,
+    enabled: isNetworkInstanceCaptured,
   });
 
   useQuery({
@@ -132,7 +132,9 @@ export default function QueryBox() {
 
   const selectors = (
     <CommonSelectors
-      isReady={isReady && !!userSettings && !isLoadingUserSettings}
+      isReady={
+        isNetworkInstanceCaptured && !!userSettings && !isLoadingUserSettings
+      }
       hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       collection={collection}
@@ -143,7 +145,9 @@ export default function QueryBox() {
 
   const followUpSelectors = (
     <CommonSelectors
-      isReady={isReady && !!userSettings && !isLoadingUserSettings}
+      isReady={
+        isNetworkInstanceCaptured && !!userSettings && !isLoadingUserSettings
+      }
       hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       languageModel={!!languageModel}
@@ -200,7 +204,7 @@ const CommonSelectors = ({
   }, [isReady]);
 
   return (
-    <>
+    <div className="tw-flex tw-items-center">
       {isReady ? (
         <>
           {(focus || collection) && (
@@ -230,6 +234,6 @@ const CommonSelectors = ({
           )}
         </div>
       )}
-    </>
+    </div>
   );
 };

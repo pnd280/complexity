@@ -3,10 +3,11 @@ import { ReactNode, useCallback, useEffect } from "react";
 import { useImmer } from "use-immer";
 
 import {
-  groupedLanguageModelsByProvider,
   LanguageModel,
-  languageModels,
-} from "@/content-script/components/QueryBox/";
+  groupedLanguageModelsByProvider,
+  languageModelIcons,
+} from "@/content-script/components/QueryBox";
+import { languageModels } from "@/content-script/components/QueryBox/consts";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
@@ -88,7 +89,7 @@ export default function LanguageModelSelector() {
           </div>
         </SelectTrigger>
       </Tooltip>
-      <SelectContent className="custom-scrollbar tw-max-h-[500px] tw-max-w-[200px] tw-overflow-auto tw-font-sans">
+      <SelectContent className="custom-scrollbar tw-max-h-[45svh] tw-max-w-[200px] tw-overflow-auto tw-font-sans">
         {groupedLanguageModelsByProvider.map(([provider, models]) => (
           <SelectGroup key={provider}>
             <SelectLabel>{provider}</SelectLabel>
@@ -104,8 +105,10 @@ export default function LanguageModelSelector() {
               >
                 <SelectItem key={model.code} item={model.code}>
                   <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
-                    {model.icon ? (
-                      <div className="tw-text-[1.1rem]">{model.icon}</div>
+                    {languageModelIcons[model.code] ? (
+                      <div className="tw-text-[1.1rem]">
+                        {languageModelIcons[model.code]}
+                      </div>
                     ) : (
                       <Cpu className="tw-size-4" />
                     )}

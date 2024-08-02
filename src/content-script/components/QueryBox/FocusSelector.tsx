@@ -1,12 +1,13 @@
 import { useToggle } from "@uidotdev/usehooks";
 import { Cpu } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { PiGlobeX } from "react-icons/pi";
 
 import {
+  webAccessFocusIcons,
   type WebAccessFocus,
-  webAccessFocus,
 } from "@/content-script/components/QueryBox/";
+import { webAccessFocus } from "@/content-script/components/QueryBox/consts";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import {
   Select,
@@ -19,10 +20,6 @@ import { cn } from "@/utils/cn";
 import UiUtils from "@/utils/UiUtils";
 
 export default function FocusSelector() {
-  const items = useMemo(() => {
-    return [...webAccessFocus] as WebAccessFocus[];
-  }, []);
-
   const [open, toggleOpen] = useToggle(false);
 
   const { focus, setFocus, allowWebAccess, toggleWebAccess } = useQueryBoxStore(
@@ -47,7 +44,7 @@ export default function FocusSelector() {
 
   return (
     <Select
-      items={items.map((model) => model.code)}
+      items={webAccessFocus.map((model) => model.code)}
       value={[(focus || "internet") as WebAccessFocus["code"]]}
       open={open}
       highlightedValue={highlightedValue}
@@ -80,7 +77,7 @@ export default function FocusSelector() {
         }}
       >
         <Tooltip
-          content={`Web access: ${allowWebAccess ? "ON" : "OFF"}${allowWebAccess && focus ? ` | Focus: ${items.find((model) => model.code === focus)?.label}` : ""}`}
+          content={`Web access: ${allowWebAccess ? "ON" : "OFF"}${allowWebAccess && focus ? ` | Focus: ${webAccessFocus.find((model) => model.code === focus)?.label}` : ""}`}
           positioning={{
             gutter: 15,
           }}
@@ -91,9 +88,7 @@ export default function FocusSelector() {
             })}
           >
             {allowWebAccess && focus ? (
-              <div className="relative">
-                {items.find((model) => model.code === focus)?.icon}
-              </div>
+              <div className="relative">{webAccessFocusIcons[focus]}</div>
             ) : (
               <PiGlobeX className="tw-text-[1rem]" />
             )}
@@ -101,11 +96,11 @@ export default function FocusSelector() {
         </Tooltip>
       </SelectTrigger>
       <SelectContent className="tw-max-h-[500px] tw-min-w-[130px] tw-max-w-[200px] tw-items-center tw-font-sans">
-        {items.map((item) => (
+        {webAccessFocus.map((item) => (
           <SelectItem key={item.code} item={item.code}>
             <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
-              {item.icon ? (
-                <div>{item.icon}</div>
+              {webAccessFocusIcons[item.code] ? (
+                <div>{webAccessFocusIcons[item.code]}</div>
               ) : (
                 <Cpu className="tw-size-4" />
               )}

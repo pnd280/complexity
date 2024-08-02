@@ -12,10 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/DropdownMenu";
-import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
+import { toast } from "@/shared/toast";
 import ThreadExport from "@/utils/ThreadExport";
 
 type CopyButtonProps = {

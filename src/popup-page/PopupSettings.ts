@@ -41,7 +41,7 @@ export default class PopupSettings {
   >[] = [
     {
       id: "block-telemetry",
-      label: "[Privacy] Block Perplexity's telemetry",
+      label: "Enhance privacy",
       settingKey: "blockTelemetry",
       versionRelease: "0.0.0.13",
     },

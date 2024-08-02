@@ -27,10 +27,13 @@ export default defineConfig(() => {
     plugins: [
       crx({ manifest }),
       react(),
-      // viteTouchGlobalCss({
-      //   cssFilePath: path.resolve(__dirname, "src/assets/index.tw.css"),
-      //   watchFiles: [path.resolve(__dirname, "src/"), path.resolve(__dirname, "public/")],
-      // }),
+      viteTouchGlobalCss({
+        cssFilePath: path.resolve(__dirname, "src/assets/index.tw.css"),
+        watchFiles: [
+          path.resolve(__dirname, "src/"),
+          path.resolve(__dirname, "public/"),
+        ],
+      }),
       // vitePluginRunCommandOnDemand({
       //   onHotUpdate:
       //     "cp -f ./public/color-scheme.tw.css ./public/overrides.css ./public/components.css ./public/canvas.css ./build/",

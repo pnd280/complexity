@@ -5,6 +5,7 @@ import { useCallback, useRef } from "react";
 import {
   groupedLanguageModelsByProvider,
   LanguageModel,
+  languageModelIcons,
 } from "@/content-script/components/QueryBox";
 import { Container } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
@@ -16,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/DropdownMenu";
-import ProSearchIcon from "@/shared/components/ProSearchIcon";
+import ProSearchIcon from "@/shared/components/icons/ProSearchIcon";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import { waitForElement } from "@/utils/utils";
@@ -144,7 +145,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
                   });
                 }}
               >
-                {model.icon}
+                {languageModelIcons[model.code]}
                 {model.label}
               </DropdownMenuItem>
             ))}

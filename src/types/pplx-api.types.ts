@@ -16,7 +16,7 @@ export type UserSettingsApiResponse = {
 
 export const UserSettingsApiResponseRawSchema = z.object({
   has_ai_profile: z.boolean(),
-  default_copilot: z.boolean(),
+  default_copilot: z.boolean().nullable(),
   default_model: z.string(),
   default_image_generation_model: z.string(),
   subscription_status: z.string(),

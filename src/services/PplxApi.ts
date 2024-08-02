@@ -25,7 +25,7 @@ export default class PplxApi {
 
     return {
       hasAiProfile: json.has_ai_profile,
-      defaultCopilot: json.default_copilot,
+      defaultCopilot: !!json.default_copilot,
       defaultModel: json.default_model,
       defaultImageGenerationModel: json.default_image_generation_model,
       subscriptionStatus: json.subscription_status,

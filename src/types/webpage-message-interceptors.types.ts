@@ -2,7 +2,7 @@ import {
   AddInterceptorMatchCondition,
   WebSocketEventData,
 } from "@/types/webpage-messenger.types";
-import { WSParsedMessage } from "@/types/ws.types";
+import { WsParsedMessage } from "@/types/ws.types";
 
 export type TrackQueryLimits = AddInterceptorMatchCondition<
   WebSocketEventData,
@@ -11,7 +11,7 @@ export type TrackQueryLimits = AddInterceptorMatchCondition<
       rateLimit: number;
       opusRateLimit: number;
     };
-    parsedPayload: WSParsedMessage;
+    parsedPayload: WsParsedMessage;
     isRateLimitRequest: boolean;
     isOpusRateLimitRequest: boolean;
     isRateLimitResponse: boolean;

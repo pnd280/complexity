@@ -18,11 +18,6 @@ import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserPr
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shared/components/Popover";
-import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -30,7 +25,12 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/shared/components/shadcn/ui/command";
+} from "@/shared/components/Command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shared/components/Popover";
 import Tooltip from "@/shared/components/Tooltip";
 import { UserProfileSettingsApiResponse } from "@/types/pplx-api.types";
 import { cn } from "@/utils/cn";
@@ -102,13 +102,14 @@ export default function CollectionSelector() {
       <Popover
         open={open}
         modal={false}
-        onOpenChange={(details) => toggleOpen(details.open)}
+        onOpenChange={({ open }) => toggleOpen(open)}
       >
         <Tooltip
-          content={!selectedCollectionUuid ? "Chat with a collection" : ""}
+          content="Chat with a collection"
+          disabled={!!selectedCollectionUuid}
         >
           <PopoverTrigger asChild>
-            <div className="text-center cursor-pointer tw-group tw-relative tw-flex tw-h-full tw-max-w-[150px] tw-items-center tw-gap-2 tw-rounded-md tw-px-2 tw-text-sm tw-text-muted-foreground tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in hover:tw-bg-accent hover:tw-text-accent-foreground active:tw-scale-95 [&>span]:tw-select-none [&>span]:!tw-truncate">
+            <div className="text-center cursor-pointer tw-group tw-relative tw-flex tw-min-h-8 tw-max-w-[150px] tw-items-center tw-gap-2 tw-rounded-md tw-px-2 tw-text-sm tw-text-muted-foreground tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in hover:tw-bg-accent hover:tw-text-accent-foreground active:tw-scale-95 [&>span]:tw-select-none [&>span]:!tw-truncate">
               {selectedCollectionUuid && (
                 <X
                   className="!tw-hidden tw-size-4 group-hover:!tw-block"

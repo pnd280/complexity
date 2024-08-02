@@ -6,6 +6,7 @@ import { FaMarkdown } from "react-icons/fa";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import PplxApi from "@/services/PplxApi";
+import Button from "@/shared/components/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +14,8 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/DropdownMenu";
 import Portal from "@/shared/components/Portal";
-import { Button } from "@/shared/components/shadcn/ui/button";
-import { toast } from "@/shared/components/shadcn/ui/use-toast";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
+import { toast } from "@/shared/toast";
 import ThreadExport from "@/utils/ThreadExport";
 import UiUtils from "@/utils/UiUtils";
 import { isDomNode } from "@/utils/utils";
