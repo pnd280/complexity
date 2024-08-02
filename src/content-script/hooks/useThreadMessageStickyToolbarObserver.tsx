@@ -1,11 +1,14 @@
 import $ from "jquery";
 import { useEffect } from "react";
 
+import { languageModels } from "@/content-script/components/QueryBox";
 import {
   Container,
   ToggleToolbarVisibilityProps,
 } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
 import useWaitForMessagesContainer from "@/content-script/hooks/useWaitForMessagesContainer";
+import { ReactNodeActionReturnType } from "@/content-script/main-world/react-node";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiUtils from "@/utils/UiUtils";
 import { isDomNode, markdown2Html } from "@/utils/utils";
@@ -87,8 +90,7 @@ export default function useThreadMessageStickyToolbarObserver({
   );
 
   useEffect(
-    // TODO: directly access the model badge from react fiber node
-    function modelBadgeObserver() {
+    function displayModelObserver() {
       if (!isDomNode(messagesContainer) || !$(messagesContainer).length) return;
 
       const id = "display-model-next-to-answer-heading";
@@ -107,37 +109,53 @@ export default function useThreadMessageStickyToolbarObserver({
       });
 
       async function callback() {
-        $(
-          `.message-block .mt-sm.flex.items-center.justify-between>*:last-child:not([data-${id}-observed])`,
-        ).each((_, element) => {
-          $(element).attr(`data-${id}-observed`, "true");
+        $(`.message-block:not([data-${id}-observed])`).each(
+          (index, messageBlock) => {
+            queueMicrotask(async () => {
+              const { $answerHeading } = UiUtils.parseMessageBlock(
+                $(messageBlock),
+              );
 
-          const messageBlock = element.closest(".message-block");
+              if (!$answerHeading.length) return;
 
-          if (!messageBlock) return;
+              $(messageBlock).attr(`data-${id}-observed`, "true");
 
-          const { $answerHeading, $messageBlock } = UiUtils.parseMessageBlock(
-            $(messageBlock),
-          );
+              const displayModelCode = (await webpageMessenger.sendMessage({
+                event: "getReactNodeData",
+                payload: {
+                  action: "getMessageDisplayModel",
+                  querySelector: `.message-block[data-index="${index + 1}"]`,
+                },
+                timeout: 5000,
+              })) as ReactNodeActionReturnType["getMessageDisplayModel"];
 
-          const $bottomButtonBar = $messageBlock.find(
-            ".mt-sm.flex.items-center.justify-between",
-          );
+              if (!displayModelCode) return;
 
-          if (!$bottomButtonBar.length) return;
+              const displayModelName = languageModels.find(
+                (x) => x.code === displayModelCode,
+              )?.label;
 
-          const bottomRightButtonBar = $bottomButtonBar.children().last();
-
-          const modelName =
-            bottomRightButtonBar.children().last().text() || "CLAUDE 3 HAIKU";
-
-          $answerHeading
-            .find('div:contains("Answer"):last')
-            .text(modelName.toUpperCase())
-            .addClass(
-              "!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in tw-slide-in-from-right",
-            );
-        });
+              setTimeout(
+                () => {
+                  $answerHeading
+                    .find('div:contains("Answer"):last')
+                    .text(
+                      displayModelName
+                        ? displayModelName.toUpperCase()
+                        : `code: ${displayModelCode}`,
+                    )
+                    .addClass(
+                      "!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in",
+                    );
+                },
+                $(messageBlock).find(".mt-sm.flex.items-center.justify-between")
+                  .length
+                  ? 0
+                  : 500,
+              );
+            });
+          },
+        );
       }
 
       return () => {

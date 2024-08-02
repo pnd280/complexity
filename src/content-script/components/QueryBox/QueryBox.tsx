@@ -1,4 +1,4 @@
-import { UndefinedInitialDataOptions, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
@@ -22,33 +22,17 @@ import PplxApi from "@/services/PplxApi";
 import KeyCombo from "@/shared/components/KeyCombo";
 import Portal from "@/shared/components/Portal";
 import { Separator } from "@/shared/components/shadcn/ui/separator";
-import { useToast } from "@/shared/components/shadcn/ui/use-toast";
 
 export default function QueryBox() {
   const isReady = useGlobalStore(
     (state) => state.isWebSocketCaptured || state.isLongPollingCaptured,
   );
 
-  const { toast } = useToast();
-
   const isDefaultsInitialized = useRef({
     userSettings: false,
   });
 
   const { settings } = usePopupSettings();
-
-  const autoRefreshSessionTimeout =
-    settings?.qolTweaks.autoRefreshSessionTimeout;
-
-  const queryOptions: Pick<
-    UndefinedInitialDataOptions,
-    "refetchIntervalInBackground" | "retry"
-  > = autoRefreshSessionTimeout
-    ? {
-        refetchIntervalInBackground: true,
-        retry: false,
-      }
-    : {};
 
   const {
     data: userSettings,
@@ -57,10 +41,10 @@ export default function QueryBox() {
   } = useQuery({
     queryKey: ["userSettings"],
     queryFn: PplxApi.fetchUserSettings,
-    refetchInterval: 10000,
-    ...queryOptions,
-    enabled: !$(document.body).hasClass("no-js"),
   });
+
+  const hasActivePplxSub =
+    userSettings && userSettings.subscriptionStatus === "active";
 
   useQuery({
     queryKey: ["userProfileSettings"],
@@ -81,9 +65,6 @@ export default function QueryBox() {
 
   const { focus, imageGenModel, languageModel, collection } =
     settings?.queryBoxSelectors || {};
-
-  const hasActivePplxSub =
-    userSettings && userSettings.subscriptionStatus === "active";
 
   useEffect(() => {
     if (userSettings) {
@@ -131,17 +112,6 @@ export default function QueryBox() {
     refetchUserSettings,
     disabled: !focus && !languageModel && !imageGenModel && !collection,
   });
-
-  useEffect(() => {
-    if (typeof hasActivePplxSub === "undefined") return;
-
-    !hasActivePplxSub &&
-      toast({
-        title: "⚠️ Some features are disabled!",
-        description: "No active Perplexity subscription/Not logged in!",
-        timeout: 3000,
-      });
-  }, [hasActivePplxSub, toast]);
 
   useEffect(() => {
     const down = (

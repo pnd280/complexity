@@ -1,33 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
-import {
-  Ellipsis,
-  ListOrdered,
-  LucideThumbsDown,
-  Share2,
-  Text,
-  X,
-} from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
-import { FaMarkdown } from "react-icons/fa";
 import { PiNotePencil } from "react-icons/pi";
 import { Updater } from "use-immer";
 
 import CopyButton from "@/content-script/components/ThreadMessageStickyToolbar/CopyButton";
+import FormatSwitch from "@/content-script/components/ThreadMessageStickyToolbar/FormatSwitch";
+import MiscMenu from "@/content-script/components/ThreadMessageStickyToolbar/MiscMenu";
 import RewriteDropdown from "@/content-script/components/ThreadMessageStickyToolbar/RewriteDropdown";
 import {
   Container,
   ContainerStates,
 } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
 import ThreadTitle from "@/content-script/components/ThreadMessageStickyToolbar/ThreadTitle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/shared/components/DropdownMenu";
+import PplxApi from "@/services/PplxApi";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
-import { scrollToElement, stripHtml, waitForElement } from "@/utils/utils";
+import { scrollToElement } from "@/utils/utils";
 
 type ThreadMessageStickyToolbarComponents = {
   containerIndex: number;
@@ -42,31 +30,13 @@ export default function ThreadMessageStickyToolbarComponents({
   containersStates,
   setContainersStates,
 }: ThreadMessageStickyToolbarComponents) {
-  const [markdownVisualDiff, setMarkdownVisualDiff] = useState(false);
+  const { data: userSettings } = useQuery({
+    queryKey: ["userSettings"],
+    queryFn: PplxApi.fetchUserSettings,
+  });
 
-  const handleVisualDiff = useCallback(() => {
-    const markdownText = stripHtml(
-      $(containers[containerIndex].query)
-        .find(">#markdown-query-wrapper")
-        .html(),
-    );
-
-    const originalText = stripHtml(
-      $(containers[containerIndex].query)
-        .find(">*:not(#markdown-query-wrapper)")
-        .html(),
-    );
-
-    setMarkdownVisualDiff(
-      !!markdownText.length &&
-        !!originalText.length &&
-        markdownText !== originalText,
-    );
-  }, [containerIndex, containers]);
-
-  useEffect(() => {
-    handleVisualDiff();
-  }, [containersStates, handleVisualDiff]);
+  const hasActivePplxSub =
+    userSettings && userSettings.subscriptionStatus === "active";
 
   // TODO: prone to changes, needs refactoring
   const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
@@ -99,59 +69,13 @@ export default function ThreadMessageStickyToolbarComponents({
       )}
     >
       <div className="tw-flex tw-w-full tw-items-center tw-gap-2">
-        {!containersStates[containerIndex].isHidden &&
-          !containersStates[containerIndex].isQueryOutOfViewport &&
-          markdownVisualDiff && (
-            <Tooltip
-              content={
-                containersStates[containerIndex].isMarkdown
-                  ? "Convert Query to Plain Text"
-                  : "Convert Query to Markdown"
-              }
-              positioning={{
-                gutter: 15,
-              }}
-              className="tw-w-max"
-            >
-              <div
-                className="tw-cursor-pointer tw-text-secondary-foreground tw-opacity-10 tw-transition-all tw-animate-in tw-fade-in tw-slide-in-from-top hover:tw-opacity-100 active:tw-scale-95"
-                onClick={() => {
-                  if (
-                    $(containers[containerIndex].query).find("textarea").length
-                  ) {
-                    $messageEditButton.trigger("click");
-                  }
-
-                  setContainersStates((draft) => {
-                    $(containers[containerIndex].query)
-                      .find(".whitespace-pre-line.break-words")
-                      .toggleClass(
-                        "!tw-hidden",
-                        !draft[containerIndex].isMarkdown,
-                      );
-                    $(containers[containerIndex].query)
-                      .find("#markdown-query-wrapper")
-                      .toggleClass(
-                        "!tw-hidden",
-                        draft[containerIndex].isMarkdown,
-                      );
-                    draft[containerIndex].isMarkdown =
-                      !draft[containerIndex].isMarkdown;
-                    scrollToElement(
-                      $(containers[containerIndex].query as unknown as Element),
-                      -60,
-                    );
-                  });
-                }}
-              >
-                {containersStates[containerIndex].isMarkdown ? (
-                  <FaMarkdown className="tw-size-4" />
-                ) : (
-                  <Text className="tw-size-4" />
-                )}
-              </div>
-            </Tooltip>
-          )}
+        <FormatSwitch
+          containers={containers}
+          containerIndex={containerIndex}
+          containersStates={containersStates}
+          setContainersStates={setContainersStates}
+          $messageEditButton={$messageEditButton}
+        />
 
         <ThreadTitle
           query={
@@ -176,7 +100,7 @@ export default function ThreadMessageStickyToolbarComponents({
             containersStates[containerIndex].isHidden,
         })}
       >
-        {isMessageEditable && (
+        {hasActivePplxSub && isMessageEditable && (
           <RewriteDropdown container={containers[containerIndex]} />
         )}
 
@@ -198,144 +122,14 @@ export default function ThreadMessageStickyToolbarComponents({
           </Tooltip>
         )}
 
-        <DropdownMenu
-          positioning={{
-            placement: "bottom-end",
-          }}
-        >
-          <DropdownMenuTrigger>
-            <div
-              className="tw-group tw-cursor-pointer tw-rounded-md tw-p-1 tw-text-secondary-foreground tw-transition-all tw-animate-in tw-fade-in hover:tw-bg-secondary active:tw-scale-95"
-              onClick={() => {}}
-            >
-              <Ellipsis className="tw-size-4 tw-text-muted-foreground tw-transition-all group-hover:tw-text-foreground" />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {!!$(containers[containerIndex].messageBlock).find(
-              '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")',
-            ).length && (
-              <DropdownMenuItem
-                value="view-sources"
-                className="tw-flex tw-items-center tw-gap-2"
-                onClick={async () => {
-                  moreMenuItemClick({
-                    container: containers[containerIndex],
-                    item: "View Sources",
-                  });
-                }}
-              >
-                <ListOrdered className="tw-size-4" />
-                View Sources
-              </DropdownMenuItem>
-            )}
-
-            {isMessageShareable && (
-              <DropdownMenuItem
-                value="share"
-                className="tw-flex tw-items-center tw-gap-2"
-                onClick={() => {
-                  $messageShareButton.trigger("click");
-                }}
-              >
-                <Share2 className="tw-size-4" />
-                Share
-              </DropdownMenuItem>
-            )}
-
-            {isMessageEditable && (
-              <DropdownMenuItem
-                value="report"
-                className="tw-flex tw-items-center tw-gap-2"
-                onClick={async () => {
-                  moreMenuItemClick({
-                    container: containers[containerIndex],
-                    item: "Report",
-                  });
-                }}
-              >
-                <LucideThumbsDown className="tw-size-4" />
-                Report
-              </DropdownMenuItem>
-            )}
-
-            {containers.length - 1 === containerIndex &&
-              containers.length > 1 && (
-                <DropdownMenuItem
-                  value="delete"
-                  className="tw-flex tw-items-center tw-gap-2"
-                  onClick={() => {
-                    moreMenuItemClick({
-                      container: containers[containerIndex],
-                      item: "Delete",
-                    });
-                  }}
-                >
-                  <X className="tw-size-4" />
-                  Delete
-                </DropdownMenuItem>
-              )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <MiscMenu
+          containers={containers}
+          containerIndex={containerIndex}
+          isMessageEditable={isMessageEditable}
+          isMessageShareable={isMessageShareable}
+          $messageShareButton={$messageShareButton}
+        />
       </div>
     </div>
   );
-}
-
-function moreMenuItemClick({
-  container,
-  item,
-}: {
-  container: Container;
-  item: "Report" | "Delete" | "View Sources";
-}) {
-  return new Promise<void>((resolve) => {
-    const $buttonBar = $(container.messageBlock).find(
-      ".mt-sm.flex.items-center.justify-between",
-    );
-
-    const $button = $buttonBar
-      .children()
-      .last()
-      .children()
-      .find('button:has([data-icon="ellipsis"])');
-
-    if (!$button.length) return resolve();
-
-    $button.trigger("click");
-
-    requestAnimationFrame(async () => {
-      const viewportWidth = window.innerWidth;
-
-      await waitForElement({
-        selector() {
-          if (viewportWidth && viewportWidth < 768) {
-            return $(".duration-250.fill-mode-both.fixed.bottom-0.left-0")[0];
-          }
-
-          return $(
-            `[data-popper-reference-hidden="true"]:contains("${item}")`,
-          )[0];
-        },
-        timeout: 1000,
-        interval: 100,
-      });
-
-      if (viewportWidth && viewportWidth < 768) {
-        $(
-          `.duration-250.fill-mode-both.fixed.bottom-0.left-0 .md\\:h-full:contains("${item}")`,
-        )
-          .last()
-          .trigger("click");
-      } else {
-        $(
-          `[data-popper-reference-hidden="true"] .md\\:h-full:contains("${item}")`,
-        )
-          .last()
-          .trigger("click");
-      }
-
-      resolve();
-    });
-  });
 }

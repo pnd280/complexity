@@ -1,5 +1,6 @@
 import $ from "jquery";
 
+import { LanguageModel } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { mainWorldExec, mainWorldOnly } from "@/utils/hof";
 import { getReactFiberKey, jsonUtils } from "@/utils/utils";
@@ -32,6 +33,12 @@ const actions = {
       return Array.isArray(result)
         ? jsonUtils.safeParse(result[result.length - 1]?.content?.answer)
         : result;
+    },
+  ),
+  getMessageDisplayModel: mainWorldOnly(
+    (messageBlock: Element): LanguageModel["code"] => {
+      return (messageBlock as any)[getReactFiberKey(messageBlock)]
+        ?.memoizedProps.children.props.result.display_model;
     },
   ),
 } as const;
