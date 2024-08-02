@@ -62,7 +62,7 @@ export default function QueryBox() {
     enabled: !$(document.body).hasClass("no-js"),
   });
 
-  const { data: userProfileSettings } = useQuery({
+  useQuery({
     queryKey: ["userProfileSettings"],
     queryFn: PplxApi.fetchUserProfileSettings,
     enabled: isReady,
@@ -83,7 +83,7 @@ export default function QueryBox() {
     settings?.queryBoxSelectors || {};
 
   const hasActivePplxSub =
-    userProfileSettings && userProfileSettings.user.subscription_status;
+    userSettings && userSettings.subscriptionStatus === "active";
 
   useEffect(() => {
     if (userSettings) {
@@ -133,8 +133,9 @@ export default function QueryBox() {
   });
 
   useEffect(() => {
-    hasActivePplxSub &&
-      hasActivePplxSub !== "active" &&
+    if (typeof hasActivePplxSub === "undefined") return;
+
+    !hasActivePplxSub &&
       toast({
         title: "⚠️ Some features are disabled!",
         description: "No active Perplexity subscription/Not logged in!",
@@ -162,7 +163,7 @@ export default function QueryBox() {
   const selectors = (
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
-      hasActivePplxSub={hasActivePplxSub === "active"}
+      hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       collection={collection}
       languageModel={!!languageModel}
@@ -173,7 +174,7 @@ export default function QueryBox() {
   const followUpSelectors = (
     <CommonSelectors
       isReady={isReady && !!userSettings && !isLoadingUserSettings}
-      hasActivePplxSub={hasActivePplxSub === "active"}
+      hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       languageModel={!!languageModel}
       imageGenModel={!!imageGenModel}
@@ -217,9 +218,9 @@ const CommonSelectors = ({
     setTimeout(() => {
       if (!isReady) {
         setHint(
-          <span className="tw-flex tw-flex-wrap tw-items-center tw-gap-1">
+          <span className="tw-flex tw-flex-wrap tw-items-baseline tw-gap-1">
             Manually trigger Pro Search{" "}
-            <span>
+            <span className="tw-flex tw-items-baseline tw-gap-1">
               (<KeyCombo keys={["Ctrl/Cmd", "i"]} />) to speed up the loading.
             </span>
           </span>,

@@ -8,15 +8,37 @@ import {
   UserProfileSettingsApiRequest,
   UserProfileSettingsApiResponse,
   UserSettingsApiResponse,
+  UserSettingsApiResponseRawSchema,
 } from "@/types/pplx-api.types";
 import { fetchResource, getPplxBuildId, jsonUtils } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class PplxApi {
-  static async fetchUserSettings(): Promise<UserSettingsApiResponse | null> {
+  static async fetchUserSettings(): Promise<UserSettingsApiResponse> {
+    const resp = await fetchResource(
+      "https://www.perplexity.ai/rest/user/settings",
+    );
+
+    const json = UserSettingsApiResponseRawSchema.parse(
+      jsonUtils.safeParse(resp),
+    );
+
+    return {
+      hasAiProfile: json.has_ai_profile,
+      defaultCopilot: json.default_copilot,
+      defaultModel: json.default_model,
+      defaultImageGenerationModel: json.default_image_generation_model,
+      subscriptionStatus: json.subscription_status,
+      gpt4Limit: json.gpt4_limit,
+      opusLimit: json.opus_limit,
+      createLimit: json.create_limit,
+    };
+  }
+
+  static async fetchUserSettingsFallback(): Promise<UserSettingsApiResponse> {
     const pplxBuildId = await getPplxBuildId();
 
-    if (!pplxBuildId) return null;
+    if (!pplxBuildId) throw new Error("Failed to fetch user settings");
 
     const resp = await fetchResource(
       `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/org.json`,
