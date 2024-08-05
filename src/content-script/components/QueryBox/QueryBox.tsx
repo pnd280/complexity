@@ -38,9 +38,19 @@ export default function QueryBox() {
     data: userSettings,
     isLoading: isLoadingUserSettings,
     refetch: refetchUserSettings,
+    error: userSettingsFetchError,
   } = useQuery({
     queryKey: ["userSettings"],
     queryFn: PplxApi.fetchUserSettings,
+    retry: (failureCount, error) => {
+      if (error.name === "ZodError") return false;
+
+      if (failureCount > 3) {
+        return false;
+      }
+
+      return true;
+    },
   });
 
   const hasActivePplxSub =
@@ -130,11 +140,13 @@ export default function QueryBox() {
     };
   }, [toggleWebAccess]);
 
+  const isReady =
+    (isNetworkInstanceCaptured && !!userSettings && !isLoadingUserSettings) ||
+    !!userSettingsFetchError;
+
   const selectors = (
     <CommonSelectors
-      isReady={
-        isNetworkInstanceCaptured && !!userSettings && !isLoadingUserSettings
-      }
+      isReady={isReady}
       hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       collection={collection}
@@ -145,9 +157,7 @@ export default function QueryBox() {
 
   const followUpSelectors = (
     <CommonSelectors
-      isReady={
-        isNetworkInstanceCaptured && !!userSettings && !isLoadingUserSettings
-      }
+      isReady={isReady}
       hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       languageModel={!!languageModel}

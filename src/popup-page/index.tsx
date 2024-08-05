@@ -12,10 +12,10 @@ import { queryClient } from "@/utils/ts-query-query-client";
 
 ReactDom.createRoot(document.getElementById("app") as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
-    <div className="tw-font-sans">
+    <div className="tw-font-sans tw-w-[350px]">
       <DiscordCallout />
       <Separator />
-      <div className="tw-h-[250px] tw-w-[350px]">
+      <div className="tw-h-[250px]">
         <PopupSettings context="popup" />
       </div>
       <Footer />
