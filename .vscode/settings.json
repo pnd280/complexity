@@ -1,7 +1,7 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "workbench.editor.customLabels.patterns": {
-    "**/src/**": "${filename} - ${dirname}"
+    "**/src/**": "${dirname}: ${filename}"
   },
   "workbench.editor.labelFormat": "medium",
   "search.exclude": {
@@ -9,11 +9,13 @@
     "**/bower_components": true,
     "**/*.code-search": true,
     "**/build/**/*": true,
-    "**/package/**/*": true,
-    "**/src/utils/prismjs-components/**/*": true,
+    "**/package/**/*": true
   },
-  "tsImportSorter.configuration.exclude": [
-    "node_modules",
-    "src\\\\components\\\\DiffViewDialog.tsx"
-  ]
+  "tailwindCSS.experimental.classRegex": [
+    ["addClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["toggleClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "files.associations": { "*.tw.css": "tailwindcss" },
+  "npm.scriptExplorerExclude": ["preinstall"],
+  "npm.exclude": ["**/build", "**/package"]
 }

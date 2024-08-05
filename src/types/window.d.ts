@@ -1,8 +1,10 @@
-import { Nullable } from './Utils';
-import {
-  MessageListener,
-  SendMessage,
-} from './WebpageMessenger';
+import $ from "jquery";
+import type { Mermaid } from "mermaid";
+import type * as shiki from "shiki";
+import type * as svgPanZoom from "svg-pan-zoom";
+
+import { Nullable } from "@/types/utils.types";
+import { MessageListener, SendMessage } from "@/types/webpage-messenger.types";
 
 declare global {
   interface Window {
@@ -17,6 +19,8 @@ declare global {
       };
     };
 
+    $: typeof $;
+
     Messenger: {
       onMessage: MessageListener;
       sendMessage: SendMessage;
@@ -24,5 +28,9 @@ declare global {
 
     capturedSocket: Nullable<WebSocket | XMLHttpRequest>;
     longPollingInstance: Nullable<XMLHttpRequest>;
+
+    shiki?: typeof shiki;
+    mermaid?: Mermaid;
+    svgPanZoom?: typeof svgPanZoom;
   }
 }

@@ -1,0 +1,309 @@
+/* Fonts */
+.font-sans,
+.font-display {
+  --font-fk-grotesk     : var(--ui-font) !important;
+  --font-fk-grotesk-neue: var(--ui-font) !important;
+}
+
+code {
+  font-family: var(--mono-font) !important;
+  font-weight: normal !important;
+}
+
+/* Pro search thumb */
+div.data-\[state\=checked\]\:before\:\!bg-super[data-state="checked"]:before,
+div.data-\[state\=checked\]\:dark\:before\:\!bg-superDark:is(.dark *)[data-state="checked"]:before {
+  background-color: var(--accent-foreground) !important;
+}
+
+/* Inline code styles */
+.prose :where(code):not(:where([class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"] *))::after {
+  content: "" !important;
+}
+
+.prose :where(code):not(:where([class~="not-prose"] *)) {
+  background-color: var(--secondary);
+  color           : var(--accent-foreground) !important;
+  padding         : 0.1rem 0.3125rem !important;
+  border-radius   : 0.375rem !important;
+}
+
+.codeWrapper code>span {
+  padding: 0 !important;
+}
+
+/* Citation styles */
+.citation>div>span>div {
+  background-color: var(--accent-foreground) !important;
+  color           : var(--foreground) !important;
+  border-radius   : 0.375rem !important;
+}
+
+.citation>div>span>div:not(:hover) {
+  opacity: 0.5 !important;
+}
+
+/* Typography */
+.marker\:font-mono ::marker {
+  font-family: var(--mono-font) !important;
+}
+
+strong,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--accent-foreground) !important;
+}
+
+th {
+  border: 1px solid var(--border) !important;
+  color : var(--foreground) !important;
+}
+
+/* Messages borders */
+.pt-md.md\:pt-0>div>div:nth-child(1)>div>div>div:last-child {
+  border-color: var(--ring-darker) !important;
+}
+
+/* Background colors */
+html,
+html.dark,
+:is(.dark .dark\:bg-backgroundDark) {
+  background-color: var(--background) !important;
+}
+
+div.dark\:\!bg-textMainDark:is(.dark *) {
+  background-color: var(--background) !important;
+}
+
+:is(.dark .dark\:bg-offsetDark),
+:is(.dark .dark\:\!bg-offsetDark),
+:is(.dark .dark\:focus\:bg-offsetDark:focus),
+:is(.dark .md\:dark\:hover\:bg-offsetDark:hover) {
+  background-color: var(--secondary) !important;
+}
+
+.hebEKa,
+.gnFpAY {
+  background-color: var(--secondary) !important;
+}
+
+/* Hover and group styles */
+.group:hover .group-hover\:\!bg-super {
+  background-color: var(--accent-foreground) !important;
+}
+
+.dark .dark\:bg-superDark\/10,
+.dark .bg-super\/10 {
+  background-color: var(--accent-foreground-darker) !important;
+}
+
+.dark .dark\:bg-superDark\/10 .text-super.dark\:text-superDark,
+.dark .bg-super\/10 .text-super.dark\:text-superDark {
+  color: var(--foreground) !important;
+}
+
+/* Selection styles */
+.markdown-highlight,
+.selection\:bg-superDuper::selection,
+.selection\:text-textMain ::selection,
+.dark .dark\:selection\:text-super ::selection {
+  background-color: var(--selection) !important;
+  color           : var(--selection-foreground) !important;
+}
+
+/* Z-index adjustments */
+.pointer-events-none.fixed.z-10 {
+  z-index: 12 !important;
+}
+
+.data-\[state\=open\]\:animate-slideUpAndFadeIn {
+  z-index: 2;
+}
+
+/* SVG and icon styles */
+.fill-super,
+.group:hover .group-hover\:fill-superDuper,
+:is(.dark .dark\:fill-superDark) {
+  fill: var(--accent-foreground) !important;
+}
+
+.caret-superDuper {
+  caret-color: var(--accent-foreground) !important;
+}
+
+.stroke-super,
+.group:hover .group-hover\:stroke-superDuper,
+:is(.dark .dark\:stroke-superDark),
+:is(.dark .dark\:stroke-textMainDark) {
+  stroke: var(--accent-foreground) !important;
+}
+
+/* Outline and ring styles */
+:is(.dark .dark\:outline-superDark) {
+  outline-color: var(--accent-foreground) !important;
+}
+
+.dark .dark\:hover\:ring-superDark:hover,
+.hover\:\!ring-super:hover,
+.hover\:ring-super:hover,
+:is(.dark .dark\:focus\:ring-borderMainDark:focus),
+.dark .dark\:ring-superDark,
+.ring-super {
+  --tw-ring-color: var(--accent-foreground) !important;
+}
+
+/* Text and background color combinations */
+.\!bg-textMain .text-textMain path {
+  color           : var(--accent-foreground) !important;
+  background-color: var(--accent-foreground) !important;
+}
+
+html.dark .dark\:text-textMainDark {
+  color: var(--text-main) !important;
+}
+
+html.dark .dark\:\!text-backgroundDark {
+  color: var(--text-main) !important;
+}
+
+html.dark .dark\:\!text-backgroundDark * {
+  color: var(--accent-foreground) !important;
+}
+
+.ring-2 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000) !important;
+}
+
+/* Background and text color combinations */
+.bg-super,
+.md\:hover\:bg-super:hover {
+  background-color: var(--accent-foreground) !important;
+}
+
+.text-super,
+.group:hover .md\:group-hover\:text-super,
+.prose :where(a):not(:where([class~="not-prose"] *)),
+:is(.dark .dark\:md\:hover\:text-textMainDark:hover) {
+  color: var(--accent-foreground) !important;
+}
+
+/* Selection styles for dark mode */
+html.dark .selection\:text-textMain::selection,
+html.dark .selection\:bg-superDuper ::selection,
+html.dark code::selection,
+html.dark code *::selection {
+  background-color: var(--selection) !important;
+  color           : var(--selection-foreground) !important;
+}
+
+/* Selection styles for light mode */
+.selection\:text-textMain::selection,
+.selection\:bg-superDuper ::selection,
+html:not(.dark) code::selection,
+html:not(.dark) code *::selection {
+  background-color: var(--selection) !important;
+  color           : var(--selection-foreground) !important;
+}
+
+/* Specific element styles */
+.mb-sm.flex.w-full.items-center.justify-between svg {
+  color: var(--accent-foreground) !important;
+}
+
+.focus\:ring-superDark:focus {
+  --tw-ring-color: var(--accent-foreground) !important;
+}
+
+[data-testid="collection-preview"]:hover>div>div:first-child {
+  background-color: var(--accent-foreground) !important;
+}
+
+/* Popovers behavior normalization */
+body[data-scroll-locked].bg-transparent {
+  --removed-body-scroll-bar-size: 0 !important;
+  margin-right                  : 0 !important;
+  overflow                      : unset !important;
+  pointer-events                : auto !important;
+}
+
+html {
+  overflow: unset !important;
+}
+
+/* Math styles */
+.math .katex .frac-line {
+  border-bottom-color: var(--accent-foreground-darker) !important;
+}
+
+/* Adjust query box position */
+.grow.block {
+  border       : 1px solid var(--border-darker) !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+  background   : var(--secondary);
+  box-shadow   : 0 0 10px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+.grow.block>div>div {
+  border-radius        : calc(var(--radius) - 2px) !important;
+  display              : grid;
+  grid-template-rows   : 1fr auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grow.block>div>div>div:first-child {
+  grid-column-start: 1;
+  grid-column-end  : 4;
+  padding-bottom   : 0.5rem;
+  order            : unset;
+  border-radius    : unset;
+}
+
+.grow.block>div>div>div:nth-child(2) {
+  grid-column-start: 1;
+  grid-column-end  : 3;
+  grid-row-start   : 2;
+  order            : unset;
+}
+
+.grow.block>div>div>div:last-child {
+  grid-column-start: 3;
+  grid-row-start   : 2;
+  order            : unset;
+}
+
+.pointer-events-none.fixed.z-10>.pointer-events-auto.md\:col-span-8:has(textarea) {
+  grid-column: span 12 / span 12 !important;
+  z-index    : 20 !important;
+}
+
+.pointer-events-none.fixed.z-10 {
+  transition         : all;
+  transition-duration: 0.3s;
+
+  position: sticky !important;
+  bottom  : 4rem !important;
+}
+
+.pt-md.md\:pb-\[124px\].md\:pt-0.pb-\[144px\] {
+  padding-bottom: 0 !important;
+}
+
+.pt-md.md\:pb-\[124px\].md\:pt-0.pb-\[144px\]>div>div:first-child {
+  min-height    : 100vh;
+  padding-bottom: 50px;
+}
+
+@media (min-width: 768px) {
+  .pointer-events-none.fixed.z-10 {
+    bottom: 0.3rem !important;
+  }
+}
+
+.mb-lg.flex.items-center.justify-center.pb-xs.md\:text-center {
+  opacity: 0;
+}

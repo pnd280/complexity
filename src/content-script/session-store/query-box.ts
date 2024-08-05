@@ -1,23 +1,24 @@
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
-import { Collection } from '@/components/QueryBox/CollectionSelector';
-import { ImageModel } from '@/components/QueryBox/ImageModelSelector';
 import {
-  isValidFocus,
-  LanguageModel,
+  ImageModel,
   WebAccessFocus,
-} from '@/types/ModelSelector';
-import { chromeStorage } from '@/utils/chrome-store';
-import pplxApi from '@/utils/pplx-api';
+  LanguageModel,
+} from "@/content-script/components/QueryBox";
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
+import PplxApi from "@/services/PplxApi";
+import { isValidFocus } from "@/types/model-selector.types";
+import ChromeStorage from "@/utils/ChromeStorage";
+import { extensionExec } from "@/utils/hof";
 
 type QueryBoxState = {
-  selectedLanguageModel: LanguageModel['code'];
+  selectedLanguageModel: LanguageModel["code"];
   setSelectedLanguageModel: (
-    selectedLanguageModel: LanguageModel['code']
+    selectedLanguageModel: LanguageModel["code"],
   ) => void;
-  selectedImageModel: ImageModel['code'];
-  setSelectedImageModel: (selectedImageModel: ImageModel['code']) => void;
+  selectedImageModel: ImageModel["code"];
+  setSelectedImageModel: (selectedImageModel: ImageModel["code"]) => void;
   queryLimit: number;
   setQueryLimit: (queryLimit: number) => void;
   opusLimit: number;
@@ -26,28 +27,28 @@ type QueryBoxState = {
   setImageCreateLimit: (createLimit: number) => void;
 
   webAccess: {
-    focus: WebAccessFocus['code'] | null;
-    setFocus: (focus: WebAccessFocus['code'] | null) => void;
+    focus: WebAccessFocus["code"] | null;
+    setFocus: (focus: WebAccessFocus["code"] | null) => void;
     allowWebAccess: boolean;
     toggleWebAccess: (toggled?: boolean) => void;
   };
 
-  selectedCollectionUuid: Collection['uuid'];
+  selectedCollectionUuid: Collection["uuid"];
   setSelectedCollectionUuid: (
-    selectedCollectionUuid: Collection['uuid']
+    selectedCollectionUuid: Collection["uuid"],
   ) => void;
 };
 
 const useQueryBoxStore = create<QueryBoxState>()(
-  immer((set) => ({
-    selectedLanguageModel: 'turbo',
+  immer((set, get) => ({
+    selectedLanguageModel: "turbo",
     setSelectedLanguageModel: async (selectedLanguageModel) => {
-      if (await pplxApi.setDefaultLanguageModel(selectedLanguageModel))
+      if (await PplxApi.setDefaultLanguageModel(selectedLanguageModel))
         return set({ selectedLanguageModel });
     },
-    selectedImageModel: 'default',
+    selectedImageModel: "default",
     setSelectedImageModel: async (selectedImageModel) => {
-      if (await pplxApi.setDefaultImageModel(selectedImageModel))
+      if (await PplxApi.setDefaultImageModel(selectedImageModel))
         return set({ selectedImageModel });
     },
     queryLimit: 0,
@@ -61,8 +62,8 @@ const useQueryBoxStore = create<QueryBoxState>()(
     webAccess: {
       focus: null,
       setFocus: (focus) => {
-        chromeStorage.setStorageValue({
-          key: 'defaultFocus',
+        ChromeStorage.setStorageValue({
+          key: "defaultFocus",
           value: focus,
         });
 
@@ -70,30 +71,28 @@ const useQueryBoxStore = create<QueryBoxState>()(
       },
 
       allowWebAccess: false,
-      toggleWebAccess: (toggled) => {
-        return set((state) => {
-          if (typeof toggled === 'undefined')
-            toggled = !state.webAccess.allowWebAccess;
+      toggleWebAccess: async (toggled?: boolean) => {
+        const state = get();
+        const newValue = toggled ?? !state.webAccess.allowWebAccess;
 
-          chromeStorage.setStorageValue({
-            key: 'defaultWebAccess',
-            value: !!toggled,
-          });
-
-          return {
-            webAccess: {
-              ...state.webAccess,
-              allowWebAccess: toggled ?? !state.webAccess.allowWebAccess,
-            },
-          };
+        await ChromeStorage.setStorageValue({
+          key: "defaultWebAccess",
+          value: newValue,
         });
+
+        set((state) => ({
+          webAccess: {
+            ...state.webAccess,
+            allowWebAccess: newValue,
+          },
+        }));
       },
     },
 
-    selectedCollectionUuid: '',
+    selectedCollectionUuid: "",
     setSelectedCollectionUuid: (selectedCollectionUuid) =>
       set({ selectedCollectionUuid }),
-  }))
+  })),
 );
 
 const queryBoxStore = useQueryBoxStore;
@@ -102,10 +101,10 @@ async function initQueryBoxStore({
   languageModel,
   imageModel,
 }: {
-  languageModel?: LanguageModel['code'];
-  imageModel?: ImageModel['code'];
+  languageModel?: LanguageModel["code"];
+  imageModel?: ImageModel["code"];
 }) {
-  const { defaultFocus, defaultWebAccess } = await chromeStorage.getStore();
+  const { defaultFocus, defaultWebAccess } = await ChromeStorage.getStore();
   if (isValidFocus(defaultFocus)) {
     queryBoxStore.setState((state) => {
       state.webAccess.focus = defaultFocus;
@@ -122,6 +121,6 @@ async function initQueryBoxStore({
   });
 }
 
-initQueryBoxStore({});
+extensionExec(() => initQueryBoxStore({}))();
 
 export { initQueryBoxStore, queryBoxStore, useQueryBoxStore };

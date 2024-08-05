@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "FK Grotesk Variable";
+  src: url("https://pplx-next-static-public.perplexity.ai/_next/static/media/3c0a20a48548ae37-s.p.woff2")
+    format("woff2");
+}
+
+@layer base {
+  :root {
+    --background: #fcfcf9;
+    --foreground: #13343b;
+    --foreground-darker: #13343b60;
+
+    --card: #fcfcf9;
+    --card-foreground: #13343b;
+
+    --popover: #fcfcf9;
+    --popover-foreground: #13343b;
+
+    --primary: #13343b;
+    --primary-foreground: #e8e8e6;
+
+    --secondary: #f3f3ee;
+    --secondary-foreground: #13343b;
+
+    --muted: #f3f3ee;
+    --muted-foreground: #64645f;
+
+    --accent: #f3f3ee;
+    --accent-foreground: #1f5e6b;
+    --accent-foreground-darker: #1f5e6b80;
+
+    --destructive: #ef4444;
+    --destructive-foreground: #e8e8e6;
+
+    --border: #e5e5e5;
+    --border-darker: #e5e5e580;
+    --input: #e5e5e5;
+    --ring: #1f5e6b;
+    --ring-darker: #1f5e6b80;
+
+    --selection: #1f5e6b60;
+    --selection-foreground: #1f5e6b;
+
+    --radius: 0.5rem;
+
+    --ui-font: "FK Grotesk Variable", ui-sans-serif, system-ui, -apple-system,
+      BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+      "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol", "Noto Color Emoji";
+    --mono-font: "JetBrains Mono", "Roboto Mono", "SFMono-Regular", Menlo,
+      Monaco, Consolas, ui-monospace, monospace;
+  }
+
+  .dark {
+    --background: #191a1a;
+    --foreground: #e8e8e6;
+    --foreground-darker: #e8e8e660;
+
+    --card: #191a1a;
+    --card-foreground: #e8e8e6;
+
+    --popover: #191a1a;
+    --popover-foreground: #e8e8e6;
+
+    --primary: #e8e8e6;
+    --primary-foreground: #191a1a;
+
+    --secondary: #202222;
+    --secondary-foreground: #e8e8e6;
+
+    --muted: #3d3f40;
+    --muted-foreground: #8d9191;
+
+    --accent: #2d2f2f;
+    --accent-foreground: #72aefd;
+    --accent-foreground-darker: #72aefd80;
+
+    --destructive: #7f1d1d;
+    --destructive-foreground: #e8e8e6;
+
+    --border: #3d3f40;
+    --border-darker: #3d3f4080;
+    --input: #3d3f40;
+    --ring: #72aefd;
+    --ring-darker: #72aefd80;
+
+    --selection: #72aefd60;
+    --selection-foreground: #e8e8e6;
+  }
+}
+
+@layer base {
+  * {
+    @apply !tw-border-border-darker;
+  }
+
+  body {
+    @apply tw-bg-background tw-text-foreground;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 9999px;
+    border: none;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  @-moz-document url-prefix() {
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: var(--muted) transparent;
+    }
+  }
+
+  .custom-scrollbar {
+    -ms-overflow-style: none;
+  }
+
+  .reduced-motion .tw-animate-in {
+    animation: none !important;
+  }
+}
