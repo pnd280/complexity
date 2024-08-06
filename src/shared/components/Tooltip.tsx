@@ -70,11 +70,12 @@ export default function Tooltip({
         placement: "top",
         ...positioning,
       }}
+      disabled={disabled}
     >
-      <TooltipTrigger asChild>
-        <div>{children}</div>
+      <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
+        <span>{children}</span>
       </TooltipTrigger>
-      {!(disabled || (typeof content === "string" && content.length === 0)) && (
+      {!(typeof content === "string" && content.length === 0) && (
         <TooltipContent asChild>
           <div>{content}</div>
         </TooltipContent>

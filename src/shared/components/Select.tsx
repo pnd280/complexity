@@ -1,4 +1,5 @@
 import { Portal, Select as ArkSelect } from "@ark-ui/react";
+import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 import { ChevronDown } from "lucide-react";
 import {
@@ -12,21 +13,25 @@ import {
 import { cn } from "@/utils/cn";
 
 type SelectContext = {
-  variant: VariantProps<typeof selectTriggerVariants>["variant"];
+  portal: boolean;
 };
 
-const SelectContext = createContext<SelectContext>({ variant: "default" });
+const SelectContext = createContext<SelectContext>({
+  portal: true,
+});
 
 const SelectContextProvider = SelectContext.Provider;
 
 const Select = forwardRef<
   ElementRef<typeof ArkSelect.Root>,
-  ComponentPropsWithoutRef<typeof ArkSelect.Root>
->(({ ...props }, ref) => {
+  ComponentPropsWithoutRef<typeof ArkSelect.Root> & {
+    portal?: boolean;
+  }
+>(({ portal, ...props }, ref) => {
   return (
     <SelectContextProvider
       value={{
-        variant: "default",
+        portal: portal ?? true,
       }}
     >
       <ArkSelect.Root
@@ -62,12 +67,6 @@ const SelectTrigger = forwardRef<
   ElementRef<typeof ArkSelect.Trigger>,
   ArkSelect.TriggerProps & VariantProps<typeof selectTriggerVariants>
 >(({ variant, className, children, ...props }, ref) => {
-  const { variant: contextVariant } = useContext(SelectContext);
-
-  if (contextVariant === undefined) {
-    throw new Error("SelectTrigger must be wrapped in a Select component");
-  }
-
   return (
     <ArkSelect.Trigger
       ref={ref}
@@ -103,8 +102,16 @@ const SelectContent = forwardRef<
   ElementRef<typeof ArkSelect.Content>,
   ArkSelect.ContentProps
 >(({ className, ...props }, ref) => {
+  const { portal } = useContext(SelectContext);
+
+  if (typeof portal === "undefined") {
+    throw new Error("SelectContent must be a child of Select");
+  }
+
+  const Comp = portal ? Portal : Slot;
+
   return (
-    <Portal>
+    <Comp>
       <ArkSelect.Positioner>
         <ArkSelect.Content
           ref={ref}
@@ -120,7 +127,7 @@ const SelectContent = forwardRef<
           {...props}
         />
       </ArkSelect.Positioner>
-    </Portal>
+    </Comp>
   );
 });
 

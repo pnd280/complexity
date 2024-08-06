@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 import useRouter from "@/content-script/hooks/useRouter";
 import CplxUserSettings from "@/lib/CplxUserSettings";
@@ -9,17 +9,19 @@ import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
 
 type UseQueryBoxObserverProps = {
-  setContainers: (containers: HTMLElement) => void;
-  setFollowUpContainers: (containers: HTMLElement) => void;
+  setContainers: (container: HTMLElement) => void;
+  setFollowUpContainers: (container: HTMLElement) => void;
+  setImageGenPopoverContainer: Dispatch<
+    SetStateAction<HTMLElement | undefined>
+  >;
   refetchUserSettings: () => void;
-  disabled?: boolean;
 };
 
 export default function useQueryBoxObserver({
   setContainers,
   setFollowUpContainers,
+  setImageGenPopoverContainer,
   refetchUserSettings,
-  disabled,
 }: UseQueryBoxObserverProps) {
   const location = whereAmI(useRouter().url);
 
@@ -27,6 +29,7 @@ export default function useQueryBoxObserver({
     function mainQueryBoxObserver() {
       const mainId = "main-query-box-selectors";
       const followUpId = "follow-up-query-box-selectors";
+      const imageGenerationPopoverId = "image-generation-popover-selectors";
       const alterAttachButtonId = "alter-attach-button";
 
       DomObserver.create(mainId, {
@@ -37,7 +40,6 @@ export default function useQueryBoxObserver({
           queueMicrotask(() =>
             observeMainQueryBox({
               id: mainId,
-              disabled,
               setContainers,
               refetchUserSettings,
             }),
@@ -47,9 +49,16 @@ export default function useQueryBoxObserver({
             observeFollowUpQueryBox({
               id: followUpId,
               location,
-              disabled,
               setFollowUpContainers,
               refetchUserSettings,
+            }),
+          );
+
+          queueMicrotask(() =>
+            observeImageGenerationPopover({
+              id: imageGenerationPopoverId,
+              location,
+              setImageGenPopoverContainer,
             }),
           );
 
@@ -66,28 +75,24 @@ export default function useQueryBoxObserver({
       };
     },
     [
-      disabled,
       location,
       refetchUserSettings,
       setContainers,
       setFollowUpContainers,
+      setImageGenPopoverContainer,
     ],
   );
 }
 
 function observeMainQueryBox({
   id,
-  disabled,
   setContainers,
   refetchUserSettings,
 }: {
   id: string;
-  disabled?: boolean;
   setContainers: (containers: HTMLElement) => void;
   refetchUserSettings: () => void;
 }) {
-  if (disabled) return;
-
   const $buttonBar = UiUtils.getActiveQueryBoxTextarea({ type: "main" })
     .parent()
     .next();
@@ -120,47 +125,61 @@ function observeMainQueryBox({
 function observeFollowUpQueryBox({
   id,
   location,
-  disabled,
   setFollowUpContainers,
   refetchUserSettings,
 }: {
   id: string;
   location: string;
-  disabled?: boolean;
   setFollowUpContainers: (containers: HTMLElement) => void;
   refetchUserSettings: () => void;
 }) {
-  if (location === "thread" || location === "page") {
-    DomObserver.create(id, {
-      target: document.body,
-      config: { childList: true, subtree: true },
-      throttleTime: 200,
-      source: "hook",
-      onAdd() {
-        if (disabled) return;
+  if (location !== "thread" && location !== "page")
+    return DomObserver.destroy(id);
 
-        const $toolbar = $('textarea[placeholder="Ask follow-up"]')
-          .parent()
-          .next();
+  const $toolbar = $('textarea[placeholder="Ask follow-up"]').parent().next();
 
-        if (!$toolbar.length || $toolbar.attr(`data-${id}`)) return;
+  if (!$toolbar.length || $toolbar.attr(`data-${id}`)) return;
 
-        $toolbar.attr(`data-${id}`, "true");
+  $toolbar.attr(`data-${id}`, "true");
 
-        const $selectorContainer = $("<div>").addClass(
-          "tw-flex tw-flex-wrap tw-items-center tw-zoom-in",
-        );
+  const $selectorContainer = $("<div>").addClass(
+    "tw-flex tw-flex-wrap tw-items-center tw-fade-in",
+  );
 
-        $toolbar.append($selectorContainer);
+  $toolbar.append($selectorContainer);
 
-        setFollowUpContainers($selectorContainer[0]);
+  setFollowUpContainers($selectorContainer[0]);
 
-        refetchUserSettings();
-      },
-    });
-  } else {
-    DomObserver.destroy(id);
-  }
+  refetchUserSettings();
+}
+
+function observeImageGenerationPopover({
+  id,
+  location,
+  setImageGenPopoverContainer,
+}: {
+  id: string;
+  location: string;
+  setImageGenPopoverContainer: Dispatch<
+    SetStateAction<HTMLElement | undefined>
+  >;
+}) {
+  if (location !== "thread" && location !== "page")
+    return DomObserver.destroy(id);
+
+  const $generationOptionsGrid = $(
+    "div.grid.grid-cols-2.gap-sm.border-borderMain\\/50.ring-borderMain\\/50.divide-borderMain\\/50.dark\\:divide-borderMainDark\\/50.dark\\:ring-borderMainDark\\/50.dark\\:border-borderMainDark\\/50.bg-transparent",
+  );
+
+  if (!$generationOptionsGrid.length) return;
+
+  const $header = $generationOptionsGrid.prev();
+
+  if ($header.attr(`data-${id}`)) return;
+
+  $header.attr(`data-${id}`, "true");
+
+  setImageGenPopoverContainer($header[0]);
 }
 
 function alterAttachButton() {

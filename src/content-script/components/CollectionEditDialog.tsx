@@ -1,8 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
 import PplxApi from "@/services/PplxApi";
 import Button from "@/shared/components/Button";
 import {
@@ -11,17 +13,20 @@ import {
   DialogFooter,
   DialogHeader,
 } from "@/shared/components/Dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/components/Form";
 import InputWithLimit from "@/shared/components/InputWithLimit";
-import Label from "@/shared/components/Label";
 import Separator from "@/shared/components/Separator";
 import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
+import useTabNavigation from "@/shared/hooks/useTabNavigation";
 import { useToast } from "@/shared/toast";
-
-type CollectionEditDialogProps = {
-  collection: Collection;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-};
+import { queryClient } from "@/utils/ts-query-query-client";
 
 const limits = {
   title: 50,
@@ -29,14 +34,43 @@ const limits = {
   instructions: 2000,
 };
 
-export default function CollectionEditDialog({
-  collection,
-  open,
-  onOpenChange,
-}: CollectionEditDialogProps) {
-  const { toast } = useToast();
+const schema = z.object({
+  title: z.string().min(1).max(limits.title),
+  description: z.string().max(limits.description),
+  instructions: z.string().max(limits.instructions),
+});
 
-  const queryClient = useQueryClient();
+type FormData = z.infer<typeof schema>;
+
+type CollectionEditDialogProps = {
+  collection?: Collection;
+  setEditCollection: Dispatch<SetStateAction<Collection | undefined>>;
+};
+
+const DialogContentWrapper = ({
+  collection,
+  toggleDialogVis,
+}: {
+  collection: Collection;
+  toggleDialogVis: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { toast } = useToast();
+  const fieldNames = ["title", "description", "instructions"];
+  const { formRef, handleTabNavigation } = useTabNavigation(fieldNames);
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      title: collection.title,
+      description: collection.description,
+      instructions: collection.instructions,
+    },
+  });
+
+  const {
+    handleSubmit,
+    formState: { isDirty, isValid },
+  } = form;
 
   const { refetch: refetchCollections } = useQuery({
     queryKey: ["collections"],
@@ -64,7 +98,6 @@ export default function CollectionEditDialog({
                 instructions: args.newInstructions,
               };
             }
-
             return oldCollection;
           });
         },
@@ -72,7 +105,7 @@ export default function CollectionEditDialog({
 
       return oldCollections;
     },
-    onError(error, __, context) {
+    onError(_, __, context) {
       queryClient.setQueryData(["collections"], () => context);
     },
     onSettled: () => {
@@ -82,29 +115,13 @@ export default function CollectionEditDialog({
     },
   });
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [instructions, setInstructions] = useState("");
-
-  useEffect(() => {
-    if (!open) return;
-
-    setTitle(collection.title);
-    setDescription(collection.description);
-    setInstructions(collection.instructions);
-  }, [open, collection]);
-
-  const handleSave = async ({
-    title: newTitle,
-    description: newDescription,
-    instructions: newInstructions,
-  }: Pick<Collection, "title" | "description" | "instructions">) => {
+  const onSubmit = async (data: FormData) => {
     try {
       await mutateAsync({
         collection,
-        newTitle,
-        newDescription,
-        newInstructions,
+        newTitle: data.title,
+        newDescription: data.description,
+        newInstructions: data.instructions,
       });
     } catch (error) {
       toast({
@@ -112,79 +129,130 @@ export default function CollectionEditDialog({
         description: "An error occurred while updating the collection",
         timeout: 2000,
       });
+    } finally {
+      toggleDialogVis(false);
     }
   };
 
   return (
+    <DialogContent className="!tw-flex tw-max-w-full tw-flex-col tw-justify-start tw-font-sans xl:tw-max-w-[40vw]">
+      <DialogHeader>
+        <DialogHeader className="tw-text-3xl">Edit Collection</DialogHeader>
+        <Separator />
+      </DialogHeader>
+      <Form {...form}>
+        <form
+          ref={formRef}
+          className="tw-flex tw-flex-col tw-items-center tw-gap-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="tw-w-full">
+                <FormLabel htmlFor="title">Title</FormLabel>
+                <FormControl>
+                  <InputWithLimit
+                    id="title"
+                    placeholder="Collection title"
+                    limit={limits.title}
+                    onKeyDown={handleTabNavigation}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="tw-w-full">
+                <FormLabel htmlFor="description">Description</FormLabel>
+                <FormControl>
+                  <TextareaWithLimit
+                    id="description"
+                    placeholder="Collection description"
+                    className="tw-resize-none"
+                    limit={limits.description}
+                    onResize={(e) => e.preventDefault()}
+                    onKeyDown={handleTabNavigation}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="instructions"
+            render={({ field }) => (
+              <FormItem className="tw-w-full">
+                <FormLabel htmlFor="instructions">System prompt</FormLabel>
+                <FormControl>
+                  <TextareaWithLimit
+                    id="instructions"
+                    placeholder="Collection prompt"
+                    className="tw-h-[300px] tw-resize-none"
+                    limit={limits.instructions}
+                    onResize={(e) => e.preventDefault()}
+                    onKeyDown={handleTabNavigation}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <DialogFooter className="tw-w-full">
+            <Button
+              type="submit"
+              disabled={!isDirty || !isValid}
+              className="tw-ml-auto"
+            >
+              Update
+            </Button>
+          </DialogFooter>
+        </form>
+      </Form>
+    </DialogContent>
+  );
+};
+
+export default function CollectionEditDialog({
+  collection,
+  setEditCollection,
+}: CollectionEditDialogProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (collection) {
+      setIsOpen(true);
+    }
+  }, [collection]);
+
+  return (
     <Dialog
+      open={isOpen}
       closeOnInteractOutside={false}
-      open={open}
-      onOpenChange={({ open }) => onOpenChange(open)}
+      onOpenChange={({ open }) => {
+        setIsOpen(open);
+      }}
+      onExitComplete={() => {
+        if (!isOpen) {
+          setEditCollection(undefined);
+        }
+      }}
     >
-      <DialogContent className="!tw-flex tw-h-[90vh] tw-max-h-[900px] tw-max-w-full tw-flex-grow tw-flex-col tw-justify-start tw-font-sans xl:tw-max-w-[40vw]">
-        <DialogHeader>
-          <DialogHeader className="tw-text-3xl">Edit Collection</DialogHeader>
-          <Separator />
-        </DialogHeader>
-        <div className="tw-flex tw-flex-grow tw-flex-col tw-items-center tw-gap-4">
-          <div className="tw-flex tw-w-full tw-flex-col tw-gap-2">
-            <Label htmlFor="title">Title</Label>
-            <InputWithLimit
-              id="title"
-              placeholder="Collection title"
-              limit={limits.title}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="w-full tw-flex tw-flex-col tw-gap-2">
-            <Label htmlFor="description">Description</Label>
-            <TextareaWithLimit
-              placeholder="Collection description"
-              className="tw-resize-none"
-              limit={limits.description}
-              value={description}
-              onResize={(e) => e.preventDefault()}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <div className="w-full tw-flex !tw-h-full tw-flex-grow tw-flex-col tw-gap-2">
-            <Label htmlFor="prompt">System prompt</Label>
-            <TextareaWithLimit
-              placeholder="Collection prompt"
-              className="tw-h-full tw-resize-none"
-              limit={limits.instructions}
-              value={instructions}
-              onResize={(e) => e.preventDefault()}
-              onChange={(e) => setInstructions(e.target.value)}
-            />
-          </div>
-        </div>
-        <DialogFooter className="sm:justify-start">
-          <Button
-            type="button"
-            disabled={
-              !title ||
-              title.length > limits.title ||
-              description.length > limits.description ||
-              instructions.length >
-                (CplxUserSettings.get().secretMode
-                  ? 10000
-                  : limits.instructions)
-            }
-            onClick={() => {
-              handleSave({
-                title,
-                description,
-                instructions,
-              });
-              onOpenChange(false);
-            }}
-          >
-            Update
-          </Button>
-        </DialogFooter>
-      </DialogContent>
+      {collection && (
+        <DialogContentWrapper
+          collection={collection}
+          toggleDialogVis={setIsOpen}
+        />
+      )}
     </Dialog>
   );
 }

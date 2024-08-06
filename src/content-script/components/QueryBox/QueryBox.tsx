@@ -1,16 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
-import { LoaderCircle } from "lucide-react";
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   ImageModel,
   LanguageModel,
 } from "@/content-script/components/QueryBox";
-import CollectionSelector from "@/content-script/components/QueryBox/CollectionSelector";
-import FocusSelector from "@/content-script/components/QueryBox/FocusSelector";
+import CommonSelectors from "@/content-script/components/QueryBox/CommonSelectors";
 import ImageModelSelector from "@/content-script/components/QueryBox/ImageModelSelector";
-import LanguageModelSelector from "@/content-script/components/QueryBox/LanguageModelSelector";
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
 import { useGlobalStore } from "@/content-script/session-store/global";
 import {
@@ -19,9 +16,7 @@ import {
 } from "@/content-script/session-store/query-box";
 import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
 import PplxApi from "@/services/PplxApi";
-import KeyCombo from "@/shared/components/KeyCombo";
 import Portal from "@/shared/components/Portal";
-import Separator from "@/shared/components/Separator";
 
 export default function QueryBox() {
   const isNetworkInstanceCaptured = useGlobalStore(
@@ -33,6 +28,9 @@ export default function QueryBox() {
   });
 
   const { settings } = usePopupSettings();
+
+  const { focus, imageGenModel, languageModel, collection } =
+    settings?.queryBoxSelectors || {};
 
   const {
     data: userSettings,
@@ -73,9 +71,6 @@ export default function QueryBox() {
 
   const { toggleWebAccess } = useQueryBoxStore((state) => state.webAccess);
 
-  const { focus, imageGenModel, languageModel, collection } =
-    settings?.queryBoxSelectors || {};
-
   useEffect(() => {
     if (userSettings) {
       if (!isDefaultsInitialized.current.userSettings) {
@@ -98,6 +93,8 @@ export default function QueryBox() {
   const [followUpContainers, setFollowUpContainers] = useState<HTMLElement[]>(
     [],
   );
+  const [imageGenPopoverContainer, setImageGenPopoverContainer] =
+    useState<HTMLElement>();
 
   const memoizedSetContainers = useCallback((newContainer: HTMLElement) => {
     setContainers((prevContainers) =>
@@ -119,8 +116,8 @@ export default function QueryBox() {
   useQueryBoxObserver({
     setContainers: memoizedSetContainers,
     setFollowUpContainers: memoizedSetFollowUpContainers,
+    setImageGenPopoverContainer,
     refetchUserSettings,
-    disabled: !focus && !languageModel && !imageGenModel && !collection,
   });
 
   useEffect(() => {
@@ -151,7 +148,6 @@ export default function QueryBox() {
       focus={!!focus}
       collection={collection}
       languageModel={!!languageModel}
-      imageGenModel={!!imageGenModel}
     />
   );
 
@@ -161,7 +157,6 @@ export default function QueryBox() {
       hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
       languageModel={!!languageModel}
-      imageGenModel={!!imageGenModel}
     />
   );
 
@@ -177,73 +172,13 @@ export default function QueryBox() {
           {followUpSelectors}
         </Portal>
       ))}
+      {imageGenPopoverContainer && (
+        <Portal container={imageGenPopoverContainer}>
+          <div className="tw-mb-2 tw-w-max">
+            {imageGenModel && <ImageModelSelector />}
+          </div>
+        </Portal>
+      )}
     </>
   );
 }
-
-const CommonSelectors = ({
-  isReady,
-  hasActivePplxSub,
-  focus,
-  collection,
-  languageModel,
-  imageGenModel,
-}: {
-  isReady: boolean;
-  hasActivePplxSub: boolean;
-  focus: boolean;
-  collection?: boolean;
-  languageModel: boolean;
-  imageGenModel: boolean;
-}) => {
-  const [hint, setHint] = useState<ReactNode>("");
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!isReady) {
-        setHint(
-          <span className="tw-flex tw-flex-wrap tw-items-baseline tw-gap-1">
-            Manually trigger Pro Search{" "}
-            <span className="tw-flex tw-items-baseline tw-gap-1">
-              (<KeyCombo keys={["Ctrl/Cmd", "i"]} />) to speed up the loading.
-            </span>
-          </span>,
-        );
-      }
-    }, 5000);
-  }, [isReady]);
-
-  return (
-    <div className="tw-flex tw-items-center">
-      {isReady ? (
-        <>
-          {(focus || collection) && (
-            <>
-              {focus && <FocusSelector />}
-              {collection && <CollectionSelector />}
-              {hasActivePplxSub && (languageModel || imageGenModel) && (
-                <div className="tw-my-auto tw-flex tw-h-8 tw-items-center">
-                  <Separator
-                    orientation="vertical"
-                    className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-fade-in"
-                  />
-                </div>
-              )}
-            </>
-          )}
-          {hasActivePplxSub && languageModel && <LanguageModelSelector />}
-          {hasActivePplxSub && imageGenModel && <ImageModelSelector />}
-        </>
-      ) : (
-        <div className="tw-mx-2 tw-flex tw-items-center tw-gap-2">
-          <LoaderCircle className="tw-size-4 tw-animate-spin tw-text-muted-foreground" />
-          {hint && (
-            <span className="tw-text-xs tw-text-muted-foreground tw-animate-in tw-fade-in tw-slide-in-from-right">
-              {hint}
-            </span>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};

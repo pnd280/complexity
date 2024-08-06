@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 import { LanguageModel } from "@/content-script/components/QueryBox";
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
 
 export type UserSettingsApiResponse = {
   hasAiProfile: boolean;

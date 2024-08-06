@@ -12,7 +12,7 @@ import { queryClient } from "@/utils/ts-query-query-client";
 
 ReactDom.createRoot(document.getElementById("app") as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
-    <div className="tw-font-sans tw-w-[350px]">
+    <div className="tw-w-[350px] tw-font-sans">
       <DiscordCallout />
       <Separator />
       <div className="tw-h-[250px]">

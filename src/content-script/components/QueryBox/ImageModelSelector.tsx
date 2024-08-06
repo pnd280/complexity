@@ -14,7 +14,6 @@ import {
   SelectValue,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
-import UiUtils from "@/utils/UiUtils";
 
 export default function ImageModelSelector() {
   const limit = useQueryBoxStore((state) => state.imageCreateLimit);
@@ -28,10 +27,6 @@ export default function ImageModelSelector() {
       value={[value]}
       onValueChange={(details) => {
         setValue(details.value[0] as ImageModel["code"]);
-
-        setTimeout(() => {
-          UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
-        }, 100);
       }}
     >
       <Tooltip
@@ -41,7 +36,7 @@ export default function ImageModelSelector() {
         }}
       >
         <SelectTrigger variant="ghost" className="!tw-px-0 !tw-py-0">
-          <div className="tw-flex tw-min-h-8 !tw-w-fit tw-max-w-[200px] tw-select-none tw-items-center tw-justify-center tw-gap-2 !tw-px-2 tw-font-medium tw-transition-all tw-duration-300 tw-animate-in tw-zoom-in active:!tw-scale-95 [&_span]:tw-max-w-[150px]">
+          <div className="tw-flex tw-min-h-8 !tw-w-fit tw-max-w-[200px] tw-select-none tw-items-center tw-justify-center tw-gap-2 !tw-px-2 tw-font-medium tw-transition-all tw-duration-300 active:!tw-scale-95 [&_span]:tw-max-w-[150px]">
             <Image className="tw-size-4" />
             <SelectValue>
               {imageModels.find((model) => model.code === value)?.shortLabel}
@@ -52,7 +47,13 @@ export default function ImageModelSelector() {
           </div>
         </SelectTrigger>
       </Tooltip>
-      <SelectContent className="custom-scrollbar tw-max-h-[500px] tw-max-w-[200px] tw-overflow-auto tw-font-sans">
+      <SelectContent
+        className="custom-scrollbar tw-max-h-[500px] tw-max-w-[200px] tw-overflow-auto tw-font-sans"
+        onPointerDown={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
         {imageModels.map((model) => (
           <Tooltip
             key={model.code}
