@@ -14,7 +14,7 @@ export default function useToggleButtonText({
 
   const setNewText = (newText: ReactNode, timeout: number = 2000) => {
     setText(newText);
-    if (timeoutRef.current) {
+    if (timeoutRef.current != null) {
       clearTimeout(timeoutRef.current);
     }
     if (timeout) {
@@ -26,7 +26,7 @@ export default function useToggleButtonText({
 
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
+      if (timeoutRef.current != null) {
         clearTimeout(timeoutRef.current);
       }
     };

@@ -79,7 +79,11 @@ export default function useMarkdownBlockObserver({
                 const { $wrapper, $container, lang } =
                   MarkdownBlockUtils.transformPreBlock(pre) || {};
 
-                if (!$container?.length || !$wrapper?.length || !lang)
+                if (
+                  $container?.length == null ||
+                  $wrapper?.length == null ||
+                  !lang
+                )
                   return resolve(null);
 
                 resolve({

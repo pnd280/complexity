@@ -80,7 +80,7 @@ export default function ThreadExportButton() {
     async ({ includeCitations }: { includeCitations?: boolean }) => {
       const resp = await refetch();
 
-      if (!resp || !resp.data) return;
+      if (resp == null || !resp.data) return;
 
       const output = ThreadExport.exportThread({
         threadJSON: resp.data,

@@ -80,13 +80,13 @@ export const createCallback = (config: DomObserverConfig): MutationCallback => {
     DomObserver.updateQueue.enqueue(() => processChunk(mutations, observer));
   };
 
-  if (config.debounceTime) {
+  if (config.debounceTime != null) {
     callback = debounce(callback, config.debounceTime, {
       leading: true,
       trailing: true,
       maxWait: 1000,
     });
-  } else if (config.throttleTime) {
+  } else if (config.throttleTime != null) {
     callback = throttle(callback, config.throttleTime, {
       leading: true,
       trailing: true,

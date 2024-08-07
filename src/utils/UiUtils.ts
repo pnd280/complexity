@@ -162,7 +162,7 @@ export default class UiUtils {
     textarea: HTMLTextAreaElement,
     newValue: string,
   ) {
-    if (!textarea) return;
+    if (textarea == null) return;
 
     const nativeTextareaValueSetter = Object.getOwnPropertyDescriptor(
       HTMLTextAreaElement.prototype,

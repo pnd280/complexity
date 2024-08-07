@@ -19,6 +19,7 @@ import {
 } from "react-hook-form";
 
 import Label from "@/shared/components/Label";
+import { isReactNode } from "@/types/utils.types";
 import { cn } from "@/utils/cn";
 
 const Form = FormProvider;
@@ -54,7 +55,7 @@ const useFormField = () => {
 
   const fieldState = getFieldState(fieldContext.name, formState);
 
-  if (!fieldContext) {
+  if (fieldContext == null) {
     throw new Error("useFormField should be used within <FormField>");
   }
 
@@ -155,7 +156,7 @@ const FormMessage = forwardRef<
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message) : children;
 
-  if (!body) {
+  if (!isReactNode(body)) {
     return null;
   }
 

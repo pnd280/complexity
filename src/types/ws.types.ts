@@ -9,6 +9,6 @@ export type RouterEvent =
   | "popstate"
   | "routeChangeComplete";
 
-export function isParsedWsMessage(data: any): data is WsParsedMessage {
-  return data && typeof data === "object" && "messageCode" in data;
+export function isParsedWsMessage(data: unknown): data is WsParsedMessage {
+  return data != null && typeof data === "object" && "messageCode" in data;
 }

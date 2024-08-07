@@ -1,11 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import useFetchUserProfileSettings from "@/content-script/hooks/useFetchUserProfileSettings";
 import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
-import PplxApi from "@/services/PplxApi";
 import Button from "@/shared/components/Button";
 import {
   Dialog,
@@ -42,12 +41,7 @@ export default function UserProfileEditDialog({
 }: UserProfileEditProps) {
   const { toast } = useToast();
 
-  const { data: userProfileSettings } = useQuery({
-    queryKey: ["userProfileSettings"],
-    queryFn: PplxApi.fetchUserProfileSettings,
-    enabled: false,
-  });
-
+  const { data: userProfileSettings } = useFetchUserProfileSettings();
   const { updateUserProfileSettings } = useUpdateUserProfileSettings();
 
   const form = useForm<FormData>({

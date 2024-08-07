@@ -3,7 +3,7 @@ import { Nullable } from "@/types/utils.types";
 import { mainWorldExec } from "@/utils/hof";
 
 class WsHook {
-  private static instance: WsHook;
+  private static instance: WsHook | null = null;
   private webSocketInstance: Nullable<WebSocket>;
   private longPollingInstance: Nullable<XMLHttpRequest>;
 
@@ -314,7 +314,7 @@ class WsHook {
               event: "longPollingEvent",
               payload: { event: "request", payload: message },
               timeout: 1000,
-            })) || "") + "";
+            })) ?? "") + "";
 
           while (newData.endsWith("")) {
             newData = newData.slice(0, -1);

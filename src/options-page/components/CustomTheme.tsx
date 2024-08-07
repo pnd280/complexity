@@ -90,7 +90,8 @@ export default function CustomTheme() {
         uiFont: savedSettings.uiFont || "",
         monoFont: savedSettings.monoFont || "",
         accentColor: savedSettings.accentColor || "",
-        customCSS: jsonUtils.safeParse(savedSettings.customCSS || "") || "",
+        customCSS:
+          (jsonUtils.safeParse(savedSettings.customCSS || "") as string) || "",
       });
     }
   }, [savedSettings, isLoading, reset]);

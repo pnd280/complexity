@@ -54,17 +54,6 @@ export default function QueryBox() {
   const hasActivePplxSub =
     userSettings && userSettings.subscriptionStatus === "active";
 
-  useQuery({
-    queryKey: ["userProfileSettings"],
-    queryFn: PplxApi.fetchUserProfileSettings,
-    enabled: isNetworkInstanceCaptured,
-  });
-
-  useQuery({
-    queryKey: ["collections"],
-    queryFn: PplxApi.fetchCollections,
-  });
-
   const { setQueryLimit, setOpusLimit, setImageCreateLimit } = useQueryBoxStore(
     (state) => state,
   );

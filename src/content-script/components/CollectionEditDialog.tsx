@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import PplxApi from "@/services/PplxApi";
 import Button from "@/shared/components/Button";
 import {
@@ -72,11 +73,7 @@ const DialogContentWrapper = ({
     formState: { isDirty, isValid },
   } = form;
 
-  const { refetch: refetchCollections } = useQuery({
-    queryKey: ["collections"],
-    queryFn: PplxApi.fetchCollections,
-    enabled: false,
-  });
+  const { refetch: refetchCollections } = useFetchCollections();
 
   const { mutateAsync } = useMutation({
     mutationKey: ["editCollection"],

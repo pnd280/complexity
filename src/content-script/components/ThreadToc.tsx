@@ -25,7 +25,7 @@ export default function ThreadToc() {
   const [visible, toggleVisibility] = useToggle(true);
 
   const [wrapperWidth, setWrapperWidth] = useState<number>(
-    $("#thread-toc")?.outerWidth() || 0,
+    $("#thread-toc")?.outerWidth() ?? 0,
   );
 
   const isFloat =
@@ -40,7 +40,7 @@ export default function ThreadToc() {
 
   useEffect(() => {
     requestAnimationFrame(() => {
-      setWrapperWidth($("#thread-toc")?.outerWidth() || 0);
+      setWrapperWidth($("#thread-toc")?.outerWidth() ?? 0);
     });
   });
 
@@ -50,7 +50,7 @@ export default function ThreadToc() {
     <div
       className="tw-fixed tw-right-0 tw-top-0 tw-z-20 tw-w-max tw-transition-all"
       style={{
-        top: `${(UiUtils.getThreadWrapper().offset()?.top || 70) + (isFloat ? 60 : 30)}px`,
+        top: `${(UiUtils.getThreadWrapper().offset()?.top ?? 70) + (isFloat ? 60 : 30)}px`,
         [!isFloat ? "left" : "right"]: !isFloat
           ? `${wrapperPos.left + 20}px`
           : "2rem",
@@ -183,10 +183,10 @@ const useThreadTocObserver = () => {
 
     if (!isCanvasOpen) {
       setWrapperPos({
-        top: $messagesContainer.offset()?.top || 0,
+        top: $messagesContainer.offset()?.top ?? 0,
         left:
           $messagesContainer.width()! +
-          ($messagesContainer.offset()?.left || 0),
+          ($messagesContainer.offset()?.left ?? 0),
       });
     }
 
@@ -214,7 +214,7 @@ const useThreadTocObserver = () => {
                 .threadMessageStickyToolbar;
 
             const isScrollingUp =
-              ($answer.offset()?.top || 0) <= $(window).scrollTop()!;
+              ($answer.offset()?.top ?? 0) <= $(window).scrollTop()!;
 
             const offset =
               isScrollingUp && threadMessageStickyToolbar ? -110 : -60;

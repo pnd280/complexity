@@ -52,7 +52,7 @@ export default class WsMessageParser {
   }
 
   static stringify(parsedMessage: WsParsedMessage | string): string {
-    if (!parsedMessage || typeof parsedMessage !== "object") {
+    if (parsedMessage == null || typeof parsedMessage !== "object") {
       return parsedMessage as string;
     }
 

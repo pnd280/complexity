@@ -1,21 +1,21 @@
 import { LayoutGrid, X } from "lucide-react";
 
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import { PopoverTrigger } from "@/shared/components/Popover";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 
 type CollectionSelectorPopoverTriggerProps = {
   selectedCollectionUuid: string;
-  collections: Collection[] | undefined;
   setSelectedCollectionUuid: (uuid: string) => void;
 };
 
 export default function CollectionSelectorPopoverTrigger({
   selectedCollectionUuid,
-  collections,
   setSelectedCollectionUuid,
 }: CollectionSelectorPopoverTriggerProps) {
+  const { data: collections } = useFetchCollections();
+
   return (
     <Tooltip
       content="Chat with a collection"

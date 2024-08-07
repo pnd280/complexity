@@ -13,7 +13,7 @@ import { extensionExec } from "@/utils/hof";
 import { isMainWorldContext } from "@/utils/utils";
 
 class WebpageMessenger {
-  public static instance: WebpageMessenger;
+  public static instance: WebpageMessenger | null = null;
 
   private interceptors: Interceptor<any, any, any>[] = [];
 
@@ -122,13 +122,13 @@ class WebpageMessenger {
 
       window.postMessage(message, window.location.origin);
 
-      if (timeout && timeout > 0) {
+      if (timeout != null && timeout > 0) {
         const listener = (event: MessageEvent) => {
           const messageData: ResponseData<ReturnType<EventHandlers[K]>> =
             event.data;
 
           if (
-            messageData &&
+            messageData != null &&
             messageData.event === "response" &&
             messageData.namespace === "complexity" &&
             messageData.messageId === uniqueId
@@ -202,7 +202,9 @@ class WebpageMessenger {
 
     window.addEventListener("message", listeners);
 
-    const instance = isMainWorldContext() ? WebpageMessenger.instance : this;
+    const instance = (
+      isMainWorldContext() ? WebpageMessenger.instance : this
+    ) as WebpageMessenger;
 
     instance.trackListeners(eventName, listeners);
 

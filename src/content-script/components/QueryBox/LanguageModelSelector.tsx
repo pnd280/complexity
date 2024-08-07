@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
+import { isReactNode } from "@/types/utils.types";
 import UiUtils from "@/utils/UiUtils";
 
 export default function LanguageModelSelector() {
@@ -106,7 +107,7 @@ export default function LanguageModelSelector() {
               >
                 <SelectItem key={model.code} item={model.code}>
                   <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
-                    {languageModelIcons[model.code] ? (
+                    {isReactNode(languageModelIcons[model.code]) ? (
                       <div className="tw-text-[1.1rem]">
                         {languageModelIcons[model.code]}
                       </div>

@@ -21,7 +21,17 @@ module.exports = {
     "prefer-rest-params": "off",
     "@typescript-eslint/no-this-alias": "off",
     "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/strict-boolean-expressions": [
+      "warn",
+      {
+        allowNumber: true,
+        allowNullableString: true,
+        allowNullableNumber: false,
+        allowNullableBoolean: true,
+      },
+    ],
     "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
     "react/jsx-sort-props": [
       "warn",
       {
@@ -79,6 +89,9 @@ module.exports = {
     ],
     "@limegrass/import-alias/import-alias": "off",
   },
+  parserOptions: {
+    project: "./tsconfig.json",
+  },
   settings: {
     react: { version: "detect" },
     "import/resolver": {
@@ -91,7 +104,6 @@ module.exports = {
   overrides: [
     {
       files: ["src/**/*.{ts,tsx}"],
-      excludedFiles: ["src/manifest.ts"],
       rules: {
         "@limegrass/import-alias/import-alias": ["warn"],
       },

@@ -17,7 +17,7 @@ type PopoutAction = {
 export type HTMLCanvasAction = RenderAction | PopoutAction;
 
 class HtmlCanvas {
-  private static instance: HtmlCanvas;
+  private static instance: HtmlCanvas | null = null;
 
   blobUrl: string | null = null;
 

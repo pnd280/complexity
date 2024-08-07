@@ -168,7 +168,8 @@ export default class MarkdownBlockUtils {
       if (typeof props !== "object") return;
 
       const className = props.children?.[0]?.props?.className;
-      const lang = className?.split("-").slice(1).join("-");
+      const lang = className?.split("-").slice(1).join("-") as string;
+
       return lang || "text";
     } catch (e) {
       return MarkdownBlockUtils.getLang($(pre));

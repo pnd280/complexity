@@ -1,6 +1,6 @@
-import { useDebounce, useToggle } from "@uidotdev/usehooks";
+import { useToggle } from "@uidotdev/usehooks";
 import $ from "jquery";
-import { useCallback, useEffect } from "react";
+import { useCallback, useDeferredValue, useEffect } from "react";
 
 import { useCanvasStore } from "@/content-script/session-store/canvas";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
@@ -9,7 +9,7 @@ import { scrollToElement } from "@/utils/utils";
 
 export default function CanvasJumpToSource() {
   const [visible, setVisible] = useToggle(false);
-  const { metaData } = useDebounce(useCanvasStore(), 200);
+  const { metaData } = useDeferredValue(useCanvasStore());
   const [btnText, setBtnText] = useToggleButtonText({
     defaultText: "Jump to source",
   });
@@ -32,7 +32,7 @@ export default function CanvasJumpToSource() {
     const $preBlock = $(`#${metaData.preBlockId}`);
 
     if (
-      !$preBlock ||
+      !$preBlock.length ||
       MarkdownBlockUtils.extractCodeFromPreBlock($preBlock[0]) !==
         metaData.content
     ) {

@@ -7,7 +7,7 @@ import UiUtils from "@/utils/UiUtils";
 import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 
 class MermaidCanvas {
-  private static instance: MermaidCanvas;
+  private static instance: MermaidCanvas | null = null;
   private importPromise: Promise<void> | null = null;
 
   private constructor() {}
@@ -90,9 +90,10 @@ class MermaidCanvas {
         case "render":
           return await this.handleRenderRequest(messageData.payload.payload);
         case "resetZoomPan":
-          return !!$(messageData.payload.payload)
+          $(messageData.payload.payload)
             .trigger("resetZoom")
             .trigger("resetPan");
+          return true;
         default:
           console.warn("Unknown Mermaid canvas action:", action);
           break;
@@ -150,7 +151,7 @@ const waitForInitialization = () => {
   let initializationPromise: Promise<void>;
 
   return extensionOnly((): Promise<void> => {
-    if (initializationPromise) return initializationPromise;
+    if (initializationPromise != null) return initializationPromise;
 
     const checkForInitialization = async (): Promise<void> => {
       const isInitialized = await webpageMessenger.sendMessage({

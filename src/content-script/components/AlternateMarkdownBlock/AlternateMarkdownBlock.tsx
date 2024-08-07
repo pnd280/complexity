@@ -1,6 +1,5 @@
-import { useDebounce } from "@uidotdev/usehooks";
 import $ from "jquery";
-import { useState } from "react";
+import { useDeferredValue, useState } from "react";
 
 import AlternateMarkdownBlockToolbar from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlockToolbar";
 import CanvasPlaceholder from "@/content-script/components/Canvas/CanvasPlaceholder";
@@ -18,13 +17,13 @@ export type MarkdownBlockContainer = {
 
 export default function AlternateMarkdownBlock() {
   const [containers, setContainers] = useState<MarkdownBlockContainer[]>([]);
-  const debouncedContainers = useDebounce(containers, 200);
+  const deferredContainers = useDeferredValue(containers);
 
   useMarkdownBlockObserver({
     setContainers,
   });
 
-  return debouncedContainers.map((container, index) => {
+  return deferredContainers.map((container, index) => {
     const id = `md-block-${index + 1}`;
 
     $(container.preElement).attr("id", id);

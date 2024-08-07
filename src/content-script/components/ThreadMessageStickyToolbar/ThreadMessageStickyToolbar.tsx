@@ -1,6 +1,12 @@
-import { useDebounce } from "@uidotdev/usehooks";
 import { debounce } from "lodash-es";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Updater, useImmer } from "use-immer";
 
 import ThreadMessageStickyToolbarComponents from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbarComponents";
@@ -45,7 +51,7 @@ const compare = (prev: Container[], next: Container[]): boolean => {
 
 export default function ThreadMessageStickyToolbar() {
   const [containers, setContainers] = useState<Container[]>([]);
-  const debouncedContainers = useDebounce(containers, 200);
+  const deferredContainers = useDeferredValue(containers);
   const [containersStates, setContainersStates] = useImmer<ContainerStates[]>(
     [],
   );
@@ -62,7 +68,7 @@ export default function ThreadMessageStickyToolbar() {
           draft.splice(newContainers.length);
 
           newContainers.forEach((_, index) => {
-            if (!draft[index]) {
+            if (draft[index] == null) {
               draft[index] = {
                 isMarkdown: true,
                 isQueryOutOfViewport: false,
@@ -87,7 +93,7 @@ export default function ThreadMessageStickyToolbar() {
       if (hide && containersStates[index]?.isHidden === hide) return;
 
       setContainersStates((draft) => {
-        if (draft[index]) draft[index].isHidden = hide;
+        if (draft[index] != null) draft[index].isHidden = hide;
       });
     },
     [containersStates, setContainersStates],
@@ -95,11 +101,11 @@ export default function ThreadMessageStickyToolbar() {
 
   useThreadMessageStickyToolbarObserver({ toggleVisibility, updateContainers });
 
-  useScrollDirection(debouncedContainers, setContainersStates);
+  useScrollDirection(deferredContainers, setContainersStates);
 
   const renderToolbar = useCallback(
     (container: Container, index: number) => {
-      if (!containers[index]) return null;
+      if (containers[index] == null) return null;
 
       return (
         <Portal key={index} container={container.container as HTMLElement}>
@@ -115,7 +121,7 @@ export default function ThreadMessageStickyToolbar() {
     [containers, containersStates, setContainersStates],
   );
 
-  return debouncedContainers.map(renderToolbar);
+  return deferredContainers.map(renderToolbar);
 }
 
 const useScrollDirection = (
@@ -123,14 +129,14 @@ const useScrollDirection = (
   setContainersStates: Updater<ContainerStates[]>,
 ) => {
   const stickyNavHeight = useMemo(
-    () => UiUtils.getStickyNavbar()?.outerHeight() || 3 * 16,
+    () => UiUtils.getStickyNavbar()?.outerHeight() ?? 3 * 16,
     [],
   );
 
   const handleScrollDirectionChange = useCallback(() => {
     setContainersStates((draft) => {
       draft.forEach((_, index) => {
-        if (containers[index]?.query) {
+        if (containers[index]?.query != null) {
           draft[index].isQueryOutOfViewport =
             containers[index]?.query.getBoundingClientRect().top +
               containers[index]?.query.getBoundingClientRect().height <

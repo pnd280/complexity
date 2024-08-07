@@ -63,7 +63,7 @@ export default function CopyButton({
   const handleCopyMessageWithoutCitations = useCallback(async () => {
     const resp = await refetch();
 
-    if (!resp || !resp.data) return;
+    if (resp == null || !resp.data) return;
 
     const threadJSON = resp.data;
 

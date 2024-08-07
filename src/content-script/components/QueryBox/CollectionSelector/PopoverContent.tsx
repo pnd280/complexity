@@ -1,6 +1,9 @@
 import { LoaderCircle, Pause, Pencil, Play, ExternalLink } from "lucide-react";
 
 import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import useFetchCollections from "@/content-script/hooks/useFetchCollections";
+import useFetchUserProfileSettings from "@/content-script/hooks/useFetchUserProfileSettings";
+import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import {
   Command,
@@ -13,17 +16,10 @@ import {
 } from "@/shared/components/Command";
 import { PopoverContent } from "@/shared/components/Popover";
 import Tooltip from "@/shared/components/Tooltip";
-import { UserProfileSettingsApiResponse } from "@/types/pplx-api.types";
 import { cn } from "@/utils/cn";
 
 type CollectionSelectorPopoverContentProps = {
   selectedCollectionUuid: string;
-  collections: Collection[] | undefined;
-  isLoadingCollections: boolean;
-  userProfileSettings: UserProfileSettingsApiResponse | undefined;
-  isUserProfileSettingsLoading: boolean;
-  isUpdatingUserProfileSettings: boolean;
-  updateUserProfileSettings: (settings: { disabled: boolean }) => void;
   setSelectedCollectionUuid: (uuid: string) => void;
   toggleEditUserProfileDialog: () => void;
   setEditCollection: (collection: Collection | undefined) => void;
@@ -32,17 +28,14 @@ type CollectionSelectorPopoverContentProps = {
 
 export function CollectionSelectorPopoverContent({
   selectedCollectionUuid,
-  collections,
-  isLoadingCollections,
-  userProfileSettings,
-  isUserProfileSettingsLoading,
-  isUpdatingUserProfileSettings,
-  updateUserProfileSettings,
   setSelectedCollectionUuid,
   toggleEditUserProfileDialog,
   setEditCollection,
   setOpen,
 }: CollectionSelectorPopoverContentProps) {
+  const { data: collections, isLoading: isLoadingCollections } =
+    useFetchCollections();
+
   return (
     <PopoverContent className="!tw-w-max !tw-p-0 tw-shadow-md">
       <Command
@@ -76,10 +69,6 @@ export function CollectionSelectorPopoverContent({
                 Your AI Profile
               </div>
               <UserProfileActions
-                userProfileSettings={userProfileSettings}
-                isUserProfileSettingsLoading={isUserProfileSettingsLoading}
-                isUpdatingUserProfileSettings={isUpdatingUserProfileSettings}
-                updateUserProfileSettings={updateUserProfileSettings}
                 toggleEditUserProfileDialog={toggleEditUserProfileDialog}
                 setOpen={setOpen}
               />
@@ -117,21 +106,18 @@ export function CollectionSelectorPopoverContent({
 }
 
 function UserProfileActions({
-  userProfileSettings,
-  isUserProfileSettingsLoading,
-  isUpdatingUserProfileSettings,
-  updateUserProfileSettings,
   toggleEditUserProfileDialog,
   setOpen,
 }: Pick<
   CollectionSelectorPopoverContentProps,
-  | "userProfileSettings"
-  | "isUserProfileSettingsLoading"
-  | "isUpdatingUserProfileSettings"
-  | "updateUserProfileSettings"
-  | "toggleEditUserProfileDialog"
-  | "setOpen"
+  "toggleEditUserProfileDialog" | "setOpen"
 >) {
+  const { data: userProfileSettings, isLoading: isUserProfileSettingsLoading } =
+    useFetchUserProfileSettings();
+
+  const { isUpdatingUserProfileSettings, updateUserProfileSettings } =
+    useUpdateUserProfileSettings();
+
   return (
     <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
       <Tooltip
@@ -170,15 +156,17 @@ function UserProfileActions({
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
+
             if (isUpdatingUserProfileSettings) {
               return;
             }
+
             updateUserProfileSettings({
               disabled: !userProfileSettings?.profile.disabled,
             });
           }}
         >
-          {isUserProfileSettingsLoading || isUpdatingUserProfileSettings ? (
+          {isUserProfileSettingsLoading ? (
             <LoaderCircle className="tw-size-3 tw-animate-spin" />
           ) : (
             <>

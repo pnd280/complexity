@@ -12,7 +12,7 @@ export default forwardRef<HTMLInputElement, InputProps>(function InputWithLimit(
   ref,
 ) {
   const [value, setValue] = useState(
-    ((props.defaultValue || props.value) as string) || "",
+    ((props.defaultValue ?? props.value) as string) || "",
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ export default forwardRef<HTMLInputElement, InputProps>(function InputWithLimit(
           props?.onChange?.(value);
         }}
       />
-      {limit && value.length >= limit - triggerCounterLimitOffset && (
+      {limit != null && value.length >= limit - triggerCounterLimitOffset && (
         <div
           className={cn(
             "tw-gap-sm tw-pb-xs tw-mb-xs tw-absolute tw-bottom-0 tw-right-1 tw-flex tw-items-center tw-rounded-full tw-bg-background",

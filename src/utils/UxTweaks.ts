@@ -25,7 +25,7 @@ export default class uxTweaks {
     $threadWrapperWrapper.on("dragover", function (e) {
       const filesTypes = e.originalEvent?.dataTransfer?.types;
 
-      if (!filesTypes?.length || !filesTypes.includes("Files")) return;
+      if (filesTypes?.length == null || !filesTypes.includes("Files")) return;
 
       e.preventDefault();
       e.stopPropagation();
@@ -34,7 +34,7 @@ export default class uxTweaks {
     $threadWrapperWrapper.on("drop", function (e) {
       const files = e.originalEvent?.dataTransfer?.files;
 
-      if (!files?.length) return;
+      if (files?.length == null) return;
 
       e.preventDefault();
       e.stopPropagation();

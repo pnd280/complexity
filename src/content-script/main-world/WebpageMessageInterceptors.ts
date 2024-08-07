@@ -271,7 +271,7 @@ export default class WebpageMessageInterceptor {
 
         const match = parsedPayload.data?.[0]?.is_complexity;
 
-        if (parsedPayload.data?.[0]?.is_complexity) {
+        if (parsedPayload.data?.[0]?.is_complexity != null) {
           parsedPayload.data[0].is_complexity = undefined;
         }
 

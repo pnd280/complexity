@@ -3,7 +3,7 @@ import { CplxUserSettings } from "@/types/cplx-user-settings.types";
 export default class ChromeStorage {
   static async getStorageValue<T extends keyof CplxUserSettings>(key: T) {
     const { [key]: value } = await chrome.storage.local.get(key);
-    return (value || null) as CplxUserSettings[T];
+    return value as CplxUserSettings[T];
   }
   static async setStorageValue<T extends keyof CplxUserSettings>({
     key,

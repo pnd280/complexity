@@ -6,7 +6,7 @@ import UiUtils from "@/utils/UiUtils";
 import { injectMainWorldScriptBlock, sleep } from "@/utils/utils";
 
 class ShikiHighlighter {
-  private static instance: ShikiHighlighter;
+  private static instance: ShikiHighlighter | null = null;
   private importPromise: Promise<void> | null = null;
 
   private constructor() {}
@@ -87,7 +87,7 @@ const waitForInitialization = () => {
   let initializationPromise: Promise<void>;
 
   return extensionOnly((): Promise<void> => {
-    if (initializationPromise) return initializationPromise;
+    if (initializationPromise != null) return initializationPromise;
 
     const checkForInitialization = async (): Promise<void> => {
       const isInitialized = await webpageMessenger.sendMessage({

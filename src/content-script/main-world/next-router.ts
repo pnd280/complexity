@@ -9,7 +9,7 @@ import { waitForNextjsHydration } from "@/utils/utils";
 type NextRouter = typeof window.next;
 
 class NextRouterProxy {
-  private static instance: NextRouterProxy;
+  private static instance: NextRouterProxy | null = null;
 
   private constructor() {}
 

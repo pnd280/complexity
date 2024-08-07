@@ -7,6 +7,7 @@ import {
   ToastViewport,
 } from "@/shared/components/Toast";
 import { useToast } from "@/shared/toast";
+import { isReactNode } from "@/types/utils.types";
 
 export function Toaster() {
   const { toasts } = useToast();
@@ -17,8 +18,8 @@ export function Toaster() {
         return (
           <Toast key={id} {...props} className="tw-mt-2 tw-w-max tw-font-sans">
             <div className="tw-grid tw-gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
+              {isReactNode(title) && <ToastTitle>{title}</ToastTitle>}
+              {isReactNode(description) && (
                 <ToastDescription>{description}</ToastDescription>
               )}
             </div>

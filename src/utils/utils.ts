@@ -73,7 +73,7 @@ export function waitForNextjsHydration() {
       const nextDataElement = $("#__NEXT_DATA__");
       const nextContainer = $("#__next");
 
-      if (nextDataElement && nextContainer) {
+      if (nextDataElement.length && nextContainer.length) {
         if (isMainWorldContext() && !window?.next?.router?.push) return;
 
         clearInterval(checkInterval);
@@ -199,10 +199,10 @@ export function scrollToElement(
   const $stickyHeader = UiUtils.getStickyNavbar();
 
   if ($stickyHeader.length) {
-    offset -= $stickyHeader.height() || 0;
+    offset -= $stickyHeader.height() ?? 0;
   }
 
-  const elementPosition = $anchor.offset()?.top;
+  const elementPosition = $anchor.offset()?.top ?? 0;
   const scrollPosition = (elementPosition || 0) + offset;
 
   $("html, body").animate(
@@ -226,16 +226,7 @@ export async function getTabId() {
   return response.tabId;
 }
 
-export function setImmediateInterval(
-  callback: (...args: any[]) => void,
-  interval: number,
-  ...args: any[]
-): number {
-  callback();
-  return window.setInterval(callback, interval, ...args);
-}
-
-export function setCookie(name: string, value: any, days: number) {
+export function setCookie(name: string, value: string, days: number) {
   let expires = "";
   if (days) {
     const date = new Date();
@@ -319,7 +310,7 @@ export function waitForElement({
       const element =
         typeof selector === "string" ? $(selector)[0] : selector();
 
-      if (element) {
+      if (element != null) {
         clearInterval(intervalId);
         resolve(element);
       }
@@ -464,4 +455,8 @@ export function onScrollDirectionChange({
   });
 
   return () => $(window).off(`scroll.${identifier}`);
+}
+
+export function queueMicrotasks(...tasks: (() => void)[]) {
+  tasks.forEach((task) => queueMicrotask(task));
 }

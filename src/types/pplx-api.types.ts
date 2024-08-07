@@ -60,6 +60,6 @@ export type UserProfileSettingsApiResponse = {
   };
 };
 
-export type UserProfileSettingsApiRequest = Partial<
+export type UpdateUserProfileSettingsApiRequest = Partial<
   UserProfileSettingsApiResponse["profile"]
 >;

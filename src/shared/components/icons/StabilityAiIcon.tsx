@@ -8,7 +8,6 @@ const StabilityAiIcon = ({ style, ...props }: SVGProps<SVGSVGElement>) => (
     preserveAspectRatio="xMidYMid"
     viewBox="0 0 256 213"
     style={{
-      filter: "grayscale(100%)",
       ...style,
     }}
     {...props}

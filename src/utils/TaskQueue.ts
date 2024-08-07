@@ -17,7 +17,7 @@ class Node {
 }
 
 export class TaskQueue {
-  private static instance: TaskQueue;
+  private static instance: TaskQueue | null = null;
   private head: Node | null = null;
   private tail: Node | null = null;
   private isProcessing = false;

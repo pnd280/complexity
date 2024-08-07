@@ -22,7 +22,7 @@ export default class ThreadExport {
     const text = jsonUtils.safeParse(message.text);
 
     return (
-      text.answer ||
+      (text.answer as string) ||
       (
         jsonUtils.safeParse(
           text[text.length - 1].content.answer,
@@ -36,14 +36,15 @@ export default class ThreadExport {
   ): WebResult[] {
     const text = jsonUtils.safeParse(message.text);
 
+    const webResults = text.web_results as WebResult[] | undefined;
+
+    if (webResults != null) {
+      return webResults;
+    }
+
     return (
-      text.web_results ||
-      (
-        jsonUtils.safeParse(
-          text[text.length - 1].content.answer,
-        ) as ThreadAnswer
-      ).web_results
-    );
+      jsonUtils.safeParse(text[text.length - 1].content.answer) as ThreadAnswer
+    ).web_results;
   }
 
   private static getModelName(displayModel: string): string {
@@ -143,7 +144,7 @@ export default class ThreadExport {
     includeCitations: boolean;
     messageIndex?: number;
   }) {
-    if (messageIndex) {
+    if (messageIndex != null) {
       return ThreadExport.exportMessage({
         message: threadJSON[messageIndex],
         includeCitations,

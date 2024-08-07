@@ -16,6 +16,7 @@ import {
   SelectTrigger,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
+import { isReactNode } from "@/types/utils.types";
 import { cn } from "@/utils/cn";
 import UiUtils from "@/utils/UiUtils";
 
@@ -99,7 +100,7 @@ export default function FocusSelector() {
         {webAccessFocus.map((item) => (
           <SelectItem key={item.code} item={item.code}>
             <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
-              {webAccessFocusIcons[item.code] ? (
+              {isReactNode(webAccessFocusIcons[item.code]) ? (
                 <div>{webAccessFocusIcons[item.code]}</div>
               ) : (
                 <Cpu className="tw-size-4" />

@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/shared/components/Select";
 import Tooltip from "@/shared/components/Tooltip";
+import { isReactNode } from "@/types/utils.types";
 
 export default function ImageModelSelector() {
   const limit = useQueryBoxStore((state) => state.imageCreateLimit);
@@ -66,7 +67,7 @@ export default function ImageModelSelector() {
           >
             <SelectItem key={model.code} item={model.code}>
               <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
-                {imageModelIcons[model.code] ? (
+                {isReactNode(imageModelIcons[model.code]) ? (
                   <div className="tw-text-[1.1rem]">
                     {imageModelIcons[model.code]}
                   </div>

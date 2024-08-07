@@ -87,10 +87,11 @@ function RenderSettings<
 
   return settings.map(
     ({ id, label, settingKey, experimental, versionRelease, onClick }) => {
-      const defaultChecked =
-        !!userSettings[settingStoreKey]?.[
+      const defaultChecked = Boolean(
+        userSettings[settingStoreKey]?.[
           settingKey as keyof CplxUserSettings["popupSettings"][K]
-        ];
+        ],
+      );
 
       return (
         <div

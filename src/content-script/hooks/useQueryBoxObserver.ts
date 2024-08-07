@@ -6,7 +6,7 @@ import CplxUserSettings from "@/lib/CplxUserSettings";
 import { cn } from "@/utils/cn";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiUtils from "@/utils/UiUtils";
-import { whereAmI } from "@/utils/utils";
+import { queueMicrotasks, whereAmI } from "@/utils/utils";
 
 type UseQueryBoxObserverProps = {
   setContainers: (container: HTMLElement) => void;
@@ -37,34 +37,29 @@ export default function useQueryBoxObserver({
         config: { childList: true, subtree: true },
         source: "hook",
         onAny: () => {
-          queueMicrotask(() =>
-            observeMainQueryBox({
-              id: mainId,
-              setContainers,
-              refetchUserSettings,
-            }),
+          queueMicrotasks(
+            () =>
+              observeMainQueryBox({
+                id: mainId,
+                setContainers,
+                refetchUserSettings,
+              }),
+            () =>
+              observeFollowUpQueryBox({
+                id: followUpId,
+                location,
+                setFollowUpContainers,
+                refetchUserSettings,
+              }),
+            () =>
+              observeImageGenerationPopover({
+                id: imageGenerationPopoverId,
+                location,
+                setImageGenPopoverContainer,
+              }),
+            alterAttachButton,
+            interceptPasteEvent,
           );
-
-          queueMicrotask(() =>
-            observeFollowUpQueryBox({
-              id: followUpId,
-              location,
-              setFollowUpContainers,
-              refetchUserSettings,
-            }),
-          );
-
-          queueMicrotask(() =>
-            observeImageGenerationPopover({
-              id: imageGenerationPopoverId,
-              location,
-              setImageGenPopoverContainer,
-            }),
-          );
-
-          queueMicrotask(alterAttachButton);
-
-          queueMicrotask(interceptPasteEvent);
         },
       });
 

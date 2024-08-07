@@ -6,6 +6,7 @@ import FocusSelector from "@/content-script/components/QueryBox/FocusSelector";
 import LanguageModelSelector from "@/content-script/components/QueryBox/LanguageModelSelector";
 import KeyCombo from "@/shared/components/KeyCombo";
 import Separator from "@/shared/components/Separator";
+import { isReactNode } from "@/types/utils.types";
 
 export default function CommonSelectors({
   isReady,
@@ -60,7 +61,7 @@ export default function CommonSelectors({
       ) : (
         <div className="tw-mx-2 tw-flex tw-items-center tw-gap-2">
           <LoaderCircle className="tw-size-4 tw-animate-spin tw-text-muted-foreground" />
-          {hint && (
+          {isReactNode(hint) && (
             <span className="tw-text-xs tw-text-muted-foreground tw-animate-in tw-fade-in tw-slide-in-from-right">
               {hint}
             </span>

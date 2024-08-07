@@ -5,7 +5,7 @@ import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessag
 import {
   CollectionsApiResponse,
   ThreadMessageApiResponse,
-  UserProfileSettingsApiRequest,
+  UpdateUserProfileSettingsApiRequest,
   UserProfileSettingsApiResponse,
   UserSettingsApiResponse,
   UserSettingsApiResponseRawSchema,
@@ -38,7 +38,7 @@ export default class PplxApi {
   static async fetchUserSettingsFallback(): Promise<UserSettingsApiResponse> {
     const pplxBuildId = await getPplxBuildId();
 
-    if (!pplxBuildId) throw new Error("Failed to fetch user settings");
+    if (pplxBuildId == null) throw new Error("Failed to fetch user settings");
 
     const resp = await fetchResource(
       `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/org.json`,
@@ -68,7 +68,7 @@ export default class PplxApi {
   static async fetchCollections(): Promise<Collection[]> {
     const pplxBuildId = await getPplxBuildId();
 
-    if (!pplxBuildId) return [];
+    if (pplxBuildId == null) throw new Error("Failed to get Pplx build ID");
 
     const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/library.json`;
     const jsonData = await fetch(url);
@@ -126,11 +126,11 @@ export default class PplxApi {
   }
 
   static async fetchThreadInfo(threadSlug: string) {
-    if (!threadSlug) return null;
+    if (!threadSlug) throw new Error("Thread slug is required");
 
     const pplxBuildId = await getPplxBuildId();
 
-    if (!pplxBuildId) return null;
+    if (pplxBuildId == null) throw new Error("Failed to get Pplx build ID");
 
     const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/search/${threadSlug}.json`;
 
@@ -138,16 +138,16 @@ export default class PplxApi {
 
     const data = jsonUtils.safeParse(resp);
 
-    if (!data) return null;
+    if (data == null) throw new Error("Failed to fetch thread info");
 
     return data.pageProps.dehydratedState.queries[1].state
       .data as ThreadMessageApiResponse[];
   }
 
-  static async fetchUserProfileSettings(): Promise<UserProfileSettingsApiResponse | null> {
+  static async fetchUserProfileSettings(): Promise<UserProfileSettingsApiResponse> {
     const pplxBuildId = await getPplxBuildId();
 
-    if (!pplxBuildId) return null;
+    if (pplxBuildId == null) throw new Error("Failed to get Pplx build ID");
 
     const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/profile.json`;
 
@@ -155,7 +155,7 @@ export default class PplxApi {
 
     const data = jsonUtils.safeParse(resp);
 
-    if (!data) return null;
+    if (data == null) throw new Error("Failed to fetch user profile settings");
 
     return {
       user: data.pageProps.session.user,
@@ -211,7 +211,9 @@ export default class PplxApi {
     return false;
   }
 
-  static async updateUserProfileSettings(data: UserProfileSettingsApiRequest) {
+  static async updateUserProfileSettings(
+    data: UpdateUserProfileSettingsApiRequest,
+  ) {
     const data2Send = {
       action:
         typeof data.disabled === "undefined"

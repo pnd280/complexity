@@ -17,6 +17,9 @@ function addDataAttrs(pre: HTMLElement) {
     return;
 
   const lang = MarkdownBlockUtils.getLangFromReactNode(pre);
+
+  if (!lang) return;
+
   pre.setAttribute("data-lang", lang);
   pre.setAttribute("data-mask", Canvas.isMaskableLang(lang) ? "true" : "false");
 }
@@ -53,7 +56,7 @@ export const preBlockAttrsContentScript = {
           document.body.getAttribute("data-pre-block-initial-attrs-applied") &&
           document.body.getAttribute("data-pre-block-dom-methods-overridden")
         ) {
-          interval && clearInterval(interval);
+          interval != null && clearInterval(interval);
           resolve();
         }
       }, 100);
