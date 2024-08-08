@@ -121,7 +121,7 @@ body .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):no
   grid-column: unset !important;
 }
 
-.collapse-empty-thread-visual-columns .message-block:has(.visual-col > div > div:nth-child(2)) .visual-col {
+.collapse-empty-thread-visual-columns .message-block:has(.visual-col > div > div > div > div) .visual-col {
   display    : block !important;
   grid-column: span 4 / span 4 !important;
 }
@@ -130,7 +130,7 @@ body .grow.block:has(textarea[placeholder]) button:not([aria-label="Submit"]):no
   grid-column: span 12 / span 12 !important;
 }
 
-.collapse-empty-thread-visual-columns .message-block:has(.visual-col > div > div:nth-child(2)) .text-col {
+.collapse-empty-thread-visual-columns .message-block:has(.visual-col > div > div > div > div) .text-col {
   grid-column: span 8 / span 8 !important;
 }
 
