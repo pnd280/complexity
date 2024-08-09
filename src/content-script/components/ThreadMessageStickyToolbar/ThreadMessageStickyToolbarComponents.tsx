@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
 import { PiNotePencil } from "react-icons/pi";
 import { Updater } from "use-immer";
@@ -12,7 +11,6 @@ import {
   ContainerStates,
 } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
 import ThreadTitle from "@/content-script/components/ThreadMessageStickyToolbar/ThreadTitle";
-import PplxApi from "@/services/PplxApi";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 import { scrollToElement } from "@/utils/utils";
@@ -30,14 +28,6 @@ export default function ThreadMessageStickyToolbarComponents({
   containersStates,
   setContainersStates,
 }: ThreadMessageStickyToolbarComponents) {
-  const { data: userSettings } = useQuery({
-    queryKey: ["userSettings"],
-    queryFn: PplxApi.fetchUserSettings,
-  });
-
-  const hasActivePplxSub =
-    userSettings && userSettings.subscriptionStatus === "active";
-
   // TODO: prone to changes, needs refactoring
   const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
     .find(".mt-sm.flex.items-center.justify-between")
@@ -100,7 +90,7 @@ export default function ThreadMessageStickyToolbarComponents({
             containersStates[containerIndex].isHidden,
         })}
       >
-        {hasActivePplxSub && isMessageEditable && (
+        {isMessageEditable && (
           <RewriteDropdown container={containers[containerIndex]} />
         )}
 

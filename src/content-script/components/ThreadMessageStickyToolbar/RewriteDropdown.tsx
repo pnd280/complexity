@@ -68,7 +68,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
 
         await waitForElement({
           selector() {
-            if (viewportWidth && viewportWidth < 768) {
+            if (viewportWidth < 768) {
               return $(".duration-250.fill-mode-both.fixed.bottom-0.left-0")[0];
             }
 
@@ -80,18 +80,14 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
           interval: 100,
         });
 
-        if (viewportWidth && viewportWidth < 768) {
-          $(
-            ".duration-250.fill-mode-both.fixed.bottom-0.left-0 .md\\:h-full:nth-of-type(2)",
-          )
-            .children()
-            .last()
-            .trigger("click");
+        if (viewportWidth < 768) {
+          const buttonSelector = `.duration-250.fill-mode-both.fixed.bottom-0.left-0 .divide-y > div:nth-child(${proSearch ? 1 : 2})`;
+
+          $(buttonSelector).children().last().trigger("click");
         } else {
-          $(`[data-popper-reference-hidden="true"] .md\\:h-full:nth-child(3)`)
-            .children()
-            .last()
-            .trigger("click");
+          const buttonSelector = `[data-popper-reference-hidden="true"] > div > div > div:nth-child(${proSearch ? 2 : 3})`;
+
+          $(buttonSelector).children().last().trigger("click");
         }
       });
     },
