@@ -174,6 +174,11 @@ function observeImageGenerationPopover({
 
   $header.attr(`data-${id}`, "true");
 
+  $header.parent().on("mousedown", (e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  });
+
   setImageGenPopoverContainer($header[0]);
 }
 
