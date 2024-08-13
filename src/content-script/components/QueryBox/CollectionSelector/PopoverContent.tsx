@@ -1,9 +1,8 @@
 import { LoaderCircle, Pause, Pencil, Play, ExternalLink } from "lucide-react";
 
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
-import useFetchUserProfileSettings from "@/content-script/hooks/useFetchUserProfileSettings";
-import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
+import useFetchUserAiProfile from "@/content-script/hooks/useFetchUserAiProfile";
+import useUpdateUserAiProfile from "@/content-script/hooks/useUpdateUserAiProfile";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import {
   Command,
@@ -16,6 +15,7 @@ import {
 } from "@/shared/components/Command";
 import { PopoverContent } from "@/shared/components/Popover";
 import Tooltip from "@/shared/components/Tooltip";
+import { Collection } from "@/types/collection.types";
 import { cn } from "@/utils/cn";
 
 type CollectionSelectorPopoverContentProps = {
@@ -112,17 +112,18 @@ function UserProfileActions({
   CollectionSelectorPopoverContentProps,
   "toggleEditUserProfileDialog" | "setOpen"
 >) {
-  const { data: userProfileSettings, isLoading: isUserProfileSettingsLoading } =
-    useFetchUserProfileSettings();
+  const { data: userAiProfile, isLoading: isUserAiProfileLoading } =
+    useFetchUserAiProfile();
 
-  const { isUpdatingUserProfileSettings, updateUserProfileSettings } =
-    useUpdateUserProfileSettings();
+  const { isUpdatingUserAiProfile, updateUserAiProfile } =
+    useUpdateUserAiProfile();
 
   return (
     <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
       <Tooltip
         className="tw-max-h-[200px] tw-truncate"
-        content={userProfileSettings?.profile.bio}
+        content={userAiProfile?.bio}
+        disabled={!userAiProfile?.bio}
         positioning={{
           placement: "right",
           gutter: 60,
@@ -141,36 +142,34 @@ function UserProfileActions({
       </Tooltip>
       <Tooltip
         content={
-          userProfileSettings?.profile.disabled
-            ? "Enable AI profile"
-            : "Disable AI profile"
+          userAiProfile?.disabled ? "Enable AI profile" : "Disable AI profile"
         }
       >
         <div
           className={cn(
             "tw-hidden tw-rounded-md tw-border !tw-bg-background tw-p-2 tw-transition-all tw-duration-100 tw-ease-in-out active:tw-scale-95 group-hover:tw-block",
             {
-              "!tw-text-muted-foreground": isUpdatingUserProfileSettings,
+              "!tw-text-muted-foreground": isUpdatingUserAiProfile,
             },
           )}
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
 
-            if (isUpdatingUserProfileSettings) {
+            if (isUpdatingUserAiProfile) {
               return;
             }
 
-            updateUserProfileSettings({
-              disabled: !userProfileSettings?.profile.disabled,
+            updateUserAiProfile({
+              disabled: !userAiProfile?.disabled,
             });
           }}
         >
-          {isUserProfileSettingsLoading ? (
+          {isUserAiProfileLoading ? (
             <LoaderCircle className="tw-size-3 tw-animate-spin" />
           ) : (
             <>
-              {userProfileSettings?.profile.disabled ? (
+              {userAiProfile?.disabled ? (
                 <Play className="tw-size-3" />
               ) : (
                 <Pause className="tw-size-3" />
@@ -222,6 +221,7 @@ function CollectionItem({
               {collection.instructions || collection.description}
             </div>
           }
+          disabled={!collection.instructions && !collection.description}
           positioning={{
             placement: "right",
             gutter: 60,
@@ -243,7 +243,7 @@ function CollectionItem({
           onClick={() => {
             webpageMessenger.sendMessage({
               event: "routeToPage",
-              payload: `/collections/${collection.url}`,
+              payload: `/collections/${collection.slug}`,
             });
           }}
         >

@@ -1,7 +1,8 @@
 import * as z from "zod";
 
 import { LanguageModel } from "@/content-script/components/QueryBox";
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
+import { Collection } from "@/types/collection.types";
+import { UserAiProfile } from "@/types/user-ai-profile";
 
 export type UserSettingsApiResponse = {
   hasAiProfile: boolean;
@@ -29,14 +30,7 @@ export type UserSettingsApiResponseRaw = z.infer<
   typeof UserSettingsApiResponseRawSchema
 >;
 
-export type CollectionsApiResponse = {
-  title: string;
-  uuid: string;
-  instructions: string;
-  slug: string;
-  description: string;
-  access: 1 | 2;
-}[];
+export type CollectionsApiResponse = Collection[];
 
 export type ThreadMessageApiResponse = {
   query_str: string;
@@ -49,17 +43,6 @@ export type ThreadMessageApiResponse = {
   display_model: LanguageModel["code"];
 };
 
-export type UserProfileSettingsApiResponse = {
-  profile: {
-    has_profile: boolean;
-    disabled: boolean;
-    bio: string;
-  };
-  user: {
-    subscription_status: "active" | "none";
-  };
-};
+export type UserAiProfileApiResponse = UserAiProfile;
 
-export type UpdateUserProfileSettingsApiRequest = Partial<
-  UserProfileSettingsApiResponse["profile"]
->;
+export type UpdateUserAiProfileApiRequest = Partial<UserAiProfileApiResponse>;

@@ -168,7 +168,9 @@ class WebpageMessenger {
         if (
           this.getTrackedListeners().some((listener) => listener[eventName])
         ) {
-          return;
+          throw new Error(
+            `Only one listener allowed for ${eventName}, use interceptors instead.`,
+          );
         }
 
         break;
@@ -217,6 +219,7 @@ class WebpageMessenger {
     matchCondition,
     callback,
     stopCondition,
+    timeout,
   }: AddInterceptorParams<K, T, J>) {
     const identifier = `interceptor_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 
@@ -232,6 +235,12 @@ class WebpageMessenger {
         (interceptor) => interceptor.identifier !== identifier,
       );
     };
+
+    if (timeout != null && timeout > 0) {
+      setTimeout(() => {
+        removeInterceptor();
+      }, timeout);
+    }
 
     return removeInterceptor;
   }

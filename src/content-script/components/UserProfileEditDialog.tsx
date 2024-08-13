@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import useFetchUserProfileSettings from "@/content-script/hooks/useFetchUserProfileSettings";
-import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";
+import useFetchUserAiProfile from "@/content-script/hooks/useFetchUserAiProfile";
+import useUpdateUserAiProfile from "@/content-script/hooks/useUpdateUserAiProfile";
 import Button from "@/shared/components/Button";
 import {
   Dialog,
@@ -41,8 +41,8 @@ export default function UserProfileEditDialog({
 }: UserProfileEditProps) {
   const { toast } = useToast();
 
-  const { data: userProfileSettings } = useFetchUserProfileSettings();
-  const { updateUserProfileSettings } = useUpdateUserProfileSettings();
+  const { data: userAiProfile } = useFetchUserAiProfile();
+  const { updateUserAiProfile } = useUpdateUserAiProfile();
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -60,7 +60,7 @@ export default function UserProfileEditDialog({
   const onSubmit = async (data: FormData) => {
     try {
       onOpenChange(false);
-      await updateUserProfileSettings({
+      await updateUserAiProfile({
         bio: data.bio,
       });
     } catch (error) {
@@ -73,12 +73,12 @@ export default function UserProfileEditDialog({
   };
 
   useEffect(() => {
-    if (userProfileSettings) {
+    if (userAiProfile) {
       reset({
-        bio: userProfileSettings.profile.bio || "",
+        bio: userAiProfile.bio || "",
       });
     }
-  }, [open, userProfileSettings, reset]);
+  }, [open, userAiProfile, reset]);
 
   return (
     <Dialog

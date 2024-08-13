@@ -2,8 +2,15 @@ import { LanguageModel } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import CplxUserSettings from "@/lib/CplxUserSettings";
+import { Collection, CollectionSchema } from "@/types/collection.types";
+import {
+  CollectionsApiResponse,
+  UserAiProfileApiResponse,
+} from "@/types/pplx-api.types";
+import { UserAiProfile, UserAiProfileSchema } from "@/types/user-ai-profile";
 import { TrackQueryLimits } from "@/types/webpage-message-interceptors.types";
 import {
+  AddInterceptorMatchCondition,
   LongPollingEventData,
   MessageData,
   WebSocketEventData,
@@ -315,33 +322,104 @@ export default class WebpageMessageInterceptor {
     });
   }
 
-  static waitForUserProfileSettings() {
-    const matchCondition = (messageData: MessageData<any>) => {
+  static waitForUserAiProfile(): Promise<UserAiProfile> {
+    const matchCondition: AddInterceptorMatchCondition<
+      any,
+      {
+        userAiProfile: UserAiProfile;
+      }
+    > = (messageData: MessageData<any>) => {
       const parsedPayload: WsParsedMessage | null =
         WebpageMessageInterceptor.parseStructuredMessage(messageData);
 
-      if (!parsedPayload) return false;
+      if (!parsedPayload) return { match: false };
 
-      if (parsedPayload.messageCode !== 431) return false;
+      if (parsedPayload.messageCode !== 430) return { match: false };
 
-      if (parsedPayload.data?.length !== 1) return false;
+      if (parsedPayload.data?.length !== 1) return { match: false };
 
-      return (
-        "has_profile" in parsedPayload.data[0] && "bio" in parsedPayload.data[0]
-      );
+      const userAiProfile = parsedPayload.data[0] as UserAiProfileApiResponse;
+
+      const validate = UserAiProfileSchema.safeParse(userAiProfile);
+
+      if (!validate.success) return { match: false };
+
+      return {
+        match: true,
+        args: [
+          {
+            userAiProfile: validate.data,
+          },
+        ],
+      };
     };
 
-    return new Promise((resolve) => {
-      webpageMessenger.addInterceptor({
-        matchCondition: (messageData: MessageData<any>) => {
-          return { match: matchCondition(messageData) };
-        },
-        callback: async (messageData: MessageData<any>) => {
-          resolve(messageData.payload);
+    return new Promise((resolve, reject) => {
+      const removeInterceptor = webpageMessenger.addInterceptor({
+        matchCondition,
+        callback: async (messageData: MessageData<any>, args) => {
+          resolve(args[0].userAiProfile);
           return messageData;
         },
-        stopCondition: (messageData) => matchCondition(messageData), // stop after the first match
+        stopCondition: (messageData) => matchCondition(messageData).match,
       });
+
+      setTimeout(() => {
+        removeInterceptor();
+        reject(new Error("Fetching user profile settings timed out"));
+      }, 5000);
+    });
+  }
+
+  static waitForCollections(): Promise<Collection[]> {
+    const matchCondition: AddInterceptorMatchCondition<
+      any,
+      { collections: any[] }
+    > = (messageData) => {
+      const parsedPayload: WsParsedMessage | null =
+        WebpageMessageInterceptor.parseStructuredMessage(messageData);
+
+      if (!parsedPayload) return { match: false };
+
+      if (parsedPayload.messageCode !== 431) return { match: false };
+
+      if (
+        parsedPayload.data?.length !== 1 ||
+        !Array.isArray(parsedPayload.data[0]) ||
+        parsedPayload.data[0].length <= 0
+      )
+        return { match: false };
+
+      const collections = parsedPayload.data[0] as CollectionsApiResponse;
+
+      const validate = CollectionSchema.safeParse(collections[0]);
+
+      if (!validate.success) return { match: false };
+
+      return {
+        match: true,
+        args: [
+          {
+            collections: collections as Collection[],
+          },
+        ],
+      };
+    };
+
+    return new Promise((resolve, reject) => {
+      const removeInterceptor = webpageMessenger.addInterceptor({
+        matchCondition,
+        async callback(messageData, args) {
+          resolve(args[0].collections);
+          return messageData;
+        },
+        stopCondition: (messageData) => matchCondition(messageData).match,
+      });
+
+      setTimeout(() => {
+        removeInterceptor();
+        reject(new Error("Fetching collections timed out"));
+      }, 5000);
     });
   }
 

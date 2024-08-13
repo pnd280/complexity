@@ -12,12 +12,7 @@ import ReactRoot from "@/content-script/ReactRoot";
 import CplxUserSettings from "@/lib/CplxUserSettings";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiTweaks from "@/utils/UiTweaks";
-import {
-  getPplxBuildId,
-  injectMainWorldScript,
-  waitForNextjsHydration,
-  whereAmI,
-} from "@/utils/utils";
+import { injectMainWorldScript, whereAmI } from "@/utils/utils";
 import UxTweaks from "@/utils/UxTweaks";
 import packageData from "@@/package.json";
 
@@ -32,8 +27,6 @@ $(async function main() {
   await initCplxUserSettings();
 
   initUiUxTweaks();
-
-  await waitForNextjsHydration();
 
   await initMainWorldDeps();
 
@@ -76,7 +69,7 @@ async function initUiUxTweaks() {
     "routeChange",
     async ({ payload: { url, trigger } }) => {
       if (trigger !== "routeChangeComplete") return;
-      observe(url);
+    observe(url);
     },
   );
 }
@@ -117,16 +110,12 @@ function initTrafficInterceptors() {
 }
 
 async function initConsoleMessage() {
-  const pplxBuildId = await getPplxBuildId();
-
   console.log(
     "%cCOMPLEXITY v" +
       packageData.version +
       "%c\n\n" +
       "Suggest new features/report issues by joining the Discord community:\n" +
-      "%chttps://discord.gg/fxzqdkwmWx%c\n\n" +
-      "PPLX_BUILD_ID: " +
-      pplxBuildId,
+      "%chttps://discord.gg/fxzqdkwmWx%c",
     "color: #72aefd; background-color: #191a1a; padding: 0.25rem 1rem; border-radius: 0.375rem; font-family: monospace; font-weight: bold; font-size: 16px; text-shadow: 1px 1px 0 #000;",
     "color: #ff9900; font-style: italic; font-size: 14px;",
     "font-size: 14px;",

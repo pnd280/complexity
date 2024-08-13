@@ -1,22 +1,23 @@
 import { LanguageModel } from "@/content-script/components/QueryBox";
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
+import { Collection } from "@/types/collection.types";
 import {
-  CollectionsApiResponse,
   ThreadMessageApiResponse,
-  UpdateUserProfileSettingsApiRequest,
-  UserProfileSettingsApiResponse,
+  UpdateUserAiProfileApiRequest,
   UserSettingsApiResponse,
   UserSettingsApiResponseRawSchema,
 } from "@/types/pplx-api.types";
-import { fetchResource, getPplxBuildId, jsonUtils } from "@/utils/utils";
+import { UserAiProfile } from "@/types/user-ai-profile";
+import { fetchResource, jsonUtils } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class PplxApi {
   static async fetchUserSettings(): Promise<UserSettingsApiResponse> {
+    // Fallback: https://www.perplexity.ai/rest/user/settings
+
     const resp = await fetchResource(
-      "https://www.perplexity.ai/rest/user/settings",
+      "https://www.perplexity.ai/p/api/v1/user/settings",
     );
 
     const json = UserSettingsApiResponseRawSchema.parse(
@@ -33,19 +34,6 @@ export default class PplxApi {
       opusLimit: json.opus_limit,
       createLimit: json.create_limit,
     };
-  }
-
-  static async fetchUserSettingsFallback(): Promise<UserSettingsApiResponse> {
-    const pplxBuildId = await getPplxBuildId();
-
-    if (pplxBuildId == null) throw new Error("Failed to fetch user settings");
-
-    const resp = await fetchResource(
-      `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/org.json`,
-    );
-
-    return jsonUtils.safeParse(resp).pageProps.dehydratedState.queries[1].state
-      .data;
   }
 
   static async detectCloudflareTimeout() {
@@ -66,34 +54,21 @@ export default class PplxApi {
   }
 
   static async fetchCollections(): Promise<Collection[]> {
-    const pplxBuildId = await getPplxBuildId();
-
-    if (pplxBuildId == null) throw new Error("Failed to get Pplx build ID");
-
-    const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/library.json`;
-    const jsonData = await fetch(url);
-
-    if (!jsonData.ok) throw new Error("Failed to fetch collections");
-
-    const parsedJson = jsonUtils.safeParse(await jsonData.text());
-
-    const fetchedCollections = parsedJson.pageProps.dehydratedState.queries[1]
-      .state.data.pages[0] as CollectionsApiResponse;
-
-    if (!fetchedCollections?.length) return [];
-
-    const collections: Collection[] = [];
-
-    fetchedCollections.forEach((collection) => {
-      collections.push({
-        title: collection.title,
-        uuid: collection.uuid,
-        instructions: collection.instructions,
-        url: collection.slug,
-        description: collection.description,
-        access: collection.access,
-      });
+    webpageMessenger.sendMessage({
+      event: "sendWebSocketMessage",
+      payload: WsMessageParser.stringify({
+        messageCode: 421,
+        event: "list_user_collections",
+        data: {
+          source: "default",
+          limit: 50,
+          offset: 0,
+        },
+      }),
+      forceLongPolling: true,
     });
+
+    const collections = await WebpageMessageInterceptor.waitForCollections();
 
     return collections;
   }
@@ -128,11 +103,7 @@ export default class PplxApi {
   static async fetchThreadInfo(threadSlug: string) {
     if (!threadSlug) throw new Error("Thread slug is required");
 
-    const pplxBuildId = await getPplxBuildId();
-
-    if (pplxBuildId == null) throw new Error("Failed to get Pplx build ID");
-
-    const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/search/${threadSlug}.json`;
+    const url = `https://www.perplexity.ai/p/api/v1/thread/${threadSlug}?with_parent_info=true&source=web`;
 
     const resp = await fetchResource(url);
 
@@ -140,27 +111,29 @@ export default class PplxApi {
 
     if (data == null) throw new Error("Failed to fetch thread info");
 
-    return data.pageProps.dehydratedState.queries[1].state
-      .data as ThreadMessageApiResponse[];
+    if (data.entries == null || data.entries?.length <= 0)
+      throw new Error("Thread not found");
+
+    return data.entries as ThreadMessageApiResponse[];
   }
 
-  static async fetchUserProfileSettings(): Promise<UserProfileSettingsApiResponse> {
-    const pplxBuildId = await getPplxBuildId();
+  static async fetchUserAiProfile(): Promise<UserAiProfile> {
+    webpageMessenger.sendMessage({
+      event: "sendWebSocketMessage",
+      payload: WsMessageParser.stringify({
+        messageCode: 420,
+        event: "get_user_ai_profile",
+        data: {
+          source: "default",
+        },
+      }),
+      forceLongPolling: true,
+    });
 
-    if (pplxBuildId == null) throw new Error("Failed to get Pplx build ID");
+    const userAiProfile =
+      await WebpageMessageInterceptor.waitForUserAiProfile();
 
-    const url = `https://www.perplexity.ai/_next/data/${pplxBuildId}/en-US/settings/profile.json`;
-
-    const resp = await fetchResource(url);
-
-    const data = jsonUtils.safeParse(resp);
-
-    if (data == null) throw new Error("Failed to fetch user profile settings");
-
-    return {
-      user: data.pageProps.session.user,
-      profile: data.pageProps.profile,
-    } as UserProfileSettingsApiResponse;
+    return userAiProfile;
   }
 
   static async setDefaultLanguageModel(
@@ -211,9 +184,7 @@ export default class PplxApi {
     return false;
   }
 
-  static async updateUserProfileSettings(
-    data: UpdateUserProfileSettingsApiRequest,
-  ) {
+  static async updateUserAiProfile(data: UpdateUserAiProfileApiRequest) {
     const data2Send = {
       action:
         typeof data.disabled === "undefined"
@@ -227,17 +198,18 @@ export default class PplxApi {
       await webpageMessenger.sendMessage({
         event: "sendWebSocketMessage",
         payload: WsMessageParser.stringify({
-          messageCode: 421,
+          messageCode: 420,
           event: "save_user_ai_profile",
           data: data2Send,
         }),
         timeout: 5000,
       });
 
-      await WebpageMessageInterceptor.waitForUserProfileSettings();
+      await WebpageMessageInterceptor.waitForUserAiProfile();
 
       return true;
     } catch (e) {
+      console.log(e);
       alert("Failed to update profile settings");
     }
 

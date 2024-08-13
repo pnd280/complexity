@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import PplxApi from "@/services/PplxApi";
 import Button from "@/shared/components/Button";
@@ -27,6 +26,7 @@ import Separator from "@/shared/components/Separator";
 import TextareaWithLimit from "@/shared/components/TextareaWithLimit";
 import useTabNavigation from "@/shared/hooks/useTabNavigation";
 import { useToast } from "@/shared/toast";
+import { Collection } from "@/types/collection.types";
 import { queryClient } from "@/utils/ts-query-query-client";
 
 const limits = {

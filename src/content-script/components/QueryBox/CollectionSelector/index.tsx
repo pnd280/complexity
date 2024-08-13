@@ -9,17 +9,9 @@ import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import useRouter from "@/content-script/hooks/useRouter";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import { Popover, PopoverContext } from "@/shared/components/Popover";
+import { Collection } from "@/types/collection.types";
 import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
-
-export type Collection = {
-  title: string;
-  uuid: string;
-  instructions: string;
-  url: string;
-  description: string;
-  access: 1 | 2;
-};
 
 export default function CollectionSelector() {
   const { url } = useRouter();
@@ -44,7 +36,7 @@ export default function CollectionSelector() {
 
       const collectionSlug = window.location.pathname.split("/").pop();
 
-      const collection = collections?.find((x) => x.url === collectionSlug);
+      const collection = collections?.find((x) => x.slug === collectionSlug);
 
       if (collection == null) return;
 

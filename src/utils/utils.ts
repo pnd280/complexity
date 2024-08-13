@@ -67,22 +67,6 @@ export function isValidVersionString(version: string) {
   return /^\d+\.\d+\.\d+\.\d+$/.test(version);
 }
 
-export function waitForNextjsHydration() {
-  return new Promise((resolve) => {
-    const checkInterval = setInterval(() => {
-      const nextDataElement = $("#__NEXT_DATA__");
-      const nextContainer = $("#__next");
-
-      if (nextDataElement.length && nextContainer.length) {
-        if (isMainWorldContext() && !window?.next?.router?.push) return;
-
-        clearInterval(checkInterval);
-        resolve(null);
-      }
-    }, 100);
-  });
-}
-
 export function escapeHtmlTags(html: string) {
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -286,20 +270,6 @@ export function waitForElement({
 
 export function isDomNode(element: any): element is HTMLElement | Element {
   return element instanceof HTMLElement || element instanceof Element;
-}
-
-export async function getPplxBuildId() {
-  const NEXTDATA = await getNEXTDATA();
-
-  return NEXTDATA.buildId;
-}
-
-export async function getNEXTDATA() {
-  while (!$("script#__NEXT_DATA__").text().includes('"buildId":')) {
-    await sleep(100);
-  }
-
-  return jsonUtils.safeParse($("script#__NEXT_DATA__").text());
 }
 
 export const isMainWorldContext = () => {
