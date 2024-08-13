@@ -56,7 +56,7 @@
       Monaco, Consolas, ui-monospace, monospace;
   }
 
-  .dark {
+  html[data-color-scheme="dark"], .dark, .tw-dark {
     --background       : #191a1a;
     --foreground       : #e8e8e6;
     --foreground-darker: #e8e8e660;

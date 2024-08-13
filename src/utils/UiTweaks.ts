@@ -60,12 +60,12 @@ export default class UiTweaks {
     $(() => {
       // cloudflare
       if (document.title === "Just a moment...") {
-        $("html").addClass("dark tw-dark");
+        $("html").addClass("tw-dark");
       }
 
       const darkTheme = UiUtils.isDarkTheme();
 
-      if (darkTheme) $("html").addClass("tw-dark");
+      if (darkTheme) $("html").addClass("dark tw-dark");
 
       // downtime page
       if (document.title === "We'll be right back") {

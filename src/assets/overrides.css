@@ -96,13 +96,13 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
   background-color: var(--accent-foreground) !important;
 }
 
-.dark .dark\:bg-superDark\/10,
-.dark .bg-super\/10 {
+html[data-color-scheme="dark"] .dark\:bg-superDark\/10,
+html[data-color-scheme="dark"] .bg-super\/10 {
   background-color: var(--accent-foreground-darker) !important;
 }
 
-.dark .dark\:bg-superDark\/10 .text-super.dark\:text-superDark,
-.dark .bg-super\/10 .text-super.dark\:text-superDark {
+html[data-color-scheme="dark"] .dark\:bg-superDark\/10 .text-super.dark\:text-superDark,
+html[data-color-scheme="dark"] .bg-super\/10 .text-super.dark\:text-superDark {
   color: var(--foreground) !important;
 }
 
@@ -110,7 +110,7 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
 .markdown-highlight,
 .selection\:bg-superDuper::selection,
 .selection\:text-textMain ::selection,
-.dark .dark\:selection\:text-super ::selection {
+html[data-color-scheme="dark"] .dark\:selection\:text-super ::selection {
   background-color: var(--selection) !important;
   color           : var(--selection-foreground) !important;
 }
@@ -127,7 +127,7 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
 /* SVG and icon styles */
 .fill-super,
 .group:hover .group-hover\:fill-superDuper,
-:is(.dark .dark\:fill-superDark) {
+:is(html[data-color-scheme="dark"] .dark\:fill-superDark) {
   fill: var(--accent-foreground) !important;
 }
 
@@ -137,21 +137,21 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
 
 .stroke-super,
 .group:hover .group-hover\:stroke-superDuper,
-:is(.dark .dark\:stroke-superDark),
-:is(.dark .dark\:stroke-textMainDark) {
+:is(html[data-color-scheme="dark"] .dark\:stroke-superDark),
+:is(html[data-color-scheme="dark"] .dark\:stroke-textMainDark) {
   stroke: var(--accent-foreground) !important;
 }
 
 /* Outline and ring styles */
-:is(.dark .dark\:outline-superDark) {
+:is(html[data-color-scheme="dark"] .dark\:outline-superDark) {
   outline-color: var(--accent-foreground) !important;
 }
 
-.dark .dark\:hover\:ring-superDark:hover,
+html[data-color-scheme="dark"] .dark\:hover\:ring-superDark:hover,
 .hover\:\!ring-super:hover,
 .hover\:ring-super:hover,
-:is(.dark .dark\:focus\:ring-borderMainDark:focus),
-.dark .dark\:ring-superDark,
+:is(html[data-color-scheme="dark"] .dark\:focus\:ring-borderMainDark:focus),
+html[data-color-scheme="dark"] .dark\:ring-superDark,
 .ring-super {
   --tw-ring-color: var(--accent-foreground) !important;
 }
@@ -162,15 +162,15 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
   background-color: var(--accent-foreground) !important;
 }
 
-html.dark .dark\:text-textMainDark {
+html[data-color-scheme="dark"] .dark\:text-textMainDark {
   color: var(--text-main) !important;
 }
 
-html.dark .dark\:\!text-backgroundDark {
+html[data-color-scheme="dark"] .dark\:\!text-backgroundDark {
   color: var(--text-main) !important;
 }
 
-html.dark .dark\:\!text-backgroundDark * {
+html[data-color-scheme="dark"] .dark\:\!text-backgroundDark * {
   color: var(--accent-foreground) !important;
 }
 
@@ -188,15 +188,15 @@ html.dark .dark\:\!text-backgroundDark * {
 .text-super,
 .group:hover .md\:group-hover\:text-super,
 .prose :where(a):not(:where([class~="not-prose"] *)),
-:is(.dark .dark\:md\:hover\:text-textMainDark:hover) {
+:is(html[data-color-scheme="dark"] .dark\:md\:hover\:text-textMainDark:hover) {
   color: var(--accent-foreground) !important;
 }
 
 /* Selection styles for dark mode */
-html.dark .selection\:text-textMain::selection,
-html.dark .selection\:bg-superDuper ::selection,
-html.dark code::selection,
-html.dark code *::selection {
+html[data-color-scheme="dark"] .selection\:text-textMain::selection,
+html[data-color-scheme="dark"] .selection\:bg-superDuper ::selection,
+html[data-color-scheme="dark"] code::selection,
+html[data-color-scheme="dark"] code *::selection {
   background-color: var(--selection) !important;
   color           : var(--selection-foreground) !important;
 }
@@ -204,8 +204,8 @@ html.dark code *::selection {
 /* Selection styles for light mode */
 .selection\:text-textMain::selection,
 .selection\:bg-superDuper ::selection,
-html:not(.dark) code::selection,
-html:not(.dark) code *::selection {
+html:not([data-color-scheme="dark"]) code::selection,
+html:not([data-color-scheme="dark"]) code *::selection {
   background-color: var(--selection) !important;
   color           : var(--selection-foreground) !important;
 }
@@ -289,11 +289,11 @@ html {
   bottom  : 4rem !important;
 }
 
-.pt-md.md\:pb-\[124px\].md\:pt-0.pb-\[144px\] {
+.mx-auto.h-full.w-full.max-w-threadWidth.px-md.pb-\[144px\].md\:px-lg {
   padding-bottom: 0 !important;
 }
 
-.pt-md.md\:pb-\[124px\].md\:pt-0.pb-\[144px\]>div>div:first-child {
+.mx-auto.h-full.w-full.max-w-threadWidth.px-md.pb-\[144px\].md\:px-lg>div>div:first-child {
   min-height    : 100vh;
   padding-bottom: 50px;
 }

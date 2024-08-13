@@ -4,7 +4,7 @@ import { whereAmI } from "@/utils/utils";
 
 export default class UiUtils {
   static isDarkTheme() {
-    return $("html").hasClass("dark");
+    return $("html").attr("data-color-scheme") === "dark";
   }
 
   static getThreadWrapper() {

@@ -41,7 +41,7 @@ body pre:not([data-lang="text"], [data-lang="markdown"]).line-numbers code .line
   border-radius   : 0.375rem;
 }
 
-html.dark .markdown-query-wrapper pre code {
+html[data-color-scheme="dark"] .markdown-query-wrapper pre code {
   color: var(--foreground) !important;
 }
 
