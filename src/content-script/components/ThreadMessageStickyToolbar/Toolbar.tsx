@@ -71,7 +71,7 @@ export default function Toolbar({
           query={
             $(containers[containerIndex].query).find("textarea").text() ||
             $(containers[containerIndex].query)
-              .find(">*:not(#markdown-query-wrapper):not(.tw-sticky)")
+              .find(">*:not(.markdown-query-wrapper):not(.tw-sticky)")
               .first()
               .text()
           }

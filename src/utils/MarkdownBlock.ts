@@ -20,7 +20,7 @@ export default class MarkdownBlockUtils {
     if (!pre) return null;
 
     const $pre = $(pre) as JQuery<HTMLElement>;
-    const isNative = !$pre.parent("#markdown-query-wrapper").length;
+    const isNative = !$pre.parent(".markdown-query-wrapper").length;
     const lang = MarkdownBlockUtils.getLang($pre) || "text";
 
     if ($pre.attr("data-toolbar")) {

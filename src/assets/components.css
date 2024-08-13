@@ -30,22 +30,22 @@ body pre:not([data-lang="text"], [data-lang="markdown"]).line-numbers code .line
 }
 
 /* Markdown Query Wrapper */
-.my-md.md\:my-lg:has(textarea) #markdown-query-wrapper {
+.my-md.md\:my-lg:has(textarea) .markdown-query-wrapper {
   display: none;
 }
 
-#markdown-query-wrapper code {
+.markdown-query-wrapper code {
   color           : var(--accent-foreground);
   background-color: var(--secondary);
   padding         : 0.1rem 0.3125rem;
   border-radius   : 0.375rem;
 }
 
-html.dark #markdown-query-wrapper pre code {
+html.dark .markdown-query-wrapper pre code {
   color: var(--foreground) !important;
 }
 
-#markdown-query-wrapper pre {
+.markdown-query-wrapper pre {
   background  : var(--secondary);
   padding-left: 0.8rem;
   padding-top : 0.8rem;
@@ -53,12 +53,12 @@ html.dark #markdown-query-wrapper pre code {
   max-width   : 90vw !important;
 }
 
-#markdown-query-wrapper pre code {
+.markdown-query-wrapper pre code {
   color     : var(--foreground) !important;
   background: var(--secondary);
 }
 
-#markdown-query-wrapper pre.retracted {
+.markdown-query-wrapper pre.retracted {
   max-height: 200px;
 }
 
@@ -94,7 +94,7 @@ body.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl:not(:has(.threa
   padding-top: auto !important;
 }
 
-body.thread-message-sticky-toolbar *:has(#markdown-query-wrapper:not(.\!tw-hidden))>.whitespace-pre-line.break-words:not(#markdown-query-wrapper) {
+body.thread-message-sticky-toolbar *:has(.markdown-query-wrapper:not(.\!tw-hidden))>.whitespace-pre-line.break-words:not(.markdown-query-wrapper) {
   display: none;
 }
 

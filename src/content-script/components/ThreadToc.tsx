@@ -197,7 +197,7 @@ const useThreadTocObserver = () => {
         const title =
           $query.find("textarea").val() ||
           $query
-            .find(">*:not(#markdown-query-wrapper):not(.tw-sticky)")
+            .find(">*:not(.markdown-query-wrapper):not(.tw-sticky)")
             .first()
             .text();
 

@@ -31,13 +31,13 @@ export default function FormatSwitch({
   const handleVisualDiff = useCallback(() => {
     const markdownText = stripHtml(
       $(containers[containerIndex].query)
-        .find(">#markdown-query-wrapper")
+        .find(">.markdown-query-wrapper")
         .html(),
     );
 
     const originalText = stripHtml(
       $(containers[containerIndex].query)
-        .find(">*:not(#markdown-query-wrapper)")
+        .find(">*:not(.markdown-query-wrapper)")
         .html(),
     );
 
@@ -79,7 +79,7 @@ export default function FormatSwitch({
                 .find(".whitespace-pre-line.break-words")
                 .toggleClass("!tw-hidden", !draft[containerIndex].isMarkdown);
               $(containers[containerIndex].query)
-                .find("#markdown-query-wrapper")
+                .find(".markdown-query-wrapper")
                 .toggleClass("!tw-hidden", draft[containerIndex].isMarkdown);
               draft[containerIndex].isMarkdown =
                 !draft[containerIndex].isMarkdown;
