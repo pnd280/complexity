@@ -4,7 +4,7 @@ import { Check, Copy, LoaderCircle, Unlink } from "lucide-react";
 import { useCallback } from "react";
 import { FaMarkdown } from "react-icons/fa";
 
-import { Container } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+import { Container } from "@/content-script/components/ThreadMessageStickyToolbar";
 import PplxApi from "@/services/PplxApi";
 import {
   DropdownMenu,

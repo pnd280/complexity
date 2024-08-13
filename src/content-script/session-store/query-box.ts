@@ -6,7 +6,7 @@ import {
   WebAccessFocus,
   LanguageModel,
 } from "@/content-script/components/QueryBox";
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import PplxApi from "@/services/PplxApi";
 import { isValidFocus } from "@/types/model-selector.types";
 import ChromeStorage from "@/utils/ChromeStorage";

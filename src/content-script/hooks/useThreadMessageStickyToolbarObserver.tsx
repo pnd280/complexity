@@ -5,7 +5,7 @@ import { languageModels } from "@/content-script/components/QueryBox/consts";
 import {
   Container,
   ToggleToolbarVisibilityProps,
-} from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+} from "@/content-script/components/ThreadMessageStickyToolbar";
 import useWaitForMessagesContainer from "@/content-script/hooks/useWaitForMessagesContainer";
 import { ReactNodeActionReturnType } from "@/content-script/main-world/react-node";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
@@ -210,7 +210,7 @@ export default function useThreadMessageStickyToolbarObserver({
 
         const $newQueryWrapper = $("<div>")
           .html(mardownedText)
-          .attr("id", "markdown-query-wrapper")
+          .attr("id", "markdown-query-wrapper") // FIXME: use class instead of id
           .addClass(
             "prose dark:prose-invert inline leading-normal break-words min-w-0 [word-break:break-word] default font-display dark:text-textMainDark selection:bg-super/50 selection:text-textMain dark:selection dark:selection " +
               textSize,

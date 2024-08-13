@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import PplxApi from "@/services/PplxApi";
 
 export default function useFetchCollections({

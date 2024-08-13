@@ -42,7 +42,7 @@ export const jsonUtils = {
  * Compares two version strings.
  * @param {string} v1 - The first version string.
  * @param {string} v2 - The second version string.
- * @returns {number} Returns 1 if v1 is greater, -1 if v2 is greater, or 0 if they are equal.
+ * @returns {number} Returns `1` if `v1` is greater, `-1` if `v2` is greater, or `0` if they are equal.
  */
 export function compareVersions(v1: string, v2: string): number {
   if (!isValidVersionString(v1) || !isValidVersionString(v2))
@@ -120,45 +120,6 @@ export function stripHtml(html: string | undefined) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
   return doc.body.textContent || "";
-}
-
-export function calculateRenderLines(
-  text: string,
-  containerWidth: number,
-  fontFamily: string,
-  fontSize: number,
-): number {
-  // Create a temporary canvas element
-  const canvas: HTMLCanvasElement = document.createElement("canvas");
-  const context: CanvasRenderingContext2D | null = canvas.getContext("2d");
-
-  if (!context) {
-    throw new Error("Failed to get 2D context");
-  }
-
-  // Set the font properties
-  context.font = `${fontSize}px ${fontFamily}`;
-
-  // Split the text into words
-  const words: string[] = text.split(" ");
-  let line: string = "";
-  let lines: number = 1;
-
-  // Iterate over each word
-  for (let i = 0; i < words.length; i++) {
-    const testLine: string = line + words[i] + " ";
-    const metrics: TextMetrics = context.measureText(testLine);
-
-    // If the test line is wider than the container, start a new line
-    if (metrics.width > containerWidth) {
-      lines++;
-      line = words[i] + " ";
-    } else {
-      line = testLine;
-    }
-  }
-
-  return lines;
 }
 
 export function detectConsecutiveClicks(params: {

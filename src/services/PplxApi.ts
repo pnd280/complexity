@@ -1,5 +1,5 @@
 import { LanguageModel } from "@/content-script/components/QueryBox";
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import {

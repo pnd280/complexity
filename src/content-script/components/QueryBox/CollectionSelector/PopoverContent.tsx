@@ -1,6 +1,6 @@
 import { LoaderCircle, Pause, Pencil, Play, ExternalLink } from "lucide-react";
 
-import { Collection } from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import { Collection } from "@/content-script/components/QueryBox/CollectionSelector";
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import useFetchUserProfileSettings from "@/content-script/hooks/useFetchUserProfileSettings";
 import useUpdateUserProfileSettings from "@/content-script/hooks/useUpdateUserProfileSettings";

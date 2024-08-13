@@ -7,7 +7,7 @@ import { Updater } from "use-immer";
 import {
   Container,
   ContainerStates,
-} from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+} from "@/content-script/components/ThreadMessageStickyToolbar";
 import Tooltip from "@/shared/components/Tooltip";
 import { scrollToElement, stripHtml } from "@/utils/utils";
 

@@ -1,31 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import {
-  ImageModel,
-  LanguageModel,
-} from "@/content-script/components/QueryBox";
 import CommonSelectors from "@/content-script/components/QueryBox/CommonSelectors";
 import ImageModelSelector from "@/content-script/components/QueryBox/ImageModelSelector";
+import useFetchUserSettings from "@/content-script/hooks/useFetchUserSettings";
+import useInitQueryBoxSessionStore from "@/content-script/hooks/useInitQueryBoxSessionStore";
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
 import { useGlobalStore } from "@/content-script/session-store/global";
-import {
-  initQueryBoxStore,
-  useQueryBoxStore,
-} from "@/content-script/session-store/query-box";
+import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
-import PplxApi from "@/services/PplxApi";
 import Portal from "@/shared/components/Portal";
 
 export default function QueryBox() {
   const isNetworkInstanceCaptured = useGlobalStore(
     (state) => state.isWebSocketCaptured || state.isLongPollingCaptured,
   );
-
-  const isDefaultsInitialized = useRef({
-    userSettings: false,
-  });
 
   const { settings } = usePopupSettings();
 
@@ -37,46 +26,14 @@ export default function QueryBox() {
     isLoading: isLoadingUserSettings,
     refetch: refetchUserSettings,
     error: userSettingsFetchError,
-  } = useQuery({
-    queryKey: ["userSettings"],
-    queryFn: PplxApi.fetchUserSettings,
-    retry: (failureCount, error) => {
-      if (error.name === "ZodError") return false;
+  } = useFetchUserSettings();
 
-      if (failureCount > 3) {
-        return false;
-      }
-
-      return true;
-    },
-  });
+  useInitQueryBoxSessionStore();
 
   const hasActivePplxSub =
     userSettings && userSettings.subscriptionStatus === "active";
 
-  const { setQueryLimit, setOpusLimit, setImageCreateLimit } = useQueryBoxStore(
-    (state) => state,
-  );
-
   const { toggleWebAccess } = useQueryBoxStore((state) => state.webAccess);
-
-  useEffect(() => {
-    if (userSettings) {
-      if (!isDefaultsInitialized.current.userSettings) {
-        initQueryBoxStore({
-          imageModel:
-            userSettings.defaultImageGenerationModel as ImageModel["code"],
-          languageModel: userSettings.defaultModel as LanguageModel["code"],
-        });
-
-        isDefaultsInitialized.current.userSettings = true;
-      }
-
-      setQueryLimit(userSettings.gpt4Limit);
-      setOpusLimit(userSettings.opusLimit);
-      setImageCreateLimit(userSettings.createLimit);
-    }
-  }, [userSettings, setQueryLimit, setOpusLimit, setImageCreateLimit]);
 
   const [containers, setContainers] = useState<HTMLElement[]>([]);
   const [followUpContainers, setFollowUpContainers] = useState<HTMLElement[]>(

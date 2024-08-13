@@ -6,15 +6,12 @@ import CopyButton from "@/content-script/components/AlternateMarkdownBlock/CopyB
 import Tooltip from "@/shared/components/Tooltip";
 import Canvas from "@/utils/Canvas";
 
-type MarkdownBlockToolbarProps = {
+type ToolbarProps = {
   lang: string;
   preBlockId: string;
 };
 
-export default function AlternateMarkdownBlockToolbar({
-  lang,
-  preBlockId,
-}: MarkdownBlockToolbarProps) {
+export default function Toolbar({ lang, preBlockId }: ToolbarProps) {
   const $pre = $(`pre#${preBlockId}`);
 
   return (

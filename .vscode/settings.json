@@ -11,11 +11,32 @@
     "**/build/**/*": true,
     "**/package/**/*": true
   },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/.hg/store/**": true,
+    "**/build/**/*": true,
+    "**/package/**/*": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true
+  },
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
   "tailwindCSS.experimental.classRegex": [
     ["addClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["toggleClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "files.associations": { "*.tw.css": "tailwindcss" },
   "npm.scriptExplorerExclude": ["preinstall"],
   "npm.exclude": ["**/build", "**/package"]
 }

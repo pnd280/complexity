@@ -43,9 +43,10 @@ export default function CollectionSelector() {
       if (whereAmI() !== "collection") return;
 
       const collectionSlug = window.location.pathname.split("/").pop();
+
       const collection = collections?.find((x) => x.url === collectionSlug);
 
-      if (!collection) return;
+      if (collection == null) return;
 
       setSelectedCollectionUuid(collection.uuid);
     };

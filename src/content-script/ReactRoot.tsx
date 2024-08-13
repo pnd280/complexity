@@ -20,16 +20,10 @@ const CanvasPanel = lazy(
   () => import("@/content-script/components/Canvas/CanvasPanel"),
 );
 const ThreadMessageStickyToolbar = lazy(
-  () =>
-    import(
-      "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar"
-    ),
+  () => import("@/content-script/components/ThreadMessageStickyToolbar"),
 );
 const AlternateMarkdownBlock = lazy(
-  () =>
-    import(
-      "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock"
-    ),
+  () => import("@/content-script/components/AlternateMarkdownBlock"),
 );
 const ThreadToc = lazy(() => import("@/content-script/components/ThreadToc"));
 

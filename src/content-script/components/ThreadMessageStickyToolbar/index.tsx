@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Updater, useImmer } from "use-immer";
 
-import ThreadMessageStickyToolbarComponents from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbarComponents";
+import Toolbar from "@/content-script/components/ThreadMessageStickyToolbar/Toolbar";
 import useThreadMessageStickyToolbarObserver from "@/content-script/hooks/useThreadMessageStickyToolbarObserver";
 import Portal from "@/shared/components/Portal";
 import UiUtils from "@/utils/UiUtils";
@@ -109,7 +109,7 @@ export default function ThreadMessageStickyToolbar() {
 
       return (
         <Portal key={index} container={container.container as HTMLElement}>
-          <ThreadMessageStickyToolbarComponents
+          <Toolbar
             containers={containers}
             containersStates={containersStates}
             containerIndex={index}

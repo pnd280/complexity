@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { useDeferredValue, useState } from "react";
 
-import AlternateMarkdownBlockToolbar from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlockToolbar";
+import Toolbar from "@/content-script/components/AlternateMarkdownBlock/Toolbar";
 import CanvasPlaceholder from "@/content-script/components/Canvas/CanvasPlaceholder";
 import useMarkdownBlockObserver from "@/content-script/hooks/useMarkdownBlockObserver";
 import Portal from "@/shared/components/Portal";
@@ -34,10 +34,7 @@ export default function AlternateMarkdownBlock() {
     if (!isMasked) {
       return (
         <Portal key={index} container={container.header}>
-          <AlternateMarkdownBlockToolbar
-            lang={container.lang}
-            preBlockId={id}
-          />
+          <Toolbar lang={container.lang} preBlockId={id} />
         </Portal>
       );
     } else if (isMasked && isCanvasLang) {

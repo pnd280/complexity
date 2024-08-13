@@ -1,7 +1,7 @@
 import { LoaderCircle } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 
-import CollectionSelector from "@/content-script/components/QueryBox/CollectionSelector/CollectionSelector";
+import CollectionSelector from "@/content-script/components/QueryBox/CollectionSelector";
 import FocusSelector from "@/content-script/components/QueryBox/FocusSelector";
 import LanguageModelSelector from "@/content-script/components/QueryBox/LanguageModelSelector";
 import KeyCombo from "@/shared/components/KeyCombo";

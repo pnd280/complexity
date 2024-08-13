@@ -2,32 +2,32 @@ import $ from "jquery";
 import { PiNotePencil } from "react-icons/pi";
 import { Updater } from "use-immer";
 
+import {
+  Container,
+  ContainerStates,
+} from "@/content-script/components/ThreadMessageStickyToolbar";
 import CopyButton from "@/content-script/components/ThreadMessageStickyToolbar/CopyButton";
 import FormatSwitch from "@/content-script/components/ThreadMessageStickyToolbar/FormatSwitch";
 import MiscMenu from "@/content-script/components/ThreadMessageStickyToolbar/MiscMenu";
 import RewriteDropdown from "@/content-script/components/ThreadMessageStickyToolbar/RewriteDropdown";
-import {
-  Container,
-  ContainerStates,
-} from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
 import ThreadTitle from "@/content-script/components/ThreadMessageStickyToolbar/ThreadTitle";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 import { scrollToElement } from "@/utils/utils";
 
-type ThreadMessageStickyToolbarComponents = {
+type ToolbarProps = {
   containerIndex: number;
   containers: Container[];
   containersStates: ContainerStates[];
   setContainersStates: Updater<ContainerStates[]>;
 };
 
-export default function ThreadMessageStickyToolbarComponents({
+export default function Toolbar({
   containerIndex,
   containers,
   containersStates,
   setContainersStates,
-}: ThreadMessageStickyToolbarComponents) {
+}: ToolbarProps) {
   // TODO: prone to changes, needs refactoring
   const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
     .find(".mt-sm.flex.items-center.justify-between")

@@ -1,32 +1,13 @@
-import $ from "jquery";
 import { Zap } from "lucide-react";
-import { useEffect } from "react";
 
 import Separator from "@/shared/components/Separator";
 import Tooltip from "@/shared/components/Tooltip";
-import ChromeStorage from "@/utils/ChromeStorage";
 import { cn } from "@/utils/cn";
-import { detectConsecutiveClicks } from "@/utils/utils";
 import packageData from "@@/package.json";
 
 const version = `beta-${packageData.version}`;
 
 export default function Footer() {
-  useEffect(() => {
-    detectConsecutiveClicks({
-      element: $("#complexity-version")[0],
-      requiredClicks: 7,
-      clickInterval: 2000,
-      callback() {
-        ChromeStorage.setStorageValue({
-          key: "secretMode",
-          value: true,
-        });
-        $("#complexity-version").text("🔓");
-      },
-    });
-  }, []);
-
   return (
     <div className="tw-flex tw-w-full tw-flex-col tw-bg-secondary tw-font-sans">
       <Separator />

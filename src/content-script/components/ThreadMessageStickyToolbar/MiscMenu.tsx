@@ -7,7 +7,7 @@ import {
   X,
 } from "lucide-react";
 
-import { Container } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+import { Container } from "@/content-script/components/ThreadMessageStickyToolbar";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -20,7 +20,6 @@ export const cplxUserSettingsSchema = z.object({
   schemaVersion: z.literal(packageData.version),
   defaultFocus: WebAccessFocusSchema.nullable(),
   defaultWebAccess: z.boolean(),
-  secretMode: z.boolean(),
   popupSettings: z.object({
     queryBoxSelectors: z.object({
       focus: z.boolean(),

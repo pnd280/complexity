@@ -7,7 +7,7 @@ import {
   useRef,
 } from "react";
 
-import { MarkdownBlockContainer } from "@/content-script/components/AlternateMarkdownBlock/AlternateMarkdownBlock";
+import { MarkdownBlockContainer } from "@/content-script/components/AlternateMarkdownBlock";
 import useWaitForMessagesContainer from "@/content-script/hooks/useWaitForMessagesContainer";
 import { preBlockAttrsContentScript } from "@/content-script/main-world/pre-block-attrs";
 import { shikiContentScript } from "@/content-script/main-world/shiki";

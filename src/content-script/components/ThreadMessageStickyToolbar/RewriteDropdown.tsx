@@ -7,7 +7,7 @@ import {
   LanguageModel,
   languageModelIcons,
 } from "@/content-script/components/QueryBox";
-import { Container } from "@/content-script/components/ThreadMessageStickyToolbar/ThreadMessageStickyToolbar";
+import { Container } from "@/content-script/components/ThreadMessageStickyToolbar";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import {
