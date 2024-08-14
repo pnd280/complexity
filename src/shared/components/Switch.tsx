@@ -1,5 +1,5 @@
 import { Switch as ArkSwitch } from "@ark-ui/react";
-import { ElementRef, forwardRef } from "react";
+import { ElementRef, forwardRef, ReactNode } from "react";
 
 import { cn } from "@/utils/cn";
 
@@ -7,7 +7,7 @@ const Switch = forwardRef<
   ElementRef<typeof ArkSwitch.Root>,
   ArkSwitch.RootProps & {
     labelClassName?: string;
-    textLabel: string;
+    textLabel: ReactNode;
   }
 >(({ textLabel, labelClassName, className, ...props }, ref) => {
   return (

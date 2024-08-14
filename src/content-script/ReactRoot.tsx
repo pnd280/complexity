@@ -4,13 +4,13 @@ import $ from "jquery";
 import { lazy, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
-import CplxSettingsMenu from "@/content-script/components/CplxSettingsMenu";
 import { IncompatibleInterfaceLanguageNotice } from "@/content-script/components/IncompatibleInterfaceLanguageNotice";
 import MainPage from "@/content-script/components/MainPage";
 import QueryBox from "@/content-script/components/QueryBox/QueryBox";
 import ThreadExportButton from "@/content-script/components/ThreadExportButton";
 import useCloudflareTimeout from "@/content-script/hooks/useCloudflareTimeout";
 import useRouter from "@/content-script/hooks/useRouter";
+import CplxUserSettingsMenu from "@/cplx-user-settings/components/CplxUserSettingsMenu";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { Toaster } from "@/shared/components/Toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
@@ -72,7 +72,7 @@ function Root() {
 
       <Toaster />
 
-      <CplxSettingsMenu />
+      <CplxUserSettingsMenu />
 
       <ReactQueryDevtools initialIsOpen={false} />
     </>

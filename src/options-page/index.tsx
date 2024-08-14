@@ -4,8 +4,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactDom from "react-dom/client";
 
+import CplxUserSettings from "@/cplx-user-settings/components/CplxUserSettings";
 import { NewVersionDialog } from "@/options-page/components/NewVersionDialog";
-import CplxUserSettings from "@/shared/components/CplxUserSettings";
 import { Toaster } from "@/shared/components/Toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
 

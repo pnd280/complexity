@@ -1,10 +1,11 @@
 import { TabsRootProps } from "@ark-ui/react";
 import { FlaskConical } from "lucide-react";
 
+import About from "@/cplx-user-settings/components/About";
+import CanvasSettings from "@/cplx-user-settings/components/CanvasSettings";
+import Changelog from "@/cplx-user-settings/components/Changelog";
+import CustomTheme from "@/cplx-user-settings/components/CustomTheme";
 import GeneralSettings from "@/cplx-user-settings/components/GeneralSettings";
-import CanvasSettings from "@/options-page/components/CanvasSettings";
-import Changelog from "@/options-page/components/Changelog";
-import CustomTheme from "@/options-page/components/CustomTheme";
 import {
   Tabs,
   TabsContent,
@@ -36,7 +37,8 @@ export default function CplxUserSettings({ ...props }: TabsRootProps) {
           <FlaskConical className="tw-mr-2 tw-size-3" /> Canvas
         </TabsTrigger>
         <TabsTrigger value="customTheme">Custom theme</TabsTrigger>
-        <TabsTrigger value="changelog">Changelog</TabsTrigger>
+        <TabsTrigger value="changelog">Release notes</TabsTrigger>
+        <TabsTrigger value="about">About</TabsTrigger>
       </TabsList>
       <div className="tw-h-full tw-w-full">
         <TabsContent value="generalSettings">
@@ -50,6 +52,9 @@ export default function CplxUserSettings({ ...props }: TabsRootProps) {
         </TabsContent>
         <TabsContent value="changelog">
           <Changelog />
+        </TabsContent>
+        <TabsContent value="about" className="tw-h-full tw-w-full">
+          <About />
         </TabsContent>
       </div>
     </Tabs>

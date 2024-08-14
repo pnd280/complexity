@@ -11,7 +11,6 @@ import {
 import Separator from "@/shared/components/Separator";
 import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
-import { cn } from "@/utils/cn";
 import { compareVersions } from "@/utils/utils";
 import packageData from "@@/package.json";
 
@@ -93,13 +92,7 @@ function SettingGroup<
       );
 
       return (
-        <div
-          key={id}
-          className={cn({
-            "tw-mb-4 tw-flex tw-flex-col tw-gap-1":
-              experimental || versionRelease === packageData.version,
-          })}
-        >
+        <div key={id}>
           <Tooltip
             content={!settingKey ? "This setting is always enabled" : ""}
             positioning={{
@@ -110,7 +103,25 @@ function SettingGroup<
             <Switch
               key={id}
               id={id}
-              textLabel={label}
+              textLabel={
+                <div className="tw-flex tw-items-center tw-gap-2">
+                  <span className="tw-flex tw-gap-2 !tw-text-foreground">
+                    {versionRelease &&
+                      compareVersions(packageData.version, versionRelease) <=
+                        0 && (
+                        <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-text-xs">
+                          new
+                        </div>
+                      )}
+                    {experimental && (
+                      <div className="tw-w-max tw-rounded-md tw-bg-destructive tw-px-2 tw-text-xs tw-text-destructive-foreground">
+                        experimental
+                      </div>
+                    )}
+                  </span>
+                  <span>{label}</span>
+                </div>
+              }
               defaultChecked={!settingKey ? true : defaultChecked}
               checked={!settingKey ? true : undefined}
               onCheckedChange={({ checked }) => {
@@ -123,19 +134,6 @@ function SettingGroup<
                 });
               }}
             />
-            <div className="tw-ml-12 tw-flex tw-gap-2">
-              {versionRelease &&
-                compareVersions(packageData.version, versionRelease) === -1 && (
-                  <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-p-1 tw-px-2 tw-text-xs tw-font-bold">
-                    New
-                  </div>
-                )}
-              {experimental && (
-                <div className="tw-w-max tw-rounded-md tw-bg-destructive tw-p-1 tw-px-2 tw-text-xs tw-font-bold tw-text-destructive-foreground">
-                  Experimental
-                </div>
-              )}
-            </div>
           </Tooltip>
         </div>
       );

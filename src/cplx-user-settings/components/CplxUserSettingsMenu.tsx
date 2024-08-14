@@ -2,8 +2,8 @@ import { useToggle } from "@uidotdev/usehooks";
 import { ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import FloatingTrigger from "@/content-script/components/CplxSettingsMenu/FloatingTrigger";
-import CplxUserSettings from "@/shared/components/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/components/CplxUserSettings";
+import FloatingTrigger from "@/cplx-user-settings/components/FloatingTrigger";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
 } from "@/shared/components/Dialog";
 import BackgroundScript from "@/utils/BackgroundScript";
 
-export default function CplxSettingsMenu() {
+export default function CplxUserSettingsMenu() {
   const [isOpen, toggleOpen] = useToggle(false);
 
   const [activeTab, setActiveTab] = useState<string>();
@@ -33,6 +33,7 @@ export default function CplxSettingsMenu() {
 
   return (
     <Dialog
+      lazyMount
       open={isOpen}
       closeOnInteractOutside={false}
       onOpenChange={({ open }) => {
