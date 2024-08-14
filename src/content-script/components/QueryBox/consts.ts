@@ -79,10 +79,6 @@ export const webAccessFocus = [
     code: "internet",
   },
   {
-    label: "Wikipedia",
-    code: "wikipedia",
-  },
-  {
     label: "Academic",
     code: "scholar",
   },
@@ -97,9 +93,5 @@ export const webAccessFocus = [
   {
     label: "Social",
     code: "reddit",
-  },
-  {
-    label: "Finance",
-    code: "finance",
   },
 ] as const;

@@ -30,8 +30,7 @@ class NextRouterProxy {
   async waitForNextjsObject(): Promise<void> {
     return new Promise((resolve) => {
       const interval = setInterval(() => {
-        if (typeof window.next !== "undefined") {
-          $(document.body).attr("nextjs-hydrated", "true");
+        if (window.next !== undefined && window.next.router !== undefined) {
           clearInterval(interval);
           resolve();
         }

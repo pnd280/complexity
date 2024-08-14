@@ -1,7 +1,7 @@
 {
   "name": "complexity",
   "displayName": "Complexity",
-  "version": "0.0.1.0",
+  "version": "0.0.0.37",
   "author": "pnd280",
   "description": "⚡ Supercharge your Perplexity.ai",
   "type": "module",
@@ -23,7 +23,7 @@
     "eslf": "eslint ./src/ --fix",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
     "zip": "pnpm build && pnpm gulp zip",
-    "clean-zip": "rm -rf node_modules/ && pnpm i && pnpm eslf && pnpm fmt && pnpm zip"
+    "clean-zip": "rm -rf node_modules/ && pnpm i && pnpm esl && pnpm fmt && pnpm zip"
   },
   "dependencies": {
     "@ark-ui/react": "^3.6.2",

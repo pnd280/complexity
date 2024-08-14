@@ -12,7 +12,11 @@ import ReactRoot from "@/content-script/ReactRoot";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiTweaks from "@/utils/UiTweaks";
-import { injectMainWorldScript, whereAmI } from "@/utils/utils";
+import {
+  injectMainWorldScript,
+  waitForStableHtml,
+  whereAmI,
+} from "@/utils/utils";
 import UxTweaks from "@/utils/UxTweaks";
 import packageData from "@@/package.json";
 
@@ -27,6 +31,8 @@ $(async function main() {
   await initCplxUserSettings();
 
   initUiUxTweaks();
+
+  await waitForStableHtml();
 
   await initMainWorldDeps();
 
@@ -51,6 +57,7 @@ async function initCplxUserSettings() {
 async function initUiUxTweaks() {
   UiTweaks.injectCustomStyles();
 
+  UxTweaks.handleAlternateSearchParams();
   UxTweaks.restoreLogoContextMenu();
 
   const observe = async (url: string) => {

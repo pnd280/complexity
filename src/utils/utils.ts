@@ -67,6 +67,14 @@ export function isValidVersionString(version: string) {
   return /^\d+\.\d+\.\d+\.\d+$/.test(version);
 }
 
+export async function waitForStableHtml() {
+  return await waitForElement({
+    selector: "html[data-color-scheme]",
+    timeout: 10000,
+    interval: 100,
+  });
+}
+
 export function escapeHtmlTags(html: string) {
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -185,16 +193,16 @@ type ParsedUrl = {
   pathname: string;
   search: string;
   hash: string;
-  queryParams: Record<string, string>;
+  queryParams: URLSearchParams;
 };
 
-export function parseUrl(url: string): ParsedUrl {
+export function parseUrl(url: string = window.location.href): ParsedUrl {
   const parsedUrl: ParsedUrl = {
     hostname: "",
     pathname: "",
     search: "",
     hash: "",
-    queryParams: {},
+    queryParams: new URLSearchParams(),
   };
 
   try {
@@ -205,9 +213,7 @@ export function parseUrl(url: string): ParsedUrl {
     parsedUrl.search = urlObject.search;
     parsedUrl.hash = urlObject.hash.slice(1);
 
-    urlObject.searchParams.forEach((value, key) => {
-      parsedUrl.queryParams[key] = value;
-    });
+    parsedUrl.queryParams = new URLSearchParams(urlObject.search);
   } catch (error) {
     console.error("Invalid URL:", error);
   }

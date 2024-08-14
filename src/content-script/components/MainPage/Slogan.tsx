@@ -31,7 +31,7 @@ export default function Slogan() {
   });
 
   useEffect(() => {
-    if (!isDomNode(element) || !$(element).length) return;
+    if (!isDomNode(element)) return;
 
     const $nativeSlogan = $(element);
 
@@ -46,7 +46,7 @@ export default function Slogan() {
       )
       .text(slogan);
 
-    $nativeSlogan.addClass("!tw-opacity-100 tw-transition-all tw-duration-300");
+    $nativeSlogan.addClass("!tw-opacity-100");
 
     setContainer($nativeSlogan[0] as HTMLElement);
   }, [element, isWaiting, slogan]);

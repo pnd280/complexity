@@ -54,7 +54,7 @@ export default function CplxUserSettingsMenu() {
           onClick={() => {
             BackgroundScript.sendMessage({
               action: "openExtensionPage",
-              payload: "?tab=" + activeTab,
+              payload: "?tab=" + (activeTab ?? "generalSettings"),
             });
           }}
         >

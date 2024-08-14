@@ -76,7 +76,6 @@ export default class GeneralSettings {
       id: "file-dropable-thread-wrapper",
       label: "Drop to upload files within thread",
       settingKey: "fileDropableThreadWrapper",
-      experimental: true,
       versionRelease: "0.0.1.0",
     },
   ];

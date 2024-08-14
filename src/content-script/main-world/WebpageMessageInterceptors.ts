@@ -1,4 +1,7 @@
-import { LanguageModel } from "@/content-script/components/QueryBox";
+import {
+  LanguageModel,
+  WebAccessFocus,
+} from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
@@ -215,9 +218,11 @@ export default class WebpageMessageInterceptor {
   static alterNextQuery({
     languageModel,
     proSearchState,
+    focus,
   }: {
-    languageModel: LanguageModel["code"];
+    languageModel?: LanguageModel["code"];
     proSearchState?: boolean;
+    focus?: WebAccessFocus["code"];
   }) {
     return webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {
@@ -230,23 +235,29 @@ export default class WebpageMessageInterceptor {
 
         if (!isParsedWsMessage(parsedPayload)) return { match: false };
 
-        if (parsedPayload.event !== "perplexity_ask") {
+        if (
+          parsedPayload.event !== "perplexity_ask" ||
+          parsedPayload.data[1].query_source === "default_search"
+        ) {
           return { match: false };
         }
+
+        const { webAccess } = queryBoxStore.getState();
+
+        const newFocus = proSearchState
+          ? webAccess.focus
+          : (focus ?? (webAccess.allowWebAccess ? webAccess.focus : "writing"));
 
         parsedPayload.data[1] = {
           ...parsedPayload.data[1],
           model_preference: languageModel,
           mode: proSearchState ? "copilot" : parsedPayload.data[1].mode,
-          search_focus: proSearchState
-            ? queryBoxStore.getState().webAccess.focus
-            : parsedPayload.data[1].search_focus,
+          search_focus: newFocus,
+          redo_search: newFocus === "writing" ? true : undefined,
         };
 
         return {
-          match:
-            parsedPayload.event === "perplexity_ask" &&
-            parsedPayload.data?.[1].query_source === "retry",
+          match: parsedPayload.event === "perplexity_ask",
           args: [
             {
               newPayload: WsMessageParser.stringify(parsedPayload),
@@ -261,6 +272,8 @@ export default class WebpageMessageInterceptor {
         return { ...messageData, payload: { payload: args[0].newPayload } };
       },
       stopCondition: () => true,
+      timeout: 5000,
+      stopPropagation: true,
     });
   }
 

@@ -14,6 +14,16 @@ import {
 } from "@/shared/components/Tabs";
 import useQueryParams from "@/shared/hooks/useQueryParams";
 
+const tabs = [
+  "generalSettings",
+  "canvas",
+  "customTheme",
+  "changelog",
+  "about",
+] as const;
+
+type Tab = (typeof tabs)[number];
+
 export default function CplxUserSettings({ ...props }: TabsRootProps) {
   const [queryParams, setQueryParams] = useQueryParams<{
     tab: string;
@@ -22,7 +32,11 @@ export default function CplxUserSettings({ ...props }: TabsRootProps) {
   return (
     <Tabs
       defaultValue={"generalSettings"}
-      value={queryParams.tab ?? "generalSettings"}
+      value={
+        tabs.includes(queryParams.tab as Tab)
+          ? queryParams.tab
+          : "generalSettings"
+      }
       activationMode="manual"
       orientation="vertical"
       className="tw-flex tw-h-full tw-w-full tw-gap-4 tw-font-sans"

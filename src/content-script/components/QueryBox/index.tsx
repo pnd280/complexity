@@ -1,4 +1,4 @@
-import { BadgePercent, Library, TrendingUp } from "lucide-react";
+import { BadgePercent, Library } from "lucide-react";
 import { AiOutlineOpenAI } from "react-icons/ai";
 import { BiNetworkChart } from "react-icons/bi";
 import { PiGlobe } from "react-icons/pi";
@@ -7,7 +7,6 @@ import {
   SiGooglegemini,
   SiMeta,
   SiPerplexity,
-  SiWikipedia,
   SiYoutube,
 } from "react-icons/si";
 
@@ -62,10 +61,8 @@ export type WebAccessFocus = (typeof webAccessFocus)[number];
 export const webAccessFocusIcons: Record<WebAccessFocus["code"], JSX.Element> =
   {
     internet: <PiGlobe className="tw-size-4" />,
-    wikipedia: <SiWikipedia className="tw-size-4" />,
     scholar: <Library className="tw-size-4" />,
     wolfram: <BadgePercent className="tw-size-4" />,
     youtube: <SiYoutube className="tw-size-4" />,
     reddit: <BiNetworkChart className="tw-size-4" />,
-    finance: <TrendingUp className="tw-size-4" />,
   };

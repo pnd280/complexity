@@ -92,6 +92,10 @@ class WebpageMessenger {
         }
 
         newMessageData = responsePayload;
+
+        if (interceptor.stopPropagation) {
+          break;
+        }
       }
     }
 
@@ -220,6 +224,7 @@ class WebpageMessenger {
     callback,
     stopCondition,
     timeout,
+    stopPropagation,
   }: AddInterceptorParams<K, T, J>) {
     const identifier = `interceptor_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 
@@ -228,6 +233,7 @@ class WebpageMessenger {
       callback,
       stopCondition,
       identifier,
+      stopPropagation,
     });
 
     const removeInterceptor = () => {

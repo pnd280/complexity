@@ -22,7 +22,7 @@ class WsHook {
   }
 
   initialize(): void {
-    this.proxyXMLHttpRequest(); // TODO: needs to be investigated to see if it's causing issues with search params
+    this.proxyXMLHttpRequest();
     this.passivelyCaptureWebSocket();
 
     webpageMessenger.onMessage("sendWebSocketMessage", async (data) => {

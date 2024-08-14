@@ -311,7 +311,3 @@ html {
     bottom: 0.3rem !important;
   }
 }
-
-.mb-lg.flex.items-center.justify-center.pb-xs.md\:text-center {
-  opacity: 0;
-}

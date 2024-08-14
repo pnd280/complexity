@@ -1,10 +1,14 @@
 import $ from "jquery";
 
+import { WebAccessFocus } from "@/content-script/components/QueryBox";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
+import { globalStore } from "@/content-script/session-store/global";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";
-import { whereAmI } from "@/utils/utils";
+import { parseUrl, whereAmI } from "@/utils/utils";
 
-export default class uxTweaks {
+export default class UxTweaks {
   static dropFileWithinThread(location: ReturnType<typeof whereAmI>) {
     if (
       !CplxUserSettings.get().generalSettings.qolTweaks
@@ -64,5 +68,63 @@ export default class uxTweaks {
     $logo.on("contextmenu", function (e) {
       e.stopPropagation();
     });
+  }
+
+  static handleAlternateSearchParams() {
+    const queryParams = parseUrl().queryParams;
+
+    const route = (url: string) => {
+      webpageMessenger.sendMessage({
+        event: "routeToPage",
+        payload: {
+          url,
+          scroll: false,
+        },
+      });
+    };
+
+    if (!queryParams.has("qq")) return;
+
+    WebpageMessageInterceptor.alterNextQuery({
+      proSearchState: queryParams.has("copilot"),
+      focus: (queryParams.get("focus") ?? "internet") as WebAccessFocus["code"],
+    });
+
+    queryParams.set("q", queryParams.get("qq")!);
+    queryParams.delete("qq");
+
+    const newUrl = `/?${queryParams.toString()}`;
+
+    const { isLongPollingCaptured, isWebSocketCaptured } =
+      globalStore.getState();
+
+    if (isLongPollingCaptured && isWebSocketCaptured) {
+      return route(newUrl);
+    }
+
+    let redirectTimeout = window.setTimeout(() => {
+      cleanup();
+      if (!redirectTimeout) return;
+      route(newUrl);
+    }, 5000);
+
+    const unsubscribe = globalStore.subscribe(
+      ({ isLongPollingCaptured, isWebSocketCaptured }) => {
+        if (!redirectTimeout) return cleanup();
+
+        if (isLongPollingCaptured && isWebSocketCaptured) {
+          cleanup();
+          route(newUrl);
+        }
+      },
+    );
+
+    const cleanup = () => {
+      if (redirectTimeout) {
+        clearTimeout(redirectTimeout);
+        redirectTimeout = 0;
+      }
+      unsubscribe();
+    };
   }
 }
