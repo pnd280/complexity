@@ -132,11 +132,9 @@ const DialogContentWrapper = ({
   };
 
   return (
-    <DialogContent className="!tw-flex tw-max-w-full tw-flex-col tw-justify-start tw-font-sans xl:tw-max-w-[40vw]">
-      <DialogHeader>
-        <DialogHeader className="tw-text-3xl">Edit Collection</DialogHeader>
-        <Separator />
-      </DialogHeader>
+    <DialogContent className="!tw-flex tw-w-full tw-flex-col tw-justify-start tw-font-sans xl:tw-w-[40vw]">
+      <DialogHeader className="tw-text-3xl">Edit Collection</DialogHeader>
+      <Separator />
       <Form {...form}>
         <form
           ref={formRef}

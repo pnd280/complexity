@@ -118,12 +118,14 @@ function UserProfileActions({
   const { isUpdatingUserAiProfile, updateUserAiProfile } =
     useUpdateUserAiProfile();
 
+  if (!userAiProfile || isUserAiProfileLoading) return null;
+
   return (
     <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
       <Tooltip
         className="tw-max-h-[200px] tw-truncate"
-        content={userAiProfile?.bio}
-        disabled={!userAiProfile?.bio}
+        content={userAiProfile.bio}
+        disabled={!userAiProfile.bio}
         positioning={{
           placement: "right",
           gutter: 60,
@@ -142,7 +144,7 @@ function UserProfileActions({
       </Tooltip>
       <Tooltip
         content={
-          userAiProfile?.disabled ? "Enable AI profile" : "Disable AI profile"
+          userAiProfile.disabled ? "Enable AI profile" : "Disable AI profile"
         }
       >
         <div
@@ -161,20 +163,14 @@ function UserProfileActions({
             }
 
             updateUserAiProfile({
-              disabled: !userAiProfile?.disabled,
+              disabled: !userAiProfile.disabled,
             });
           }}
         >
-          {isUserAiProfileLoading ? (
-            <LoaderCircle className="tw-size-3 tw-animate-spin" />
+          {userAiProfile.disabled ? (
+            <Play className="tw-size-3" />
           ) : (
-            <>
-              {userAiProfile?.disabled ? (
-                <Play className="tw-size-3" />
-              ) : (
-                <Pause className="tw-size-3" />
-              )}
-            </>
+            <Pause className="tw-size-3" />
           )}
         </div>
       </Tooltip>

@@ -45,7 +45,7 @@ const DialogContent: React.FC<ArkDialog.ContentProps> = ({
       <ArkDialog.Positioner>
         <ArkDialog.Content
           className={cn(
-            "tw-pointer-events-auto tw-fixed tw-left-[50%] tw-top-[50%] tw-z-50 tw-grid tw-w-full tw-max-w-lg tw-translate-x-[-50%] tw-translate-y-[-50%] tw-gap-4 tw-border tw-bg-background tw-p-6 tw-shadow-lg tw-duration-200",
+            "tw-pointer-events-auto tw-fixed tw-left-[50%] tw-top-[50%] tw-z-50 tw-grid tw-translate-x-[-50%] tw-translate-y-[-50%] tw-gap-4 tw-border tw-bg-background tw-p-6 tw-shadow-lg tw-duration-200",
             "data-[state=open]:tw-animate-in data-[state=open]:tw-fade-in-0",
             "data-[state=closed]:tw-animate-out data-[state=closed]:tw-fade-out-0",
             "data-[state=closed]:tw-zoom-out-95 data-[state=open]:tw-zoom-in-95",

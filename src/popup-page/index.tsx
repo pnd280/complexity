@@ -15,7 +15,7 @@ ReactDom.createRoot(document.getElementById("app") as HTMLElement).render(
     <div className="tw-w-[350px] tw-font-sans">
       <DiscordCallout />
       <Separator />
-      <div className="tw-h-[250px]">
+      <div className="tw-h-[250px] tw-overflow-auto tw-p-4">
         <PopupSettings context="popup" />
       </div>
       <Footer />

@@ -18,21 +18,18 @@ const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
 export default function PopupSettings({
   context,
 }: {
-  context?: "popup" | "options";
+  context?: "popup" | "in-page";
 }) {
   return (
-    <main className="tw-relative tw-h-full tw-w-full tw-flex-col tw-overflow-auto tw-bg-background tw-font-sans !tw-text-[1em] tw-text-foreground">
-      <div className="tw-overflow-auto tw-px-4 tw-py-2">
-        <div className="tw-mb-4 tw-mt-2 tw-w-full tw-text-sm tw-text-yellow-300">
-          Change(s) requires a full page reload!
-        </div>
+    <main className="tw-h-full tw-w-full tw-flex-col tw-bg-background tw-font-sans !tw-text-[1em] tw-text-foreground">
+      <div>
         <div className="tw-mb-4 tw-flex tw-flex-col tw-gap-4">
           <div className="tw-flex tw-flex-col tw-gap-2">
             <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
               Query box Selectors
             </div>
             <Separator />
-            <RenderSettings
+            <SettingGroup
               settings={queryBoxSelectors}
               settingStoreKey="queryBoxSelectors"
             />
@@ -42,14 +39,14 @@ export default function PopupSettings({
               QoL tweaks
             </div>
             <Separator />
-            <RenderSettings settings={qolTweaks} settingStoreKey="qolTweaks" />
+            <SettingGroup settings={qolTweaks} settingStoreKey="qolTweaks" />
           </div>
           <div className="tw-flex tw-flex-col tw-gap-2">
             <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
               Visual tweaks
             </div>
             <Separator />
-            <RenderSettings
+            <SettingGroup
               settings={visualTweaks}
               settingStoreKey="visualTweaks"
             />
@@ -58,7 +55,7 @@ export default function PopupSettings({
 
         {context === "popup" ? (
           <div
-            className="tw-ml-auto tw-flex tw-w-max tw-cursor-pointer tw-items-center tw-gap-1 hover:tw-underline"
+            className="tw-ml-auto tw-flex tw-w-max tw-cursor-pointer tw-items-center tw-gap-1 tw-pb-4 hover:tw-underline"
             onClick={() => {
               chrome.runtime.openOptionsPage();
               window.close();
@@ -77,7 +74,7 @@ export default function PopupSettings({
   );
 }
 
-function RenderSettings<
+function SettingGroup<
   T extends PopupSetting<PopupSettingKeys>,
   K extends keyof CplxUserSettings["popupSettings"],
 >({ settings, settingStoreKey }: { settings: T[]; settingStoreKey: K }) {

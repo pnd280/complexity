@@ -4,6 +4,7 @@ import $ from "jquery";
 import { lazy, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
+import CplxSettingsMenu from "@/content-script/components/CplxSettingsMenu";
 import { IncompatibleInterfaceLanguageNotice } from "@/content-script/components/IncompatibleInterfaceLanguageNotice";
 import MainPage from "@/content-script/components/MainPage";
 import QueryBox from "@/content-script/components/QueryBox/QueryBox";
@@ -70,6 +71,9 @@ function Root() {
       {location === "thread" && <ThreadComponents />}
 
       <Toaster />
+
+      <CplxSettingsMenu />
+
       <ReactQueryDevtools initialIsOpen={false} />
     </>
   );

@@ -25,7 +25,7 @@ export function NewVersionDialog() {
         </div>
         <div className="tw-flex tw-items-center tw-justify-center tw-gap-2">
           <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-1">
-            <div>Restart the browser to trigger the update.</div>
+            <div>Restart the browser to trigger the auto-update.</div>
             <div className="tw-flex tw-items-center tw-gap-1">
               Not working?{" "}
               <a

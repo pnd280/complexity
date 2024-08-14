@@ -20,8 +20,15 @@ chrome.runtime.onMessage.addListener(
     sendResponse: (response: any) => void,
   ) => {
     const action: BackgroundAction = message.action;
+    const payload = message.payload;
 
     switch (action) {
+      case "openExtensionPage":
+        chrome.tabs.create({
+          url:
+            chrome.runtime.getURL("/page/options.html") + (payload as string),
+        });
+        break;
       case "openChangelog":
         chrome.tabs.create({
           url: chrome.runtime.getURL("/page/options.html") + "?tab=changelog",
@@ -50,4 +57,10 @@ chrome.runtime.onMessage.addListener((message) => {
       saveAs: true,
     });
   }
+});
+
+chrome.action.onClicked.addListener(() => {
+  chrome.tabs.create({
+    url: "https://perplexity.ai"
+  });
 });

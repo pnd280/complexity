@@ -86,7 +86,7 @@ export default function UserProfileEditDialog({
       open={open}
       onOpenChange={({ open }) => onOpenChange(open)}
     >
-      <DialogContent className="!tw-flex tw-h-[50vh] tw-max-h-[900px] tw-max-w-full tw-flex-grow tw-flex-col tw-justify-start tw-font-sans xl:tw-max-w-[50vw]">
+      <DialogContent className="!tw-flex tw-h-[50vh] tw-max-h-[900px] tw-w-full tw-flex-grow tw-flex-col tw-justify-start tw-font-sans xl:tw-w-[50vw]">
         <DialogHeader>
           <DialogHeader className="tw-text-3xl">Edit User Profile</DialogHeader>
           <Separator />

@@ -1,12 +1,16 @@
-export type BackgroundAction = "openChangelog" | "openCustomTheme" | "getTabId";
+export type BackgroundAction =
+  | "openExtensionPage"
+  | "openChangelog"
+  | "openCustomTheme"
+  | "getTabId";
 
 export default class BackgroundScript {
-  static async sendMessage({
+  static async sendMessage<T>({
     action,
     payload,
   }: {
     action: BackgroundAction;
-    payload?: any;
+    payload?: T;
   }) {
     return await chrome.runtime.sendMessage({ action, payload });
   }
