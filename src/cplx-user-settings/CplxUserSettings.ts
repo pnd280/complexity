@@ -1,11 +1,11 @@
 import { produce } from "immer";
 import { merge } from "lodash-es";
 
-import { toast } from "@/shared/toast";
 import {
   cplxUserSettingsSchema,
   type CplxUserSettings as CplxUserSettingsType,
-} from "@/types/cplx-user-settings.types";
+} from "@/cplx-user-settings/types/cplx-user-settings.types";
+import { toast } from "@/shared/toast";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { compareVersions, isValidVersionString } from "@/utils/utils";
 import packageData from "@@/package.json";
@@ -16,7 +16,7 @@ export default class CplxUserSettings {
     customTheme: {},
     defaultFocus: "internet",
     defaultWebAccess: false,
-    popupSettings: {
+    generalSettings: {
       queryBoxSelectors: {
         focus: false,
         languageModel: false,

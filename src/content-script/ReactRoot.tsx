@@ -11,7 +11,7 @@ import QueryBox from "@/content-script/components/QueryBox/QueryBox";
 import ThreadExportButton from "@/content-script/components/ThreadExportButton";
 import useCloudflareTimeout from "@/content-script/hooks/useCloudflareTimeout";
 import useRouter from "@/content-script/hooks/useRouter";
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { Toaster } from "@/shared/components/Toaster";
 import { queryClient } from "@/utils/ts-query-query-client";
 import { whereAmI } from "@/utils/utils";
@@ -47,7 +47,7 @@ function Root() {
 
   useCloudflareTimeout({
     enabled:
-      CplxUserSettings.get().popupSettings.qolTweaks
+      CplxUserSettings.get().generalSettings.qolTweaks
         .autoRefreshSessionTimeout && !$(document.body).hasClass("no-js"),
   });
 
@@ -89,7 +89,7 @@ function MainPageComponents() {
 }
 
 function ThreadComponents() {
-  const settings = CplxUserSettings.get().popupSettings.qolTweaks;
+  const settings = CplxUserSettings.get().generalSettings.qolTweaks;
 
   return (
     <>

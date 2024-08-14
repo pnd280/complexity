@@ -20,7 +20,7 @@ export const cplxUserSettingsSchema = z.object({
   schemaVersion: z.literal(packageData.version),
   defaultFocus: WebAccessFocusSchema.nullable(),
   defaultWebAccess: z.boolean(),
-  popupSettings: z.object({
+  generalSettings: z.object({
     queryBoxSelectors: z.object({
       focus: z.boolean(),
       languageModel: z.boolean(),
@@ -55,4 +55,6 @@ export const cplxUserSettingsSchema = z.object({
 
 export type CplxUserSettings = z.infer<typeof cplxUserSettingsSchema>;
 
-export type PopupSettingKeys = NestedKeys<CplxUserSettings["popupSettings"]>;
+export type GeneralSettingsKeys = NestedKeys<
+  CplxUserSettings["generalSettings"]
+>;

@@ -1,13 +1,13 @@
 import { CircleHelp, HelpCircle } from "lucide-react";
 
 import { canvasLangs } from "@/content-script/components/Canvas/langs";
-import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
+import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSettings";
 import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
 import { CanvasLang } from "@/utils/Canvas";
 
 export default function CanvasSettings() {
-  const { settings, updateSettings } = usePopupSettings();
+  const { settings, updateSettings } = useCplxGeneralSettings();
 
   if (!settings) return null;
 
@@ -96,7 +96,7 @@ function CanvasSettingBlock({
   trigger,
   description,
 }: CanvasSettingBlockProps) {
-  const { settings, updateSettings } = usePopupSettings();
+  const { settings, updateSettings } = useCplxGeneralSettings();
 
   if (!settings) return null;
 

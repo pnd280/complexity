@@ -2,7 +2,7 @@ import $ from "jquery";
 import { Dispatch, SetStateAction, useEffect } from "react";
 
 import useRouter from "@/content-script/hooks/useRouter";
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { cn } from "@/utils/cn";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiUtils from "@/utils/UiUtils";
@@ -99,8 +99,9 @@ function observeMainQueryBox({
   $buttonBar.addClass(() =>
     cn("tw-col-span-3 tw-col-start-1 !tw-col-end-4 tw-flex-wrap tw-gap-y-1", {
       "tw-mr-[7rem]":
-        !CplxUserSettings.get().popupSettings.queryBoxSelectors.focus,
-      "tw-mr-10": CplxUserSettings.get().popupSettings.queryBoxSelectors.focus,
+        !CplxUserSettings.get().generalSettings.queryBoxSelectors.focus,
+      "tw-mr-10":
+        CplxUserSettings.get().generalSettings.queryBoxSelectors.focus,
     }),
   );
 
@@ -108,7 +109,7 @@ function observeMainQueryBox({
     ":not(.mr-xs.flex.shrink-0.items-center)",
   );
 
-  if (CplxUserSettings.get().popupSettings.queryBoxSelectors.focus) {
+  if (CplxUserSettings.get().generalSettings.queryBoxSelectors.focus) {
     $buttonBarChildren.first().addClass("hidden");
   }
 
@@ -195,7 +196,7 @@ function alterAttachButton() {
 }
 
 function interceptPasteEvent() {
-  if (!CplxUserSettings.get().popupSettings.qolTweaks.noFileCreationOnPaste)
+  if (!CplxUserSettings.get().generalSettings.qolTweaks.noFileCreationOnPaste)
     return;
 
   const $textarea = UiUtils.getActiveQueryBoxTextarea({});

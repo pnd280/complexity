@@ -1,21 +1,23 @@
 import { ExternalLink } from "lucide-react";
 
-import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
-import popupSettings, { PopupSetting } from "@/popup-page/PopupSettings";
+import generalSettings, {
+  PopupSetting,
+} from "@/cplx-user-settings/GeneralSettings";
+import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSettings";
+import {
+  CplxUserSettings,
+  GeneralSettingsKeys,
+} from "@/cplx-user-settings/types/cplx-user-settings.types";
 import Separator from "@/shared/components/Separator";
 import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
-import {
-  CplxUserSettings,
-  PopupSettingKeys,
-} from "@/types/cplx-user-settings.types";
 import { cn } from "@/utils/cn";
 import { compareVersions } from "@/utils/utils";
 import packageData from "@@/package.json";
 
-const { queryBoxSelectors, qolTweaks, visualTweaks } = popupSettings;
+const { queryBoxSelectors, qolTweaks, visualTweaks } = generalSettings;
 
-export default function PopupSettings({
+export default function GeneralSettings({
   context,
 }: {
   context?: "popup" | "in-page";
@@ -75,10 +77,10 @@ export default function PopupSettings({
 }
 
 function SettingGroup<
-  T extends PopupSetting<PopupSettingKeys>,
-  K extends keyof CplxUserSettings["popupSettings"],
+  T extends PopupSetting<GeneralSettingsKeys>,
+  K extends keyof CplxUserSettings["generalSettings"],
 >({ settings, settingStoreKey }: { settings: T[]; settingStoreKey: K }) {
-  const { settings: userSettings, updateSettings } = usePopupSettings();
+  const { settings: userSettings, updateSettings } = useCplxGeneralSettings();
 
   if (!userSettings) return null;
 
@@ -86,7 +88,7 @@ function SettingGroup<
     ({ id, label, settingKey, experimental, versionRelease, onClick }) => {
       const defaultChecked = Boolean(
         userSettings[settingStoreKey]?.[
-          settingKey as keyof CplxUserSettings["popupSettings"][K]
+          settingKey as keyof CplxUserSettings["generalSettings"][K]
         ],
       );
 
@@ -115,9 +117,9 @@ function SettingGroup<
                 if (!settingKey) return onClick?.();
                 updateSettings(settingStoreKey, (draft) => {
                   draft[
-                    settingKey as keyof CplxUserSettings["popupSettings"][K]
+                    settingKey as keyof CplxUserSettings["generalSettings"][K]
                   ] =
-                    checked as CplxUserSettings["popupSettings"][K][keyof CplxUserSettings["popupSettings"][K]];
+                    checked as CplxUserSettings["generalSettings"][K][keyof CplxUserSettings["generalSettings"][K]];
                 });
               }}
             />

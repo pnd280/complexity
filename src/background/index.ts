@@ -1,4 +1,4 @@
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { BackgroundAction } from "@/utils/BackgroundScript";
 
 if (!import.meta.env.DEV) {
@@ -61,6 +61,6 @@ chrome.runtime.onMessage.addListener((message) => {
 
 chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({
-    url: "https://perplexity.ai"
+    url: "https://perplexity.ai",
   });
 });

@@ -1,7 +1,7 @@
 import { LanguageModel } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { Collection, CollectionSchema } from "@/types/collection.types";
 import {
   CollectionsApiResponse,
@@ -166,19 +166,19 @@ export default class WebpageMessageInterceptor {
         }
 
         const newModelPreference =
-          CplxUserSettings.get().popupSettings.queryBoxSelectors
+          CplxUserSettings.get().generalSettings.queryBoxSelectors
             .languageModel && parsedPayload.data?.[1].query_source !== "retry"
             ? queryBoxStore.getState().selectedLanguageModel
             : parsedPayload.data[1].model_preference;
 
-        const newSearchFocus = CplxUserSettings.get().popupSettings
+        const newSearchFocus = CplxUserSettings.get().generalSettings
           .queryBoxSelectors.focus
           ? queryBoxStore.getState().webAccess.allowWebAccess
             ? queryBoxStore.getState().webAccess.focus
             : "writing"
           : parsedPayload.data[1].search_focus;
 
-        const newTargetCollectionUuid = CplxUserSettings.get().popupSettings
+        const newTargetCollectionUuid = CplxUserSettings.get().generalSettings
           .queryBoxSelectors.collection
           ? parsedPayload.data[1].query_source === "home" ||
             parsedPayload.data[1].query_source === "modal"
@@ -424,7 +424,8 @@ export default class WebpageMessageInterceptor {
   }
 
   static blockTelemetry() {
-    if (!CplxUserSettings.get().popupSettings.qolTweaks.blockTelemetry) return;
+    if (!CplxUserSettings.get().generalSettings.qolTweaks.blockTelemetry)
+      return;
 
     webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {

@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";
 import { jsonUtils, whereAmI } from "@/utils/utils";
 
@@ -77,7 +77,7 @@ export default class UiTweaks {
   }
 
   static async applySettingsAsHTMLAttrs(location: ReturnType<typeof whereAmI>) {
-    const settings = CplxUserSettings.get().popupSettings;
+    const settings = CplxUserSettings.get().generalSettings;
 
     $(document.body)
       .toggleClass(

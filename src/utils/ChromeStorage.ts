@@ -1,4 +1,4 @@
-import { CplxUserSettings } from "@/types/cplx-user-settings.types";
+import { CplxUserSettings } from "@/cplx-user-settings/types/cplx-user-settings.types";
 
 export default class ChromeStorage {
   static async getStorageValue<T extends keyof CplxUserSettings>(key: T) {

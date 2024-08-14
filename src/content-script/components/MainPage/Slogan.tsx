@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import { useGlobalStore } from "@/content-script/session-store/global";
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Portal from "@/shared/components/Portal";
 import { cn } from "@/utils/cn";
 import { isDomNode } from "@/utils/utils";

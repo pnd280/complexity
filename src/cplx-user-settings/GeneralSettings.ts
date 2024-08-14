@@ -1,4 +1,4 @@
-import { CplxUserSettings } from "@/types/cplx-user-settings.types";
+import { CplxUserSettings } from "@/cplx-user-settings/types/cplx-user-settings.types";
 import BackgroundScript from "@/utils/BackgroundScript";
 
 export type PopupSetting<T> = {
@@ -10,9 +10,9 @@ export type PopupSetting<T> = {
   onClick?: () => void;
 };
 
-export default class PopupSettings {
+export default class GeneralSettings {
   static queryBoxSelectors: PopupSetting<
-    keyof CplxUserSettings["popupSettings"]["queryBoxSelectors"]
+    keyof CplxUserSettings["generalSettings"]["queryBoxSelectors"]
   >[] = [
     {
       id: "focus-selector",
@@ -37,7 +37,7 @@ export default class PopupSettings {
   ];
 
   static qolTweaks: PopupSetting<
-    keyof CplxUserSettings["popupSettings"]["qolTweaks"]
+    keyof CplxUserSettings["generalSettings"]["qolTweaks"]
   >[] = [
     {
       id: "block-telemetry",
@@ -82,7 +82,7 @@ export default class PopupSettings {
   ];
 
   static visualTweaks: PopupSetting<
-    keyof CplxUserSettings["popupSettings"]["visualTweaks"]
+    keyof CplxUserSettings["generalSettings"]["visualTweaks"]
   >[] = [
     {
       id: "collapse-empty-visual-columns",

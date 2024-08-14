@@ -1,13 +1,14 @@
 import $ from "jquery";
 
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
 
 export default class uxTweaks {
   static dropFileWithinThread(location: ReturnType<typeof whereAmI>) {
     if (
-      !CplxUserSettings.get().popupSettings.qolTweaks.fileDropableThreadWrapper
+      !CplxUserSettings.get().generalSettings.qolTweaks
+        .fileDropableThreadWrapper
     )
       return;
 

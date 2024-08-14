@@ -1,10 +1,10 @@
 import { TabsRootProps } from "@ark-ui/react";
 import { FlaskConical } from "lucide-react";
 
+import GeneralSettings from "@/cplx-user-settings/components/GeneralSettings";
 import CanvasSettings from "@/options-page/components/CanvasSettings";
 import Changelog from "@/options-page/components/Changelog";
 import CustomTheme from "@/options-page/components/CustomTheme";
-import PopupSettings from "@/popup-page/components/PopupSettings";
 import {
   Tabs,
   TabsContent,
@@ -20,8 +20,8 @@ export default function CplxUserSettings({ ...props }: TabsRootProps) {
 
   return (
     <Tabs
-      defaultValue={"popupSettings"}
-      value={queryParams.tab ?? "popupSettings"}
+      defaultValue={"generalSettings"}
+      value={queryParams.tab ?? "generalSettings"}
       activationMode="manual"
       orientation="vertical"
       className="tw-flex tw-h-full tw-w-full tw-gap-4 tw-font-sans"
@@ -31,7 +31,7 @@ export default function CplxUserSettings({ ...props }: TabsRootProps) {
       {...props}
     >
       <TabsList className="tw-sticky tw-top-0 tw-bg-transparent">
-        <TabsTrigger value="popupSettings">General</TabsTrigger>
+        <TabsTrigger value="generalSettings">General</TabsTrigger>
         <TabsTrigger value="canvas">
           <FlaskConical className="tw-mr-2 tw-size-3" /> Canvas
         </TabsTrigger>
@@ -39,8 +39,8 @@ export default function CplxUserSettings({ ...props }: TabsRootProps) {
         <TabsTrigger value="changelog">Changelog</TabsTrigger>
       </TabsList>
       <div className="tw-h-full tw-w-full">
-        <TabsContent value="popupSettings">
-          <PopupSettings />
+        <TabsContent value="generalSettings">
+          <GeneralSettings />
         </TabsContent>
         <TabsContent value="canvas">
           <CanvasSettings />

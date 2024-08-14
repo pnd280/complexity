@@ -9,7 +9,7 @@ import { webpageMessenger } from "@/content-script/main-world/webpage-messenger"
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import WebpageMessageListeners from "@/content-script/main-world/WebpageMessageListeners";
 import ReactRoot from "@/content-script/ReactRoot";
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiTweaks from "@/utils/UiTweaks";
 import { injectMainWorldScript, whereAmI } from "@/utils/utils";
@@ -70,7 +70,7 @@ async function initUiUxTweaks() {
 }
 
 async function initMainWorldDeps() {
-  const settings = CplxUserSettings.get().popupSettings;
+  const settings = CplxUserSettings.get().generalSettings;
 
   await Promise.all([
     injectMainWorldScript({

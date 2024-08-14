@@ -8,7 +8,7 @@ import useInitQueryBoxSessionStore from "@/content-script/hooks/useInitQueryBoxS
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
 import { useGlobalStore } from "@/content-script/session-store/global";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
-import usePopupSettings from "@/popup-page/hooks/usePopupSettings";
+import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSettings";
 import Portal from "@/shared/components/Portal";
 
 export default function QueryBox() {
@@ -16,7 +16,7 @@ export default function QueryBox() {
     (state) => state.isWebSocketCaptured || state.isLongPollingCaptured,
   );
 
-  const { settings } = usePopupSettings();
+  const { settings } = useCplxGeneralSettings();
 
   const { focus, imageGenModel, languageModel, collection } =
     settings?.queryBoxSelectors || {};

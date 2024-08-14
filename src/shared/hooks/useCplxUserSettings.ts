@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import CplxUserSettings from "@/lib/CplxUserSettings";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { queryClient } from "@/utils/ts-query-query-client";
 
 export default function useCplxUserSettings() {
