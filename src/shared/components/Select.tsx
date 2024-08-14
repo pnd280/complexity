@@ -163,7 +163,7 @@ const SelectItem = forwardRef<
     <ArkSelect.Item
       ref={ref}
       className={cn(
-        "tw-relative tw-flex tw-w-full tw-cursor-pointer tw-select-none tw-items-center tw-rounded-sm tw-px-2 tw-py-1.5 tw-text-sm tw-outline-none",
+        "tw-relative tw-flex tw-cursor-pointer tw-select-none tw-items-center tw-rounded-sm tw-px-2 tw-py-1.5 tw-text-sm tw-outline-none",
         "data-[disabled]:tw-pointer-events-none data-[disabled]:tw-opacity-50",
         "data-[highlighted]:tw-bg-accent data-[highlighted]:tw-text-accent-foreground",
         "data-[state=checked]:tw-text-accent-foreground",

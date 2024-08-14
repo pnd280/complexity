@@ -105,11 +105,11 @@ function SettingGroup<
               id={id}
               textLabel={
                 <div className="tw-flex tw-items-center tw-gap-2">
-                  <span className="tw-flex tw-gap-2 !tw-text-foreground">
+                  <span className="tw-flex tw-gap-2">
                     {versionRelease &&
                       compareVersions(packageData.version, versionRelease) <=
                         0 && (
-                        <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-text-xs">
+                        <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-text-xs tw-text-background dark:tw-text-foreground">
                           new
                         </div>
                       )}

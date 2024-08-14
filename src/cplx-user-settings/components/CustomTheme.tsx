@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Check } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import AccentColorSelector from "@/cplx-user-settings/components/AccentColorSelector";
 import Button from "@/shared/components/Button";
 import {
   Form,
@@ -16,6 +17,7 @@ import {
 } from "@/shared/components/Form";
 import Input from "@/shared/components/Input";
 import Textarea from "@/shared/components/Textarea";
+import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { jsonUtils } from "@/utils/utils";
 
@@ -61,9 +63,12 @@ export default function CustomTheme() {
     handleSubmit,
     formState: { isDirty },
     reset,
+    setValue,
   } = form;
 
-  const [saveButtonText, setSaveButtonText] = useState<ReactNode>("Save");
+  const [saveButtonText, setSaveButtonText] = useToggleButtonText({
+    defaultText: "Save",
+  });
 
   const onSubmit = async (data: FormData) => {
     ChromeStorage.setStorageValue({
@@ -76,9 +81,7 @@ export default function CustomTheme() {
 
     setSaveButtonText(<Check className="tw-mr-2 tw-h-4 tw-w-4" />);
 
-    setTimeout(() => {
-      setSaveButtonText("Save");
-    }, 2000);
+    reset(data);
   };
 
   useEffect(() => {
@@ -159,19 +162,15 @@ export default function CustomTheme() {
                 Custom accent color
               </FormLabel>
               <FormControl>
-                <div className="tw-flex tw-gap-2">
-                  <div
-                    className="tw-w-[30%] tw-self-stretch tw-rounded-md tw-border tw-border-border tw-transition-all"
-                    style={{
-                      backgroundColor: field.value || "#72aefd",
-                    }}
-                  />
-                  <Input
-                    id="accent-color"
-                    placeholder="#72aefd (default dark)"
-                    {...field}
-                  />
-                </div>
+                <AccentColorSelector
+                  color={field.value}
+                  {...field}
+                  setColor={(color) =>
+                    setValue("accentColor", color, {
+                      shouldDirty: true,
+                    })
+                  }
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

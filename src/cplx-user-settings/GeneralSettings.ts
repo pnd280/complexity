@@ -1,5 +1,4 @@
 import { CplxUserSettings } from "@/cplx-user-settings/types/cplx-user-settings.types";
-import BackgroundScript from "@/utils/BackgroundScript";
 
 export type PopupSetting<T> = {
   id: string;
@@ -77,6 +76,7 @@ export default class GeneralSettings {
       id: "file-dropable-thread-wrapper",
       label: "Drop to upload files within thread",
       settingKey: "fileDropableThreadWrapper",
+      experimental: true,
       versionRelease: "0.0.1.0",
     },
   ];
@@ -91,12 +91,8 @@ export default class GeneralSettings {
     },
     {
       id: "custom-theme",
-      label: "Custom Css, accent color, fonts, etc.",
-      onClick: () => {
-        BackgroundScript.sendMessage({
-          action: "openCustomTheme",
-        });
-      },
+      label:
+        "Custome theme: provide your own custom CSS, accent color, fonts, etc.",
     },
   ];
 }
