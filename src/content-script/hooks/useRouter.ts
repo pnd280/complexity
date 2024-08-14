@@ -11,8 +11,6 @@ export default function useRouter() {
     const stopListen = webpageMessenger.onMessage(
       "routeChange",
       async ({ payload: { url, trigger } }) => {
-        if (trigger !== "routeChangeComplete") return;
-
         setUrl(url);
         setTrigger(trigger);
       },

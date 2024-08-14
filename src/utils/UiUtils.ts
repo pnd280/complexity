@@ -14,13 +14,13 @@ export default class UiUtils {
   static getMessagesContainer() {
     // user's thread
     let $messagesContainer = $(
-      ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:first-child",
+      ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child",
     );
 
     // branched thread
     if (!$messagesContainer.length) {
       $messagesContainer = $(
-        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child > div:first-child > div:nth-child(2)",
+        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:nth-child(2)",
       );
     }
 

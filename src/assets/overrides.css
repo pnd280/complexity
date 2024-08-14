@@ -289,6 +289,8 @@ html {
   bottom  : 4rem !important;
 }
 
+
+/* Normal thread */
 .mx-auto.h-full.w-full.max-w-threadWidth.px-md.pb-\[144px\].md\:px-lg {
   padding-bottom: 0 !important;
 }
@@ -297,6 +299,12 @@ html {
   min-height    : 100vh;
   padding-bottom: 50px;
 }
+
+/* Branched thread */
+.mx-auto.h-full.w-full.max-w-threadWidth.px-md.pb-\[144px\].md\:px-lg>div:first-child>div:nth-child(2):not(.fixed) {
+  min-height: 100vh;
+}
+
 
 @media (min-width: 768px) {
   .pointer-events-none.fixed.z-10 {

@@ -65,13 +65,9 @@ async function initUiUxTweaks() {
 
   observe(window.location.href);
 
-  webpageMessenger.onMessage(
-    "routeChange",
-    async ({ payload: { url, trigger } }) => {
-      if (trigger !== "routeChangeComplete") return;
+  webpageMessenger.onMessage("routeChange", async ({ payload: { url } }) => {
     observe(url);
-    },
-  );
+  });
 }
 
 async function initMainWorldDeps() {

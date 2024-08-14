@@ -4,7 +4,6 @@ import { webpageMessenger } from "@/content-script/main-world/webpage-messenger"
 import { MessageData } from "@/types/webpage-messenger.types";
 import { RouterEvent } from "@/types/ws.types";
 import { mainWorldExec } from "@/utils/hof";
-import { waitForNextjsHydration } from "@/utils/utils";
 
 type NextRouter = typeof window.next;
 
@@ -21,11 +20,23 @@ class NextRouterProxy {
   }
 
   async initialize() {
-    await waitForNextjsHydration();
+    await this.waitForNextjsObject();
 
     this.proxyRouterMethods();
     this.setupEventListeners();
     this.setupRouteChangeListener();
+  }
+
+  async waitForNextjsObject(): Promise<void> {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (typeof window.next !== "undefined") {
+          $(document.body).attr("nextjs-hydrated", "true");
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    });
   }
 
   private proxyRouterMethods(): void {
@@ -47,7 +58,7 @@ class NextRouterProxy {
       options?: any,
     ): Promise<boolean> {
       const result = await originalPush.apply(this, [url, as, options]);
-      NextRouterProxy.getInstance().dispatchRouteChange("push");
+      NextRouterProxy.getInstance().dispatchRouteChange("push", url);
       return result;
     };
   }
@@ -62,26 +73,29 @@ class NextRouterProxy {
       url?: string | URL | null,
     ): void {
       originalReplaceState.apply(this, [data, unused, url]);
-      NextRouterProxy.getInstance().dispatchRouteChange("replace");
+      NextRouterProxy.getInstance().dispatchRouteChange(
+        "replace",
+        url as string,
+      );
     };
   }
 
   private setupEventListeners(): void {
     window.addEventListener("popstate", () =>
-      this.dispatchRouteChange("popstate"),
-    );
-    window.next!.router.events.on("routeChangeComplete", () =>
-      this.dispatchRouteChange("routeChangeComplete"),
+      this.dispatchRouteChange("popstate", window.location.pathname),
     );
   }
 
-  private dispatchRouteChange(trigger: RouterEvent): void {
-    webpageMessenger.sendMessage({
-      event: "routeChange",
-      payload: {
-        url: window.location.href,
-        trigger,
-      },
+  private dispatchRouteChange(trigger: RouterEvent, url: string): void {
+    // hacky solution since router events are no longer available in next app router 🥲 (routeChangeStart, routeChangeComplete)
+    requestAnimationFrame(() => {
+      webpageMessenger.sendMessage({
+        event: "routeChange",
+        payload: {
+          url: new URL(url, window.location.origin).href,
+          trigger,
+        },
+      });
     });
   }
 
@@ -96,7 +110,7 @@ class NextRouterProxy {
     messageData: MessageData<string | { url: string; scroll: boolean }>,
   ): Promise<void> {
     if (typeof window.next === "undefined") {
-      console.warn("Next.js router not found. Cannot route to page.");
+      alert("Next.js router not found.");
       return;
     }
 
