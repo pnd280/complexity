@@ -64,8 +64,8 @@ th {
 }
 
 /* Messages borders */
-.pt-md.md\:pt-0>div>div:nth-child(1)>div>div>div:last-child {
-  border-color: var(--ring-darker) !important;
+.message-block:not(:last-of-type) {
+  border-bottom: 1px solid var(--ring-darker) !important;
 }
 
 /* Background colors */

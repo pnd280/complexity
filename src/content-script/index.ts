@@ -49,7 +49,6 @@ async function initCplxUserSettings() {
 }
 
 async function initUiUxTweaks() {
-  UiTweaks.correctColorScheme();
   UiTweaks.injectCustomStyles();
 
   UxTweaks.restoreLogoContextMenu();

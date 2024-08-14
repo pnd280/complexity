@@ -24,14 +24,14 @@ export const languageModels = [
     provider: "OpenAI",
   },
   {
-    label: "Llama 3.1 405B",
-    shortLabel: "Llama 3.1 405B",
+    label: "Sonar Huge",
+    shortLabel: "Sonar XL",
     code: "llama_x_large",
-    provider: "Meta",
+    provider: "Perplexity",
   },
   {
     label: "Sonar Large",
-    shortLabel: "Sonar",
+    shortLabel: "Sonar L",
     code: "experimental",
     provider: "Perplexity",
   },
@@ -48,7 +48,7 @@ export const languageModels = [
     provider: "Mistral",
   },
   {
-    label: "Gemini Pro 1.0",
+    label: "Gemini Pro",
     shortLabel: "Gemini",
     code: "gemini",
     provider: "Google",

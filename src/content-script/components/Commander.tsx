@@ -182,6 +182,7 @@ export default function Commander() {
             keywords={["dark", "theme", "change"]}
             onSelect={() => {
               $("html").toggleClass("dark tw-dark", true);
+              $("html").attr("data-color-scheme", "dark");
 
               localStorage.setItem("colorScheme", "dark");
               setCookie("colorScheme", "dark", 0);
@@ -196,6 +197,7 @@ export default function Commander() {
             keywords={["light", "theme", "change"]}
             onSelect={() => {
               $("html").toggleClass("dark tw-dark", false);
+              $("html").attr("data-color-scheme", "light");
 
               localStorage.setItem("colorScheme", "light");
               setCookie("colorScheme", "light", 0);

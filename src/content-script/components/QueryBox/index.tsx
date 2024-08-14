@@ -33,7 +33,7 @@ export const languageModelIcons: Record<LanguageModel["code"], JSX.Element> = {
   claude3opus: <SiAnthropic />,
   gpt4o: <AiOutlineOpenAI />,
   gpt4: <AiOutlineOpenAI />,
-  llama_x_large: <SiMeta />,
+  llama_x_large: <SiPerplexity />,
   experimental: <SiPerplexity />,
   turbo: <SiPerplexity />,
   mistral: <MistralAiIcon />,
