@@ -2,7 +2,6 @@ import * as z from "zod";
 
 import { WebAccessFocus } from "@/content-script/components/QueryBox";
 import { webAccessFocus } from "@/content-script/components/QueryBox/consts";
-import { NestedKeys } from "@/types/utils.types";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
 import packageData from "@@/package.json";
 
@@ -55,6 +54,8 @@ export const cplxUserSettingsSchema = z.object({
 
 export type CplxUserSettings = z.infer<typeof cplxUserSettingsSchema>;
 
-export type GeneralSettingsKeys = NestedKeys<
-  CplxUserSettings["generalSettings"]
->;
+type SubKey<T> = {
+  [K in keyof T]: T[K] extends object ? keyof T[K] : never;
+}[keyof T];
+
+export type GeneralSettingsKeys = SubKey<CplxUserSettings["generalSettings"]>;

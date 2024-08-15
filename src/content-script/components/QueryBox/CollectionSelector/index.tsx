@@ -48,7 +48,12 @@ export default function CollectionSelector() {
 
   return (
     <>
-      <Popover portal={false}>
+      <Popover
+        portal={false}
+        onExitComplete={() => {
+          UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
+        }}
+      >
         <CollectionSelectorPopoverTrigger
           selectedCollectionUuid={selectedCollectionUuid}
           setSelectedCollectionUuid={setSelectedCollectionUuid}

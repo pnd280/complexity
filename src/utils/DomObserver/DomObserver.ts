@@ -28,6 +28,7 @@ export default class DomObserver {
 
     DomObserver.instances.set(id, instance);
     DomObserver.observe(id);
+    DomObserver.log(`Created observer with id "${id}"`);
   }
 
   public static update(

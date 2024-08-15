@@ -5,6 +5,6 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true
   },
-  "files": ["vite.config.ts", "./src/manifest.ts"],
+  "files": ["vite.config.ts"],
   "include": ["./vite-plugins/**/*.ts"]
 }

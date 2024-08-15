@@ -1,7 +1,5 @@
 import $ from "jquery";
 
-import { whereAmI } from "@/utils/utils";
-
 export default class UiUtils {
   static isDarkTheme() {
     return $("html").attr("data-color-scheme") === "dark";
@@ -28,8 +26,6 @@ export default class UiUtils {
   }
 
   static getMessageBlocks() {
-    if (whereAmI() !== "thread") return [];
-
     const $messagesContainer = UiUtils.getMessagesContainer();
 
     const messageBlocks: {
@@ -46,6 +42,9 @@ export default class UiUtils {
 
       const { $query, $answer, $answerHeading } =
         UiUtils.parseMessageBlock($messageBlock);
+
+      if (!$query.length || !$answer.length)
+        throw new Error("Invalid message block");
 
       $messageBlock.find(".col-span-8:last").addClass("text-col");
       $messageBlock.find(".col-span-4:last").addClass("visual-col");

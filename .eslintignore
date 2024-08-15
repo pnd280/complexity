@@ -1,2 +1,4 @@
 src/manifest.ts
 *.config.js
+*.config.ts
+gulpfile.js

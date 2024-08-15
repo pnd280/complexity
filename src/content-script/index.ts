@@ -14,7 +14,7 @@ import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiTweaks from "@/utils/UiTweaks";
 import {
   injectMainWorldScript,
-  waitForStableHtml,
+  waitForHydration,
   whereAmI,
 } from "@/utils/utils";
 import UxTweaks from "@/utils/UxTweaks";
@@ -28,15 +28,13 @@ import shiki from "@/content-script/main-world/shiki?script&module";
 $(async function main() {
   initConsoleMessage();
 
-  await initCplxUserSettings();
+  await Promise.all([waitForHydration(), initCplxUserSettings()]);
 
-  initUiUxTweaks();
-
-  await waitForStableHtml();
-
-  await initMainWorldDeps();
-
-  initTrafficInterceptors();
+  await Promise.all([
+    initTrafficInterceptors(),
+    initMainWorldDeps(),
+    initUiUxTweaks(),
+  ]);
 
   ReactRoot();
 
@@ -55,7 +53,10 @@ async function initCplxUserSettings() {
 }
 
 async function initUiUxTweaks() {
+  // DomObserver.enableLogging();
+
   UiTweaks.injectCustomStyles();
+  UiTweaks.correctColorScheme();
 
   UxTweaks.handleAlternateSearchParams();
   UxTweaks.restoreLogoContextMenu();
@@ -63,7 +64,7 @@ async function initUiUxTweaks() {
   const observe = async (url: string) => {
     const location = whereAmI(url);
 
-    UiTweaks.applySelectableAttrs(location);
+    UiTweaks.applySelectableAttrs(location); // FIXME: race condition with selectors which depend on this
     UiTweaks.applySettingsAsHTMLAttrs(location);
 
     UxTweaks.dropFileWithinThread(location);

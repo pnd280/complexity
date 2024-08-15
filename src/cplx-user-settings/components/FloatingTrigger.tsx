@@ -1,13 +1,29 @@
 import { HTMLAttributes } from "react";
 
+import useRouter from "@/content-script/hooks/useRouter";
 import Cplx from "@/shared/components/icons/Cplx";
 import Tooltip from "@/shared/components/Tooltip";
+import { cn } from "@/utils/cn";
+import { whereAmI } from "@/utils/utils";
+
+const isDev = import.meta.env.DEV;
 
 export default function FloatingTrigger({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
+  const location = whereAmI(useRouter().url);
+
   return (
-    <div className="right-md tw-fixed tw-bottom-[4rem] tw-font-sans" {...props}>
+    <div
+      className={cn(
+        "right-md tw-fixed tw-font-sans tw-transition-all tw-animate-in tw-fade-in",
+        {
+          "tw-bottom-4": location !== "home" && !isDev,
+          "tw-bottom-[4rem]": location === "home" || isDev,
+        },
+      )}
+      {...props}
+    >
       <Tooltip
         content="Complexity"
         positioning={{

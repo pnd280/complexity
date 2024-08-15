@@ -4,20 +4,21 @@ import { webpageMessenger } from "@/content-script/main-world/webpage-messenger"
 import { RouterEvent } from "@/types/ws.types";
 
 export default function useRouter() {
-  const [url, setUrl] = useState(window.location.href);
-  const [trigger, setTrigger] = useState<RouterEvent>();
+  const [state, setState] = useState({
+    url: window.location.href,
+    trigger: undefined as RouterEvent | undefined,
+  });
 
   useEffect(() => {
     const stopListen = webpageMessenger.onMessage(
       "routeChange",
       async ({ payload: { url, trigger } }) => {
-        setUrl(url);
-        setTrigger(trigger);
+        setState({ url, trigger });
       },
     );
 
     return () => stopListen?.();
   }, []);
 
-  return { url, trigger };
+  return state;
 }

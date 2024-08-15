@@ -4,7 +4,6 @@ import { ReactNode, useEffect, useState } from "react";
 import CollectionSelector from "@/content-script/components/QueryBox/CollectionSelector";
 import FocusSelector from "@/content-script/components/QueryBox/FocusSelector";
 import LanguageModelSelector from "@/content-script/components/QueryBox/LanguageModelSelector";
-import KeyCombo from "@/shared/components/KeyCombo";
 import Separator from "@/shared/components/Separator";
 import { isReactNode } from "@/types/utils.types";
 
@@ -28,10 +27,7 @@ export default function CommonSelectors({
       if (!isReady) {
         setHint(
           <span className="tw-flex tw-flex-wrap tw-items-baseline tw-gap-1">
-            Manually trigger Pro Search{" "}
-            <span className="tw-flex tw-items-baseline tw-gap-1">
-              (<KeyCombo keys={["Ctrl/Cmd", "i"]} />) to speed up the loading.
-            </span>
+            This is taking longer than expected...
           </span>,
         );
       }

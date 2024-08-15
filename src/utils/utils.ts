@@ -67,11 +67,30 @@ export function isValidVersionString(version: string) {
   return /^\d+\.\d+\.\d+\.\d+$/.test(version);
 }
 
-export async function waitForStableHtml() {
-  return await waitForElement({
-    selector: "html[data-color-scheme]",
-    timeout: 10000,
-    interval: 100,
+export async function waitForHydration() {
+  await Promise.all([
+    waitForElement({
+      selector: "html[data-color-scheme]",
+      timeout: 5000,
+      interval: 100,
+    }),
+    waitForElement({
+      selector: `textarea[tabindex="-1"][aria-hidden="true"]`,
+      timeout: 5000,
+      interval: 100,
+    }),
+    waitForNextjsGlobalObj(),
+  ]);
+}
+
+export async function waitForNextjsGlobalObj(): Promise<void> {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      if ($(document.body).attr("data-nextjs-router") !== undefined) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 100);
   });
 }
 
