@@ -51,7 +51,6 @@ export default function CplxUserSettingsMenu() {
   return (
     <Dialog
       lazyMount
-      unmountOnExit
       open={isOpen}
       closeOnInteractOutside={false}
       onExitComplete={() => isSettingsChanged() && window.location.reload()}

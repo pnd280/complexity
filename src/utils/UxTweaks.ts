@@ -1,12 +1,8 @@
 import $ from "jquery";
 
-import { WebAccessFocus } from "@/content-script/components/QueryBox";
-import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
-import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
-import { globalStore } from "@/content-script/session-store/global";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";
-import { parseUrl, whereAmI } from "@/utils/utils";
+import { whereAmI } from "@/utils/utils";
 
 export default class UxTweaks {
   static dropFileWithinThread(location: ReturnType<typeof whereAmI>) {
@@ -68,60 +64,5 @@ export default class UxTweaks {
     $logo.on("contextmenu", function (e) {
       e.stopPropagation();
     });
-  }
-
-  static handleCustomSearchParams() {
-    const queryParams = parseUrl().queryParams;
-
-    const route = (url: string) => {
-      webpageMessenger.sendMessage({
-        event: "routeToPage",
-        payload: {
-          url,
-          scroll: false,
-        },
-      });
-    };
-
-    if (!queryParams.has("qq")) return;
-
-    WebpageMessageInterceptor.alterNextQuery({
-      proSearchState: queryParams.has("copilot"),
-      focus: (queryParams.get("focus") ?? "internet") as WebAccessFocus["code"],
-    });
-
-    queryParams.set("q", queryParams.get("qq")!);
-    queryParams.delete("qq");
-
-    const newUrl = `/?${queryParams.toString()}`;
-
-    const { isWebSocketCaptured } = globalStore.getState();
-
-    if (isWebSocketCaptured) {
-      return route(newUrl);
-    }
-
-    let redirectTimeout = window.setTimeout(() => {
-      cleanup();
-      if (!redirectTimeout) return;
-      route(newUrl);
-    }, 5000);
-
-    const unsubscribe = globalStore.subscribe(({ isWebSocketCaptured }) => {
-      if (!redirectTimeout) return cleanup();
-
-      if (isWebSocketCaptured) {
-        cleanup();
-        route(newUrl);
-      }
-    });
-
-    const cleanup = () => {
-      if (redirectTimeout) {
-        clearTimeout(redirectTimeout);
-        redirectTimeout = 0;
-      }
-      unsubscribe();
-    };
   }
 }

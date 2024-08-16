@@ -43,7 +43,6 @@ function initUiUxTweaks() {
   UiTweaks.injectCustomStyles();
   UiTweaks.correctColorScheme();
 
-  UxTweaks.handleCustomSearchParams();
   UxTweaks.restoreLogoContextMenu();
 
   const observe = (url: string) => {

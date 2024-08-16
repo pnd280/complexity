@@ -1,10 +1,10 @@
 import { useToggle } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
 
-import CollectionEditDialog from "@/content-script/components/CollectionEditDialog";
+import CollectionEditDialog from "@/content-script/components/QueryBox/CollectionSelector/CollectionEditDialog";
 import { CollectionSelectorPopoverContent } from "@/content-script/components/QueryBox/CollectionSelector/PopoverContent";
 import CollectionSelectorPopoverTrigger from "@/content-script/components/QueryBox/CollectionSelector/PopoverTrigger";
-import UserProfileEditDialog from "@/content-script/components/UserProfileEditDialog";
+import UserProfileEditDialog from "@/content-script/components/QueryBox/CollectionSelector/UserProfileEditDialog";
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import useRouter from "@/content-script/hooks/useRouter";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
