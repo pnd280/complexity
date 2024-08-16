@@ -13,6 +13,7 @@ import {
   TabsTrigger,
 } from "@/shared/components/Tabs";
 import useQueryParams from "@/shared/hooks/useQueryParams";
+import { cn } from "@/utils/cn";
 
 const tabs = [
   "generalSettings",
@@ -24,7 +25,10 @@ const tabs = [
 
 type Tab = (typeof tabs)[number];
 
-export default function CplxUserSettings({ ...props }: TabsRootProps) {
+export default function CplxUserSettings({
+  className,
+  ...props
+}: TabsRootProps) {
   const [queryParams, setQueryParams] = useQueryParams<{
     tab: string;
   }>();
@@ -39,7 +43,10 @@ export default function CplxUserSettings({ ...props }: TabsRootProps) {
       }
       activationMode="manual"
       orientation="vertical"
-      className="tw-flex tw-h-full tw-w-full tw-gap-4 tw-font-sans"
+      className={cn(
+        "tw-flex tw-h-full tw-w-full tw-gap-4 tw-font-sans",
+        className,
+      )}
       onValueChange={({ value }) => {
         setQueryParams({ tab: value }, { replace: true });
       }}

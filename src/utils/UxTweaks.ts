@@ -70,7 +70,7 @@ export default class UxTweaks {
     });
   }
 
-  static handleAlternateSearchParams() {
+  static handleCustomSearchParams() {
     const queryParams = parseUrl().queryParams;
 
     const route = (url: string) => {

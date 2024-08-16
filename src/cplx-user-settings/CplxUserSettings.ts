@@ -5,9 +5,7 @@ import {
   cplxUserSettingsSchema,
   type CplxUserSettings as CplxUserSettingsType,
 } from "@/cplx-user-settings/types/cplx-user-settings.types";
-import { toast } from "@/shared/toast";
 import ChromeStorage from "@/utils/ChromeStorage";
-import { compareVersions, isValidVersionString } from "@/utils/utils";
 import packageData from "@@/package.json";
 
 export default class CplxUserSettings {
@@ -26,7 +24,7 @@ export default class CplxUserSettings {
       qolTweaks: {
         threadToc: false,
         threadMessageStickyToolbar: false,
-        alternateMarkdownBlock: false,
+        customMarkdownBlock: false,
         canvas: {
           enabled: false,
           mask: {},
@@ -53,23 +51,11 @@ export default class CplxUserSettings {
       return (CplxUserSettings.userSettings = result.data);
     }
 
-    const prevVersion = isValidVersionString(fetchedSettings.schemaVersion)
-      ? fetchedSettings.schemaVersion
-      : "0.0.0.0";
-
-    const isSameSchemaVersion =
-      compareVersions(prevVersion, packageData.version) === 0;
-
-    if (isSameSchemaVersion) {
-      toast({
-        title: "⚠️ [Cplx] User settings schema mismatch",
-        description: "Resetting to default.",
-      });
-    }
-
-    const mergedSettings = !isSameSchemaVersion
-      ? merge({}, CplxUserSettings.defaultUserSettings, fetchedSettings)
-      : CplxUserSettings.defaultUserSettings;
+    const mergedSettings = merge(
+      {},
+      CplxUserSettings.defaultUserSettings,
+      fetchedSettings,
+    );
 
     mergedSettings.schemaVersion = packageData.version;
 
@@ -77,7 +63,7 @@ export default class CplxUserSettings {
 
     CplxUserSettings.userSettings = mergedSettings;
 
-    console.log("[Cplx] Merged settings from previous version");
+    console.log("[Cplx] Settings schema mismatch, updated to latest version");
   }
 
   static async fetch() {
@@ -87,6 +73,10 @@ export default class CplxUserSettings {
   }
 
   static get() {
+    if (CplxUserSettings.userSettings == null) {
+      throw new Error("User settings not initialized");
+    }
+
     return CplxUserSettings.userSettings;
   }
 

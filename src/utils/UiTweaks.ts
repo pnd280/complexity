@@ -76,7 +76,7 @@ export default class UiTweaks {
     });
   }
 
-  static async applySettingsAsHTMLAttrs(location: ReturnType<typeof whereAmI>) {
+  static applySettingsAsHTMLAttrs(location: ReturnType<typeof whereAmI>) {
     const settings = CplxUserSettings.get().generalSettings;
 
     $(document.body)
@@ -91,8 +91,8 @@ export default class UiTweaks {
           location === "thread",
       )
       .toggleClass(
-        "alternate-markdown-block",
-        settings.qolTweaks.alternateMarkdownBlock && location === "thread",
+        "custom-markdown-block",
+        settings.qolTweaks.customMarkdownBlock && location === "thread",
       )
       .toggleClass(
         "thread-message-sticky-toolbar",
@@ -100,7 +100,7 @@ export default class UiTweaks {
       )
       .toggleClass(
         "cplx-canvas",
-        settings.qolTweaks.alternateMarkdownBlock &&
+        settings.qolTweaks.customMarkdownBlock &&
           settings.qolTweaks.canvas.enabled,
       );
 
@@ -120,7 +120,7 @@ export default class UiTweaks {
     })();
   }
 
-  static async applySelectableAttrs(location: ReturnType<typeof whereAmI>) {
+  static applySelectableAttrs(location: ReturnType<typeof whereAmI>) {
     if (location !== "thread") return;
 
     UiUtils.getMessageBlocks();

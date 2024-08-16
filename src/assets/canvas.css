@@ -1,13 +1,13 @@
-body.alternate-markdown-block pre[data-mask="true"] code {
+body.custom-markdown-block pre[data-mask="true"] code {
   height: 30px !important;
 }
 
-body.alternate-markdown-block div.w-full.max-w-\[90vw\]:not(.bg-transparent) {
+body.custom-markdown-block div.w-full.max-w-\[90vw\]:not(.bg-transparent) {
   visibility: hidden;
   opacity   : 0;
 }
 
-body.alternate-markdown-block div.w-full.max-w-\[90vw\]:not(.bg-transparent)>* {
+body.custom-markdown-block div.w-full.max-w-\[90vw\]:not(.bg-transparent)>* {
   visibility: hidden;
   opacity   : 0;
 }

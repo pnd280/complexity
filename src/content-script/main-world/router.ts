@@ -3,7 +3,7 @@ import $ from "jquery";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { MessageData } from "@/types/webpage-messenger.types";
 import { RouterEvent } from "@/types/ws.types";
-import DomSelectors from "@/utils/DomSelectors";
+import { DomSelectors } from "@/utils/DomSelectors";
 import { mainWorldExec } from "@/utils/hof";
 import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";

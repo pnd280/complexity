@@ -13,6 +13,7 @@ import RewriteDropdown from "@/content-script/components/ThreadMessageStickyTool
 import ThreadTitle from "@/content-script/components/ThreadMessageStickyToolbar/ThreadTitle";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
+import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
 import { scrollToElement } from "@/utils/utils";
 
 type ToolbarProps = {
@@ -30,7 +31,7 @@ export default function Toolbar({
 }: ToolbarProps) {
   // TODO: prone to changes, needs refactoring
   const $messageEditButton = $(containers?.[containerIndex]?.messageBlock)
-    .find(".mt-sm.flex.items-center.justify-between")
+    .find(DomSelectors.THREAD.MESSAGE.BOTTOM_BAR)
     .children()
     .last()
     .children()
@@ -39,7 +40,7 @@ export default function Toolbar({
   const isMessageEditable = !!$messageEditButton.length;
 
   const $messageShareButton = $(containers?.[containerIndex]?.messageBlock)
-    .find(".mt-sm.flex.items-center.justify-between")
+    .find(DomSelectors.THREAD.MESSAGE.BOTTOM_BAR)
     .children()
     .first()
     .children()
@@ -71,7 +72,12 @@ export default function Toolbar({
           query={
             $(containers[containerIndex].query).find("textarea").text() ||
             $(containers[containerIndex].query)
-              .find(">*:not(.markdown-query-wrapper):not(.tw-sticky)")
+              .find(
+                `>*:not(${
+                  DomHelperSelectors.THREAD.MESSAGE.TEXT_COL_CHILD
+                    .MARKDOWN_QUERY
+                }):not(.tw-sticky)`,
+              )
               .first()
               .text()
           }

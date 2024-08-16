@@ -10,7 +10,6 @@ import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessag
 import WebpageMessageListeners from "@/content-script/main-world/WebpageMessageListeners";
 import ReactRoot from "@/content-script/ReactRoot";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
-import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiTweaks from "@/utils/UiTweaks";
 import {
   injectMainWorldScript,
@@ -28,43 +27,32 @@ import shiki from "@/content-script/main-world/shiki?script&module";
 $(async function main() {
   initConsoleMessage();
 
-  await Promise.all([waitForHydration(), initCplxUserSettings()]);
+  await Promise.all([initCplxUserSettings(), waitForHydration()]);
 
-  await Promise.all([
-    initTrafficInterceptors(),
-    initMainWorldDeps(),
-    initUiUxTweaks(),
-  ]);
+  initUiUxTweaks();
+
+  await Promise.all([initTrafficInterceptors(), initMainWorldDeps()]);
 
   ReactRoot();
-
-  if (import.meta.env.DEV) {
-    $(document).on("keydown", (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === "Q") {
-        DomObserver.destroyAll();
-        alert("All observers destroyed!");
-      }
-    });
-  }
 });
 
 async function initCplxUserSettings() {
   await CplxUserSettings.init();
 }
 
-async function initUiUxTweaks() {
+function initUiUxTweaks() {
   // DomObserver.enableLogging();
 
   UiTweaks.injectCustomStyles();
   UiTweaks.correctColorScheme();
 
-  UxTweaks.handleAlternateSearchParams();
+  UxTweaks.handleCustomSearchParams();
   UxTweaks.restoreLogoContextMenu();
 
-  const observe = async (url: string) => {
+  const observe = (url: string) => {
     const location = whereAmI(url);
 
-    UiTweaks.applySelectableAttrs(location); // FIXME: race condition with selectors which depend on this
+    UiTweaks.applySelectableAttrs(location);
     UiTweaks.applySettingsAsHTMLAttrs(location);
 
     UxTweaks.dropFileWithinThread(location);
@@ -78,7 +66,7 @@ async function initUiUxTweaks() {
 }
 
 async function initMainWorldDeps() {
-  const settings = CplxUserSettings.get().generalSettings;
+  const { qolTweaks } = CplxUserSettings.get().generalSettings;
 
   await Promise.all([
     injectMainWorldScript({
@@ -86,19 +74,15 @@ async function initMainWorldDeps() {
     }),
     injectMainWorldScript({
       url: chrome.runtime.getURL(shiki),
-      inject: settings.qolTweaks.alternateMarkdownBlock,
+      inject: qolTweaks.customMarkdownBlock,
     }),
     injectMainWorldScript({
       url: chrome.runtime.getURL(mermaidCanvas),
-      inject:
-        settings.qolTweaks.alternateMarkdownBlock &&
-        settings.qolTweaks.canvas.enabled,
+      inject: qolTweaks.customMarkdownBlock && qolTweaks.canvas.enabled,
     }),
     injectMainWorldScript({
       url: chrome.runtime.getURL(htmlCanvas),
-      inject:
-        settings.qolTweaks.alternateMarkdownBlock &&
-        settings.qolTweaks.canvas.enabled,
+      inject: qolTweaks.customMarkdownBlock && qolTweaks.canvas.enabled,
     }),
   ]);
 }

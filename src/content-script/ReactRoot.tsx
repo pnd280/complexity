@@ -23,8 +23,8 @@ const CanvasPanel = lazy(
 const ThreadMessageStickyToolbar = lazy(
   () => import("@/content-script/components/ThreadMessageStickyToolbar"),
 );
-const AlternateMarkdownBlock = lazy(
-  () => import("@/content-script/components/AlternateMarkdownBlock"),
+const CustomMarkdownBlock = lazy(
+  () => import("@/content-script/components/CustomMarkdownBlock"),
 );
 const ThreadToc = lazy(() => import("@/content-script/components/ThreadToc"));
 
@@ -45,13 +45,11 @@ export default function ReactRoot() {
 function Root() {
   const location = whereAmI(useRouter().url);
 
-  useCloudflareTimeout({
-    enabled:
-      CplxUserSettings.get().generalSettings.qolTweaks
-        .autoRefreshSessionTimeout && !$(document.body).hasClass("no-js"),
-  });
+  const [isTimedOut, handleTimeout] = useCloudflareTimeout();
 
   useEffect(() => {
+    isTimedOut && handleTimeout();
+
     return () => {
       queryClient.resetQueries({
         predicate(query) {
@@ -96,7 +94,7 @@ function ThreadComponents() {
       <ThreadExportButton />
       {settings.threadToc && <ThreadToc />}
       {settings.threadMessageStickyToolbar && <ThreadMessageStickyToolbar />}
-      {settings.alternateMarkdownBlock && <AlternateMarkdownBlock />}
+      {settings.customMarkdownBlock && <CustomMarkdownBlock />}
       {settings.canvas.enabled && <CanvasPanel />}
     </>
   );

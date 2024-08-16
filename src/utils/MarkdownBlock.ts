@@ -4,6 +4,7 @@ import { ReactNodeActionReturnType } from "@/content-script/main-world/react-nod
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { cn } from "@/utils/cn";
+import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
 import { getReactPropsKey, isMainWorldContext, stripHtml } from "@/utils/utils";
 
 type PreBlockTransformResult = {
@@ -20,7 +21,9 @@ export default class MarkdownBlockUtils {
     if (!pre) return null;
 
     const $pre = $(pre) as JQuery<HTMLElement>;
-    const isNative = !$pre.parent(".markdown-query-wrapper").length;
+    const isNative = !$pre.parent(
+      DomHelperSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.MARKDOWN_QUERY,
+    ).length;
     const lang = MarkdownBlockUtils.getLang($pre) || "text";
 
     if ($pre.attr("data-toolbar")) {
@@ -148,7 +151,9 @@ export default class MarkdownBlockUtils {
   };
 
   static getPreBlockLocalIndex = ($pre: JQuery<HTMLElement>): number => {
-    const messageBlock = $pre[0].closest(".message-block");
+    const messageBlock = $pre[0].closest(
+      DomHelperSelectors.THREAD.MESSAGE.BLOCK,
+    );
 
     if (!messageBlock) return -1;
 
@@ -189,11 +194,11 @@ export default class MarkdownBlockUtils {
   };
 
   static async isInFlight(pre: HTMLElement) {
-    const messageBlock = pre.closest(".message-block");
+    const messageBlock = pre.closest(DomHelperSelectors.THREAD.MESSAGE.BLOCK);
 
     if (!messageBlock) return false;
 
-    if ($(messageBlock).find(".mt-sm.flex.items-center.justify-between").length)
+    if ($(messageBlock).find(DomSelectors.THREAD.MESSAGE.BOTTOM_BAR).length)
       return false;
 
     return getInFlightStateFromReactNode(pre);
@@ -202,7 +207,7 @@ export default class MarkdownBlockUtils {
       const messageContent = (await webpageMessenger.sendMessage({
         event: "getReactNodeData",
         payload: {
-          querySelector: `.message-block:has(#${pre.id})`,
+          querySelector: `${DomHelperSelectors.THREAD.MESSAGE.BLOCK}:has(#${pre.id})`,
           action: "getMessageData",
         },
         timeout: 5000,
@@ -227,7 +232,7 @@ export default class MarkdownBlockUtils {
     const $pre = $(pre);
 
     $pre
-      .closest("div.w-full.max-w-\\[90vw\\]")
+      .closest(DomSelectors.THREAD.MESSAGE.CODE_BLOCK.WRAPPER)
       .addClass(
         "!tw-visible !tw-opacity-100 tw-transition-all [&>*]:!tw-visible [&>*]:!tw-opacity-100",
       )
@@ -238,7 +243,7 @@ export default class MarkdownBlockUtils {
   }
 
   static async handleInFlightState(pre: HTMLElement) {
-    const messageBlock = pre.closest(".message-block");
+    const messageBlock = pre.closest(DomHelperSelectors.THREAD.MESSAGE.BLOCK);
 
     if (!messageBlock) return false;
 

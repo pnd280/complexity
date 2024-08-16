@@ -3,6 +3,7 @@ import $ from "jquery";
 import { useEffect } from "react";
 
 import { useCanvasStore } from "@/content-script/session-store/canvas";
+import { DomHelperSelectors } from "@/utils/DomSelectors";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import { queryClient } from "@/utils/ts-query-query-client";
 
@@ -24,7 +25,9 @@ export default function useRenderInCanvas({
   });
 
   const messageBlockIndex = +(
-    $(`#${preBlockId}`).closest(".message-block").attr("data-index") || 0
+    $(`#${preBlockId}`)
+      .closest(DomHelperSelectors.THREAD.MESSAGE.BLOCK)
+      .attr("data-index") || 0
   );
 
   const isActive =
@@ -37,7 +40,7 @@ export default function useRenderInCanvas({
     if (
       !content ||
       $(`#${preBlockId}`)
-        .closest(".message-block")
+        .closest(DomHelperSelectors.THREAD.MESSAGE.BLOCK)
         .find(`.${preBlockId}-inflight-indicator`)
         .attr("data-inflight") !== "false"
     )

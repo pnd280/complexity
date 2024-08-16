@@ -20,6 +20,7 @@ import {
 import ProSearchIcon from "@/shared/components/icons/ProSearchIcon";
 import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
+import { DomSelectors } from "@/utils/DomSelectors";
 import { waitForElement } from "@/utils/utils";
 
 type RewriteDropdownProps = {
@@ -50,7 +51,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
       );
 
       const $buttonBar = $(container.messageBlock).find(
-        ".mt-sm.flex.items-center.justify-between",
+        DomSelectors.THREAD.MESSAGE.BOTTOM_BAR,
       );
 
       const $rewriteButton = $buttonBar

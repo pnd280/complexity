@@ -16,41 +16,35 @@ export default class PplxApi {
   static async fetchUserSettings(): Promise<UserSettingsApiResponse> {
     // Fallback: https://www.perplexity.ai/rest/user/settings
 
-    const resp = await fetchResource(
-      "https://www.perplexity.ai/p/api/v1/user/settings",
-    );
-
-    const json = UserSettingsApiResponseRawSchema.parse(
-      jsonUtils.safeParse(resp),
-    );
-
-    return {
-      hasAiProfile: json.has_ai_profile,
-      defaultCopilot: !!json.default_copilot,
-      defaultModel: json.default_model,
-      defaultImageGenerationModel: json.default_image_generation_model,
-      subscriptionStatus: json.subscription_status,
-      gpt4Limit: json.gpt4_limit,
-      opusLimit: json.opus_limit,
-      createLimit: json.create_limit,
-    };
-  }
-
-  static async detectCloudflareTimeout() {
     const resp = await fetch(
       "https://www.perplexity.ai/p/api/v1/user/settings",
     );
 
+    const respText = await resp.text();
+
     if (
       resp.status === 403 ||
-      (await resp.text()).startsWith(
+      respText.startsWith(
         '<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...',
       )
     ) {
       throw new Error("Cloudflare timeout");
     }
 
-    return true;
+    const parsedJson = UserSettingsApiResponseRawSchema.parse(
+      jsonUtils.safeParse(respText),
+    );
+
+    return {
+      hasAiProfile: parsedJson.has_ai_profile,
+      defaultCopilot: !!parsedJson.default_copilot,
+      defaultModel: parsedJson.default_model,
+      defaultImageGenerationModel: parsedJson.default_image_generation_model,
+      subscriptionStatus: parsedJson.subscription_status,
+      gpt4Limit: parsedJson.gpt4_limit,
+      opusLimit: parsedJson.opus_limit,
+      createLimit: parsedJson.create_limit,
+    };
   }
 
   static async fetchCollections(): Promise<Collection[]> {

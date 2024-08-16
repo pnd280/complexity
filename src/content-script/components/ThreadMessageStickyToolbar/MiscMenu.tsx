@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/DropdownMenu";
+import { DomSelectors } from "@/utils/DomSelectors";
 import { waitForElement } from "@/utils/utils";
 
 type MiscMenuProps = {
@@ -122,7 +123,7 @@ function triggerMenuItem({
 }) {
   return new Promise<void>((resolve) => {
     const $buttonBar = $(container.messageBlock).find(
-      ".mt-sm.flex.items-center.justify-between",
+      DomSelectors.THREAD.MESSAGE.BOTTOM_BAR,
     );
 
     const $button = $buttonBar

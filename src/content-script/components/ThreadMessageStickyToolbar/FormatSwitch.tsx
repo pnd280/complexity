@@ -9,6 +9,7 @@ import {
   ContainerStates,
 } from "@/content-script/components/ThreadMessageStickyToolbar";
 import Tooltip from "@/shared/components/Tooltip";
+import { DomHelperSelectors } from "@/utils/DomSelectors";
 import { scrollToElement, stripHtml } from "@/utils/utils";
 
 type FormatSwitchProps = {
@@ -31,13 +32,17 @@ export default function FormatSwitch({
   const handleVisualDiff = useCallback(() => {
     const markdownText = stripHtml(
       $(containers[containerIndex].query)
-        .find(">.markdown-query-wrapper")
+        .find(
+          `>${DomHelperSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.MARKDOWN_QUERY}`,
+        )
         .html(),
     );
 
     const originalText = stripHtml(
       $(containers[containerIndex].query)
-        .find(">*:not(.markdown-query-wrapper)")
+        .find(
+          `>*:not(${DomHelperSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.MARKDOWN_QUERY})`,
+        )
         .html(),
     );
 
@@ -79,7 +84,10 @@ export default function FormatSwitch({
                 .find(".whitespace-pre-line.break-words")
                 .toggleClass("!tw-hidden", !draft[containerIndex].isMarkdown);
               $(containers[containerIndex].query)
-                .find(".markdown-query-wrapper")
+                .find(
+                  DomHelperSelectors.THREAD.MESSAGE.TEXT_COL_CHILD
+                    .MARKDOWN_QUERY,
+                )
                 .toggleClass("!tw-hidden", draft[containerIndex].isMarkdown);
               draft[containerIndex].isMarkdown =
                 !draft[containerIndex].isMarkdown;

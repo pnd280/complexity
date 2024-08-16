@@ -1,25 +1,21 @@
 import $ from "jquery";
 
+import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
+
 export default class UiUtils {
   static isDarkTheme() {
     return $("html").attr("data-color-scheme") === "dark";
   }
 
   static getThreadWrapper() {
-    return $(".max-w-threadWidth");
+    return $(DomSelectors.THREAD.WRAPPER);
   }
 
   static getMessagesContainer() {
-    // user's thread
-    let $messagesContainer = $(
-      ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:first-child",
-    );
+    let $messagesContainer = $(DomSelectors.THREAD.CONTAINER.NORMAL);
 
-    // branched thread
     if (!$messagesContainer.length) {
-      $messagesContainer = $(
-        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div:nth-child(2)",
-      );
+      $messagesContainer = $(DomSelectors.THREAD.CONTAINER.BRANCHED);
     }
 
     return $messagesContainer;
@@ -38,7 +34,9 @@ export default class UiUtils {
     $messagesContainer.children().each((index, messageBlock) => {
       const $messageBlock = $(messageBlock);
 
-      $messageBlock.addClass("message-block").attr({ "data-index": index + 1 });
+      $messageBlock
+        .addClass(DomHelperSelectors.THREAD.MESSAGE.BLOCK.slice(1))
+        .attr({ "data-index": index + 1 });
 
       const { $query, $answer, $answerHeading } =
         UiUtils.parseMessageBlock($messageBlock);
@@ -46,8 +44,12 @@ export default class UiUtils {
       if (!$query.length || !$answer.length)
         throw new Error("Invalid message block");
 
-      $messageBlock.find(".col-span-8:last").addClass("text-col");
-      $messageBlock.find(".col-span-4:last").addClass("visual-col");
+      $messageBlock
+        .find(`${DomSelectors.THREAD.MESSAGE.TEXT_COL}:last`)
+        .addClass(DomHelperSelectors.THREAD.MESSAGE.TEXT_COL.slice(1));
+      $messageBlock
+        .find(`${DomSelectors.THREAD.MESSAGE.VISUAL_COL}:last`)
+        .addClass(DomHelperSelectors.THREAD.MESSAGE.VISUAL_COL.slice(1));
 
       const messageBlockData = {
         $messageBlock,
@@ -63,10 +65,14 @@ export default class UiUtils {
   }
 
   static parseMessageBlock($messageBlock: JQuery<Element>) {
-    const $query = $messageBlock.find(".my-md.md\\:my-lg");
-    const $answer = $messageBlock.find(".relative.default.font-sans.text-base");
+    const $query = $messageBlock.find(
+      DomSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.QUERY,
+    );
+    const $answer = $messageBlock.find(
+      DomSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.ANSWER,
+    );
     const $answerHeading = $messageBlock.find(
-      '.mb-sm.flex.w-full.items-center.justify-between:contains("Answer")',
+      DomSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.ANSWER_HEADING,
     );
 
     return {
@@ -82,15 +88,17 @@ export default class UiUtils {
   }: {
     type?: "main" | "follow-up";
   }): JQuery<HTMLTextAreaElement> {
-    const $parents = $('button[aria-label="Submit"]:last').parents();
+    const $parents = $(
+      `${DomSelectors.QUERY_BOX.SUBMIT_BUTTON}:last`,
+    ).parents();
 
     if (type === "main") {
       const $main = $parents.find(
-        'textarea[placeholder="Ask anything..."]:last',
+        `${DomSelectors.QUERY_BOX.TEXTAREA.MAIN}:last`,
       );
 
       const $collection = $parents.find(
-        'textarea[placeholder="New Thread"]:last',
+        `${DomSelectors.QUERY_BOX.TEXTAREA.COLLECTION}:last`,
       );
 
       return (
@@ -100,23 +108,23 @@ export default class UiUtils {
 
     if (type === "follow-up") {
       return $parents.find(
-        'textarea[placeholder="Ask follow-up"]:last',
+        `${DomSelectors.QUERY_BOX.TEXTAREA.FOLLOW_UP}:last`,
       ) as JQuery<HTMLTextAreaElement>;
     }
 
     return $parents.find(
-      "textarea[placeholder]:last",
+      `${DomSelectors.QUERY_BOX.TEXTAREA.ARBITRARY}:last`,
     ) as JQuery<HTMLTextAreaElement>;
   }
 
   static getActiveQueryBox({ type }: { type?: "main" | "follow-up" }) {
     return UiUtils.getActiveQueryBoxTextarea({
       type,
-    }).parents(".grow.block");
+    }).parents(DomSelectors.QUERY_BOX.WRAPPER);
   }
 
   static getStickyNavbar() {
-    return $(".sticky.left-0.right-0.top-0.z-20.border-b");
+    return $(DomSelectors.STICKY_NAVBAR);
   }
 
   static getWordOnCaret(element: HTMLTextAreaElement) {

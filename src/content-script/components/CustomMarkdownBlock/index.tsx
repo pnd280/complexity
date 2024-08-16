@@ -1,8 +1,8 @@
 import $ from "jquery";
 import { useDeferredValue, useState } from "react";
 
-import Toolbar from "@/content-script/components/AlternateMarkdownBlock/Toolbar";
 import CanvasPlaceholder from "@/content-script/components/Canvas/CanvasPlaceholder";
+import Toolbar from "@/content-script/components/CustomMarkdownBlock/Toolbar";
 import useMarkdownBlockObserver from "@/content-script/hooks/useMarkdownBlockObserver";
 import Portal from "@/shared/components/Portal";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
@@ -15,7 +15,7 @@ export type MarkdownBlockContainer = {
   isNative: boolean;
 };
 
-export default function AlternateMarkdownBlock() {
+export default function CustomMarkdownBlock() {
   const [containers, setContainers] = useState<MarkdownBlockContainer[]>([]);
   const deferredContainers = useDeferredValue(containers);
 

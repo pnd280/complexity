@@ -1,34 +1,60 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { QueryObserver } from "@tanstack/react-query";
+import $ from "jquery";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import PplxApi from "@/services/PplxApi";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { toast } from "@/shared/toast";
+import { queryClient } from "@/utils/ts-query-query-client";
 
-type UseCloudflareTimeoutProps = Pick<UseQueryOptions<boolean>, "enabled">;
+export default function useCloudflareTimeout() {
+  const [isTimedOut, setIsTimedOut] = useState(false);
 
-export default function useCloudflareTimeout({
-  ...props
-}: UseCloudflareTimeoutProps = {}) {
-  const { error } = useQuery({
-    queryKey: ["detectCloudflareTimeout"],
-    queryFn: PplxApi.detectCloudflareTimeout,
-    refetchInterval: 10000,
-    refetchIntervalInBackground: true,
-    retry: false,
-    ...props,
-  });
+  const autoRefreshSessionTimeout =
+    CplxUserSettings.get().generalSettings.qolTweaks.autoRefreshSessionTimeout;
 
-  useEffect(() => {
-    if (error && error.message === "Cloudflare timeout") {
-      toast({
-        title: "⚠️ Cloudflare timeout!",
-        description: "Refreshing the page...",
-        timeout: 3000,
-      });
+  const unsubscribe = useRef<() => void>();
 
+  const observer = useMemo(
+    () =>
+      new QueryObserver(queryClient, {
+        queryKey: ["userSettings"],
+      }),
+    [],
+  );
+
+  const cleanup = useCallback(() => {
+    unsubscribe.current?.();
+    observer.destroy();
+  }, [observer]);
+
+  const handleTimeout = useCallback(() => {
+    cleanup();
+
+    toast({
+      title: "⚠️ Cloudflare timeout!",
+      description: autoRefreshSessionTimeout
+        ? "Refreshing the page..."
+        : undefined,
+      duration: 99999,
+    });
+
+    if (autoRefreshSessionTimeout)
       setTimeout(() => {
         window.location.reload();
       }, 3000);
-    }
-  }, [error]);
+  }, [autoRefreshSessionTimeout, cleanup]);
+
+  useEffect(() => {
+    unsubscribe.current = observer.subscribe(({ failureReason }) => {
+      if ($(document.body).hasClass("no-js")) return;
+
+      if (failureReason && failureReason.message === "Cloudflare timeout") {
+        setIsTimedOut(true);
+      }
+    });
+
+    return cleanup;
+  }, [autoRefreshSessionTimeout, cleanup, handleTimeout, observer]);
+
+  return [isTimedOut, handleTimeout] as const;
 }

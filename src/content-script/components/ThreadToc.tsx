@@ -13,6 +13,7 @@ import { useCanvasStore } from "@/content-script/session-store/canvas";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
+import { DomHelperSelectors } from "@/utils/DomSelectors";
 import UiUtils from "@/utils/UiUtils";
 import { scrollToElement } from "@/utils/utils";
 
@@ -197,7 +198,9 @@ const useThreadTocObserver = () => {
         const title =
           $query.find("textarea").val() ||
           $query
-            .find(">*:not(.markdown-query-wrapper):not(.tw-sticky)")
+            .find(
+              `>*:not(${DomHelperSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.MARKDOWN_QUERY}):not(.tw-sticky)`,
+            )
             .first()
             .text();
 

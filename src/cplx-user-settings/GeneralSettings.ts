@@ -50,9 +50,9 @@ export default class GeneralSettings {
       settingKey: "threadToc",
     },
     {
-      id: "alternate-markdown-block",
-      label: "Alternate markdown block",
-      settingKey: "alternateMarkdownBlock",
+      id: "custom-markdown-block",
+      label: "Custom markdown block",
+      settingKey: "customMarkdownBlock",
     },
     {
       id: "thread-message-sticky-toolbar",

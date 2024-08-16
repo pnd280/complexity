@@ -10,14 +10,14 @@
 }
 
 /* Markdown block */
-body.alternate-markdown-block pre code {
+body.custom-markdown-block pre code {
   width      : 100%;
   max-height : 500px;
   overflow   : auto;
   white-space: pre !important;
 }
 
-body.alternate-markdown-block pre code span:empty:last-child {
+body.custom-markdown-block pre code span:empty:last-child {
   display: none;
 }
 
@@ -75,22 +75,22 @@ html[data-color-scheme="dark"] .markdown-query-wrapper pre code {
 }
 
 /* Thread layout adjustments */
-body.alternate-markdown-block pre[data-lang="text"] code,
-body.alternate-markdown-block pre[data-lang="markdown"] code {
+body.custom-markdown-block pre[data-lang="text"] code,
+body.custom-markdown-block pre[data-lang="markdown"] code {
   white-space: pre-wrap !important;
 }
 
-body.alternate-markdown-block div.w-full.max-w-\[90vw\]:has(> pre) {
+body.custom-markdown-block div.w-full.max-w-\[90vw\]:has(> pre) {
   margin       : 1rem 0;
   border-radius: calc(var(--radius) - 2px);
 }
 
-body.alternate-markdown-block div.w-full.max-w-\[90vw\]:has(> pre:not([data-mask="true"])) {
+body.custom-markdown-block div.w-full.max-w-\[90vw\]:has(> pre:not([data-mask="true"])) {
   border    : 1px solid var(--border) !important;
   background: var(--secondary);
 }
 
-body.alternate-markdown-block .codeWrapper {
+body.custom-markdown-block .codeWrapper {
   padding-top   : 0 !important;
   padding-bottom: 0 !important;
   margin        : 0 !important;

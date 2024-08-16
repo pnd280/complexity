@@ -11,17 +11,17 @@ export default function CanvasSettings() {
 
   if (!settings) return null;
 
-  const isAlternateMarkdownBlockSettingEnabled =
-    settings?.qolTweaks.alternateMarkdownBlock;
+  const isCustomMarkdownBlockSettingEnabled =
+    settings?.qolTweaks.customMarkdownBlock;
 
   const canvasSettings = settings.qolTweaks.canvas;
 
-  if (!isAlternateMarkdownBlockSettingEnabled)
+  if (!isCustomMarkdownBlockSettingEnabled)
     return (
       <div className="tw-w-full tw-text-center">
         This feature requires{" "}
         <span className="tw-font-bold tw-text-accent-foreground">
-          Alternate Markdown Block
+          Custom Markdown Block
         </span>{" "}
         to be enabled.
       </div>

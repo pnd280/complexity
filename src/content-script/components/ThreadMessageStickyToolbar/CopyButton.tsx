@@ -16,6 +16,7 @@ import Tooltip from "@/shared/components/Tooltip";
 import useCtrlDown from "@/shared/hooks/useCtrlDown";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import { toast } from "@/shared/toast";
+import { DomSelectors } from "@/utils/DomSelectors";
 import ThreadExport from "@/utils/ThreadExport";
 
 type CopyButtonProps = {
@@ -44,7 +45,7 @@ export default function CopyButton({
 
   const handleCopyMessage = useCallback(() => {
     const $buttonBar = $(container.messageBlock).find(
-      ".mt-sm.flex.items-center.justify-between",
+      DomSelectors.THREAD.MESSAGE.BOTTOM_BAR,
     );
 
     const $button = $buttonBar

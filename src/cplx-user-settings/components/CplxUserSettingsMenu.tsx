@@ -44,10 +44,11 @@ export default function CplxUserSettingsMenu() {
       <DialogTrigger asChild>
         <FloatingTrigger onClick={() => toggleOpen()} />
       </DialogTrigger>
-      <DialogContent className="custom-scrollbar tw-h-[90dvh] tw-w-full tw-max-w-screen-lg tw-overflow-auto">
+      <DialogContent className="tw-h-[90dvh] tw-w-full tw-max-w-screen-lg">
         <CplxUserSettings
           defaultValue="generalSettings"
           value={activeTab}
+          className="custom-scrollbar tw-overflow-auto"
           onValueChange={({ value }) => setActiveTab(value)}
         />
         <div

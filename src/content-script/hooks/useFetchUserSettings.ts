@@ -21,6 +21,8 @@ export default function useFetchUserSettings({
 
       return true;
     },
+    refetchInterval: 10000,
+    refetchIntervalInBackground: true,
     ...props,
   });
 }

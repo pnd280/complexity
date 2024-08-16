@@ -10,6 +10,7 @@ import useWaitForMessagesContainer from "@/content-script/hooks/useWaitForMessag
 import { ReactNodeActionReturnType } from "@/content-script/main-world/react-node";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import DomObserver from "@/utils/DomObserver/DomObserver";
+import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
 import UiUtils from "@/utils/UiUtils";
 import { isDomNode, markdown2Html } from "@/utils/utils";
 
@@ -69,7 +70,7 @@ export default function useThreadMessageStickyToolbarObserver({
 
             toggleVisibility({
               bottomButtonBar: $messageBlock.find(
-                ".mt-sm.flex.items-center.justify-between",
+                DomSelectors.THREAD.MESSAGE.BOTTOM_BAR,
               )[0],
               index,
               messageBlock: $messageBlock[0],
@@ -109,55 +110,55 @@ export default function useThreadMessageStickyToolbarObserver({
       });
 
       async function callback() {
-        $(`.message-block:not([data-${id}-observed])`).each(
-          (_, messageBlock) => {
-            queueMicrotask(async () => {
-              const { $answerHeading } = UiUtils.parseMessageBlock(
-                $(messageBlock),
-              );
+        $(
+          `${DomHelperSelectors.THREAD.MESSAGE.BLOCK}:not([data-${id}-observed])`,
+        ).each((_, messageBlock) => {
+          queueMicrotask(async () => {
+            const { $answerHeading } = UiUtils.parseMessageBlock(
+              $(messageBlock),
+            );
 
-              if (!$answerHeading.length) return;
+            if (!$answerHeading.length) return;
 
-              $(messageBlock).attr(`data-${id}-observed`, "true");
+            $(messageBlock).attr(`data-${id}-observed`, "true");
 
-              const index = parseInt($(messageBlock).attr("data-index") ?? "0");
+            const index = parseInt($(messageBlock).attr("data-index") ?? "0");
 
-              const displayModelCode = (await webpageMessenger.sendMessage({
-                event: "getReactNodeData",
-                payload: {
-                  action: "getMessageDisplayModel",
-                  querySelector: `.message-block[data-index="${index}"]`,
-                },
-                timeout: 5000,
-              })) as ReactNodeActionReturnType["getMessageDisplayModel"];
+            const displayModelCode = (await webpageMessenger.sendMessage({
+              event: "getReactNodeData",
+              payload: {
+                action: "getMessageDisplayModel",
+                querySelector: `${DomHelperSelectors.THREAD.MESSAGE.BLOCK}[data-index="${index}"]`,
+              },
+              timeout: 5000,
+            })) as ReactNodeActionReturnType["getMessageDisplayModel"];
 
-              if (!displayModelCode) return;
+            if (!displayModelCode) return;
 
-              const displayModelName = languageModels.find(
-                (x) => x.code === displayModelCode,
-              )?.label;
+            const displayModelName = languageModels.find(
+              (x) => x.code === displayModelCode,
+            )?.label;
 
-              setTimeout(
-                () => {
-                  $answerHeading
-                    .find('div:contains("Answer"):last')
-                    .text(
-                      displayModelName
-                        ? displayModelName.toUpperCase()
-                        : `code: ${displayModelCode}`,
-                    )
-                    .addClass(
-                      "!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in",
-                    );
-                },
-                $(messageBlock).find(".mt-sm.flex.items-center.justify-between")
-                  .length
-                  ? 0
-                  : 500,
-              );
-            });
-          },
-        );
+            setTimeout(
+              () => {
+                $answerHeading
+                  .find('div:contains("Answer"):last')
+                  .text(
+                    displayModelName
+                      ? displayModelName.toUpperCase()
+                      : `code: ${displayModelCode}`,
+                  )
+                  .addClass(
+                    "!tw-font-mono !tw-text-xs tw-p-1 tw-px-2 tw-rounded-md tw-border tw-border-border tw-animate-in tw-fade-in",
+                  );
+              },
+              $(messageBlock).find(DomSelectors.THREAD.MESSAGE.BOTTOM_BAR)
+                .length
+                ? 0
+                : 500,
+            );
+          });
+        });
       }
 
       return () => {
@@ -185,7 +186,9 @@ export default function useThreadMessageStickyToolbarObserver({
       });
 
       async function callback() {
-        const $messageBlocks = $(`.message-block:not([data-${id}])`);
+        const $messageBlocks = $(
+          `${DomHelperSelectors.THREAD.MESSAGE.BLOCK}:not([data-${id}])`,
+        );
 
         $messageBlocks.each((_, messageBlock) => {
           queueMicrotask(() => {
@@ -203,7 +206,11 @@ export default function useThreadMessageStickyToolbarObserver({
         const mardownedText = markdown2Html($query.text());
 
         const textSize = $query
-          .find(">*:not(.markdown-query-wrapper)")
+          .find(
+            `>*:not(${
+              DomHelperSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.MARKDOWN_QUERY
+            })`,
+          )
           .attr("class")
           ?.split(" ")
           .find((c) => c === "text-3xl" || c === "text-base");

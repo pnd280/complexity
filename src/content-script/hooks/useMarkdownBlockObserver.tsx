@@ -7,11 +7,12 @@ import {
   useRef,
 } from "react";
 
-import { MarkdownBlockContainer } from "@/content-script/components/AlternateMarkdownBlock";
+import { MarkdownBlockContainer } from "@/content-script/components/CustomMarkdownBlock";
 import useWaitForMessagesContainer from "@/content-script/hooks/useWaitForMessagesContainer";
 import { preBlockAttrsContentScript } from "@/content-script/main-world/pre-block-attrs";
 import { shikiContentScript } from "@/content-script/main-world/shiki";
 import DomObserver from "@/utils/DomObserver/DomObserver";
+import { DomHelperSelectors } from "@/utils/DomSelectors";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
 import { isDomNode } from "@/utils/utils";
 
@@ -72,31 +73,33 @@ export default function useMarkdownBlockObserver({
       function callback() {
         const promises: Promise<MarkdownBlockContainer | null>[] = [];
 
-        $(".message-block pre").each((index, pre) => {
-          promises.push(
-            new Promise<MarkdownBlockContainer | null>((resolve) => {
-              queueMicrotask(() => {
-                const { $wrapper, $container, lang } =
-                  MarkdownBlockUtils.transformPreBlock(pre) || {};
+        $(`${DomHelperSelectors.THREAD.MESSAGE.BLOCK} pre`).each(
+          (index, pre) => {
+            promises.push(
+              new Promise<MarkdownBlockContainer | null>((resolve) => {
+                queueMicrotask(() => {
+                  const { $wrapper, $container, lang } =
+                    MarkdownBlockUtils.transformPreBlock(pre) || {};
 
-                if (
-                  $container?.length == null ||
-                  $wrapper?.length == null ||
-                  !lang
-                )
-                  return resolve(null);
+                  if (
+                    $container?.length == null ||
+                    $wrapper?.length == null ||
+                    !lang
+                  )
+                    return resolve(null);
 
-                resolve({
-                  wrapper: $wrapper[0],
-                  header: $container[0],
-                  preElement: pre,
-                  lang,
-                  isNative: true,
+                  resolve({
+                    wrapper: $wrapper[0],
+                    header: $container[0],
+                    preElement: pre,
+                    lang,
+                    isNative: true,
+                  });
                 });
-              });
-            }),
-          );
-        });
+              }),
+            );
+          },
+        );
 
         Promise.all(promises).then((results) => {
           const newContainers = results.filter(
@@ -114,10 +117,10 @@ export default function useMarkdownBlockObserver({
   );
 
   useEffect(
-    function alternateMarkdownBlockObservers() {
+    function customMarkdownBlockObservers() {
       if (!isDomNode(messagesContainer) || !$(messagesContainer).length) return;
 
-      const id = "alternate-markdown-block";
+      const id = "custom-markdown-block";
 
       (async () => {
         await preBlockAttrsContentScript.waitForInitialization();
@@ -139,7 +142,7 @@ export default function useMarkdownBlockObserver({
       })();
 
       function callback() {
-        $(".message-block pre").each((_, pre) => {
+        $(`${DomHelperSelectors.THREAD.MESSAGE.BLOCK} pre`).each((_, pre) => {
           queueMicrotask(async () => {
             MarkdownBlockUtils.handleVisibility(pre);
 
