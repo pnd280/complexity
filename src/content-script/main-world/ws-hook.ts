@@ -24,12 +24,15 @@ class WsHook {
   }
 
   initialize(): void {
+    let isXMLHttpRequestProxied = false;
+
     if (!parseUrl().queryParams.has("q")) {
       this.proxyXMLHttpRequest();
+      isXMLHttpRequestProxied = true;
     }
 
     setTimeout(() => {
-      if (!this.getActiveInstance()) {
+      if (!this.getActiveInstance() && !isXMLHttpRequestProxied) {
         console.log(
           "No active WebSocket connection found. Falling back to long polling...",
         );

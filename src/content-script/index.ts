@@ -28,10 +28,9 @@ $(async function main() {
   initConsoleMessage();
 
   await Promise.all([initCplxUserSettings(), waitForHydration()]);
-
   initUiUxTweaks();
-
-  await Promise.all([initTrafficInterceptors(), initMainWorldDeps()]);
+  initTrafficInterceptors();
+  await initMainWorldDeps();
 
   ReactRoot();
 });

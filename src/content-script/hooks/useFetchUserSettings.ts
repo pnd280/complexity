@@ -15,11 +15,7 @@ export default function useFetchUserSettings({
     retry: (failureCount, error) => {
       if (error.name === "ZodError") return false;
 
-      if (failureCount > 3) {
-        return false;
-      }
-
-      return true;
+      return failureCount <= 3;
     },
     refetchInterval: 10000,
     refetchIntervalInBackground: true,
