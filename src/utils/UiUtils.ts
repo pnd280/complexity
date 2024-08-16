@@ -21,7 +21,7 @@ export default class UiUtils {
     return $messagesContainer;
   }
 
-  static getMessageBlocks() {
+  static getMessageBlocks(throwOnError = false) {
     const $messagesContainer = UiUtils.getMessagesContainer();
 
     const messageBlocks: {
@@ -41,7 +41,7 @@ export default class UiUtils {
       const { $query, $answer, $answerHeading } =
         UiUtils.parseMessageBlock($messageBlock);
 
-      if (!$query.length || !$answer.length)
+      if (throwOnError && (!$query.length || !$answer.length))
         throw new Error("Invalid message block");
 
       $messageBlock
@@ -121,6 +121,10 @@ export default class UiUtils {
     return UiUtils.getActiveQueryBoxTextarea({
       type,
     }).parents(DomSelectors.QUERY_BOX.WRAPPER);
+  }
+
+  static getProSearchToggle() {
+    return $(DomSelectors.QUERY_BOX.PRO_SEARCH_TOGGLE);
   }
 
   static getStickyNavbar() {

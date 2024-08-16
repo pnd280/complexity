@@ -6,9 +6,5 @@ export default class WebpageMessageListeners {
     webpageMessenger.onMessage("webSocketCaptured", async () => {
       globalStore.setState({ isWebSocketCaptured: true });
     });
-
-    webpageMessenger.onMessage("longPollingCaptured", async () => {
-      globalStore.setState({ isLongPollingCaptured: true });
-    });
   }
 }

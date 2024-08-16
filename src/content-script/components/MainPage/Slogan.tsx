@@ -1,6 +1,5 @@
 import { useDebounce, useToggle } from "@uidotdev/usehooks";
 import $ from "jquery";
-import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
@@ -14,9 +13,7 @@ export default function Slogan() {
   const [container, setContainer] = useState<HTMLElement>();
 
   const isReady = useDebounce(
-    useGlobalStore(
-      (state) => state.isWebSocketCaptured || state.isLongPollingCaptured,
-    ),
+    useGlobalStore((state) => state.isWebSocketCaptured),
     1000,
   );
 
@@ -70,10 +67,7 @@ export default function Slogan() {
         }}
       >
         {slogan.length > 5 && (
-          <div className="tw-flex tw-items-center tw-gap-1">
-            <LoaderCircle className="tw-size-2 tw-animate-spin" />
-            <span>Complexity</span>
-          </div>
+          <div className="tw-tracking-wide">Complexity</div>
         )}
       </div>
     </Portal>

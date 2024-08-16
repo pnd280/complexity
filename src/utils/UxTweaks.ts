@@ -95,10 +95,9 @@ export default class UxTweaks {
 
     const newUrl = `/?${queryParams.toString()}`;
 
-    const { isLongPollingCaptured, isWebSocketCaptured } =
-      globalStore.getState();
+    const { isWebSocketCaptured } = globalStore.getState();
 
-    if (isLongPollingCaptured && isWebSocketCaptured) {
+    if (isWebSocketCaptured) {
       return route(newUrl);
     }
 
@@ -108,16 +107,14 @@ export default class UxTweaks {
       route(newUrl);
     }, 5000);
 
-    const unsubscribe = globalStore.subscribe(
-      ({ isLongPollingCaptured, isWebSocketCaptured }) => {
-        if (!redirectTimeout) return cleanup();
+    const unsubscribe = globalStore.subscribe(({ isWebSocketCaptured }) => {
+      if (!redirectTimeout) return cleanup();
 
-        if (isLongPollingCaptured && isWebSocketCaptured) {
-          cleanup();
-          route(newUrl);
-        }
-      },
-    );
+      if (isWebSocketCaptured) {
+        cleanup();
+        route(newUrl);
+      }
+    });
 
     const cleanup = () => {
       if (redirectTimeout) {

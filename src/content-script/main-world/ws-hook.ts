@@ -1,6 +1,8 @@
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { Nullable } from "@/types/utils.types";
 import { mainWorldExec } from "@/utils/hof";
+import UiUtils from "@/utils/UiUtils";
+import { parseUrl } from "@/utils/utils";
 
 class WsHook {
   private static instance: WsHook | null = null;
@@ -22,7 +24,20 @@ class WsHook {
   }
 
   initialize(): void {
-    this.proxyXMLHttpRequest();
+    if (!parseUrl().queryParams.has("q")) {
+      this.proxyXMLHttpRequest();
+    }
+
+    setTimeout(() => {
+      if (!this.getActiveInstance()) {
+        console.log(
+          "No active WebSocket connection found. Falling back to long polling...",
+        );
+        this.proxyXMLHttpRequest();
+        UiUtils.getProSearchToggle().trigger("click");
+      }
+    }, 5000);
+
     this.passivelyCaptureWebSocket();
 
     webpageMessenger.onMessage("sendWebSocketMessage", async (data) => {
@@ -63,7 +78,7 @@ class WsHook {
     this.longPollingInstance = instance;
 
     webpageMessenger.sendMessage({
-      event: "longPollingCaptured",
+      event: "webSocketCaptured",
     });
 
     window.capturedSocket = this.getActiveInstance();
@@ -250,7 +265,7 @@ class WsHook {
     };
   }
 
-  async proxyXMLHttpRequest() {
+  proxyXMLHttpRequest() {
     const self = this;
 
     const originalXMLHttpRequestOpen = XMLHttpRequest.prototype.open;
@@ -280,8 +295,8 @@ class WsHook {
                   payload: { event: "response", payload: message },
                 });
               }
-            } catch (e) {
-              // Do nothing
+            } catch {
+              return;
             }
           }
         },

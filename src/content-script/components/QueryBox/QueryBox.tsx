@@ -13,7 +13,7 @@ import Portal from "@/shared/components/Portal";
 
 export default function QueryBox() {
   const isNetworkInstanceCaptured = useGlobalStore(
-    (state) => state.isWebSocketCaptured || state.isLongPollingCaptured,
+    (state) => state.isWebSocketCaptured,
   );
 
   const { settings } = useCplxGeneralSettings();

@@ -31,7 +31,7 @@ export const languageModels = [
   },
   {
     label: "Sonar Large",
-    shortLabel: "Sonar L",
+    shortLabel: "Sonar",
     code: "experimental",
     provider: "Perplexity",
   },

@@ -46,6 +46,7 @@ const DomSelectors = {
     SUBMIT_BUTTON: 'button[aria-label="Submit"]',
     /** The floating container that wraps the query box */
     WRAPPER: ".grow.block",
+    PRO_SEARCH_TOGGLE: "button#copilot-toggle",
   },
   STICKY_NAVBAR: ".sticky.left-0.right-0.top-0.z-20.border-b",
 } as const;

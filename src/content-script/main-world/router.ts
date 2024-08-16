@@ -139,7 +139,7 @@ class Router {
       const conditions: Partial<Record<typeof location, () => boolean>> = {
         thread: () => {
           try {
-            UiUtils.getMessageBlocks();
+            UiUtils.getMessageBlocks(true);
             return true;
           } catch {
             return false;

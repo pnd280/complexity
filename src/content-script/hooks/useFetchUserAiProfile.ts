@@ -10,7 +10,7 @@ export default function useFetchUserAiProfile({
   UseQueryOptions<UserAiProfileApiResponse>,
   "queryKey" | "queryFn"
 > = {}) {
-  const isReady = useGlobalStore((state) => state.isLongPollingCaptured);
+  const isReady = useGlobalStore((state) => state.isWebSocketCaptured);
 
   return useQuery<UserAiProfileApiResponse>({
     queryKey: ["userAiProfile"],

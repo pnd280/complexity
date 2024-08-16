@@ -7,7 +7,7 @@ import { Collection } from "@/types/collection.types";
 export default function useFetchCollections({
   ...props
 }: Omit<UseQueryOptions<Collection[]>, "queryKey" | "queryFn"> = {}) {
-  const isReady = useGlobalStore((state) => state.isLongPollingCaptured);
+  const isReady = useGlobalStore((state) => state.isWebSocketCaptured);
 
   return useQuery<Collection[]>({
     queryKey: ["collections"],

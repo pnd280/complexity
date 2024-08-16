@@ -41,8 +41,6 @@ async function initCplxUserSettings() {
 }
 
 function initUiUxTweaks() {
-  // DomObserver.enableLogging();
-
   UiTweaks.injectCustomStyles();
   UiTweaks.correctColorScheme();
 
