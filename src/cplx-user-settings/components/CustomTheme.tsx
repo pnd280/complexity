@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import AccentColorSelector from "@/cplx-user-settings/components/AccentColorSelector";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Button from "@/shared/components/Button";
 import {
   Form,
@@ -78,6 +79,8 @@ export default function CustomTheme() {
         customCSS: JSON.stringify(data.customCSS),
       },
     });
+
+    CplxUserSettings.fetch();
 
     setSaveButtonText(<Check className="tw-mr-2 tw-h-4 tw-w-4" />);
 

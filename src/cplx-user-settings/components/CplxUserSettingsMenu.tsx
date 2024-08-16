@@ -1,9 +1,10 @@
 import { useToggle } from "@uidotdev/usehooks";
 import { ExternalLink } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import CplxUserSettings from "@/cplx-user-settings/components/CplxUserSettings";
+import CplxUserSettingsComp from "@/cplx-user-settings/components/CplxUserSettings";
 import FloatingTrigger from "@/cplx-user-settings/components/FloatingTrigger";
+import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +16,16 @@ export default function CplxUserSettingsMenu() {
   const [isOpen, toggleOpen] = useToggle(false);
 
   const [activeTab, setActiveTab] = useState<string>();
+
+  const prevSettings = useRef<CplxUserSettings | null>(null);
+
+  const isSettingsChanged = () => {
+    if (!prevSettings.current) return;
+
+    const newSettings = CplxUserSettings.get();
+
+    return JSON.stringify(prevSettings.current) !== JSON.stringify(newSettings);
+  };
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -31,12 +42,20 @@ export default function CplxUserSettingsMenu() {
     }
   }, [activeTab, toggleOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      prevSettings.current = CplxUserSettings.get();
+    }
+  }, [isOpen]);
+
   return (
     <Dialog
       lazyMount
       unmountOnExit
       open={isOpen}
       closeOnInteractOutside={false}
+      onExitComplete={() => isSettingsChanged() && window.location.reload()}
+      onPointerDownOutside={() => !isSettingsChanged() && toggleOpen(false)}
       onOpenChange={({ open }) => {
         toggleOpen(open);
       }}
@@ -45,7 +64,7 @@ export default function CplxUserSettingsMenu() {
         <FloatingTrigger onClick={() => toggleOpen()} />
       </DialogTrigger>
       <DialogContent className="tw-h-[90dvh] tw-w-full tw-max-w-screen-lg">
-        <CplxUserSettings
+        <CplxUserSettingsComp
           defaultValue="generalSettings"
           value={activeTab}
           className="custom-scrollbar tw-overflow-auto"
