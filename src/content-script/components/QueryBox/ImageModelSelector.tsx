@@ -48,13 +48,7 @@ export default function ImageModelSelector() {
           </div>
         </SelectTrigger>
       </Tooltip>
-      <SelectContent
-        className="custom-scrollbar tw-max-h-[500px] tw-max-w-[200px] tw-overflow-auto tw-font-sans"
-        onPointerDown={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
+      <SelectContent className="custom-scrollbar tw-max-h-[500px] tw-max-w-[200px] tw-overflow-auto tw-font-sans">
         {imageModels.map((model) => (
           <Tooltip
             key={model.code}
@@ -65,7 +59,14 @@ export default function ImageModelSelector() {
               gutter: 10,
             }}
           >
-            <SelectItem key={model.code} item={model.code}>
+            <SelectItem
+              key={model.code}
+              item={model.code}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
               <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
                 {isReactNode(imageModelIcons[model.code]) ? (
                   <div className="tw-text-[1.1rem]">

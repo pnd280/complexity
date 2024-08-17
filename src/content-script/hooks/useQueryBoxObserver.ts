@@ -5,6 +5,7 @@ import useRouter from "@/content-script/hooks/useRouter";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { cn } from "@/utils/cn";
 import DomObserver from "@/utils/DomObserver/DomObserver";
+import { DomSelectors } from "@/utils/DomSelectors";
 import UiUtils from "@/utils/UiUtils";
 import { queueMicrotasks, whereAmI } from "@/utils/utils";
 
@@ -164,7 +165,7 @@ function observeImageGenerationPopover({
     return DomObserver.destroy(id);
 
   const $generationOptionsGrid = $(
-    `div.grid.grid-cols-2.gap-sm.border-borderMain\\/50.ring-borderMain\\/50.divide-borderMain\\/50.dark\\:divide-borderMainDark\\/50.dark\\:ring-borderMainDark\\/50.dark\\:border-borderMainDark\\/50.bg-transparent`,
+    DomSelectors.THREAD.MESSAGE.VISUAL_COL_CHILD.IMAGE_GEN_POPOVER,
   );
 
   if (!$generationOptionsGrid.length) return;
@@ -174,11 +175,6 @@ function observeImageGenerationPopover({
   if ($header.attr(`data-${id}`)) return;
 
   $header.attr(`data-${id}`, "true");
-
-  $header.parent().on("mousedown", (e) => {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  });
 
   setImageGenPopoverContainer($header[0]);
 }
