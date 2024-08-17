@@ -18,9 +18,10 @@ export default function Panel({
   visible,
   visibleMessageIndex,
   toggleVisibility,
+  ...props
 }: PanelProps) {
   return (
-    <div>
+    <div {...props}>
       <div className="custom-scrollbar tw-flex tw-max-h-[50dvh] tw-min-w-[150px] tw-max-w-[250px] tw-flex-col tw-gap-1 tw-overflow-auto">
         {anchorsProps?.map((anchorProps, index) => (
           <div

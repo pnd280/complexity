@@ -44,6 +44,7 @@ function initUiUxTweaks() {
   UiTweaks.correctColorScheme();
 
   UxTweaks.restoreLogoContextMenu();
+  UxTweaks.removeConflictedMobileOverlay();
 
   const observe = (url: string) => {
     const location = whereAmI(url);
