@@ -107,7 +107,7 @@ function CanvasSettingBlock({
       {pplxSearch && (
         <a
           className="tw-absolute tw-right-2 tw-top-2"
-          href={`https://perplexity.ai/search?qq=${encodeURIComponent(pplxSearch)}&focus=internet&copilot=true`}
+          href={`https://perplexity.ai/search?q=${encodeURIComponent(pplxSearch)}&focus=internet&copilot=true`}
           target="_blank"
           rel="noreferrer"
         >
