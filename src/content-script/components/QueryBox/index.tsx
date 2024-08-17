@@ -1,12 +1,11 @@
 import { BadgePercent, Library } from "lucide-react";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 import { AiOutlineOpenAI } from "react-icons/ai";
 import { BiNetworkChart } from "react-icons/bi";
 import { PiGlobe } from "react-icons/pi";
 import {
   SiAnthropic,
   SiGooglegemini,
-  SiMeta,
   SiPerplexity,
   SiYoutube,
 } from "react-icons/si";
@@ -16,10 +15,10 @@ import {
   languageModels,
   webAccessFocus,
 } from "@/content-script/components/QueryBox/consts";
+import BlackForestLabs from "@/shared/components/icons/BlackForestLabsIcon";
 import MistralAiIcon from "@/shared/components/icons/MistralAiIcon";
 import PlaygroundAiIcon from "@/shared/components/icons/PlaygroundAiIcon";
 import StabilityAiIcon from "@/shared/components/icons/StabilityAiIcon";
-
 
 export type LanguageModel = (typeof languageModels)[number];
 type Provider = (typeof languageModels)[number]["provider"];
@@ -53,18 +52,18 @@ export const groupedLanguageModelsByProvider: GroupedLanguageModelsByProvider =
 export type ImageModel = (typeof imageModels)[number];
 
 export const imageModelIcons: Record<ImageModel["code"], ReactNode> = {
-  "dall-e-3": <SiMeta />,
+  flux: <BlackForestLabs />,
+  "dall-e-3": <AiOutlineOpenAI />,
   default: <PlaygroundAiIcon />,
   sdxl: <StabilityAiIcon />,
 };
 
 export type WebAccessFocus = (typeof webAccessFocus)[number];
 
-export const webAccessFocusIcons: Record<WebAccessFocus["code"], ReactNode> =
-  {
-    internet: <PiGlobe className="tw-size-4" />,
-    scholar: <Library className="tw-size-4" />,
-    wolfram: <BadgePercent className="tw-size-4" />,
-    youtube: <SiYoutube className="tw-size-4" />,
-    reddit: <BiNetworkChart className="tw-size-4" />,
-  };
+export const webAccessFocusIcons: Record<WebAccessFocus["code"], ReactNode> = {
+  internet: <PiGlobe className="tw-size-4" />,
+  scholar: <Library className="tw-size-4" />,
+  wolfram: <BadgePercent className="tw-size-4" />,
+  youtube: <SiYoutube className="tw-size-4" />,
+  reddit: <BiNetworkChart className="tw-size-4" />,
+};

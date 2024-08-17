@@ -29,17 +29,21 @@ export default function CanvasSettings() {
 
   return (
     <div className="tw-flex tw-flex-col tw-gap-2">
-      <h1 className="tw-mx-auto tw-text-xl tw-text-yellow-300">
-        ⚠️ This is a <span className="tw-underline">highly experimental</span>{" "}
-        feature!
-      </h1>
       <div className="tw-text-center">
         <p>
-          This feature is still in development and may not work as expected.
+          This feature is heavily inspired by{" "}
+          <a
+            href="https://claude.ai/"
+            className="tw-underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Claude.ai&apos;s
+          </a>{" "}
+          artifacts.
         </p>
         <p>
-          Enabling this feature may cause performance issues/unexpected
-          behavior.
+          Allows you to visualize/preview the output of the code in certain languages.
         </p>
         <Switch
           id="canvas-enable"
@@ -103,7 +107,7 @@ function CanvasSettingBlock({
   const canvasSettings = settings.qolTweaks.canvas;
 
   return (
-    <div className="tw-relative tw-flex tw-w-[300px] tw-flex-col tw-gap-4 tw-rounded-md tw-border tw-p-4 tw-shadow-lg">
+    <div className="tw-relative tw-flex tw-w-[300px] tw-flex-col tw-gap-4 tw-rounded-md tw-border tw-p-4">
       {pplxSearch && (
         <a
           className="tw-absolute tw-right-2 tw-top-2"
