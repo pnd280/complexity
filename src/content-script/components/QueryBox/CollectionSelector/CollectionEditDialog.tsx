@@ -7,9 +7,11 @@ import * as z from "zod";
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import PplxApi from "@/services/PplxApi";
 import Button from "@/shared/components/Button";
+import CopyButton from "@/shared/components/CopyButton";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
 } from "@/shared/components/Dialog";
@@ -134,6 +136,11 @@ const DialogContentWrapper = ({
   return (
     <DialogContent className="!tw-flex tw-w-full tw-flex-col tw-justify-start tw-font-sans xl:tw-w-[40vw]">
       <DialogHeader className="tw-text-3xl">Edit Collection</DialogHeader>
+      <div className="tw-flex tw-items-center tw-gap-2">
+        uuid:
+        <DialogDescription>{collection.uuid}</DialogDescription>
+        <CopyButton content={collection.uuid} />
+      </div>
       <Separator />
       <Form {...form}>
         <form

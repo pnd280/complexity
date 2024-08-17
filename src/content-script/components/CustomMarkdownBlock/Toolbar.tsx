@@ -2,9 +2,11 @@ import $ from "jquery";
 import { LoaderCircle } from "lucide-react";
 
 import CanvasRenderButton from "@/content-script/components/CustomMarkdownBlock/CanvasRenderButton";
-import CopyButton from "@/content-script/components/CustomMarkdownBlock/CopyButton";
+// import CopyButton from "@/content-script/components/CustomMarkdownBlock/CopyButton";
+import CopyButton from "@/shared/components/CopyButton";
 import Tooltip from "@/shared/components/Tooltip";
 import Canvas from "@/utils/Canvas";
+import { stripHtml } from "@/utils/utils";
 
 type ToolbarProps = {
   lang: string;
@@ -36,7 +38,21 @@ export default function Toolbar({ lang, preBlockId }: ToolbarProps) {
           </div>
         )}
 
-        <CopyButton $pre={$pre} />
+        <CopyButton
+          onCopy={() => {
+            if ($pre.parents().eq(1).attr("id") === "markdown-query-wrapper") {
+              navigator.clipboard.writeText(
+                stripHtml($pre.find("code").text()),
+              );
+            } else {
+              const $copyButton = $pre.parent().find("button");
+              requestAnimationFrame(() => {
+                $copyButton.addClass("!tw-hidden");
+              });
+              $copyButton.trigger("click");
+            }
+          }}
+        />
       </div>
     </div>
   );
