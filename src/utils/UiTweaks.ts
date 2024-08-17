@@ -2,7 +2,7 @@ import $ from "jquery";
 
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";
-import { jsonUtils, whereAmI } from "@/utils/utils";
+import { getCookie, jsonUtils, setCookie, whereAmI } from "@/utils/utils";
 
 export default class UiTweaks {
   static injectCustomStyles() {
@@ -74,6 +74,16 @@ export default class UiTweaks {
         $("p.message").addClass("tw-font-sans");
       }
     });
+  }
+
+  static forceUSInterface() {
+    if (
+      getCookie("pplx.chosen-locale") != null &&
+      getCookie("pplx.chosen-locale") !== "en-US"
+    ) {
+      setCookie("pplx.chosen-locale", "", -1);
+      window.location.reload();
+    }
   }
 
   static applySettingsAsHTMLAttrs(location: ReturnType<typeof whereAmI>) {

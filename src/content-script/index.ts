@@ -41,6 +41,7 @@ async function initCplxUserSettings() {
 
 function initUiUxTweaks() {
   UiTweaks.injectCustomStyles();
+  UiTweaks.forceUSInterface();
   UiTweaks.correctColorScheme();
 
   UxTweaks.restoreLogoContextMenu();

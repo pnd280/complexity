@@ -24,6 +24,8 @@ const DomSelectors = {
         /** The answer heading */
         ANSWER_HEADING:
           '.mb-sm.flex.w-full.items-center.justify-between:contains("Answer")',
+        SOURCE_HEADING:
+          '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")',
       },
       VISUAL_COL_CHILD: {
         IMAGE_GEN_POPOVER:
@@ -35,6 +37,14 @@ const DomSelectors = {
       },
       /** The bottom toolbar of the message (share, rewrite, model name, etc.) */
       BOTTOM_BAR: ".mt-sm.flex.items-center.justify-between",
+      BOTTOM_BAR_CHILD: {
+        MISC_BUTTON: 'button:has([data-icon="ellipsis"])',
+        REWRITE_BUTTON: 'button:contains("Rewrite")',
+      },
+    },
+    POPPER: {
+      MOBILE: ".duration-250.fill-mode-both.fixed.bottom-0.left-0",
+      DESKTOP: "[data-popper-reference-hidden='true']",
     },
   },
   HOME: {

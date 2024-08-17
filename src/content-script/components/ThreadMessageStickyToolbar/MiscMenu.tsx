@@ -48,7 +48,7 @@ export default function MiscMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {!!$(containers[containerIndex].messageBlock).find(
-          '.mb-sm.flex.w-full.items-center.justify-between:contains("Sources")',
+          DomSelectors.THREAD.MESSAGE.TEXT_COL_CHILD.SOURCE_HEADING,
         ).length && (
           <DropdownMenuItem
             value="view-sources"
@@ -130,7 +130,7 @@ function triggerMenuItem({
       .children()
       .last()
       .children()
-      .find('button:has([data-icon="ellipsis"])');
+      .find(DomSelectors.THREAD.MESSAGE.BOTTOM_BAR_CHILD.MISC_BUTTON);
 
     if (!$button.length) return resolve();
 
@@ -142,11 +142,11 @@ function triggerMenuItem({
       await waitForElement({
         selector() {
           if (viewportWidth && viewportWidth < 768) {
-            return $(".duration-250.fill-mode-both.fixed.bottom-0.left-0")[0];
+            return $(DomSelectors.THREAD.POPPER.MOBILE)[0];
           }
 
           return $(
-            `[data-popper-reference-hidden="true"]:contains("${item}")`,
+            `${DomSelectors.THREAD.POPPER.DESKTOP}:contains("${item}")`,
           )[0];
         },
         timeout: 1000,
@@ -155,13 +155,13 @@ function triggerMenuItem({
 
       if (viewportWidth && viewportWidth < 768) {
         $(
-          `.duration-250.fill-mode-both.fixed.bottom-0.left-0 .md\\:h-full:contains("${item}")`,
+          `${DomSelectors.THREAD.POPPER.MOBILE} .md\\:h-full:contains("${item}")`,
         )
           .last()
           .trigger("click");
       } else {
         $(
-          `[data-popper-reference-hidden="true"] .md\\:h-full:contains("${item}")`,
+          `${DomSelectors.THREAD.POPPER.DESKTOP} .md\\:h-full:contains("${item}")`,
         )
           .last()
           .trigger("click");

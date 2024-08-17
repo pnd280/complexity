@@ -4,7 +4,6 @@ import $ from "jquery";
 import { lazy, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
-import { IncompatibleInterfaceLanguageNotice } from "@/content-script/components/IncompatibleInterfaceLanguageNotice";
 import MainPage from "@/content-script/components/MainPage";
 import QueryBox from "@/content-script/components/QueryBox/QueryBox";
 import ThreadExportButton from "@/content-script/components/ThreadExportButton";
@@ -64,7 +63,7 @@ function Root() {
       <QueryBox />
       {import.meta.env.DEV && <Commander />}
 
-      {location === "home" && <MainPageComponents />}
+      {location === "home" && <MainPage />}
 
       {location === "thread" && <ThreadComponents />}
 
@@ -73,15 +72,6 @@ function Root() {
       <CplxUserSettingsMenu />
 
       <ReactQueryDevtools initialIsOpen={false} />
-    </>
-  );
-}
-
-function MainPageComponents() {
-  return (
-    <>
-      <MainPage />
-      <IncompatibleInterfaceLanguageNotice />
     </>
   );
 }

@@ -58,7 +58,7 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         .children()
         .first()
         .children()
-        .find('button:contains("Rewrite")');
+        .find(DomSelectors.THREAD.MESSAGE.BOTTOM_BAR_CHILD.REWRITE_BUTTON);
 
       if (!$rewriteButton.length) return;
 
@@ -70,11 +70,11 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         await waitForElement({
           selector() {
             if (viewportWidth < 768) {
-              return $(".duration-250.fill-mode-both.fixed.bottom-0.left-0")[0];
+              return $(DomSelectors.THREAD.POPPER.MOBILE)[0];
             }
 
             return $(
-              `[data-popper-reference-hidden="true"]:contains("Pro Search")`,
+              `${DomSelectors.THREAD.POPPER.DESKTOP}:contains("Pro Search")`,
             )[0];
           },
           timeout: 1000,
@@ -82,11 +82,11 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         });
 
         if (viewportWidth < 768) {
-          const buttonSelector = `.duration-250.fill-mode-both.fixed.bottom-0.left-0 .divide-y > div:nth-child(${proSearch ? 1 : 2})`;
+          const buttonSelector = `${DomSelectors.THREAD.POPPER.MOBILE} .divide-y > div:nth-child(${proSearch ? 1 : 2})`;
 
           $(buttonSelector).children().last().trigger("click");
         } else {
-          const buttonSelector = `[data-popper-reference-hidden="true"] > div > div > div:nth-child(${proSearch ? 2 : 3})`;
+          const buttonSelector = `${DomSelectors.THREAD.POPPER.DESKTOP} > div > div > div:nth-child(${proSearch ? 2 : 3})`;
 
           $(buttonSelector).children().last().trigger("click");
         }
