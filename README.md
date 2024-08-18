@@ -5,15 +5,9 @@
 
 <p align="center">
   <div align="center">
-    <a href="https://github.com/pnd280/complexity" target="_blank">
-    <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Fchrome-ext%2Fpackage.json&query=%24.version&label=stable" alt="Stable">
-    </a>
-    <a href="https://github.com/pnd280/complexity/tree/alpha" target="_blank">
-    <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Falpha%2Fpackage.json&query=%24.version&label=alpha&color=yellow" alt="Alpha">
-    </a>
-    <a href="https://discord.gg/fxzqdkwmWx" target="_blank">
-    <img src="https://img.shields.io/discord/1245377426331144304?logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%2FfxzqdkwmWx" alt="Discord">
-    </a>
+    <a href="https://github.com/pnd280/complexity" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Fchrome-ext%2Fpackage.json&query=%24.version&label=stable" alt="Stable"></a>
+    <a href="https://github.com/pnd280/complexity/tree/alpha" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Falpha%2Fpackage.json&query=%24.version&label=alpha&color=yellow" alt="Alpha"></a>
+    <a href="https://discord.gg/fxzqdkwmWx" target="_blank"><img src="https://img.shields.io/discord/1245377426331144304?logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%2FfxzqdkwmWx" alt="Discord"></a>
   </div>
   <div align="center">
     <img src="https://img.shields.io/badge/CWS_Rating-5/5-blue" alt="Chrome Web Store Rating">
@@ -32,8 +26,9 @@
   💖 support the development
 <div>
 
-[![Paypal](https://img.shields.io/badge/Paypal-blue?logo=paypal&logoColor=white)](https://www.paypal.com)
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-orange?logo=kofi&logoColor=white)](https://ko-fi.com)
+<a href="https://paypal.me/pnd280" target="_blank"><img src="https://img.shields.io/badge/Paypal-blue?logo=paypal&logoColor=white" alt="Paypal"></a>
+<a href="https://ko-fi.com/pnd280" target="_blank"><img src="https://img.shields.io/badge/Ko--fi-orange?logo=kofi&logoColor=white" alt="Ko-fi"></a>
+
 </div>
 </div>
 
@@ -42,15 +37,15 @@ Perplexity.ai is famously known for its LLM-based search engine, but many may no
 ## Complexity is packed with features
 
 - Various UI/UX/QoL tweaks.
+- LLM/Image gen model selectors; directly chat to a collection; export your searches/conversations, etc.
 - Highly customizable ADHD-friendly theme (custom css is supported).
-- LLM/Image gen model selectors, directly chat to a collection, etc.
-- A dedicated solution for prompts management: Prompts Library (soon).
+- A dedicated solution for prompts management: Prompts Library (in development).
 
 [Read more](https://complexity.pnd280.me/features)
 
 ## How does it work?
 
-- Read more about the [architecture](https://complexity.pnd280.me/architecture).
+- Read more about the [architecture](./docs/architecture.md).
 
 ## Installation
 
@@ -64,12 +59,13 @@ Perplexity.ai is famously known for its LLM-based search engine, but many may no
 2. `pnpm clean-zip`
 3. Load the extension from the zip file in the `package` folder.
 
-The mozilla add-on version is available at `moz` branch.
+The mozilla add-on version is available at the [moz](https://github.com/pnd280/complexity/tree/moz) branch.
 
 ## Limitations
 
+- DX on mozilla-based browsers is non-existent due to a non-compatible dev dependency [@crxjs/vite-plugin](https://github.com/crxjs/chrome-extension-tools).
 - UI tweaks are prone to breakage due to frequent/unexpected changes in the host page. And it will take some time for the review process to be passed.
-- Poor e2e test coverage: Due to the nature of the project, coupled with the agressive Cloudflare protection of the host page itself, it is almost impossible to run e2e tests, let alone CI/CD (will soon figure this out).
+- No e2e test: the aforementioned downsides, coupled with the agressive Cloudflare protection of the host page itself, it is almost impossible to run e2e tests (will soon figure this out).
 
 ## Contributing
 

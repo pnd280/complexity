@@ -8,8 +8,8 @@ Ahh, we all know how things work. Just don't throw in random, unverified AI-gene
   - Use built-in types whenever possible.
   - Don't use types that are banned by `eslint@typescript-eslint/ban-types`. e.g. `Function`.
 - React:
-	- Directly import modules/types instead of namespaces: `useState` instead of `React.useState`, `ReactNode` instead of `React.ReactNode`.
-	- Always prefer the functional component format `function Component` over `const Component = React<FC>...`.
-	- Always prefer to `export default function Component()...` than have the default export statement in a separated line.
+  - Directly import modules/types instead of namespaces: `useState` instead of `React.useState`, `ReactNode` instead of `React.ReactNode`.
+  - Always prefer the functional component format `function Component` over `const Component = React<FC>...`.
+  - Always prefer to `export default function Component()...` than have the default export statement in a separated line.
 
->Note: I know that the project itself, in some places, doesn't fully comply with the above conventions (there are still some explicit `any` types). But they will eventually be refactored. So, please follow them when contributing.
+> Note: I know that the project itself, in some places, doesn't fully comply with the above conventions (there are still some explicit `any` types). But they will eventually be refactored. So, please follow them when contributing.

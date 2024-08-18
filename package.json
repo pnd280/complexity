@@ -1,15 +1,14 @@
 {
   "name": "complexity",
   "displayName": "Complexity",
-  "version": "0.0.0.42",
+  "version": "0.0.1.0",
   "author": "pnd280",
   "description": "⚡ Supercharge your Perplexity.ai",
   "type": "module",
   "license": "MIT",
   "keywords": [
     "chrome-extension",
-    "react",
-    "vite",
+    "mozilla-addon",
     "perplexty.ai"
   ],
   "engines": {
@@ -21,7 +20,7 @@
     "build": "eslint ./src/ && tsc && vite build",
     "esl": "eslint ./src/",
     "eslf": "eslint ./src/ --fix",
-    "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
+    "fmt": "prettier --write '**/*.{tsx,ts}'",
     "zip": "pnpm build && pnpm gulp zip",
     "clean-zip": "rm -rf node_modules/ && pnpm i && pnpm esl && pnpm fmt && pnpm zip"
   },
