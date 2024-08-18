@@ -43,7 +43,7 @@ export default class WebpageMessageInterceptor {
 
           const isRateLimitResponse =
             Array.isArray(parsedPayload.data) &&
-            parsedPayload.data?.[0]?.remaining;
+            parsedPayload.data?.[0]?.remaining != null;
 
           return {
             match:

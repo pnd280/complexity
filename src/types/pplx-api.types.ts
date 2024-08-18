@@ -36,7 +36,7 @@ export type ThreadMessageApiResponse = {
   query_str: string;
   text: string;
   backend_uuid: string;
-  author_image: string;
+  author_image: string | null;
   author_username: string;
   collection_info: Collection;
   thread_url_slug: string;

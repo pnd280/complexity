@@ -6,29 +6,6 @@ import BackgroundScript from "@/utils/BackgroundScript";
 import UiUtils from "@/utils/UiUtils";
 
 export const jsonUtils = {
-  unescape(escapedJson: string) {
-    return (
-      escapedJson
-        .replace(/\\\\/g, "\\") // backslashes
-        // eslint-disable-next-line no-useless-escape
-        .replace(/\\\"/g, '"') // double quotes
-        .replace(/\\n/g, "\n") // newlines
-        .replace(/\\r/g, "\r") // carriage returns
-        .replace(/\\t/g, "\t") // tabs
-        .replace(/\\b/g, "\b") // backspaces
-        .replace(/\\f/g, "\f")
-    ); // form feeds
-  },
-  escape(json: string) {
-    return json
-      .replace(/\\/g, "\\\\")
-      .replace(/"/g, '\\"')
-      .replace(/\n/g, "\\n")
-      .replace(/\r/g, "\\r")
-      .replace(/\t/g, "\\t")
-      .replace(/\\b/g, "\\b")
-      .replace(/\f/g, "\\f");
-  },
   safeParse(json: string) {
     try {
       return JSON.parse(json);
@@ -64,7 +41,7 @@ export function compareVersions(v1: string, v2: string): number {
 }
 
 export function isValidVersionString(version: string) {
-  return /^\d+\.\d+\.\d+\.\d+$/.test(version);
+  return /^\d+(\.\d+){1,}$/.test(version);
 }
 
 export async function waitForHydration() {

@@ -63,7 +63,7 @@ export default class WsMessageParser {
       data = [data];
     }
 
-    const eventData = JSON.stringify([event, ...data]);
+    const eventData = JSON.stringify(event ? [event, ...data] : data);
     const stringifiedMessage = `${messageCode}${eventData}`;
 
     return stringifiedMessage;
