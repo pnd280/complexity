@@ -4,7 +4,7 @@ Ahh, we all know how things work. Just don't throw in random, unverified AI-gene
 - No deprecated methods/modules.
 - TypeScript:
   - Always prefer `type` over `interface` for type declarations.
-  - Do not use `any` type, regardless of implicit or explicit.
+  - Don't use `any` type, regardless of implicit or explicit.
   - Use built-in types whenever possible.
   - Don't use types that are banned by `eslint@typescript-eslint/ban-types`. e.g. `Function`.
 - React:

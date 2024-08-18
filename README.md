@@ -63,9 +63,9 @@ The mozilla add-on version is available at the [moz](https://github.com/pnd280/c
 
 ## Limitations
 
-- DX on mozilla-based browsers is non-existent due to a non-compatible dev dependency [@crxjs/vite-plugin](https://github.com/crxjs/chrome-extension-tools).
-- UI tweaks are prone to breakage due to frequent/unexpected changes in the host page. And it will take some time for the review process to be passed.
-- No e2e test: the aforementioned downsides, coupled with the agressive Cloudflare protection of the host page itself, it is almost impossible to run e2e tests (will soon figure this out).
+- Because of frequent/unexpected changes in the host page, UI tweaks are prone to breakage and it will take some time for the review process to be passed.
+- The dev runtime/overall DX on mozilla-based browsers is non-existent due to a non-compatible dev dependency [@crxjs/vite-plugin](https://github.com/crxjs/chrome-extension-tools).
+- Limited testing: the e2e test suite has not been implemented due to the agressive Cloudflare protection of the host page itself (I'm still figuring out a way 🙂)
 
 ## Contributing
 
