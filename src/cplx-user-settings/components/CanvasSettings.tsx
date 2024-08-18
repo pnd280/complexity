@@ -43,7 +43,8 @@ export default function CanvasSettings() {
           artifacts.
         </p>
         <p>
-          Allows you to visualize/preview the output of the code in certain languages.
+          Allows you to visualize/preview the output of the code in certain
+          languages.
         </p>
         <Switch
           id="canvas-enable"

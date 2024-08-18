@@ -1,6 +1,7 @@
 import $ from "jquery";
 
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
+import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiUtils from "@/utils/UiUtils";
 import { getCookie, jsonUtils, setCookie, whereAmI } from "@/utils/utils";
 
@@ -57,7 +58,7 @@ export default class UiTweaks {
   }
 
   static correctColorScheme() {
-    $(() => {
+    const callback = () => {
       // cloudflare
       if (document.title === "Just a moment...") {
         $("html").addClass("dark tw-dark");
@@ -66,6 +67,7 @@ export default class UiTweaks {
       const darkTheme = UiUtils.isDarkTheme();
 
       if (darkTheme) $("html").addClass("dark tw-dark");
+      else $("html").removeClass("dark tw-dark");
 
       // downtime page
       if (document.title === "We'll be right back") {
@@ -73,6 +75,19 @@ export default class UiTweaks {
         $("h1").addClass("!tw-text-[4rem]");
         $("p.message").addClass("tw-font-sans");
       }
+    };
+
+    callback();
+
+    DomObserver.create("htmlColorSchemeObserver", {
+      config: {
+        attributes: true,
+        attributeFilter: ["data-color-scheme"],
+        childList: false,
+        subtree: false,
+      },
+      target: $("html")[0],
+      onAttrChange: callback,
     });
   }
 

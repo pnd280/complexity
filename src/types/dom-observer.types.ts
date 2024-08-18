@@ -5,13 +5,7 @@ export type MutationCallback = (
 
 export type CustomCallback = (element: Element) => void | Promise<void>;
 
-export type MutationConfig = {
-  attributes?: boolean;
-  childList?: boolean;
-  subtree?: boolean;
-  attributeFilter?: string[];
-  characterData?: boolean;
-};
+export type MutationConfig = MutationObserverInit;
 
 export type DomObserverConfig = {
   target: Element | null;

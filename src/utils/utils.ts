@@ -74,11 +74,6 @@ export async function waitForHydration() {
       timeout: 5000,
       interval: 100,
     }),
-    waitForElement({
-      selector: `textarea[tabindex="-1"][aria-hidden="true"]`,
-      timeout: 5000,
-      interval: 100,
-    }),
     waitForNextjsGlobalObj(),
   ]);
 }
