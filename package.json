@@ -21,8 +21,9 @@
     "esl": "eslint ./src/",
     "eslf": "eslint ./src/ --fix",
     "fmt": "prettier --write '**/*.{tsx,ts}'",
+    "test": "vitest",
     "zip": "pnpm build && pnpm gulp zip",
-    "clean-zip": "rm -rf node_modules/ && pnpm i && pnpm esl && pnpm fmt && pnpm zip"
+    "clean-zip": "rm -rf node_modules/ && pnpm i && pnpm esl && pnpm fmt && pnpm test && pnpm zip"
   },
   "dependencies": {
     "@ark-ui/react": "^3.7.0",

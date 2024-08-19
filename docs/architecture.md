@@ -6,7 +6,7 @@ The following implementations are opinionated and may not be the best solution. 
 
 ## Intercepting Websocket Messages
 
-By overriding native classes and methods, Complexity is able to intercept and modify the messages sent and received by the Perplexity.ai's websocket connection, including the fallback to long-polling.
+Some magic like switching model/focus mode on the fly, or modifying collections, are done by intercepting the messages sent and received by the Perplexity.ai's websocket connection, including the fallback to long-polling.
 
 ## Custom DOM Mutation Observer
 
