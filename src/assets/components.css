@@ -10,14 +10,14 @@
 }
 
 /* Markdown block */
-body.custom-markdown-block pre code {
+.custom-markdown-block pre code {
   width      : 100%;
   max-height : 500px;
   overflow   : auto;
   white-space: pre !important;
 }
 
-body.custom-markdown-block pre code span:empty:last-child {
+.custom-markdown-block pre code span:empty:last-child {
   display: none;
 }
 
@@ -48,7 +48,7 @@ body pre:not([data-lang="text"], [data-lang="markdown"]).line-numbers code .line
   border-radius   : 0.375rem;
 }
 
-html[data-color-scheme="dark"] .markdown-query-wrapper pre code {
+[data-color-scheme="dark"] .markdown-query-wrapper pre code {
   color: var(--foreground) !important;
 }
 
@@ -75,37 +75,37 @@ html[data-color-scheme="dark"] .markdown-query-wrapper pre code {
 }
 
 /* Thread layout adjustments */
-body.custom-markdown-block pre[data-lang="text"] code,
-body.custom-markdown-block pre[data-lang="markdown"] code {
+.custom-markdown-block pre[data-lang="text"] code,
+.custom-markdown-block pre[data-lang="markdown"] code {
   white-space: pre-wrap !important;
 }
 
-body.custom-markdown-block div.w-full.max-w-\[90vw\]:has(> pre) {
+.custom-markdown-block div.w-full.max-w-\[90vw\]:has(> pre) {
   margin       : 1rem 0;
   border-radius: calc(var(--radius) - 2px);
 }
 
-body.custom-markdown-block div.w-full.max-w-\[90vw\]:has(> pre:not([data-mask="true"])) {
+.custom-markdown-block div.w-full.max-w-\[90vw\]:has(> pre:not([data-mask="true"])) {
   border    : 1px solid var(--border) !important;
   background: var(--secondary);
 }
 
-body.custom-markdown-block .codeWrapper {
+.custom-markdown-block .codeWrapper {
   padding-top   : 0 !important;
   padding-bottom: 0 !important;
   margin        : 0 !important;
   border        : none;
 }
 
-body.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl:not(:has(.thread-message-toolbar-container)) {
+.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl:not(:has(.thread-message-toolbar-container)) {
   padding-top: auto !important;
 }
 
-body.thread-message-sticky-toolbar *:has(.markdown-query-wrapper:not(.\!tw-hidden))>.whitespace-pre-line.break-words:not(.markdown-query-wrapper) {
+.thread-message-sticky-toolbar *:has(.markdown-query-wrapper:not(.\!tw-hidden))>.whitespace-pre-line.break-words:not(.markdown-query-wrapper) {
   display: none;
 }
 
-body.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl .mt-sm.flex.items-center.justify-between {
+.thread-message-sticky-toolbar .md\:grid.grid-cols-12.gap-xl .mt-sm.flex.items-center.justify-between {
   display: none;
 }
 
