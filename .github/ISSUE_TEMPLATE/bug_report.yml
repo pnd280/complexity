@@ -7,6 +7,14 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Which version of the extension are you running?
+      placeholder: 0.0.1.0
+    validations:
+      required: true
   - type: textarea
     id: bug-description
     attributes:
