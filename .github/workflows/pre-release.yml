@@ -1,0 +1,49 @@
+name: Create pre-release
+
+on: 
+  push:
+    branches:
+      - alpha
+
+jobs:
+  create-alpha-release:
+    if: startsWith(github.event.head_commit.message, 'release(alpha):')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract package version
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=v$VERSION-alpha" >> $GITHUB_OUTPUT
+
+      - name: Extract release notes
+        id: release-notes
+        run: |
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          RELEASE_NOTES=$(echo "$COMMIT_MSG" | sed -n '/^release(alpha):/,/^$/p' | sed '1d;$d')
+          echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$RELEASE_NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        shell: /usr/bin/bash -e {0}
+
+      - name: Create and push tag
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          source $GITHUB_OUTPUT
+          git tag -a ${{steps.package-version.outputs.version}} -m "$release_notes"
+          git push origin ${{steps.package-version.outputs.version}}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.release-notes.outputs.release_notes }}
+          prerelease: true
+          tag_name: ${{ steps.package-version.outputs.version }}
+
+permissions: 
+  contents: write

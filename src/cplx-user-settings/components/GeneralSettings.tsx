@@ -109,7 +109,7 @@ function SettingGroup<
                     {versionRelease &&
                       compareVersions(packageData.version, versionRelease) <=
                         0 && (
-                        <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-text-xs tw-text-primary">
+                        <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-text-xs tw-text-background">
                           new
                         </div>
                       )}

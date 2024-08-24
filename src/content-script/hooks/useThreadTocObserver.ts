@@ -15,6 +15,8 @@ import { DomHelperSelectors } from "@/utils/DomSelectors";
 import UiUtils from "@/utils/UiUtils";
 import { scrollToElement } from "@/utils/utils";
 
+// TODO: refactor to use IntersectionObserver
+
 export default function useThreadTocObserver() {
   const { url } = useRouter();
 

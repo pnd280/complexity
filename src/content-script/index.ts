@@ -94,7 +94,7 @@ function initTrafficInterceptors() {
   WebpageMessageInterceptor.removeComplexityIdentifier();
 }
 
-async function initConsoleMessage() {
+function initConsoleMessage() {
   console.log(
     "%cCOMPLEXITY v" +
       packageData.version +

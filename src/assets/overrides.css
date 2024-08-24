@@ -96,13 +96,13 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
   background-color: var(--accent-foreground) !important;
 }
 
-html[data-color-scheme="dark"] .dark\:bg-superDark\/10,
-html[data-color-scheme="dark"] .bg-super\/10 {
+[data-color-scheme="dark"] .dark\:bg-superDark\/10,
+[data-color-scheme="dark"] .bg-super\/10 {
   background-color: var(--accent-foreground-darker) !important;
 }
 
-html[data-color-scheme="dark"] .dark\:bg-superDark\/10 .text-super.dark\:text-superDark,
-html[data-color-scheme="dark"] .bg-super\/10 .text-super.dark\:text-superDark {
+[data-color-scheme="dark"] .dark\:bg-superDark\/10 .text-super.dark\:text-superDark,
+[data-color-scheme="dark"] .bg-super\/10 .text-super.dark\:text-superDark {
   color: var(--foreground) !important;
 }
 
@@ -110,7 +110,7 @@ html[data-color-scheme="dark"] .bg-super\/10 .text-super.dark\:text-superDark {
 .markdown-highlight,
 .selection\:bg-superDuper::selection,
 .selection\:text-textMain ::selection,
-html[data-color-scheme="dark"] .dark\:selection\:text-super ::selection {
+[data-color-scheme="dark"] .dark\:selection\:text-super ::selection {
   background-color: var(--selection) !important;
   color           : var(--selection-foreground) !important;
 }
@@ -127,7 +127,7 @@ html[data-color-scheme="dark"] .dark\:selection\:text-super ::selection {
 /* SVG and icon styles */
 .fill-super,
 .group:hover .group-hover\:fill-superDuper,
-:is(html[data-color-scheme="dark"] .dark\:fill-superDark) {
+:is([data-color-scheme="dark"] .dark\:fill-superDark) {
   fill: var(--accent-foreground) !important;
 }
 
@@ -137,21 +137,21 @@ html[data-color-scheme="dark"] .dark\:selection\:text-super ::selection {
 
 .stroke-super,
 .group:hover .group-hover\:stroke-superDuper,
-:is(html[data-color-scheme="dark"] .dark\:stroke-superDark),
-:is(html[data-color-scheme="dark"] .dark\:stroke-textMainDark) {
+:is([data-color-scheme="dark"] .dark\:stroke-superDark),
+:is([data-color-scheme="dark"] .dark\:stroke-textMainDark) {
   stroke: var(--accent-foreground) !important;
 }
 
 /* Outline and ring styles */
-:is(html[data-color-scheme="dark"] .dark\:outline-superDark) {
+:is([data-color-scheme="dark"] .dark\:outline-superDark) {
   outline-color: var(--accent-foreground) !important;
 }
 
-html[data-color-scheme="dark"] .dark\:hover\:ring-superDark:hover,
+[data-color-scheme="dark"] .dark\:hover\:ring-superDark:hover,
 .hover\:\!ring-super:hover,
 .hover\:ring-super:hover,
-:is(html[data-color-scheme="dark"] .dark\:focus\:ring-borderMainDark:focus),
-html[data-color-scheme="dark"] .dark\:ring-superDark,
+:is([data-color-scheme="dark"] .dark\:focus\:ring-borderMainDark:focus),
+[data-color-scheme="dark"] .dark\:ring-superDark,
 .ring-super {
   --tw-ring-color: var(--accent-foreground) !important;
 }
@@ -162,15 +162,15 @@ html[data-color-scheme="dark"] .dark\:ring-superDark,
   background-color: var(--accent-foreground) !important;
 }
 
-html[data-color-scheme="dark"] .dark\:text-textMainDark {
+[data-color-scheme="dark"] .dark\:text-textMainDark {
   color: var(--text-main) !important;
 }
 
-html[data-color-scheme="dark"] .dark\:\!text-backgroundDark {
+[data-color-scheme="dark"] .dark\:\!text-backgroundDark {
   color: var(--text-main) !important;
 }
 
-html[data-color-scheme="dark"] .dark\:\!text-backgroundDark * {
+[data-color-scheme="dark"] .dark\:\!text-backgroundDark * {
   color: var(--accent-foreground) !important;
 }
 
@@ -188,15 +188,15 @@ html[data-color-scheme="dark"] .dark\:\!text-backgroundDark * {
 .text-super,
 .group:hover .md\:group-hover\:text-super,
 .prose :where(a):not(:where([class~="not-prose"] *)),
-:is(html[data-color-scheme="dark"] .dark\:md\:hover\:text-textMainDark:hover) {
+:is([data-color-scheme="dark"] .dark\:md\:hover\:text-textMainDark:hover) {
   color: var(--accent-foreground) !important;
 }
 
 /* Selection styles for dark mode */
-html[data-color-scheme="dark"] .selection\:text-textMain::selection,
-html[data-color-scheme="dark"] .selection\:bg-superDuper ::selection,
-html[data-color-scheme="dark"] code::selection,
-html[data-color-scheme="dark"] code *::selection {
+[data-color-scheme="dark"] .selection\:text-textMain::selection,
+[data-color-scheme="dark"] .selection\:bg-superDuper ::selection,
+[data-color-scheme="dark"] code::selection,
+[data-color-scheme="dark"] code *::selection {
   background-color: var(--selection) !important;
   color           : var(--selection-foreground) !important;
 }
@@ -235,79 +235,80 @@ html {
   overflow: unset !important;
 }
 
-/* Math styles */
-.math .katex .frac-line {
-  border-bottom-color: var(--accent-foreground-darker) !important;
-}
+[location="thread"], [location="page"] {
 
-/* Adjust query box position */
-.grow.block {
-  border       : 1px solid var(--border-darker) !important;
-  border-radius: calc(var(--radius) - 2px) !important;
-  background   : var(--secondary);
-  box-shadow   : 0 0 10px 0 rgba(0, 0, 0, 0.2) !important;
-}
+  /* Math styles */
+  .math .katex .frac-line {
+    border-bottom-color: var(--accent-foreground-darker) !important;
+  }
 
-.grow.block>div>div {
-  border-radius        : calc(var(--radius) - 2px) !important;
-  display              : grid;
-  grid-template-rows   : 1fr auto;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
+  /* Adjust query box position */
+  .grow.block {
+    border       : 1px solid var(--border-darker) !important;
+    border-radius: calc(var(--radius) - 2px) !important;
+    background   : var(--secondary);
+    box-shadow   : 0 0 10px 0 rgba(0, 0, 0, 0.2) !important;
+  }
 
-.grow.block>div>div>div:first-child {
-  grid-column-start: 1;
-  grid-column-end  : 4;
-  padding-bottom   : 0.5rem;
-  order            : unset;
-  border-radius    : unset;
-}
+  .grow.block>div>div {
+    border-radius        : calc(var(--radius) - 2px) !important;
+    display              : grid;
+    grid-template-rows   : 1fr auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 
-.grow.block>div>div>div:nth-child(2) {
-  grid-column-start: 1;
-  grid-column-end  : 3;
-  grid-row-start   : 2;
-  order            : unset;
-}
+  .grow.block>div>div>div:first-child {
+    grid-column-start: 1;
+    grid-column-end  : 4;
+    padding-bottom   : 0.5rem;
+    order            : unset;
+    border-radius    : unset;
+  }
 
-.grow.block>div>div>div:last-child {
-  grid-column-start: 3;
-  grid-row-start   : 2;
-  order            : unset;
-}
+  .grow.block>div>div>div:nth-child(2) {
+    grid-column-start: 1;
+    grid-column-end  : 3;
+    grid-row-start   : 2;
+    order            : unset;
+  }
 
-.pointer-events-none.fixed.z-10>.pointer-events-auto.md\:col-span-8:has(textarea) {
-  grid-column: span 12 / span 12 !important;
-  z-index    : 20 !important;
-}
+  .grow.block>div>div>div:last-child {
+    grid-column-start: 3;
+    grid-row-start   : 2;
+    order            : unset;
+  }
 
-.pointer-events-none.fixed.z-10 {
-  transition         : all;
-  transition-duration: 0.3s;
+  .pointer-events-none.fixed.z-10>.pointer-events-auto.md\:col-span-8:has(textarea) {
+    grid-column: span 12 / span 12 !important;
+    z-index    : 20 !important;
+  }
 
-  position: sticky !important;
-  bottom  : 4rem !important;
-}
-
-
-/* Normal thread */
-.mx-auto.h-full.w-full.max-w-threadWidth.px-md.pb-\[144px\].md\:px-lg {
-  padding-bottom: 0 !important;
-}
-
-.mx-auto.h-full.w-full.max-w-threadWidth.px-md.pb-\[144px\].md\:px-lg>div>div:first-child {
-  min-height    : 100vh;
-  padding-bottom: 50px;
-}
-
-/* Branched thread */
-.mx-auto.h-full.w-full.max-w-threadWidth.px-md.pb-\[144px\].md\:px-lg>div:first-child>div:nth-child(2):not(.fixed) {
-  min-height: 100vh;
-}
-
-
-@media (min-width: 768px) {
   .pointer-events-none.fixed.z-10 {
-    bottom: 0.3rem !important;
+    transition         : all;
+    transition-duration: 0.3s;
+
+    position: sticky !important;
+    bottom  : 4rem !important;
+  }
+
+  /* Normal thread */
+  .mx-auto.h-full.w-full.max-w-threadWidth {
+    padding-bottom: 0 !important;
+  }
+
+  .mx-auto.h-full.w-full.max-w-threadWidth.px-md>div>div:first-child>div:first-child {
+    min-height: 100vh;
+  }
+
+  /* Branched thread */
+  .mx-auto.h-full.w-full.max-w-threadWidth.px-md > div > div > div:nth-child(2):not([class]) {
+    min-height: 100vh;
+  }
+
+
+  @media (min-width: 768px) {
+    .pointer-events-none.fixed.bottom-mobileNavHeight {
+      bottom: 0.3rem !important;
+    }
   }
 }

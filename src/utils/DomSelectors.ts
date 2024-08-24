@@ -10,7 +10,7 @@ const DomSelectors = {
         ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div.relative > div:first-child",
       /** Branched thread */
       BRANCHED:
-        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div.relative > div:nth-child(2)",
+        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg div.relative > div:nth-child(2)",
     },
     MESSAGE: {
       TEXT_COL: ".col-span-8",
@@ -48,7 +48,7 @@ const DomSelectors = {
     },
   },
   HOME: {
-    SLOGAN: ".mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center",
+    SLOGAN: ".mb-lg.md\\:text-center.pb-xs.md\\:text-center",
   },
   QUERY_BOX: {
     TEXTAREA: {

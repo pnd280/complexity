@@ -135,7 +135,7 @@ class Router {
   private async waitForRouteChangeComplete(
     location: ReturnType<typeof whereAmI>,
   ) {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       const conditions: Partial<Record<typeof location, () => boolean>> = {
         thread: () => {
           try {
@@ -163,8 +163,8 @@ class Router {
 
       setTimeout(() => {
         clearInterval(interval);
-        reject(new Error("Route change timeout"));
-      }, 5000);
+        return resolve();
+      }, 3000);
     });
   }
 }
