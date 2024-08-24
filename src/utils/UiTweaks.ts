@@ -105,6 +105,7 @@ export default class UiTweaks {
     const settings = CplxUserSettings.get().generalSettings;
 
     $(document.body)
+      .attr("location", location)
       .toggleClass(
         "alter-attach-button",
         settings.queryBoxSelectors.focus ||

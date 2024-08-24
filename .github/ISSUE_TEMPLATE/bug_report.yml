@@ -26,6 +26,17 @@ body:
         4. See error
     validations:
       required: true
+  - type: checkboxes
+    id: bug-confirm
+    attributes:
+      label: Bug confirmation
+      description: Make sure this is not a native bug from Perplexity.ai
+      options:
+        - label: I am not able to reproduce the issue with the extension disabled
+          required: true
+        - label: I have re-installed the extension and the issue persists
+          required: true
+
   - type: textarea
     id: expected-behavior
     attributes:

@@ -10,10 +10,10 @@
     <a href="https://discord.gg/fxzqdkwmWx" target="_blank"><img src="https://img.shields.io/discord/1245377426331144304?logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%2FfxzqdkwmWx" alt="Discord"></a>
   </div>
   <div align="center">
-    <img src="https://img.shields.io/badge/CWS_Rating-5/5-blue" alt="Chrome Web Store Rating">
-    <img src="https://img.shields.io/badge/CWS_Users-220-blue" alt="Chrome Web Store Users">
-    <img src="https://img.shields.io/badge/MOA_Rating-5/5-orange" alt="Mozilla Add-on Rating">
-    <img src="https://img.shields.io/badge/MOA_Users-100-orange" alt="Mozilla Add-on Users">
+    <img src="https://img.shields.io/chrome-web-store/rating/ffppmilmeaekegkpckebkeahjgmhggpj?label=CWS%20rating" alt="Chrome Web Store Rating">
+    <img src="https://img.shields.io/chrome-web-store/users/ffppmilmeaekegkpckebkeahjgmhggpj?label=CWS%20users" alt="Chrome Web Store Users">
+    <img src="https://img.shields.io/badge/MAO_Rating-%23-orange" alt="Mozilla Add-on Rating">
+    <img src="https://img.shields.io/badge/MAO_Users-%23-orange" alt="Mozilla Add-on Users">
   </div>
 </p>
 
@@ -45,12 +45,66 @@ Perplexity.ai is famously known for its LLM-based search engine, but many may no
 
 ## How does it work?
 
-- Read more about the [architecture](./docs/architecture.md).
+This is a high-level overview of the network traffic intercepting which provides the extension with the ability to alter the behavior of the host page.
+
+```mermaid
+  graph TD
+    subgraph Browser
+        W[perplexity.ai]
+        CS[Content Scripts]
+        BP[Background Page]
+    end
+
+    subgraph InterceptAPIs["Intercept native APIs"]
+        WI["Singleton Instance (Main-world)"]
+        WI --> |Initializes| PWS[Proxy WebSocket]
+        WI --> |Initializes| PXHR[Proxy XMLHttpRequest]
+        WI --> AM[Active Connection Manager]
+        WI --> ML[Message Listener]
+    end
+
+    subgraph Interceptors
+        WM["Controller (Isolated)"]
+        WM --> MP[Message Processor]
+        WM --> IC[Interceptor Chain]
+        WM --> EL[Event Listeners]
+    end
+
+    WI <-. "window.postMessage" .-> WM
+
+    W <--> |WebSocket/XHR| PWS
+    W <--> |WebSocket/XHR| PXHR
+
+    PWS --> |Intercepts| AM
+    PXHR --> |Intercepts| AM
+
+    AM --> |Notifies| ML
+    ML --> |Sends Messages to| WM
+
+    CS <--> |Communicates| WM
+    BP <--> |Communicates| WM
+
+    WM --> |Processes Messages| MP
+    MP --> |Applies Interceptors| IC
+    IC --> |Modifies Data| MP
+
+    MP --> |Sends Modified Data| AM
+    AM --> |Sends to Webpage| W
+
+    WM --> |Registers| EL
+    EL --> |Triggers Events| MP
+
+    classDef singleton fill:#72aefd,stroke:#333,color:#ffffff,stroke-width:2px;
+    class WI,WM singleton;
+
+```
+
+[Read more](./docs/architecture.md)
 
 ## Installation
 
 - [Chrome Web Store](https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj)
-- [Mozilla Add-on](#)
+- Mozilla Add-on (pending review)
 - [Releases](#)
 
 ## Build from source

@@ -7,6 +7,7 @@ import { useGlobalStore } from "@/content-script/session-store/global";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Portal from "@/shared/components/Portal";
 import { cn } from "@/utils/cn";
+import { DomSelectors } from "@/utils/DomSelectors";
 import { isDomNode } from "@/utils/utils";
 
 export default function Slogan() {
@@ -24,7 +25,7 @@ export default function Slogan() {
 
   const { element, isWaiting } = useWaitForElement({
     id: "slogan",
-    selector: ".mb-lg.flex.items-center.justify-center.pb-xs.md\\:text-center",
+    selector: DomSelectors.HOME.SLOGAN,
   });
 
   useEffect(() => {

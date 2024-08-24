@@ -20,7 +20,7 @@ export default function About() {
           <Cplx className="tw-mx-auto tw-h-16 tw-w-16 tw-text-accent-foreground tw-transition-colors" />
           <div className="tw-text-xl">Complexity</div>
           <div className="tw-w-max tw-font-mono tw-text-xs tw-text-muted-foreground">
-            {packageData.version}-CLOSED-BETA
+            {packageData.version}-PUBLIC-BETA
           </div>
         </div>
         <div className="tw-mt-4 tw-text-center">
