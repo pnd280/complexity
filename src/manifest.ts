@@ -1,10 +1,27 @@
-import { defineManifest } from "@crxjs/vite-plugin";
+import { defineManifest, ManifestV3Export } from "@crxjs/vite-plugin";
 
 import * as packageData from "../package.json";
 
+type MozManifest = ManifestV3Export & {
+  browser_specific_settings: {
+    gecko: {
+      id: string;
+      strict_min_version: string;
+    };
+  };
+  background: {
+    service_worker?: never;
+    type: "module";
+  };
+};
+
+const defineMozManifest = defineManifest as unknown as (
+  manifest: MozManifest,
+) => MozManifest;
+
 const isDev = process.env.NODE_ENV == "development";
 
-export default defineManifest({
+export default defineMozManifest({
   name: `${packageData.displayName || packageData.name}${isDev ? ` ➡️ Dev` : ""}`,
   description: packageData.description,
   version: packageData.version,
@@ -18,8 +35,14 @@ export default defineManifest({
   action: {
     default_icon: "img/logo-48.png",
   },
+  browser_specific_settings: {
+    gecko: {
+      id: "complexity@ngocdg",
+      strict_min_version: "109.0",
+    },
+  },
   background: {
-    service_worker: "src/background/index.ts",
+    scripts: ["src/background/index.ts"],
     type: "module",
   },
   content_scripts: [

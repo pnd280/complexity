@@ -235,7 +235,8 @@ html {
   overflow: unset !important;
 }
 
-[location="thread"], [location="page"] {
+[location="thread"],
+[location="page"] {
 
   /* Math styles */
   .math .katex .frac-line {
@@ -301,7 +302,7 @@ html {
   }
 
   /* Branched thread */
-  .mx-auto.h-full.w-full.max-w-threadWidth.px-md > div > div > div:nth-child(2):not([class]) {
+  .mx-auto.h-full.w-full.max-w-threadWidth.px-md>div>div>div:nth-child(2):not([class]) {
     min-height: 100vh;
   }
 
@@ -311,4 +312,8 @@ html {
       bottom: 0.3rem !important;
     }
   }
+}
+
+textarea:focus-visible {
+  outline: none !important;
 }

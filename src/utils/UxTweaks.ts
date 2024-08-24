@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { throttle } from "lodash-es";
+import { throttle } from "lodash";
 
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";

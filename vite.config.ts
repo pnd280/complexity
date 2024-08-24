@@ -25,7 +25,7 @@ export default defineConfig(() => {
     },
 
     plugins: [
-      crx({ manifest }),
+      crx({ manifest, browser: "firefox" }),
       react(),
       viteTouchGlobalCss({
         cssFilePath: path.resolve(__dirname, "src/assets/index.tw.css"),
