@@ -12,8 +12,8 @@
   <div align="center">
     <img src="https://img.shields.io/chrome-web-store/rating/ffppmilmeaekegkpckebkeahjgmhggpj?label=CWS%20rating" alt="Chrome Web Store Rating">
     <img src="https://img.shields.io/chrome-web-store/users/ffppmilmeaekegkpckebkeahjgmhggpj?label=CWS%20users" alt="Chrome Web Store Users">
-    <img src="https://img.shields.io/badge/MAO_Rating-%23-orange" alt="Mozilla Add-on Rating">
-    <img src="https://img.shields.io/badge/MAO_Users-%23-orange" alt="Mozilla Add-on Users">
+    <img src="https://img.shields.io/amo/rating/complexity?label=AMO%20rating" alt="Mozilla Add-on Rating">
+    <img src="https://img.shields.io/amo/users/complexity?label=AMO%20rating" alt="Mozilla Add-on Users">
   </div>
 </p>
 
@@ -21,7 +21,7 @@
 
 <div align="center">
   <a href="https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj" target="_blank"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/HRs9MPufa1J1h5glNhut.png" width="200px" style="border-radius: .5rem"></a>
-  <a href="#" target="_blank"><img src="https://extensionworkshop.com/assets/img/documentation/publish/get-the-addon-178x60px.dad84b42.png" width="180px"></a>
+  <a href="https://addons.mozilla.org/en-US/firefox/addon/complexity/" target="_blank"><img src="https://extensionworkshop.com/assets/img/documentation/publish/get-the-addon-178x60px.dad84b42.png" width="180px"></a>
   <p align="center" style="font-style: italic; font-size: .8rem;">Complexity is a third-party extension, it does NOT affiliate with Perplexity.ai.</p>
   💖 support the development
 <div>
