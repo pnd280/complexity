@@ -41,7 +41,7 @@ Perplexity.ai is famously known for its LLM-based search engine, but many may no
 - Highly customizable ADHD-friendly theme (custom css is supported).
 - A dedicated solution for prompts management: Prompts Library (in development).
 
-[Read more](https://complexity.pnd280.me/features)
+[Read more](https://cplx.vercel.app)
 
 ## How does it work?
 
