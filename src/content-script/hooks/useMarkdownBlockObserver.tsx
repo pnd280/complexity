@@ -14,6 +14,7 @@ import { shikiContentScript } from "@/content-script/main-world/shiki";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import { DomHelperSelectors } from "@/utils/DomSelectors";
 import MarkdownBlockUtils from "@/utils/MarkdownBlock";
+import UiUtils from "@/utils/UiUtils";
 import { isDomNode } from "@/utils/utils";
 
 type useMarkdownBlockObserverProps = {
@@ -72,6 +73,10 @@ export default function useMarkdownBlockObserver({
 
       function callback() {
         const promises: Promise<MarkdownBlockContainer | null>[] = [];
+
+        const $pres = $(`${DomHelperSelectors.THREAD.MESSAGE.BLOCK} pre`);
+
+        if (!$pres.length) UiUtils.getMessageBlocks();
 
         $(`${DomHelperSelectors.THREAD.MESSAGE.BLOCK} pre`).each(
           (index, pre) => {
