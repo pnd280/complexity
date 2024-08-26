@@ -13,7 +13,7 @@
     <img src="https://img.shields.io/chrome-web-store/rating/ffppmilmeaekegkpckebkeahjgmhggpj?label=CWS%20rating" alt="Chrome Web Store Rating">
     <img src="https://img.shields.io/chrome-web-store/users/ffppmilmeaekegkpckebkeahjgmhggpj?label=CWS%20users" alt="Chrome Web Store Users">
     <img src="https://img.shields.io/amo/rating/complexity?label=AMO%20rating" alt="Mozilla Add-on Rating">
-    <img src="https://img.shields.io/amo/users/complexity?label=AMO%20rating" alt="Mozilla Add-on Users">
+    <img src="https://img.shields.io/amo/users/complexity?label=AMO%20users" alt="Mozilla Add-on Users">
   </div>
 </p>
 
@@ -41,11 +41,11 @@ Perplexity.ai is famously known for its LLM-based search engine, but many may no
 - Highly customizable ADHD-friendly theme (custom css is supported).
 - A dedicated solution for prompts management: Prompts Library (in development).
 
-[Read more](https://complexity.pnd280.me/features)
+[Read more](https://cplx.vercel.app)
 
 ## How does it work?
 
-This is a high-level overview of the network traffic intercepting which provides the extension with the ability to alter the behavior of the host page.
+This is a high-level overview of the network traffic interception approach, which provides the extension with the ability to alter the behavior of the host page.
 
 ```mermaid
   graph TD
@@ -104,7 +104,7 @@ This is a high-level overview of the network traffic intercepting which provides
 ## Installation
 
 - [Chrome Web Store](https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj)
-- Mozilla Add-on (pending review)
+- [Mozilla Add-on](https://addons.mozilla.org/en-US/firefox/addon/complexity/)
 - [Releases](#)
 
 ## Build from source
