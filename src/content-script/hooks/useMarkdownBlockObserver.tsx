@@ -74,12 +74,8 @@ export default function useMarkdownBlockObserver({
       function callback() {
         const promises: Promise<MarkdownBlockContainer | null>[] = [];
 
-        const $pres = $(`${DomHelperSelectors.THREAD.MESSAGE.BLOCK} pre`);
-
-        if (!$pres.length) UiUtils.getMessageBlocks();
-
-        $(`${DomHelperSelectors.THREAD.MESSAGE.BLOCK} pre`).each(
-          (index, pre) => {
+        UiUtils.getMessageBlocks().forEach(({ $messageBlock }) => {
+          $messageBlock.find("pre").each((index, pre) => {
             promises.push(
               new Promise<MarkdownBlockContainer | null>((resolve) => {
                 queueMicrotask(() => {
@@ -103,8 +99,8 @@ export default function useMarkdownBlockObserver({
                 });
               }),
             );
-          },
-        );
+          });
+        });
 
         Promise.all(promises).then((results) => {
           const newContainers = results.filter(
