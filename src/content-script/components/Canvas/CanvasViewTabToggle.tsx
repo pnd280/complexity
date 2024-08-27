@@ -1,4 +1,8 @@
-import { Check, CodeXml, Copy } from "lucide-react";
+import {
+  LuCheck as Check,
+  LuCode2 as CodeXml,
+  LuCopy as Copy,
+} from "react-icons/lu";
 
 import { useCanvasStore } from "@/content-script/session-store/canvas";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";

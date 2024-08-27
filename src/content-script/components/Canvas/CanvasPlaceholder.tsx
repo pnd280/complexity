@@ -1,4 +1,4 @@
-import { LoaderCircle } from "lucide-react";
+import { LuLoader2 as LoaderCircle } from "react-icons/lu";
 
 import { canvasPlaceholders } from "@/content-script/components/Canvas/";
 import useRenderInCanvas from "@/content-script/hooks/useRenderInCanvas";

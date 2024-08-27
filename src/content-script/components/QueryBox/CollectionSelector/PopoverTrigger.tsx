@@ -1,4 +1,4 @@
-import { LayoutGrid, X } from "lucide-react";
+import { LuLayoutGrid as LayoutGrid, LuX as X } from "react-icons/lu";
 
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import { PopoverTrigger } from "@/shared/components/Popover";

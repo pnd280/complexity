@@ -1,6 +1,6 @@
 import { useToggle } from "@uidotdev/usehooks";
-import { ExternalLink } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import CplxUserSettingsComp from "@/cplx-user-settings/components/CplxUserSettings";
 import FloatingTrigger from "@/cplx-user-settings/components/FloatingTrigger";

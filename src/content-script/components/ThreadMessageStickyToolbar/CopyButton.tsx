@@ -1,8 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
-import { Check, Copy, LoaderCircle, Unlink } from "lucide-react";
 import { useCallback } from "react";
 import { FaMarkdown } from "react-icons/fa";
+import {
+  LuCheck as Check,
+  LuCopy as Copy,
+  LuLoader2 as LoaderCircle,
+  LuUnlink as Unlink,
+} from "react-icons/lu";
 
 import { Container } from "@/content-script/components/ThreadMessageStickyToolbar";
 import PplxApi from "@/services/PplxApi";

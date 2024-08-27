@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import generalSettings, {
   PopupSetting,

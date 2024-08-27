@@ -1,8 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
-import { Check, Download, LoaderCircle, Unlink } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaMarkdown } from "react-icons/fa";
+import {
+  LuCheck as Check,
+  LuDownload as Download,
+  LuLoader2 as LoaderCircle,
+  LuUnlink as Unlink,
+} from "react-icons/lu";
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import PplxApi from "@/services/PplxApi";

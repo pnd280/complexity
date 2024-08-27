@@ -1,7 +1,6 @@
 import { Portal, Select as ArkSelect } from "@ark-ui/react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
-import { ChevronDown } from "lucide-react";
 import {
   forwardRef,
   ElementRef,
@@ -9,6 +8,7 @@ import {
   createContext,
   useContext,
 } from "react";
+import { LuChevronDown as ChevronDown } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
 

@@ -1,5 +1,5 @@
-import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { LuLoader2 as LoaderCircle } from "react-icons/lu";
 import showdown from "showdown";
 
 import useExtensionUpdate from "@/shared/hooks/useExtensionUpdate";

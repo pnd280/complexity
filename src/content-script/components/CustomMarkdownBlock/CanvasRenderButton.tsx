@@ -1,4 +1,4 @@
-import { Play } from "lucide-react";
+import { LuPlay as Play } from "react-icons/lu";
 
 import useRenderInCanvas from "@/content-script/hooks/useRenderInCanvas";
 import { cn } from "@/utils/cn";

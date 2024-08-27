@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { ExternalLink } from "lucide-react";
 import { useCallback, useEffect } from "react";
+import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { useCanvasStore } from "@/content-script/session-store/canvas";

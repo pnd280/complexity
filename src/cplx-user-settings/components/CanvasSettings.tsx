@@ -1,4 +1,7 @@
-import { CircleHelp, HelpCircle } from "lucide-react";
+import {
+  LuHelpCircle as CircleHelp,
+  LuHelpCircle as HelpCircle,
+} from "react-icons/lu";
 
 import { canvasLangs } from "@/content-script/components/Canvas/langs";
 import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSettings";

@@ -1,11 +1,11 @@
 import $ from "jquery";
+import { FaEllipsis as Ellipsis } from "react-icons/fa6";
 import {
-  Ellipsis,
-  ListOrdered,
-  LucideThumbsDown,
-  Share2,
-  X,
-} from "lucide-react";
+  LuListOrdered as ListOrdered,
+  LuThumbsDown as LucideThumbsDown,
+  LuShare2 as Share2,
+  LuX as X,
+} from "react-icons/lu";
 
 import { Container } from "@/content-script/components/ThreadMessageStickyToolbar";
 import {

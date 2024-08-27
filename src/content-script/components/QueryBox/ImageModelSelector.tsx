@@ -1,4 +1,4 @@
-import { Cpu, Image } from "lucide-react";
+import { LuCpu as Cpu, LuImage as Image } from "react-icons/lu";
 
 import {
   ImageModel,

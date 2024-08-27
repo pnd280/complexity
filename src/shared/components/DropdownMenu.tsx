@@ -1,7 +1,7 @@
 import { Menu, Portal } from "@ark-ui/react";
-import { ChevronRight } from "lucide-react";
 import { forwardRef } from "react";
 import type { ElementRef } from "react";
+import { LuChevronRight as ChevronRight } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
 
