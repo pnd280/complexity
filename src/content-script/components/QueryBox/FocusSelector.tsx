@@ -1,6 +1,6 @@
 import { useToggle } from "@uidotdev/usehooks";
-import { Cpu } from "lucide-react";
 import { useEffect, useState } from "react";
+import { LuCpu as Cpu } from "react-icons/lu";
 import { PiGlobeX } from "react-icons/pi";
 
 import {

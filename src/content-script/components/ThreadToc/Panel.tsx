@@ -1,5 +1,5 @@
-import { X } from "lucide-react";
 import { HTMLAttributes } from "react";
+import { LuX as X } from "react-icons/lu";
 
 import { AnchorProps } from "@/content-script/components/ThreadToc";
 import { cn } from "@/utils/cn";

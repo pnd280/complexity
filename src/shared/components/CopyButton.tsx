@@ -1,5 +1,5 @@
-import { Check, Copy } from "lucide-react";
 import { HTMLAttributes } from "react";
+import { LuCheck as Check, LuCopy as Copy } from "react-icons/lu";
 
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import { cn } from "@/utils/cn";

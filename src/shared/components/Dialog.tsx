@@ -1,6 +1,6 @@
 import { Dialog as ArkDialog } from "@ark-ui/react";
-import { X } from "lucide-react";
 import React from "react";
+import { LuX as X } from "react-icons/lu";
 
 import Portal from "@/shared/components/Portal";
 import { cn } from "@/utils/cn";

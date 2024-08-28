@@ -1,4 +1,4 @@
-import { LoaderCircle } from "lucide-react";
+import { LuLoader2 as LoaderCircle } from "react-icons/lu";
 
 import CollectionSelector from "@/content-script/components/QueryBox/CollectionSelector";
 import FocusSelector from "@/content-script/components/QueryBox/FocusSelector";

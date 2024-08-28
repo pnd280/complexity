@@ -1,7 +1,7 @@
 import $ from "jquery";
-import { Text } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { FaMarkdown } from "react-icons/fa";
+import { LuText as Text } from "react-icons/lu";
 import { Updater } from "use-immer";
 
 import {

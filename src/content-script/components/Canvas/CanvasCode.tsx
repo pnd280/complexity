@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import $ from "jquery";
-import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
+import { LuLoader2 as LoaderCircle } from "react-icons/lu";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { useCanvasStore } from "@/content-script/session-store/canvas";

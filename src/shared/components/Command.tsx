@@ -1,6 +1,6 @@
 import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
 import * as React from "react";
+import { LuSearch as Search } from "react-icons/lu";
 
 import { Dialog, DialogContent, DialogProps } from "@/shared/components/Dialog";
 import { cn } from "@/utils/cn";

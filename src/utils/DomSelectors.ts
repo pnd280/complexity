@@ -10,7 +10,7 @@ const DomSelectors = {
         ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg > div:first-child > div.relative > div:first-child",
       /** Branched thread */
       BRANCHED:
-        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg div.relative > div:nth-child(2)",
+        ".h-full.w-full.max-w-threadWidth.px-md.md\\:px-lg div.relative > div:nth-child(2):not([class])",
     },
     MESSAGE: {
       TEXT_COL: ".col-span-8",

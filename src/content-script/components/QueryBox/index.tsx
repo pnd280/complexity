@@ -1,7 +1,10 @@
-import { BadgePercent, Library } from "lucide-react";
 import { ReactNode } from "react";
 import { AiOutlineOpenAI } from "react-icons/ai";
 import { BiNetworkChart } from "react-icons/bi";
+import {
+  LuBadgePercent as BadgePercent,
+  LuLibrary as Library,
+} from "react-icons/lu";
 import { PiGlobe } from "react-icons/pi";
 import {
   SiAnthropic,

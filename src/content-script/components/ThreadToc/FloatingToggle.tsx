@@ -1,5 +1,5 @@
-import { ChevronLeft } from "lucide-react";
 import { HTMLAttributes } from "react";
+import { LuChevronLeft as ChevronLeft } from "react-icons/lu";
 
 import Tooltip from "@/shared/components/Tooltip";
 

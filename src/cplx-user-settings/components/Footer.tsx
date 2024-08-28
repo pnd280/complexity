@@ -1,4 +1,4 @@
-import { Zap } from "lucide-react";
+import { LuZap as Zap } from "react-icons/lu";
 
 import Separator from "@/shared/components/Separator";
 import Tooltip from "@/shared/components/Tooltip";

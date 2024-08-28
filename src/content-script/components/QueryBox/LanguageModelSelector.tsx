@@ -1,5 +1,5 @@
-import { Cpu, Infinity } from "lucide-react";
 import { ReactNode, useCallback, useEffect } from "react";
+import { LuCpu as Cpu, LuInfinity as Infinity } from "react-icons/lu";
 import { useImmer } from "use-immer";
 
 import {

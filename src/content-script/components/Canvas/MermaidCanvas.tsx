@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { RefreshCcw } from "lucide-react";
 import { useCallback, useEffect } from "react";
+import { LuRefreshCcw as RefreshCcw } from "react-icons/lu";
 
 import { mermaidContentScript } from "@/content-script/main-world/canvas/mermaid";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";

@@ -1,4 +1,7 @@
-import { ArrowRight, ExternalLink } from "lucide-react";
+import {
+  LuArrowRight as ArrowRight,
+  LuExternalLink as ExternalLink,
+} from "react-icons/lu";
 
 import useExtensionUpdate from "@/shared/hooks/useExtensionUpdate";
 import packageData from "@@/package.json";

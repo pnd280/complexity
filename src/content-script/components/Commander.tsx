@@ -1,17 +1,17 @@
 import $ from "jquery";
-import {
-  BookOpenText,
-  Compass,
-  Computer,
-  GalleryHorizontalEnd,
-  Layers3,
-  Moon,
-  NotebookText,
-  Settings,
-  Sun,
-  TestTubeDiagonal,
-} from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  LuBookOpen as BookOpenText,
+  LuCompass as Compass,
+  LuComputer as Computer,
+  LuGalleryHorizontalEnd as GalleryHorizontalEnd,
+  LuLayers as Layers3,
+  LuMoon as Moon,
+  LuBook as NotebookText,
+  LuSettings as Settings,
+  LuSun as Sun,
+  LuTestTube2 as TestTubeDiagonal,
+} from "react-icons/lu";
 import { SiPerplexity } from "react-icons/si";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";

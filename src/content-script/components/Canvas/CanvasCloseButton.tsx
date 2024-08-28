@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { LuX as X } from "react-icons/lu";
 
 import { useCanvasStore } from "@/content-script/session-store/canvas";
 

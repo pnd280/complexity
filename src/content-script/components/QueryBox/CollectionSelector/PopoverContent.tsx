@@ -1,4 +1,10 @@
-import { LoaderCircle, Pause, Pencil, Play, ExternalLink } from "lucide-react";
+import {
+  LuLoader2 as LoaderCircle,
+  LuPause as Pause,
+  LuPencil as Pencil,
+  LuPlay as Play,
+  LuExternalLink as ExternalLink,
+} from "react-icons/lu";
 
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
 import useFetchUserAiProfile from "@/content-script/hooks/useFetchUserAiProfile";
