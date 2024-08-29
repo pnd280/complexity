@@ -31,7 +31,9 @@ export default function QueryBox() {
   useInitQueryBoxSessionStore();
 
   const hasActivePplxSub =
-    userSettings && userSettings.subscriptionStatus === "active";
+    userSettings &&
+    (userSettings.subscriptionStatus === "active" ||
+      userSettings.subscriptionStatus === "trialing");
 
   const { toggleWebAccess } = useQueryBoxStore((state) => state.webAccess);
 
