@@ -4,7 +4,9 @@ import { crx } from "@crxjs/vite-plugin";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
+// @ts-ignore
 import manifest from "./src/manifest";
+
 import vitePluginRunCommandOnDemand from "./vite-plugins/vite-plugin-run-command-on-demand";
 import viteTouchGlobalCss from "./vite-plugins/vite-plugin-touch-global-css";
 
@@ -34,10 +36,10 @@ export default defineConfig(() => {
           path.resolve(__dirname, "public/"),
         ],
       }),
-      // vitePluginRunCommandOnDemand({
-      //   onHotUpdate:
-      //     "cp -f ./public/color-scheme.tw.css ./public/overrides.css ./public/components.css ./public/canvas.css ./build/",
-      // }),
+      vitePluginRunCommandOnDemand({
+        afterServerStart: "pnpm gulp forceDisableUseDynamicUrl",
+        closeBundle: "pnpm gulp forceDisableUseDynamicUrl",
+      }),
     ],
 
     server: {
