@@ -1,3 +1,4 @@
+import $ from "jquery";
 import { debounce } from "lodash-es";
 import {
   useCallback,
@@ -12,6 +13,7 @@ import { Updater, useImmer } from "use-immer";
 import Toolbar from "@/content-script/components/ThreadMessageStickyToolbar/Toolbar";
 import useThreadMessageStickyToolbarObserver from "@/content-script/hooks/useThreadMessageStickyToolbarObserver";
 import Portal from "@/shared/components/Portal";
+import { DomSelectors } from "@/utils/DomSelectors";
 import UiUtils from "@/utils/UiUtils";
 import { onScrollDirectionChange } from "@/utils/utils";
 
@@ -34,8 +36,14 @@ export type ToggleToolbarVisibilityProps = {
   messageBlock: Element;
 };
 
-const compare = (prev: Container[], next: Container[]): boolean => {
-  if (prev.length !== next.length) return false;
+const prevIsIncognito = !!$(DomSelectors.QUERY_BOX.FORK_BUTTON).length;
+
+const isChanged = (prev: Container[], next: Container[]): boolean => {
+  const isIncognito = !!$(DomSelectors.QUERY_BOX.FORK_BUTTON).length;
+
+  if (prevIsIncognito !== isIncognito) return true;
+
+  if (prev.length !== next.length) return true;
   for (let i = prev.length - 1; i >= 0; i--) {
     if (
       prev[i].messageBlock !== next[i].messageBlock ||
@@ -43,10 +51,10 @@ const compare = (prev: Container[], next: Container[]): boolean => {
       prev[i].container !== next[i].container ||
       prev[i].answer !== next[i].answer
     ) {
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
 };
 
 export default function ThreadMessageStickyToolbar() {
@@ -60,7 +68,7 @@ export default function ThreadMessageStickyToolbar() {
 
   const updateContainers = useCallback(
     (newContainers: Container[]) => {
-      if (!compare(containersRef.current, newContainers)) {
+      if (isChanged(containersRef.current, newContainers)) {
         containersRef.current = newContainers;
         setContainers(newContainers);
 

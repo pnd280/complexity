@@ -49,6 +49,11 @@ export default function Toolbar({
 
   const isMessageShareable = !!$messageShareButton.length;
 
+  const isMessageDeletable =
+    containers.length - 1 === containerIndex &&
+    containers.length > 1 &&
+    !$(DomSelectors.QUERY_BOX.FORK_BUTTON).length;
+
   return (
     <div
       className={cn(
@@ -123,6 +128,7 @@ export default function Toolbar({
           containerIndex={containerIndex}
           isMessageEditable={isMessageEditable}
           isMessageShareable={isMessageShareable}
+          isMessageDeletable={isMessageDeletable}
           $messageShareButton={$messageShareButton}
         />
       </div>
