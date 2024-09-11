@@ -16,10 +16,10 @@ export default function FloatingTrigger({
   return (
     <div
       className={cn(
-        "right-md tw-fixed tw-font-sans tw-transition-all tw-animate-in tw-fade-in",
+        "tw-fixed tw-font-sans tw-transition-all tw-animate-in tw-fade-in",
         {
-          "tw-bottom-4": location !== "home" && !isDev,
-          "tw-bottom-[4rem]": location === "home" || isDev,
+          "tw-bottom-3 tw-right-3": location !== "home" && !isDev,
+          "tw-bottom-[4rem] tw-right-4": location === "home" || isDev,
         },
       )}
       {...props}
@@ -30,7 +30,15 @@ export default function FloatingTrigger({
           placement: "left",
         }}
       >
-        <div className="tw-group tw-m-2 tw-flex tw-size-8 tw-cursor-pointer tw-items-center tw-justify-center tw-rounded-full tw-bg-muted tw-transition-all tw-duration-300 hover:tw-shadow-[0_0_10px_var(--accent-foreground)]">
+        <div
+          className={cn(
+            "tw-group tw-m-2 tw-flex tw-cursor-pointer tw-items-center tw-justify-center tw-rounded-full tw-bg-muted tw-transition-all tw-duration-300 hover:tw-shadow-[0_0_10px_var(--accent-foreground)]",
+            {
+              "tw-size-10": location !== "home" && !isDev,
+              "tw-size-8": location === "home" || isDev,
+            },
+          )}
+        >
           <Cplx className="tw-size-4 tw-text-muted-foreground tw-transition-colors tw-duration-300 group-hover:tw-text-accent-foreground" />
         </div>
       </Tooltip>

@@ -22,6 +22,7 @@ type MiscMenuProps = {
   containerIndex: number;
   isMessageShareable: boolean;
   isMessageEditable: boolean;
+  isMessageDeletable: boolean;
   $messageShareButton: JQuery<HTMLElement>;
 };
 
@@ -30,6 +31,7 @@ export default function MiscMenu({
   containerIndex,
   isMessageShareable,
   isMessageEditable,
+  isMessageDeletable,
   $messageShareButton,
 }: MiscMenuProps) {
   return (
@@ -94,7 +96,7 @@ export default function MiscMenu({
           </DropdownMenuItem>
         )}
 
-        {containers.length - 1 === containerIndex && containers.length > 1 && (
+        {isMessageDeletable && (
           <DropdownMenuItem
             value="delete"
             className="tw-flex tw-items-center tw-gap-2"

@@ -58,6 +58,7 @@ const DomSelectors = {
       ARBITRARY: "textarea[placeholder]",
     },
     SUBMIT_BUTTON: 'button[aria-label="Submit"]',
+    FORK_BUTTON: 'button svg[data-icon="code-fork"]',
     /** The floating container that wraps the query box */
     WRAPPER: ".grow.block",
     PRO_SEARCH_TOGGLE: "button#copilot-toggle",
