@@ -1,7 +1,7 @@
 import { useToggle } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
 import { LuCpu as Cpu } from "react-icons/lu";
-import { PiGlobeX } from "react-icons/pi";
+import { PiGlobeX, PiMouseRightClickFill } from "react-icons/pi";
 
 import {
   webAccessFocusIcons,
@@ -78,7 +78,19 @@ export default function FocusSelector() {
         }}
       >
         <Tooltip
-          content={`Web access: ${allowWebAccess ? "ON" : "OFF"}${allowWebAccess && focus ? ` | Focus: ${webAccessFocus.find((model) => model.code === focus)?.label}` : ""}`}
+          content={
+            <div className="tw-flex tw-items-center">
+              Web access: {allowWebAccess ? "ON" : "OFF"}
+              {allowWebAccess && focus && (
+                <>
+                  {" | "}Focus{" "}
+                  <PiMouseRightClickFill className="tw-mb-0.5 tw-inline-block tw-align-middle" />
+                  {": "}
+                  {webAccessFocus.find((model) => model.code === focus)?.label}
+                </>
+              )}
+            </div>
+          }
           positioning={{
             gutter: 15,
           }}
