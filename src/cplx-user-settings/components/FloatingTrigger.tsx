@@ -16,7 +16,7 @@ export default function FloatingTrigger({
   return (
     <div
       className={cn(
-        "tw-fixed tw-font-sans tw-transition-all tw-animate-in tw-fade-in",
+        "tw-hidden lg:tw-block tw-fixed tw-font-sans tw-transition-all tw-animate-in tw-fade-in",
         {
           "tw-bottom-3 tw-right-3": location !== "home" && !isDev,
           "tw-bottom-[4rem] tw-right-4": location === "home" || isDev,
@@ -25,7 +25,7 @@ export default function FloatingTrigger({
       {...props}
     >
       <Tooltip
-        content="Complexity"
+        content="Settings"
         positioning={{
           placement: "left",
         }}

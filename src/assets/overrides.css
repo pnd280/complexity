@@ -116,7 +116,7 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
 }
 
 /* Z-index adjustments */
-.pointer-events-none.fixed.z-10 {
+.pointer-events-none.fixed.bottom-mobileNavHeight {
   z-index: 12 !important;
 }
 
@@ -279,12 +279,14 @@ html {
     order            : unset;
   }
 
-  .pointer-events-none.fixed.z-10>.pointer-events-auto.md\:col-span-8:has(textarea) {
+  .pointer-events-none.fixed.bottom-mobileNavHeight>.pointer-events-auto.md\:col-span-8:has(textarea) {
     grid-column: span 12 / span 12 !important;
     z-index    : 20 !important;
   }
 
-  .pointer-events-none.fixed.z-10 {
+  .pointer-events-none.fixed.bottom-mobileNavHeight {
+    margin-top: 5rem;
+
     transition         : all;
     transition-duration: 0.3s;
 
@@ -309,6 +311,7 @@ html {
 
   @media (min-width: 768px) {
     .pointer-events-none.fixed.bottom-mobileNavHeight {
+      margin-top: 0;
       bottom: 0.3rem !important;
     }
   }
