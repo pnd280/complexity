@@ -116,7 +116,7 @@ div.dark\:\!bg-textMainDark:is(.dark *) {
 }
 
 /* Z-index adjustments */
-.pointer-events-none.fixed.z-10 {
+.pointer-events-none.fixed.bottom-mobileNavHeight {
   z-index: 12 !important;
 }
 
@@ -235,7 +235,8 @@ html {
   overflow: unset !important;
 }
 
-[location="thread"], [location="page"] {
+[location="thread"],
+[location="page"] {
 
   /* Math styles */
   .math .katex .frac-line {
@@ -278,12 +279,14 @@ html {
     order            : unset;
   }
 
-  .pointer-events-none.fixed.z-10>.pointer-events-auto.md\:col-span-8:has(textarea) {
+  .pointer-events-none.fixed.bottom-mobileNavHeight>.pointer-events-auto.md\:col-span-8:has(textarea) {
     grid-column: span 12 / span 12 !important;
     z-index    : 20 !important;
   }
 
-  .pointer-events-none.fixed.z-10 {
+  .pointer-events-none.fixed.bottom-mobileNavHeight {
+    margin-top: 5rem;
+
     transition         : all;
     transition-duration: 0.3s;
 
@@ -301,13 +304,14 @@ html {
   }
 
   /* Branched thread */
-  .mx-auto.h-full.w-full.max-w-threadWidth.px-md > div > div > div:nth-child(2):not([class]) {
+  .mx-auto.h-full.w-full.max-w-threadWidth.px-md>div>div>div:nth-child(2):not([class]) {
     min-height: 100vh;
   }
 
 
   @media (min-width: 768px) {
     .pointer-events-none.fixed.bottom-mobileNavHeight {
+      margin-top: 0;
       bottom: 0.3rem !important;
     }
   }
