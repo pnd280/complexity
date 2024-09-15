@@ -56,7 +56,7 @@ export default function useThreadMessageStickyToolbarObserver({
 
             if (!$container.length) {
               $container = $("<div>").addClass(
-                `thread-message-toolbar-container tw-sticky tw-top-[3.35rem] tw-z-[11] tw-mt-4 !tw-h-[3.125rem] tw-w-full`,
+                `thread-message-toolbar-container tw-sticky tw-top-[3.35rem] tw-z-[9] tw-mt-4 !tw-h-[3.125rem] tw-w-full`,
               );
               $($query[0]).before($container);
             }

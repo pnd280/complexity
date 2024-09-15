@@ -1,13 +1,13 @@
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { BackgroundAction } from "@/utils/BackgroundScript";
 
-if (!import.meta.env.DEV) {
-  chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === "install") {
     chrome.tabs.create({
       url: chrome.runtime.getURL("/page/options.html") + "?tab=changelog",
     });
-  });
-}
+  }
+});
 
 chrome.runtime.onInstalled.addListener(async () => {
   CplxUserSettings.init();

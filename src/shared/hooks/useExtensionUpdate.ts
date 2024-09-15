@@ -17,20 +17,17 @@ export default function useExtensionUpdate({
 
   const newVersionAvailable =
     data &&
-    compareVersions(data?.public || "0.0.0.0", packageData.version) === 1;
+    compareVersions(data?.version || "0.0.0.0", packageData.version) === 1;
 
   const { data: changelog, isLoading: isChangelogFetching } = useQuery({
     queryKey: ["changelog"],
-    queryFn: () =>
-      CplxApi.fetchChangelog({
-        type: "public",
-      }),
+    queryFn: CplxApi.fetchChangelog,
     enabled: newVersionAvailable || forceFetchChangelog,
   });
 
   return {
     newVersionAvailable,
-    newVersion: data?.public,
+    newVersion: data?.version,
     changelog,
     isChangelogFetching,
   };

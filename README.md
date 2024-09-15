@@ -32,7 +32,7 @@
 </div>
 </div>
 
-Perplexity.ai is famously known for its LLM-based search engine, but many may not know that it is also a decent portal which provides access to various SOTA LLMs and image generation models and have somewhat a very generous rate limit compared to other services. But it lacks a lot of basic features, the UX isn't that great either, and they implicitly refuse to improve on those areas by cutting almost all communication on their discord server. Hence, Complexity was created to fill that gap.
+Perplexity.ai is famously known for its LLM-based search engine, but many may not know that it is also a decent portal which provides access to various SOTA LLMs and image generation models and have somewhat a very generous rate limit compared to other services. But it lacks a lot of basic features, the UX isn't that great either. Hence, Complexity was created to fill that gap.
 
 ## Complexity is packed with features
 
@@ -105,7 +105,7 @@ This is a high-level overview of the network traffic interception approach, whic
 
 - [Chrome Web Store](https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj)
 - [Mozilla Add-on](https://addons.mozilla.org/en-US/firefox/addon/complexity/)
-- [Releases](#)
+- [Releases](https://github.com/pnd280/complexity/releases)
 
 ## Build from source
 

@@ -68,8 +68,10 @@ export default class ThreadExport {
     answer: string;
     modelName: string;
     formattedWebResults: string;
+    includeQuery: boolean;
   }): string {
-    const { query, answer, modelName, formattedWebResults } = params;
+    const { query, answer, modelName, formattedWebResults, includeQuery } =
+      params;
 
     return [
       `# ${query}`,
@@ -79,7 +81,9 @@ export default class ThreadExport {
       "",
       "# Citations:",
       formattedWebResults,
-    ].join("  \n");
+    ]
+      .slice(-(includeQuery ? 0 : 4))
+      .join("  \n");
   }
 
   private static trimReferences(answer: string, webResults: WebResult[]) {
@@ -95,18 +99,23 @@ export default class ThreadExport {
     query: string;
     answer: string;
     modelName: string;
+    includeQuery: boolean;
   }): string {
-    const { query, answer, modelName } = params;
+    const { query, answer, modelName, includeQuery } = params;
 
-    return [`# ${query}`, "", `# Answer (${modelName}):`, answer].join("  \n");
+    return [`# ${query}`, "", `# Answer (${modelName}):`, answer]
+      .slice(-(includeQuery ? 0 : 1))
+      .join("  \n");
   }
 
   private static exportMessage({
     message,
     includeCitations,
+    includeQuery,
   }: {
     message: ThreadMessageApiResponse;
     includeCitations: boolean;
+    includeQuery?: boolean;
   }) {
     const query = ThreadExport.extractQuery(message);
     const rawAnswer = ThreadExport.extractAnswer(message);
@@ -120,6 +129,7 @@ export default class ThreadExport {
         answer: rawAnswer,
         modelName,
         formattedWebResults,
+        includeQuery: includeQuery ?? true,
       });
     }
 
@@ -132,6 +142,7 @@ export default class ThreadExport {
       query,
       answer: answerWithoutCitations,
       modelName,
+      includeQuery: includeQuery ?? true,
     });
   }
 
@@ -148,6 +159,7 @@ export default class ThreadExport {
       return ThreadExport.exportMessage({
         message: threadJSON[messageIndex],
         includeCitations,
+        includeQuery: false,
       });
     }
 

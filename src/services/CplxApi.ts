@@ -7,14 +7,14 @@ export default class CplxApi {
   static async fetchVersions() {
     return jsonUtils.safeParse(
       await fetchResource(
-        "https://raw.githubusercontent.com/pnd280/cplx_release_notes/main/versions.json",
+        "https://raw.githubusercontent.com/pnd280/complexity/chrome-ext/package.json",
       ),
     ) as CplxVersionsApiResponse;
   }
 
-  static async fetchChangelog({ type }: { type: "public" | "internal" }) {
+  static async fetchChangelog() {
     return await fetchResource(
-      `https://raw.githubusercontent.com/pnd280/cplx_release_notes/main/${type}.md`,
+      "https://raw.githubusercontent.com/pnd280/complexity/chrome-ext/docs/changelog.md",
     );
   }
 }

@@ -1,4 +1,3 @@
-export type CplxVersionsApiResponse = {
-  public: string;
-  internal: string;
-};
+import packageData from "@@/package.json";
+
+export type CplxVersionsApiResponse = typeof packageData;

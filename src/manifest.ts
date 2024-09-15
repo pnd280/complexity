@@ -72,6 +72,7 @@ export default defineMozManifest({
         "*.css",
       ],
       matches: ["https://www.perplexity.ai/*", "https://perplexity.ai/*"],
+      use_dynamic_url: false,
     },
   ],
   permissions: ["storage"],
