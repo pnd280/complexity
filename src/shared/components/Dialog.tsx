@@ -34,13 +34,13 @@ const DialogOverlay: React.FC<ArkDialog.BackdropProps> = ({
 
 DialogOverlay.displayName = "DialogOverlay";
 
-const DialogContent: React.FC<ArkDialog.ContentProps> = ({
-  children,
-  className,
-  ...props
-}) => {
+const DialogContent: React.FC<
+  ArkDialog.ContentProps & { portal?: boolean }
+> = ({ children, className, portal = true, ...props }) => {
+  const Comp = portal ? Portal : React.Fragment;
+
   return (
-    <Portal>
+    <Comp>
       <DialogOverlay />
       <ArkDialog.Positioner>
         <ArkDialog.Content
@@ -54,6 +54,9 @@ const DialogContent: React.FC<ArkDialog.ContentProps> = ({
             "sm:tw-rounded-lg",
             className,
           )}
+          onWheel={(e) => {
+            e.stopPropagation();
+          }}
           {...props}
         >
           {children}
@@ -62,7 +65,7 @@ const DialogContent: React.FC<ArkDialog.ContentProps> = ({
           </DialogClose>
         </ArkDialog.Content>
       </ArkDialog.Positioner>
-    </Portal>
+    </Comp>
   );
 };
 
