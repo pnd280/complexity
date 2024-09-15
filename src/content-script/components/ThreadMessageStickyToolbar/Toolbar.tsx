@@ -57,7 +57,7 @@ export default function Toolbar({
   return (
     <div
       className={cn(
-        "thread-message-toolbar w-w-full tw-flex tw-items-center tw-gap-2 tw-border-b tw-border-border tw-bg-background tw-px-2 tw-py-[.8rem]",
+        "thread-message-toolbar tw-flex tw-items-center tw-gap-2 tw-border-b tw-border-border tw-bg-background tw-px-2 tw-py-[.8rem]",
         {
           "tw-shadow-bottom-lg":
             containersStates[containerIndex].isQueryOutOfViewport,

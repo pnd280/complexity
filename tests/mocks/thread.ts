@@ -620,7 +620,7 @@ export const normalThreadApiResponse = [
   },
 ];
 
-export const exportedNormalThreadWithCitations = `# adele  
+export const exportedThreadWithCitations = `# adele  
   
 # Answer (Claude 3.5 Sonnet):  
 Adele Laurie Blue Adkins, known professionally as Adele, is an English singer-songwriter who has become one of the world's most successful and acclaimed musical artists[1]. Born on May 5, 1988, in Tottenham, London, Adele has achieved remarkable success in her career, earning numerous accolades and breaking multiple records in the music industry.
@@ -706,7 +706,7 @@ These songs span Adele's entire career and showcase her powerful vocals, emotion
 [7] [Adele Top Hits Popular Songs Top 10 Song Collection - YouTube](https://www.youtube.com/watch?v=HmlqoUGsVWg)  
 [8] [Adele - Wikipedia](https://en.wikipedia.org/wiki/Adele)`;
 
-export const exportedNormalThreadWithoutCitations = `# adele  
+export const exportedThreadWithoutCitations = `# adele  
   
 # Answer (Claude 3.5 Sonnet):  
 Adele Laurie Blue Adkins, known professionally as Adele, is an English singer-songwriter who has become one of the world's most successful and acclaimed musical artists. Born on May 5, 1988, in Tottenham, London, Adele has achieved remarkable success in her career, earning numerous accolades and breaking multiple records in the music industry.
@@ -773,3 +773,83 @@ Adele has released numerous iconic and critically acclaimed songs throughout her
 10. "Easy On Me" - The lead single from her most recent album *30*, which continued her tradition of emotional ballads.
 
 These songs span Adele's entire career and showcase her powerful vocals, emotional depth, and songwriting skills that have made her one of the most successful artists of her generation.`;
+
+export const exportedMessageWithCitations = `Adele Laurie Blue Adkins, known professionally as Adele, is an English singer-songwriter who has become one of the world's most successful and acclaimed musical artists[1]. Born on May 5, 1988, in Tottenham, London, Adele has achieved remarkable success in her career, earning numerous accolades and breaking multiple records in the music industry.
+
+## Career Highlights
+
+Adele's musical journey began after graduating from the BRIT School for Performing Arts & Technology in 2006. Her debut album, *19*, released in 2008, included hit singles like "Chasing Pavements" and "Make You Feel My Love"[1]. However, it was her second album, *21*, released in 2011, that catapulted her to global superstardom. *21* became the world's best-selling album of the 21st century and holds the record for the top-performing album in US chart history[1].
+
+Her subsequent albums, *25* (2015) and *30* (2021), continued her streak of success, with both becoming the best-selling albums worldwide in their respective release years[1]. Adele's powerful mezzo-soprano voice and emotionally charged songwriting have resonated with audiences globally, leading to sales of over 120 million records worldwide[1].
+
+## Achievements and Accolades
+
+Adele's talent has been recognized with numerous prestigious awards:
+
+- 16 Grammy Awards
+- 12 Brit Awards (including three for British Album of the Year)
+- An Academy Award
+- A Primetime Emmy Award
+- A Golden Globe Award[1]
+
+She has also achieved several notable distinctions:
+
+- Best-selling female artist of the 21st century in the UK
+- Named the best-selling artist of the 2010s in the US
+- Her albums *21* and *25* are among the best-selling albums in UK chart history[1]
+
+## Recent Events
+
+As of August 2024, Adele continues to be active in her musical career:
+
+1. **Munich Concert Series**: Adele is currently performing a 10-day concert series at a specially built open-air arena in Munich, Germany[5].
+
+2. **Engagement Announcement**: During one of her Munich concerts, Adele seemingly confirmed her engagement to Rich Paul, a US sports agent whom she has been dating since 2021[5][6].
+
+3. **Upcoming Break**: Adele has mentioned her intention to take a "big break" from music after her Las Vegas residency at Caesar's Palace ends in November 2024[5].
+
+Adele's ability to connect with her audience through her music and her down-to-earth personality continues to endear her to fans worldwide. Her journey from a young aspiring singer in London to a global superstar is a testament to her extraordinary talent and dedication to her craft.  
+  
+# Citations:  
+[1] [Adele - Wikipedia](https://en.wikipedia.org/wiki/Adele)  
+[2] [Adele](https://www.adele.com)  
+[3] [Adele Performs Munich Tour Date in Torrential Downpour](https://www.tmz.com/2024/08/14/adele-munich-concert-rain/)  
+[4] [Adele Finally Confirmed That She's Engaged To Rich Paul In A Way That Only Adele Could Do](https://www.buzzfeed.com/larryfitzmaurice/adele-confirms-rich-paul-engagement)  
+[5] [Adele tells Munich concert crowd she's engaged](https://news.sky.com/story/adele-tells-munich-concert-crowd-shes-engaged-13194400)  
+[6] [Adele Finally Seems to Confirm Engagement After Fan Proposes: 'I Can't Marry You, I'm Already Getting Married'](https://people.com/adele-finally-seems-to-confirm-engagement-rich-paul-7568314)`
+
+export const exportedMessageWithoutCitations = `Adele Laurie Blue Adkins, known professionally as Adele, is an English singer-songwriter who has become one of the world's most successful and acclaimed musical artists. Born on May 5, 1988, in Tottenham, London, Adele has achieved remarkable success in her career, earning numerous accolades and breaking multiple records in the music industry.
+
+## Career Highlights
+
+Adele's musical journey began after graduating from the BRIT School for Performing Arts & Technology in 2006. Her debut album, *19*, released in 2008, included hit singles like "Chasing Pavements" and "Make You Feel My Love". However, it was her second album, *21*, released in 2011, that catapulted her to global superstardom. *21* became the world's best-selling album of the 21st century and holds the record for the top-performing album in US chart history.
+
+Her subsequent albums, *25* (2015) and *30* (2021), continued her streak of success, with both becoming the best-selling albums worldwide in their respective release years. Adele's powerful mezzo-soprano voice and emotionally charged songwriting have resonated with audiences globally, leading to sales of over 120 million records worldwide.
+
+## Achievements and Accolades
+
+Adele's talent has been recognized with numerous prestigious awards:
+
+- 16 Grammy Awards
+- 12 Brit Awards (including three for British Album of the Year)
+- An Academy Award
+- A Primetime Emmy Award
+- A Golden Globe Award
+
+She has also achieved several notable distinctions:
+
+- Best-selling female artist of the 21st century in the UK
+- Named the best-selling artist of the 2010s in the US
+- Her albums *21* and *25* are among the best-selling albums in UK chart history
+
+## Recent Events
+
+As of August 2024, Adele continues to be active in her musical career:
+
+1. **Munich Concert Series**: Adele is currently performing a 10-day concert series at a specially built open-air arena in Munich, Germany.
+
+2. **Engagement Announcement**: During one of her Munich concerts, Adele seemingly confirmed her engagement to Rich Paul, a US sports agent whom she has been dating since 2021.
+
+3. **Upcoming Break**: Adele has mentioned her intention to take a "big break" from music after her Las Vegas residency at Caesar's Palace ends in November 2024.
+
+Adele's ability to connect with her audience through her music and her down-to-earth personality continues to endear her to fans worldwide. Her journey from a young aspiring singer in London to a global superstar is a testament to her extraordinary talent and dedication to her craft.`
