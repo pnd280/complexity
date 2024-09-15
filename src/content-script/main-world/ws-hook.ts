@@ -124,7 +124,7 @@ class WsHook {
     }
 
     if (instance instanceof WebSocket) {
-      if (forceLongPolling) {
+      if (forceLongPolling && instance.url.includes("sid")) {
         const url = instance.url
           .replace("wss://", "https://")
           .replace('transport="websocket"', 'transport="polling"');
