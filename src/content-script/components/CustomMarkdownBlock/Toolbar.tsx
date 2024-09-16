@@ -2,7 +2,6 @@ import $ from "jquery";
 import { LuLoader2 as LoaderCircle } from "react-icons/lu";
 
 import CanvasRenderButton from "@/content-script/components/CustomMarkdownBlock/CanvasRenderButton";
-// import CopyButton from "@/content-script/components/CustomMarkdownBlock/CopyButton";
 import CopyButton from "@/shared/components/CopyButton";
 import Tooltip from "@/shared/components/Tooltip";
 import Canvas from "@/utils/Canvas";

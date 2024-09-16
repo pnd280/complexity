@@ -21,7 +21,9 @@ export default function CanvasCode() {
         event: "getHighlightedCodeAsHtml",
         payload: {
           code: metaData!.content,
-          lang: MarkdownBlockUtils.getLang($(`pre#${metaData!.preBlockId}`)),
+          lang: MarkdownBlockUtils.translateLang(
+            MarkdownBlockUtils.getLang($(`pre#${metaData!.preBlockId}`)),
+          ),
         },
         timeout: 5000,
       });

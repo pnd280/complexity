@@ -15,4 +15,11 @@ export const canvasLangs = [
     trigger: "html",
     description: "JavaScript is enabled.",
   },
+  {
+    title: "Chain of Thought",
+    pplxSearch: "LLM's chain of thought reasoning",
+    trigger: "scratchpad",
+    description:
+      "LLM's chain of thought reasoning. Prompt is required.",
+  },
 ] as const;

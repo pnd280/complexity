@@ -16,7 +16,8 @@ export default function CanvasPlaceholder({
   className,
   ...props
 }: CanvasPlaceholderProps) {
-  const { title, description, icon } = canvasPlaceholders[lang];
+  const { title, description, icon, loadingPlaceholder, maxWidth } =
+    canvasPlaceholders[lang];
 
   const { isActive, handleRender } = useRenderInCanvas({
     preBlockId,
@@ -25,13 +26,16 @@ export default function CanvasPlaceholder({
   return (
     <div
       className={cn(
-        `canvas-placeholder tw-absolute tw-inset-0 tw-z-10 tw-flex tw-size-full tw-w-[300px] tw-cursor-pointer tw-select-none tw-items-center tw-overflow-hidden tw-rounded-md tw-border tw-transition-all tw-duration-300 tw-animate-in tw-fade-in-50 active:tw-scale-95 ${preBlockId}-inflight-indicator tw-group`,
+        `canvas-placeholder tw-absolute tw-inset-0 tw-z-[8] tw-flex tw-size-full tw-select-none tw-items-center tw-overflow-hidden tw-rounded-md tw-border tw-transition-all tw-duration-300 tw-animate-in tw-fade-in-50 ${preBlockId}-inflight-indicator tw-group tw-cursor-pointer active:tw-scale-95`,
         {
           "tw-ring-1 tw-ring-accent-foreground": isActive,
           "hover:!tw-border-foreground-darker": !isActive,
         },
         className,
       )}
+      style={{
+        width: `${maxWidth ?? 300}px`,
+      }}
       onClick={handleRender}
       {...props}
     >
@@ -47,7 +51,7 @@ export default function CanvasPlaceholder({
           <LoaderCircle className="tw-size-4 tw-animate-spin tw-text-accent-foreground" />
         </div>
       </div>
-      <div className="tw-ml-4 tw-flex tw-flex-col">
+      <div className="tw-ml-4 tw-flex tw-w-full tw-flex-col">
         <div
           className={cn("tw-text-base tw-font-medium tw-transition-colors", {
             "tw-text-accent-foreground": isActive,
@@ -56,11 +60,11 @@ export default function CanvasPlaceholder({
         >
           {title}
         </div>
-        <div className='tw-hidden tw-font-sans tw-text-[.8rem] tw-text-muted-foreground group-data-[inflight="false"]:tw-block'>
+        <div className='tw-hidden tw-w-full tw-truncate tw-font-sans tw-text-[.8rem] tw-text-muted-foreground group-data-[inflight="false"]:tw-block'>
           {description}
         </div>
-        <div className='tw-animate-pulse tw-font-sans tw-text-[.8rem] tw-text-muted-foreground group-data-[inflight="false"]:tw-hidden'>
-          Generating...
+        <div className='tw-w-full tw-animate-pulse tw-truncate tw-font-sans tw-text-[.8rem] tw-text-muted-foreground group-data-[inflight="false"]:tw-hidden'>
+          {loadingPlaceholder || "Generating..."}
         </div>
       </div>
     </div>
