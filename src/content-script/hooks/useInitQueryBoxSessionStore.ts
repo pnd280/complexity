@@ -15,9 +15,8 @@ export default function useInitQueryBoxSessionStore() {
 
   const { data: userSettings } = useFetchUserSettings();
 
-  const { setQueryLimit, setOpusLimit, setImageCreateLimit } = useQueryBoxStore(
-    (state) => state,
-  );
+  const { setQueryLimit, setOpusLimit, setImageCreateLimit, setO1Limit } =
+    useQueryBoxStore((state) => state);
 
   useEffect(() => {
     if (userSettings != null) {
@@ -33,7 +32,14 @@ export default function useInitQueryBoxSessionStore() {
 
       setQueryLimit(userSettings.gpt4Limit);
       setOpusLimit(userSettings.opusLimit);
+      setO1Limit(userSettings.o1Limit);
       setImageCreateLimit(userSettings.createLimit);
     }
-  }, [setImageCreateLimit, setOpusLimit, setQueryLimit, userSettings]);
+  }, [
+    setImageCreateLimit,
+    setOpusLimit,
+    setQueryLimit,
+    setO1Limit,
+    userSettings,
+  ]);
 }
