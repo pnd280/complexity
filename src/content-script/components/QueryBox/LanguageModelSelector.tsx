@@ -28,15 +28,16 @@ export default function LanguageModelSelector() {
 
   const getModelLimit = useCallback(
     (model: LanguageModel) => {
-      if (model.code === "claude3opus") {
-        return opusLimit;
+      switch (model.code) {
+        case "claude3opus":
+          return opusLimit;
+        case "o1":
+          return "";
+        case "turbo":
+          return <Infinity className="tw-h-4 tw-w-3" />;
+        default:
+          return limit;
       }
-
-      if (model.code === "turbo") {
-        return <Infinity className="tw-h-4 tw-w-3" />;
-      }
-
-      return limit;
     },
     [limit, opusLimit],
   );

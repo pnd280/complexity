@@ -42,6 +42,7 @@ export default class PplxApi {
       defaultImageGenerationModel: parsedJson.default_image_generation_model,
       subscriptionStatus: parsedJson.subscription_status,
       gpt4Limit: parsedJson.gpt4_limit,
+      o1Limit: parsedJson.o1_limit,
       opusLimit: parsedJson.opus_limit,
       createLimit: parsedJson.create_limit,
     };

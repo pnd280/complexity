@@ -129,7 +129,7 @@ export default function CanvasPanel() {
           <div className="tw-absolute tw-right-2 tw-top-2 tw-z-10 tw-size-max">
             <CloseButton />
           </div>
-          <div id="complexity-canvas" className="tw-size-full" />
+          <div id="complexity-canvas" className="tw-size-full tw-overflow-auto" />
           {canvasComponent}
           <CanvasCode />
         </div>

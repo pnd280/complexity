@@ -1,4 +1,3 @@
-
 ### PSA: Your Perplexity.ai user interface **MUST** be in **ENGLISH**. And please turn off any 3rd party translation extenstions/plugins (including browser setttings).
 
 ---
@@ -11,6 +10,9 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 _Release date: 15th Sep, 2024_
 
+-   **NEW**: Added **O1 Mini** model.
+    > You can explicitly choose the `O1 Mini` model and not via the "Reasoning" focus mode. The limit is not explicitly stated anywhere in the client-side, but it's `10` according to the CEO.
+-   **NEW**: Added `scratchpad` canvas. Specifically for masking LLM's reasoning tokens. Prompt is required, check out `@paradroid/dayman`'s scratchpad [prompt](https://discord.com/channels/1047197230748151888/1223058316662538331/1223058316662538331).
 -   **IMPROVE**: export individual messages will now exclude the query.
 -   **IMPROVE**: changelog page will now only be automatically opened on the first install.
 -   **IMPROVE**: Improved the Collections fetch speed and fixed a bug where it failed to load in certain cases.

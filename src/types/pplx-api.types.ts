@@ -12,6 +12,7 @@ export type UserSettingsApiResponse = {
   subscriptionStatus: string;
   gpt4Limit: number;
   opusLimit: number;
+  o1Limit: number;
   createLimit: number;
 };
 
@@ -23,6 +24,7 @@ export const UserSettingsApiResponseRawSchema = z.object({
   subscription_status: z.string(),
   gpt4_limit: z.number(),
   opus_limit: z.number(),
+  o1_limit: z.number(),
   create_limit: z.number(),
 });
 

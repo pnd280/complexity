@@ -193,6 +193,14 @@ export default class MarkdownBlockUtils {
     );
   };
 
+  static translateLang = (lang: string) => {
+    const substitutions: Record<string, string> = {
+      scratchpad: "md",
+    };
+
+    return substitutions[lang] || lang;
+  };
+
   static async isInFlight(pre: HTMLElement) {
     const messageBlock = pre.closest(DomHelperSelectors.THREAD.MESSAGE.BLOCK);
 

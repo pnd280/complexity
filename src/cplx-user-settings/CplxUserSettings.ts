@@ -43,6 +43,8 @@ export default class CplxUserSettings {
   private static userSettings: CplxUserSettingsType;
 
   static async init() {
+    // TODO: filter out unknown keys
+
     const fetchedSettings = await CplxUserSettings.fetch();
 
     const result = cplxUserSettingsSchema.safeParse(fetchedSettings);
