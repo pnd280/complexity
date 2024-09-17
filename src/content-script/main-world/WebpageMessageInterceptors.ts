@@ -19,6 +19,7 @@ import {
   WebSocketEventData,
 } from "@/types/webpage-messenger.types";
 import { isParsedWsMessage, WsParsedMessage } from "@/types/ws.types";
+import { queryClient } from "@/utils/ts-query-query-client";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class WebpageMessageInterceptor {
@@ -63,6 +64,9 @@ export default class WebpageMessageInterceptor {
         };
       })(),
       callback: async (messageData, args) => {
+        queryClient.invalidateQueries({ queryKey: ["userSettings"] });
+
+        // TODO: the below logic might be redundant
         const {
           getRateLimitIdentifier,
           parsedPayload,
