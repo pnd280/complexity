@@ -23,6 +23,8 @@ type QueryBoxState = {
   setQueryLimit: (queryLimit: number) => void;
   opusLimit: number;
   setOpusLimit: (opusLimit: number) => void;
+  o1Limit: number;
+  setO1Limit: (o1Limit: number) => void;
   imageCreateLimit: number;
   setImageCreateLimit: (createLimit: number) => void;
 
@@ -55,6 +57,8 @@ const useQueryBoxStore = create<QueryBoxState>()(
     setQueryLimit: (queryLimit) => set({ queryLimit }),
     opusLimit: 0,
     setOpusLimit: (opusLimit) => set({ opusLimit }),
+    o1Limit: 0,
+    setO1Limit: (o1Limit) => set({ o1Limit }),
     imageCreateLimit: 0,
     setImageCreateLimit: (createLimit) =>
       set({ imageCreateLimit: createLimit }),
