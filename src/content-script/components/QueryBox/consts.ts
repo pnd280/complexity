@@ -1,3 +1,6 @@
+// This file is shared between main-world and isolated context
+// DO NOT include react components
+
 export const languageModels = [
   {
     label: "Claude 3.5 Sonnet",
@@ -10,6 +13,12 @@ export const languageModels = [
     shortLabel: "Opus",
     code: "claude3opus",
     provider: "Anthropic",
+  },
+  {
+    label: "O1 Mini",
+    shortLabel: "O1 Mini",
+    code: "o1",
+    provider: "OpenAI",
   },
   {
     label: "GPT-4 Omni",
