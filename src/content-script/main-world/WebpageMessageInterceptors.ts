@@ -1,7 +1,4 @@
-import {
-  LanguageModel,
-  FocusMode,
-} from "@/content-script/components/QueryBox";
+import { LanguageModel, FocusMode } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
@@ -11,7 +8,6 @@ import {
   UserAiProfileApiResponse,
 } from "@/types/pplx-api.types";
 import { UserAiProfile, UserAiProfileSchema } from "@/types/user-ai-profile";
-import { TrackQueryLimits } from "@/types/webpage-message-interceptors.types";
 import {
   AddInterceptorMatchCondition,
   LongPollingEventData,
@@ -25,88 +21,20 @@ import WsMessageParser from "@/utils/WsMessageParser";
 export default class WebpageMessageInterceptor {
   static updateQueryLimits() {
     webpageMessenger.addInterceptor({
-      matchCondition: ((): TrackQueryLimits => {
-        const getRateLimitIdentifier = {
-          rateLimit: 0,
-          opusRateLimit: 0,
+      matchCondition: (messageData: MessageData<any>) => {
+        const parsedPayload =
+          WebpageMessageInterceptor.parseStructuredMessage(messageData);
+
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
+
+        return {
+          match:
+            parsedPayload.event === "get_rate_limit" ||
+            parsedPayload.event === "get_opus_rate_limit",
         };
-
-        return (messageData) => {
-          const parsedPayload: WsParsedMessage | null | string =
-            WsMessageParser.parse(messageData.payload.payload);
-
-          if (!isParsedWsMessage(parsedPayload)) return { match: false };
-
-          const isRateLimitRequest = parsedPayload.event === "get_rate_limit";
-
-          const isOpusRateLimitRequest =
-            parsedPayload.event === "get_opus_rate_limit";
-
-          const isRateLimitResponse =
-            Array.isArray(parsedPayload.data) &&
-            parsedPayload.data?.[0]?.remaining != null;
-
-          return {
-            match:
-              isRateLimitRequest ||
-              isOpusRateLimitRequest ||
-              isRateLimitResponse,
-            args: [
-              {
-                getRateLimitIdentifier,
-                parsedPayload,
-                isRateLimitRequest,
-                isOpusRateLimitRequest,
-                isRateLimitResponse,
-              },
-            ],
-          };
-        };
-      })(),
-      callback: async (messageData, args) => {
+      },
+      callback: async (messageData) => {
         queryClient.invalidateQueries({ queryKey: ["userSettings"] });
-
-        // TODO: the below logic might be redundant
-        const {
-          getRateLimitIdentifier,
-          parsedPayload,
-          isRateLimitRequest,
-          isOpusRateLimitRequest,
-          isRateLimitResponse,
-        } = args[0];
-
-        if (isRateLimitRequest) {
-          getRateLimitIdentifier.rateLimit = parsedPayload.messageCode;
-        }
-
-        if (isOpusRateLimitRequest) {
-          getRateLimitIdentifier.opusRateLimit = parsedPayload.messageCode;
-        }
-
-        if (isRateLimitResponse) {
-          if (
-            parsedPayload.messageCode - 10 ===
-              getRateLimitIdentifier.rateLimit ||
-            parsedPayload.messageCode - 100 === getRateLimitIdentifier.rateLimit
-          ) {
-            queryBoxStore.setState({
-              queryLimit: parsedPayload.data[0].remaining,
-            });
-
-            console.log("queryLimit:", parsedPayload.data[0].remaining);
-          } else if (
-            parsedPayload.messageCode - 10 ===
-              getRateLimitIdentifier.opusRateLimit ||
-            parsedPayload.messageCode - 100 ===
-              getRateLimitIdentifier.opusRateLimit
-          ) {
-            queryBoxStore.setState({
-              opusLimit: parsedPayload.data[0].remaining,
-            });
-
-            console.log("opusLimit:", parsedPayload.data[0].remaining);
-          }
-        }
 
         return messageData;
       },
