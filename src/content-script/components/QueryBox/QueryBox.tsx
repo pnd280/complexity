@@ -1,5 +1,4 @@
-import $ from "jquery";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import CommonSelectors from "@/content-script/components/QueryBox/CommonSelectors";
 import ImageModelSelector from "@/content-script/components/QueryBox/ImageModelSelector";
@@ -7,7 +6,6 @@ import useFetchUserSettings from "@/content-script/hooks/useFetchUserSettings";
 import useInitQueryBoxSessionStore from "@/content-script/hooks/useInitQueryBoxSessionStore";
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
 import { useGlobalStore } from "@/content-script/session-store/global";
-import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSettings";
 import Portal from "@/shared/components/Portal";
 
@@ -34,8 +32,6 @@ export default function QueryBox() {
     userSettings &&
     (userSettings.subscriptionStatus === "active" ||
       userSettings.subscriptionStatus === "trialing");
-
-  const { toggleWebAccess } = useQueryBoxStore((state) => state.webAccess);
 
   const [containers, setContainers] = useState<HTMLElement[]>([]);
   const [followUpContainers, setFollowUpContainers] = useState<HTMLElement[]>(
@@ -67,23 +63,6 @@ export default function QueryBox() {
     setImageGenPopoverContainer,
     refetchUserSettings,
   });
-
-  useEffect(() => {
-    const down = (
-      e: JQuery.TriggeredEvent<Document, undefined, Document, Document>,
-    ) => {
-      if (e.altKey && e.key === ".") {
-        e.preventDefault();
-        toggleWebAccess();
-      }
-    };
-
-    $(document).on("keydown.toggleWebAccess", down);
-
-    return () => {
-      $(document).off("keydown.toggleWebAccess", down);
-    };
-  }, [toggleWebAccess]);
 
   const isReady =
     (isNetworkInstanceCaptured && !!userSettings && !isLoadingUserSettings) ||

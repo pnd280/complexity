@@ -87,9 +87,13 @@ export const imageModels = [
   },
 ] as const;
 
-export const webAccessFocus = [
+export const focusModes = [
   {
-    label: "All",
+    label: "Writing",
+    code: "writing",
+  },
+  {
+    label: "Web",
     code: "internet",
   },
   {

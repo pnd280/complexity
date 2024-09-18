@@ -12,8 +12,7 @@ export default class CplxUserSettings {
   static defaultUserSettings: CplxUserSettingsType = {
     schemaVersion: packageData.version,
     customTheme: {},
-    defaultFocus: "internet",
-    defaultWebAccess: false,
+    defaultFocusMode: "internet",
     generalSettings: {
       queryBoxSelectors: {
         focus: false,

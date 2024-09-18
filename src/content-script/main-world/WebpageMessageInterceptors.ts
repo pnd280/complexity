@@ -1,6 +1,6 @@
 import {
   LanguageModel,
-  WebAccessFocus,
+  FocusMode,
 } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
@@ -180,9 +180,7 @@ export default class WebpageMessageInterceptor {
 
         const newSearchFocus = CplxUserSettings.get().generalSettings
           .queryBoxSelectors.focus
-          ? queryBoxStore.getState().webAccess.allowWebAccess
-            ? queryBoxStore.getState().webAccess.focus
-            : "writing"
+          ? queryBoxStore.getState().focusMode
           : parsedPayload.data[1].search_focus;
 
         const newTargetCollectionUuid = CplxUserSettings.get().generalSettings
@@ -226,7 +224,7 @@ export default class WebpageMessageInterceptor {
   }: {
     languageModel?: LanguageModel["code"];
     proSearchState?: boolean;
-    focus?: WebAccessFocus["code"];
+    focus?: FocusMode["code"];
   }) {
     return webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {
@@ -246,11 +244,9 @@ export default class WebpageMessageInterceptor {
           return { match: false };
         }
 
-        const { webAccess } = queryBoxStore.getState();
+        const { focusMode } = queryBoxStore.getState();
 
-        const newFocus = proSearchState
-          ? webAccess.focus
-          : (focus ?? (webAccess.allowWebAccess ? webAccess.focus : "writing"));
+        const newFocus = proSearchState ? focusMode : (focus ?? focusMode);
 
         parsedPayload.data[1] = {
           ...parsedPayload.data[1],
