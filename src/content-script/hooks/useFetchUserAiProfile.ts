@@ -10,12 +10,13 @@ export default function useFetchUserAiProfile({
   UseQueryOptions<UserAiProfileApiResponse>,
   "queryKey" | "queryFn"
 > = {}) {
+  const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
   const isReady = useGlobalStore((state) => state.isWebSocketCaptured);
 
   return useQuery<UserAiProfileApiResponse>({
     queryKey: ["userAiProfile"],
     queryFn: PplxApi.fetchUserAiProfile,
-    enabled: isReady,
+    enabled: isReady && isLoggedIn,
     ...props,
   });
 }

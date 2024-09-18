@@ -45,6 +45,7 @@ export default class PplxApi {
       o1Limit: parsedJson.o1_limit,
       opusLimit: parsedJson.opus_limit,
       createLimit: parsedJson.create_limit,
+      queryCount: parsedJson.query_count,
     };
   }
 

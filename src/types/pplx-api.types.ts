@@ -4,16 +4,19 @@ import { LanguageModel } from "@/content-script/components/QueryBox";
 import { Collection } from "@/types/collection.types";
 import { UserAiProfile } from "@/types/user-ai-profile";
 
+export type SubscriptionStatus = "active" | "trialing";
+
 export type UserSettingsApiResponse = {
   hasAiProfile: boolean;
   defaultCopilot: boolean;
   defaultModel: string;
   defaultImageGenerationModel: string;
-  subscriptionStatus: string;
+  subscriptionStatus?: SubscriptionStatus;
   gpt4Limit: number;
   opusLimit: number;
   o1Limit: number;
   createLimit: number;
+  queryCount: number;
 };
 
 export const UserSettingsApiResponseRawSchema = z.object({
@@ -21,11 +24,12 @@ export const UserSettingsApiResponseRawSchema = z.object({
   default_copilot: z.boolean().nullable(),
   default_model: z.string(),
   default_image_generation_model: z.string(),
-  subscription_status: z.string(),
+  subscription_status: z.enum(["active", "trialing"]).optional(),
   gpt4_limit: z.number(),
   opus_limit: z.number(),
   o1_limit: z.number(),
   create_limit: z.number(),
+  query_count: z.number(),
 });
 
 export type UserSettingsApiResponseRaw = z.infer<
