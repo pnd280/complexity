@@ -10,7 +10,7 @@ import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSet
 import Portal from "@/shared/components/Portal";
 
 export default function QueryBox() {
-  const isNetworkInstanceCaptured = useGlobalStore(
+  const isWebSocketCaptured = useGlobalStore(
     (state) => state.isWebSocketCaptured,
   );
 
@@ -65,7 +65,7 @@ export default function QueryBox() {
   });
 
   const isReady =
-    (isNetworkInstanceCaptured && !!userSettings && !isLoadingUserSettings) ||
+    (isWebSocketCaptured && !!userSettings && !isLoadingUserSettings) ||
     !!userSettingsFetchError;
 
   const selectors = (

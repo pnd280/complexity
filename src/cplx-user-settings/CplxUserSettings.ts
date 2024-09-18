@@ -32,6 +32,7 @@ export default class CplxUserSettings {
         blockTelemetry: false,
         noFileCreationOnPaste: false,
         fileDropableThreadWrapper: false,
+        autoGenerateThreadTitle: false,
       },
       visualTweaks: {
         collapseEmptyThreadVisualColumns: false,

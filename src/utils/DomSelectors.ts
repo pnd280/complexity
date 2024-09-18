@@ -64,6 +64,13 @@ const DomSelectors = {
     PRO_SEARCH_TOGGLE: "button#copilot-toggle",
   },
   STICKY_NAVBAR: ".sticky.left-0.right-0.top-0.border-b",
+  SICKY_NAVBAR_CHILD: {
+    THREAD_TITLE_WRAPPER:
+      ".hidden.max-w-md.grow.items-center.justify-center.gap-x-xs.text-center.md\\:flex",
+    THREAD_TITLE:
+      ".min-w-0 .cursor-pointer.transition.duration-300.hover\\:opacity-70",
+    THREAD_TITLE_INPUT: 'input[placeholder="Untitled"]',
+  },
 } as const;
 
 const DomHelperSelectors = {
