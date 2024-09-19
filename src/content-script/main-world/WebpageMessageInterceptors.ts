@@ -296,18 +296,21 @@ export default class WebpageMessageInterceptor {
         const threadTitle = $("h1").text().trim().slice(0, 1000);
         const queryStr = `# IDENTITY and PURPOSE
 
-You are an expert content summarizer. You take a conversation and generate a simple and succinct one line title based on this conversation. Your title should be concise and capture the essence of the conversation.
+You are an expert content summarizer. You take a text and generate a simple and succinct one line title based on this text. Your title should be concise and capture the essence of the text.
 
 # STEPS
 
-- Combine all of your understanding of the conversation into a single, 3-10 word title, with an optional emoji at the beginning.
+- Combine all of your understanding of the text into a single, 3-10 word title, with an optional emoji at the beginning.
 - Make sure the title is simple and easy to understand.
 
 # OUTPUT INSTRUCTIONS
 
 - Output the title in plain text. Do not use any special characters or Markdown. This is very important.
 - Do not output anything else. Strictly answer with only title and no other text.
+- The title should be in the same language as the text.
 - Do not provide any additional information or context. Just the title.
+
+# THE TEXT
 
 ${threadTitle}`;
 

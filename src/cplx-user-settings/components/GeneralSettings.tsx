@@ -11,6 +11,7 @@ import {
 import Separator from "@/shared/components/Separator";
 import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
+import { cn } from "@/utils/cn";
 import { compareVersions } from "@/utils/utils";
 import packageData from "@@/package.json";
 
@@ -84,7 +85,15 @@ function SettingGroup<
   if (!userSettings) return null;
 
   return settings.map(
-    ({ id, label, settingKey, experimental, versionRelease, onClick }) => {
+    ({
+      id,
+      label,
+      description,
+      settingKey,
+      experimental,
+      versionRelease,
+      onClick,
+    }) => {
       const defaultChecked = Boolean(
         userSettings[settingStoreKey]?.[
           settingKey as keyof CplxUserSettings["generalSettings"][K]
@@ -103,23 +112,33 @@ function SettingGroup<
             <Switch
               key={id}
               id={id}
+              className={cn({
+                "tw-items-start": !!description,
+              })}
               textLabel={
-                <div className="tw-flex tw-items-center tw-gap-2">
-                  <span className="tw-flex tw-gap-2">
-                    {versionRelease &&
-                      compareVersions(packageData.version, versionRelease) <=
-                        0 && (
-                        <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-text-xs tw-text-background">
-                          new
+                <div className="tw-flex tw-flex-col tw-gap-1">
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <span className="tw-flex tw-gap-2">
+                      {versionRelease &&
+                        compareVersions(packageData.version, versionRelease) <=
+                          0 && (
+                          <div className="tw-w-max tw-rounded-md tw-bg-accent-foreground tw-px-2 tw-text-xs tw-text-background">
+                            new
+                          </div>
+                        )}
+                      {experimental && (
+                        <div className="tw-w-max tw-rounded-md tw-bg-destructive tw-px-2 tw-text-xs tw-text-destructive-foreground">
+                          experimental
                         </div>
                       )}
-                    {experimental && (
-                      <div className="tw-w-max tw-rounded-md tw-bg-destructive tw-px-2 tw-text-xs tw-text-destructive-foreground">
-                        experimental
-                      </div>
-                    )}
-                  </span>
-                  <span>{label}</span>
+                    </span>
+                    <span>{label}</span>
+                  </div>
+                  {description && (
+                    <div className="tw-ml-2 tw-text-xs tw-text-muted-foreground">
+                      {description}
+                    </div>
+                  )}
                 </div>
               }
               defaultChecked={!settingKey ? true : defaultChecked}

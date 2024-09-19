@@ -10,8 +10,9 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 _Release date: 19th Sep, 2024_
 
--   **NEW**: Auto generate thread title.
+-   **NEW** | **EXPERIMENTAL**: Auto generate thread title.
 
+-   **IMPROVE**: Better onboarding experience - Added descriptions for all settings.
 -   **IMPROVE**: Redesigned the Focus Selector UI. Now it's more intuitive for new users.
 -   **IMPROVE**: Significantly reduce the chance of being stuck in infinite message generating state.
 

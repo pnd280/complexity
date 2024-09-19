@@ -27,6 +27,15 @@ export const canvasLangSettings = [
     description: "LLM's chain of thought reasoning. Prompt is required.",
     actions: [
       {
+        description: "Check out @paradroid's Scratchpad prompt",
+        cta: "Open original thread",
+        action: () => {
+          window.open(
+            "https://discord.com/channels/1047197230748151888/1223058316662538331/1285473963958472765",
+          );
+        },
+      },
+      {
         description: "Install Scratchpad prompt as a Collection",
         cta: "Install",
         action: async () => {

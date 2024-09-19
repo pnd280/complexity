@@ -1,8 +1,11 @@
 import { ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
 
+const extendedMerge = extendTailwindMerge({
+  prefix: "tw-",
+});
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return extendedMerge(clsx(inputs));
 }
 
 // for prettier sorting

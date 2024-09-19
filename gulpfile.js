@@ -5,7 +5,7 @@ import fs from "fs";
 
 function zip() {
   const require = createRequire(import.meta.url);
-  const manifest = require("./build/manifest.json");
+  const manifest = require("./package.json");
   const zipFileName = `${manifest.name.replaceAll(" ", "-")}-${manifest.version}.zip`;
 
   return gulp
