@@ -421,8 +421,12 @@ export class InternalWsInstance {
 mainWorldExec(() => {
   WsHook.getInstance().initialize();
 
+  let isSendMessageListenerRegistered = false;
+
   webpageMessenger.onMessage("webSocketCaptured", async () => {
     const ownWsInstance = InternalWsInstance.getInstance();
+
+    if (isSendMessageListenerRegistered) return;
 
     webpageMessenger.onMessage("sendWebSocketMessage", async (data) => {
       if (ownWsInstance.getSocket()?.readyState === "open") {
@@ -431,5 +435,7 @@ mainWorldExec(() => {
         WsHook.getInstance().sendWebSocketMessage(data.payload, false);
       }
     });
+
+    isSendMessageListenerRegistered = true;
   });
 })();

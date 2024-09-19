@@ -498,7 +498,7 @@ ${threadTitle}`;
       setTimeout(() => {
         removeInterceptor();
         reject(new Error("Fetching collections timed out"));
-      }, 5000);
+      }, 3000);
     });
   }
 
@@ -547,6 +547,41 @@ ${threadTitle}`;
       setTimeout(() => {
         removeInterceptor();
         reject(new Error("Fetching thread name generation timed out"));
+      }, 3000);
+    });
+  }
+
+  static waitForCollectionCreation() {
+    const matchCondition = (messageData: MessageData<any>) => {
+      const parsedPayload = parseStructuredMessage(messageData);
+
+      if (!parsedPayload) return false;
+
+      return !(
+        parsedPayload.messageCode !== 430 &&
+        parsedPayload.data?.length === 1 &&
+        parsedPayload.data[0].status === "completed" &&
+        "title" in parsedPayload.data[0] &&
+        "description" in parsedPayload.data[0] &&
+        "instructions" in parsedPayload.data[0]
+      );
+    };
+
+    return new Promise((resolve, reject) => {
+      const removeInterceptor = webpageMessenger.addInterceptor({
+        matchCondition: (messageData: MessageData<any>) => {
+          return { match: matchCondition(messageData) };
+        },
+        callback: async (messageData: MessageData<any>) => {
+          resolve(null);
+          return messageData;
+        },
+        stopCondition: (messageData) => matchCondition(messageData), // stop after the first match
+      });
+
+      setTimeout(() => {
+        removeInterceptor();
+        reject(new Error("Collection creation timed out"));
       }, 5000);
     });
   }

@@ -1,13 +1,15 @@
 import {
   LuHelpCircle as CircleHelp,
   LuHelpCircle as HelpCircle,
+  LuLoader2,
 } from "react-icons/lu";
 
-import { canvasLangs } from "@/content-script/components/Canvas/langs";
+import { canvasLangSettings } from "@/content-script/components/Canvas/langs";
 import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSettings";
+import AsyncButton from "@/shared/components/AsyncButton";
 import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
-import { CanvasLang } from "@/utils/Canvas";
+import { hasActions } from "@/utils/Canvas";
 
 export default function CanvasSettings() {
   const { settings, updateSettings } = useCplxGeneralSettings();
@@ -73,17 +75,9 @@ export default function CanvasSettings() {
             </div>
           </div>
           <div className="tw-flex tw-flex-wrap tw-gap-2">
-            {canvasLangs.map(
-              ({ title, description, trigger, pplxSearch }, index) => (
-                <CanvasSettingBlock
-                  key={index}
-                  pplxSearch={pplxSearch}
-                  title={title}
-                  trigger={trigger}
-                  description={description}
-                />
-              ),
-            )}
+            {canvasLangSettings.map((setting, index) => (
+              <CanvasSettingBlock key={index} canvasSetting={setting} />
+            ))}
           </div>
         </div>
       )}
@@ -92,18 +86,14 @@ export default function CanvasSettings() {
 }
 
 type CanvasSettingBlockProps = {
-  pplxSearch: string;
-  title: string;
-  trigger: CanvasLang;
-  description: string;
+  canvasSetting: (typeof canvasLangSettings)[number];
 };
 
-function CanvasSettingBlock({
-  pplxSearch,
-  title,
-  trigger,
-  description,
-}: CanvasSettingBlockProps) {
+function CanvasSettingBlock({ canvasSetting }: CanvasSettingBlockProps) {
+  const { title, pplxSearch, trigger, description } = canvasSetting;
+
+  const actions = hasActions(canvasSetting) ? canvasSetting.actions : undefined;
+
   const { settings, updateSettings } = useCplxGeneralSettings();
 
   if (!settings) return null;
@@ -136,6 +126,29 @@ function CanvasSettingBlock({
       </div>
 
       <div className="tw-text-xs tw-text-muted-foreground">{description}</div>
+
+      {actions && (
+        <div className="tw-mt-auto tw-flex tw-flex-col tw-gap-2">
+          {actions.map(({ description, cta, action }, idx) => (
+            <div key={idx} className="tw-flex tw-flex-col tw-gap-2">
+              <div className="tw-text-xs tw-text-muted-foreground">
+                {description}
+              </div>
+              <AsyncButton
+                className="tw-w-fit"
+                loadingText={
+                  <LuLoader2 className="tw-size-4 tw-animate-spin" />
+                }
+                onClick={async () => {
+                  await action();
+                }}
+              >
+                {cta}
+              </AsyncButton>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="tw-mt-auto tw-flex tw-flex-col tw-gap-2">
         <div className="tw-flex tw-items-center tw-gap-4">

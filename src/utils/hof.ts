@@ -42,7 +42,7 @@ export function extensionOnly<P extends unknown[], R>(
   return withGuard(
     () => !isMainWorldContext(),
     callback,
-    "This function can only be called in the extension.",
+    "This function can only be called in the extension context.",
     suppressGuardError,
   );
 }
