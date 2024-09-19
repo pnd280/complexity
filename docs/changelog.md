@@ -16,6 +16,8 @@ _Release date: 19th Sep, 2024_
 -   **IMPROVE**: Redesigned the Focus Selector UI. Now it's more intuitive for new users.
 -   **IMPROVE**: Significantly reduce the chance of being stuck in infinite message generating state.
 
+-   **FIX**: Fixed minor bugs.
+
 ## v0.0.2.0
 
 _Release date: 15th Sep, 2024_
