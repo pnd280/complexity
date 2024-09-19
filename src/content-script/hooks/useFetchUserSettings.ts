@@ -22,7 +22,12 @@ export default function useFetchUserSettings({
     retry: (failureCount, error) => {
       if (error.name === "ZodError") return false;
 
-      return failureCount <= 3;
+      if (failureCount > 3) {
+        console.log("Refreshing page");
+        window.location.reload();
+      }
+
+      return true;
     },
     refetchInterval: 10000,
     refetchIntervalInBackground: true,
