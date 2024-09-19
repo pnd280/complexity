@@ -55,7 +55,7 @@ export default function Slogan() {
     <Portal container={$(container).find("> div:first-child")[0]}>
       <div
         className={cn(
-          "tw-absolute -tw-top-[2rem] tw-left-1/2 tw-flex tw-w-fit -tw-translate-x-1/2 tw-select-none tw-items-center tw-justify-center tw-gap-1 tw-font-sans tw-text-[.8rem] tw-text-accent-foreground tw-transition-all tw-duration-300 tw-animate-in tw-fade-in",
+          "tw-absolute -tw-top-[2rem] tw-left-1/2 tw-hidden tw-w-fit -tw-translate-x-1/2 tw-select-none tw-items-center tw-justify-center tw-gap-1 tw-font-sans tw-text-[.8rem] tw-text-accent-foreground tw-transition-all tw-duration-300 tw-animate-in tw-fade-in md:tw-flex",
           {
             "tw-animate-out tw-fade-out tw-zoom-out tw-slide-out-to-top tw-fill-mode-forwards":
               isReady,

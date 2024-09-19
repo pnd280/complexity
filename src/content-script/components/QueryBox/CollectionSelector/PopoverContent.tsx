@@ -220,7 +220,7 @@ function CollectionItem({
         <Tooltip
           content={
             <div className="tw-line-clamp-5">
-              {collection.instructions || collection.description}
+              {collection.description || collection.instructions}
             </div>
           }
           disabled={!collection.instructions && !collection.description}

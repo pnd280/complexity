@@ -187,6 +187,21 @@ export default class UiUtils {
     textarea.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
+  static setReactInputValue(input: HTMLInputElement, newValue: string) {
+    if (input == null) return;
+
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value",
+    )?.set;
+
+    if (nativeInputValueSetter) {
+      nativeInputValueSetter.call(input, newValue);
+    }
+
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
   static getMostVisibleElementIndex(elements: Element[]) {
     let maxVisiblePercentage = 0;
     let indexWithMaxVisible = -1;

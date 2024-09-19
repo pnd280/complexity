@@ -6,7 +6,7 @@ import { RouterEvent } from "@/types/ws.types";
 import { DomSelectors } from "@/utils/DomSelectors";
 import { mainWorldExec } from "@/utils/hof";
 import UiUtils from "@/utils/UiUtils";
-import { whereAmI } from "@/utils/utils";
+import { sleep, whereAmI } from "@/utils/utils";
 
 type NextRouter = typeof window.next;
 
@@ -135,12 +135,13 @@ class Router {
   private async waitForRouteChangeComplete(
     location: ReturnType<typeof whereAmI>,
   ) {
+    await sleep(1000);
+
     return new Promise<void>((resolve) => {
       const conditions: Partial<Record<typeof location, () => boolean>> = {
         thread: () => {
           try {
-            if (UiUtils.getMessageBlocks(true).length < 1) return false;
-            return true;
+            return UiUtils.getMessageBlocks(true).length >= 1;
           } catch {
             return false;
           }
@@ -156,7 +157,9 @@ class Router {
 
       const interval = setInterval(() => {
         if (condition()) {
+          console.log("condition met");
           clearInterval(interval);
+
           return resolve();
         }
       }, 100);

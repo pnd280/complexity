@@ -22,7 +22,7 @@ const defineMozManifest = defineManifest as unknown as (
 const isDev = process.env.NODE_ENV == "development";
 
 export default defineMozManifest({
-  name: `${packageData.displayName || packageData.name}${isDev ? ` ➡️ Dev` : ""}`,
+  name: `${isDev ? "[🛠️ Dev] " : ""}${packageData.displayName || packageData.name}`,
   description: packageData.description,
   version: packageData.version,
   manifest_version: 3,

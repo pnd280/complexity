@@ -1,7 +1,6 @@
-import {
-  LanguageModel,
-  WebAccessFocus,
-} from "@/content-script/components/QueryBox";
+import $ from "jquery";
+
+import { LanguageModel, FocusMode } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
@@ -11,7 +10,6 @@ import {
   UserAiProfileApiResponse,
 } from "@/types/pplx-api.types";
 import { UserAiProfile, UserAiProfileSchema } from "@/types/user-ai-profile";
-import { TrackQueryLimits } from "@/types/webpage-message-interceptors.types";
 import {
   AddInterceptorMatchCondition,
   LongPollingEventData,
@@ -19,94 +17,28 @@ import {
   WebSocketEventData,
 } from "@/types/webpage-messenger.types";
 import { isParsedWsMessage, WsParsedMessage } from "@/types/ws.types";
+import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
 import { queryClient } from "@/utils/ts-query-query-client";
+import UiUtils from "@/utils/UiUtils";
+import { jsonUtils, waitForElement, whereAmI } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class WebpageMessageInterceptor {
   static updateQueryLimits() {
     webpageMessenger.addInterceptor({
-      matchCondition: ((): TrackQueryLimits => {
-        const getRateLimitIdentifier = {
-          rateLimit: 0,
-          opusRateLimit: 0,
+      matchCondition: (messageData: MessageData<any>) => {
+        const parsedPayload = parseStructuredMessage(messageData);
+
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
+
+        return {
+          match:
+            parsedPayload.event === "get_rate_limit" ||
+            parsedPayload.event === "get_opus_rate_limit",
         };
-
-        return (messageData) => {
-          const parsedPayload: WsParsedMessage | null | string =
-            WsMessageParser.parse(messageData.payload.payload);
-
-          if (!isParsedWsMessage(parsedPayload)) return { match: false };
-
-          const isRateLimitRequest = parsedPayload.event === "get_rate_limit";
-
-          const isOpusRateLimitRequest =
-            parsedPayload.event === "get_opus_rate_limit";
-
-          const isRateLimitResponse =
-            Array.isArray(parsedPayload.data) &&
-            parsedPayload.data?.[0]?.remaining != null;
-
-          return {
-            match:
-              isRateLimitRequest ||
-              isOpusRateLimitRequest ||
-              isRateLimitResponse,
-            args: [
-              {
-                getRateLimitIdentifier,
-                parsedPayload,
-                isRateLimitRequest,
-                isOpusRateLimitRequest,
-                isRateLimitResponse,
-              },
-            ],
-          };
-        };
-      })(),
-      callback: async (messageData, args) => {
+      },
+      callback: async (messageData) => {
         queryClient.invalidateQueries({ queryKey: ["userSettings"] });
-
-        // TODO: the below logic might be redundant
-        const {
-          getRateLimitIdentifier,
-          parsedPayload,
-          isRateLimitRequest,
-          isOpusRateLimitRequest,
-          isRateLimitResponse,
-        } = args[0];
-
-        if (isRateLimitRequest) {
-          getRateLimitIdentifier.rateLimit = parsedPayload.messageCode;
-        }
-
-        if (isOpusRateLimitRequest) {
-          getRateLimitIdentifier.opusRateLimit = parsedPayload.messageCode;
-        }
-
-        if (isRateLimitResponse) {
-          if (
-            parsedPayload.messageCode - 10 ===
-              getRateLimitIdentifier.rateLimit ||
-            parsedPayload.messageCode - 100 === getRateLimitIdentifier.rateLimit
-          ) {
-            queryBoxStore.setState({
-              queryLimit: parsedPayload.data[0].remaining,
-            });
-
-            console.log("queryLimit:", parsedPayload.data[0].remaining);
-          } else if (
-            parsedPayload.messageCode - 10 ===
-              getRateLimitIdentifier.opusRateLimit ||
-            parsedPayload.messageCode - 100 ===
-              getRateLimitIdentifier.opusRateLimit
-          ) {
-            queryBoxStore.setState({
-              opusLimit: parsedPayload.data[0].remaining,
-            });
-
-            console.log("opusLimit:", parsedPayload.data[0].remaining);
-          }
-        }
 
         return messageData;
       },
@@ -172,6 +104,10 @@ export default class WebpageMessageInterceptor {
           return { match: false };
         }
 
+        if (parsedPayload.data[1].ignore_interceptor === true) {
+          return { match: false };
+        }
+
         const newModelPreference =
           CplxUserSettings.get().generalSettings.queryBoxSelectors
             .languageModel && parsedPayload.data?.[1].query_source !== "retry"
@@ -180,9 +116,7 @@ export default class WebpageMessageInterceptor {
 
         const newSearchFocus = CplxUserSettings.get().generalSettings
           .queryBoxSelectors.focus
-          ? queryBoxStore.getState().webAccess.allowWebAccess
-            ? queryBoxStore.getState().webAccess.focus
-            : "writing"
+          ? queryBoxStore.getState().focusMode
           : parsedPayload.data[1].search_focus;
 
         const newTargetCollectionUuid = CplxUserSettings.get().generalSettings
@@ -226,7 +160,7 @@ export default class WebpageMessageInterceptor {
   }: {
     languageModel?: LanguageModel["code"];
     proSearchState?: boolean;
-    focus?: WebAccessFocus["code"];
+    focus?: FocusMode["code"];
   }) {
     return webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {
@@ -246,11 +180,9 @@ export default class WebpageMessageInterceptor {
           return { match: false };
         }
 
-        const { webAccess } = queryBoxStore.getState();
+        const { focusMode } = queryBoxStore.getState();
 
-        const newFocus = proSearchState
-          ? webAccess.focus
-          : (focus ?? (webAccess.allowWebAccess ? webAccess.focus : "writing"));
+        const newFocus = proSearchState ? focusMode : (focus ?? focusMode);
 
         parsedPayload.data[1] = {
           ...parsedPayload.data[1],
@@ -311,10 +243,143 @@ export default class WebpageMessageInterceptor {
     });
   }
 
+  static blockTelemetry() {
+    if (!CplxUserSettings.get().generalSettings.qolTweaks.blockTelemetry)
+      return;
+
+    webpageMessenger.addInterceptor({
+      matchCondition: (messageData: MessageData<any>) => {
+        const webSocketMessageData = messageData as MessageData<
+          WebSocketEventData | LongPollingEventData
+        >;
+
+        const parsedPayload: WsParsedMessage | null | string =
+          WsMessageParser.parse(webSocketMessageData.payload.payload);
+
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
+
+        return {
+          match: parsedPayload.event === "analytics_event",
+        };
+      },
+      callback: async () => {
+        return null;
+      },
+      stopCondition: () => false,
+    });
+  }
+
+  static autoRenameThread() {
+    if (
+      !CplxUserSettings.get().generalSettings.qolTweaks.autoGenerateThreadTitle
+    )
+      return;
+
+    webpageMessenger.addInterceptor({
+      matchCondition: (messageData: MessageData<any>) => {
+        const parsedPayload = parseStructuredMessage(messageData);
+
+        if (!isParsedWsMessage(parsedPayload)) return { match: false };
+
+        return {
+          match:
+            parsedPayload.event === "get_rate_limit" ||
+            parsedPayload.event === "get_opus_rate_limit",
+        };
+      },
+      callback: async (messageData) => {
+        if (whereAmI() !== "thread") return messageData;
+
+        if ($(DomHelperSelectors.THREAD.MESSAGE.BLOCK).length > 1)
+          return messageData;
+
+        const threadTitle = $("h1").text().trim().slice(0, 1000);
+        const queryStr = `# IDENTITY and PURPOSE
+
+You are an expert content summarizer. You take a text and generate a simple and succinct one line title based on this text. Your title should be concise and capture the essence of the text.
+
+# STEPS
+
+- Combine all of your understanding of the text into a single, 3-10 word title, with an optional emoji at the beginning.
+- Make sure the title is simple and easy to understand.
+
+# OUTPUT INSTRUCTIONS
+
+- Output the title in plain text. Do not use any special characters or Markdown. This is very important.
+- Do not output anything else. Strictly answer with only title and no other text.
+- The title should be in the same language as the text.
+- Do not provide any additional information or context. Just the title.
+
+# THE TEXT
+
+${threadTitle}`;
+
+        webpageMessenger.sendMessage({
+          event: "sendWebSocketMessage",
+          payload: WsMessageParser.stringify({
+            messageCode: 420,
+            event: "perplexity_ask",
+            data: [
+              queryStr,
+              {
+                version: "2.12",
+                source: "default",
+                language: "en-US",
+                search_focus: "writing",
+                mode: "concise",
+                model_preference: "turbo" as LanguageModel["code"],
+                is_incognito: true,
+                ignore_interceptor: true,
+              },
+            ],
+          }),
+          timeout: 10000,
+        });
+
+        const title =
+          await WebpageMessageInterceptor.waitForThreadNameGeneration({
+            queryStr,
+          });
+
+        if (!title) return messageData;
+
+        const div = await waitForElement({
+          selector: DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE,
+          timeout: 1000,
+        });
+
+        if (div == null) return messageData;
+
+        $(DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE_WRAPPER).css({
+          opacity: 0,
+        });
+
+        (div as HTMLElement).click();
+
+        const input = await waitForElement({
+          selector: DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE_INPUT,
+          timeout: 1000,
+        });
+
+        if (input == null) return messageData;
+
+        UiUtils.setReactInputValue(input as HTMLInputElement, title);
+
+        $(input).trigger("blur");
+
+        $(DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE_WRAPPER).css({
+          opacity: 100,
+        });
+
+        return messageData;
+      },
+      stopCondition: () => false,
+    });
+  }
+
   static waitForUpsertThreadCollection() {
     const matchCondition = (messageData: MessageData<any>) => {
-      const parsedPayload =
-        WebpageMessageInterceptor.parseStructuredMessage(messageData);
+      const parsedPayload = parseStructuredMessage(messageData);
 
       if (!parsedPayload) return false;
 
@@ -347,7 +412,7 @@ export default class WebpageMessageInterceptor {
       }
     > = (messageData: MessageData<any>) => {
       const parsedPayload: WsParsedMessage | null =
-        WebpageMessageInterceptor.parseStructuredMessage(messageData);
+        parseStructuredMessage(messageData);
 
       if (!parsedPayload) return { match: false };
 
@@ -394,7 +459,7 @@ export default class WebpageMessageInterceptor {
       { collections: any[] }
     > = (messageData) => {
       const parsedPayload: WsParsedMessage | null =
-        WebpageMessageInterceptor.parseStructuredMessage(messageData);
+        parseStructuredMessage(messageData);
 
       if (!parsedPayload) return { match: false };
 
@@ -436,46 +501,105 @@ export default class WebpageMessageInterceptor {
       setTimeout(() => {
         removeInterceptor();
         reject(new Error("Fetching collections timed out"));
+      }, 3000);
+    });
+  }
+
+  static waitForThreadNameGeneration({
+    queryStr,
+  }: {
+    queryStr: string;
+  }): Promise<string> {
+    const matchCondition: AddInterceptorMatchCondition<
+      any,
+      { content: string }
+    > = (messageData) => {
+      const parsedPayload: WsParsedMessage | null =
+        parseStructuredMessage(messageData);
+
+      if (!parsedPayload) return { match: false };
+
+      if (parsedPayload.messageCode !== 430) return { match: false };
+
+      if (parsedPayload.event !== "") return { match: false };
+
+      if (parsedPayload.data[0].status !== "completed") return { match: false };
+
+      if (parsedPayload.data[0].query_str !== queryStr) return { match: false };
+
+      return {
+        match: true,
+        args: [
+          {
+            content: jsonUtils.safeParse(parsedPayload.data[0].text).answer,
+          },
+        ],
+      };
+    };
+
+    return new Promise((resolve, reject) => {
+      const removeInterceptor = webpageMessenger.addInterceptor({
+        matchCondition,
+        async callback(messageData, args) {
+          resolve(args[0].content);
+          return messageData;
+        },
+        stopCondition: (messageData) => matchCondition(messageData).match,
+      });
+
+      setTimeout(() => {
+        removeInterceptor();
+        reject(new Error("Fetching thread name generation timed out"));
+      }, 3000);
+    });
+  }
+
+  static waitForCollectionCreation() {
+    const matchCondition = (messageData: MessageData<any>) => {
+      const parsedPayload = parseStructuredMessage(messageData);
+
+      if (!parsedPayload) return false;
+
+      return !(
+        parsedPayload.messageCode !== 430 &&
+        parsedPayload.data?.length === 1 &&
+        parsedPayload.data[0].status === "completed" &&
+        "title" in parsedPayload.data[0] &&
+        "description" in parsedPayload.data[0] &&
+        "instructions" in parsedPayload.data[0]
+      );
+    };
+
+    return new Promise((resolve, reject) => {
+      const removeInterceptor = webpageMessenger.addInterceptor({
+        matchCondition: (messageData: MessageData<any>) => {
+          return { match: matchCondition(messageData) };
+        },
+        callback: async (messageData: MessageData<any>) => {
+          resolve(null);
+          return messageData;
+        },
+        stopCondition: (messageData) => matchCondition(messageData), // stop after the first match
+      });
+
+      setTimeout(() => {
+        removeInterceptor();
+        reject(new Error("Collection creation timed out"));
       }, 5000);
     });
   }
+}
 
-  static blockTelemetry() {
-    if (!CplxUserSettings.get().generalSettings.qolTweaks.blockTelemetry)
-      return;
+function parseStructuredMessage(messageData: MessageData<any>) {
+  const webSocketMessageData = messageData as MessageData<
+    WebSocketEventData | LongPollingEventData
+  >;
 
-    webpageMessenger.addInterceptor({
-      matchCondition: (messageData: MessageData<any>) => {
-        const webSocketMessageData = messageData as MessageData<
-          WebSocketEventData | LongPollingEventData
-        >;
+  const parsedPayload: WsParsedMessage | null | string = WsMessageParser.parse(
+    webSocketMessageData.payload.payload,
+  );
 
-        const parsedPayload: WsParsedMessage | null | string =
-          WsMessageParser.parse(webSocketMessageData.payload.payload);
+  if (!isParsedWsMessage(parsedPayload)) return null;
 
-        if (!isParsedWsMessage(parsedPayload)) return { match: false };
-
-        return {
-          match: parsedPayload.event === "analytics_event",
-        };
-      },
-      callback: async () => {
-        return null;
-      },
-      stopCondition: () => false,
-    });
-  }
-
-  static parseStructuredMessage(messageData: MessageData<any>) {
-    const webSocketMessageData = messageData as MessageData<
-      WebSocketEventData | LongPollingEventData
-    >;
-
-    const parsedPayload: WsParsedMessage | null | string =
-      WsMessageParser.parse(webSocketMessageData.payload.payload);
-
-    if (!isParsedWsMessage(parsedPayload)) return null;
-
-    return parsedPayload;
-  }
+  return parsedPayload;
 }

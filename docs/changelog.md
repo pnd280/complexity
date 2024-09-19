@@ -6,6 +6,18 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.0
+
+_Release date: 19th Sep, 2024_
+
+-   **NEW** | **EXPERIMENTAL**: Auto generate thread title.
+
+-   **IMPROVE**: Better onboarding experience - Added descriptions for all settings.
+-   **IMPROVE**: Redesigned the Focus Selector UI. Now it's more intuitive for new users.
+-   **IMPROVE**: Significantly reduce the chance of being stuck in infinite message generating state.
+
+-   **FIX**: Fixed minor bugs.
+
 ## v0.0.2.0
 
 _Release date: 15th Sep, 2024_

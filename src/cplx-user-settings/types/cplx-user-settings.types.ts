@@ -1,14 +1,14 @@
 import * as z from "zod";
 
-import { WebAccessFocus } from "@/content-script/components/QueryBox";
-import { webAccessFocus } from "@/content-script/components/QueryBox/consts";
+import { FocusMode } from "@/content-script/components/QueryBox";
+import { focusModes } from "@/content-script/components/QueryBox/consts";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
 import packageData from "@@/package.json";
 
-type WebAccessFocusCode = WebAccessFocus["code"];
+type WebAccessFocusCode = FocusMode["code"];
 
 const WebAccessFocusSchema = z.custom<WebAccessFocusCode>((val) => {
-  return webAccessFocus.some((item) => item.code === val);
+  return focusModes.some((item) => item.code === val);
 });
 
 const CanvasLangSchema = z.custom<CanvasLang>((val) => {
@@ -17,8 +17,7 @@ const CanvasLangSchema = z.custom<CanvasLang>((val) => {
 
 export const cplxUserSettingsSchema = z.object({
   schemaVersion: z.literal(packageData.version),
-  defaultFocus: WebAccessFocusSchema.nullable(),
-  defaultWebAccess: z.boolean(),
+  defaultFocusMode: WebAccessFocusSchema.nullable(),
   generalSettings: z.object({
     queryBoxSelectors: z.object({
       focus: z.boolean(),
@@ -38,6 +37,7 @@ export const cplxUserSettingsSchema = z.object({
       blockTelemetry: z.boolean(),
       noFileCreationOnPaste: z.boolean(),
       fileDropableThreadWrapper: z.boolean(),
+      autoGenerateThreadTitle: z.boolean(),
     }),
     visualTweaks: z.object({
       collapseEmptyThreadVisualColumns: z.boolean(),

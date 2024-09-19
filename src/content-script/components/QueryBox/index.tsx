@@ -4,6 +4,7 @@ import { BiNetworkChart } from "react-icons/bi";
 import {
   LuBadgePercent as BadgePercent,
   LuLibrary as Library,
+  LuPencil,
 } from "react-icons/lu";
 import { PiGlobe } from "react-icons/pi";
 import {
@@ -16,7 +17,7 @@ import {
 import {
   imageModels,
   languageModels,
-  webAccessFocus,
+  focusModes,
 } from "@/content-script/components/QueryBox/consts";
 import BlackForestLabs from "@/shared/components/icons/BlackForestLabsIcon";
 import MistralAiIcon from "@/shared/components/icons/MistralAiIcon";
@@ -62,9 +63,10 @@ export const imageModelIcons: Record<ImageModel["code"], ReactNode> = {
   sdxl: <StabilityAiIcon />,
 };
 
-export type WebAccessFocus = (typeof webAccessFocus)[number];
+export type FocusMode = (typeof focusModes)[number];
 
-export const webAccessFocusIcons: Record<WebAccessFocus["code"], ReactNode> = {
+export const focusModeIcons: Record<FocusMode["code"], ReactNode> = {
+  writing: <LuPencil className="tw-size-4" />,
   internet: <PiGlobe className="tw-size-4" />,
   scholar: <Library className="tw-size-4" />,
   wolfram: <BadgePercent className="tw-size-4" />,

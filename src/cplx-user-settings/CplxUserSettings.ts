@@ -12,8 +12,7 @@ export default class CplxUserSettings {
   static defaultUserSettings: CplxUserSettingsType = {
     schemaVersion: packageData.version,
     customTheme: {},
-    defaultFocus: "internet",
-    defaultWebAccess: false,
+    defaultFocusMode: "internet",
     generalSettings: {
       queryBoxSelectors: {
         focus: false,
@@ -33,6 +32,7 @@ export default class CplxUserSettings {
         blockTelemetry: false,
         noFileCreationOnPaste: false,
         fileDropableThreadWrapper: false,
+        autoGenerateThreadTitle: false,
       },
       visualTweaks: {
         collapseEmptyThreadVisualColumns: false,
