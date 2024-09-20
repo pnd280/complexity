@@ -244,6 +244,8 @@ export function whereAmI(providedUrl?: string) {
         return "library";
       case pathname === "/":
         return "home";
+      case hostname.includes("perplexity.ai"):
+        return "same_origin";
       default:
         return "unknown";
     }

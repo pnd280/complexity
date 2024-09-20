@@ -18,34 +18,34 @@ export default function CommonSelectors({
   collection?: boolean;
   languageModel: boolean;
 }) {
+  if (!isReady) {
+    return (
+      <div className="tw-mx-2 tw-flex tw-items-center tw-gap-2">
+        <LoaderCircle className="tw-size-4 tw-animate-spin tw-text-muted-foreground" />
+        <span className="tw-text-xs tw-text-muted-foreground tw-animate-in tw-fade-in tw-slide-in-from-right">
+          Initializing...
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="tw-flex tw-items-center">
-      {isReady ? (
+      {(focus || collection) && (
         <>
-          {(focus || collection) && (
-            <>
-              {focus && <FocusSelector />}
-              {collection && <CollectionSelector />}
-              {hasActivePplxSub && languageModel && (
-                <div className="tw-my-auto tw-flex tw-h-8 tw-items-center">
-                  <Separator
-                    orientation="vertical"
-                    className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-fade-in"
-                  />
-                </div>
-              )}
-            </>
+          {focus && <FocusSelector />}
+          {collection && <CollectionSelector />}
+          {hasActivePplxSub && languageModel && (
+            <div className="tw-my-auto tw-flex tw-h-8 tw-items-center">
+              <Separator
+                orientation="vertical"
+                className="tw-mx-2 !tw-h-[60%] tw-animate-in tw-fade-in"
+              />
+            </div>
           )}
-          {hasActivePplxSub && languageModel && <LanguageModelSelector />}
         </>
-      ) : (
-        <div className="tw-mx-2 tw-flex tw-items-center tw-gap-2">
-          <LoaderCircle className="tw-size-4 tw-animate-spin tw-text-muted-foreground" />
-          <span className="tw-text-xs tw-text-muted-foreground tw-animate-in tw-fade-in tw-slide-in-from-right">
-            Initializing...
-          </span>
-        </div>
       )}
+      {hasActivePplxSub && languageModel && <LanguageModelSelector />}
     </div>
   );
 }

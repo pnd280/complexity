@@ -17,6 +17,7 @@ const CanvasLangSchema = z.custom<CanvasLang>((val) => {
 
 export const cplxUserSettingsSchema = z.object({
   schemaVersion: z.literal(packageData.version),
+  isFirstVisit: z.boolean(),
   defaultFocusMode: WebAccessFocusSchema.nullable(),
   generalSettings: z.object({
     queryBoxSelectors: z.object({

@@ -13,6 +13,18 @@ import { fetchResource, jsonUtils } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class PplxApi {
+  static async fetchAuthSession() {
+    const resp = await fetchResource(
+      "https://www.perplexity.ai/api/auth/session",
+    );
+
+    const data = jsonUtils.safeParse(resp);
+
+    if (data == null) throw new Error("Failed to fetch auth session");
+
+    return data;
+  }
+
   static async fetchUserSettings(): Promise<UserSettingsApiResponse> {
     // Fallback: https://www.perplexity.ai/rest/user/settings
 

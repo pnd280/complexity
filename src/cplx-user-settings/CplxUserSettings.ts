@@ -11,6 +11,7 @@ import packageData from "@@/package.json";
 export default class CplxUserSettings {
   static defaultUserSettings: CplxUserSettingsType = {
     schemaVersion: packageData.version,
+    isFirstVisit: true,
     customTheme: {},
     defaultFocusMode: "internet",
     generalSettings: {

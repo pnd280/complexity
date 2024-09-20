@@ -65,8 +65,8 @@ describe("whereAmI", () => {
     expect(whereAmI("https://www.perplexity.ai/")).toBe("home");
   });
 
-  it('should return "unknown" for unrecognized paths on perplexity.ai', () => {
-    expect(whereAmI("https://www.perplexity.ai/settings")).toBe("unknown");
+  it('should return "same_origin" for unrecognized paths on perplexity.ai', () => {
+    expect(whereAmI("https://www.perplexity.ai/settings")).toBe("same_origin");
   });
 
   it('should return "unknown" for non-perplexity.ai URLs', () => {

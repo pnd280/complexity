@@ -1,10 +1,6 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { useEffect } from "react";
 
-import {
-  globalStore,
-  useGlobalStore,
-} from "@/content-script/session-store/global";
+import usePplxAuth from "@/content-script/hooks/usePplxAuth";
 import PplxApi from "@/services/PplxApi";
 import { UserSettingsApiResponse } from "@/types/pplx-api.types";
 
@@ -14,7 +10,7 @@ export default function useFetchUserSettings({
   UseQueryOptions<UserSettingsApiResponse>,
   "queryKey" | "queryFn" | "enabled"
 > = {}) {
-  const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
+  const { isLoggedIn } = usePplxAuth();
 
   const query = useQuery({
     queryKey: ["userSettings"],
@@ -34,21 +30,6 @@ export default function useFetchUserSettings({
     enabled: isLoggedIn,
     ...props,
   });
-
-  const { data } = query;
-
-  useEffect(() => {
-    if (!data) return;
-
-    const localIsLoggedIn =
-      data.subscriptionStatus != null && data.queryCount > 0;
-
-    if (!localIsLoggedIn) {
-      console.log("Not logged in, disabling auto-refetch user settings");
-    }
-
-    globalStore.setState({ isLoggedIn: localIsLoggedIn });
-  }, [data, isLoggedIn]);
 
   return query;
 }

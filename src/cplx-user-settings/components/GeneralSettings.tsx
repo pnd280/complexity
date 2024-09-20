@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import generalSettings, {
@@ -11,6 +12,7 @@ import {
 import Separator from "@/shared/components/Separator";
 import Switch from "@/shared/components/Switch";
 import Tooltip from "@/shared/components/Tooltip";
+import useCplxUserSettings from "@/shared/hooks/useCplxUserSettings";
 import { cn } from "@/utils/cn";
 import { compareVersions } from "@/utils/utils";
 import packageData from "@@/package.json";
@@ -22,16 +24,80 @@ export default function GeneralSettings({
 }: {
   context?: "popup" | "in-page";
 }) {
+  const { data, mutation } = useCplxUserSettings();
+
+  const isAllSettingsEnabled = useMemo(() => {
+    const settings = data.data?.generalSettings;
+
+    if (!settings) return false;
+
+    const settingsKey = Object.keys(
+      settings,
+    ) as (keyof CplxUserSettings["generalSettings"])[];
+
+    return settingsKey.every((key) => {
+      return Object.keys(settings[key]).every((subKey) => {
+        const subSettingsKey =
+          subKey as keyof CplxUserSettings["generalSettings"][keyof CplxUserSettings["generalSettings"]];
+
+        if (typeof settings[key][subSettingsKey] !== "boolean") {
+          return true;
+        }
+
+        return settings[key][subSettingsKey];
+      });
+    });
+  }, [data.data?.generalSettings]);
+
   return (
     <main className="tw-h-full tw-w-full tw-flex-col tw-bg-background tw-font-sans !tw-text-[1em] tw-text-foreground">
       <div>
         <div className="tw-mb-4 tw-flex tw-flex-col tw-gap-4">
           <div className="tw-flex tw-flex-col tw-gap-2">
+            <div className="tw-mr-4 tw-mt-4 tw-flex tw-items-center tw-justify-end">
+              <Switch
+                checked={isAllSettingsEnabled}
+                textLabel="Toggle All Settings"
+                onCheckedChange={async ({ checked }) => {
+                  mutation.mutate((draft) => {
+                    Object.keys(draft.generalSettings).forEach((key) => {
+                      const settingsKey =
+                        key as keyof CplxUserSettings["generalSettings"];
+
+                      Object.keys(draft.generalSettings[settingsKey]).forEach(
+                        (subKey) => {
+                          const subSettingsKey =
+                            subKey as keyof CplxUserSettings["generalSettings"][keyof CplxUserSettings["generalSettings"]];
+
+                          if (
+                            typeof draft.generalSettings[settingsKey][
+                              subSettingsKey
+                            ] !== "boolean"
+                          ) {
+                            return;
+                          }
+
+                          console.log(
+                            draft.generalSettings[settingsKey][subSettingsKey],
+                          );
+
+                          (draft.generalSettings[settingsKey][
+                            subSettingsKey
+                          ] as boolean) = checked;
+                        },
+                      );
+                    });
+                  });
+                }}
+              />
+            </div>
+
             <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
               Query box Selectors
             </div>
             <Separator />
             <SettingGroup
+              key={isAllSettingsEnabled.toString()}
               settings={queryBoxSelectors}
               settingStoreKey="queryBoxSelectors"
             />
@@ -41,7 +107,11 @@ export default function GeneralSettings({
               QoL tweaks
             </div>
             <Separator />
-            <SettingGroup settings={qolTweaks} settingStoreKey="qolTweaks" />
+            <SettingGroup
+              key={isAllSettingsEnabled.toString()}
+              settings={qolTweaks}
+              settingStoreKey="qolTweaks"
+            />
           </div>
           <div className="tw-flex tw-flex-col tw-gap-2">
             <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
@@ -49,6 +119,7 @@ export default function GeneralSettings({
             </div>
             <Separator />
             <SettingGroup
+              key={isAllSettingsEnabled.toString()}
               settings={visualTweaks}
               settingStoreKey="visualTweaks"
             />
