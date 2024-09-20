@@ -6,6 +6,16 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.1
+
+_Release date: 20th Sep, 2024_
+
+-   **NEW**: Toggle All Settings button.
+
+-   **IMPROVE**: The floating Settings button will now be highlighted for first-time users.
+
+-   **FIX**: Fixed a bug where the Collection selector is not showing for free users.
+
 ## v0.0.3.0
 
 _Release date: 19th Sep, 2024_

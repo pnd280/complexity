@@ -6,7 +6,7 @@ import useCplxUserSettings from "@/shared/hooks/useCplxUserSettings";
 export default function useCplxGeneralSettings() {
   const {
     data: { data: settings },
-    mutation: { mutate: updateSettings },
+    mutation: { mutateAsync: updateSettings },
   } = useCplxUserSettings();
 
   const generalSettings = settings?.generalSettings;
@@ -19,7 +19,7 @@ export default function useCplxGeneralSettings() {
   ) => {
     if (!generalSettings) return;
 
-    updateSettings((draft) => {
+    return await updateSettings((draft) => {
       draft.generalSettings[section] = produce(
         draft.generalSettings[section],
         updater,

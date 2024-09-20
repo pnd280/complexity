@@ -1,5 +1,5 @@
 import { Tooltip as ArkTooltip, Portal } from "@ark-ui/react";
-import { ElementRef, FC, forwardRef, ReactNode } from "react";
+import React, { ElementRef, FC, forwardRef, ReactNode } from "react";
 
 import { cn } from "@/utils/cn";
 
@@ -20,10 +20,12 @@ TooltipTrigger.displayName = "TooltipTrigger";
 
 const TooltipContent = forwardRef<
   ElementRef<typeof ArkTooltip.Content>,
-  ArkTooltip.ContentProps
->(({ className, ...props }, ref) => {
+  ArkTooltip.ContentProps & { portal?: boolean }
+>(({ className, portal, ...props }, ref) => {
+  const Comp = portal ? Portal : React.Fragment;
+
   return (
-    <Portal>
+    <Comp>
       <ArkTooltip.Positioner>
         <ArkTooltip.Content
           ref={ref}
@@ -39,7 +41,7 @@ const TooltipContent = forwardRef<
           {...props}
         />
       </ArkTooltip.Positioner>
-    </Portal>
+    </Comp>
   );
 });
 
@@ -53,6 +55,8 @@ export type TooltipProps = {
   content: ReactNode;
   className?: string;
   positioning?: ArkTooltip.RootProps["positioning"];
+  defaultOpen?: boolean;
+  portal?: boolean;
 };
 
 export default function Tooltip({
@@ -60,6 +64,8 @@ export default function Tooltip({
   disabled,
   content,
   positioning,
+  defaultOpen,
+  portal = true,
 }: TooltipProps) {
   return (
     <TooltipRoot
@@ -71,12 +77,13 @@ export default function Tooltip({
         ...positioning,
       }}
       disabled={disabled}
+      defaultOpen={defaultOpen}
     >
       <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
         <span>{children}</span>
       </TooltipTrigger>
       {!(typeof content === "string" && content.length === 0) && (
-        <TooltipContent asChild>
+        <TooltipContent asChild portal={portal}>
           <div>{content}</div>
         </TooltipContent>
       )}

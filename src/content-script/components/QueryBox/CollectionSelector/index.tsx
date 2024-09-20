@@ -6,8 +6,8 @@ import { CollectionSelectorPopoverContent } from "@/content-script/components/Qu
 import CollectionSelectorPopoverTrigger from "@/content-script/components/QueryBox/CollectionSelector/PopoverTrigger";
 import UserProfileEditDialog from "@/content-script/components/QueryBox/CollectionSelector/UserProfileEditDialog";
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
+import usePplxAuth from "@/content-script/hooks/usePplxAuth";
 import useRouter from "@/content-script/hooks/useRouter";
-import { useGlobalStore } from "@/content-script/session-store/global";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import { Popover, PopoverContext } from "@/shared/components/Popover";
 import { Collection } from "@/types/collection.types";
@@ -17,7 +17,7 @@ import { whereAmI } from "@/utils/utils";
 export default function CollectionSelector() {
   const { url } = useRouter();
 
-  const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
+  const { isLoggedIn } = usePplxAuth();
 
   const { data: collections } = useFetchCollections();
 

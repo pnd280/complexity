@@ -4,7 +4,7 @@ import { LanguageModel } from "@/content-script/components/QueryBox";
 import { Collection } from "@/types/collection.types";
 import { UserAiProfile } from "@/types/user-ai-profile";
 
-export type SubscriptionStatus = "active" | "trialing";
+export type SubscriptionStatus = "active" | "trialing" | "none";
 
 export type UserSettingsApiResponse = {
   hasAiProfile: boolean;
@@ -24,7 +24,7 @@ export const UserSettingsApiResponseRawSchema = z.object({
   default_copilot: z.boolean().nullable(),
   default_model: z.string(),
   default_image_generation_model: z.string(),
-  subscription_status: z.enum(["active", "trialing"]).optional(),
+  subscription_status: z.enum(["active", "trialing", "none"]).optional(),
   gpt4_limit: z.number(),
   opus_limit: z.number(),
   o1_limit: z.number(),
