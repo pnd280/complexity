@@ -63,7 +63,6 @@ export default function ImageModelSelector() {
               key={model.code}
               item={model.code}
               onClick={(e) => {
-                e.preventDefault();
                 e.stopPropagation();
               }}
             >
