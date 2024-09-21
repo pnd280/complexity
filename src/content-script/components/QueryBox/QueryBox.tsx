@@ -1,18 +1,14 @@
-
-
 import CommonSelectors from "@/content-script/components/QueryBox/CommonSelectors";
 import ImageModelSelector from "@/content-script/components/QueryBox/ImageModelSelector";
 import useFetchUserSettings from "@/content-script/hooks/useFetchUserSettings";
+import { useInit } from "@/content-script/hooks/useInit";
 import useInitQueryBoxSessionStore from "@/content-script/hooks/useInitQueryBoxSessionStore";
 import useQueryBoxObserver from "@/content-script/hooks/useQueryBoxObserver";
-import { useGlobalStore } from "@/content-script/session-store/global";
 import useCplxGeneralSettings from "@/cplx-user-settings/hooks/useCplxGeneralSettings";
 import Portal from "@/shared/components/Portal";
 
 export default function QueryBox() {
-  const isWebSocketCaptured = useGlobalStore(
-    (state) => state.isWebSocketCaptured,
-  );
+  const { isWebSocketCaptured } = useInit();
 
   const { settings } = useCplxGeneralSettings();
 

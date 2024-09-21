@@ -1,5 +1,3 @@
-
-
 import { LuRefreshCcw as RefreshCcw } from "react-icons/lu";
 
 import {
@@ -60,7 +58,8 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         .children()
         .find(DomSelectors.THREAD.MESSAGE.BOTTOM_BAR_CHILD.REWRITE_BUTTON);
 
-      if (!$rewriteButton.length) return;
+      if (!$rewriteButton.length)
+        return console.log("Rewrite button not found.");
 
       $rewriteButton.trigger("click");
 
@@ -82,11 +81,11 @@ export default function RewriteDropdown({ container }: RewriteDropdownProps) {
         });
 
         if (viewportWidth < 768) {
-          const buttonSelector = `${DomSelectors.THREAD.POPPER.MOBILE} .divide-y > div:nth-child(${proSearch ? 1 : 2})`;
+          const buttonSelector = `${DomSelectors.THREAD.POPPER.MOBILE} .divide-y > div >div:nth-child(${proSearch ? 1 : 2})`;
 
           $(buttonSelector).children().last().trigger("click");
         } else {
-          const buttonSelector = `${DomSelectors.THREAD.POPPER.DESKTOP} > div > div > div:nth-child(${proSearch ? 2 : 3})`;
+          const buttonSelector = `${DomSelectors.THREAD.POPPER.DESKTOP} > div > div > div:nth-child(2) > div:nth-child(${proSearch ? 1 : 2})`;
 
           $(buttonSelector).children().last().trigger("click");
         }

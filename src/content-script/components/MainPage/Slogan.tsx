@@ -1,8 +1,7 @@
 import { useDebounce, useToggle } from "@uidotdev/usehooks";
 
-
+import { useInit } from "@/content-script/hooks/useInit";
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
-import { useGlobalStore } from "@/content-script/session-store/global";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Portal from "@/shared/components/Portal";
 import { cn } from "@/utils/cn";
@@ -12,12 +11,9 @@ import { isDomNode } from "@/utils/utils";
 export default function Slogan() {
   const [container, setContainer] = useState<HTMLElement>();
 
-  const isReady = useDebounce(
-    useGlobalStore((state) => state.isWebSocketCaptured),
-    1000,
-  );
+  const { isWebSocketCaptured } = useDebounce(useInit(), 1000);
 
-  const [visible, toggleVisibility] = useToggle(!isReady);
+  const [visible, toggleVisibility] = useToggle(!isWebSocketCaptured);
 
   const slogan =
     CplxUserSettings.get().customTheme.slogan || "Where knowledge begins";
@@ -57,11 +53,11 @@ export default function Slogan() {
           "tw-absolute -tw-top-[2rem] tw-left-1/2 tw-hidden tw-w-fit -tw-translate-x-1/2 tw-select-none tw-items-center tw-justify-center tw-gap-1 tw-font-sans tw-text-[.8rem] tw-text-accent-foreground tw-transition-all tw-duration-300 tw-animate-in tw-fade-in md:tw-flex",
           {
             "tw-animate-out tw-fade-out tw-zoom-out tw-slide-out-to-top tw-fill-mode-forwards":
-              isReady,
+              isWebSocketCaptured,
           },
         )}
         onAnimationEnd={() => {
-          if (isReady) {
+          if (isWebSocketCaptured) {
             toggleVisibility(false);
           }
         }}

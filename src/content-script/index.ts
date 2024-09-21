@@ -5,7 +5,6 @@ import "@/assets/canvas.css";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
-import WebpageMessageListeners from "@/content-script/main-world/WebpageMessageListeners";
 import ReactRoot from "@/content-script/ReactRoot";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiTweaks from "@/utils/UiTweaks";
@@ -84,9 +83,6 @@ async function initMainWorldDeps() {
 }
 
 function initTrafficInterceptors() {
-  WebpageMessageListeners.onWebSocketCaptured();
-  WebpageMessageListeners.onInternalWebSocketInitialized();
-
   WebpageMessageInterceptor.updateQueryLimits();
   WebpageMessageInterceptor.alterQueries();
   WebpageMessageInterceptor.blockTelemetry();
