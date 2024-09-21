@@ -1,5 +1,3 @@
-
-
 import { LanguageModel } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { mainWorldExec, mainWorldOnly } from "@/utils/hof";
