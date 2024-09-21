@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import { PiNotePencil } from "react-icons/pi";
 import { Updater } from "use-immer";
 

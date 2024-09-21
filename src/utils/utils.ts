@@ -1,5 +1,4 @@
 import DomPurify from "dompurify";
-import $ from "jquery";
 import showdown from "showdown";
 
 import BackgroundScript from "@/utils/BackgroundScript";

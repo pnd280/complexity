@@ -1,6 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import $ from "jquery";
-import { useCallback } from "react";
 import { FaMarkdown } from "react-icons/fa";
 import {
   LuCheck as Check,

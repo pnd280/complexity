@@ -1,5 +1,5 @@
 import { useToggle } from "@uidotdev/usehooks";
-import { useEffect, useState } from "react";
+
 
 import CollectionEditDialog from "@/content-script/components/QueryBox/CollectionSelector/CollectionEditDialog";
 import { CollectionSelectorPopoverContent } from "@/content-script/components/QueryBox/CollectionSelector/PopoverContent";

@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import { LuLoader2 as LoaderCircle } from "react-icons/lu";
 
 import CanvasRenderButton from "@/content-script/components/CustomMarkdownBlock/CanvasRenderButton";

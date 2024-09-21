@@ -39,8 +39,11 @@ export function CollectionSelectorPopoverContent({
   setEditCollection,
   setOpen,
 }: CollectionSelectorPopoverContentProps) {
-  const { data: collections, isLoading: isLoadingCollections } =
-    useFetchCollections();
+  const {
+    data: collections,
+    isLoading: isLoadingCollections,
+    isPending: isPendingCollections,
+  } = useFetchCollections();
 
   return (
     <PopoverContent className="!tw-w-max !tw-p-0 tw-shadow-md">
@@ -82,7 +85,7 @@ export function CollectionSelectorPopoverContent({
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Collections">
-            {isLoadingCollections && (
+            {(isLoadingCollections || isPendingCollections) && (
               <div className="tw-my-4 tw-flex tw-items-center tw-justify-center tw-gap-2">
                 <LoaderCircle className="tw-size-4 tw-animate-spin" />
                 <span>Loading...</span>

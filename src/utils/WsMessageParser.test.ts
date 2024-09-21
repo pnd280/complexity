@@ -10,7 +10,7 @@ import {
   opus50RateLimitMessage,
   longerMessageNoEvent,
   messageNoEventDataAsArray,
-} from "@@/tests/mocks/ws-messages";
+} from "~/tests/mocks/ws-messages";
 
 describe("WsMessageParser", () => {
   describe("parse method", () => {

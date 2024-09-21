@@ -8,7 +8,7 @@ import {
   exportedThreadWithCitations,
   exportedThreadWithoutCitations,
   normalThreadApiResponse,
-} from "@@/tests/mocks/thread";
+} from "~/tests/mocks/thread";
 
 describe("ThreadExport", () => {
   describe("exportThread method", () => {

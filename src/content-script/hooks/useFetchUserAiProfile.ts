@@ -5,7 +5,6 @@ import { useGlobalStore } from "@/content-script/session-store/global";
 import PplxApi from "@/services/PplxApi";
 import { UserAiProfileApiResponse } from "@/types/pplx-api.types";
 
-
 export default function useFetchUserAiProfile({
   ...props
 }: Omit<
@@ -13,7 +12,10 @@ export default function useFetchUserAiProfile({
   "queryKey" | "queryFn"
 > = {}) {
   const { isLoggedIn } = usePplxAuth();
-  const isReady = useGlobalStore((state) => state.isWebSocketCaptured);
+  const isReady = useGlobalStore(
+    ({ internalWebSocketInitialized, isWebSocketCaptured }) =>
+      isWebSocketCaptured && internalWebSocketInitialized,
+  );
 
   return useQuery<UserAiProfileApiResponse>({
     queryKey: ["userAiProfile"],

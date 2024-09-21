@@ -3,9 +3,8 @@ import {
   useWindowScroll,
   useWindowSize,
 } from "@uidotdev/usehooks";
-import $ from "jquery";
 import { throttle } from "lodash-es";
-import { useCallback, useEffect, useRef, useState } from "react";
+
 
 import { AnchorProps } from "@/content-script/components/ThreadToc";
 import useRouter from "@/content-script/hooks/useRouter";

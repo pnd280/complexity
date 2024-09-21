@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import { debounce } from "lodash-es";
 import {
   useCallback,

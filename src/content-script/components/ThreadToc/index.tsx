@@ -1,6 +1,5 @@
 import { useToggle } from "@uidotdev/usehooks";
-import $ from "jquery";
-import { useEffect, useState } from "react";
+
 
 import FloatingTrigger from "@/content-script/components/ThreadToc/FloatingToggle";
 import Panel from "@/content-script/components/ThreadToc/Panel";

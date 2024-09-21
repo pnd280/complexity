@@ -1,5 +1,4 @@
 import { useToggle } from "@uidotdev/usehooks";
-import { useEffect, useRef, useState } from "react";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import CplxUserSettingsComp from "@/cplx-user-settings/components/CplxUserSettings";

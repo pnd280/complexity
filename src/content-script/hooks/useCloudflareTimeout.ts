@@ -1,6 +1,5 @@
 import { QueryObserver } from "@tanstack/react-query";
-import $ from "jquery";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
 
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import { toast } from "@/shared/toast";

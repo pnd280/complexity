@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import { FaEllipsis as Ellipsis } from "react-icons/fa6";
 import {
   LuListOrdered as ListOrdered,

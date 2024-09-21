@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
 

@@ -133,7 +133,10 @@ class WsHook {
       }
     }
 
-    if (instance instanceof XMLHttpRequest) {
+    if (
+      instance instanceof XMLHttpRequest &&
+      instance.responseURL.includes("sid")
+    ) {
       const url = instance.responseURL;
       if (url) {
         return sendLongPollingRequest(url, data);
@@ -387,6 +390,12 @@ export class InternalWsInstance {
       const socket = io("wss://www.perplexity.ai", {
         transports: ["websocket"],
       }).io.engine;
+
+      socket.on("open", () => {
+        webpageMessenger.sendMessage({
+          event: "internalWebSocketInitialized",
+        });
+      });
 
       socket.on("message", (message) => {
         webpageMessenger.sendMessage({

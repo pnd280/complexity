@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import CplxApi from "@/services/CplxApi";
 import { compareVersions } from "@/utils/utils";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 export default function useExtensionUpdate({
   forceFetchChangelog,

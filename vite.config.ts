@@ -7,6 +7,7 @@ import { defineConfig } from "vite";
 // @ts-ignore
 import manifest from "./src/manifest";
 
+import Unimport from "unimport/unplugin";
 import vitePluginRunCommandOnDemand from "./vite-plugins/vite-plugin-run-command-on-demand";
 import viteTouchGlobalCss from "./vite-plugins/vite-plugin-touch-global-css";
 
@@ -29,6 +30,34 @@ export default defineConfig(() => {
     plugins: [
       crx({ manifest }),
       react(),
+      Unimport.vite({
+        dts: true,
+        presets: [
+          "react",
+          {
+            from: "react",
+            imports: [
+              "lazy",
+              "forwardRef",
+              "createContext",
+              "useDeferredValue",
+            ],
+          },
+        ],
+        imports: [
+          {
+            name: "default",
+            as: "$",
+            from: "jquery",
+          },
+          {
+            name: "cn",
+            from: path.posix.join(
+              ...path.resolve(__dirname, "src/utils/cn.ts").split(path.sep),
+            ),
+          },
+        ],
+      }),
       viteTouchGlobalCss({
         cssFilePath: path.resolve(__dirname, "src/assets/index.tw.css"),
         watchFiles: [
@@ -52,7 +81,7 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
-        "@@": path.resolve(__dirname, "./"),
+        "~": path.resolve(__dirname, "./"),
       },
     },
   };

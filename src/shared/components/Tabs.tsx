@@ -1,5 +1,5 @@
 import { Tabs as ArkTabs, useTabsContext } from "@ark-ui/react";
-import { ElementRef, forwardRef } from "react";
+import { ElementRef } from "react";
 
 import { cn } from "@/utils/cn";
 

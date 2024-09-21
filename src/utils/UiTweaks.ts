@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Canvas from "@/utils/Canvas";

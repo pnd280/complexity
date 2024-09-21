@@ -1,5 +1,4 @@
 import { Portal as ArkPortal } from "@ark-ui/react";
-import $ from "jquery";
 import React from "react";
 
 type PortalProps = {

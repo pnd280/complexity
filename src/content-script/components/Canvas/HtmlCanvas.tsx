@@ -1,5 +1,3 @@
-import $ from "jquery";
-import { useCallback, useEffect } from "react";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";

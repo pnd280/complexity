@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import Portal from "@/shared/components/Portal";

@@ -1,5 +1,3 @@
-import $ from "jquery";
-import { useCallback, useEffect } from "react";
 import { LuRefreshCcw as RefreshCcw } from "react-icons/lu";
 
 import { mermaidContentScript } from "@/content-script/main-world/canvas/mermaid";

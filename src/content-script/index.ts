@@ -3,8 +3,6 @@ import "@/assets/overrides.css";
 import "@/assets/components.css";
 import "@/assets/canvas.css";
 
-import $ from "jquery";
-
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import WebpageMessageListeners from "@/content-script/main-world/WebpageMessageListeners";
@@ -17,7 +15,7 @@ import {
   whereAmI,
 } from "@/utils/utils";
 import UxTweaks from "@/utils/UxTweaks";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 import htmlCanvas from "@/content-script/main-world/canvas/html?script&module";
 import mermaidCanvas from "@/content-script/main-world/canvas/mermaid?script&module";
@@ -87,6 +85,7 @@ async function initMainWorldDeps() {
 
 function initTrafficInterceptors() {
   WebpageMessageListeners.onWebSocketCaptured();
+  WebpageMessageListeners.onInternalWebSocketInitialized();
 
   WebpageMessageInterceptor.updateQueryLimits();
   WebpageMessageInterceptor.alterQueries();

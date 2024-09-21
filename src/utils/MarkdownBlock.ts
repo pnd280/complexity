@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import { ReactNodeActionReturnType } from "@/content-script/main-world/react-node";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
@@ -268,7 +268,7 @@ export default class MarkdownBlockUtils {
   }
 
   static async highlightNativelyUnsupportedLang(pre: HTMLElement) {
-    const supportedLangs = ["gdscript", "blade"];
+    const supportedLangs = ["gdscript", "blade", "vue"];
 
     if ($(pre).attr("data-mask") === "true" || $(pre).attr("data-highlighted"))
       return true;

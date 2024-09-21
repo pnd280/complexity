@@ -27,7 +27,6 @@ export default class WsMessageParser {
     data = jsonUtils.safeParse(jsonString);
 
     if (!Array.isArray(data)) {
-      console.error("Parsed data is not in the expected format");
       return null;
     }
 

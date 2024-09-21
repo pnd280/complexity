@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { MessageData } from "@/types/webpage-messenger.types";
@@ -157,7 +157,6 @@ class Router {
 
       const interval = setInterval(() => {
         if (condition()) {
-          console.log("condition met");
           clearInterval(interval);
 
           return resolve();

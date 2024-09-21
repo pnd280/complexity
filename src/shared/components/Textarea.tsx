@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, ReactNode, forwardRef } from "react";
+import { ReactNode, TextareaHTMLAttributes } from "react";
 
 import { cn } from "@/utils/cn";
 

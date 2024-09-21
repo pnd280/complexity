@@ -1,5 +1,3 @@
-import $ from "jquery";
-import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LuBookOpen as BookOpenText,
   LuCompass as Compass,
