@@ -78,10 +78,6 @@ class WsHook {
 
     this.longPollingInstance = instance;
 
-    webpageMessenger.sendMessage({
-      event: "webSocketCaptured",
-    });
-
     window.capturedSocket = this.getActiveInstance();
     window.longPollingInstance = this.getLongPollingInstance();
   }
@@ -351,18 +347,16 @@ class WsHook {
     const self = this;
 
     WebSocket.prototype.send = function (data: any): void {
-      webpageMessenger.sendMessage({
-        event: "webSocketEvent",
-        payload: { event: "send", payload: data },
-      });
+      if (!this.url.includes("src=complexity")) {
+        //! important: must restore the original send method BEFORE capturing the instance
+        WebSocket.prototype.send = self.webSocketOriginalSend;
 
-      WebSocket.prototype.send = self.webSocketOriginalSend;
-
-      self.setWebSocketInstance(this);
-
-      webpageMessenger.sendMessage({
-        event: "webSocketCaptured",
-      });
+        self.setWebSocketInstance(this);
+        webpageMessenger.sendMessage({
+          event: "webSocketEvent",
+          payload: { event: "send", payload: data },
+        });
+      }
 
       // @ts-expect-error
       return self.webSocketOriginalSend.apply(this, arguments);
@@ -387,20 +381,18 @@ export class InternalWsInstance {
 
   private handShake(): Socket["io"]["engine"] | null {
     try {
-      const socket = io("wss://www.perplexity.ai", {
+      const socket = io("wss://www.perplexity.ai/?src=complexity", {
         transports: ["websocket"],
       }).io.engine;
-
-      socket.on("open", () => {
-        webpageMessenger.sendMessage({
-          event: "internalWebSocketInitialized",
-        });
-      });
 
       socket.on("message", (message) => {
         webpageMessenger.sendMessage({
           event: "webSocketEvent",
-          payload: { event: "message", payload: "4" + message },
+          payload: {
+            event: "message",
+            payload: "4" + message,
+            isInternal: true,
+          },
         });
       });
 
@@ -428,23 +420,24 @@ export class InternalWsInstance {
 }
 
 mainWorldExec(() => {
-  WsHook.getInstance().initialize();
+  const wsInstance = WsHook.getInstance();
+  const ownWsInstance = InternalWsInstance.getInstance();
 
-  let isSendMessageListenerRegistered = false;
+  wsInstance.initialize();
 
-  webpageMessenger.onMessage("webSocketCaptured", async () => {
-    const ownWsInstance = InternalWsInstance.getInstance();
+  webpageMessenger.onMessage("sendWebSocketMessage", async (data) => {
+    if (ownWsInstance.getSocket()?.readyState === "open") {
+      ownWsInstance.sendMessage(data.payload.slice(1)); // trim the message prefix
+    } else {
+      WsHook.getInstance().sendWebSocketMessage(data.payload, false);
+    }
+  });
 
-    if (isSendMessageListenerRegistered) return;
+  webpageMessenger.onMessage("isWebSocketCaptured", async () => {
+    return wsInstance.getWebSocketInstance()?.readyState === 1;
+  });
 
-    webpageMessenger.onMessage("sendWebSocketMessage", async (data) => {
-      if (ownWsInstance.getSocket()?.readyState === "open") {
-        ownWsInstance.sendMessage(data.payload.slice(1)); // trim the message prefix
-      } else {
-        WsHook.getInstance().sendWebSocketMessage(data.payload, false);
-      }
-    });
-
-    isSendMessageListenerRegistered = true;
+  webpageMessenger.onMessage("isInternalWebSocketInitialized", async () => {
+    return ownWsInstance.getSocket()?.readyState === "open";
   });
 })();

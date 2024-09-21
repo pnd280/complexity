@@ -1,7 +1,7 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
+import { useInit } from "@/content-script/hooks/useInit";
 import usePplxAuth from "@/content-script/hooks/usePplxAuth";
-import { useGlobalStore } from "@/content-script/session-store/global";
 import PplxApi from "@/services/PplxApi";
 import { UserAiProfileApiResponse } from "@/types/pplx-api.types";
 
@@ -12,15 +12,13 @@ export default function useFetchUserAiProfile({
   "queryKey" | "queryFn"
 > = {}) {
   const { isLoggedIn } = usePplxAuth();
-  const isReady = useGlobalStore(
-    ({ internalWebSocketInitialized, isWebSocketCaptured }) =>
-      isWebSocketCaptured && internalWebSocketInitialized,
-  );
+  const { isWebSocketCaptured, isInternalWebSocketInitialized } = useInit();
 
   return useQuery<UserAiProfileApiResponse>({
     queryKey: ["userAiProfile"],
     queryFn: PplxApi.fetchUserAiProfile,
-    enabled: isReady && isLoggedIn,
+    enabled:
+      isWebSocketCaptured && isInternalWebSocketInitialized && isLoggedIn,
     ...props,
   });
 }

@@ -1,5 +1,3 @@
-
-
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { MessageData } from "@/types/webpage-messenger.types";
 import { RouterEvent } from "@/types/ws.types";

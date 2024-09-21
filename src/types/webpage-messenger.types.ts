@@ -45,6 +45,7 @@ export type MessageListener = <K extends keyof EventHandlers>(
 ) => void;
 
 export type WebSocketEventData = {
+  isInternal?: boolean;
   event: "send" | "open" | "message" | "close";
   payload: any;
 };
@@ -86,8 +87,8 @@ export interface EventHandlers {
   sendWebSocketMessage(data: string): void;
   webSocketEvent(data: WebSocketEventData): WebSocketEventData["payload"];
   longPollingEvent(data: LongPollingEventData): LongPollingEventData["payload"];
-  webSocketCaptured(): void;
-  internalWebSocketInitialized(): void;
+  isWebSocketCaptured(): boolean;
+  isInternalWebSocketInitialized(): boolean;
   getActiveWebSocketType(): Nullable<"WebSocket" | "Long-polling">;
   webSocketError(data: Event): void;
 

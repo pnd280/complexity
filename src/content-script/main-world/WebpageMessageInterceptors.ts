@@ -1,5 +1,3 @@
-
-
 import { LanguageModel, FocusMode } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
@@ -16,7 +14,11 @@ import {
   MessageData,
   WebSocketEventData,
 } from "@/types/webpage-messenger.types";
-import { isParsedWsMessage, WsParsedMessage } from "@/types/ws.types";
+import {
+  isParsedWsMessage,
+  isWebSocketEventData,
+  WsParsedMessage,
+} from "@/types/ws.types";
 import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
 import { queryClient } from "@/utils/ts-query-query-client";
 import UiUtils from "@/utils/UiUtils";
@@ -29,7 +31,7 @@ export default class WebpageMessageInterceptor {
       matchCondition: (messageData: MessageData<any>) => {
         const parsedPayload = parseStructuredMessage(messageData);
 
-        if (!isParsedWsMessage(parsedPayload)) return { match: false };
+        if (!parsedPayload) return { match: false };
 
         return {
           match:
@@ -270,49 +272,68 @@ export default class WebpageMessageInterceptor {
   }
 
   static autoRenameThread() {
+    const prompt = `
+# IDENTITY and PURPOSE
+
+You are an expert content summarizer. Your task is to generate a concise, one-line title that captures the essence of the provided text.
+
+## STEPS
+
+- Synthesize your understanding of the text into a single title consisting of 3-10 words, optionally starting with an emoji.
+- Ensure the title is straightforward and easy to comprehend.
+- The title should reflect the main topic, task, or purpose of the text.
+
+## OUTPUT INSTRUCTIONS
+
+- Provide the title in plain text without any special characters or Markdown formatting.
+- Respond strictly with the title; do not include any additional text or context.
+- The title must be in the same language as the original text.
+
+## THE TEXT:
+`;
+
     if (
       !CplxUserSettings.get().generalSettings.qolTweaks.autoGenerateThreadTitle
     )
       return;
 
     webpageMessenger.addInterceptor({
-      matchCondition: (messageData: MessageData<any>) => {
+      matchCondition: (messageData: MessageData<unknown>) => {
+        if (!isWebSocketEventData(messageData)) return { match: false };
+
+        if (messageData.payload.isInternal) {
+          return { match: false };
+        }
+
         const parsedPayload = parseStructuredMessage(messageData);
 
-        if (!isParsedWsMessage(parsedPayload)) return { match: false };
+        if (!parsedPayload) return { match: false };
+
+        if (parsedPayload.data[0]?.length < 1) return { match: false };
+
+        const { status, query_str, privacy_state } = parsedPayload.data[0];
+
+        if (status !== "completed" || privacy_state === "INCOGNITO")
+          return { match: false };
+
+        if (query_str == null) return { match: false };
 
         return {
-          match:
-            parsedPayload.event === "get_rate_limit" ||
-            parsedPayload.event === "get_opus_rate_limit",
+          match: true,
+          args: [
+            {
+              queryStr: query_str,
+            },
+          ],
         };
       },
-      callback: async (messageData) => {
+      callback: async (messageData, args) => {
         if (whereAmI() !== "thread") return messageData;
 
         if ($(DomHelperSelectors.THREAD.MESSAGE.BLOCK).length > 1)
           return messageData;
 
-        const threadTitle = $("h1").text().trim().slice(0, 1000);
-        const queryStr = `# IDENTITY and PURPOSE
-
-You are an expert content summarizer. You take a text and generate a simple and succinct one line title based on this text. Your title should be concise and capture the essence of the text.
-
-# STEPS
-
-- Combine all of your understanding of the text into a single, 3-10 word title, with an optional emoji at the beginning.
-- Make sure the title is simple and easy to understand.
-
-# OUTPUT INSTRUCTIONS
-
-- Output the title in plain text. Do not use any special characters or Markdown. This is very important.
-- Do not output anything else. Strictly answer with only title and no other text.
-- The title should be in the same language as the text.
-- Do not provide any additional information or context. Just the title.
-
-# THE TEXT
-
-${threadTitle}`;
+        const queryStr = args[0].queryStr;
 
         webpageMessenger.sendMessage({
           event: "sendWebSocketMessage",
@@ -320,7 +341,7 @@ ${threadTitle}`;
             messageCode: 420,
             event: "perplexity_ask",
             data: [
-              queryStr,
+              prompt + queryStr,
               {
                 version: "2.12",
                 source: "default",
@@ -338,7 +359,7 @@ ${threadTitle}`;
 
         const title =
           await WebpageMessageInterceptor.waitForThreadNameGeneration({
-            queryStr,
+            queryStr: prompt + queryStr,
           });
 
         if (!title) return messageData;
@@ -514,18 +535,21 @@ ${threadTitle}`;
       any,
       { content: string }
     > = (messageData) => {
+      if (!isWebSocketEventData(messageData)) return { match: false };
+
+      if (!messageData.payload.isInternal) return { match: false };
+
       const parsedPayload: WsParsedMessage | null =
         parseStructuredMessage(messageData);
-
-      if (!parsedPayload) return { match: false };
-
-      if (parsedPayload.messageCode !== 430) return { match: false };
-
-      if (parsedPayload.event !== "") return { match: false };
-
-      if (parsedPayload.data[0].status !== "completed") return { match: false };
-
-      if (parsedPayload.data[0].query_str !== queryStr) return { match: false };
+      if (
+        !parsedPayload ||
+        parsedPayload.messageCode !== 430 ||
+        parsedPayload.event !== "" ||
+        parsedPayload.data[0].status !== "completed" ||
+        parsedPayload.data[0].query_str.trim() !== queryStr.trim()
+      ) {
+        return { match: false };
+      }
 
       return {
         match: true,
@@ -590,12 +614,12 @@ ${threadTitle}`;
   }
 }
 
-function parseStructuredMessage(messageData: MessageData<any>) {
+function parseStructuredMessage(messageData: MessageData<unknown>) {
   const webSocketMessageData = messageData as MessageData<
     WebSocketEventData | LongPollingEventData
   >;
 
-  const parsedPayload: WsParsedMessage | null | string = WsMessageParser.parse(
+  const parsedPayload = WsMessageParser.parse(
     webSocketMessageData.payload.payload,
   );
 

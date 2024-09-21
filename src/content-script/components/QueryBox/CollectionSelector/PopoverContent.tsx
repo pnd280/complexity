@@ -4,6 +4,7 @@ import {
   LuPencil as Pencil,
   LuPlay as Play,
   LuExternalLink as ExternalLink,
+  LuLoader2,
 } from "react-icons/lu";
 
 import useFetchCollections from "@/content-script/hooks/useFetchCollections";
@@ -127,7 +128,12 @@ function UserProfileActions({
   const { isUpdatingUserAiProfile, updateUserAiProfile } =
     useUpdateUserAiProfile();
 
-  if (!userAiProfile || isUserAiProfileLoading) return null;
+  if (!userAiProfile || isUserAiProfileLoading)
+    return (
+      <div className="tw-ml-auto tw-text-foreground">
+        <LuLoader2 className="tw-size-4 tw-animate-spin" />
+      </div>
+    );
 
   return (
     <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">

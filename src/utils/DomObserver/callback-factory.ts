@@ -56,10 +56,10 @@ export const createCallback = (config: DomObserverConfig): MutationCallback => {
           }
         }
       } else if (mutation.type === "attributes" && config.onAttrChange) {
-        await safeExecute<[Element, string | null]>(
+        await safeExecute<[Element, string[] | null]>(
           config.onAttrChange,
           mutation.target as Element,
-          mutation.attributeName,
+          mutation.attributeName as unknown as string[],
         );
       }
     }

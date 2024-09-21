@@ -6,9 +6,16 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.5
+
+_Release date: 21th Sep, 2024_
+
+-   **FIX**: Fixed infinte initializing loop.
+-   **FIX**: Fixed the Rewrite dropdown (Thread Message Sticky Toolbar) - html structure changed.
+
 ## v0.0.3.4
 
-_Release date: 24th Sep, 2024_
+_Release date: 21th Sep, 2024_
 
 -   **IMPROVE**: Collections will now be fetched at instant speed.
 
