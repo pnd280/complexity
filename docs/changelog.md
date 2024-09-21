@@ -6,13 +6,19 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.4
+
+_Release date: 24th Sep, 2024_
+
+-   **IMPROVE**: Collections will now be fetched at instant speed.
+
 ## v0.0.3.3
 
 _Release date: 21st Sep, 2024_
 
--   **IMPROVE**: Remove the "Parsed data is not in the expected format" console error message.
+-   **NEW**: Add syntax highlighting for `vue`.
 
--   **FIX**: Add syntax highlighting for `vue`.
+-   **IMPROVE**: Remove the "Parsed data is not in the expected format" console error message.
 
 ## v0.0.3.2
 
