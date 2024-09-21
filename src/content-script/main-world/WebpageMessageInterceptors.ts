@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import { LanguageModel, FocusMode } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";

@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, forwardRef, LabelHTMLAttributes } from "react";
+import { DetailedHTMLProps, LabelHTMLAttributes } from "react";
 
 import { cn } from "@/utils/cn";
 

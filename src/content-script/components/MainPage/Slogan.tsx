@@ -1,6 +1,5 @@
 import { useDebounce, useToggle } from "@uidotdev/usehooks";
-import $ from "jquery";
-import { useEffect, useState } from "react";
+
 
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import { useGlobalStore } from "@/content-script/session-store/global";

@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import type { MermaidConfig } from "mermaid";
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";

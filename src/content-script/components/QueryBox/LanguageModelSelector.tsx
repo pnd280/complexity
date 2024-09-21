@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect } from "react";
+import { ReactNode } from "react";
 import { LuCpu as Cpu, LuInfinity as Infinity } from "react-icons/lu";
 import { useImmer } from "use-immer";
 

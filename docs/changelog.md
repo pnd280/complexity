@@ -6,6 +6,20 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.3
+
+_Release date: 21st Sep, 2024_
+
+-   **IMPROVE**: Remove the "Parsed data is not in the expected format" console error message.
+
+-   **FIX**: Add syntax highlighting for `vue`.
+
+## v0.0.3.2
+
+_Release date: 20st Sep, 2024_
+
+-   **FIX**: Non selectable item in Image Generation Model Selector.
+
 ## v0.0.3.1
 
 _Release date: 20th Sep, 2024_

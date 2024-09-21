@@ -1,6 +1,4 @@
 import { useToggle } from "@uidotdev/usehooks";
-import $ from "jquery";
-import { useCallback, useDeferredValue, useEffect } from "react";
 
 import { useCanvasStore } from "@/content-script/session-store/canvas";
 import useToggleButtonText from "@/shared/hooks/useToggleButtonText";

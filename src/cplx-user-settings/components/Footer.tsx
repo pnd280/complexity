@@ -3,7 +3,7 @@ import { LuZap as Zap } from "react-icons/lu";
 import Separator from "@/shared/components/Separator";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 const version = `beta-${packageData.version}`;
 

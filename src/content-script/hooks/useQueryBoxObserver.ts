@@ -1,5 +1,4 @@
-import $ from "jquery";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import useRouter from "@/content-script/hooks/useRouter";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";

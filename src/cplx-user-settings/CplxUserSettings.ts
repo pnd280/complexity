@@ -6,7 +6,7 @@ import {
   type CplxUserSettings as CplxUserSettingsType,
 } from "@/cplx-user-settings/types/cplx-user-settings.types";
 import ChromeStorage from "@/utils/ChromeStorage";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 export default class CplxUserSettings {
   static defaultUserSettings: CplxUserSettingsType = {

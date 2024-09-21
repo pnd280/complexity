@@ -1,5 +1,3 @@
-import $ from "jquery";
-import { useCallback, useEffect } from "react";
 import showdown from "showdown";
 
 import { useCanvasStore } from "@/content-script/session-store/canvas";

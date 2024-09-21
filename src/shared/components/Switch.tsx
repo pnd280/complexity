@@ -1,5 +1,5 @@
 import { Switch as ArkSwitch } from "@ark-ui/react";
-import { ElementRef, forwardRef, ReactNode } from "react";
+import { ElementRef, ReactNode } from "react";
 
 import { cn } from "@/utils/cn";
 

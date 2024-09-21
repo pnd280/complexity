@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LuCheck as Check } from "react-icons/lu";
 import * as z from "zod";
@@ -168,7 +167,7 @@ export default function CustomTheme() {
                 <AccentColorSelector
                   color={field.value}
                   {...field}
-                  setColor={(color) =>
+                  setColor={(color: string) =>
                     setValue("accentColor", color, {
                       shouldDirty: true,
                     })

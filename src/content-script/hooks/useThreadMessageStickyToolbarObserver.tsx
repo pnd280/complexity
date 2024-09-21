@@ -1,5 +1,5 @@
-import $ from "jquery";
-import { useEffect } from "react";
+
+
 
 import { languageModels } from "@/content-script/components/QueryBox/consts";
 import {

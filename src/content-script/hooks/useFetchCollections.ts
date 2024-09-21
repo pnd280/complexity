@@ -9,7 +9,10 @@ export default function useFetchCollections({
   ...props
 }: Omit<UseQueryOptions<Collection[]>, "queryKey" | "queryFn"> = {}) {
   const { isLoggedIn } = usePplxAuth();
-  const isReady = useGlobalStore((state) => state.isWebSocketCaptured);
+  const isReady = useGlobalStore(
+    ({ internalWebSocketInitialized, isWebSocketCaptured }) =>
+      isWebSocketCaptured && internalWebSocketInitialized,
+  );
 
   return useQuery<Collection[]>({
     queryKey: ["collections"],

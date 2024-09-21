@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 
 import Input from "@/shared/components/Input";
 import {

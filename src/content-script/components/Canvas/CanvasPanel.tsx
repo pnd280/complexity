@@ -1,6 +1,5 @@
 import { useMediaQuery } from "@uidotdev/usehooks";
-import $ from "jquery";
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode } from "react";
 
 import { canvasComponents } from "@/content-script/components/Canvas/";
 import CloseButton from "@/content-script/components/Canvas/CanvasCloseButton";
@@ -129,7 +128,10 @@ export default function CanvasPanel() {
           <div className="tw-absolute tw-right-2 tw-top-2 tw-z-10 tw-size-max">
             <CloseButton />
           </div>
-          <div id="complexity-canvas" className="tw-size-full tw-overflow-auto" />
+          <div
+            id="complexity-canvas"
+            className="tw-size-full tw-overflow-auto"
+          />
           {canvasComponent}
           <CanvasCode />
         </div>

@@ -13,7 +13,10 @@ export default function useFetchUserAiProfile({
   "queryKey" | "queryFn"
 > = {}) {
   const { isLoggedIn } = usePplxAuth();
-  const isReady = useGlobalStore((state) => state.isWebSocketCaptured);
+  const isReady = useGlobalStore(
+    ({ internalWebSocketInitialized, isWebSocketCaptured }) =>
+      isWebSocketCaptured && internalWebSocketInitialized,
+  );
 
   return useQuery<UserAiProfileApiResponse>({
     queryKey: ["userAiProfile"],

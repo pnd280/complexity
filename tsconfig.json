@@ -19,9 +19,15 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@@/*": ["./*"]
+      "~/*": ["./*"]
     }
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./tests/**/*.ts", "./tests/**/*.tsx"],
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./tests/**/*.ts",
+    "./tests/**/*.tsx",
+    "./src/types/unimport.d.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

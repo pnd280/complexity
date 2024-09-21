@@ -7,4 +7,10 @@ export default class WebpageMessageListeners {
       globalStore.setState({ isWebSocketCaptured: true });
     });
   }
+
+  static onInternalWebSocketInitialized() {
+    webpageMessenger.onMessage("internalWebSocketInitialized", async () => {
+      globalStore.setState({ internalWebSocketInitialized: true });
+    });
+  }
 }

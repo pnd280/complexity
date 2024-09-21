@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import Canvas from "@/utils/Canvas";
 import { extensionOnly, mainWorldExec } from "@/utils/hof";

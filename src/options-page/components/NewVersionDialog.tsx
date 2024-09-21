@@ -4,7 +4,7 @@ import {
 } from "react-icons/lu";
 
 import useExtensionUpdate from "@/shared/hooks/useExtensionUpdate";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 const version = packageData.version;
 

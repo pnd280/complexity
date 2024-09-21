@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import { throttle } from "lodash";
 
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";

@@ -3,7 +3,7 @@ import * as z from "zod";
 import { FocusMode } from "@/content-script/components/QueryBox";
 import { focusModes } from "@/content-script/components/QueryBox/consts";
 import Canvas, { CanvasLang } from "@/utils/Canvas";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 type WebAccessFocusCode = FocusMode["code"];
 

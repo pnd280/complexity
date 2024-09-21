@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import generalSettings, {
@@ -15,7 +15,7 @@ import Tooltip from "@/shared/components/Tooltip";
 import useCplxUserSettings from "@/shared/hooks/useCplxUserSettings";
 import { cn } from "@/utils/cn";
 import { compareVersions } from "@/utils/utils";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = generalSettings;
 

@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { extensionOnly, mainWorldExec } from "@/utils/hof";

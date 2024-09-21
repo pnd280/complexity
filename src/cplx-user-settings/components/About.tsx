@@ -10,7 +10,7 @@ import {
 import Cplx from "@/shared/components/icons/Cplx";
 import FlagVietnam from "@/shared/components/icons/FlagVietnam";
 import { toast } from "@/shared/toast";
-import packageData from "@@/package.json";
+import packageData from "~/package.json";
 
 export default function About() {
   return (

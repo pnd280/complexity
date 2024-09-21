@@ -1,5 +1,5 @@
-import $ from "jquery";
-import { useDeferredValue, useState } from "react";
+
+
 
 import CanvasPlaceholder from "@/content-script/components/Canvas/CanvasPlaceholder";
 import Toolbar from "@/content-script/components/CustomMarkdownBlock/Toolbar";

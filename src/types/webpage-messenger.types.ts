@@ -87,6 +87,7 @@ export interface EventHandlers {
   webSocketEvent(data: WebSocketEventData): WebSocketEventData["payload"];
   longPollingEvent(data: LongPollingEventData): LongPollingEventData["payload"];
   webSocketCaptured(): void;
+  internalWebSocketInitialized(): void;
   getActiveWebSocketType(): Nullable<"WebSocket" | "Long-polling">;
   webSocketError(data: Event): void;
 
