@@ -62,23 +62,31 @@ export default class PplxApi {
   }
 
   static async fetchCollections(): Promise<Collection[]> {
-    webpageMessenger.sendMessage({
-      event: "sendWebSocketMessage",
-      payload: WsMessageParser.stringify({
-        messageCode: 421,
-        event: "list_user_collections",
-        data: {
-          source: "default",
-          limit: 50,
-          offset: 0,
-        },
-      }),
-      forceLongPolling: true,
-    });
+    // webpageMessenger.sendMessage({
+    //   event: "sendWebSocketMessage",
+    //   payload: WsMessageParser.stringify({
+    //     messageCode: 421,
+    //     event: "list_user_collections",
+    //     data: {
+    //       source: "default",
+    //       limit: 50,
+    //       offset: 0,
+    //     },
+    //   }),
+    //   forceLongPolling: true,
+    // });
 
-    const collections = await WebpageMessageInterceptor.waitForCollections();
+    // const collections = await WebpageMessageInterceptor.waitForCollections();
 
-    return collections;
+    const resp = await fetchResource(
+      "https://www.perplexity.ai/rest/collections/list_user_collections?limit=50&offset=0&version=2.13&source=default",
+    );
+
+    const data = jsonUtils.safeParse(resp);
+
+    if (data == null) throw new Error("Failed to fetch collections");
+
+    return data;
   }
 
   static async updateCollection(args: {
