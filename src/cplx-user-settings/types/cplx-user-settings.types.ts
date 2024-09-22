@@ -19,6 +19,7 @@ export const cplxUserSettingsSchema = z.object({
   schemaVersion: z.literal(packageData.version),
   isFirstVisit: z.boolean(),
   defaultFocusMode: WebAccessFocusSchema.nullable(),
+  defaultProSearchState: z.boolean(),
   generalSettings: z.object({
     queryBoxSelectors: z.object({
       focus: z.boolean(),
@@ -39,6 +40,7 @@ export const cplxUserSettingsSchema = z.object({
       noFileCreationOnPaste: z.boolean(),
       fileDropableThreadWrapper: z.boolean(),
       autoGenerateThreadTitle: z.boolean(),
+      trackProSearchState: z.boolean(),
     }),
     visualTweaks: z.object({
       collapseEmptyThreadVisualColumns: z.boolean(),
