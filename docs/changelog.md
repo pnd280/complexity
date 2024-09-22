@@ -10,6 +10,8 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 _Release date: 21th Sep, 2024_
 
+-   **NEW** | **EXPERIMENTAL**: Explicitly keep track of the Pro Search state (Prevent auto-toggling off).
+
 -   **FIX**: Fixed infinte initializing loop.
 -   **FIX**: Fixed the Rewrite dropdown (Thread Message Sticky Toolbar) - html structure changed.
 

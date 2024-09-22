@@ -347,14 +347,16 @@ class WsHook {
     const self = this;
 
     WebSocket.prototype.send = function (data: any): void {
-      webpageMessenger.sendMessage({
-        event: "webSocketEvent",
-        payload: { event: "send", payload: data },
-      });
+      if (!this.url.includes("src=complexity")) {
+        //! important: must restore the original send method BEFORE capturing the instance
+        WebSocket.prototype.send = self.webSocketOriginalSend;
 
-      WebSocket.prototype.send = self.webSocketOriginalSend;
-
-      self.setWebSocketInstance(this);
+        self.setWebSocketInstance(this);
+        webpageMessenger.sendMessage({
+          event: "webSocketEvent",
+          payload: { event: "send", payload: data },
+        });
+      }
 
       // @ts-expect-error
       return self.webSocketOriginalSend.apply(this, arguments);
@@ -379,14 +381,18 @@ export class InternalWsInstance {
 
   private handShake(): Socket["io"]["engine"] | null {
     try {
-      const socket = io("wss://www.perplexity.ai", {
+      const socket = io("wss://www.perplexity.ai/?src=complexity", {
         transports: ["websocket"],
       }).io.engine;
 
       socket.on("message", (message) => {
         webpageMessenger.sendMessage({
           event: "webSocketEvent",
-          payload: { event: "message", payload: "4" + message },
+          payload: {
+            event: "message",
+            payload: "4" + message,
+            isInternal: true,
+          },
         });
       });
 

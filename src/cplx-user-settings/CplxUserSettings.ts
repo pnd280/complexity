@@ -14,6 +14,7 @@ export default class CplxUserSettings {
     isFirstVisit: true,
     customTheme: {},
     defaultFocusMode: "internet",
+    defaultProSearchState: false,
     generalSettings: {
       queryBoxSelectors: {
         focus: false,
@@ -34,6 +35,7 @@ export default class CplxUserSettings {
         noFileCreationOnPaste: false,
         fileDropableThreadWrapper: false,
         autoGenerateThreadTitle: false,
+        trackProSearchState: false,
       },
       visualTweaks: {
         collapseEmptyThreadVisualColumns: false,

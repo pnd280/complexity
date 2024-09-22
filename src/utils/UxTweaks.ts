@@ -2,6 +2,8 @@
 import { throttle } from "lodash";
 
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
+import DomObserver from "@/utils/DomObserver/DomObserver";
+import { DomSelectors } from "@/utils/DomSelectors";
 import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
 
@@ -81,6 +83,43 @@ export default class UxTweaks {
     requestIdleCallback(() => {
       handler();
       $(window).on("resize", handler);
+    });
+  }
+
+  static trackProSearchState() {
+    if (!CplxUserSettings.get().generalSettings.qolTweaks.trackProSearchState)
+      return;
+
+    const defaultProSearchState = CplxUserSettings.get().defaultProSearchState
+      ? "checked"
+      : "unchecked";
+
+    const currentState = $(DomSelectors.QUERY_BOX.PRO_SEARCH_TOGGLE).attr(
+      "data-state",
+    );
+
+    if (currentState !== defaultProSearchState) {
+      console.log("Overriding pro search state");
+      $(DomSelectors.QUERY_BOX.PRO_SEARCH_TOGGLE).trigger("click");
+    }
+
+    DomObserver.destroy("pro-search-state-tracker");
+
+    DomObserver.create("pro-search-state-tracker", {
+      target: $(DomSelectors.QUERY_BOX.PRO_SEARCH_TOGGLE)[0],
+      config: {
+        attributes: true,
+        attributeFilter: ["data-state"],
+      },
+      onAttrChange: (element) => {
+        const state = element.getAttribute("data-state");
+
+        if (state == null) return;
+
+        CplxUserSettings.set(
+          (draft) => (draft.defaultProSearchState = state === "checked"),
+        );
+      },
     });
   }
 }

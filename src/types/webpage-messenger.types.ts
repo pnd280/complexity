@@ -45,6 +45,7 @@ export type MessageListener = <K extends keyof EventHandlers>(
 ) => void;
 
 export type WebSocketEventData = {
+  isInternal?: boolean;
   event: "send" | "open" | "message" | "close";
   payload: any;
 };

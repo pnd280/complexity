@@ -14,7 +14,7 @@ export type DomObserverConfig = {
   onRemove?: CustomCallback;
   onAttrChange?: (
     element: Element,
-    attributeName: string | null,
+    attributeName: string[] | null,
   ) => void | Promise<void>;
   onAny?: MutationCallback;
   debounceTime?: number;
