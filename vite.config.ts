@@ -31,7 +31,7 @@ export default defineConfig(() => {
       crx({ manifest }),
       react(),
       Unimport.vite({
-        dts: true,
+        dts: "./src/types/unimport.d.ts",
         presets: [
           "react",
           {

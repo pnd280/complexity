@@ -27,7 +27,7 @@
     "./src/**/*.tsx",
     "./tests/**/*.ts",
     "./tests/**/*.tsx",
-    "./unimport.d.ts"
+    "./src/types/unimport.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
