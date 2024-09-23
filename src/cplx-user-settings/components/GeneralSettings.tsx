@@ -1,4 +1,3 @@
-
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import generalSettings, {
@@ -77,10 +76,6 @@ export default function GeneralSettings({
                             return;
                           }
 
-                          console.log(
-                            draft.generalSettings[settingsKey][subSettingsKey],
-                          );
-
                           (draft.generalSettings[settingsKey][
                             subSettingsKey
                           ] as boolean) = checked;
@@ -97,7 +92,6 @@ export default function GeneralSettings({
             </div>
             <Separator />
             <SettingGroup
-              key={isAllSettingsEnabled.toString()}
               settings={queryBoxSelectors}
               settingStoreKey="queryBoxSelectors"
             />
@@ -107,11 +101,7 @@ export default function GeneralSettings({
               QoL tweaks
             </div>
             <Separator />
-            <SettingGroup
-              key={isAllSettingsEnabled.toString()}
-              settings={qolTweaks}
-              settingStoreKey="qolTweaks"
-            />
+            <SettingGroup settings={qolTweaks} settingStoreKey="qolTweaks" />
           </div>
           <div className="tw-flex tw-flex-col tw-gap-2">
             <div className="tw-text-lg tw-font-semibold tw-tracking-tight">
@@ -119,7 +109,6 @@ export default function GeneralSettings({
             </div>
             <Separator />
             <SettingGroup
-              key={isAllSettingsEnabled.toString()}
               settings={visualTweaks}
               settingStoreKey="visualTweaks"
             />
@@ -165,7 +154,7 @@ function SettingGroup<
       versionRelease,
       onClick,
     }) => {
-      const defaultChecked = Boolean(
+      const enabled = Boolean(
         userSettings[settingStoreKey]?.[
           settingKey as keyof CplxUserSettings["generalSettings"][K]
         ],
@@ -212,8 +201,8 @@ function SettingGroup<
                   )}
                 </div>
               }
-              defaultChecked={!settingKey ? true : defaultChecked}
-              checked={!settingKey ? true : undefined}
+              defaultChecked={!settingKey ? true : enabled}
+              checked={!settingKey ? true : enabled}
               onCheckedChange={({ checked }) => {
                 if (!settingKey) return onClick?.();
                 updateSettings(settingStoreKey, (draft) => {
