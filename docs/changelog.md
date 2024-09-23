@@ -6,9 +6,15 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.6
+
+_Release date: 23rd Sep, 2024_
+
+-   **CHANGE**: Removed custom slogan/heading customization.
+
 ## v0.0.3.5
 
-_Release date: 21th Sep, 2024_
+_Release date: 22nd Sep, 2024_
 
 -   **NEW** | **EXPERIMENTAL**: Explicitly keep track of the Pro Search state (Prevent auto-toggling off).
 
@@ -17,7 +23,7 @@ _Release date: 21th Sep, 2024_
 
 ## v0.0.3.4
 
-_Release date: 21th Sep, 2024_
+_Release date: 21st Sep, 2024_
 
 -   **IMPROVE**: Collections will now be fetched at instant speed.
 
