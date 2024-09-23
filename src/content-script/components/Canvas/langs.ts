@@ -39,7 +39,7 @@ export const canvasLangSettings = [
         description: "Install Scratchpad prompt as a Collection",
         cta: "Install",
         action: async () => {
-          if (whereAmI() !== "same_origin") {
+          if (whereAmI() === "unknown") {
             toast({
               title: "Unsupported Context",
               description: "Please do this action on Perplexity.ai",
