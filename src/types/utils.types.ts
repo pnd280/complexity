@@ -17,3 +17,5 @@ export function isReactNode(node: unknown): node is React.ReactNode {
     (Array.isArray(node) && node.every(isReactNode))
   );
 }
+
+export type MaybePromise<T> = T | Promise<T>;

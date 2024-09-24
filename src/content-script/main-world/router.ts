@@ -1,4 +1,5 @@
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { MaybePromise } from "@/types/utils.types";
 import { MessageData } from "@/types/webpage-messenger.types";
 import { RouterEvent } from "@/types/ws.types";
 import { DomSelectors } from "@/utils/DomSelectors";
@@ -133,11 +134,13 @@ class Router {
   private async waitForRouteChangeComplete(
     location: ReturnType<typeof whereAmI>,
   ) {
-    await sleep(1000);
-
     return new Promise<void>((resolve) => {
-      const conditions: Partial<Record<typeof location, () => boolean>> = {
-        thread: () => {
+      const conditions: Partial<
+        Record<typeof location, () => MaybePromise<boolean>>
+      > = {
+        thread: async () => {
+          await sleep(1000);
+
           try {
             return UiUtils.getMessageBlocks(true).length >= 1;
           } catch {
@@ -153,8 +156,8 @@ class Router {
 
       if (condition == null) return resolve();
 
-      const interval = setInterval(() => {
-        if (condition()) {
+      const interval = setInterval(async () => {
+        if (await condition()) {
           clearInterval(interval);
 
           return resolve();

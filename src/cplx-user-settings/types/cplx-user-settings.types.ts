@@ -46,6 +46,7 @@ export const cplxUserSettingsSchema = z.object({
     }),
   }),
   customTheme: z.object({
+    slogan: z.string().optional(),
     uiFont: z.string().optional(),
     monoFont: z.string().optional(),
     accentColor: z.string().optional(),
