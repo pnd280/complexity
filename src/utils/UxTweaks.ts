@@ -5,7 +5,7 @@ import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import { DomSelectors } from "@/utils/DomSelectors";
 import UiUtils from "@/utils/UiUtils";
-import { whereAmI } from "@/utils/utils";
+import { waitForElement, whereAmI } from "@/utils/utils";
 
 export default class UxTweaks {
   static dropFileWithinThread(location: ReturnType<typeof whereAmI>) {
@@ -94,9 +94,15 @@ export default class UxTweaks {
       ? "checked"
       : "unchecked";
 
-    const currentState = $(DomSelectors.QUERY_BOX.PRO_SEARCH_TOGGLE).attr(
-      "data-state",
-    );
+    const element = waitForElement({
+      selector: DomSelectors.QUERY_BOX.PRO_SEARCH_TOGGLE,
+      interval: 100,
+      timeout: 3000,
+    });
+
+    if (element == null) return;
+
+    const currentState = $(element).attr("data-state");
 
     if (currentState !== defaultProSearchState) {
       console.log("Overriding pro search state");
