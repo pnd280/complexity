@@ -40,7 +40,6 @@ export const cplxUserSettingsSchema = z.object({
       noFileCreationOnPaste: z.boolean(),
       fileDropableThreadWrapper: z.boolean(),
       autoGenerateThreadTitle: z.boolean(),
-      trackProSearchState: z.boolean(),
     }),
     visualTweaks: z.object({
       collapseEmptyThreadVisualColumns: z.boolean(),
