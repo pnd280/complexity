@@ -103,15 +103,6 @@ export default class GeneralSettings {
       description: "Treat the whole page as a dropzone for file uploads.",
       versionRelease: "0.0.1.0",
     },
-    {
-      id: "track-pro-search-state",
-      label: "Track pro search state",
-      settingKey: "trackProSearchState",
-      description:
-        "Explicitly keep track of the Pro Search state (Prevent auto-toggling off).",
-      versionRelease: "0.0.4.0",
-      experimental: true,
-    },
   ];
 
   static visualTweaks: PopupSetting<

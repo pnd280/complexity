@@ -35,7 +35,6 @@ export default class CplxUserSettings {
         noFileCreationOnPaste: false,
         fileDropableThreadWrapper: false,
         autoGenerateThreadTitle: false,
-        trackProSearchState: false,
       },
       visualTweaks: {
         collapseEmptyThreadVisualColumns: false,

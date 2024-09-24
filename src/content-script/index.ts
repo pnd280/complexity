@@ -51,8 +51,6 @@ function initUiUxTweaks() {
     UiTweaks.applySettingsAsHTMLAttrs(location);
 
     UxTweaks.dropFileWithinThread(location);
-
-    UxTweaks.trackProSearchState();
   };
 
   observe(window.location.href);
