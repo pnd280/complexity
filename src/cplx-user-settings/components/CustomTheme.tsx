@@ -22,6 +22,7 @@ import ChromeStorage from "@/utils/ChromeStorage";
 import { jsonUtils } from "@/utils/utils";
 
 const schema = z.object({
+  slogan: z.string().optional(),
   uiFont: z.string().optional(),
   monoFont: z.string().optional(),
   accentColor: z
@@ -50,6 +51,7 @@ export default function CustomTheme() {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
+      slogan: "",
       uiFont: "",
       monoFont: "",
       accentColor: "",
@@ -89,6 +91,7 @@ export default function CustomTheme() {
 
     if (savedSettings) {
       reset({
+        slogan: savedSettings.slogan || "",
         uiFont: savedSettings.uiFont || "",
         monoFont: savedSettings.monoFont || "",
         accentColor: savedSettings.accentColor || "",
@@ -104,6 +107,25 @@ export default function CustomTheme() {
         className="tw-flex tw-flex-col tw-gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <FormField
+          control={form.control}
+          name="slogan"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="slogan" className="tw-text-base">
+                Custom slogan/heading
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="slogan"
+                  placeholder="Where knowledge begins"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="tw-flex tw-gap-2">
           <FormField
             control={form.control}
