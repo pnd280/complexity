@@ -1,8 +1,9 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
   "workbench.editor.customLabels.patterns": {
     "**/src/**/*.test.ts": "Test - ${dirname}: ${filename}",
-    "**/src/**": "${dirname}: ${filename}",
+    "**/src/**": "${dirname}: ${filename}"
   },
   "workbench.editor.labelFormat": "medium",
   "search.exclude": {

@@ -2,7 +2,7 @@ import * as z from "zod";
 
 import { LanguageModel } from "@/content-script/components/QueryBox";
 import { Collection } from "@/types/collection.types";
-import { UserAiProfile } from "@/types/user-ai-profile";
+import { HasUserAiProfile, UserAiProfile } from "@/types/user-ai-profile";
 
 export type SubscriptionStatus = "active" | "trialing" | "none";
 
@@ -51,4 +51,4 @@ export type ThreadMessageApiResponse = {
 
 export type UserAiProfileApiResponse = UserAiProfile;
 
-export type UpdateUserAiProfileApiRequest = Partial<UserAiProfileApiResponse>;
+export type UpdateUserAiProfileApiRequest = Partial<HasUserAiProfile>;

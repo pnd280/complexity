@@ -135,6 +135,8 @@ function UserProfileActions({
       </div>
     );
 
+  if (userAiProfile != null && !userAiProfile.has_profile) return;
+
   return (
     <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
       <Tooltip
