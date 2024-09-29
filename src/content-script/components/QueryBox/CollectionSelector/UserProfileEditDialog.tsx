@@ -74,7 +74,7 @@ export default function UserProfileEditDialog({
   useEffect(() => {
     if (userAiProfile) {
       reset({
-        bio: userAiProfile.bio || "",
+        bio: userAiProfile.has_profile ? userAiProfile.bio : "",
       });
     }
   }, [open, userAiProfile, reset]);
