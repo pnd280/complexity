@@ -8,6 +8,8 @@ import { parseUrl } from "@/utils/utils";
 
 class WsHook {
   private static instance: WsHook | null = null;
+  private capturedInstances: Set<Nullable<WebSocket | XMLHttpRequest>> =
+    new Set();
   private webSocketInstance: Nullable<WebSocket>;
   private longPollingInstance: Nullable<XMLHttpRequest>;
 
@@ -56,6 +58,8 @@ class WsHook {
 
   setWebSocketInstance(instance: WebSocket): void {
     if (!this.isValidWebSocketInstance(instance)) return;
+
+    this.capturedInstances.add(instance);
 
     this.webSocketInstance = instance;
     this.proxyWebSocketInstance(instance);
@@ -347,9 +351,12 @@ class WsHook {
     const self = this;
 
     WebSocket.prototype.send = function (data: any): void {
-      if (!this.url.includes("src=complexity")) {
+      if (
+        !this.url.includes("src=complexity") &&
+        !self.capturedInstances.has(this)
+      ) {
         //! important: must restore the original send method BEFORE capturing the instance
-        WebSocket.prototype.send = self.webSocketOriginalSend;
+        // WebSocket.prototype.send = self.webSocketOriginalSend;
 
         self.setWebSocketInstance(this);
         webpageMessenger.sendMessage({
