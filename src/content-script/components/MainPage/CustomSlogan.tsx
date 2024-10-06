@@ -1,4 +1,4 @@
-import { useDebounce, useToggle } from "@uidotdev/usehooks";
+import { useToggle } from "@uidotdev/usehooks";
 
 import { useInit } from "@/content-script/hooks/useInit";
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
@@ -11,7 +11,7 @@ import { isDomNode } from "@/utils/utils";
 export default function CustomSlogan() {
   const [container, setContainer] = useState<HTMLElement>();
 
-  const isReady = useDebounce(useInit().isWebSocketCaptured, 1000);
+  const isReady = useInit().isWebSocketCaptured;
 
   const [visible, toggleVisibility] = useToggle(!isReady);
 

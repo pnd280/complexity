@@ -118,7 +118,7 @@ export default function CanvasPanel() {
             Canvas.isMaskableLang(
               MarkdownBlockUtils.getLang($(`#${metaData.preBlockId}`)),
             ) && (
-              <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max">
+              <div className="tw-absolute tw-inset-2 tw-z-10 tw-size-max !tw-min-h-max">
                 <CanvasViewTabToggle />
               </div>
             )}
