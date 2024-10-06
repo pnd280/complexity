@@ -33,7 +33,7 @@ export function NewVersionDialog() {
               Not working?{" "}
               <a
                 className="tw-flex tw-items-center tw-gap-1 tw-underline"
-                href="https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj"
+                href="https://addons.mozilla.org/en-US/firefox/addon/complexity/"
                 target="_blank"
                 rel="noreferrer"
               >
