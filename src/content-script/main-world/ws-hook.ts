@@ -371,7 +371,7 @@ class WsHook {
   }
 }
 
-export class InternalWsInstance {
+class InternalWsInstance {
   private static instance: InternalWsInstance | null = null;
   private socket: Socket["io"]["engine"] | null;
 
