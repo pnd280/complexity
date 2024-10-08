@@ -1,5 +1,3 @@
-import { throttle } from "lodash-es";
-
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import UiUtils from "@/utils/UiUtils";
 import { whereAmI } from "@/utils/utils";
@@ -63,23 +61,6 @@ export default class UxTweaks {
 
     $logo.on("contextmenu", function (e) {
       e.stopPropagation();
-    });
-  }
-
-  static removeConflictedMobileOverlay() {
-    const handler = throttle(function () {
-      if (window.innerWidth < 768) {
-        const $navs = $(".h-mobileNavHeight");
-
-        if ($navs.length < 2) return;
-
-        $navs.first().remove();
-      }
-    }, 200);
-
-    requestIdleCallback(() => {
-      handler();
-      $(window).on("resize", handler);
     });
   }
 }

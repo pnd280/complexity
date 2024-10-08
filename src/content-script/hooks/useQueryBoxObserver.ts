@@ -201,10 +201,25 @@ function interceptPasteEvent() {
 
   $textarea.attr("data-paste-event-intercepted", "true");
 
+  $(document).off("keydown.interceptPasteEvent keyup.interceptPasteEvent");
+
+  let isShiftKeyPressed = false;
+
+  const handleKeyDown = (e: JQuery.TriggeredEvent) => {
+    if (e.key === "Shift") isShiftKeyPressed = true;
+  };
+
+  const handleKeyUp = (e: JQuery.TriggeredEvent) => {
+    if (e.key === "Shift") isShiftKeyPressed = false;
+  };
+
+  $(document).on("keydown.interceptPasteEvent", handleKeyDown);
+  $(document).on("keyup.interceptPasteEvent", handleKeyUp);
+
   $textarea.on("paste", (e) => {
     const clipboardEvent = e.originalEvent as ClipboardEvent;
 
-    if (clipboardEvent.clipboardData) {
+    if (clipboardEvent.clipboardData && isShiftKeyPressed) {
       if (clipboardEvent.clipboardData.types.includes("text/plain")) {
         e.stopImmediatePropagation();
       }

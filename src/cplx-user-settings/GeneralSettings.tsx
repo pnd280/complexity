@@ -1,9 +1,12 @@
+import { ReactNode } from "react";
+
 import { CplxUserSettings } from "@/cplx-user-settings/types/cplx-user-settings.types";
+import KeyCombo from "@/shared/components/KeyCombo";
 
 export type PopupSetting<T> = {
   id: string;
   label: string;
-  description?: string;
+  description?: ReactNode;
   settingKey?: T;
   versionRelease?: string;
   experimental?: boolean;
@@ -63,7 +66,7 @@ export default class GeneralSettings {
       id: "custom-markdown-block",
       label: "Custom markdown block",
       description:
-        "Precisely display the language of your code and enable syntax highlighting for natively unsupported languages. e.g. `gdscript`, `blade`, etc.",
+        "Precisely display the language of your code and enable syntax highlighting for natively unsupported languages. e.g. `vue`, `gdscript`, `blade`, etc.",
       settingKey: "customMarkdownBlock",
     },
     {
@@ -93,7 +96,15 @@ export default class GeneralSettings {
       id: "no-file-creation-on-paste",
       label: "No file creation on long text paste",
       settingKey: "noFileCreationOnPaste",
-      description: "Pasting long text no longer creates a file.",
+      description: (
+        <span>
+          <KeyCombo
+            className="tw-inline"
+            keys={["Control (⌘)", "Shift", "V"]}
+          />{" "}
+          to paste long text without creating a file.
+        </span>
+      ),
       versionRelease: "0.0.1.0",
     },
     {
