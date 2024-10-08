@@ -6,6 +6,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.11
+
+_Release date: 8th Oct, 2024_
+
+-   **IMPROVE**: `Ctrl (Cmd) + Shift + V` to bypass file creation on long text paste. Normal paste will still create a file.
+
 ## v0.0.3.6
 
 _Release date: 23rd Sep, 2024_

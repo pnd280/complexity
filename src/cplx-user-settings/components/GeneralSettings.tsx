@@ -173,7 +173,7 @@ function SettingGroup<
               key={id}
               id={id}
               className={cn({
-                "tw-items-start": !!description,
+                "tw-items-start": description != null,
               })}
               textLabel={
                 <div className="tw-flex tw-flex-col tw-gap-1">
@@ -194,7 +194,7 @@ function SettingGroup<
                     </span>
                     <span>{label}</span>
                   </div>
-                  {description && (
+                  {description != null && (
                     <div className="tw-ml-2 tw-text-xs tw-text-muted-foreground">
                       {description}
                     </div>

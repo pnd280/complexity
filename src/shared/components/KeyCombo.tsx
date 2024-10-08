@@ -1,6 +1,11 @@
-export default function KeyCombo({ keys }: { keys: string[] }) {
+import { HTMLProps } from "react";
+
+export default function KeyCombo({
+  keys,
+  ...props
+}: HTMLProps<HTMLSpanElement> & { keys: string[] }) {
   return (
-    <span className="tw-flex tw-gap-1">
+    <span className={cn("tw-flex tw-gap-1")} {...props}>
       {keys.map((key) => (
         <span
           key={key}
