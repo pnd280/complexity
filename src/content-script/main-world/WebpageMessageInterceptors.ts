@@ -19,10 +19,8 @@ import {
   isWebSocketEventData,
   WsParsedMessage,
 } from "@/types/ws.types";
-import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
 import { queryClient } from "@/utils/ts-query-query-client";
-import UiUtils from "@/utils/UiUtils";
-import { jsonUtils, waitForElement, whereAmI } from "@/utils/utils";
+import { jsonUtils } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class WebpageMessageInterceptor {
@@ -266,133 +264,6 @@ export default class WebpageMessageInterceptor {
       },
       callback: async () => {
         return null;
-      },
-      stopCondition: () => false,
-    });
-  }
-
-  static autoRenameThread() {
-    const prompt = `
-# IDENTITY and PURPOSE
-
-You are an expert content summarizer. Your task is to generate a concise, one-line title that captures the essence of the provided text.
-
-## STEPS
-
-- Synthesize your understanding of the text into a single title consisting of 3-10 words, optionally starting with an emoji.
-- Ensure the title is straightforward and easy to comprehend.
-- The title should reflect the main topic, task, or purpose of the text.
-
-## OUTPUT INSTRUCTIONS
-
-- Provide the title in plain text without any special characters or Markdown formatting.
-- Respond strictly with the title; do not include any additional text or context.
-- The title must be in the same language as the original text.
-
-## THE TEXT:
-`;
-
-    if (
-      !CplxUserSettings.get().generalSettings.qolTweaks.autoGenerateThreadTitle
-    )
-      return;
-
-    webpageMessenger.addInterceptor({
-      matchCondition: (messageData: MessageData<unknown>) => {
-        if (!isWebSocketEventData(messageData)) return { match: false };
-
-        if (messageData.payload.isInternal) {
-          return { match: false };
-        }
-
-        const parsedPayload = parseStructuredMessage(messageData);
-
-        if (!parsedPayload) return { match: false };
-
-        if (parsedPayload.data[0]?.length < 1) return { match: false };
-
-        const { status, query_str, privacy_state } = parsedPayload.data[0];
-
-        if (status !== "completed" || privacy_state === "INCOGNITO")
-          return { match: false };
-
-        if (query_str == null) return { match: false };
-
-        return {
-          match: true,
-          args: [
-            {
-              queryStr: query_str,
-            },
-          ],
-        };
-      },
-      callback: async (messageData, args) => {
-        if (whereAmI() !== "thread") return messageData;
-
-        if ($(DomHelperSelectors.THREAD.MESSAGE.BLOCK).length > 1)
-          return messageData;
-
-        const queryStr = args[0].queryStr;
-
-        webpageMessenger.sendMessage({
-          event: "sendWebSocketMessage",
-          payload: WsMessageParser.stringify({
-            messageCode: 420,
-            event: "perplexity_ask",
-            data: [
-              prompt + queryStr,
-              {
-                version: "2.12",
-                source: "default",
-                language: "en-US",
-                search_focus: "writing",
-                mode: "concise",
-                model_preference: "turbo" as LanguageModel["code"],
-                is_incognito: true,
-                ignore_interceptor: true,
-              },
-            ],
-          }),
-          timeout: 10000,
-        });
-
-        const title =
-          await WebpageMessageInterceptor.waitForThreadNameGeneration({
-            queryStr: prompt + queryStr,
-          });
-
-        if (!title) return messageData;
-
-        const div = await waitForElement({
-          selector: DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE,
-          timeout: 1000,
-        });
-
-        if (div == null) return messageData;
-
-        $(DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE_WRAPPER).css({
-          opacity: 0,
-        });
-
-        (div as HTMLElement).click();
-
-        const input = await waitForElement({
-          selector: DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE_INPUT,
-          timeout: 1000,
-        });
-
-        if (input == null) return messageData;
-
-        UiUtils.setReactInputValue(input as HTMLInputElement, title);
-
-        $(input).trigger("blur");
-
-        $(DomSelectors.SICKY_NAVBAR_CHILD.THREAD_TITLE_WRAPPER).css({
-          opacity: 100,
-        });
-
-        return messageData;
       },
       stopCondition: () => false,
     });
