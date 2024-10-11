@@ -85,14 +85,6 @@ export default class GeneralSettings {
       versionRelease: "0.0.0.12",
     },
     {
-      id: "auto-generate-thread-title",
-      label: "Auto-generate thread title",
-      settingKey: "autoGenerateThreadTitle",
-      experimental: true,
-      description: "Auto-generate a 3-10 word title for your thread.",
-      versionRelease: "0.0.4.0",
-    },
-    {
       id: "no-file-creation-on-paste",
       label: "No file creation on long text paste",
       settingKey: "noFileCreationOnPaste",

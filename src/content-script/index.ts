@@ -86,7 +86,6 @@ function initTrafficInterceptors() {
   WebpageMessageInterceptor.alterQueries();
   WebpageMessageInterceptor.blockTelemetry();
   WebpageMessageInterceptor.removeComplexityIdentifier();
-  WebpageMessageInterceptor.autoRenameThread();
 }
 
 function initConsoleMessage() {

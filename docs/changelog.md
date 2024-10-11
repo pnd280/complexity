@@ -6,6 +6,14 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.3.13
+
+_Release date: 11th Oct, 2024_
+
+-   **FIX**: Adapt to new query box dynamic placeholders - fixed a bug where selectors are not showing.
+-   **REMOVE**: **Temporarily** removed **Auto-generate thread title** setting.
+
+
 ## v0.0.3.11
 
 _Release date: 8th Oct, 2024_
