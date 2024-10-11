@@ -16,7 +16,7 @@ export default function CustomSlogan() {
   const [visible, toggleVisibility] = useToggle(!isReady);
 
   const slogan =
-    CplxUserSettings.get().customTheme.slogan || "Where knowledge begins";
+    CplxUserSettings.get().customTheme.slogan;
 
   const { element, isWaiting } = useWaitForElement({
     id: "slogan",
@@ -37,7 +37,7 @@ export default function CustomSlogan() {
       .addClass(
         "text-shadow-hover tw-select-none !tw-leading-[1.2rem] tw-transition-all tw-duration-300 tw-ease-in-out hover:tw-tracking-wide",
       )
-      .text(slogan);
+      .text(slogan || $nativeSlogan.text());
 
     $nativeSlogan.addClass("!tw-opacity-100");
 
@@ -62,7 +62,7 @@ export default function CustomSlogan() {
           }
         }}
       >
-        {slogan.length > 5 && (
+        {slogan && slogan.length > 5 && (
           <div className="tw-tracking-wide">Complexity</div>
         )}
       </div>
