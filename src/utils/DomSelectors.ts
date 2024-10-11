@@ -52,7 +52,7 @@ const DomSelectors = {
   },
   QUERY_BOX: {
     TEXTAREA: {
-      MAIN: 'textarea[autocomplete][placeholder]:not([placeholder="Ask follow-up"])',
+      MAIN: 'textarea[autocomplete][placeholder]:not([placeholder="Ask follow-up"]):not([placeholder="New Thread"]):not([placeholder=""])',
       FOLLOW_UP: 'textarea[placeholder="Ask follow-up"]',
       COLLECTION: 'textarea[placeholder="New Thread"]',
       ARBITRARY: "textarea[placeholder]",
