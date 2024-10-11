@@ -11,6 +11,7 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 _Release date: 11th Oct, 2024_
 
 -   **FIX**: Adapt to new query box dynamic placeholders - fixed a bug where selectors are not showing.
+-   **FIX**: Fixed the store url on the Firefox addon.
 -   **REMOVE**: **Temporarily** removed **Auto-generate thread title** setting.
 
 
