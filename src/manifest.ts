@@ -1,11 +1,33 @@
-import { defineManifest } from "@crxjs/vite-plugin";
+import {
+  defineManifest as defineChromeManifest,
+  ManifestV3Export,
+} from "@crxjs/vite-plugin";
+import chalk from "chalk";
 
-import * as packageData from "../package.json";
+import packageData from "../package.json";
+import appConfig from "./app.config";
 
-const isDev = process.env.NODE_ENV == "development";
+type MozManifest = ManifestV3Export & {
+  browser_specific_settings: {
+    gecko: {
+      id: string;
+      strict_min_version: string;
+    };
+  };
+  background: {
+    service_worker?: never;
+    type: "module";
+  };
+};
 
-export default defineManifest({
-  name: `${isDev ? "[🛠️ Dev] " : ""}${packageData.displayName || packageData.name}`,
+const defineMozManifest = defineChromeManifest as unknown as (
+  manifest: MozManifest,
+) => MozManifest;
+
+const browser = appConfig.browser;
+
+const baseManifest: ManifestV3Export = {
+  name: `${appConfig.isDev ? "[🟡 Dev] " : ""}${packageData.displayName || packageData.name}`,
   description: packageData.description,
   version: packageData.version,
   manifest_version: 3,
@@ -15,20 +37,14 @@ export default defineManifest({
     48: "img/logo-48.png",
     128: "img/logo-128.png",
   },
+  homepage_url: "https://cplx.vercel.app",
   action: {
     default_icon: "img/logo-48.png",
   },
-  background: {
-    service_worker: "src/background/index.ts",
-    type: "module",
-  },
   content_scripts: [
     {
-      matches: ["https://www.perplexity.ai/*", "https://perplexity.ai/*"],
-      exclude_matches: [
-        "https://www.perplexity.ai/p/api/*",
-        "https://perplexity.ai/p/api/*",
-      ],
+      matches: appConfig["perplexity-ai"].globalMatches,
+      exclude_matches: appConfig["perplexity-ai"].globalExcludeMatches,
       js: [
         "src/content-script/index.ts",
         "src/content-script/main-world/index.ts",
@@ -36,8 +52,8 @@ export default defineManifest({
       run_at: "document_start",
     },
   ],
-  options_page: "page/options.html",
-  host_permissions: ["https://www.perplexity.ai/*", "https://perplexity.ai/*"],
+  options_ui: { open_in_tab: true, page: "src/options-page/options.html" },
+  host_permissions: appConfig["perplexity-ai"].globalMatches,
   web_accessible_resources: [
     {
       resources: [
@@ -48,9 +64,40 @@ export default defineManifest({
         "*.js",
         "*.css",
       ],
-      matches: ["https://www.perplexity.ai/*", "https://perplexity.ai/*"],
-      use_dynamic_url: false,
+      matches: appConfig["perplexity-ai"].globalMatches,
     },
   ],
-  permissions: ["storage"],
-});
+  permissions: ["storage", "scripting"],
+};
+
+function createManifest(): ManifestV3Export | MozManifest {
+  console.log("\n", chalk.bold.underline.yellow("TARGET BROWSER:"), browser);
+
+  if (browser === "firefox") {
+    const mozManifest: MozManifest = {
+      ...baseManifest,
+      browser_specific_settings: {
+        gecko: {
+          id: "complexity@ngocdg",
+          strict_min_version: "109.0",
+        },
+      },
+      background: {
+        scripts: ["src/background/index.ts"],
+        type: "module",
+      },
+    } as MozManifest;
+    return defineMozManifest(mozManifest);
+  } else {
+    const chromeManifest: ManifestV3Export = {
+      ...baseManifest,
+      background: {
+        service_worker: "src/background/index.ts",
+        type: "module",
+      },
+    } as ManifestV3Export;
+    return defineChromeManifest(chromeManifest);
+  }
+}
+
+export default createManifest();

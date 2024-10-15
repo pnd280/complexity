@@ -17,7 +17,7 @@ package-lock.json
 .history
 
 # ignore compiled files
-build
+dist
 types
 coverage
 

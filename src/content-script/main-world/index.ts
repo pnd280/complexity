@@ -6,14 +6,14 @@ import wsHook from "@/content-script/main-world/ws-hook?script&module";
 
 // Standalone main world scripts
 injectMainWorldScript({
-  url: chrome.runtime.getURL(wsHook),
+  url: browser.runtime.getURL(wsHook),
   head: true,
 });
 injectMainWorldScript({
-  url: chrome.runtime.getURL(router),
+  url: browser.runtime.getURL(router),
   head: true,
 });
 injectMainWorldScript({
-  url: chrome.runtime.getURL(reactNode),
+  url: browser.runtime.getURL(reactNode),
   head: true,
 });

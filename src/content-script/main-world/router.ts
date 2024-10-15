@@ -172,7 +172,7 @@ class Router {
   }
 }
 
-export default function initRouter(): void {
+function initRouter(): void {
   $(() => {
     Router.getInstance().initialize();
   });

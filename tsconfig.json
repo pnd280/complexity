@@ -1,33 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "strictNullChecks": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "~/*": ["./*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext"
   },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./tests/**/*.ts",
-    "./tests/**/*.tsx",
-    "./src/types/unimport.d.ts"
-  ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["node_modules"],
+  "include": ["src/**/*", "tests/**/*", "vite-plugins/**/*.ts"]
 }

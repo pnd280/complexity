@@ -1,88 +1,71 @@
-import * as path from "path";
+/// <reference types="vitest" />
 
+import * as path from "path";
 import { crx } from "@crxjs/vite-plugin";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-
-// @ts-ignore
-import manifest from "./src/manifest";
-
 import Unimport from "unimport/unplugin";
 import vitePluginRunCommandOnDemand from "./vite-plugins/vite-plugin-run-command-on-demand";
 import viteTouchGlobalCss from "./vite-plugins/vite-plugin-touch-global-css";
+import unimportConfig from "./src/types/unimport.config";
+import manifest from "./src/manifest";
+import appConfig from "./src/app.config";
 
-export default defineConfig(() => {
-  return {
-    base: "./",
-    build: {
-      target: ["chrome88", "edge88", "firefox109"],
-      outDir: "build",
-      emptyOutDir: true,
-      rollupOptions: {
-        output: {
-          chunkFileNames: "assets/cplx-[hash].js",
-          assetFileNames: "assets/cplx-[hash][extname]",
-        },
+const browser = appConfig.browser;
+
+export default defineConfig(() => ({
+  base: "./",
+  build: {
+    target: ["chrome88", "edge88", "firefox109"],
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        chunkFileNames: "assets/cplx-[hash].js",
+        assetFileNames: "assets/cplx-[hash][extname]",
       },
-      reportCompressedSize: false,
     },
+    reportCompressedSize: false,
+  },
+  plugins: [
+    crx({ manifest, browser }),
+    react(),
+    Unimport.vite(unimportConfig),
+    viteTouchGlobalCss({
+      cssFilePath: path.resolve(__dirname, "src/assets/index.tw.css"),
+      watchFiles: [
+        path.resolve(__dirname, "src/"),
+        path.resolve(__dirname, "public/"),
+      ],
+    }),
+    vitePluginRunCommandOnDemand({
+      afterServerStart: "pnpm gulp forceDisableUseDynamicUrl",
+      closeBundle: "pnpm gulp forceDisableUseDynamicUrl",
+    }),
+    vitePluginRunCommandOnDemand({
+      closeBundle: "pnpm gulp rootifyOptionsPageHTMLEntries",
+    }),
+  ],
 
-    plugins: [
-      crx({ manifest }),
-      react(),
-      Unimport.vite({
-        dts: "./src/types/unimport.d.ts",
-        presets: [
-          "react",
-          {
-            from: "react",
-            imports: [
-              "lazy",
-              "forwardRef",
-              "createContext",
-              "useDeferredValue",
-            ],
-          },
-        ],
-        imports: [
-          {
-            name: "default",
-            as: "$",
-            from: "jquery",
-          },
-          {
-            name: "cn",
-            from: path.posix.join(
-              ...path.resolve(__dirname, "src/utils/cn.ts").split(path.sep),
-            ),
-          },
-        ],
-      }),
-      viteTouchGlobalCss({
-        cssFilePath: path.resolve(__dirname, "src/assets/index.tw.css"),
-        watchFiles: [
-          path.resolve(__dirname, "src/"),
-          path.resolve(__dirname, "public/"),
-        ],
-      }),
-      vitePluginRunCommandOnDemand({
-        afterServerStart: "pnpm gulp forceDisableUseDynamicUrl",
-        closeBundle: "pnpm gulp forceDisableUseDynamicUrl",
-      }),
-    ],
+  server: {
+    port: 5173,
+    hmr: {
+      host: "localhost",
+    },
+  },
 
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "~": path.resolve(__dirname, "./"),
+    },
+  },
+
+  test: {
+    setupFiles: ["./tests/vitest.setup.ts"],
     server: {
-      port: 5173,
-      hmr: {
-        host: "localhost",
+      deps: {
+        inline: ["@webext-core/messaging"],
       },
     },
-
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-        "~": path.resolve(__dirname, "./"),
-      },
-    },
-  };
-});
+  },
+}));

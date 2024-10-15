@@ -1,17 +1,29 @@
-export type BackgroundAction =
-  | "openExtensionPage"
-  | "openChangelog"
-  | "openCustomTheme"
-  | "getTabId";
+import appConfig from "@/app.config";
+
+export type BackgroundActionSchema = {
+  openExtensionPage: string;
+  openChangelog: void;
+  openCustomTheme: void;
+  getTabId: void;
+};
+
+export type BackgroundScriptMessage = {
+  [K in keyof BackgroundActionSchema]: BackgroundActionSchema[K] extends void
+    ? { action: K }
+    : {
+        action: K;
+        payload: BackgroundActionSchema[K];
+      };
+}[keyof BackgroundActionSchema];
 
 export default class BackgroundScript {
-  static async sendMessage<T>({
-    action,
-    payload,
-  }: {
-    action: BackgroundAction;
-    payload?: T;
-  }) {
-    return await chrome.runtime.sendMessage({ action, payload });
+  static async sendMessage(message: BackgroundScriptMessage) {
+    return await browser.runtime.sendMessage(message);
+  }
+
+  static getOptionsPageUrl() {
+    const prefix = appConfig.isDev ? "src/options-page/" : "";
+
+    return browser.runtime.getURL(`${prefix}options.html`);
   }
 }

@@ -2,6 +2,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
 
+import appConfig from "@/app.config";
 import MainPage from "@/content-script/components/MainPage";
 import QueryBox from "@/content-script/components/QueryBox/QueryBox";
 import ThreadExportButton from "@/content-script/components/ThreadExportButton";
@@ -59,7 +60,7 @@ function Root() {
   return (
     <>
       <QueryBox />
-      {import.meta.env.DEV && <Commander />}
+      {appConfig.isDev && <Commander />}
 
       {location === "home" && <MainPage />}
 

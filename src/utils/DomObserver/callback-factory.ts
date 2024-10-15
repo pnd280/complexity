@@ -1,4 +1,4 @@
-import { debounce, throttle } from "lodash-es";
+import { debounce, throttle } from "lodash";
 
 import {
   CustomCallback,

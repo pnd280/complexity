@@ -9,7 +9,7 @@
 /coverage
 
 # production
-/build
+/dist
 /package
 
 # misc
@@ -29,3 +29,4 @@
 secrets.*.js
 
 .env
+unimport.d.ts

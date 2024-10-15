@@ -1,7 +1,6 @@
 import DomPurify from "dompurify";
 import showdown from "showdown";
 
-import BackgroundScript from "@/utils/BackgroundScript";
 import UiUtils from "@/utils/UiUtils";
 
 export const jsonUtils = {
@@ -163,12 +162,6 @@ export async function fetchResource(url: string) {
   const response = await fetch(url);
   return response.text();
 }
-
-export async function getTabId() {
-  const response = await BackgroundScript.sendMessage({ action: "getTabId" });
-  return response.tabId;
-}
-
 export function getCookie(name: string) {
   const nameEQ = name + "=";
   const ca = document.cookie.split(";");

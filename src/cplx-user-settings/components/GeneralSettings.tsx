@@ -1,5 +1,3 @@
-import { LuExternalLink as ExternalLink } from "react-icons/lu";
-
 import generalSettings, {
   PopupSetting,
 } from "@/cplx-user-settings/GeneralSettings";
@@ -18,11 +16,7 @@ import packageData from "~/package.json";
 
 const { queryBoxSelectors, qolTweaks, visualTweaks } = generalSettings;
 
-export default function GeneralSettings({
-  context,
-}: {
-  context?: "popup" | "in-page";
-}) {
+export default function GeneralSettings() {
   const { data, mutation } = useCplxUserSettings();
 
   const isAllSettingsEnabled = useMemo(() => {
@@ -115,22 +109,9 @@ export default function GeneralSettings({
           </div>
         </div>
 
-        {context === "popup" ? (
-          <div
-            className="tw-ml-auto tw-flex tw-w-max tw-cursor-pointer tw-items-center tw-gap-1 tw-pb-4 hover:tw-underline"
-            onClick={() => {
-              chrome.runtime.openOptionsPage();
-              window.close();
-            }}
-          >
-            <span>All settings</span>
-            <ExternalLink className="tw-size-3" />
-          </div>
-        ) : (
-          <div className="tw-text-lg tw-text-muted-foreground">
-            ...more to come
-          </div>
-        )}
+        <div className="tw-text-lg tw-text-muted-foreground">
+          ...more to come
+        </div>
       </div>
     </main>
   );

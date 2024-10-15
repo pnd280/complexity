@@ -1,66 +1,50 @@
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
-import { BackgroundAction } from "@/utils/BackgroundScript";
+import BackgroundScript, {
+  BackgroundScriptMessage,
+} from "@/utils/BackgroundScript";
 
-chrome.runtime.onInstalled.addListener((details) => {
+browser.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
-    chrome.tabs.create({
-      url: chrome.runtime.getURL("/page/options.html") + "?tab=changelog",
+    browser.tabs.create({
+      url: BackgroundScript.getOptionsPageUrl() + "?tab=changelog",
     });
   }
 });
 
-chrome.runtime.onInstalled.addListener(async () => {
+browser.runtime.onInstalled.addListener(async () => {
   CplxUserSettings.init();
 });
 
-chrome.runtime.onMessage.addListener(
-  async (
-    message: any,
-    sender: chrome.runtime.MessageSender,
-    sendResponse: (response: any) => void,
-  ) => {
-    const action: BackgroundAction = message.action;
-    const payload = message.payload;
+browser.runtime.onMessage.addListener(async (unknMessage, sender) => {
+  const message = unknMessage as BackgroundScriptMessage;
 
-    switch (action) {
-      case "openExtensionPage":
-        chrome.tabs.create({
-          url:
-            chrome.runtime.getURL("/page/options.html") + (payload as string),
-        });
-        break;
-      case "openChangelog":
-        chrome.tabs.create({
-          url: chrome.runtime.getURL("/page/options.html") + "?tab=changelog",
-        });
-        break;
-      case "openCustomTheme":
-        chrome.tabs.create({
-          url: chrome.runtime.getURL("/page/options.html") + "?tab=customTheme",
-        });
-        break;
-      case "getTabId":
-        if (sender.tab) {
-          sendResponse({ tabId: sender.tab.id });
-        }
-        break;
-    }
-    return true;
-  },
-);
-
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === "downloadSVG") {
-    chrome.downloads.download({
-      filename: message.fileName,
-      url: `data:image/svg+xml;base64,${message.data}`,
-      saveAs: true,
-    });
+  switch (message.action) {
+    case "openExtensionPage":
+      browser.tabs.create({
+        url: BackgroundScript.getOptionsPageUrl() + message.payload,
+      });
+      break;
+    case "openChangelog":
+      browser.tabs.create({
+        url: BackgroundScript.getOptionsPageUrl() + "?tab=changelog",
+      });
+      break;
+    case "openCustomTheme":
+      browser.tabs.create({
+        url: BackgroundScript.getOptionsPageUrl() + "?tab=customTheme",
+      });
+      break;
+    case "getTabId":
+      if (sender.tab) {
+        return sender.tab.id;
+      }
+      break;
   }
+  return true;
 });
 
-chrome.action.onClicked.addListener(() => {
-  chrome.tabs.create({
+browser.action.onClicked.addListener(() => {
+  browser.tabs.create({
     url: "https://perplexity.ai",
   });
 });

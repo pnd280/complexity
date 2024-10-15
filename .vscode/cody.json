@@ -1,9 +1,0 @@
-{
-  "lucide-to-react-icons": {
-    "prompt": "convert lucide imports to react-icons/lu, e.g. `import { Check } from \"lucide-react\"` => `import { LuCheck as Check } from \"react-icons/lu\"`",
-    "context": {
-      "selection": true
-    },
-    "mode": "edit"
-  }
-}

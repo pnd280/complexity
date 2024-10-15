@@ -93,7 +93,7 @@ export default function Commander() {
         className="tw-font-sans"
         onValueChange={setSearchValue}
       />
-      <CommandList className="tw-font-sans">
+      <CommandList className="tw-font-sans lg:tw-w-[500px]">
         <CommandEmpty>
           No results found for{" "}
           {

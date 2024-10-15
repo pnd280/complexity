@@ -1,44 +1,52 @@
 {
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
-  "workbench.editor.customLabels.patterns": {
-    "**/src/**/*.test.ts": "Test - ${dirname}: ${filename}",
-    "**/src/**": "${dirname}: ${filename}"
+  "editor.quickSuggestions": {
+    "comments": false,
+    "other": true,
+    "strings": false
   },
-  "workbench.editor.labelFormat": "medium",
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/bower_components": true,
-    "**/*.code-search": true,
-    "**/build/**/*": true,
-    "**/package/**/*": true
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
-    "**/node_modules/*/**": true,
     "**/.hg/store/**": true,
     "**/build/**/*": true,
+    "**/dist/**/*": true,
+    "**/node_modules/*/**": true,
     "**/package/**/*": true
   },
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/node_modules": true
-  },
-  "editor.quickSuggestions": {
-    "other": true,
-    "comments": false,
-    "strings": false
+  "npm.exclude": ["**/build", "**/dist", "**/package"],
+  "npm.scriptExplorerExclude": ["preinstall"],
+  "search.exclude": {
+    "**/*.code-search": true,
+    "**/bower_components": true,
+    "**/build/**/*": true,
+    "**/dist/**/*": true,
+    "**/node_modules": true,
+    "**/package/**/*": true
   },
   "tailwindCSS.experimental.classRegex": [
     ["addClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["toggleClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "npm.scriptExplorerExclude": ["preinstall"],
-  "npm.exclude": ["**/build", "**/package"]
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  // "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "typescript.tsserver.maxTsServerMemory": 8192,
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEventsOnParentDirectory",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriorityPolling"
+  },
+  "workbench.editor.customLabels.patterns": {
+    "**/src/**": "${dirname}: ${filename}",
+    "**/src/**/*.test.ts": "Test - ${dirname}: ${filename}"
+  },
+  "workbench.editor.labelFormat": "medium"
 }

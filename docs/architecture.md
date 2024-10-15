@@ -2,7 +2,7 @@
 
 Complexity is a web extension that aims to enhance the user experience and functionality of Perplexity.ai.
 
-The following implementations are opinionated and may not be the best solution. One can always suggest better approaches, [CONTRIBUTE](../CONTRIBUTING.md)!
+The following implementations represent the current approach and may be subject to improvement or alternative solutions in the future.
 
 ## Intercepting Websocket Messages
 

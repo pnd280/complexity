@@ -1,13 +1,14 @@
-import chalk from "chalk";
 import { exec } from "child_process";
+
+import chalk from "chalk";
 import { HmrContext, Plugin } from "vite";
 
 const pluginName = "vite-plugin-run-command-on-demand";
 
 const log = (message: string) =>
-  console.log(chalk.blue(`\n[${pluginName}]`), chalk.green(message));
+  console.log(chalk.blue(`\n[${pluginName}]`), message);
 const logError = (message: string) =>
-  console.error(chalk.blue(`\n[${pluginName}]`), chalk.red(message));
+  console.error(chalk.blue(`\n[${pluginName}]`), chalk.red(message), "\n");
 
 const runCommand = (command: string): Promise<void> =>
   new Promise((resolve, reject) => {
@@ -44,12 +45,19 @@ const executeCommand = async (
   }
 };
 
+const isAllowedEnvironment = () => {
+  const env = process.env.NODE_ENV;
+  return env === "development" || env === "production";
+};
+
 export default function customCommandsPlugin(
   options: CustomCommandsPluginOptions = {},
 ): Plugin {
   return {
     name: pluginName,
     configureServer(server) {
+      if (!isAllowedEnvironment()) return;
+
       server.httpServer?.once("listening", async () => {
         await executeCommand(
           options.beforeServerStart,
@@ -63,6 +71,8 @@ export default function customCommandsPlugin(
     },
 
     async handleHotUpdate(ctx: HmrContext) {
+      if (!isAllowedEnvironment()) return ctx.modules;
+
       const isPageReload = ctx.modules.some(
         (module) => !module.isSelfAccepting,
       );
@@ -76,6 +86,8 @@ export default function customCommandsPlugin(
     },
 
     async buildStart() {
+      if (!isAllowedEnvironment()) return;
+
       await executeCommand(
         options.beforeBuild,
         `Error running beforeBuild command: ${options.beforeBuild}`,
@@ -83,6 +95,8 @@ export default function customCommandsPlugin(
     },
 
     async buildEnd() {
+      if (!isAllowedEnvironment()) return;
+
       await executeCommand(
         options.afterBuild,
         `Error running afterBuild command: ${options.afterBuild}`,
@@ -90,6 +104,8 @@ export default function customCommandsPlugin(
     },
 
     async closeBundle() {
+      if (!isAllowedEnvironment()) return;
+
       await executeCommand(
         options.closeBundle,
         `Error running closeBundle command: ${options.closeBundle}`,

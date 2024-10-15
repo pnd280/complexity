@@ -19,14 +19,34 @@ export default function About() {
         <div className="tw-text-center">
           <Cplx className="tw-mx-auto tw-h-16 tw-w-16 tw-text-accent-foreground tw-transition-colors" />
           <div className="tw-text-xl">Complexity</div>
-          <div className="tw-w-max tw-font-mono tw-text-xs tw-text-muted-foreground">
-            {packageData.version}-PUBLIC-BETA
+          <div className="tw-font-mono tw-text-xs tw-text-muted-foreground">
+            v{packageData.version}
           </div>
         </div>
         <div className="tw-mt-4 tw-text-center">
           <div className="tw-text-xl">Made with 💖 by the community</div>
           <DiscordCallout className="tw-text-xs" />
         </div>
+      </div>
+      <div className="tw-text-xs">
+        Support the development via{" "}
+        <a
+          className="tw-text-accent-foreground tw-underline"
+          href="https://ko-fi.com/pnd280"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Ko-fi
+        </a>{" "}
+        or{" "}
+        <a
+          className="tw-text-accent-foreground tw-underline"
+          href="https://paypal.me/pnd280"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Paypal
+        </a>
       </div>
       <Author />
     </div>

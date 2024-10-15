@@ -312,7 +312,13 @@ html {
   @media (min-width: 768px) {
     .pointer-events-none.fixed.bottom-mobileNavHeight {
       margin-top: 0;
-      bottom: 0.3rem !important;
+      bottom    : 0.3rem !important;
     }
+  }
+}
+
+@-moz-document url-prefix() {
+  textarea:focus-visible {
+    outline: none !important;
   }
 }
