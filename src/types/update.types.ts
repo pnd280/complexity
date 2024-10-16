@@ -1,3 +1,4 @@
-import packageData from "~/package.json";
-
-export type CplxVersionsApiResponse = typeof packageData;
+export type CplxVersionsApiResponse = {
+  chrome: string;
+  firefox: string;
+};

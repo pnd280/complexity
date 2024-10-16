@@ -12,16 +12,14 @@ const envSchema = z.object({
 const parsedEnv = envSchema.parse(env);
 
 const appConfig = {
-  browser: parsedEnv.TARGET_BROWSER,
-  isDev: Boolean(parsedEnv.DEV) || parsedEnv.NODE_ENV === "development",
+  BROWSER: parsedEnv.TARGET_BROWSER,
+  IS_DEV: Boolean(parsedEnv.DEV) || parsedEnv.NODE_ENV === "development",
   METADATA_BRANCH: parsedEnv.VITE_METADATA_BRANCH,
   "perplexity-ai": {
-    globalMatches: ["https://*.perplexity.ai/*"],
+    globalMatches: ["https://www.perplexity.ai/*", "https://perplexity.ai/*"],
     globalExcludeMatches: [
       "https://*.perplexity.ai/p/api/*",
       "https://*.perplexity.ai/hub/*",
-      "https://*.labs.perplexity.ai/*",
-      "https://*.docs.perplexity.ai/*",
     ],
   },
 };

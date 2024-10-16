@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+import appConfig from "@/app.config";
 import CplxApi from "@/services/CplxApi";
 import { compareVersions } from "@/utils/utils";
 import packageData from "~/package.json";
@@ -17,7 +18,10 @@ export default function useExtensionUpdate({
 
   const newVersionAvailable =
     data &&
-    compareVersions(data?.version || "0.0.0.0", packageData.version) === 1;
+    compareVersions(
+      data?.[appConfig.BROWSER] || "0.0.0.0",
+      packageData.version,
+    ) === 1;
 
   const { data: changelog, isLoading: isChangelogFetching } = useQuery({
     queryKey: ["changelog"],
@@ -27,7 +31,7 @@ export default function useExtensionUpdate({
 
   return {
     newVersionAvailable,
-    newVersion: data?.version,
+    newVersion: data?.[appConfig.BROWSER],
     changelog,
     isChangelogFetching,
   };

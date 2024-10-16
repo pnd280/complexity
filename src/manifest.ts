@@ -24,10 +24,10 @@ const defineMozManifest = defineChromeManifest as unknown as (
   manifest: MozManifest,
 ) => MozManifest;
 
-const browser = appConfig.browser;
+const browser = appConfig.BROWSER;
 
 const baseManifest: ManifestV3Export = {
-  name: `${appConfig.isDev ? "[🟡 Dev] " : ""}${packageData.displayName || packageData.name}`,
+  name: `${appConfig.IS_DEV ? "[🟡 Dev] " : ""}${packageData.displayName || packageData.name}`,
   description: packageData.description,
   version: packageData.version,
   manifest_version: 3,
@@ -67,7 +67,7 @@ const baseManifest: ManifestV3Export = {
       matches: appConfig["perplexity-ai"].globalMatches,
     },
   ],
-  permissions: ["storage", "scripting"],
+  permissions: ["storage"],
 };
 
 function createManifest(): ManifestV3Export | MozManifest {

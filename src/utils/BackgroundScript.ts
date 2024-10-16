@@ -22,7 +22,7 @@ export default class BackgroundScript {
   }
 
   static getOptionsPageUrl() {
-    const prefix = appConfig.isDev ? "src/options-page/" : "";
+    const prefix = appConfig.IS_DEV ? "src/options-page/" : "";
 
     return browser.runtime.getURL(`${prefix}options.html`);
   }
