@@ -219,10 +219,6 @@ html:not([data-color-scheme="dark"]) code *::selection {
   --tw-ring-color: var(--accent-foreground) !important;
 }
 
-[data-testid="collection-preview"]:hover>div>div:first-child {
-  background-color: var(--accent-foreground) !important;
-}
-
 /* Popovers behavior normalization */
 body[data-scroll-locked].bg-transparent {
   --removed-body-scroll-bar-size: 0 !important;
