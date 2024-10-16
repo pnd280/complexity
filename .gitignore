@@ -1,1 +1,6 @@
-tailwind.config.js
+.env
+node_modules
+dist
+src/types/unimport.d.ts
+package
+temp
