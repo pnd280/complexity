@@ -3,10 +3,12 @@
   <h1 style="text-align: center;">Complexity</h1>
 </div>
 
+<p align="center">An enhanced version of <a href="https://perplexity.ai/" target="_blank" style="font-weight: bold">Perplexity.ai</a> which everyone has ever wanted.<br/>Community-driven, open-source, and free to use.</p>
+
 <p align="center">
   <div align="center">
-    <a href="https://github.com/pnd280/complexity" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Fchrome-ext%2Fpackage.json&query=%24.version&label=stable" alt="Stable"></a>
-    <a href="https://github.com/pnd280/complexity/tree/alpha" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Falpha%2Fpackage.json&query=%24.version&label=alpha&color=yellow" alt="Alpha"></a>
+    <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Frefs%2Fheads%2Frelease-notes%2Fversions.json&query=chrome&label=stable" alt="Stable version">
+    <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpnd280%2Fcomplexity%2Falpha%2Fpackage.json&query=%24.version&label=alpha&color=yellow" alt="Alpha version">
     <a href="https://discord.gg/fxzqdkwmWx" target="_blank"><img src="https://img.shields.io/discord/1245377426331144304?logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%2FfxzqdkwmWx" alt="Discord"></a>
   </div>
   <div align="center">
@@ -16,8 +18,6 @@
     <img src="https://img.shields.io/amo/users/complexity?label=AMO%20users" alt="Mozilla Add-on Users">
   </div>
 </p>
-
-<p align="center">An enhanced version of <a href="https://perplexity.ai/" target="_blank" style="font-weight: bold">Perplexity.ai</a> which everyone has ever wanted.<br/>Community-driven, open-source, and free to use.</p>
 
 <div align="center">
   <a href="https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj" target="_blank"><img src="https://i.imgur.com/9QWBxZO.png" width="200px" style="border-radius: .5rem"></a>
@@ -34,6 +34,9 @@
 
 Perplexity.ai is famously known for its LLM-based search engine, but many may not know that it is also a decent portal which provides access to various SOTA LLMs and image generation models and have somewhat a very generous rate limit compared to other services. But it lacks a lot of basic features, the UX isn't that great either. Hence, Complexity was created to fill that gap.
 
+> [!NOTE]
+> Complexity is going freemium! [Read more](https://github.com/pnd280/complexity/issues/19).
+
 ## Complexity will enrich your experience with:
 
 - LLM/Image gen model selectors.
@@ -42,7 +45,7 @@ Perplexity.ai is famously known for its LLM-based search engine, but many may no
 - Highly customizable ADHD-friendly theme (custom css is supported).
 - Various UI/UX/QoL tweaks.
 - A dedicated solution for prompts management: Prompts Library (in development).
-- [And many more...](https://github.com/pnd280/complexity/issues/19).
+- And many more...
 
 [Read more](https://cplx.vercel.app)
 
