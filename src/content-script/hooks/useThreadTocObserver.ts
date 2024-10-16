@@ -3,8 +3,7 @@ import {
   useWindowScroll,
   useWindowSize,
 } from "@uidotdev/usehooks";
-import { throttle } from "lodash";
-
+import throttle from "lodash/throttle";
 
 import { AnchorProps } from "@/content-script/components/ThreadToc";
 import useRouter from "@/content-script/hooks/useRouter";

@@ -15,8 +15,8 @@ type MozManifest = ManifestV3Export & {
     };
   };
   background: {
-    service_worker?: never;
-    type: "module";
+    scripts: string[];
+    type?: never;
   };
 };
 
@@ -84,7 +84,6 @@ function createManifest(): ManifestV3Export | MozManifest {
       },
       background: {
         scripts: ["src/background/index.ts"],
-        type: "module",
       },
     } as MozManifest;
     return defineMozManifest(mozManifest);

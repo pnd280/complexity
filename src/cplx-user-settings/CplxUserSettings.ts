@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { merge } from "lodash";
+import merge from "lodash/merge";
 
 import {
   cplxUserSettingsSchema,

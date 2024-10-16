@@ -11,8 +11,6 @@ import unimportConfig from "./src/types/unimport.config";
 import manifest from "./src/manifest";
 import appConfig from "./src/app.config";
 
-const browser = appConfig.browser;
-
 export default defineConfig(() => ({
   base: "./",
   build: {
@@ -26,8 +24,11 @@ export default defineConfig(() => ({
     },
     reportCompressedSize: false,
   },
+  optimizeDeps: {
+    include: ["lodash"],
+  },
   plugins: [
-    crx({ manifest, browser }),
+    crx({ manifest, browser: appConfig.BROWSER }),
     react(),
     Unimport.vite(unimportConfig),
     viteTouchGlobalCss({
