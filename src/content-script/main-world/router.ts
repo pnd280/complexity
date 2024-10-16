@@ -55,15 +55,9 @@ class Router {
     function createProxiedPush(
       originalPush: NonNullable<NextRouter>["router"]["push"],
     ) {
-      return async function (
-        this: NextRouter,
-        url: string,
-        as?: string,
-        options?: Record<string, unknown>,
-      ): Promise<boolean> {
-        const result = await originalPush.apply(this, [url, as, options]);
+      return async function (this: NextRouter, url: string): Promise<void> {
+        originalPush.apply(this, [url]);
         Router.getInstance().dispatchRouteChange("push", url);
-        return result;
       };
     }
 
@@ -100,11 +94,9 @@ class Router {
 
       try {
         if (typeof payload === "object") {
-          await router.push(payload.url, undefined, { scroll: payload.scroll });
+          router.push(payload.url);
         } else {
-          await router.push(payload, undefined, {
-            scroll: payload !== window.location.pathname,
-          });
+          router.push(payload);
         }
       } catch (error) {
         console.error("Error during route change:", error);

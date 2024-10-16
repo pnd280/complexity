@@ -92,14 +92,7 @@ export interface EventHandlers {
   getActiveWebSocketType(): Nullable<"WebSocket" | "Long-polling">;
   webSocketError(data: Event): void;
 
-  routeToPage(
-    data:
-      | string
-      | {
-          url: string;
-          scroll: boolean;
-        },
-  ): void;
+  routeToPage(data: string): void;
   routeChange({ url, trigger }: { url: string; trigger: RouterEvent }): void;
 
   isShikiHighlighterInitialized(): boolean;

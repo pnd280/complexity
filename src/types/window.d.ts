@@ -8,14 +8,17 @@ import { MessageListener, SendMessage } from "@/types/webpage-messenger.types";
 declare global {
   interface Window {
     next?: {
+      appDir: boolean;
+      version: string;
       router: {
-        push: (url: string, as?: string, options?: any) => Promise<boolean>;
-        replace: (url: string, as?: string, options?: any) => Promise<boolean>;
-        events: {
-          on: (event: string, callback: () => void) => void;
-          off: (event: string, callback: () => void) => void;
-        };
-      };
+        back: () => void;
+        forward: () => void;
+        refresh: () => void;
+        replace: (url: string) => void;
+        push: (url: string) => void;
+        prefetch: (url: string) => void;
+      }
+
     };
 
     Messenger: {
