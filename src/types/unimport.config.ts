@@ -18,15 +18,6 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       from: "jquery",
     },
     {
-      name: "default",
-      as: "browser",
-      from: path.posix.join(
-        ...path
-          .resolve(process.cwd(), "src/utils/browser-polyfill.ts")
-          .split(path.sep),
-      ),
-    },
-    {
       name: "cn",
       from: path.posix.join(
         ...path.resolve(process.cwd(), "src/utils/cn.ts").split(path.sep),

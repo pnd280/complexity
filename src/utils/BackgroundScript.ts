@@ -18,12 +18,12 @@ export type BackgroundScriptMessage = {
 
 export default class BackgroundScript {
   static async sendMessage(message: BackgroundScriptMessage) {
-    return await browser.runtime.sendMessage(message);
+    return await chrome.runtime.sendMessage(message);
   }
 
   static getOptionsPageUrl() {
     const prefix = appConfig.IS_DEV ? "src/options-page/" : "";
 
-    return browser.runtime.getURL(`${prefix}options.html`);
+    return chrome.runtime.getURL(`${prefix}options.html`);
   }
 }

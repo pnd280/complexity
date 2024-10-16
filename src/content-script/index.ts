@@ -64,18 +64,18 @@ async function initMainWorldDeps() {
 
   await Promise.all([
     injectMainWorldScript({
-      url: browser.runtime.getURL(preBlockAttrs),
+      url: chrome.runtime.getURL(preBlockAttrs),
     }),
     injectMainWorldScript({
-      url: browser.runtime.getURL(shiki),
+      url: chrome.runtime.getURL(shiki),
       inject: qolTweaks.customMarkdownBlock,
     }),
     injectMainWorldScript({
-      url: browser.runtime.getURL(mermaidCanvas),
+      url: chrome.runtime.getURL(mermaidCanvas),
       inject: qolTweaks.customMarkdownBlock && qolTweaks.canvas.enabled,
     }),
     injectMainWorldScript({
-      url: browser.runtime.getURL(htmlCanvas),
+      url: chrome.runtime.getURL(htmlCanvas),
       inject: qolTweaks.customMarkdownBlock && qolTweaks.canvas.enabled,
     }),
   ]);

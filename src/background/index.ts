@@ -3,48 +3,43 @@ import BackgroundScript, {
   BackgroundScriptMessage,
 } from "@/utils/BackgroundScript";
 
-browser.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
-    browser.tabs.create({
+    chrome.tabs.create({
       url: BackgroundScript.getOptionsPageUrl() + "?tab=changelog",
     });
   }
 });
 
-browser.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async () => {
   CplxUserSettings.init();
 });
 
-browser.runtime.onMessage.addListener(async (unknMessage, sender) => {
+chrome.runtime.onMessage.addListener(async (unknMessage) => {
   const message = unknMessage as BackgroundScriptMessage;
 
   switch (message.action) {
     case "openExtensionPage":
-      browser.tabs.create({
+      chrome.tabs.create({
         url: BackgroundScript.getOptionsPageUrl() + message.payload,
       });
       break;
     case "openChangelog":
-      browser.tabs.create({
+      chrome.tabs.create({
         url: BackgroundScript.getOptionsPageUrl() + "?tab=changelog",
       });
       break;
     case "openCustomTheme":
-      browser.tabs.create({
+      chrome.tabs.create({
         url: BackgroundScript.getOptionsPageUrl() + "?tab=customTheme",
       });
-      break;
-    case "getTabId":
-      if (sender.tab) {
-        return sender.tab.id;
-      }
       break;
   }
   return true;
 });
 
-browser.action.onClicked.addListener(() => {
-  browser.tabs.create({
+chrome.action.onClicked.addListener(() => {
+  chrome.tabs.create({
     url: "https://perplexity.ai",
   });
 });

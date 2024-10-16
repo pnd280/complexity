@@ -17,8 +17,7 @@ declare global {
         replace: (url: string) => void;
         push: (url: string) => void;
         prefetch: (url: string) => void;
-      }
-
+      };
     };
 
     Messenger: {
