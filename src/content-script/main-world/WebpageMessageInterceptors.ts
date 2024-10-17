@@ -14,13 +14,8 @@ import {
   MessageData,
   WebSocketEventData,
 } from "@/types/webpage-messenger.types";
-import {
-  isParsedWsMessage,
-  isWebSocketEventData,
-  WsParsedMessage,
-} from "@/types/ws.types";
+import { isParsedWsMessage, WsParsedMessage } from "@/types/ws.types";
 import { queryClient } from "@/utils/ts-query-query-client";
-import { jsonUtils } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class WebpageMessageInterceptor {
@@ -393,58 +388,6 @@ export default class WebpageMessageInterceptor {
       setTimeout(() => {
         removeInterceptor();
         reject(new Error("Fetching collections timed out"));
-      }, 3000);
-    });
-  }
-
-  static waitForThreadNameGeneration({
-    queryStr,
-  }: {
-    queryStr: string;
-  }): Promise<string> {
-    const matchCondition: AddInterceptorMatchCondition<
-      any,
-      { content: string }
-    > = (messageData) => {
-      if (!isWebSocketEventData(messageData)) return { match: false };
-
-      if (!messageData.payload.isInternal) return { match: false };
-
-      const parsedPayload: WsParsedMessage | null =
-        parseStructuredMessage(messageData);
-      if (
-        !parsedPayload ||
-        parsedPayload.messageCode !== 430 ||
-        parsedPayload.event !== "" ||
-        parsedPayload.data[0].status !== "completed" ||
-        parsedPayload.data[0].query_str.trim() !== queryStr.trim()
-      ) {
-        return { match: false };
-      }
-
-      return {
-        match: true,
-        args: [
-          {
-            content: jsonUtils.safeParse(parsedPayload.data[0].text).answer,
-          },
-        ],
-      };
-    };
-
-    return new Promise((resolve, reject) => {
-      const removeInterceptor = webpageMessenger.addInterceptor({
-        matchCondition,
-        async callback(messageData, args) {
-          resolve(args[0].content);
-          return messageData;
-        },
-        stopCondition: (messageData) => matchCondition(messageData).match,
-      });
-
-      setTimeout(() => {
-        removeInterceptor();
-        reject(new Error("Fetching thread name generation timed out"));
       }, 3000);
     });
   }

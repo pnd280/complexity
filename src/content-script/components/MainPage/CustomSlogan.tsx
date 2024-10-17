@@ -1,12 +1,11 @@
 import { useToggle } from "@uidotdev/usehooks";
 
 import { useInit } from "@/content-script/hooks/useInit";
-import useWaitForElement from "@/content-script/hooks/useWaitForElement";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Portal from "@/shared/components/Portal";
 import { cn } from "@/utils/cn";
+import DomObserver from "@/utils/DomObserver/DomObserver";
 import { DomSelectors } from "@/utils/DomSelectors";
-import { isDomNode } from "@/utils/utils";
 
 export default function CustomSlogan() {
   const [container, setContainer] = useState<HTMLElement>();
@@ -15,34 +14,39 @@ export default function CustomSlogan() {
 
   const [visible, toggleVisibility] = useToggle(!isReady);
 
-  const slogan =
-    CplxUserSettings.get().customTheme.slogan;
-
-  const { element, isWaiting } = useWaitForElement({
-    id: "slogan",
-    selector: DomSelectors.HOME.SLOGAN,
-  });
+  const slogan = CplxUserSettings.get().customTheme.slogan;
 
   useEffect(() => {
-    if (!isDomNode(element)) return;
+    const id = "slogan";
 
-    const $nativeSlogan = $(element);
+    DomObserver.create(id, {
+      target: document.body,
+      config: { childList: true, subtree: true },
+      source: "hook",
+      onRemove: () => {
+        const $nativeSlogan = $(DomSelectors.HOME.SLOGAN);
 
-    if (!$nativeSlogan.length) return;
+        if (!$nativeSlogan.length) return;
 
-    $nativeSlogan
-      .find("> div:first-child")
-      .addClass("tw-relative")
-      .find("span:first")
-      .addClass(
-        "text-shadow-hover tw-select-none !tw-leading-[1.2rem] tw-transition-all tw-duration-300 tw-ease-in-out hover:tw-tracking-wide",
-      )
-      .text(slogan || $nativeSlogan.text());
+        $nativeSlogan
+          .find("> div:first-child")
+          .addClass("tw-relative")
+          .find("span:first")
+          .addClass(
+            "text-shadow-hover tw-select-none !tw-leading-[1.2rem] tw-transition-all tw-duration-300 tw-ease-in-out hover:tw-tracking-wide",
+          )
+          .text(slogan || $nativeSlogan.text());
 
-    $nativeSlogan.addClass("!tw-opacity-100");
+        $nativeSlogan.addClass("!tw-opacity-100");
 
-    setContainer($nativeSlogan[0] as HTMLElement);
-  }, [element, isWaiting, slogan]);
+        setContainer($nativeSlogan[0] as HTMLElement);
+      },
+    });
+
+    return () => {
+      DomObserver.destroy(id);
+    };
+  });
 
   if (!container || !visible) return null;
 
