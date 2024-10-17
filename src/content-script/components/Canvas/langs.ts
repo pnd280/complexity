@@ -28,10 +28,10 @@ export const canvasLangSettings = [
     actions: [
       {
         description: "Check out @paradroid's Scratchpad prompt",
-        cta: "Open original thread",
+        cta: "Github",
         action: () => {
           window.open(
-            "https://discord.com/channels/1047197230748151888/1223058316662538331/1285473963958472765",
+            "https://github.com/para-droid-ai/scratchpad",
           );
         },
       },
