@@ -96,22 +96,17 @@ function observeMainQueryBox({
 
   $buttonBar.attr(`data-${id}`, "true");
 
+  const hideNativeFocusDropdown =
+    CplxUserSettings.get().generalSettings.queryBoxSelectors.spaceNFocus;
+
   $buttonBar.addClass(() =>
     cn("tw-col-span-3 tw-col-start-1 !tw-col-end-4 tw-flex-wrap tw-gap-y-1", {
-      "tw-mr-[7rem]":
-        !CplxUserSettings.get().generalSettings.queryBoxSelectors.focus,
-      "tw-mr-10":
-        CplxUserSettings.get().generalSettings.queryBoxSelectors.focus,
+      "[&>:first-child:not(.mr-xs.flex.shrink-0.items-center)]:tw-hidden [&_.mr-xs.flex.shrink-0.items-center+*]:tw-hidden":
+        hideNativeFocusDropdown,
+      "tw-mr-10": hideNativeFocusDropdown,
+      "tw-mr-[7rem]": !hideNativeFocusDropdown,
     }),
   );
-
-  const $buttonBarChildren = $buttonBar.children(
-    ":not(.mr-xs.flex.shrink-0.items-center)",
-  );
-
-  if (CplxUserSettings.get().generalSettings.queryBoxSelectors.focus) {
-    $buttonBarChildren.first().addClass("hidden");
-  }
 
   setContainers($buttonBar[0]);
 

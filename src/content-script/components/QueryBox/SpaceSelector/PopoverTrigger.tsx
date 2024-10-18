@@ -27,7 +27,7 @@ export default function SpaceSelectorPopoverTrigger({
 
   return (
     <Tooltip content="Chat with a space" disabled={!!selectedSpaceUuid}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <div className="text-center cursor-pointer tw-group tw-relative tw-flex tw-min-h-8 tw-max-w-[150px] tw-items-center tw-gap-2 tw-rounded-md tw-px-2 tw-text-sm tw-text-muted-foreground tw-transition-all tw-duration-300 tw-animate-in tw-fade-in hover:tw-bg-accent hover:tw-text-accent-foreground active:tw-scale-95 [&>span]:tw-select-none [&>span]:!tw-truncate">
           {selectedSpaceUuid && (
             <X

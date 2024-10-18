@@ -13,6 +13,7 @@ export default function useFetchSpaceFiles({
   const query = useQuery({
     queryKey: ["space-files", spaceUuid],
     queryFn: () => PplxApi.fetchSpaceFiles(spaceUuid),
+    enabled: !!spaceUuid,
     refetchOnMount: false,
   });
 

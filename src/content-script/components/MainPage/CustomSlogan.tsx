@@ -17,30 +17,36 @@ export default function CustomSlogan() {
   const slogan = CplxUserSettings.get().customTheme.slogan;
 
   useEffect(() => {
-    const id = "slogan";
+    const id = "custom-slogan";
+
+    const callback = () => {
+      const $nativeSlogan = $(DomSelectors.HOME.SLOGAN);
+
+      if (!$nativeSlogan.length || $nativeSlogan.attr(`data-${id}`)) return;
+
+      $nativeSlogan.attr(`data-${id}`, "true");
+
+      $nativeSlogan
+        .find("> div:first-child")
+        .addClass("tw-relative")
+        .find("span:first")
+        .addClass(
+          "text-shadow-hover tw-select-none !tw-leading-[1.2rem] tw-transition-all tw-duration-300 tw-ease-in-out hover:tw-tracking-wide",
+        )
+        .text(slogan || $nativeSlogan.text());
+
+      $nativeSlogan.addClass("!tw-opacity-100");
+
+      setContainer($nativeSlogan[0] as HTMLElement);
+    };
+
+    requestIdleCallback(callback);
 
     DomObserver.create(id, {
       target: document.body,
       config: { childList: true, subtree: true },
       source: "hook",
-      onRemove: () => {
-        const $nativeSlogan = $(DomSelectors.HOME.SLOGAN);
-
-        if (!$nativeSlogan.length) return;
-
-        $nativeSlogan
-          .find("> div:first-child")
-          .addClass("tw-relative")
-          .find("span:first")
-          .addClass(
-            "text-shadow-hover tw-select-none !tw-leading-[1.2rem] tw-transition-all tw-duration-300 tw-ease-in-out hover:tw-tracking-wide",
-          )
-          .text(slogan || $nativeSlogan.text());
-
-        $nativeSlogan.addClass("!tw-opacity-100");
-
-        setContainer($nativeSlogan[0] as HTMLElement);
-      },
+      onAny: callback,
     });
 
     return () => {

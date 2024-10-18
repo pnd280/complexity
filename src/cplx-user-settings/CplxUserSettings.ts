@@ -17,10 +17,9 @@ export default class CplxUserSettings {
     defaultProSearchState: false,
     generalSettings: {
       queryBoxSelectors: {
-        focus: false,
+        spaceNFocus: false,
         languageModel: false,
         imageGenModel: false,
-        space: false,
       },
       qolTweaks: {
         threadToc: false,

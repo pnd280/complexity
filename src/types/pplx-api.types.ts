@@ -47,6 +47,8 @@ export type ThreadMessageApiResponse = {
   space_info: Space;
   thread_url_slug: string;
   display_model: LanguageModel["code"];
+  collection_info?: Space;
+  // TODO: api response contains 2 types, first message has "collection_info" and subsequent messages don't
 };
 
 export type UserAiProfileApiResponse = UserAiProfile;
@@ -69,3 +71,11 @@ export const SpaceFilesApiResponseSchema = z.object({
 });
 
 export type SpaceFilesApiResponse = z.infer<typeof SpaceFilesApiResponseSchema>;
+
+export const SpaceFileDownloadUrlApiResponseSchema = z.object({
+  file_url: z.string(),
+});
+
+export type SpaceFileDownloadUrlApiResponse = z.infer<
+  typeof SpaceFileDownloadUrlApiResponseSchema
+>;

@@ -1,9 +1,14 @@
 import { LanguageModel, FocusMode } from "@/content-script/components/QueryBox";
+import {
+  followUpQueryBoxScopedContext,
+  mainQueryBoxScopedContext,
+} from "@/content-script/components/QueryBox/context";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import {
   SpacesApiResponse,
+  ThreadMessageApiResponse,
   UserAiProfileApiResponse,
 } from "@/types/pplx-api.types";
 import { Space, SpaceSchema } from "@/types/space.types";
@@ -16,6 +21,7 @@ import {
 } from "@/types/webpage-messenger.types";
 import { isParsedWsMessage, WsParsedMessage } from "@/types/ws.types";
 import { queryClient } from "@/utils/ts-query-query-client";
+import { parseUrl } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
 
 export default class WebpageMessageInterceptor {
@@ -34,6 +40,40 @@ export default class WebpageMessageInterceptor {
       },
       callback: async (messageData) => {
         queryClient.invalidateQueries({ queryKey: ["userSettings"] });
+
+        return messageData;
+      },
+      stopCondition: () => false,
+    });
+  }
+
+  static detectSpaceSwap() {
+    webpageMessenger.addInterceptor({
+      matchCondition: (messageData: MessageData<any>) => {
+        const parsedPayload = parseStructuredMessage(messageData);
+
+        if (!parsedPayload) return { match: false };
+
+        return {
+          match:
+            (parsedPayload.event === "upsert_thread_collection" &&
+              parsedPayload.data?.length > 0 &&
+              "new_collection_uuid" in parsedPayload.data[0]) ||
+            parsedPayload.event === "remove_collection_thread",
+        };
+      },
+      callback: async (messageData: MessageData<any>) => {
+        setTimeout(async () => {
+          await this.waitForUpsertThreadCollection();
+
+          queryClient.invalidateQueries({
+            queryKey: [
+              "threadInfo",
+              parseUrl().pathname.split("/").pop() || "",
+            ],
+            exact: true,
+          });
+        }, 0);
 
         return messageData;
       },
@@ -82,6 +122,8 @@ export default class WebpageMessageInterceptor {
   static alterQueries() {
     webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {
+        // TODO: Refactor this mess
+
         const webSocketMessageData = messageData as MessageData<
           WebSocketEventData | LongPollingEventData
         >;
@@ -109,24 +151,69 @@ export default class WebpageMessageInterceptor {
             ? queryBoxStore.getState().selectedLanguageModel
             : parsedPayload.data[1].model_preference;
 
-        const newSearchFocus = CplxUserSettings.get().generalSettings
-          .queryBoxSelectors.focus
+        let newSearchFocus: FocusMode["code"] = CplxUserSettings.get()
+          .generalSettings.queryBoxSelectors.spaceNFocus
           ? queryBoxStore.getState().focusMode
           : parsedPayload.data[1].search_focus;
 
-        const newTargetCollectionUuid = CplxUserSettings.get().generalSettings
-          .queryBoxSelectors.space
+        let newTargetCollectionUuid = CplxUserSettings.get().generalSettings
+          .queryBoxSelectors.spaceNFocus
           ? parsedPayload.data[1].query_source === "home" ||
             parsedPayload.data[1].query_source === "modal"
             ? queryBoxStore.getState().selectedSpaceUuid
             : parsedPayload.data[1].target_collection_uuid
           : undefined;
 
+        const { selectedSpaceUuid, focusMode } = queryBoxStore.getState();
+
+        const focusModeIncludeFiles = (
+          parsedPayload.data[1].query_source === "followup"
+            ? followUpQueryBoxScopedContext
+            : mainQueryBoxScopedContext
+        ).getState().focusModeIncludeFiles;
+
+        let newQuerySource =
+          (parsedPayload.data[1].query_source === "home" ||
+            parsedPayload.data[1].query_source === "modal") &&
+          selectedSpaceUuid
+            ? "collection"
+            : parsedPayload.data[1].query_source;
+
+        let sources: string[] = parsedPayload.data[1].sources;
+
+        if (
+          CplxUserSettings.get().generalSettings.queryBoxSelectors.spaceNFocus
+        ) {
+          sources = [];
+
+          if (focusMode !== "writing") sources.push("web");
+          if (focusModeIncludeFiles) {
+            sources.push("space");
+            if (newSearchFocus === "writing") newSearchFocus = "internet";
+
+            // TODO: Remove thistemp fix
+            if (parsedPayload.data[1].query_source === "retry") {
+              newQuerySource = "edit";
+            }
+
+            const currentThreadInfo = queryClient.getQueryData<
+              ThreadMessageApiResponse[]
+            >(["threadInfo", parseUrl().pathname.split("/").pop() || ""]);
+
+            if (currentThreadInfo) {
+              newTargetCollectionUuid =
+                currentThreadInfo[0].collection_info?.uuid;
+            }
+          }
+        }
+
         parsedPayload.data[1] = {
           ...parsedPayload.data[1],
+          query_source: newQuerySource,
           model_preference: newModelPreference,
           search_focus: newSearchFocus,
           target_collection_uuid: newTargetCollectionUuid,
+          sources,
         };
 
         return {
@@ -270,8 +357,7 @@ export default class WebpageMessageInterceptor {
 
       if (!parsedPayload) return false;
 
-      return !(
-        parsedPayload.messageCode !== 431 &&
+      return (
         parsedPayload.data?.length === 1 &&
         parsedPayload.data[0].status === "completed"
       );

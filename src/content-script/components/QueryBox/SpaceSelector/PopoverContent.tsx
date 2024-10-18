@@ -13,6 +13,8 @@ import useFetchSpaces from "@/content-script/hooks/useFetchSpaces";
 import useFetchUserAiProfile from "@/content-script/hooks/useFetchUserAiProfile";
 import useUpdateUserAiProfile from "@/content-script/hooks/useUpdateUserAiProfile";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { useQueryBoxStore } from "@/content-script/session-store/query-box";
+import PplxApi from "@/services/PplxApi";
 import {
   Command,
   CommandInput,
@@ -29,10 +31,11 @@ import {
 } from "@/shared/components/HoverCard";
 import { PopoverContent } from "@/shared/components/Popover";
 import Tooltip from "@/shared/components/Tooltip";
+import { toast } from "@/shared/toast";
 import { Space } from "@/types/space.types";
 import { cn } from "@/utils/cn";
 import { queryClient } from "@/utils/ts-query-query-client";
-import { whereAmI } from "@/utils/utils";
+import { emojiCodeToString, whereAmI } from "@/utils/utils";
 
 type SpaceSelectorPopoverContentProps = {
   selectedSpaceUuid: string;
@@ -48,6 +51,20 @@ export function SpaceSelectorPopoverContent({
     isLoading: isLoadingSpaces,
     isPending: isPendingSpaces,
   } = useFetchSpaces();
+
+  const setSelectedLanguageModel = useQueryBoxStore(
+    (state) => state.setSelectedLanguageModel,
+  );
+
+  useEffect(() => {
+    const selectedSpace = spaces?.find(
+      (space) => space.uuid === selectedSpaceUuid,
+    );
+
+    if (selectedSpace?.model_selection) {
+      setSelectedLanguageModel(selectedSpace.model_selection);
+    }
+  }, [selectedSpaceUuid, spaces, setSelectedLanguageModel]);
 
   return (
     <PopoverContent className="!tw-w-max !tw-p-0 tw-shadow-md">
@@ -226,7 +243,10 @@ function SpaceItem({
       }}
     >
       <div className="tw-max-w-[250px] tw-truncate !tw-py-1 !tw-text-sm">
-        {space.title}
+        {space.emoji && (
+          <span className="mr-2">{emojiCodeToString(space.emoji)}</span>
+        )}
+        <span>{space.title}</span>
       </div>
       <div className="tw-absolute tw-right-0 tw-flex tw-h-full tw-w-full tw-items-center tw-justify-end tw-gap-1 tw-px-2 group-hover:tw-bg-gradient-to-r group-hover:tw-from-transparent group-hover:tw-to-secondary">
         <HoverCard
@@ -252,42 +272,48 @@ function SpaceItem({
               <FaEye className="tw-size-3" />
             </div>
           </HoverCardTrigger>
-          <HoverCardContent className="max-w-[500px] tw-flex tw-flex-col tw-gap-2 tw-text-left tw-font-sans">
-            <div className="tw-absolute tw-right-2 tw-top-2 tw-flex tw-gap-2">
-              <div
-                className="tw-cursor-pointer tw-text-muted-foreground tw-transition-colors tw-duration-100 tw-ease-in-out hover:tw-text-foreground"
-                onClick={(e) => {
-                  e.stopPropagation();
-
-                  queryClient.invalidateQueries({
-                    queryKey: ["space-files", space.uuid],
-                  });
-                }}
-              >
-                <LuRefreshCcw className="tw-size-3" />
+          <HoverCardContent
+            className="tw-relative tw-flex tw-max-w-[350px] tw-flex-col tw-gap-2 tw-text-left tw-font-sans lg:tw-max-w-[500px]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="tw-mb-2 tw-flex tw-items-start tw-justify-between">
+              <div className="tw-flex-1">
+                {space.description && (
+                  <div className="tw-flex tw-flex-col tw-gap-1">
+                    <div className="tw-text-xs tw-text-muted-foreground">
+                      Description
+                    </div>
+                    <div className="tw-line-clamp-5 tw-text-sm">
+                      {space.description}
+                    </div>
+                  </div>
+                )}
               </div>
-              <div
-                className="tw-cursor-pointer tw-text-muted-foreground tw-transition-colors tw-duration-100 tw-ease-in-out hover:tw-text-foreground"
-                onClick={() => {
-                  webpageMessenger.sendMessage({
-                    event: "routeToPage",
-                    payload: `/collections/${space.uuid}`,
-                  });
-                }}
-              >
-                <LuExternalLink className="tw-size-3" />
+              <div className="tw-ml-2 tw-flex tw-gap-2">
+                <div
+                  className="tw-cursor-pointer tw-text-muted-foreground tw-transition-colors tw-duration-100 tw-ease-in-out hover:tw-text-foreground"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    queryClient.invalidateQueries({
+                      queryKey: ["space-files", space.uuid],
+                    });
+                  }}
+                >
+                  <LuRefreshCcw className="tw-size-3" />
+                </div>
+                <div
+                  className="tw-cursor-pointer tw-text-muted-foreground tw-transition-colors tw-duration-100 tw-ease-in-out hover:tw-text-foreground"
+                  onClick={() => {
+                    webpageMessenger.sendMessage({
+                      event: "routeToPage",
+                      payload: `/collections/${space.uuid}`,
+                    });
+                  }}
+                >
+                  <LuExternalLink className="tw-size-3" />
+                </div>
               </div>
             </div>
-            {space.description && (
-              <div className="tw-flex tw-flex-col tw-gap-1">
-                <div className="tw-text-xs tw-text-muted-foreground">
-                  Description
-                </div>
-                <div className="tw-line-clamp-5 tw-text-sm">
-                  {space.description}
-                </div>
-              </div>
-            )}
             <div className="tw-flex tw-flex-col tw-gap-1">
               <div className="tw-text-xs tw-text-muted-foreground">
                 Instruction
@@ -337,7 +363,7 @@ function SpaceFiles({ spaceUuid }: { spaceUuid: Space["uuid"] }) {
   if (files == null || files.length === 0)
     return (
       <div className="tw-text-xs tw-text-muted-foreground">
-        No files found in this space!
+        No files found in this Space!
       </div>
     );
 
@@ -349,7 +375,30 @@ function SpaceFiles({ spaceUuid }: { spaceUuid: Space["uuid"] }) {
           className="tw-flex tw-items-center tw-gap-2 tw-text-xs"
         >
           <FaFile className="tw-size-3" />
-          <div>{file.filename}</div>
+          <div
+            className="tw-cursor-pointer hover:tw-text-accent-foreground hover:tw-underline"
+            onClick={async () => {
+              const result = await PplxApi.fetchSpaceFileDownloadUrl({
+                fileUuid: file.file_uuid,
+                spaceUuid,
+              });
+
+              if (!result.success) {
+                console.log(result.error);
+
+                toast({
+                  title: "Failed to fetch space file download url",
+                  description: "Please check the console!",
+                  variant: "destructive",
+                });
+                return;
+              }
+
+              window.open(result.data.file_url, "_blank");
+            }}
+          >
+            {file.filename}
+          </div>
         </div>
       ))}
     </div>

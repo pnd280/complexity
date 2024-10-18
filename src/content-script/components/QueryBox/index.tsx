@@ -66,8 +66,8 @@ export const imageModelIcons: Record<ImageModel["code"], ReactNode> = {
 export type FocusMode = (typeof focusModes)[number];
 
 export const focusModeIcons: Record<FocusMode["code"], ReactNode> = {
-  writing: <LuPencil className="tw-size-4" />,
   internet: <PiGlobe className="tw-size-4" />,
+  writing: <LuPencil className="tw-size-4" />,
   scholar: <Library className="tw-size-4" />,
   wolfram: <BadgePercent className="tw-size-4" />,
   youtube: <SiYoutube className="tw-size-4" />,
