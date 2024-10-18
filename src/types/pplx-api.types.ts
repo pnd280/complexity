@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 import { LanguageModel } from "@/content-script/components/QueryBox";
-import { Collection } from "@/types/collection.types";
+import { Space } from "@/types/space.types";
 import { HasUserAiProfile, UserAiProfile } from "@/types/user-ai-profile";
 
 export type SubscriptionStatus = "active" | "trialing" | "none";
@@ -36,7 +36,7 @@ export type UserSettingsApiResponseRaw = z.infer<
   typeof UserSettingsApiResponseRawSchema
 >;
 
-export type CollectionsApiResponse = Collection[];
+export type SpacesApiResponse = Space[];
 
 export type ThreadMessageApiResponse = {
   query_str: string;
@@ -44,7 +44,7 @@ export type ThreadMessageApiResponse = {
   backend_uuid: string;
   author_image: string | null;
   author_username: string;
-  collection_info: Collection;
+  space_info: Space;
   thread_url_slug: string;
   display_model: LanguageModel["code"];
 };
@@ -52,3 +52,20 @@ export type ThreadMessageApiResponse = {
 export type UserAiProfileApiResponse = UserAiProfile;
 
 export type UpdateUserAiProfileApiRequest = Partial<HasUserAiProfile>;
+
+export const SpaceFilesApiResponseSchema = z.object({
+  files: z.array(
+    z.object({
+      filename: z.string(),
+      file_uuid: z.string(),
+      file_s3_url: z.string(),
+      uploaded_by: z.string(),
+      file_size: z.number(),
+      time_created: z.string(),
+      error: z.string().nullable(),
+    }),
+  ),
+  num_total_files: z.number(),
+});
+
+export type SpaceFilesApiResponse = z.infer<typeof SpaceFilesApiResponseSchema>;

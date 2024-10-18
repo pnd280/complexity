@@ -227,7 +227,7 @@ export function whereAmI(providedUrl?: string) {
   if (hostname === "www.perplexity.ai") {
     switch (true) {
       case pathname.startsWith("/collections"):
-        return "collection";
+        return "space";
       case pathname.startsWith("/search"):
         return "thread";
       case pathname.startsWith("/page"):

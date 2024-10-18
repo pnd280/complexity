@@ -39,9 +39,9 @@ describe("compareVersions", () => {
 });
 
 describe("whereAmI", () => {
-  it('should return "collection" for collection URLs', () => {
+  it('should return "space" for space URLs', () => {
     expect(whereAmI("https://www.perplexity.ai/collections/example")).toBe(
-      "collection",
+      "space",
     );
   });
 

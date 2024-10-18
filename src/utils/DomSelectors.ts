@@ -55,8 +55,8 @@ const DomSelectors = {
       MAIN: '[data-testid="quick-search-modal"] textarea[placeholder][autocomplete][style*="height: 48px !important;"], .max-w-screen-md textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
       FOLLOW_UP:
         '[location="thread"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
-      COLLECTION:
-        '[location="collection"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+      SPACE:
+        '[location="space"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
       ARBITRARY:
         'textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
     },

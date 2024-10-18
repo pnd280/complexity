@@ -25,7 +25,7 @@ export const cplxUserSettingsSchema = z.object({
       focus: z.boolean(),
       languageModel: z.boolean(),
       imageGenModel: z.boolean(),
-      collection: z.boolean(),
+      space: z.boolean(),
     }),
     qolTweaks: z.object({
       threadToc: z.boolean(),

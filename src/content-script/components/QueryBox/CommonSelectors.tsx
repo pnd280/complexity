@@ -1,21 +1,21 @@
 import { LuLoader2 as LoaderCircle } from "react-icons/lu";
 
-import CollectionSelector from "@/content-script/components/QueryBox/CollectionSelector";
 import FocusSelector from "@/content-script/components/QueryBox/FocusSelector";
 import LanguageModelSelector from "@/content-script/components/QueryBox/LanguageModelSelector";
+import SpaceSelector from "@/content-script/components/QueryBox/SpaceSelector";
 import Separator from "@/shared/components/Separator";
 
 export default function CommonSelectors({
   isReady,
   hasActivePplxSub,
   focus,
-  collection,
+  space,
   languageModel,
 }: {
   isReady: boolean;
   hasActivePplxSub: boolean;
   focus: boolean;
-  collection?: boolean;
+  space?: boolean;
   languageModel: boolean;
 }) {
   if (!isReady) {
@@ -31,10 +31,10 @@ export default function CommonSelectors({
 
   return (
     <div className="tw-flex tw-items-center">
-      {(focus || collection) && (
+      {(focus || space) && (
         <>
           {focus && <FocusSelector />}
-          {collection && <CollectionSelector />}
+          {space && <SpaceSelector />}
           {hasActivePplxSub && languageModel && (
             <div className="tw-my-auto tw-flex tw-h-8 tw-items-center">
               <Separator

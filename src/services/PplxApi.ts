@@ -1,13 +1,14 @@
 import { LanguageModel } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
-import { Collection } from "@/types/collection.types";
 import {
+  SpaceFilesApiResponseSchema,
   ThreadMessageApiResponse,
   UpdateUserAiProfileApiRequest,
   UserSettingsApiResponse,
   UserSettingsApiResponseRawSchema,
 } from "@/types/pplx-api.types";
+import { Space } from "@/types/space.types";
 import { UserAiProfile } from "@/types/user-ai-profile";
 import { fetchResource, jsonUtils } from "@/utils/utils";
 import WsMessageParser from "@/utils/WsMessageParser";
@@ -61,7 +62,7 @@ export default class PplxApi {
     };
   }
 
-  static async fetchCollections(): Promise<Collection[]> {
+  static async fetchSpaces(): Promise<Space[]> {
     // webpageMessenger.sendMessage({
     //   event: "sendWebSocketMessage",
     //   payload: WsMessageParser.stringify({
@@ -76,7 +77,7 @@ export default class PplxApi {
     //   forceLongPolling: true,
     // });
 
-    // const collections = await WebpageMessageInterceptor.waitForCollections();
+    // const spaces = await WebpageMessageInterceptor.waitForSpaces();
 
     const resp = await fetchResource(
       "https://www.perplexity.ai/rest/collections/list_user_collections?limit=50&offset=0&version=2.13&source=default",
@@ -84,31 +85,62 @@ export default class PplxApi {
 
     const data = jsonUtils.safeParse(resp);
 
-    if (data == null) throw new Error("Failed to fetch collections");
+    if (data == null) throw new Error("Failed to fetch spaces");
 
     return data;
   }
 
-  static async updateCollection(args: {
-    collection: Collection;
+  static async fetchSpaceFiles(spaceUuid: Space["uuid"]) {
+    // POST https://www.perplexity.ai/rest/file-repository/list-files?version=2.13&source=default
+    // payload: {"file_repository_info":{"file_repository_type":"COLLECTION","owner_id":"cf11f61d-4f74-4582-9f2c-365f5419989b"},"limit":12,"offset":0,"search_term":"","file_states_in_filter":["COMPLETE"]}
+
+    const resp = await fetch(
+      "https://www.perplexity.ai/rest/file-repository/list-files?version=2.13&source=default",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          file_repository_info: {
+            file_repository_type: "COLLECTION",
+            owner_id: spaceUuid,
+          },
+          limit: 12,
+          offset: 0,
+          search_term: "",
+          file_states_in_filter: ["COMPLETE"],
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const data = await resp.json();
+
+    const parsedData = SpaceFilesApiResponseSchema.parse(data);
+
+    return parsedData;
+  }
+
+  static async updateSpace(args: {
+    space: Space;
     newTitle: string;
     newDescription: string;
     newInstructions: string;
   }) {
-    const { collection, newTitle, newDescription, newInstructions } = args;
+    const { space, newTitle, newDescription, newInstructions } = args;
 
     await webpageMessenger.sendMessage({
       event: "sendWebSocketMessage",
       payload: WsMessageParser.stringify({
         messageCode: 420,
-        event: "edit_collection",
+        event: "edit_space",
         data: [
           {
-            collection_uuid: collection.uuid,
+            space_uuid: space.uuid,
             title: newTitle,
             description: newDescription,
             instructions: newInstructions,
-            access: collection.access,
+            access: space.access,
           },
         ],
       }),

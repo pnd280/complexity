@@ -7,8 +7,8 @@ import {
   LanguageModel,
 } from "@/content-script/components/QueryBox";
 import PplxApi from "@/services/PplxApi";
-import { Collection } from "@/types/collection.types";
 import { isValidFocus } from "@/types/model-selector.types";
+import { Space } from "@/types/space.types";
 import ChromeStorage from "@/utils/ChromeStorage";
 import { extensionExec } from "@/utils/hof";
 
@@ -29,10 +29,8 @@ type QueryBoxState = {
   setImageCreateLimit: (createLimit: number) => void;
   focusMode: FocusMode["code"] | null;
   setFocusMode: (focusMode: FocusMode["code"] | null) => void;
-  selectedCollectionUuid: Collection["uuid"];
-  setSelectedCollectionUuid: (
-    selectedCollectionUuid: Collection["uuid"],
-  ) => void;
+  selectedSpaceUuid: Space["uuid"];
+  setSelectedSpaceUuid: (selectedSpaceUuid: Space["uuid"]) => void;
 };
 
 const useQueryBoxStore = create<QueryBoxState>()(
@@ -67,9 +65,8 @@ const useQueryBoxStore = create<QueryBoxState>()(
       return set({ focusMode });
     },
 
-    selectedCollectionUuid: "",
-    setSelectedCollectionUuid: (selectedCollectionUuid) =>
-      set({ selectedCollectionUuid }),
+    selectedSpaceUuid: "",
+    setSelectedSpaceUuid: (selectedSpaceUuid) => set({ selectedSpaceUuid }),
   })),
 );
 

@@ -24,11 +24,11 @@ export default class GeneralSettings {
       settingKey: "focus",
     },
     {
-      id: "collection-selector",
-      label: "Collection",
+      id: "space-selector",
+      label: "(Space) Collection",
       description:
-        "Initialize a new Collection thread from the homepage and the quick ask modal. Including pause/resume the AI Profile.",
-      settingKey: "collection",
+        "Initialize a new Space (Collection) thread from the homepage and the quick ask modal. Including pause/resume the AI Profile.",
+      settingKey: "space",
     },
     {
       id: "language-model-selector",

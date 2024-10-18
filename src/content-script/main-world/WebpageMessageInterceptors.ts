@@ -2,11 +2,11 @@ import { LanguageModel, FocusMode } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
-import { Collection, CollectionSchema } from "@/types/collection.types";
 import {
-  CollectionsApiResponse,
+  SpacesApiResponse,
   UserAiProfileApiResponse,
 } from "@/types/pplx-api.types";
+import { Space, SpaceSchema } from "@/types/space.types";
 import { UserAiProfile, UserAiProfileSchema } from "@/types/user-ai-profile";
 import {
   AddInterceptorMatchCondition,
@@ -115,10 +115,10 @@ export default class WebpageMessageInterceptor {
           : parsedPayload.data[1].search_focus;
 
         const newTargetCollectionUuid = CplxUserSettings.get().generalSettings
-          .queryBoxSelectors.collection
+          .queryBoxSelectors.space
           ? parsedPayload.data[1].query_source === "home" ||
             parsedPayload.data[1].query_source === "modal"
-            ? queryBoxStore.getState().selectedCollectionUuid
+            ? queryBoxStore.getState().selectedSpaceUuid
             : parsedPayload.data[1].target_collection_uuid
           : undefined;
 
@@ -340,7 +340,7 @@ export default class WebpageMessageInterceptor {
     });
   }
 
-  static waitForCollections(): Promise<Collection[]> {
+  static waitForCollections(): Promise<Space[]> {
     const matchCondition: AddInterceptorMatchCondition<
       any,
       { collections: any[] }
@@ -359,9 +359,9 @@ export default class WebpageMessageInterceptor {
       )
         return { match: false };
 
-      const collections = parsedPayload.data[0] as CollectionsApiResponse;
+      const collections = parsedPayload.data[0] as SpacesApiResponse;
 
-      const validate = CollectionSchema.safeParse(collections[0]);
+      const validate = SpaceSchema.safeParse(collections[0]);
 
       if (!validate.success) return { match: false };
 
@@ -369,7 +369,7 @@ export default class WebpageMessageInterceptor {
         match: true,
         args: [
           {
-            collections: collections as Collection[],
+            collections: collections as Space[],
           },
         ],
       };
@@ -387,12 +387,12 @@ export default class WebpageMessageInterceptor {
 
       setTimeout(() => {
         removeInterceptor();
-        reject(new Error("Fetching collections timed out"));
+        reject(new Error("Fetching spaces timed out"));
       }, 3000);
     });
   }
 
-  static waitForCollectionCreation() {
+  static waitForSpaceCreation() {
     const matchCondition = (messageData: MessageData<any>) => {
       const parsedPayload = parseStructuredMessage(messageData);
 
@@ -422,7 +422,7 @@ export default class WebpageMessageInterceptor {
 
       setTimeout(() => {
         removeInterceptor();
-        reject(new Error("Collection creation timed out"));
+        reject(new Error("Space creation timed out"));
       }, 5000);
     });
   }

@@ -3,7 +3,6 @@ import {
   LuCompass as Compass,
   LuComputer as Computer,
   LuGalleryHorizontalEnd as GalleryHorizontalEnd,
-  LuLayers as Layers3,
   LuMoon as Moon,
   LuBook as NotebookText,
   LuSettings as Settings,
@@ -23,6 +22,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/shared/components/Command";
+import SpaceIcon from "@/shared/components/icons/SpaceIcon";
 import KeyCombo from "@/shared/components/KeyCombo";
 import { setCookie } from "@/utils/utils";
 
@@ -112,9 +112,9 @@ export default function Commander() {
               <KeyCombo keys={["Ctrl", "Alt", "T"]} />
             </CommandShortcut>
           </CommandItem>
-          <CommandItem keywords={["collections", "search"]}>
-            <Layers3 className="tw-mr-2" />
-            Collections
+          <CommandItem keywords={["spaces", "search"]}>
+            <SpaceIcon className="tw-mr-2" />
+            Spaces
             <CommandShortcut>
               <KeyCombo keys={["Ctrl", "Alt", "C"]} />
             </CommandShortcut>

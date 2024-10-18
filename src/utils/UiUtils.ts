@@ -96,12 +96,12 @@ export default class UiUtils {
         `${DomSelectors.QUERY_BOX.TEXTAREA.MAIN}:last`,
       );
 
-      const $collection = $parents.find(
-        `${DomSelectors.QUERY_BOX.TEXTAREA.COLLECTION}:last`,
+      const $space = $parents.find(
+        `${DomSelectors.QUERY_BOX.TEXTAREA.SPACE}:last`,
       );
 
       return (
-        $main.length ? $main : $collection
+        $main.length ? $main : $space
       ) as JQuery<HTMLTextAreaElement>;
     }
 

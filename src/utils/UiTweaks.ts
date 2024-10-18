@@ -107,7 +107,7 @@ export default class UiTweaks {
       .toggleClass(
         "alter-attach-button",
         settings.queryBoxSelectors.focus ||
-          settings.queryBoxSelectors.collection,
+          settings.queryBoxSelectors.space,
       )
       .toggleClass(
         "collapse-empty-thread-visual-columns",

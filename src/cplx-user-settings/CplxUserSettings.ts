@@ -20,7 +20,7 @@ export default class CplxUserSettings {
         focus: false,
         languageModel: false,
         imageGenModel: false,
-        collection: false,
+        space: false,
       },
       qolTweaks: {
         threadToc: false,

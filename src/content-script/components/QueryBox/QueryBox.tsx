@@ -9,7 +9,7 @@ import Portal from "@/shared/components/Portal";
 export default function QueryBox() {
   const { settings } = useCplxGeneralSettings();
 
-  const { focus, imageGenModel, languageModel, collection } =
+  const { focus, imageGenModel, languageModel, space } =
     settings?.queryBoxSelectors || {};
 
   const {
@@ -65,7 +65,7 @@ export default function QueryBox() {
       isReady={isReady}
       hasActivePplxSub={!!hasActivePplxSub}
       focus={!!focus}
-      collection={collection}
+      space={space}
       languageModel={!!languageModel}
     />
   );
