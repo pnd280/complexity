@@ -1,6 +1,5 @@
-
-
 import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
+import { whereAmI } from "@/utils/utils";
 
 export default class UiUtils {
   static isDarkTheme() {
@@ -237,5 +236,9 @@ export default class UiUtils {
 
       return (visibleArea / totalArea) * 100;
     }
+  }
+
+  static applyRouteIdAttrs(location: ReturnType<typeof whereAmI>) {
+    $(document.body).attr("location", location);
   }
 }

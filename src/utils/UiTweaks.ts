@@ -1,11 +1,8 @@
-
-
 import CplxUserSettings from "@/cplx-user-settings/CplxUserSettings";
 import Canvas from "@/utils/Canvas";
 import DomObserver from "@/utils/DomObserver/DomObserver";
 import UiUtils from "@/utils/UiUtils";
 import { getCookie, jsonUtils, setCookie, whereAmI } from "@/utils/utils";
-
 
 export default class UiTweaks {
   static injectCustomStyles() {
@@ -107,7 +104,6 @@ export default class UiTweaks {
     const settings = CplxUserSettings.get().generalSettings;
 
     $(document.body)
-      .attr("location", location)
       .toggleClass(
         "alter-attach-button",
         settings.queryBoxSelectors.focus ||

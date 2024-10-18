@@ -23,6 +23,8 @@ class Router {
   }
 
   async initialize(): Promise<void> {
+    UiUtils.applyRouteIdAttrs(whereAmI());
+
     await this.waitForNextjsGlobalObj();
 
     this.setupRouter();
@@ -127,6 +129,8 @@ class Router {
     location: ReturnType<typeof whereAmI>,
   ) {
     return new Promise<void>((resolve) => {
+      UiUtils.applyRouteIdAttrs(location);
+
       const conditions: Partial<
         Record<typeof location, () => MaybePromise<boolean>>
       > = {

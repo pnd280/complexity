@@ -52,10 +52,13 @@ const DomSelectors = {
   },
   QUERY_BOX: {
     TEXTAREA: {
-      MAIN: 'textarea[autocomplete][placeholder]:not([placeholder="Ask follow-up"]):not([placeholder="New Thread"]):not([placeholder=""])',
-      FOLLOW_UP: 'textarea[placeholder="Ask follow-up"]',
-      COLLECTION: 'textarea[placeholder="New Thread"]',
-      ARBITRARY: "textarea[placeholder]",
+      MAIN: '[data-testid="quick-search-modal"] textarea[placeholder][autocomplete][style*="height: 48px !important;"], .max-w-screen-md textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+      FOLLOW_UP:
+        '[location="thread"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+      COLLECTION:
+        '[location="collection"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+      ARBITRARY:
+        'textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
     },
     SUBMIT_BUTTON: 'button[aria-label="Submit"]',
     FORK_BUTTON: 'button svg[data-icon="code-fork"]',
