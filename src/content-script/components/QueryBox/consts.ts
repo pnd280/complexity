@@ -89,12 +89,12 @@ export const imageModels = [
 
 export const focusModes = [
   {
-    label: "Writing",
-    code: "writing",
-  },
-  {
     label: "Web",
     code: "internet",
+  },
+  {
+    label: "Writing",
+    code: "writing",
   },
   {
     label: "Academic",

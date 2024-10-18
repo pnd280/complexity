@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { FaMarkdown } from "react-icons/fa";
 import {
   LuCheck as Check,
@@ -8,7 +7,7 @@ import {
 } from "react-icons/lu";
 
 import { Container } from "@/content-script/components/ThreadMessageStickyToolbar";
-import PplxApi from "@/services/PplxApi";
+import useFetchThreadInfo from "@/content-script/hooks/useFetchThreadInfo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +20,7 @@ import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import { toast } from "@/shared/toast";
 import { DomSelectors } from "@/utils/DomSelectors";
 import ThreadExport from "@/utils/ThreadExport";
+import { parseUrl } from "@/utils/utils";
 
 type CopyButtonProps = {
   container: Container;
@@ -31,12 +31,11 @@ export default function CopyButton({
   container,
   containerIndex,
 }: CopyButtonProps) {
-  const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
-    queryKey: ["currentThreadInfo"],
-    queryFn: () =>
-      PplxApi.fetchThreadInfo(window.location.pathname.split("/").pop() || ""),
-    enabled: false,
-  });
+  const { refetch, isFetching: isFetchingCurrentThreadInfo } =
+    useFetchThreadInfo({
+      slug: parseUrl().pathname.split("/").pop() || "",
+      enabled: false,
+    });
 
   const ctrlDown = useCtrlDown();
 

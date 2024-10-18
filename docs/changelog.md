@@ -6,6 +6,20 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.4.0
+
+_Release date: 18th Oct, 2024_
+
+-   **NEW**: New "Space" selector.
+    -   It is now **mandatory** to enable both "Space" and "Focus Mode" selectors. Quick editing popup is removed.
+        ![Space setting](https://i.imgur.com/tuq3nkQ.png)
+    -   Spaces that have files uploaded will have an extra focus mode option to include files in the context.
+        ![Space preview](https://i.imgur.com/Ez1ndO1.png)
+        ![Space preview](https://i.imgur.com/2ILreiy.png)
+    -   Selecting a Space auto-switches to its predefined language model, but you can still change it on-the-fly.
+    -   Display emoji.
+    -   **NOTE**: Files search only works when Pro Search is enabled. Complexity automatically turns on Pro Search when you select a space that has at least 1 file uploaded.
+
 ## v0.0.3.14
 
 _Release date: 16th Oct, 2024_

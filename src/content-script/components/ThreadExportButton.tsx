@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { FaMarkdown } from "react-icons/fa";
 import {
   LuCheck as Check,
@@ -7,8 +6,8 @@ import {
   LuUnlink as Unlink,
 } from "react-icons/lu";
 
+import useFetchThreadInfo from "@/content-script/hooks/useFetchThreadInfo";
 import useWaitForElement from "@/content-script/hooks/useWaitForElement";
-import PplxApi from "@/services/PplxApi";
 import Button from "@/shared/components/Button";
 import {
   DropdownMenu,
@@ -37,12 +36,12 @@ const exportOptions = [
 ] as const;
 
 export default function ThreadExportButton() {
-  const { refetch, isFetching: isFetchingCurrentThreadInfo } = useQuery({
-    queryKey: ["currentThreadInfo"],
-    queryFn: () =>
-      PplxApi.fetchThreadInfo(window.location.pathname.split("/").pop() || ""),
-    enabled: false,
-  });
+  const slug = window.location.pathname.split("/").pop() || "";
+  const { refetch, isFetching: isFetchingCurrentThreadInfo } =
+    useFetchThreadInfo({
+      slug,
+      enabled: false,
+    });
 
   const [container, setContainer] = useState<HTMLElement>();
 

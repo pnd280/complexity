@@ -1,4 +1,8 @@
 import CommonSelectors from "@/content-script/components/QueryBox/CommonSelectors";
+import {
+  MainQueryBoxContextProvider,
+  FollowUpQueryBoxContextProvider,
+} from "@/content-script/components/QueryBox/context";
 import ImageModelSelector from "@/content-script/components/QueryBox/ImageModelSelector";
 import useFetchUserSettings from "@/content-script/hooks/useFetchUserSettings";
 import useInitQueryBoxSessionStore from "@/content-script/hooks/useInitQueryBoxSessionStore";
@@ -9,7 +13,7 @@ import Portal from "@/shared/components/Portal";
 export default function QueryBox() {
   const { settings } = useCplxGeneralSettings();
 
-  const { focus, imageGenModel, languageModel, collection } =
+  const { spaceNFocus, imageGenModel, languageModel } =
     settings?.queryBoxSelectors || {};
 
   const {
@@ -64,8 +68,8 @@ export default function QueryBox() {
     <CommonSelectors
       isReady={isReady}
       hasActivePplxSub={!!hasActivePplxSub}
-      focus={!!focus}
-      collection={collection}
+      focus={!!spaceNFocus}
+      space={!!spaceNFocus}
       languageModel={!!languageModel}
     />
   );
@@ -74,7 +78,7 @@ export default function QueryBox() {
     <CommonSelectors
       isReady={isReady}
       hasActivePplxSub={!!hasActivePplxSub}
-      focus={!!focus}
+      focus={!!spaceNFocus}
       languageModel={!!languageModel}
     />
   );
@@ -83,12 +87,14 @@ export default function QueryBox() {
     <>
       {containers.map((container, index) => (
         <Portal key={index} container={container}>
-          {selectors}
+          <MainQueryBoxContextProvider>{selectors}</MainQueryBoxContextProvider>
         </Portal>
       ))}
       {followUpContainers.map((container, index) => (
         <Portal key={index} container={container}>
-          {followUpSelectors}
+          <FollowUpQueryBoxContextProvider>
+            {followUpSelectors}
+          </FollowUpQueryBoxContextProvider>
         </Portal>
       ))}
       {imageGenPopoverContainer && (

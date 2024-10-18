@@ -18,17 +18,11 @@ export default class GeneralSettings {
     keyof CplxUserSettings["generalSettings"]["queryBoxSelectors"]
   >[] = [
     {
-      id: "focus-selector",
-      label: "Focus Mode",
-      description: "Change focus mode (e.g. web ➡️ writing) within a thread.",
-      settingKey: "focus",
-    },
-    {
-      id: "collection-selector",
-      label: "Collection",
+      id: "space-n-focus-selector",
+      label: "Space & Focus Mode",
       description:
-        "Initialize a new Collection thread from the homepage and the quick ask modal. Including pause/resume the AI Profile.",
-      settingKey: "collection",
+        "initialize new Space threads from home page, change focus mode within a thread, and quickly pause/resume AI Profile.",
+      settingKey: "spaceNFocus",
     },
     {
       id: "language-model-selector",

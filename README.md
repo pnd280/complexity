@@ -40,7 +40,7 @@ Perplexity.ai is famously known for its LLM-based search engine, but many may no
 ## Complexity will enrich your experience with:
 
 - LLM/Image gen model selectors.
-- Directly chat to a collection.
+- Directly chat to a Space (previously known as Collection) on the home page.
 - Export your searches/conversations.
 - Highly customizable ADHD-friendly theme (custom css is supported).
 - Various UI/UX/QoL tweaks.

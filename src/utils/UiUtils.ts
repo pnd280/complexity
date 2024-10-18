@@ -1,6 +1,5 @@
-
-
 import { DomHelperSelectors, DomSelectors } from "@/utils/DomSelectors";
+import { whereAmI } from "@/utils/utils";
 
 export default class UiUtils {
   static isDarkTheme() {
@@ -97,12 +96,12 @@ export default class UiUtils {
         `${DomSelectors.QUERY_BOX.TEXTAREA.MAIN}:last`,
       );
 
-      const $collection = $parents.find(
-        `${DomSelectors.QUERY_BOX.TEXTAREA.COLLECTION}:last`,
+      const $space = $parents.find(
+        `${DomSelectors.QUERY_BOX.TEXTAREA.SPACE}:last`,
       );
 
       return (
-        $main.length ? $main : $collection
+        $main.length ? $main : $space
       ) as JQuery<HTMLTextAreaElement>;
     }
 
@@ -237,5 +236,9 @@ export default class UiUtils {
 
       return (visibleArea / totalArea) * 100;
     }
+  }
+
+  static applyRouteIdAttrs(location: ReturnType<typeof whereAmI>) {
+    $(document.body).attr("location", location);
   }
 }

@@ -227,7 +227,7 @@ export function whereAmI(providedUrl?: string) {
   if (hostname === "www.perplexity.ai") {
     switch (true) {
       case pathname.startsWith("/collections"):
-        return "collection";
+        return "space";
       case pathname.startsWith("/search"):
         return "thread";
       case pathname.startsWith("/page"):
@@ -395,4 +395,18 @@ export function onScrollDirectionChange({
 
 export function queueMicrotasks(...tasks: (() => void)[]) {
   tasks.forEach((task) => queueMicrotask(task));
+}
+
+/**
+ * Converts an emoji code to its corresponding emoji character.
+ *
+ * @param {string} emojiCode - The emoji code to convert. Intended format: `2049-fe0f`.
+ * @returns {string} The corresponding emoji character.
+ */
+export function emojiCodeToString(emojiCode: string): string {
+  const parts = emojiCode.split("-");
+
+  const codePoints = parts.map((part) => parseInt(part, 16));
+
+  return String.fromCodePoint(...codePoints);
 }

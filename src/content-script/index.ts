@@ -83,6 +83,7 @@ async function initMainWorldDeps() {
 
 function initTrafficInterceptors() {
   WebpageMessageInterceptor.updateQueryLimits();
+  WebpageMessageInterceptor.detectSpaceSwap();
   WebpageMessageInterceptor.alterQueries();
   WebpageMessageInterceptor.blockTelemetry();
   WebpageMessageInterceptor.removeComplexityIdentifier();

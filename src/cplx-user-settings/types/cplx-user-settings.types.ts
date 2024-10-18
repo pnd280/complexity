@@ -22,10 +22,9 @@ export const cplxUserSettingsSchema = z.object({
   defaultProSearchState: z.boolean(),
   generalSettings: z.object({
     queryBoxSelectors: z.object({
-      focus: z.boolean(),
+      spaceNFocus: z.boolean(),
       languageModel: z.boolean(),
       imageGenModel: z.boolean(),
-      collection: z.boolean(),
     }),
     qolTweaks: z.object({
       threadToc: z.boolean(),

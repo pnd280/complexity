@@ -60,6 +60,7 @@ function Root() {
   return (
     <>
       <QueryBox />
+
       {appConfig.IS_DEV && <Commander />}
 
       {location === "home" && <MainPage />}

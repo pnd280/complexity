@@ -30,13 +30,11 @@ export const canvasLangSettings = [
         description: "Check out @paradroid's Scratchpad prompt",
         cta: "Github",
         action: () => {
-          window.open(
-            "https://github.com/para-droid-ai/scratchpad",
-          );
+          window.open("https://github.com/para-droid-ai/scratchpad");
         },
       },
       {
-        description: "Install Scratchpad prompt as a Collection",
+        description: "Install Scratchpad prompt as a Space (Collection)",
         cta: "Install",
         action: async () => {
           if (whereAmI() === "unknown") {
@@ -90,11 +88,17 @@ export const canvasLangSettings = [
             }),
           });
 
-          await WebpageMessageInterceptor.waitForCollectionCreation();
+          await WebpageMessageInterceptor.waitForSpaceCreation();
 
           toast({
-            description: "✅ Scratchpad Collection installed",
+            description: "✅ Scratchpad Space installed",
           });
+
+          const queryClient = await import(
+            "@/utils/ts-query-query-client"
+          ).then((mod) => mod.queryClient);
+
+          queryClient.invalidateQueries({ queryKey: ["spaces"] });
         },
       },
     ],

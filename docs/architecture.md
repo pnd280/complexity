@@ -58,7 +58,7 @@ The following implementations represent the current approach and may be subject 
 
 ```
 
-Some magic like switching model/focus mode on the fly, or modifying collections, is done by intercepting the messages sent and received by Perplexity.ai's websocket connection, including the fallback to long-polling.
+Some magic like switching model/focus mode on the fly, or modifying spaces, is done by intercepting the messages sent and received by Perplexity.ai's websocket connection, including the fallback to long-polling.
 
 ## Custom DOM Mutation Observer
 
