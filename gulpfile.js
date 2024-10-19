@@ -29,7 +29,7 @@ function removeUnwantedFiles(cb) {
 function zip() {
   const require = createRequire(import.meta.url);
   const manifest = require("./package.json");
-  const zipFileName = `${manifest.name.replaceAll(" ", "-")}-${manifest.version}-${process.env.TARGET_BROWSER}.zip`;
+  const zipFileName = `${manifest.name.replaceAll(" ", "-")}-${manifest.version}-${process.env.VITE_TARGET_BROWSER}.zip`;
 
   return gulp
     .src("dist/**")

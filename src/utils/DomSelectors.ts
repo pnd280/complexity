@@ -52,9 +52,9 @@ const DomSelectors = {
   },
   QUERY_BOX: {
     TEXTAREA: {
-      MAIN: '[data-testid="quick-search-modal"] textarea[placeholder][autocomplete][style*="height: 48px !important;"], .max-w-screen-md textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+      MAIN: '.max-w-screen-md textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
       FOLLOW_UP:
-        '[location="thread"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+        '[location="thread"] textarea[placeholder][autocomplete][style*="height: 24px !important;"]',
       SPACE:
         '[location="space"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
       ARBITRARY:

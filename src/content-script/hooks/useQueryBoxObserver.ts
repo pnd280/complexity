@@ -67,6 +67,7 @@ export default function useQueryBoxObserver({
         DomObserver.destroy(mainId);
         DomObserver.destroy(followUpId);
         DomObserver.destroy(alterAttachButtonId);
+        DomObserver.destroy(imageGenerationPopoverId);
       };
     },
     [
@@ -127,7 +128,7 @@ function observeFollowUpQueryBox({
   if (location !== "thread" && location !== "page")
     return DomObserver.destroy(id);
 
-  const $toolbar = $('textarea[placeholder="Ask follow-up"]').parent().next();
+  const $toolbar = $(DomSelectors.QUERY_BOX.TEXTAREA.FOLLOW_UP).parent().next();
 
   if (!$toolbar.length || $toolbar.attr(`data-${id}`)) return;
 
