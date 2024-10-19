@@ -8,6 +8,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.4.1
+
+_Release date: 20th Oct, 2024_
+
+-   **FIX**: Fixed performance issues.
+
 ## v0.0.4.0
 
 _Release date: 18th Oct, 2024_
