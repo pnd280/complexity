@@ -54,11 +54,11 @@ const DomSelectors = {
     TEXTAREA: {
       MAIN: '.max-w-screen-md textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
       FOLLOW_UP:
-        '[location="thread"] textarea[placeholder][autocomplete][style*="height: 24px !important;"]',
+        '[location="thread"] .pointer-events-none.fixed.bottom-mobileNavHeight textarea[placeholder][autocomplete]',
       SPACE:
-        '[location="space"] textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+        '[location="space"] .max-w-threadWidth textarea[placeholder][autocomplete]',
       ARBITRARY:
-        'textarea[placeholder][autocomplete][style*="height: 48px !important;"]',
+        'textarea[placeholder][autocomplete]',
     },
     SUBMIT_BUTTON: 'button[aria-label="Submit"]',
     FORK_BUTTON: 'button svg[data-icon="code-fork"]',

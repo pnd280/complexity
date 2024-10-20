@@ -46,7 +46,7 @@ export default function ThreadToc() {
 
   return (
     <div
-      className="tw-fixed tw-right-0 tw-top-0 tw-z-20 tw-w-max tw-transition-all"
+      className="tw-fixed tw-right-0 tw-top-0 tw-w-max tw-transition-all"
       style={{
         top: `${(UiUtils.getThreadWrapper().offset()?.top ?? 70) + (isFloat ? 60 : 30)}px`,
         [!isFloat ? "left" : "right"]: !isFloat
