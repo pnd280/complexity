@@ -1,10 +1,12 @@
 import { LuX as X } from "react-icons/lu";
 
 import useFetchSpaces from "@/content-script/hooks/useFetchSpaces";
+import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import SpaceIcon from "@/shared/components/icons/SpaceIcon";
 import { PopoverTrigger } from "@/shared/components/Popover";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
+import { whereAmI } from "@/utils/utils";
 
 type SpaceSelectorPopoverTriggerProps = {
   selectedSpaceUuid: string;
@@ -34,6 +36,14 @@ export default function SpaceSelectorPopoverTrigger({
               className="!tw-hidden tw-size-4 group-hover:!tw-block"
               onClick={(e) => {
                 e.stopPropagation();
+
+                if (whereAmI() === "space") {
+                  webpageMessenger.sendMessage({
+                    event: "routeToPage",
+                    payload: "/",
+                  });
+                }
+
                 setSelectedSpaceUuid("");
               }}
             />

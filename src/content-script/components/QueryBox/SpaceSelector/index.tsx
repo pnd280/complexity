@@ -6,7 +6,7 @@ import useRouter from "@/content-script/hooks/useRouter";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import { Popover } from "@/shared/components/Popover";
 import UiUtils from "@/utils/UiUtils";
-import { whereAmI } from "@/utils/utils";
+import { parseUrl, whereAmI } from "@/utils/utils";
 
 export default function SpaceSelector() {
   const { url } = useRouter();
@@ -24,22 +24,22 @@ export default function SpaceSelector() {
   }, [selectedSpaceUuid]);
 
   useEffect(() => {
-    const autoSelect = () => {
-      if (whereAmI() !== "space") return;
+    if (whereAmI() !== "space" || spaces == null || spaces.length < 1) return;
 
-      const spaceSlug = window.location.pathname.split("/").pop();
+    const spaceSlug = parseUrl().pathname.split("/").pop();
 
-      const space = spaces?.find((x) => x.uuid === spaceSlug);
+    const space = spaces?.find(
+      (x) => x.slug === spaceSlug || x.uuid === spaceSlug,
+    );
 
-      if (space == null) return;
+    if (space == null) return;
 
-      setSelectedSpaceUuid(space.uuid);
-    };
-
-    autoSelect();
+    setSelectedSpaceUuid(space.uuid);
   }, [url, spaces, setSelectedSpaceUuid]);
 
   if (!isLoggedIn) return null;
+
+  if (whereAmI() === "space" && !selectedSpaceUuid) return null;
 
   return (
     <Popover portal={false}>

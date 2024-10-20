@@ -8,6 +8,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.4.4
+
+_Release date: 20st Oct, 2024_
+
+-   **FIX**: Fixed a bug where Space selector doesn't auto-select the space when in Space's page.
+
 ## v0.0.4.2
 
 _Release date: 20th Oct, 2024_

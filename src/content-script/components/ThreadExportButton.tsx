@@ -20,7 +20,7 @@ import useToggleButtonText from "@/shared/hooks/useToggleButtonText";
 import { toast } from "@/shared/toast";
 import ThreadExport from "@/utils/ThreadExport";
 import UiUtils from "@/utils/UiUtils";
-import { isDomNode } from "@/utils/utils";
+import { isDomNode, parseUrl } from "@/utils/utils";
 
 const exportOptions = [
   {
@@ -36,7 +36,7 @@ const exportOptions = [
 ] as const;
 
 export default function ThreadExportButton() {
-  const slug = window.location.pathname.split("/").pop() || "";
+  const slug = parseUrl().pathname.split("/").pop() || "";
   const { refetch, isFetching: isFetchingCurrentThreadInfo } =
     useFetchThreadInfo({
       slug,
