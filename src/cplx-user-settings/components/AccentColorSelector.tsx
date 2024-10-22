@@ -1,3 +1,4 @@
+import { createListCollection } from "@ark-ui/react";
 import { HTMLAttributes } from "react";
 
 import Input from "@/shared/components/Input";
@@ -44,7 +45,9 @@ export default forwardRef<HTMLInputElement, AccentColorSelectorProps>(
     return (
       <div className="tw-flex tw-gap-2">
         <Select
-          items={predefinedColors}
+          collection={createListCollection({
+            items: predefinedColors.map((color) => color.value),
+          })}
           value={[defaultColor]}
           onValueChange={({ value }) => {
             setColor(value[0]);

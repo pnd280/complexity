@@ -1,3 +1,4 @@
+import { createListCollection } from "@ark-ui/react";
 import { LuCpu as Cpu, LuImage as Image } from "react-icons/lu";
 
 import {
@@ -24,7 +25,9 @@ export default function ImageModelSelector() {
 
   return (
     <Select
-      items={imageModels.map((model) => model.code)}
+      collection={createListCollection({
+        items: imageModels.map((model) => model.code),
+      })}
       value={[value]}
       onValueChange={(details) => {
         setValue(details.value[0] as ImageModel["code"]);

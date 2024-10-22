@@ -1,3 +1,4 @@
+import { createListCollection } from "@ark-ui/react";
 import { ReactNode } from "react";
 import { LuCpu as Cpu, LuInfinity as Infinity } from "react-icons/lu";
 import { useImmer } from "use-immer";
@@ -64,8 +65,9 @@ export default function LanguageModelSelector() {
 
   return (
     <Select
-      portal={false}
-      items={languageModels.map((model) => model.code)}
+      collection={createListCollection({
+        items: languageModels.map((model) => model.code),
+      })}
       value={[value]}
       onValueChange={(details) => {
         setValue(details.value[0] as LanguageModel["code"]);

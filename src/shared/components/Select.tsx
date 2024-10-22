@@ -11,6 +11,7 @@ import {
 import { LuChevronDown as ChevronDown } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
+import { untrapWheel } from "@/utils/utils";
 
 type SelectContext = {
   portal: boolean;
@@ -124,6 +125,7 @@ const SelectContent = forwardRef<
             "data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2",
             className,
           )}
+          onWheel={untrapWheel}
           {...props}
         />
       </ArkSelect.Positioner>

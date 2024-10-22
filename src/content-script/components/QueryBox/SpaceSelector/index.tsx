@@ -42,15 +42,9 @@ export default function SpaceSelector() {
   if (whereAmI() === "space" && !selectedSpaceUuid) return null;
 
   return (
-    <Popover portal={false}>
-      <SpaceSelectorPopoverTrigger
-        selectedSpaceUuid={selectedSpaceUuid}
-        setSelectedSpaceUuid={setSelectedSpaceUuid}
-      />
-      <SpaceSelectorPopoverContent
-        selectedSpaceUuid={selectedSpaceUuid}
-        setSelectedSpaceUuid={setSelectedSpaceUuid}
-      />
+    <Popover portal>
+      <SpaceSelectorPopoverTrigger />
+      <SpaceSelectorPopoverContent />
     </Popover>
   );
 }

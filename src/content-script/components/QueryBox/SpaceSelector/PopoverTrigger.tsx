@@ -2,22 +2,22 @@ import { LuX as X } from "react-icons/lu";
 
 import useFetchSpaces from "@/content-script/hooks/useFetchSpaces";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
+import { useQueryBoxStore } from "@/content-script/session-store/query-box";
 import SpaceIcon from "@/shared/components/icons/SpaceIcon";
 import { PopoverTrigger } from "@/shared/components/Popover";
 import Tooltip from "@/shared/components/Tooltip";
 import { cn } from "@/utils/cn";
 import { whereAmI } from "@/utils/utils";
 
-type SpaceSelectorPopoverTriggerProps = {
-  selectedSpaceUuid: string;
-  setSelectedSpaceUuid: (uuid: string) => void;
-};
-
-export default function SpaceSelectorPopoverTrigger({
-  selectedSpaceUuid,
-  setSelectedSpaceUuid,
-}: SpaceSelectorPopoverTriggerProps) {
+export default function SpaceSelectorPopoverTrigger() {
   const { data: spaces } = useFetchSpaces();
+
+  const { selectedSpaceUuid, setSelectedSpaceUuid } = useQueryBoxStore(
+    ({ selectedSpaceUuid, setSelectedSpaceUuid }) => ({
+      selectedSpaceUuid,
+      setSelectedSpaceUuid,
+    }),
+  );
 
   const selectedSpaceTitle = spaces?.find(
     (space) => space.uuid === selectedSpaceUuid,

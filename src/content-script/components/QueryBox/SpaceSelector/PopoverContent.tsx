@@ -37,20 +37,19 @@ import { cn } from "@/utils/cn";
 import { queryClient } from "@/utils/ts-query-query-client";
 import { emojiCodeToString, whereAmI } from "@/utils/utils";
 
-type SpaceSelectorPopoverContentProps = {
-  selectedSpaceUuid: string;
-  setSelectedSpaceUuid: (uuid: string) => void;
-};
-
-export function SpaceSelectorPopoverContent({
-  selectedSpaceUuid,
-  setSelectedSpaceUuid,
-}: SpaceSelectorPopoverContentProps) {
+export function SpaceSelectorPopoverContent() {
   const {
     data: spaces,
     isLoading: isLoadingSpaces,
     isPending: isPendingSpaces,
   } = useFetchSpaces();
+
+  const { selectedSpaceUuid, setSelectedSpaceUuid } = useQueryBoxStore(
+    ({ selectedSpaceUuid, setSelectedSpaceUuid }) => ({
+      selectedSpaceUuid,
+      setSelectedSpaceUuid,
+    }),
+  );
 
   const setSelectedLanguageModel = useQueryBoxStore(
     (state) => state.setSelectedLanguageModel,

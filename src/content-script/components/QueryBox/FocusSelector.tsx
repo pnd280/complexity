@@ -1,3 +1,4 @@
+import { createListCollection } from "@ark-ui/react";
 import { FaFile } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
 import { PiQuestionMark } from "react-icons/pi";
@@ -71,7 +72,9 @@ export default function FocusSelector() {
 
   return (
     <Select
-      items={focusModes.map((model) => model.code)}
+      collection={createListCollection({
+        items: focusModes.map((model) => model.code),
+      })}
       value={[(focusMode || "internet") as FocusMode["code"]]}
       lazyMount={false}
       onValueChange={(details) => {

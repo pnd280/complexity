@@ -3,6 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { ElementRef } from "react";
 
 import { cn } from "@/utils/cn";
+import { untrapWheel } from "@/utils/utils";
 
 type PopoverLocalContext = {
   portal: boolean;
@@ -68,6 +69,7 @@ const PopoverContent = forwardRef<
             "data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2",
             className,
           )}
+          onWheel={untrapWheel}
           {...props}
         />
       </ArkPopover.Positioner>

@@ -410,3 +410,7 @@ export function emojiCodeToString(emojiCode: string): string {
 
   return String.fromCodePoint(...codePoints);
 }
+
+export function untrapWheel(e: React.WheelEvent<HTMLDivElement>) {
+  e.stopPropagation();
+}
