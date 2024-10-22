@@ -54,7 +54,7 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@crxjs/vite-plugin": "2.0.0-beta.25",
+    "@crxjs/vite-plugin": "2.0.0-beta.26",
     "@limegrass/eslint-plugin-import-alias": "^1.4.1",
     "@tailwindcss/typography": "^0.5.15",
     "@types/chrome": "^0.0.268",

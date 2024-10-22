@@ -39,10 +39,6 @@ export default defineConfig(() => ({
       ],
     }),
     vitePluginRunCommandOnDemand({
-      afterServerStart: "pnpm gulp forceDisableUseDynamicUrl",
-      closeBundle: "pnpm gulp forceDisableUseDynamicUrl",
-    }),
-    vitePluginRunCommandOnDemand({
       closeBundle: "pnpm gulp rootifyOptionsPageHTMLEntries",
     }),
   ],

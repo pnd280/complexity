@@ -88,8 +88,8 @@ importers:
         version: 4.5.5(@types/react@18.3.11)(immer@10.1.1)(react@18.3.1)
     devDependencies:
       '@crxjs/vite-plugin':
-        specifier: 2.0.0-beta.25
-        version: 2.0.0-beta.25
+        specifier: 2.0.0-beta.26
+        version: 2.0.0-beta.26
       '@limegrass/eslint-plugin-import-alias':
         specifier: ^1.4.1
         version: 1.4.1(eslint@8.57.1)
@@ -333,8 +333,8 @@ packages:
   '@bundled-es-modules/tough-cookie@0.1.6':
     resolution: {integrity: sha512-dvMHbL464C0zI+Yqxbz6kZ5TOEp7GLW+pry/RWndAR8MJQAXZ2rPmIs8tziTZjeIyhSNZgZbCePtfSbdWqStJw==}
 
-  '@crxjs/vite-plugin@2.0.0-beta.25':
-    resolution: {integrity: sha512-g5ytTNiFpFCi+T0trSDJLohVz5PufLBLh6OGljyGTHkQCKiApuEgZ1bAjgPXluMDhMUvbPfZT10LYl5ROefXog==}
+  '@crxjs/vite-plugin@2.0.0-beta.26':
+    resolution: {integrity: sha512-fZiSeOB4LOwq3cLIwHJnJ4x/duBU/Gkn3JKF7b7mZIRAXtu1waorJ6QaH7qoZPcN5LzyA3J+/t3Kuwa/oo8XNg==}
 
   '@dotenvx/dotenvx@1.19.3':
     resolution: {integrity: sha512-mRmlqCmUpPzVf/fr5oBHeKq/moPuWb+I3G75OzrL+RYBZtAoXTySOVmUsYANpC3MMgRWJqvptg+9+sbfYV/iUg==}
@@ -5589,7 +5589,7 @@ snapshots:
       tough-cookie: 4.1.4
     optional: true
 
-  '@crxjs/vite-plugin@2.0.0-beta.25':
+  '@crxjs/vite-plugin@2.0.0-beta.26':
     dependencies:
       '@rollup/pluginutils': 4.2.1
       '@webcomponents/custom-elements': 1.6.0

@@ -37,39 +37,15 @@ function zip() {
     .pipe(gulp.dest("package"));
 }
 
-function forceDisableUseDynamicUrl(done) {
-  const manifestPath = "./dist/manifest.json";
-
-  if (!fs.existsSync(manifestPath)) {
-    console.warn(
-      "Manifest file not found. Skipping forceDisableUseDynamicUrl.",
-    );
-    return done();
-  }
-
-  try {
-    const require = createRequire(import.meta.url);
-    const manifest = require(manifestPath);
-
-    manifest.web_accessible_resources.forEach((resource) => {
-      delete resource.use_dynamic_url;
-    });
-
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
-  } catch (error) {
-    console.error("Error processing manifest:", error);
-  }
-
-  done();
-}
-
 const createPackage = gulp.series(removeUnwantedFiles, zip);
 
 function rootifyOptionsPageHTMLEntries(done) {
   const manifestPath = "./dist/manifest.json";
 
   if (!fs.existsSync(manifestPath)) {
-    console.warn("Manifest file not found. Skipping rootifyOptionsPageHTMLEntries.");
+    console.warn(
+      "Manifest file not found. Skipping rootifyOptionsPageHTMLEntries.",
+    );
     return done();
   }
 
@@ -84,10 +60,7 @@ function rootifyOptionsPageHTMLEntries(done) {
 
     // Update paths in the HTML file
     const htmlContent = fs.readFileSync(destPath, "utf8");
-    const updatedHtmlContent = htmlContent.replace(
-      /(\.\.\/)+(\w+)\//g,
-      "$2/",
-    );
+    const updatedHtmlContent = htmlContent.replace(/(\.\.\/)+(\w+)\//g, "$2/");
     fs.writeFileSync(destPath, updatedHtmlContent);
 
     // Remove empty directories
@@ -124,4 +97,4 @@ function rootifyOptionsPageHTMLEntries(done) {
   done();
 }
 
-export { createPackage, forceDisableUseDynamicUrl, rootifyOptionsPageHTMLEntries };
+export { createPackage, rootifyOptionsPageHTMLEntries };
