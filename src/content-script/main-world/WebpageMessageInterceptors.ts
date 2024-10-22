@@ -166,11 +166,22 @@ export default class WebpageMessageInterceptor {
 
         const { selectedSpaceUuid, focusMode } = queryBoxStore.getState();
 
-        const focusModeIncludeFiles = (
-          parsedPayload.data[1].query_source === "followup"
+        const isFollowUp = (querySource: string) =>
+          querySource === "followup" ||
+          querySource === "edit" ||
+          querySource === "retry";
+
+        const includeSpaceFiles = (
+          isFollowUp(parsedPayload.data[1].query_source)
             ? followUpQueryBoxScopedContext
             : mainQueryBoxScopedContext
-        ).getState().focusModeIncludeFiles;
+        ).getState().includeSpaceFiles;
+
+        const includeOrgFiles = (
+          isFollowUp(parsedPayload.data[1].query_source)
+            ? followUpQueryBoxScopedContext
+            : mainQueryBoxScopedContext
+        ).getState().includeOrgFiles;
 
         let newQuerySource =
           (parsedPayload.data[1].query_source === "home" ||
@@ -187,22 +198,29 @@ export default class WebpageMessageInterceptor {
           sources = [];
 
           if (focusMode !== "writing") sources.push("web");
-          if (focusModeIncludeFiles) {
+
+          if (includeSpaceFiles) {
             sources.push("space");
             if (newSearchFocus === "writing") newSearchFocus = "internet";
-
-            // TODO: Remove thistemp fix
-            if (parsedPayload.data[1].query_source === "retry") {
-              newQuerySource = "edit";
-            }
 
             const currentThreadInfo = queryClient.getQueryData<
               ThreadMessageApiResponse[]
             >(["threadInfo", parseUrl().pathname.split("/").pop() || ""]);
 
-            if (currentThreadInfo) {
+            if (currentThreadInfo && currentThreadInfo[0].collection_info) {
               newTargetCollectionUuid =
                 currentThreadInfo[0].collection_info?.uuid;
+            }
+          }
+
+          if (includeOrgFiles) {
+            sources.push("org");
+          }
+
+          if (includeSpaceFiles || includeOrgFiles) {
+            // TODO: Remove this temp fix
+            if (parsedPayload.data[1].query_source === "retry") {
+              newQuerySource = "edit";
             }
           }
         }

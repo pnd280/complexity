@@ -8,6 +8,7 @@ import {
 } from "@/content-script/components/QueryBox/";
 import { focusModes } from "@/content-script/components/QueryBox/consts";
 import { QueryBoxContext } from "@/content-script/components/QueryBox/context";
+import useFetchOrgSettings from "@/content-script/hooks/useFetchOrgSettings";
 import useFetchSpaceFiles from "@/content-script/hooks/useFetchSpaceFiles";
 import useFetchThreadInfo from "@/content-script/hooks/useFetchThreadInfo";
 import { useQueryBoxStore } from "@/content-script/session-store/query-box";
@@ -30,7 +31,7 @@ export default function FocusSelector() {
 
   if (!queryBoxContext) throw new Error("No context found");
 
-  const { context, setFocusModeIncludeFiles } = queryBoxContext;
+  const { context, setIncludeSpaceFiles } = queryBoxContext;
 
   const { data: threadInfo } = useFetchThreadInfo({
     slug: parseUrl().pathname.split("/").pop() || "",
@@ -48,22 +49,19 @@ export default function FocusSelector() {
       ? queryBoxSelectedSpaceUuid
       : threadInfo?.[0].collection_info?.uuid || "";
 
-  const {
-    files,
-    query: { isFetching, isError },
-  } = useFetchSpaceFiles({ spaceUuid: currentSpaceUuid });
+  const { files } = useFetchSpaceFiles({ spaceUuid: currentSpaceUuid });
+
+  const { data: orgSettings } = useFetchOrgSettings();
 
   useEffect(() => {
     if (currentSpaceUuid && files && files.length) {
-      setFocusModeIncludeFiles?.(true);
+      setIncludeSpaceFiles?.(true);
 
       enableProSearch();
 
       return;
     }
-
-    setFocusModeIncludeFiles?.(false);
-  }, [currentSpaceUuid, files, setFocusModeIncludeFiles]);
+  }, [currentSpaceUuid, files, setIncludeSpaceFiles]);
 
   useEffect(() => {
     UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
@@ -75,6 +73,7 @@ export default function FocusSelector() {
     <Select
       items={focusModes.map((model) => model.code)}
       value={[(focusMode || "internet") as FocusMode["code"]]}
+      lazyMount={false}
       onValueChange={(details) => {
         setFocusMode(details.value[0] as FocusMode["code"]);
 
@@ -97,15 +96,11 @@ export default function FocusSelector() {
         </Tooltip>
       </SelectTrigger>
       <SelectContent className="tw-max-h-[500px] tw-min-w-[130px] tw-max-w-[200px] tw-items-center tw-font-sans">
-        {currentSpaceUuid && (
-          <MiscOptions
-            isFetching={isFetching}
-            isError={isError}
-            files={files}
-          />
-        )}
+        <MiscOptions files={files} />
         <SelectGroup>
-          {files && files.length > 0 && <SelectLabel>Focus</SelectLabel>}
+          {((files && files.length > 0) || orgSettings?.is_in_organization) && (
+            <SelectLabel>Focus</SelectLabel>
+          )}
           {focusModes.map((item) => (
             <SelectItem key={item.code} item={item.code}>
               <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
@@ -124,52 +119,86 @@ export default function FocusSelector() {
   );
 }
 
-function MiscOptions({
-  isFetching,
-  isError,
-  files,
-}: {
-  isFetching: boolean;
-  isError: boolean;
-  files?: SpaceFilesApiResponse["files"];
-}) {
+function MiscOptions({ files }: { files?: SpaceFilesApiResponse["files"] }) {
   const queryBoxContext = useContext(QueryBoxContext);
 
   if (!queryBoxContext) throw new Error("No context found");
 
-  const { focusModeIncludeFiles, setFocusModeIncludeFiles } = queryBoxContext;
+  const { includeSpaceFiles, setIncludeSpaceFiles } = queryBoxContext;
 
-  if (isError || isFetching || files?.length === 0) return null;
+  const { includeOrgFiles, setIncludeOrgFiles } = queryBoxContext;
+
+  const { data: orgSettings } = useFetchOrgSettings();
 
   return (
     <SelectGroup>
-      <SelectLabel>Space</SelectLabel>
-      <div
-        className={cn(
-          "tw-flex tw-w-full tw-max-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-p-2 hover:tw-bg-accent hover:tw-text-accent-foreground",
-          {
-            "tw-text-accent-foreground": focusModeIncludeFiles,
-          },
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          setFocusModeIncludeFiles(!focusModeIncludeFiles);
+      {orgSettings?.is_in_organization && (
+        <>
+          <SelectLabel>Organization</SelectLabel>
+          <div
+            className={cn(
+              "tw-flex tw-w-full tw-max-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-p-2 hover:tw-bg-accent hover:tw-text-accent-foreground",
+              {
+                "tw-text-accent-foreground": includeOrgFiles,
+              },
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIncludeOrgFiles(!includeOrgFiles);
 
-          if (!focusModeIncludeFiles) {
-            enableProSearch();
-          }
-        }}
-      >
-        <div className="tw-flex tw-items-center tw-gap-2">
-          <FaFile className="tw-size-4" />
-          <span className="tw-select-none tw-truncate tw-text-sm">Files</span>
-        </div>
-        {focusModeIncludeFiles && (
-          <div>
-            <FaCircleCheck className="tw-size-3" />
+              if (!includeOrgFiles) {
+                enableProSearch();
+              }
+            }}
+          >
+            <div className="tw-flex tw-items-center tw-gap-2">
+              <FaFile className="tw-size-4" />
+              <span className="tw-select-none tw-truncate tw-text-sm">
+                Files
+              </span>
+            </div>
+            {includeOrgFiles && (
+              <div>
+                <FaCircleCheck className="tw-size-3" />
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
+
+      {files && files.length > 0 && (
+        <>
+          <SelectLabel>Space</SelectLabel>
+          <div
+            className={cn(
+              "tw-flex tw-w-full tw-max-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-p-2 hover:tw-bg-accent hover:tw-text-accent-foreground",
+              {
+                "tw-text-accent-foreground": includeSpaceFiles,
+              },
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIncludeSpaceFiles(!includeSpaceFiles);
+
+              if (!includeSpaceFiles) {
+                enableProSearch();
+              }
+            }}
+          >
+            <div className="tw-flex tw-items-center tw-gap-2">
+              <FaFile className="tw-size-4" />
+              <span className="tw-select-none tw-truncate tw-text-sm">
+                Files
+              </span>
+            </div>
+            {includeSpaceFiles && (
+              <div>
+                <FaCircleCheck className="tw-size-3" />
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </SelectGroup>
   );
 }

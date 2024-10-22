@@ -1,7 +1,7 @@
 {
   "name": "complexity",
   "displayName": "Complexity - Perplexity AI Supercharged",
-  "version": "0.0.4.5",
+  "version": "0.0.4.6",
   "author": "pnd280",
   "description": "⚡ Supercharge your Perplexity AI",
   "type": "module",
@@ -22,6 +22,7 @@
     "test": "vitest run",
     "zip": "pnpm test && pnpm build && pnpm dx gulp createPackage",
     "zip:firefox": "pnpm test && pnpm build:firefox && pnpm dx:firefox gulp createPackage",
+    "zip:both": "pnpm zip && pnpm zip:firefox",
     "clear": "rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {

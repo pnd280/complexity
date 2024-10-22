@@ -2,32 +2,36 @@ import { ReactNode, createContext } from "react";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
+import { useQueryBoxStore } from "@/content-script/session-store/query-box";
+
 type ScopedQueryBoxContext = {
-  focusModeIncludeFiles: boolean;
-  setFocusModeIncludeFiles: (focusModeIncludeFiles: boolean) => void;
+  includeSpaceFiles: boolean;
+  setIncludeSpaceFiles: (includeSpaceFiles: boolean) => void;
+  includeOrgFiles: boolean;
+  setIncludeOrgFiles: (includeOrgFiles: boolean) => void;
 };
 
 export const mainQueryBoxScopedContext = create<ScopedQueryBoxContext>()(
   immer((set) => ({
-    focusModeIncludeFiles: true,
-    setFocusModeIncludeFiles: (focusModeIncludeFiles) =>
-      set({ focusModeIncludeFiles }),
+    includeSpaceFiles: false,
+    setIncludeSpaceFiles: (includeSpaceFiles) => set({ includeSpaceFiles }),
+    includeOrgFiles: false,
+    setIncludeOrgFiles: (includeOrgFiles) => set({ includeOrgFiles }),
   })),
 );
 
 export const followUpQueryBoxScopedContext = create<ScopedQueryBoxContext>()(
   immer((set) => ({
-    focusModeIncludeFiles: true,
-    setFocusModeIncludeFiles: (focusModeIncludeFiles) =>
-      set({ focusModeIncludeFiles }),
+    includeSpaceFiles: false,
+    setIncludeSpaceFiles: (includeSpaceFiles) => set({ includeSpaceFiles }),
+    includeOrgFiles: false,
+    setIncludeOrgFiles: (includeOrgFiles) => set({ includeOrgFiles }),
   })),
 );
 
 type QueryBoxContext = {
   context: "main" | "follow-up";
-  focusModeIncludeFiles: boolean;
-  setFocusModeIncludeFiles: (focusModeIncludeFiles: boolean) => void;
-};
+} & ScopedQueryBoxContext;
 
 export const QueryBoxContext = createContext<QueryBoxContext | null>(null);
 
@@ -42,14 +46,44 @@ const QueryBoxContextProvider = ({
     | typeof mainQueryBoxScopedContext
     | typeof followUpQueryBoxScopedContext;
 }) => {
-  const { focusModeIncludeFiles, setFocusModeIncludeFiles } = context();
+  const {
+    includeSpaceFiles,
+    setIncludeSpaceFiles,
+    includeOrgFiles,
+    setIncludeOrgFiles,
+  } = context();
+
+  const selectedSpaceUuid = useQueryBoxStore(
+    ({ selectedSpaceUuid }) => selectedSpaceUuid,
+  );
+
+  useEffect(() => {
+    if (selectedSpaceUuid) {
+      setIncludeOrgFiles(false);
+      setIncludeSpaceFiles(true);
+    }
+
+    if (!selectedSpaceUuid) {
+      setIncludeSpaceFiles(false);
+    }
+  }, [setIncludeSpaceFiles, setIncludeOrgFiles, selectedSpaceUuid]);
+
+  useEffect(() => {
+    if (includeOrgFiles) setIncludeSpaceFiles(false);
+  }, [includeOrgFiles, setIncludeSpaceFiles]);
+
+  useEffect(() => {
+    if (includeSpaceFiles) setIncludeOrgFiles(false);
+  }, [includeSpaceFiles, setIncludeOrgFiles]);
 
   return (
     <QueryBoxContext.Provider
       value={{
         context: contextType,
-        focusModeIncludeFiles,
-        setFocusModeIncludeFiles,
+        includeSpaceFiles,
+        setIncludeSpaceFiles,
+        includeOrgFiles,
+        setIncludeOrgFiles,
       }}
     >
       {children}

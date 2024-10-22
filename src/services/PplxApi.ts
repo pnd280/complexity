@@ -2,6 +2,7 @@ import { LanguageModel } from "@/content-script/components/QueryBox";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import WebpageMessageInterceptor from "@/content-script/main-world/WebpageMessageInterceptors";
 import {
+  OrgSettingsApiResponseSchema,
   SpaceFileDownloadUrlApiResponseSchema,
   SpaceFilesApiResponseSchema,
   ThreadMessageApiResponse,
@@ -297,5 +298,15 @@ export default class PplxApi {
     }
 
     return false;
+  }
+
+  static async fetchOrgSettings() {
+    const resp = await fetchResource(
+      "https://www.perplexity.ai/rest/enterprise/user/organization?version=2.13&source=default",
+    );
+
+    const data = OrgSettingsApiResponseSchema.parse(jsonUtils.safeParse(resp));
+
+    return data;
   }
 }

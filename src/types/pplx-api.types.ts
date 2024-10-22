@@ -79,3 +79,11 @@ export const SpaceFileDownloadUrlApiResponseSchema = z.object({
 export type SpaceFileDownloadUrlApiResponse = z.infer<
   typeof SpaceFileDownloadUrlApiResponseSchema
 >;
+
+export const OrgSettingsApiResponseSchema = z.object({
+  is_in_organization: z.boolean(),
+});
+
+export type OrgSettingsApiResponse = z.infer<
+  typeof OrgSettingsApiResponseSchema
+>;
