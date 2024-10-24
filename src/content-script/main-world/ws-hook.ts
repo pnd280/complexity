@@ -374,6 +374,7 @@ class WsHook {
 class InternalWsInstance {
   private static instance: InternalWsInstance | null = null;
   private socket: Socket["io"]["engine"] | null;
+  isReady: boolean = false;
 
   private constructor() {
     this.socket = this.handShake();
@@ -392,7 +393,11 @@ class InternalWsInstance {
         transports: ["websocket"],
       }).io.engine;
 
-      socket.on("message", (message) => {
+      socket.on("message", (message: string) => {
+        if (message.startsWith(`0{"sid":"`)) {
+          this.isReady = true;
+        }
+
         webpageMessenger.sendMessage({
           event: "webSocketEvent",
           payload: {
@@ -445,6 +450,8 @@ mainWorldExec(() => {
   });
 
   webpageMessenger.onMessage("isInternalWebSocketInitialized", async () => {
-    return ownWsInstance.getSocket()?.readyState === "open";
+    return (
+      ownWsInstance.getSocket()?.readyState === "open" && ownWsInstance.isReady
+    );
   });
 })();

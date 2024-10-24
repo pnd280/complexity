@@ -21,7 +21,7 @@ export default class GeneralSettings {
       id: "space-n-focus-selector",
       label: "Space & Focus Mode",
       description:
-        "initialize new Space threads from home page, change focus mode within a thread, and quickly pause/resume AI Profile.",
+        "initialize new Space threads from home page, use focus mode with Space, and quickly pause/resume AI Profile.",
       settingKey: "spaceNFocus",
     },
     {

@@ -1,5 +1,5 @@
-import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { createWithEqualityFn } from "zustand/traditional";
 
 type CanvasMetaData = {
   messageBlockIndex: number;
@@ -16,15 +16,17 @@ export type CanvasState = {
   toggleShowCode: (showCode?: boolean) => void;
 };
 
-const useCanvasStore = create<CanvasState>()(
-  immer((set, get) => ({
-    isOpen: false,
-    toggleOpen: (open = !get().isOpen) => set({ isOpen: open }),
-    setMetaData: (metaData) => set({ metaData, showCode: false }),
-    showCode: false,
-    toggleShowCode: (showCode?: boolean) =>
-      set({ showCode: showCode ?? !get().showCode }),
-  })),
+const useCanvasStore = createWithEqualityFn<CanvasState>()(
+  immer(
+    (set, get): CanvasState => ({
+      isOpen: false,
+      toggleOpen: (open = !get().isOpen) => set({ isOpen: open }),
+      setMetaData: (metaData) => set({ metaData, showCode: false }),
+      showCode: false,
+      toggleShowCode: (showCode?: boolean) =>
+        set({ showCode: showCode ?? !get().showCode }),
+    }),
+  ),
 );
 
 const canvasStore = useCanvasStore;

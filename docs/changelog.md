@@ -8,6 +8,18 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.4.7
+
+_Release date: 24th Oct, 2024_
+
+-   **CHANGE**: Remove the ability to change focus mode mid thread due to Perplexity's changes. Here are things you can still do:
+
+    -   Use focus mode with Spaces.
+    -   Use focus mode with Pro Enterprise accounts.
+    -   Choose to whether include Space/Org's files mid thread.
+
+-   **FIX**: Query box's suggestion panel overlaps the Space selector.
+
 ## v0.0.4.6
 
 _Release date: 22nd Oct, 2024_

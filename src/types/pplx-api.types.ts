@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-import { LanguageModel } from "@/content-script/components/QueryBox";
+import { FocusMode, LanguageModel } from "@/content-script/components/QueryBox";
 import { Space } from "@/types/space.types";
 import { HasUserAiProfile, UserAiProfile } from "@/types/user-ai-profile";
 
@@ -47,6 +47,7 @@ export type ThreadMessageApiResponse = {
   space_info: Space;
   thread_url_slug: string;
   display_model: LanguageModel["code"];
+  search_focus: FocusMode["code"];
   collection_info?: Space;
   // TODO: api response contains 2 types, first message has "collection_info" and subsequent messages don't
 };

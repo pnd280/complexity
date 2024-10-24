@@ -1,7 +1,7 @@
 import { LanguageModel, FocusMode } from "@/content-script/components/QueryBox";
 import {
-  followUpQueryBoxScopedContext,
-  mainQueryBoxScopedContext,
+  mainQueryBoxStore,
+  followUpQueryBoxStore,
 } from "@/content-script/components/QueryBox/context";
 import { webpageMessenger } from "@/content-script/main-world/webpage-messenger";
 import { queryBoxStore } from "@/content-script/session-store/query-box";
@@ -153,7 +153,7 @@ export default class WebpageMessageInterceptor {
 
         let newSearchFocus: FocusMode["code"] = CplxUserSettings.get()
           .generalSettings.queryBoxSelectors.spaceNFocus
-          ? queryBoxStore.getState().focusMode
+          ? mainQueryBoxStore.getState().focusMode
           : parsedPayload.data[1].search_focus;
 
         let newTargetCollectionUuid = CplxUserSettings.get().generalSettings
@@ -164,23 +164,20 @@ export default class WebpageMessageInterceptor {
             : parsedPayload.data[1].target_collection_uuid
           : undefined;
 
-        const { selectedSpaceUuid, focusMode } = queryBoxStore.getState();
+        const selectedSpaceUuid = queryBoxStore.getState().selectedSpaceUuid;
+        const focusMode = mainQueryBoxStore.getState().focusMode;
 
-        const isFollowUp = (querySource: string) =>
-          querySource === "followup" ||
-          querySource === "edit" ||
-          querySource === "retry";
+        const isFollowUpQuery =
+          parsedPayload.data[1].query_source === "followup" ||
+          parsedPayload.data[1].query_source === "edit" ||
+          parsedPayload.data[1].query_source === "retry";
 
         const includeSpaceFiles = (
-          isFollowUp(parsedPayload.data[1].query_source)
-            ? followUpQueryBoxScopedContext
-            : mainQueryBoxScopedContext
+          isFollowUpQuery ? followUpQueryBoxStore : mainQueryBoxStore
         ).getState().includeSpaceFiles;
 
         const includeOrgFiles = (
-          isFollowUp(parsedPayload.data[1].query_source)
-            ? followUpQueryBoxScopedContext
-            : mainQueryBoxScopedContext
+          isFollowUpQuery ? followUpQueryBoxStore : mainQueryBoxStore
         ).getState().includeOrgFiles;
 
         let newQuerySource =
@@ -201,7 +198,6 @@ export default class WebpageMessageInterceptor {
 
           if (includeSpaceFiles) {
             sources.push("space");
-            if (newSearchFocus === "writing") newSearchFocus = "internet";
 
             const currentThreadInfo = queryClient.getQueryData<
               ThreadMessageApiResponse[]
@@ -218,6 +214,8 @@ export default class WebpageMessageInterceptor {
           }
 
           if (includeSpaceFiles || includeOrgFiles) {
+            if (newSearchFocus === "writing") newSearchFocus = "internet";
+
             // TODO: Remove this temp fix
             if (parsedPayload.data[1].query_source === "retry") {
               newQuerySource = "edit";
@@ -229,7 +227,10 @@ export default class WebpageMessageInterceptor {
           ...parsedPayload.data[1],
           query_source: newQuerySource,
           model_preference: newModelPreference,
-          search_focus: newSearchFocus,
+          // dont override search focus for follow-up queries (doesnt work anymore)
+          search_focus: isFollowUpQuery
+            ? parsedPayload.data[1].search_focus
+            : newSearchFocus,
           target_collection_uuid: newTargetCollectionUuid,
           sources,
         };
@@ -256,11 +257,9 @@ export default class WebpageMessageInterceptor {
   static alterNextQuery({
     languageModel,
     proSearchState,
-    focus,
   }: {
     languageModel?: LanguageModel["code"];
     proSearchState?: boolean;
-    focus?: FocusMode["code"];
   }) {
     return webpageMessenger.addInterceptor({
       matchCondition: (messageData: MessageData<any>) => {
@@ -280,16 +279,10 @@ export default class WebpageMessageInterceptor {
           return { match: false };
         }
 
-        const { focusMode } = queryBoxStore.getState();
-
-        const newFocus = proSearchState ? focusMode : (focus ?? focusMode);
-
         parsedPayload.data[1] = {
           ...parsedPayload.data[1],
           model_preference: languageModel,
           mode: proSearchState ? "copilot" : parsedPayload.data[1].mode,
-          search_focus: newFocus,
-          redo_search: newFocus === "writing" ? true : undefined,
         };
 
         return {

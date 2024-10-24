@@ -1,5 +1,5 @@
 import { createListCollection } from "@ark-ui/react";
-import { FaFile } from "react-icons/fa";
+import { FaBuilding, FaFile } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
 import { PiQuestionMark } from "react-icons/pi";
 
@@ -32,27 +32,40 @@ export default function FocusSelector() {
 
   if (!queryBoxContext) throw new Error("No context found");
 
-  const { context, setIncludeSpaceFiles } = queryBoxContext;
+  const {
+    type,
+    setIncludeSpaceFiles,
+    includeOrgFiles,
+    includeSpaceFiles,
+    focusMode,
+    setFocusMode,
+  } = queryBoxContext;
 
   const { data: threadInfo } = useFetchThreadInfo({
     slug: parseUrl().pathname.split("/").pop() || "",
-    enabled: context === "follow-up",
+    enabled: type === "follow-up",
   });
 
-  const { focusMode, setFocusMode } = useQueryBoxStore((state) => state);
+  const currentFocusMode =
+    type === "main" ? focusMode : threadInfo?.[0].search_focus;
 
   const queryBoxSelectedSpaceUuid = useQueryBoxStore(
     (state) => state.selectedSpaceUuid,
   );
 
   const currentSpaceUuid =
-    context === "main"
+    type === "main"
       ? queryBoxSelectedSpaceUuid
       : threadInfo?.[0].collection_info?.uuid || "";
 
   const { files } = useFetchSpaceFiles({ spaceUuid: currentSpaceUuid });
 
   const { data: orgSettings } = useFetchOrgSettings();
+
+  const hasFiles =
+    (files && files.length > 0) || orgSettings?.is_in_organization;
+
+  const includeFiles = hasFiles && (includeOrgFiles || includeSpaceFiles);
 
   useEffect(() => {
     if (currentSpaceUuid && files && files.length) {
@@ -68,7 +81,7 @@ export default function FocusSelector() {
     UiUtils.getActiveQueryBoxTextarea({}).trigger("focus");
   }, [focusMode]);
 
-  if (!focusMode) return null;
+  if (type === "follow-up" && !hasFiles) return null;
 
   return (
     <Select
@@ -90,12 +103,26 @@ export default function FocusSelector() {
         )}
       >
         <Tooltip
-          content={`Focus: ${focusModes.find((model) => model.code === focusMode)?.label}`}
+          content={`Focus: ${focusModes.find((model) => model.code === currentFocusMode)?.label}${includeFiles ? " (with " + (includeOrgFiles ? "org" : "space") + " files)" : ""}`}
           positioning={{
             gutter: 15,
           }}
         >
-          <div className="relative">{focusModeIcons[focusMode]}</div>
+          <div className="tw-flex tw-items-center tw-gap-2">
+            <div className="relative">
+              {focusModeIcons[currentFocusMode ?? "internet"]}
+            </div>
+            {orgSettings?.is_in_organization && includeOrgFiles && (
+              <div className="tw-text-accent-foreground">
+                <FaBuilding className="tw-size-3" />
+              </div>
+            )}
+            {files && files.length > 0 && includeSpaceFiles && (
+              <div className="tw-text-accent-foreground">
+                <FaFile className="tw-size-3" />
+              </div>
+            )}
+          </div>
         </Tooltip>
       </SelectTrigger>
       <SelectContent className="tw-max-h-[500px] tw-min-w-[130px] tw-max-w-[200px] tw-items-center tw-font-sans">
@@ -104,18 +131,29 @@ export default function FocusSelector() {
           {((files && files.length > 0) || orgSettings?.is_in_organization) && (
             <SelectLabel>Focus</SelectLabel>
           )}
-          {focusModes.map((item) => (
-            <SelectItem key={item.code} item={item.code}>
-              <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
-                {isReactNode(focusModeIcons[item.code]) ? (
-                  <div>{focusModeIcons[item.code]}</div>
-                ) : (
-                  <PiQuestionMark className="tw-size-4" />
-                )}
-                <span className="tw-truncate">{item.label}</span>
-              </div>
-            </SelectItem>
-          ))}
+          {focusModes
+            .filter(
+              (item) => type !== "follow-up" || item.code === currentFocusMode,
+            )
+            .map((item) => (
+              <SelectItem
+                key={item.code}
+                item={item.code}
+                className={cn({
+                  "tw-cursor-not-allowed !tw-bg-background !tw-text-foreground":
+                    type === "follow-up",
+                })}
+              >
+                <div className="tw-flex tw-max-w-full tw-items-center tw-justify-around tw-gap-2">
+                  {isReactNode(focusModeIcons[item.code]) ? (
+                    <div>{focusModeIcons[item.code]}</div>
+                  ) : (
+                    <PiQuestionMark className="tw-size-4" />
+                  )}
+                  <span className="tw-truncate">{item.label}</span>
+                </div>
+              </SelectItem>
+            ))}
         </SelectGroup>
       </SelectContent>
     </Select>
