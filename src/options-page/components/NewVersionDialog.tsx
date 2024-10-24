@@ -3,6 +3,7 @@ import {
   LuExternalLink as ExternalLink,
 } from "react-icons/lu";
 
+import appConfig from "@/app.config";
 import useExtensionUpdate from "@/shared/hooks/useExtensionUpdate";
 import packageData from "~/package.json";
 
@@ -33,7 +34,11 @@ export function NewVersionDialog() {
               Not working?{" "}
               <a
                 className="tw-flex tw-items-center tw-gap-1 tw-underline"
-                href="https://chromewebstore.google.com/detail/complexity/ffppmilmeaekegkpckebkeahjgmhggpj"
+                href={
+                  appConfig.BROWSER === "chrome"
+                    ? "https://chromewebstore.google.com/detail/complexity-perplexity-ai/ffppmilmeaekegkpckebkeahjgmhggpj"
+                    : "https://addons.mozilla.org/en-US/firefox/addon/complexity/"
+                }
                 target="_blank"
                 rel="noreferrer"
               >
