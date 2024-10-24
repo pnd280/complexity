@@ -1,0 +1,10 @@
+{
+  "overrides": [
+    {
+      "files": "docs/changelog.md",
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}
