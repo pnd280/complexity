@@ -404,11 +404,21 @@ export function queueMicrotasks(...tasks: (() => void)[]) {
  * @returns {string} The corresponding emoji character.
  */
 export function emojiCodeToString(emojiCode: string): string {
-  const parts = emojiCode.split("-");
+  try {
+    const parts = emojiCode.split("-");
 
-  const codePoints = parts.map((part) => parseInt(part, 16));
+    const codePoints = parts.map((part) => {
+      const codePoint = parseInt(part, 16);
+      if (isNaN(codePoint)) {
+        throw new Error(`Invalid emoji code part: ${part}`);
+      }
+      return codePoint;
+    });
 
-  return String.fromCodePoint(...codePoints);
+    return String.fromCodePoint(...codePoints);
+  } catch (error) {
+    return "";
+  }
 }
 
 export function untrapWheel(e: React.WheelEvent<HTMLDivElement>) {

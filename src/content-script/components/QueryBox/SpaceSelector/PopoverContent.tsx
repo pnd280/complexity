@@ -219,6 +219,8 @@ function SpaceItem({
   selectedSpaceUuid: string;
   setSelectedSpaceUuid: (uuid: string) => void;
 }) {
+  const decodedEmoji = emojiCodeToString(space.emoji || "");
+
   return (
     <CommandItem
       keywords={[space.title]}
@@ -242,8 +244,8 @@ function SpaceItem({
       }}
     >
       <div className="tw-max-w-[250px] tw-truncate !tw-py-1 !tw-text-sm">
-        {space.emoji && (
-          <span className="mr-2">{emojiCodeToString(space.emoji)}</span>
+        {space.emoji && decodedEmoji && (
+          <span className="mr-2">{decodedEmoji}</span>
         )}
         <span>{space.title}</span>
       </div>
