@@ -8,6 +8,13 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+## v0.0.4.8
+
+_Release date: 25th Oct, 2024_
+
+-   **FIX**: Fixed crashing issue on certain scenarios.
+-   **FIX**: Fixed store url on Firefox browsers.
+
 ## v0.0.4.7
 
 _Release date: 24th Oct, 2024_
