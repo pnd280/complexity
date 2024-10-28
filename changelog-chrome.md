@@ -8,6 +8,21 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 💖 Support the development via [Ko-fi](https://ko-fi.com/pnd280) or [Paypal](https://paypal.me/pnd280).
 
+**EXPERIMENTAL** features are subjected to change/removal without prior notice.
+
+## v0.0.5.1
+
+_Release date: 26th Oct, 2024_
+
+-   **NEW** | **EXPERIMENTAL**: Text-to-Speech. Credit to `@asura0_00` for helping with the implementation.
+    ![TTS](https://i.imgur.com/BglHpbJ.png)
+
+    -   This feature **only works on CHROMIUM browsers**, and only available on Perplexity Pro/Enterprise accounts.
+    -   Support 4 different voices (exactly the same as the mobile/mac app). Right click the "Headphones" icon to open the dropdown menu.
+    -   Play/pause, seek, volume control, download will be added soon.
+
+-   **FIX**: Fixed minor bugs.
+
 ## v0.0.4.8
 
 _Release date: 25th Oct, 2024_
