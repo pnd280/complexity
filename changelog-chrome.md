@@ -10,6 +10,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+## v0.0.5.2
+
+_Release date: 29th Oct, 2024_
+
+-   Added Grok-2 model.
+
 ## v0.0.5.1
 
 _Release date: 26th Oct, 2024_
