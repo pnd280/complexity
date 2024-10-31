@@ -10,6 +10,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+## v0.0.5.4
+
+_Release date: 31st Oct, 2024_
+
+-   **FIX**: Fixed "Failed to change language model" error.
+
 ## v0.0.5.2
 
 _Release date: 29th Oct, 2024_
