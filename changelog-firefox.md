@@ -10,6 +10,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+## v0.0.5.6
+
+_Release date: 5th Nov, 2024_
+
+-   Added `Claude 3.5 Haiku` model.
+
 ## v0.0.5.5
 
 _Release date: 1st Nov, 2024_
