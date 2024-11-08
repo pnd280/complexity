@@ -10,6 +10,25 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+## v0.0.5.6
+
+_Release date: 5th Nov, 2024_
+
+-   Added `Claude 3.5 Haiku` model.
+
+## v0.0.5.5
+
+_Release date: 1st Nov, 2024_
+
+-   **FIX**: Fixed Space regression.
+-   **FIX**: Fixed a bug where unable to start a new Space thread if the "Space & Focus" selectors are disabled.
+
+## v0.0.5.4
+
+_Release date: 31st Oct, 2024_
+
+-   **FIX**: Fixed "Failed to change language model" error.
+
 ## v0.0.5.2
 
 _Release date: 29th Oct, 2024_
