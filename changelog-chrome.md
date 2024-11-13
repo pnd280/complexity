@@ -10,6 +10,18 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+## v0.0.5.10
+
+_Release date: 12th Nov, 2024_
+
+-   **FIX**: Fixed a bug where the "Space & Focus" selectors causing Space's thread to not search for file(s) in writing mode.
+
+## v0.0.5.8
+
+_Release date: 8th Nov, 2024_
+
+-   **FIX**: Fixed a bug where the custom slogan is not showing.
+
 ## v0.0.5.7
 
 _Release date: 8th Nov, 2024_
