@@ -10,6 +10,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+## v0.0.5.12
+
+_Release date: 19th Nov, 2024_
+
+-   **FIX**: Fixed many breaking bugs due to Perplexity's frontend changes.
+
 ## v0.0.5.11
 
 _Release date: 17th Nov, 2024_

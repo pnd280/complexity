@@ -10,6 +10,19 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+## v0.0.5.12
+
+_Release date: 19th Nov, 2024_
+
+-   **FIX**: Fixed many breaking bugs due to Perplexity's frontend changes.
+
+## v0.0.5.11
+
+_Release date: 17th Nov, 2024_
+
+-   **FIX**: Fixed model name display on "Better thread message toolbar".
+-   **CHANGE**: Removed Claude 3 Opus, Mistral Large, Gemini Pro 1.0 from model selector as they are no longer available on Perplexity's backend.
+
 ## v0.0.5.10
 
 _Release date: 12th Nov, 2024_
