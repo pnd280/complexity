@@ -10,6 +10,14 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 **EXPERIMENTAL** features are subjected to change/removal without prior notice.
 
+---
+
+## v0.0.5.16
+
+_Release date: 23rd Nov, 2024_
+
+-   **FIX**: Fixed messed up follow-up query box styling.
+
 ## v0.0.5.12
 
 _Release date: 19th Nov, 2024_
