@@ -12,6 +12,12 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 ---
 
+## v0.0.5.18
+
+_Release date: 27th Nov, 2024_
+
+-   **FIX**: Fixed Thread ToC title retrieval.
+
 ## v0.0.5.16
 
 _Release date: 23rd Nov, 2024_
