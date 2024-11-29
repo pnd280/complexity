@@ -12,7 +12,7 @@ Consider giving a star ⭐ on [Github](https://github.com/pnd280/complexity).
 
 ---
 
-## v0.0.5.18
+## v0.0.5.18 + 0.0.5.19
 
 _Release date: 27th Nov, 2024_
 
