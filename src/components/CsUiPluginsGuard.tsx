@@ -91,7 +91,7 @@ function ErrorDialog({
 }) {
   const pluginsError = (
     <div>
-      Error has occured in (one of) the following plugin(s):
+      Error has occurred in (one of) the following plugin(s):
       <Ul>
         {dependentPluginIds?.map((pluginId) => {
           const pluginName = PLUGINS_METADATA[pluginId].title;
