@@ -20,7 +20,7 @@ export const pplxLocalLanguageModels = [
   {
     label: "Claude 4 Opus",
     shortLabel: "Opus Thinking",
-    code: "claude4opusthinking",
+    code: "claude40opusthinking",
     provider: "Anthropic",
     limitKey: "gpt4_limit",
     type: "reasoning",
