@@ -16,11 +16,15 @@
     "lint-staged": "16.1.2",
     "prettier": "^3.6.2",
     "syncpack": "^13.0.4",
-    "turbo": "^2.5.3",
+    "tsup": "^8.5.0",
+    "turbo": "^2.5.4",
     "typescript": "5.8.3"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.47.3"
   }
 }

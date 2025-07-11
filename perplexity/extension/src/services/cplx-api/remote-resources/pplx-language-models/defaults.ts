@@ -18,6 +18,15 @@ export const pplxLocalLanguageModels = [
     hideFromList: false,
   },
   {
+    label: "Claude 4 Opus",
+    shortLabel: "Opus Thinking",
+    code: "claude4opusthinking",
+    provider: "Anthropic",
+    limitKey: "gpt4_limit",
+    type: "reasoning",
+    hideFromList: false,
+  },
+  {
     label: "Gemini 2.5 Pro",
     shortLabel: "Gemini Pro",
     code: "gemini2flash",
