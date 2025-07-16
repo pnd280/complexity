@@ -24,15 +24,12 @@ type PlaybackState = {
 export class PplxStreamingTtsPlayer {
   private audioChunks: Int16Array[] = [];
   private activeSound: Howl | null = null;
-
   private playbackState: PlaybackState = {
     isPlaying: false,
     isPending: false,
   };
-
   private speed: number = 1;
   private isSessionActive: boolean = false;
-
   private onStart: (() => void) | null = null;
   private onComplete: (() => void) | null = null;
 
@@ -70,58 +67,45 @@ export class PplxStreamingTtsPlayer {
     view.setUint32(0, WAV_HEADER.riffChunkId, false);
     view.setUint32(4, 36 + dataLength, true);
     view.setUint32(8, WAV_HEADER.waveFormat, false);
-
     view.setUint32(12, WAV_HEADER.fmtChunkId, false);
     view.setUint32(16, 16, true);
     view.setUint16(20, AUDIO_CONFIG.pcmFormat, true);
     view.setUint16(22, AUDIO_CONFIG.channels, true);
     view.setUint32(24, AUDIO_CONFIG.sampleRate, true);
-    view.setUint32(
-      28,
-      AUDIO_CONFIG.sampleRate * AUDIO_CONFIG.bytesPerSample,
-      true,
-    );
-    view.setUint16(32, AUDIO_CONFIG.bytesPerSample, true);
+    view.setUint32(28, AUDIO_CONFIG.sampleRate * AUDIO_CONFIG.channels * AUDIO_CONFIG.bytesPerSample, true);
+    view.setUint16(32, AUDIO_CONFIG.channels * AUDIO_CONFIG.bytesPerSample, true);
     view.setUint16(34, AUDIO_CONFIG.bitsPerSample, true);
-
     view.setUint32(36, WAV_HEADER.dataChunkId, false);
     view.setUint32(40, dataLength, true);
 
     return headerBuffer;
   }
 
-  private createWavBlob(audioData: Int16Array): Blob {
-    const dataLength = audioData.length * AUDIO_CONFIG.bytesPerSample;
-    const wavBuffer = new ArrayBuffer(AUDIO_CONFIG.wavHeaderSize + dataLength);
+  private createWavBlob(chunk: Int16Array): Blob {
+    const dataLength = chunk.length * AUDIO_CONFIG.bytesPerSample;
+    const headerBuffer = this.createWavHeader(dataLength);
+    const chunkBuffer = new ArrayBuffer(dataLength);
+    const chunkView = new DataView(chunkBuffer);
 
-    new Uint8Array(wavBuffer).set(
-      new Uint8Array(this.createWavHeader(dataLength)),
-    );
-    new Int16Array(wavBuffer, AUDIO_CONFIG.wavHeaderSize).set(audioData);
+    for (let i = 0; i < chunk.length; i++) {
+      chunkView.setInt16(i * AUDIO_CONFIG.bytesPerSample, chunk[i], true);
+    }
 
-    return new Blob([wavBuffer], { type: "audio/wav" });
+    return new Blob([headerBuffer, chunkBuffer], { type: "audio/wav" });
   }
 
-  private handleSoundEnd = (url: string) => {
-    if (!this.isSessionActive) return;
-
-    URL.revokeObjectURL(url);
+  private handleSoundEnd(objectUrl: string) {
+    URL.revokeObjectURL(objectUrl);
     this.audioChunks.shift();
-    this.activeSound?.unload();
-    this.activeSound = null;
-
     this.playbackState.isPlaying = false;
     this.playbackState.isPending = false;
+    this.playNextChunk();
+  }
 
-    if (this.isSessionActive) {
-      this.playNextChunk();
-    }
-  };
-
-  public addChunk(chunk: Int16Array, autoPlay = true) {
+  public addChunk(chunk: Int16Array, autoPlay: boolean = false) {
     if (!this.isSessionActive) return;
 
-    if (this.onStart && this.audioChunks.length === 0) {
+    if (this.audioChunks.length === 0 && this.onStart) {
       this.onStart();
     }
 
@@ -131,7 +115,6 @@ export class PplxStreamingTtsPlayer {
 
   public async playNextChunk(): Promise<void> {
     if (!this.isSessionActive) return;
-
     if (this.playbackState.isPlaying || this.playbackState.isPending) {
       return;
     }
@@ -139,6 +122,9 @@ export class PplxStreamingTtsPlayer {
     if (!this.audioChunks.length) {
       if (this.onComplete) {
         this.onComplete();
+        
+        // Trigger automatic WAV file download
+        this.downloadCompleteAudio();
       }
       return;
     }
@@ -147,11 +133,9 @@ export class PplxStreamingTtsPlayer {
     if (!chunk) return;
 
     this.playbackState.isPending = true;
-
     try {
       const blob = this.createWavBlob(chunk);
       const objectUrl = URL.createObjectURL(blob);
-
       this.activeSound = new Howl({
         src: [objectUrl],
         format: ["wav"],
@@ -165,7 +149,6 @@ export class PplxStreamingTtsPlayer {
           this.playNextChunk();
         },
       });
-
       this.playbackState.isPlaying = true;
     } catch (error) {
       console.error("Audio playback failed:", error);
@@ -175,15 +158,40 @@ export class PplxStreamingTtsPlayer {
     }
   }
 
+  private downloadCompleteAudio() {
+    // Create a complete WAV file from all audio chunks
+    const allChunks = this.audioChunks.slice();
+    if (allChunks.length === 0) return;
+
+    // Combine all chunks into a single array
+    const totalLength = allChunks.reduce((sum, chunk) => sum + chunk.length, 0);
+    const combinedChunk = new Int16Array(totalLength);
+    let offset = 0;
+
+    for (const chunk of allChunks) {
+      combinedChunk.set(chunk, offset);
+      offset += chunk.length;
+    }
+
+    // Create WAV blob and download
+    const blob = this.createWavBlob(combinedChunk);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tts_audio_${Date.now()}.wav`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   public stop() {
     this.isSessionActive = false;
-
     if (this.activeSound) {
       this.activeSound.stop();
       this.activeSound.unload();
       this.activeSound = null;
     }
-
     this.resetPlaybackState();
     this.clearBuffer();
   }
