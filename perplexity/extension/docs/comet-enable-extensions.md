@@ -56,6 +56,14 @@ irm "https://cdn.cplx.app/assets/comet-patch.ps1" | iex
 
 A shortcut named `Comet - CPLX` will be created on your Desktop. Comet launched through this shortcut will have all extensions enabled on perplexity.ai domains.
 
-#### Mac
+#### macOS
 
-I dont own a Mac - contribute by submitting a PR.
+Close all running Comet instances and run the following command in the Terminal (no admin required)
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/theJayTea/Comet-Patcher-to-Unblock-Perplexity-Extensions/main/comet-patch-macos.sh" | bash
+```
+
+A shortcut / wrapper app named `Comet - CPLX` will be created at `~/Applications/Comet - CPLX.app`. Comet launched through this shortcut will have all extensions enabled on perplexity.ai domains.
+
+*This macOS Comet perplexity.ai extension fix script was created by [Jesai (https://github.com/theJayTea)](https://github.com/theJayTea), inspired by Complexity creator [pnd280](https://github.com/pnd280)'s original findings above. You can explore the macOS script's source at [https://github.com/theJayTea/Comet-Patcher-to-Unblock-Perplexity-Extensions](https://github.com/theJayTea/Comet-Patcher-to-Unblock-Perplexity-Extensions).*
