@@ -22,8 +22,6 @@ export const DomSelectorsSchema = z.object({
       }),
     }),
     MESSAGE: z.object({
-      OUTER_WRAPPER: z.string(),
-      INNER_WRAPPER: z.string(),
       QUERY_WRAPPER: z.string(),
       QUERY: z.string(),
       QUERY_EDIT_BUTTON_GROUP: z.string(),

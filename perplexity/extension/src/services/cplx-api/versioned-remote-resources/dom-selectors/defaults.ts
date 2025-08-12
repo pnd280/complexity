@@ -29,8 +29,6 @@ export const DOM_SELECTORS: DomSelectors = {
       },
     },
     MESSAGE: {
-      OUTER_WRAPPER: "div:not([class]),.erp-sidecar\\:pb-0.pb-16",
-      INNER_WRAPPER: "> div > div > .bg-transparent",
       QUERY_WRAPPER: ".isolate.mx-auto > .max-w-threadContentWidth:first-child",
       QUERY: ".group\\/query",
       QUERY_EDIT_BUTTON_GROUP:
@@ -51,8 +49,7 @@ export const DOM_SELECTORS: DomSelectors = {
         MISC_BUTTON: "button:has(svg.tabler-icon-dots)",
       },
       IMAGE_GEN: {
-        OPTIONS_GRID:
-          "div.grid.grid-cols-2.gap-sm.border-borderMain\\/50.ring-borderMain\\/50.divide-borderMain\\/50.dark\\:divide-borderMainDark\\/50.dark\\:ring-borderMainDark\\/50.dark\\:border-borderMainDark\\/50.bg-transparent",
+        OPTIONS_GRID: ".gap-sm.grid.grid-cols-2",
       },
       CODE_BLOCK: {
         /** The outermost container that wraps the pre & code block */
@@ -62,7 +59,7 @@ export const DOM_SELECTORS: DomSelectors = {
       },
     },
     POPPER: {
-      DESKTOP: ".duration-250.fill-mode-both>.absolute.left-0.right-0.top-0",
+      DESKTOP: "div[data-type='portal'] .absolute.inset-x-0.top-0",
     },
   },
   HOME: {

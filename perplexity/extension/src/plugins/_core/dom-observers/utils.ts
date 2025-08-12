@@ -47,7 +47,7 @@ export function isInternalNodeExists({
 
   if (!document.body.contains(node)) return false;
 
-  if (selector != null && !$(node).is(selector)) return false;
+  if (selector != null && !node.matches(selector)) return false;
 
   return true;
 }

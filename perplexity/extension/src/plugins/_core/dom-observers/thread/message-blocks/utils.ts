@@ -17,9 +17,7 @@ export async function findMessageBlocks(
 ): Promise<MessageBlock[] | null> {
   if (!$threadMessagesContainer[0]) return null;
 
-  const $messageBlockElements = $threadMessagesContainer.find(
-    `>${DomSelectorsService.cachedSync.THREAD.MESSAGE.OUTER_WRAPPER}`,
-  );
+  const $messageBlockElements = $threadMessagesContainer.children();
 
   if ($messageBlockElements.length === 0) return [];
 

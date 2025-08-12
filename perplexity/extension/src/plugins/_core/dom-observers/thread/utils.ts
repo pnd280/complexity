@@ -180,7 +180,11 @@ export function findPopper() {
   )
     return;
 
-  const $popper = $(DomSelectorsService.cachedSync.THREAD.POPPER.DESKTOP);
+  const $popper = $(document.body).find(
+    `>${DomSelectorsService.cachedSync.THREAD.POPPER.DESKTOP}`,
+  );
+
+  if (!$popper.length) return;
 
   $popper.internalComponentAttr(
     DomSelectorsService.internalAttributes.THREAD.POPPER.DESKTOP,

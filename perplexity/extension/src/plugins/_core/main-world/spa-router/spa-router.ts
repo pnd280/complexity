@@ -5,6 +5,7 @@ import {
   applyRouteIdAttribute,
   waitForRouteChangeComplete,
 } from "@/plugins/_core/main-world/spa-router/utils";
+import { UiUtils } from "@/utils/ui-utils";
 import { whereAmI } from "@/utils/utils";
 
 onlyMainWorldGuard();
@@ -69,7 +70,9 @@ const dispatchRouteChange = (function () {
         "content-script",
       );
 
-      await waitForRouteChangeComplete(whereAmI(fullUrl));
+      // await waitForRouteChangeComplete(whereAmI(fullUrl));
+
+      await UiUtils.waitForSpaIdle();
 
       if (fullUrl !== lastDispatchedUrl) {
         console.warn(

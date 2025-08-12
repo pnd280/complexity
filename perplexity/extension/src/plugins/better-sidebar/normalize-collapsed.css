@@ -1,6 +1,6 @@
 @reference "../../assets/index.css";
 
-.h-\[100dvh\] > .group\/sidebar {
+.h-dvh > .group\/sidebar {
   display: none;
 
   & + [class^="erp"][style^="padding"] {

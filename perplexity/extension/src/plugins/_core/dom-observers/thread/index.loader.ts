@@ -1,4 +1,4 @@
-import { sendMessage } from "webext-bridge/window";
+import { sendMessage } from "webext-bridge/content-script";
 
 import {
   CallbackQueue,
@@ -51,7 +51,7 @@ export default function loader() {
         return;
 
       await waitUntil({
-        interval: 500,
+        interval: 50,
         timeout: 2000,
         condition: () => {
           return sendMessage("reactVdom:isInitialized", undefined, "window");

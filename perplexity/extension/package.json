@@ -1,6 +1,6 @@
 {
   "name": "pplx-ext",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "author": "pnd280",
   "dependencies": {
     "@ark-ui/react": "^5.18.3",

@@ -36,7 +36,7 @@ export default function ZenModePluginSettingsUi() {
             <HotkeyRecorderUi />
           </div>
           <Switch
-            textLabel="Persistent across reloads"
+            textLabel="Persistent across reloads (remember the last state)"
             checked={settings?.plugins["zenMode"].persistent ?? false}
             onCheckedChange={({ checked }) => {
               mutation.mutate((draft) => {
@@ -45,7 +45,7 @@ export default function ZenModePluginSettingsUi() {
             }}
           />
           <Switch
-            textLabel="Always hide related questions"
+            textLabel='Always hide "Related" questions section'
             checked={
               settings?.plugins["zenMode"].alwaysHideRelatedQuestions ?? false
             }

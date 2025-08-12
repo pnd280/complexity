@@ -16,9 +16,8 @@ export const locationWaits: Partial<
   }
 
   async function checkThreadLoaded() {
-    const domSelectors = await getDomSelectors();
     await UiUtils.waitForSpaIdle();
-    return $(domSelectors.THREAD.MESSAGE.INNER_WRAPPER).length > 0;
+    return true;
   }
 
   async function checkHomeLoaded() {

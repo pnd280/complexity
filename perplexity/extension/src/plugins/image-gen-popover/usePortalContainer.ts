@@ -1,7 +1,7 @@
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
 
-export default function useObserver() {
+export default function usePortalContainer() {
   const popper = useThreadDomObserverStore(
     (state) => state.$popper?.[0] ?? null,
     deepEqual,
@@ -18,6 +18,8 @@ function findOptionsGridHeader(popper: HTMLElement | null) {
     .prev();
 
   if (!$header.length) return null;
+
+  console.log($header);
 
   return $header[0];
 }
