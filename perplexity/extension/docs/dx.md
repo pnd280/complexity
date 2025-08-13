@@ -4,7 +4,7 @@
 
 ### Requirements
 
-- Node.js ^20.9.0
+- Node.js ^22
 - PNPM package manager
 - Any Chromium-based browser (Chrome, Edge, Brave, etc.)
   - **Firefox is NOT supported for running the dev environment**

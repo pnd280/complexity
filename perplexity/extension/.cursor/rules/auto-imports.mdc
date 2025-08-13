@@ -3,6 +3,7 @@ description:
 globs: **/src/**/*.ts,**/src/**/*.tsx
 alwaysApply: false
 ---
+
 # AUTO-IMPORTS
 
 ## CRITICAL: NEVER ADD EXPLICIT IMPORTS FOR THESE DEPENDENCIES
@@ -10,35 +11,33 @@ alwaysApply: false
 This project uses automatic imports via unimport. The following dependencies are AUTOMATICALLY AVAILABLE in all files without explicit imports.
 
 ### React Core
+
 - `useState`, `useEffect`, `useRef`, `useMemo`, `useCallback`, `useLayoutEffect`
 - `useContext`, `useReducer`, `useImperativeHandle`, `useDebugValue`, `useId`
 - `lazy`, `use`, `createContext`, `useDeferredValue`, `memo`
 
 ### Utility Functions
-- From `src/utils/js-context-guards.ts`: 
+
+- From `src/utils/js-context-guards.ts`:
   - `onlyMainWorldGuard`
   - `onlyExtensionGuard`
-  
-- From `src/utils/utils.ts`: 
+- From `src/utils/utils.ts`:
   - `sleep`
   - `isMainWorldContext`
   - `isExtensionContext`
   - `invariant`
 
-- From `src/utils/deep-equal.ts`: 
+- From `src/utils/deep-equal.ts`:
   - `deepEqual`
-  
-- From `src/utils/cn.ts`: 
+- From `src/utils/cn.ts`:
   - `cn`
 
 ### External Libraries
+
 - From jquery: `$` (default import)
 - From ts-key-enum: `Key`
 
 ## IMPORTANT REMINDER
+
 - DO NOT add import statements for any of the above items
 - Treat these imports as already present in the global scope
-
-
-
-

@@ -6,7 +6,7 @@ import { Logger } from "@complexity/cli-logger";
 
 import { APP_CONFIG } from "../src/app.config";
 
-export default function viteRemoveStaticCssFromManifest(): Plugin {
+export default function vitePluginRemoveStaticCssFromManifest(): Plugin {
   const logger = new Logger({
     name: "vite-plugin-remove-static-css-from-manifest",
     isVerbose: false,

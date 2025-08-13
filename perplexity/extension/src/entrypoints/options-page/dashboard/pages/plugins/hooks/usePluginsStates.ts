@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { APP_CONFIG } from "@/app.config";
 import useExtensionUpdate from "@/hooks/useExtensionUpdate";
 import { PluginsStatesService } from "@/services/plugins-states";
+import { featureCompatResourceConfig } from "@/services/plugins-states/index.remote-resources";
 import {
   initializePluginStates,
   updatePluginStatesWithFeatureCompat,
@@ -19,6 +20,7 @@ export default function usePluginsStates() {
   const { data: featureCompat, isLoading: isFetchingFeatureCompat } = useQuery({
     ...PluginsStatesService.featureCompatQuery,
     retry: false,
+    enabled: !APP_CONFIG.IS_DEV,
   });
 
   const { latestVersion, isLoading: isLoadingLatestVersion } =
@@ -26,12 +28,14 @@ export default function usePluginsStates() {
 
   const pluginsStates = useMemo(
     () =>
-      updatePluginStatesWithFeatureCompat(
-        initializePluginStates(),
-        featureCompat,
-        APP_CONFIG.VERSION,
-        latestVersion,
-      ),
+      updatePluginStatesWithFeatureCompat({
+        pluginsStates: initializePluginStates(),
+        featureCompat: APP_CONFIG.IS_DEV
+          ? featureCompatResourceConfig.fallback
+          : featureCompat,
+        currentVersion: APP_CONFIG.VERSION,
+        latestAvailableVersion: latestVersion,
+      }),
     [featureCompat, latestVersion],
   );
 

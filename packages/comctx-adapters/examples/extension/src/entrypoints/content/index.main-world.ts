@@ -1,0 +1,3 @@
+// INJECTED SCRIPT
+
+(async () => {})();

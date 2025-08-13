@@ -2,8 +2,9 @@ import type { BridgeMessage } from "webext-bridge";
 
 import type { MaybePromise } from "@/types/utils.types";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface EventHandlers {}
+interface EventHandlers {
+  placeholder: never;
+}
 
 type MessageFunctions = {
   onMessage<K extends keyof EventHandlers>(
@@ -15,7 +16,7 @@ type MessageFunctions = {
             data: Parameters<EventHandlers[K]>[0];
           },
     ) => MaybePromise<ReturnType<EventHandlers[K]>>,
-  ): void;
+  ): () => void;
 
   sendMessage<K extends keyof EventHandlers>(
     event: K,

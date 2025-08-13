@@ -199,7 +199,7 @@ function cleanupSource(
   }
 }
 
-export default function viteMoveHtmlPlugin(
+export default function vitePluginMoveHtml(
   entries: MoveHtmlOptions[],
   verbose?: boolean,
 ): PluginOption {

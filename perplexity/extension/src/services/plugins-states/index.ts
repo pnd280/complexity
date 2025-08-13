@@ -55,17 +55,17 @@ export class PluginsStatesService {
 
     const pluginsStates = initializePluginStates();
 
-    const withFeatureCompat = updatePluginStatesWithFeatureCompat(
+    const withFeatureCompat = updatePluginStatesWithFeatureCompat({
       pluginsStates,
       featureCompat,
-      APP_CONFIG.VERSION,
-      cplxVersions?.latest,
-    );
+      currentVersion: APP_CONFIG.VERSION,
+      latestAvailableVersion: cplxVersions?.latest,
+    });
 
-    const enableStates = getEnableStates(
-      withFeatureCompat,
-      ExtensionSettingsService.cachedSync.plugins,
-    );
+    const enableStates = getEnableStates({
+      pluginsStates: withFeatureCompat,
+      localEnableStates: ExtensionSettingsService.cachedSync.plugins,
+    });
 
     invariant(
       featureCompat && cplxVersions,

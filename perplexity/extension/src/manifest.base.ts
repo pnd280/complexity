@@ -3,7 +3,10 @@ import type { ManifestV3Export } from "@crxjs/vite-plugin";
 import { APP_CONFIG } from "./app.config";
 import packageData from ".././package.json";
 
-export const baseManifest: ManifestV3Export = {
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+export type ManifestV3Options = Exclude<Awaited<ManifestV3Export>, Function>;
+
+export const baseManifest: ManifestV3Options = {
   manifest_version: 3,
   name: "Complexity | Perplexity AI Supercharged",
   description:

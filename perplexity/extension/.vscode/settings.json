@@ -73,7 +73,7 @@
     "watchDirectory": "useFsEvents",
     "watchFile": "useFsEventsOnParentDirectory"
   },
-  "window.title": "${dirty}🧩 Perplexity AI Enhancer${separator}${activeRepositoryBranchName}${separator}${activeEditorShort}",
+  "window.title": "${dirty}pplx-ext${separator}${activeRepositoryBranchName}${separator}${activeEditorShort}",
   "workbench.editor.customLabels.patterns": {
     "**/src/**/*.remote-resources.ts": "Remote Resources - ${dirname}",
     "**/src/data/plugin-registry/index.ts": "Plugin Registry",

@@ -1,25 +1,15 @@
 {
   "name": "@complexity/async-dep-registry",
   "version": "0.1.0",
-  "devDependencies": {
-    "@complexity/eslint-config": "workspace:*",
-    "@complexity/typescript-config": "workspace:*",
-    "@types/node": "^20.17.30",
-    "eslint": "catalog:lint",
-    "globals": "^16.3.0",
-    "prettier": "^3.6.2",
-    "tsup": "8.5.0",
-    "typescript": "catalog:types",
-    "typescript-eslint": "catalog:lint",
-    "vitest": "^3.2.4"
-  },
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/",
     "src/"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "private": true,
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "check-types": "tsc",
@@ -29,6 +19,16 @@
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
-  "type": "module",
-  "types": "./dist/index.d.ts"
+  "devDependencies": {
+    "@complexity/eslint-config": "workspace:*",
+    "@complexity/typescript-config": "workspace:*",
+    "@types/node": "22.17.2",
+    "eslint": "catalog:lint",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "tsup": "8.5.0",
+    "typescript": "catalog:types",
+    "typescript-eslint": "catalog:lint",
+    "vitest": "^3.2.4"
+  }
 }

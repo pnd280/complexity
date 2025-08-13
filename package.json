@@ -2,28 +2,28 @@
   "name": "complexity",
   "private": true,
   "scripts": {
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "fmt": "turbo fmt",
-    "check-types": "turbo check-types",
-    "test": "turbo test",
     "build": "turbo build",
-    "prepare": "husky",
-    "lint-staged": "lint-staged",
     "check-deps": "manypkg check",
-    "fix-deps": "manypkg fix"
+    "check-types": "turbo check-types",
+    "dev": "turbo dev",
+    "fix-deps": "manypkg fix",
+    "fmt": "turbo fmt",
+    "lint": "turbo lint",
+    "lint-staged": "lint-staged",
+    "prepare": "husky",
+    "test": "turbo test"
   },
   "devDependencies": {
-    "@manypkg/cli": "^0.25.0",
+    "@manypkg/cli": "^0.25.1",
     "husky": "^9.1.7",
-    "lint-staged": "16.1.2",
+    "lint-staged": "16.1.5",
     "prettier": "^3.6.2",
-    "turbo": "^2.5.5",
+    "turbo": "^2.5.6",
     "typescript": "catalog:types"
   },
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.15.0",
   "engines": {
-    "node": ">=20"
+    "node": "^22.12.0"
   },
   "manypkg": {
     "defaultBranch": "main",

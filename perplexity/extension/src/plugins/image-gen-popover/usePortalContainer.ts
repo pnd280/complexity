@@ -19,7 +19,5 @@ function findOptionsGridHeader(popper: HTMLElement | null) {
 
   if (!$header.length) return null;
 
-  console.log($header);
-
   return $header[0];
 }

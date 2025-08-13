@@ -13,7 +13,7 @@ export type PluginStateDetailed = {
 
 export type PluginsStatesDetailed = Record<PluginId, PluginStateDetailed>;
 
-export const initializePluginStates = (): PluginsStatesDetailed => {
+export function initializePluginStates(): PluginsStatesDetailed {
   return (Object.keys(PluginRegistry.manifests) as PluginId[]).reduce(
     (acc, pluginId) => ({
       ...acc,
@@ -24,38 +24,49 @@ export const initializePluginStates = (): PluginsStatesDetailed => {
     }),
     {} as PluginsStatesDetailed,
   );
-};
+}
 
-export const isPluginOutdated = (
-  currentVersion: string,
-  requiredVersion: string | undefined,
-): boolean => {
+export function isPluginOutdated({
+  currentVersion,
+  requiredVersion,
+}: {
+  currentVersion: string;
+  requiredVersion: string | undefined;
+}): boolean {
   if (!requiredVersion) return true;
   return semver.lt(currentVersion, requiredVersion);
-};
+}
 
-export const isUpdateAvail = (
-  requiredVersion: string | undefined,
-  latestAvailableVersion: string | undefined,
-): boolean => {
+export function isUpdateAvail({
+  requiredVersion,
+  latestAvailableVersion,
+}: {
+  requiredVersion: string | undefined;
+  latestAvailableVersion: string | undefined;
+}): boolean {
   if (!requiredVersion || !latestAvailableVersion) return false;
   return semver.gt(latestAvailableVersion, requiredVersion);
-};
+}
 
-export const updatePluginStatesWithFeatureCompat = (
-  pluginsStates: PluginsStatesDetailed,
-  featureCompat: FeatureCompatibility | undefined,
-  currentVersion: string,
-  latestAvailableVersion: string | undefined,
-): PluginsStatesDetailed => {
+export function updatePluginStatesWithFeatureCompat({
+  pluginsStates,
+  featureCompat,
+  currentVersion,
+  latestAvailableVersion,
+}: {
+  pluginsStates: PluginsStatesDetailed;
+  featureCompat: FeatureCompatibility | undefined;
+  currentVersion: string;
+  latestAvailableVersion: string | undefined;
+}): PluginsStatesDetailed {
   if (!featureCompat) return pluginsStates;
 
   return Object.keys(pluginsStates).reduce(
     (acc, pluginId) => {
-      const isOutdated = isPluginOutdated(
+      const isOutdated = isPluginOutdated({
         currentVersion,
-        featureCompat[pluginId as PluginId],
-      );
+        requiredVersion: featureCompat[pluginId as PluginId],
+      });
 
       return {
         ...acc,
@@ -64,35 +75,50 @@ export const updatePluginStatesWithFeatureCompat = (
           isOutdated,
           isOnMaintenance:
             isOutdated &&
-            !isUpdateAvail(currentVersion, latestAvailableVersion),
+            !isUpdateAvail({
+              requiredVersion: currentVersion,
+              latestAvailableVersion,
+            }),
         },
       };
     },
 
     { ...pluginsStates },
   );
-};
+}
 
-export const getEnableStates = (
-  pluginsStates: PluginsStatesDetailed,
-  localEnableStates: ExtensionSettings["plugins"],
-): PluginsStates => {
+export function getEnableStates({
+  pluginsStates,
+  localEnableStates,
+}: {
+  pluginsStates: PluginsStatesDetailed;
+  localEnableStates: ExtensionSettings["plugins"];
+}): PluginsStates {
   return Object.keys(pluginsStates).reduce(
     (acc, pluginId) => ({
       ...acc,
       [pluginId as PluginId]:
-        areAllDependenciesAvailable(pluginId as PluginId, pluginsStates) &&
-        !isPluginLockedDown(pluginsStates, pluginId as PluginId) &&
+        areAllDependenciesAvailable({
+          pluginId: pluginId as PluginId,
+          pluginsStates,
+        }) &&
+        !isPluginLockedDown({
+          pluginsStates,
+          pluginId: pluginId as PluginId,
+        }) &&
         localEnableStates[pluginId as PluginId].enabled,
     }),
     {} as PluginsStates,
   );
-};
+}
 
-function areAllDependenciesAvailable(
-  pluginId: PluginId,
-  pluginsStates: PluginsStatesDetailed,
-) {
+function areAllDependenciesAvailable({
+  pluginId,
+  pluginsStates,
+}: {
+  pluginId: PluginId;
+  pluginsStates: PluginsStatesDetailed;
+}) {
   if (!PluginRegistry.manifests[pluginId]?.dependentPlugins) return true;
 
   return PluginRegistry.manifests[pluginId]?.dependentPlugins?.every(
@@ -102,10 +128,13 @@ function areAllDependenciesAvailable(
   );
 }
 
-function isPluginLockedDown(
-  pluginsStates: PluginsStatesDetailed,
-  pluginId: PluginId,
-) {
+function isPluginLockedDown({
+  pluginsStates,
+  pluginId,
+}: {
+  pluginsStates: PluginsStatesDetailed;
+  pluginId: PluginId;
+}) {
   return (
     pluginsStates[pluginId].isOutdated ||
     pluginsStates[pluginId].isOnMaintenance

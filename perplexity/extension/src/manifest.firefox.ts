@@ -1,45 +1,31 @@
-import { defineManifest, type ManifestV3Export } from "@crxjs/vite-plugin";
-import { baseManifest } from "./manifest.base";
+import { baseManifest, type ManifestV3Options } from "./manifest.base";
 import { produce } from "immer";
 
-export type MozManifest = ManifestV3Export & {
+export type MozManifest = ManifestV3Options & {
   browser_specific_settings: {
     gecko: {
       id: string;
       strict_min_version: string;
     };
   };
-  background: {
-    service_worker?: never;
-    type: "classic" | "module";
-  };
-  commands: {
-    _execute_action: {
-      description?: string;
-    };
-  };
 };
 
-const defineMozManifest = defineManifest as unknown as (
-  manifest: MozManifest,
-) => MozManifest;
+const mozManifest = produce(baseManifest as MozManifest, (draft) => {
+  draft.browser_specific_settings = {
+    gecko: {
+      id: "complexity@ngocdg",
+      strict_min_version: "109.0",
+    },
+  };
+  draft.background = {
+    scripts: ["src/entrypoints/background/index.ts"],
+    type: "module",
+  };
+  draft.commands = {
+    _execute_action: {
+      description: "Activate the extension",
+    },
+  };
+});
 
-export default defineMozManifest(
-  produce(baseManifest as MozManifest, (draft) => {
-    draft.browser_specific_settings = {
-      gecko: {
-        id: "complexity@ngocdg",
-        strict_min_version: "109.0",
-      },
-    };
-    draft.background = {
-      scripts: ["src/entrypoints/background/index.ts"],
-      type: "module",
-    };
-    draft.commands = {
-      _execute_action: {
-        description: "Activate the extension",
-      },
-    };
-  }),
-);
+export default mozManifest as ManifestV3Options;

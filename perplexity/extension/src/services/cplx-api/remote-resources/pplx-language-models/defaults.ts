@@ -43,6 +43,15 @@ export const pplxLocalLanguageModels = {
       icon: "openai",
     },
     {
+      label: "GPT-5 Thinking",
+      shortLabel: "GPT-5 Thinking",
+      code: "gpt5_thinking",
+      isReasoning: false,
+      limitKey: "gpt4_limit",
+      isMax: false,
+      icon: "openai",
+    },
+    {
       label: "o3 Pro",
       shortLabel: "o3 Pro",
       code: "o3pro",

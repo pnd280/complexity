@@ -14,10 +14,10 @@ import tailwindcss from "@tailwindcss/vite";
 
 import vitePluginForceRestartOnChanges from "./vite-plugins/vite-plugin-force-restart-on-changes";
 import vitePluginReloadOnDynamicallyInjectedStyleChanges from "./vite-plugins/vite-plugin-reload-on-dynamically-injected-style-changes";
-import viteTouchGlobalCss from "./vite-plugins/vite-plugin-touch-global-css";
-import viteMoveHtmlPlugin from "./vite-plugins/vite-plugin-move-html";
-import viteTailwindCustomPrefixes from "./vite-plugins/vite-plugin-tailwind-custom-prefixes";
-// import viteRemoveStaticCssFromManifest from "./vite-plugins/vite-plugin-remove-static-css-from-manifest";
+import vitePluginTouchOnChange from "./vite-plugins/vite-plugin-touch-on-change";
+import vitePluginMoveHtml from "./vite-plugins/vite-plugin-move-html";
+import vitePluginTailwindCustomPrefixes from "./vite-plugins/vite-plugin-tailwind-custom-prefixes";
+// import vitePluginRemoveStaticCssFromManifest from "./vite-plugins/vite-plugin-remove-static-css-from-manifest";
 
 export default defineConfig(() => ({
   base: "./",
@@ -44,15 +44,17 @@ export default defineConfig(() => ({
     }),
     react(),
     tailwindcss(),
-    viteTailwindCustomPrefixes(),
+    vitePluginTailwindCustomPrefixes(),
     Unimport.vite(unimportConfig),
 
     // dev
-    viteTouchGlobalCss({
-      cssFilePath: path.resolve(__dirname, "src/assets/index.css"),
-      watchFiles: [
-        path.resolve(__dirname, "src/"),
-        path.resolve(__dirname, "public/"),
+    vitePluginTouchOnChange({
+      watch: ["src/assets/index.css"],
+      globs: [
+        "src/**/*",
+        "public/**/*",
+        "!src/entrypoints/options-page/**/*",
+        "!src/plugins/**/settings-ui.tsx",
       ],
     }),
     vitePluginReloadOnDynamicallyInjectedStyleChanges({
@@ -63,7 +65,7 @@ export default defineConfig(() => ({
     }),
 
     // build
-    viteMoveHtmlPlugin([
+    vitePluginMoveHtml([
       {
         src: "src/entrypoints/options-page/options.html",
         dest: "options.html",
@@ -80,11 +82,12 @@ export default defineConfig(() => ({
   },
 
   server: {
-    port: 8811,
-    hmr: {
-      host: "localhost",
-      protocol: "ws",
-    },
+    // enable this if hmr doesn't work
+    // port: 8811,
+    // hmr: {
+    //   host: "localhost",
+    //   protocol: "ws",
+    // },
     warmup: {
       clientFiles: [
         "src/entrypoints/content-scripts/index.ts",
@@ -94,7 +97,7 @@ export default defineConfig(() => ({
   },
 
   test: {
-    exclude: ["node_modules", "e2e/**"],
+    exclude: ["node_modules", "e2e/**", "dist/**"],
     setupFiles: ["./tests/vitest.setup.ts"],
   },
 }));

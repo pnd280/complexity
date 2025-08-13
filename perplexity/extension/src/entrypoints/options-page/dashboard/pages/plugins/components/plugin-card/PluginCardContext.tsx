@@ -47,6 +47,7 @@ export function PluginCardProvider({
   const { pluginInfo, state, actions } = usePluginCard(pluginId);
 
   const { pluginsStates } = usePluginsStates();
+
   const isLockedDown = isPluginLockedDown(pluginId, pluginsStates);
   const lockdownText = getLockdownText(pluginId, pluginsStates);
   const lockdownSubText = getLockdownSubText(pluginId, pluginsStates);

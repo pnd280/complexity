@@ -70,8 +70,7 @@ export default function loader() {
           let dragCounter = 0;
 
           $wrapper.on(DRAGENTER_EVENT, function (e) {
-            const filesTypes = (e as JQuery.DragEvent).originalEvent
-              ?.dataTransfer?.types;
+            const filesTypes = e.originalEvent?.dataTransfer?.types;
             if (filesTypes?.length == null || !filesTypes.includes("Files"))
               return;
 
@@ -85,8 +84,7 @@ export default function loader() {
           });
 
           $wrapper.on(DRAGOVER_EVENT, function (e) {
-            const filesTypes = (e as JQuery.DragEvent).originalEvent
-              ?.dataTransfer?.types;
+            const filesTypes = e.originalEvent?.dataTransfer?.types;
             if (filesTypes?.length == null || !filesTypes.includes("Files"))
               return;
 
@@ -106,8 +104,7 @@ export default function loader() {
           });
 
           $wrapper.on(DROP_EVENT, function (e) {
-            const files = (e as JQuery.DragEvent).originalEvent?.dataTransfer
-              ?.files;
+            const files = e.originalEvent?.dataTransfer?.files;
 
             if (files?.length == null) return;
 

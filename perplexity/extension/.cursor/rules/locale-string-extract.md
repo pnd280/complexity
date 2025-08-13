@@ -1,15 +1,17 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
+
 ## Task
 
 1. Extract strings into the specified `{namespace}.{locale}.ts` locale file.
 2. Update the code file to match the extracted strings:
-  - Populate the full key path into the `t(...)` function with the format of `namespace.key.subKey...`.
-  - For components wrapper, use `Trans` instead of `t`.
-  - NEVER extract elements that user can NOT see or interact with e.g. `aria-labels`, `alt` attributes, etc.
+
+- Populate the full key path into the `t(...)` function with the format of `namespace.key.subKey...`.
+- For components wrapper, use `Trans` instead of `t`.
+- NEVER extract elements that user can NOT see or interact with e.g. `aria-labels`, `alt` attributes, etc.
 
 ## IMPORTANT RESTRICTIONS:
 

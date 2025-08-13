@@ -1,23 +1,11 @@
-import { defineManifest, type ManifestV3Export } from "@crxjs/vite-plugin";
-import { baseManifest } from "./manifest.base";
+import { baseManifest, type ManifestV3Options } from "./manifest.base";
 import { produce } from "immer";
 
-export type ChromeManifest = ManifestV3Export & {
-  background: {
-    service_worker: string;
-    type: "module";
+const chromeManifest = produce(baseManifest, (draft) => {
+  draft.background = {
+    service_worker: "src/entrypoints/background/index.ts",
+    type: "module",
   };
-};
+});
 
-const defineChromeManifest = defineManifest as unknown as (
-  manifest: ChromeManifest,
-) => ChromeManifest;
-
-export default defineChromeManifest(
-  produce(baseManifest as ChromeManifest, (draft) => {
-    draft.background = {
-      service_worker: "src/entrypoints/background/index.ts",
-      type: "module",
-    };
-  }),
-);
+export default chromeManifest as ManifestV3Options;
