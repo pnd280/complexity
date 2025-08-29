@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import rootPackageJson from "#/package.json";
-import type { VersionedRemoteResourceReturnType } from "#/src/services/cplx-api/versioned-remote-resources/types";
+import type { VersionedRemoteResourceReturnType } from "#/src/services/externals/cplx-api/versioned-remote-resources/types";
 import chalk from "chalk";
 
 import { logger } from "@/r2/config";

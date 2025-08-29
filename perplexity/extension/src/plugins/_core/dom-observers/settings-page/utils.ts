@@ -1,6 +1,6 @@
 import { settingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function findSidebar() {
   const existingSidebar =

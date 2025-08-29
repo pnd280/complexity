@@ -1,7 +1,7 @@
 import { defineProxyService } from "@webext-core/proxy-service";
 
 import type { QueryCacheEntry } from "@/data/query-client/utils";
-import { db } from "@/services/indexed-db";
+import { db } from "@/services/infra/indexed-db";
 
 class QueryCacheService {
   async add(query: QueryCacheEntry): Promise<string> {

@@ -1,5 +1,5 @@
-import { pplxLocalLanguageModels } from "@/services/cplx-api/remote-resources/pplx-language-models/defaults";
-import type { ThreadMessageApiResponse } from "@/services/pplx-api/pplx-api.types";
+import { pplxLocalLanguageModels } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/defaults";
+import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
 import { jsonUtils } from "@/utils/utils";
 
 type ThreadAnswer = {

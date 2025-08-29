@@ -3,9 +3,9 @@ import { LuCpu } from "react-icons/lu";
 import Tooltip from "@/components/Tooltip";
 import { Separator } from "@/components/ui/separator";
 import { useSharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
-import { languageModelTypeIcons } from "@/services/cplx-api/remote-resources/pplx-language-models/icons";
-import type { LanguageModelType } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import { languageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
+import type { LanguageModelType } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export default function BetterLanguageModelSelectorTriggerButton() {
   const selectedLanguageModel = useSharedQueryBoxStore(

@@ -1,7 +1,8 @@
+import {
+  TabConsumerAdapter,
+  BrowserRuntimeAdapter,
+} from "@comctx-adapters/core";
 import defineProxy from "comctx";
-
-import { BrowserRuntimeAdapter } from "@/adapters/browser";
-import { TabConsumerAdapter } from "@/adapters/tab-consumer";
 
 export class BridgeRegistryService {
   private registeredServices = new Set<string>();
@@ -24,7 +25,13 @@ export class BridgeRegistryService {
    * @param params.namespace The service namespace
    * @returns true if registered successfully, false if already exists
    */
-  register({ tabId, namespace }: { tabId: number; namespace: string }): boolean {
+  register({
+    tabId,
+    namespace,
+  }: {
+    tabId: number;
+    namespace: string;
+  }): boolean {
     const serviceKey = `${tabId}:${namespace}`;
 
     // Check if already registered
@@ -65,7 +72,13 @@ export class BridgeRegistryService {
    * @param params.tabId The tab ID
    * @param params.namespace The service namespace
    */
-  isRegistered({ tabId, namespace }: { tabId: number; namespace: string }): boolean {
+  isRegistered({
+    tabId,
+    namespace,
+  }: {
+    tabId: number;
+    namespace: string;
+  }): boolean {
     const serviceKey = `${tabId}:${namespace}`;
     return this.registeredServices.has(serviceKey);
   }

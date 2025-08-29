@@ -12,12 +12,12 @@ import { APP_CONFIG } from "@/app.config";
 import { Toaster } from "@/components/Toaster";
 import { queryClient } from "@/data/query-client";
 import { setupOptionPageListeners } from "@/entrypoints/options-page/listeners";
-import { extensionSettingsQueries } from "@/services/extension-settings/query-keys";
-import { initializeDayjsLocale, initializeI18n } from "@/services/i18n";
+import { extensionSettingsQueries } from "@/services/infra/extension-settings/query-keys";
+import { initializeDayjsLocale, initializeI18n } from "@/services/infra/i18n";
 import {
   commonLocalesLazyGlob,
   dashboardLocalesLazyGlob,
-} from "@/services/i18n/consts";
+} from "@/services/infra/i18n/consts";
 
 const { CdnRemoteResourcesInvalidator } = lazily(
   () => import("@/components/CdnRemoteResourcesInvalidator"),

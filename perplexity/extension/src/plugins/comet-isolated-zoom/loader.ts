@@ -1,7 +1,7 @@
 import { sendMessage } from "webext-bridge/content-script";
 
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

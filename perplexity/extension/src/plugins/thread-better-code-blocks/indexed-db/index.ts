@@ -4,7 +4,7 @@ import merge from "lodash/merge";
 import type { DeepPartial } from "react-hook-form";
 
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
-import { db } from "@/services/indexed-db";
+import { db } from "@/services/infra/indexed-db";
 
 class BetterCodeBlocksFineGrainedService {
   async add(options: BetterCodeBlockFineGrainedOptions): Promise<string> {

@@ -1,7 +1,7 @@
 import { globalCssStore } from "@/plugins/_core/global-stores/global-css-store";
 import { queryBoxFollowUpQueryBoxNormalizeCssResourceConfig } from "@/plugins/_core/ui/index.remote-resources";
 import { queryBoxMainQueryBoxNormalizeCssResourceConfig } from "@/plugins/_core/ui/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 declare module "@/plugins/_core/global-stores/global-css-store" {
   interface GlobalCssStoreRegistry {

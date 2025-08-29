@@ -1,7 +1,7 @@
 import { globalCssStore } from "@/plugins/_core/global-stores/global-css-store";
 import { hideNativeCopyButtonsCssResourceConfig } from "@/plugins/thread-better-message-copy-buttons/index.remote-resources";
 import { threadBetterRewriteDropdownHideNativeDropdownsCssResourceConfig } from "@/plugins/thread-better-rewrite-dropdown/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 declare module "@/plugins/_core/global-stores/global-css-store" {
   interface GlobalCssStoreRegistry {

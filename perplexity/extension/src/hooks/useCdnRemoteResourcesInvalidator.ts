@@ -3,7 +3,7 @@ import { storage } from "@wxt-dev/storage";
 
 import { softCacheBusterKey } from "@/data/query-client";
 import { removeCachedRemoteResources } from "@/data/query-client/utils";
-import { cplxApiQueries } from "@/services/cplx-api/query-keys";
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 
 export default function useCdnRemoteResourcesInvalidator({
   callback,

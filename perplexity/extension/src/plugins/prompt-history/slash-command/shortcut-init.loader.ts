@@ -4,7 +4,7 @@ import {
   getAnchor,
   slashCommandMenuStore,
 } from "@/plugins/slash-command/index.public";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import hotkeysJs from "@/utils/hotkeys-js";
 import { keysToString } from "@/utils/utils";
 

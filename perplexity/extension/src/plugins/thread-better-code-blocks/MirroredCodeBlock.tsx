@@ -3,7 +3,7 @@ import { isAutonomousArtifactLanguageString } from "@/plugins/artifacts/index.pu
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 import ArtifactPlaceholderWrapper from "@/plugins/thread-better-code-blocks/variants/artifact-placeholders/Wrapper";
 import BaseCodeBlockWrapper from "@/plugins/thread-better-code-blocks/variants/base/Wrapper";
-import { PluginsStatesService } from "@/services/plugins-states";
+import { PluginsStatesService } from "@/services/features/plugins-states";
 
 const MirroredCodeBlock = memo(function MirroredCodeBlock() {
   const { codeBlock } = useMirroredCodeBlockContext();

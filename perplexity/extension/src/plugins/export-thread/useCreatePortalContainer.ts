@@ -1,5 +1,5 @@
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export default function useObserver() {
   const $overflowMenuButtonWrapper = useThreadDomObserverStore(

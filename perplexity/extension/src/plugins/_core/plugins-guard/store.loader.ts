@@ -5,8 +5,8 @@ import { isMobileStore } from "@/hooks/use-is-mobile-store";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
 import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
-import { getPermissions } from "@/services/extension-permissions/utils";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+import { getPermissions } from "@/services/infra/extension-permissions/utils";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

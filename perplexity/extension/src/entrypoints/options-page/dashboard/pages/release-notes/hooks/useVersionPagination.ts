@@ -2,7 +2,7 @@ import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
 import semver from "semver";
 
 import { APP_CONFIG } from "@/app.config";
-import { cplxApiQueries } from "@/services/cplx-api/query-keys";
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 
 export function useVersionPagination() {
   const { data: changelogListing } = useQuery(

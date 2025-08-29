@@ -18,7 +18,7 @@ import {
 } from "@/plugins/_core/dom-observers/thread/utils";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { waitUntil, whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {

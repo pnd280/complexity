@@ -1,9 +1,9 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { initializeDayjsLocale, initializeI18n } from "@/services/i18n";
+import { initializeDayjsLocale, initializeI18n } from "@/services/infra/i18n";
 import {
   commonLocalesLazyGlob,
   pluginLocalesLazyGlob,
-} from "@/services/i18n/consts";
+} from "@/services/infra/i18n/consts";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

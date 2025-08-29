@@ -1,5 +1,5 @@
 import type { PluginId } from "@/data/plugin-registry/types";
-import type { PluginsStatesDetailed } from "@/services/plugins-states/utils";
+import type { PluginsStatesDetailed } from "@/services/features/plugins-states/utils";
 
 export function isPluginLockedDown(
   pluginId: PluginId,

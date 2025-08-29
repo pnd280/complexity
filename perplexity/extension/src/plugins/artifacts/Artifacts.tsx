@@ -10,7 +10,7 @@ import { normalizeCssResourceConfig } from "@/plugins/artifacts/index.remote-res
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import { useHandleArtifactsState } from "@/plugins/artifacts/useHandleArtifactsState";
 import useHandleAutonomousArtifactsState from "@/plugins/artifacts/useHandleAutonomousArtifactsState";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const normalizeCss = await getVersionedRemoteResource(
   normalizeCssResourceConfig,

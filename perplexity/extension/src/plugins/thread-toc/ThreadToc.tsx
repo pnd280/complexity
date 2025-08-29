@@ -11,7 +11,7 @@ import {
   usePanelPosition,
 } from "@/plugins/thread-toc/usePanelPosition";
 import { useThreadTocItems } from "@/plugins/thread-toc/useThreadTocItems";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
 import { scrollToElement } from "@/utils/utils";
 

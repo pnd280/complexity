@@ -1,6 +1,6 @@
 import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
-import type { LanguageModelCode } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { errorWrapper } from "@/utils/error-wrapper";
 import type { PplxWebResult } from "@/utils/thread-export";
 import { getReactFiberKey } from "@/utils/utils";

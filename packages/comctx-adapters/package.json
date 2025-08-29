@@ -4,73 +4,32 @@
   "private": true,
   "author": "pnd280",
   "type": "module",
-  "exports": {
-    "./bg/*": {
-      "types": "./dist/bg/*.d.ts",
-      "import": "./dist/bg/*.js"
-    },
-    "./content-script/*": {
-      "types": "./dist/content-script/*.d.ts",
-      "import": "./dist/content-script/*.js"
-    },
-    "./popup/*": {
-      "types": "./dist/popup/*.d.ts",
-      "import": "./dist/popup/*.js"
-    },
-    "./options-page/*": {
-      "types": "./dist/options-page/*.d.ts",
-      "import": "./dist/options-page/*.js"
-    },
-    "./window/*": {
-      "types": "./dist/window/*.d.ts",
-      "import": "./dist/window/*.js"
-    },
-    "./bg/consumers/*": {
-      "types": "./dist/bg/consumers/*.d.ts",
-      "import": "./dist/bg/consumers/*.js"
-    },
-    "./content-script/consumers/*": {
-      "types": "./dist/content-script/consumers/*.d.ts",
-      "import": "./dist/content-script/consumers/*.js"
-    },
-    "./popup/consumers/*": {
-      "types": "./dist/popup/consumers/*.d.ts",
-      "import": "./dist/popup/consumers/*.js"
-    },
-    "./options-page/consumers/*": {
-      "types": "./dist/options-page/consumers/*.d.ts",
-      "import": "./dist/options-page/consumers/*.js"
-    },
-    "./window/consumers/*": {
-      "types": "./dist/window/consumers/*.d.ts",
-      "import": "./dist/window/consumers/*.js"
-    }
-  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "src/",
     "dist/"
   ],
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
     "check-types": "tsc",
-    "dev": "pnpm run build && concurrently \"tsc --watch\" \"tsc-alias --watch\"",
+    "dev": "pnpm run build --watch",
     "fmt": "prettier --write '**/*.{ts}'",
     "lint": "eslint ./src"
   },
   "dependencies": {
     "comctx": "^1.4.1",
-    "webext-bridge": "workspace:*"
+    "tsup": "^8.5.0"
   },
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
     "@types/chrome": "0.1.4",
     "@types/node": "22.17.2",
-    "concurrently": "^9.2.1",
     "eslint": "catalog:lint",
     "globals": "^16.3.0",
     "prettier": "^3.6.2",
-    "tsc-alias": "^1.8.16",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint"
   }

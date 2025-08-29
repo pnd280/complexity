@@ -1,7 +1,7 @@
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function findPageWrapper() {
   const existingPageWrapper =

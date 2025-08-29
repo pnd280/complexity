@@ -1,6 +1,6 @@
 import type { AnchorSlice } from "@/plugins/slash-command/store/slices/anchor";
 import { createTextboxAdapter } from "@/plugins/slash-command/textbox-adapter";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { whereAmI } from "@/utils/utils";
 
 function mightBeTextbox(target: HTMLElement): boolean {

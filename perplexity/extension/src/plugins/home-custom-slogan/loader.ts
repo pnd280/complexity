@@ -1,9 +1,9 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import { insertCss, whereAmI } from "@/utils/utils";
 
 let removeCss: (() => void) | null = null;

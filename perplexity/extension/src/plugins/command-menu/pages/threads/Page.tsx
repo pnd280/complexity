@@ -2,7 +2,7 @@ import CommandPage from "@/plugins/command-menu/components/CommandPage";
 import { ThreadsSearchFiltersProvider } from "@/plugins/command-menu/pages/threads/filters/ContextProvider";
 import ThreadsSearchFilters from "@/plugins/command-menu/pages/threads/filters/Index";
 import ThreadCommandItems from "@/plugins/command-menu/pages/threads/ThreadCommandItems";
-import type { ThreadsSearchPayload } from "@/services/pplx-api/pplx-api.types";
+import type { ThreadsSearchPayload } from "@/services/externals/pplx-api/pplx-api.types";
 
 declare module "@/plugins/command-menu/store/slices/pages/types" {
   interface CommandMenuPagesArgsRegistry {

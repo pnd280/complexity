@@ -1,7 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import { P } from "@/components/ui/typography";
 import type { PluginId } from "@/data/plugin-registry/types";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "imageGenModelSelector";
 

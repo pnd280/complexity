@@ -3,8 +3,8 @@ import { LuLink } from "react-icons/lu";
 
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import SpaceItemFile from "@/plugins/command-menu/pages/spaces/SpaceItemFile";
-import type { Space } from "@/services/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
 
 export default function SpacePreview({ space }: { space: Space }) {

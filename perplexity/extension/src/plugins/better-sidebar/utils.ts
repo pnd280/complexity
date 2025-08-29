@@ -1,5 +1,5 @@
-import { ExtensionSettingsService } from "@/services/extension-settings";
-import { InstantCssService } from "@/services/instant-css";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { InstantCssService } from "@/services/features/instant-css";
 
 export async function shouldPreventLayoutShift() {
   return (

@@ -20,9 +20,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/use-toast";
 import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
-import { CplxVersionsService } from "@/services/cplx-api/remote-resources/versions";
-import { PluginsStatesService } from "@/services/plugins-states";
-import { PplxApiService } from "@/services/pplx-api";
+import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
+import { PluginsStatesService } from "@/services/features/plugins-states";
+import { PplxApiService } from "@/services/externals/pplx-api";
 import { errorWrapper } from "@/utils/error-wrapper";
 import { fetchTextResource, setCookie } from "@/utils/utils";
 

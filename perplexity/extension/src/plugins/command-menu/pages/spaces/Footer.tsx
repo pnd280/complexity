@@ -2,11 +2,11 @@ import {
   openInNewTab,
   softNavigate,
 } from "@/plugins/_core/main-world/spa-router/utils";
+import usePplxSpaces from "@/plugins/command-menu/pages/spaces/usePplxSpaces";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import usePplxSpaces from "@/services/pplx-api/hooks/usePplxSpaces";
 
 export default function SpacesSearchItemsFooter() {
   const { data: spaces } = usePplxSpaces();

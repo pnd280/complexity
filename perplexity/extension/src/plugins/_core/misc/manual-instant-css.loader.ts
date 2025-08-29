@@ -2,7 +2,7 @@
 
 import { sendMessage } from "webext-bridge/content-script";
 
-import { InstantCssService } from "@/services/instant-css";
+import { InstantCssService } from "@/services/features/instant-css";
 import { whereAmI } from "@/utils/utils";
 
 export default async function loader() {

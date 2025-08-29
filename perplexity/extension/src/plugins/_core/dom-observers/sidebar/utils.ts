@@ -1,7 +1,7 @@
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
 import { sidebarDomObserverStore } from "@/plugins/_core/dom-observers/sidebar/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function findSidebarWrapper() {
   const existingWrapper = sidebarDomObserverStore.getState().$wrapper?.[0];

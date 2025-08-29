@@ -13,9 +13,9 @@ import {
 import usePplxUserSettings from "@/hooks/usePplxUserSettings";
 import { useImageGenModelSelectorStore } from "@/plugins/image-gen-popover/store";
 import usePortalContainer from "@/plugins/image-gen-popover/usePortalContainer";
-import { PplxImageModelsService } from "@/services/cplx-api/remote-resources/pplx-image-models";
-import type { ImageModel } from "@/services/cplx-api/remote-resources/pplx-image-models/types";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-image-models";
+import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { isReactNode } from "@/types/utils.types";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
 

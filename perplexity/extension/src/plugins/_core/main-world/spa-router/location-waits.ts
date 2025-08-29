@@ -1,5 +1,5 @@
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
-import type { DomSelectors } from "@/services/cplx-api/versioned-remote-resources/dom-selectors/types";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
 import type { MaybePromise } from "@/types/utils.types";
 import { UiUtils } from "@/utils/ui-utils";
 import type { whereAmI } from "@/utils/utils";

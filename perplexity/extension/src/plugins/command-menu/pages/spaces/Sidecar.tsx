@@ -1,9 +1,9 @@
 import SpacePreview from "@/plugins/command-menu/pages/spaces/SpacePreview";
+import usePplxSpaces from "@/plugins/command-menu/pages/spaces/usePplxSpaces";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import usePplxSpaces from "@/services/pplx-api/hooks/usePplxSpaces";
 
 export default function SpacesSearchItemsSidecar() {
   const { data: spaces } = usePplxSpaces();

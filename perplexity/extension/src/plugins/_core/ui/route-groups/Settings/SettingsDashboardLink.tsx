@@ -5,7 +5,7 @@ import FaArrowUpRight from "@/components/icons/FaArrowUpRight";
 import { Portal } from "@/components/ui/portal";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import { useSettingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function SettingsDashboardLink() {
   const isMobile = useIsMobileStore((store) => store.isMobile);

@@ -4,7 +4,7 @@ import { toast } from "@/components/ui/use-toast";
 import { queryClient } from "@/data/query-client";
 import { getBetterCodeBlocksFineGrainedOptionsService } from "@/plugins/thread-better-code-blocks/indexed-db";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 type UseOptionsProps = {
   language?: string;

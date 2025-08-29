@@ -4,7 +4,7 @@ import type {
   TypedPluginManifest,
 } from "@/data/plugin-registry/types";
 import type { CoreDomObserverId } from "@/plugins/_core/dom-observers/types";
-import { PluginsStatesService } from "@/services/plugins-states";
+import { PluginsStatesService } from "@/services/features/plugins-states";
 
 export function shouldEnableCoreObserver({
   coreObserverId,

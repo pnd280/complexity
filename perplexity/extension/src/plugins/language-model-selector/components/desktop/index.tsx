@@ -7,7 +7,7 @@ import {
   getAdvancedStandaloneModels,
   getModelsByType,
 } from "@/plugins/language-model-selector/utils";
-import { languageModelTypeIcons } from "@/services/cplx-api/remote-resources/pplx-language-models/icons";
+import { languageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
 
 export default function DesktopContent() {

@@ -4,8 +4,8 @@ import AsyncButton from "@/components/AsyncButton";
 import { Button } from "@/components/ui/button";
 import type { ExtensionData } from "@/data/dashboard/extension-data.types";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
-import { ExtensionSettingsService } from "@/services/extension-settings";
-import { db as indexedDb } from "@/services/indexed-db";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { db as indexedDb } from "@/services/infra/indexed-db";
 
 export default function ExportDataButtons() {
   const [copyButtonText, toggleCopyButtonText] = useToggleButtonText({

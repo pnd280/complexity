@@ -17,7 +17,7 @@ import { useInsertCss } from "@/hooks/useInsertCss";
 import { useSharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const normalizeCss = await getVersionedRemoteResource(
   normalizeCssResourceConfig,

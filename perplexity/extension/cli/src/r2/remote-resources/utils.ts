@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
 
-import type { RemoteResourceReturnType } from "#/src/services/cplx-api/remote-resources/types";
-import { remoteResourceTypes } from "#/src/services/cplx-api/types";
+import type { RemoteResourceReturnType } from "#/src/services/externals/cplx-api/remote-resources/types";
+import { remoteResourceTypes } from "#/src/services/externals/cplx-api/types";
 import type {
   VersionedRemoteResourceListing,
   VersionedRemoteResourceReturnType,
-} from "#/src/services/cplx-api/versioned-remote-resources/types";
+} from "#/src/services/externals/cplx-api/versioned-remote-resources/types";
 import { globSync } from "glob";
 import semver from "semver";
 

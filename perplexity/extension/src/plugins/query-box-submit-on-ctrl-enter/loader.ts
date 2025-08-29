@@ -2,7 +2,7 @@ import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import type { QueryBoxesDomObserverStoreType } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { isLexical } from "@/plugins/_core/ui/groups/query-box/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 const OBSERVER_ID = "submit-on-ctrl-enter";
 

@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
-import type { LanguageModelsList } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import type { LanguageModelsList } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

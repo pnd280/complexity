@@ -1,9 +1,9 @@
 import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import type {
   LanguageModelCode,
   LanguageModelType,
-} from "@/services/cplx-api/remote-resources/pplx-language-models/types";
+} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 function filterAndMapSelectItems(
   models: (typeof PplxLanguageModelsService.allModels)[keyof typeof PplxLanguageModelsService.allModels],

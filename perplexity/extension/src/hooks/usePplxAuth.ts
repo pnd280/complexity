@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 export default function usePplxAuth() {
   const query = useQuery({

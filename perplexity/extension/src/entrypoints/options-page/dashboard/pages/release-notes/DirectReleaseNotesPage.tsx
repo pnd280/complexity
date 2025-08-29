@@ -4,7 +4,7 @@ import { useLoaderData } from "react-router-dom";
 import ChangelogRenderer from "@/components/changelog/ChangelogRenderer";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import { H1, H2 } from "@/components/ui/typography";
-import { cplxApiQueries } from "@/services/cplx-api/query-keys";
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 
 export function DirectReleaseNotesPage() {
   const { version } = useLoaderData() as { version: string };

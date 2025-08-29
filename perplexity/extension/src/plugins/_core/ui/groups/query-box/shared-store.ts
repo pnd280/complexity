@@ -2,7 +2,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
-import type { LanguageModel } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
+import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type SharedQueryBoxStore = {
   spacesThreadsForceWritingMode: boolean;

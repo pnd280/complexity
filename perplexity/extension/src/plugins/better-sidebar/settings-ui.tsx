@@ -3,8 +3,8 @@ import { Switch } from "@/components/ui/switch";
 import type { PluginId } from "@/data/plugin-registry/types";
 import RequirePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/plugins/components/RequirePermissionsDialogWrapper";
 import manifest from "@/plugins/better-sidebar";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
-import { InstantCssService } from "@/services/instant-css";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import { InstantCssService } from "@/services/features/instant-css";
 
 export const pluginId: PluginId = "betterSidebar";
 

@@ -3,8 +3,8 @@ import { sendMessage } from "webext-bridge/content-script";
 import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/_core/dom-observers/thread/message-blocks/index.remote-resources";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
 import { type MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const remoteFiberNodePath = (
   await getVersionedRemoteResource(

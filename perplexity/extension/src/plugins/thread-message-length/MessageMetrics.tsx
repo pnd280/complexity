@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/hover-card";
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { useThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-context";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 export function MessageMetrics() {
   const { messageBlockIndex } = useThreadMessageContext();

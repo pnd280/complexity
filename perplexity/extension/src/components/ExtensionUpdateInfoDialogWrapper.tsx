@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/dialog";
 import { Image } from "@/components/ui/image";
 import { toast } from "@/components/ui/use-toast";
-import { cplxApiQueries } from "@/services/cplx-api/query-keys";
-import { CplxVersionsService } from "@/services/cplx-api/remote-resources/versions";
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
+import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
 
 export default function ExtensionUpdateInfoDialogWrapper({
   children,

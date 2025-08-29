@@ -77,7 +77,7 @@ plugins/feature-name/
 
 ## Dependency Boundaries
 
-The project enforces strict dependency boundaries via ESLint using `eslint-plugin-boundaries`. The configuration is defined in [`eslint-config/boundaries.js`](../eslint-config/boundaries.js).
+The project enforces strict [dependency boundaries](../eslint-config/boundaries/index.js).
 
 ### Boundary Types
 
@@ -90,34 +90,32 @@ The project enforces strict dependency boundaries via ESLint using `eslint-plugi
 
 ### Import Rules
 
-Dependency flow is strictly controlled where each boundary type can only import from allowed types:
-
-- **Shared** → `Shared`, `Plugin Core`, `Plugin Public Exports`
-- **Entrypoint** → `Entrypoint`, `Shared`, `Plugin Core`, `Plugin Public Exports`
-- **Plugin Core** → `Shared`, `Plugin Core`, `Plugin`, `Plugin Public Exports`
-- **Plugin** → `Shared`, `Plugin Core`, `Plugin Public Exports`, same plugin only
-- **Plugin Public Exports** → same plugin only
-- **Plugin Settings UI** → `Shared`, `Plugin Core`, `Plugin Public Exports`, same plugin, `options-page` entrypoint
+Dependency flow is strictly controlled where each boundary type can only import from allowed types. Higher layers can import from lower layers, but not vice versa. This prevents circular dependencies and maintains clean architecture.
 
 ```mermaid
 flowchart TD
-    E["Entrypoint<br/><small>Entry points for different contexts</small>"]
-    P["Plugin<br/><small>Individual feature implementations</small>"]
     S["Shared<br/><small>Common utilities, components, hooks</small>"]
+    PC["Plugin Core<br/><small>Core plugin functionality & APIs</small>"]
+    P["Plugin<br/><small>Individual feature implementations</small>"]
+    E["Entrypoint<br/><small>Entry points for different contexts</small>"]
 
     E -->|"can import"| P
+    E -->|"can import"| PC
+    E -->|"can import"| S
+    P -->|"can import"| PC
     P -->|"can import"| S
+    PC -->|"can import"| S
 
     classDef entrypoint fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef plugin fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef pluginCore fill:#fff3e0,stroke:#f57c00,stroke-width:2px
     classDef shared fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
 
     class E entrypoint
     class P plugin
+    class PC pluginCore
     class S shared
 ```
-
-**Key principle**: Higher layers can import from lower layers, but not vice versa. This prevents circular dependencies and maintains clean architecture.
 
 ### File Categorization
 
@@ -129,13 +127,6 @@ Files are categorized based on their location patterns as defined in the ESLint 
 - **Plugin**: `src/plugins/*/**/*`
 - **Plugin Public Exports**: `src/plugins/*/**/*.public.*`
 - **Plugin Settings UI**: `src/plugins/*/**/settings-ui.tsx`
-
-### Special Rules
-
-- Plugins can only import from their own plugin directory (same `pluginName`)
-- Plugin Public Exports cannot import from their own plugin's public exports (prevents circular dependencies)
-- Plugin Settings UI can import from the `options-page` entrypoint specifically
-- Files in `**/_locales/**/*` are excluded from boundary checking
 
 ## Data
 

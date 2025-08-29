@@ -8,7 +8,7 @@ import type {
   Result,
 } from "@/plugins/_api/dom-observer/dom-observer.types";
 import type { DomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 export class DomObserver {
   private static instance: DomObserver;

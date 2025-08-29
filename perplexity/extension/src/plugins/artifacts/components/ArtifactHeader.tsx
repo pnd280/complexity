@@ -13,7 +13,7 @@ import {
   isAutonomousArtifactLanguageString,
   isArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { scrollToElement } from "@/utils/utils";
 
 export default function ArtifactHeader() {

@@ -14,7 +14,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import type { PluginId } from "@/data/plugin-registry/types";
 import type { SlashCommandMenuTabShortcut } from "@/plugins/slash-command/shortcuts.types.public";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "promptHistory";
 

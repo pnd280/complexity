@@ -3,8 +3,8 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { usePluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
 import LanguageModelGroup from "@/plugins/language-model-selector/components/mobile/LanguageModelGroup";
 import { getAdvancedStandaloneModels } from "@/plugins/language-model-selector/utils";
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
-import { languageModelTypeIcons } from "@/services/cplx-api/remote-resources/pplx-language-models/icons";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import { languageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 
 export default function MobileContent({ ...props }: DialogProps) {
   const subTier = usePluginGuardsStore((store) => store.subTier);

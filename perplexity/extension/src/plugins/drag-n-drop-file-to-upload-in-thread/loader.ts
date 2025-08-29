@@ -2,7 +2,7 @@ import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
 import styles from "@/plugins/drag-n-drop-file-to-upload-in-thread/styles.css?inline";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { insertCss } from "@/utils/utils";
 
 const DRAGOVER_EVENT = "dragover.cplx-file-upload";

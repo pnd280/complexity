@@ -8,7 +8,7 @@ import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-bett
 import CreateNewLanguageOptionButton from "@/plugins/thread-better-code-blocks/settings-ui/CreateNewLanguageOptionButton";
 import BetterCodeBlockFineGrainedOptions from "@/plugins/thread-better-code-blocks/settings-ui/FineGrainedOptions";
 import BetterCodeBlockGlobalOptions from "@/plugins/thread-better-code-blocks/settings-ui/GlobalOptions";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "thread:betterCodeBlocks";
 

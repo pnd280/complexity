@@ -1,10 +1,10 @@
 import { onMessage } from "webext-bridge/content-script";
 
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
-import { domSelectorsResourceConfig } from "@/services/cplx-api/versioned-remote-resources/dom-selectors/index.remote-resources";
-import type { DomSelectors } from "@/services/cplx-api/versioned-remote-resources/dom-selectors/types";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { domSelectorsResourceConfig } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/index.remote-resources";
+import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

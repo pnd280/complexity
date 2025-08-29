@@ -2,7 +2,7 @@ import { QueryObserver } from "@tanstack/react-query";
 
 import { queryClient } from "@/data/query-client";
 import { persistRemoteResources } from "@/data/query-client/utils";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 export default async function loader() {
   new QueryObserver(queryClient, {

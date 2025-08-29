@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { CplxVersionsService } from "@/services/cplx-api/remote-resources/versions";
-import { PluginsStatesService } from "@/services/plugins-states";
+import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
+import { PluginsStatesService } from "@/services/features/plugins-states";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

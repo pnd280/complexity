@@ -5,8 +5,8 @@ import { queryClient } from "@/data/query-client";
 import type {
   Space,
   SpaceFilesApiResponse,
-} from "@/services/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+} from "@/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 export default function SpaceItemFiles({
   file,

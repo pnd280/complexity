@@ -12,8 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { cplxApiQueries } from "@/services/cplx-api/query-keys";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 export function PostUpdateReleaseNotesDialog() {
   const [open, setOpen] = useState(true);

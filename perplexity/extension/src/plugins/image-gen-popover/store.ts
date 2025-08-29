@@ -8,9 +8,9 @@ import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
 import {
   isImageModelCode,
   type ImageModel,
-} from "@/services/cplx-api/remote-resources/pplx-image-models/types";
-import { PplxApiService } from "@/services/pplx-api";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+} from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
+import { PplxApiService } from "@/services/externals/pplx-api";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { extensionExec } from "@/utils/hof";
 
 type ImageGenModelSelectorStore = {

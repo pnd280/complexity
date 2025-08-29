@@ -1,4 +1,4 @@
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getCookie } from "@/utils/utils";
 
 export class UiUtils {

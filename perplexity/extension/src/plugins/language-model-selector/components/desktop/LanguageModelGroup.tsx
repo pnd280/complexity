@@ -10,8 +10,8 @@ import {
 import { SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
-import type { LanguageModel } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type LanguageModelGroupProps = {
   title: ReactNode;

@@ -7,7 +7,7 @@ import ThreadItem from "@/plugins/command-menu/pages/threads/ThreadItem";
 import ThreadListLoader from "@/plugins/command-menu/pages/threads/ThreadListLoader";
 import useLoadMoreItems from "@/plugins/command-menu/pages/threads/useLoadMoreItems";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
-import type { Space } from "@/services/pplx-api/pplx-api.types";
+import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
 
 export default function SpaceThreadCommandItems({
   spaceSlug,

@@ -13,9 +13,9 @@ import {
 import { InlineCode } from "@/components/ui/typography";
 import type { PluginManifest } from "@/data/plugin-registry/types";
 import { queryClient } from "@/data/query-client";
-import { extensionPermissionsQueries } from "@/services/extension-permissions/query-keys";
-import { useExtensionPermissions } from "@/services/extension-permissions/useExtensionPermissions";
-import { requestPermissions } from "@/services/extension-permissions/utils";
+import { extensionPermissionsQueries } from "@/services/infra/extension-permissions/query-keys";
+import { useExtensionPermissions } from "@/services/infra/extension-permissions/useExtensionPermissions";
+import { requestPermissions } from "@/services/infra/extension-permissions/utils";
 
 export default function RequirePermissionsDialogWrapper({
   children,

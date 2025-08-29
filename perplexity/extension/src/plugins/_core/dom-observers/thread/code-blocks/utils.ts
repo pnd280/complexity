@@ -5,7 +5,7 @@ import { sendMessage } from "webext-bridge/content-script";
 
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 const astCache = new Map<string, any>();
 const mdAstProcessor = unified().use(remarkParse).use(remarkGfm);

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useImmer } from "use-immer";
 
-import type { ThreadsSearchPayload } from "@/services/pplx-api/pplx-api.types";
+import type { ThreadsSearchPayload } from "@/services/externals/pplx-api/pplx-api.types";
 
 export type SourceValue = ThreadsSearchPayload["querySourceFilter"];
 export type TypeValue = ThreadsSearchPayload["threadTypeFilter"];

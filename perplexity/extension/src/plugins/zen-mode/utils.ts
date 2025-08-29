@@ -1,4 +1,4 @@
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 export function toggleZenMode(forceState?: boolean): boolean {
   const previousZenMode = $("body").attr("data-cplx-zen-mode");

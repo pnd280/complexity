@@ -16,7 +16,7 @@ import usePplxTtsRequest from "@/plugins/thread-message-tts/hooks/usePplxTtsRequ
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";
 import { TTS_VOICES } from "@/plugins/thread-message-tts/types";
 import { PplxTtsPlayerCoordinator } from "@/plugins/thread-message-tts/utils/coordinator";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 export function ThreadMessageTtsButton() {
   const { messageBlockIndex } = useThreadMessageContext();

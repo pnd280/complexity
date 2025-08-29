@@ -1,7 +1,7 @@
 import { APP_CONFIG } from "@/app.config";
 import type { PluginId } from "@/data/plugin-registry/types";
-import type { ExtensionSettings } from "@/services/extension-settings/types";
-import type { PluginsStates } from "@/services/plugins-states/types";
+import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
+import type { PluginsStates } from "@/services/features/plugins-states/types";
 import type { whereAmI } from "@/utils/utils";
 
 const PPLX_SUB_TIER_ENUM = {

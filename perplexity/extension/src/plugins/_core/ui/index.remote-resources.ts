@@ -3,7 +3,7 @@ import { z } from "zod";
 import queryBoxFollowUpQueryBoxNormalizeCss from "@/plugins/_core/ui/groups/query-box/follow-up-query-box.css?inline";
 import queryBoxMainQueryBoxNormalizeCss from "@/plugins/_core/ui/groups/query-box/main-query-box.css?inline";
 import threadQueryHoverNormalizeCss from "@/plugins/_core/ui/groups/thread-query-edit-button-group/normalize.css?inline";
-import { defineVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources";
+import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const queryBoxMainQueryBoxNormalizeCssResourceConfig =
   defineVersionedRemoteResource({

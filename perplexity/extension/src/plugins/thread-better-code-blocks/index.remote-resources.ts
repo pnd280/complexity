@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import hideNativeCodeBlocksCss from "@/plugins/thread-better-code-blocks/hide-native-code-blocks.css?inline";
 import stickyHeaderCss from "@/plugins/thread-better-code-blocks/sticky-header.css?inline";
-import { defineVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources";
+import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const hideNativeCodeBlocksCssResourceConfig =
   defineVersionedRemoteResource({

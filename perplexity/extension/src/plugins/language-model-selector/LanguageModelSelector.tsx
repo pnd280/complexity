@@ -11,8 +11,8 @@ import MobileContent from "@/plugins/language-model-selector/components/mobile";
 import BetterLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/TriggerButton";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import { getSelectItems } from "@/plugins/language-model-selector/utils";
-import type { LanguageModelCode } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function LanguageModelSelector() {
   const { isMobile } = useIsMobileStore();

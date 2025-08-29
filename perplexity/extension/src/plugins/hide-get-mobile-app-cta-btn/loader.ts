@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { hideGetMobileAppCtaBtnCssResourceConfig } from "@/plugins/hide-get-mobile-app-cta-btn/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { insertCss } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

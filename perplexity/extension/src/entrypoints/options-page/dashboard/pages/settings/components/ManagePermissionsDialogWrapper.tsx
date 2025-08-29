@@ -11,9 +11,9 @@ import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins
 import {
   OPTIONAL_PERMISSIONS,
   OPTIONAL_PERMISSIONS_DETAILS,
-} from "@/services/extension-permissions/permissions";
-import { useExtensionPermissions } from "@/services/extension-permissions/useExtensionPermissions";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+} from "@/services/infra/extension-permissions/permissions";
+import { useExtensionPermissions } from "@/services/infra/extension-permissions/useExtensionPermissions";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 export default function ManagePermissionsDialogWrapper({
   children,

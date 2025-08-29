@@ -16,12 +16,12 @@ import {
 } from "@/plugins/_core/main-world/spa-router/utils";
 import SpacesSearchItemsFooter from "@/plugins/command-menu/pages/spaces/Footer";
 import SpacesSearchItemsSidecar from "@/plugins/command-menu/pages/spaces/Sidecar";
+import usePplxSpaces from "@/plugins/command-menu/pages/spaces/usePplxSpaces";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import { formatRelativeTime } from "@/services/i18n";
-import usePplxSpaces from "@/services/pplx-api/hooks/usePplxSpaces";
+import { formatRelativeTime } from "@/services/infra/i18n";
 import { emojiCodeToString } from "@/utils/utils";
 
 export default function SpaceCommandItems() {

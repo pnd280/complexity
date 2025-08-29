@@ -2,7 +2,7 @@ import { useArtifactsStore } from "@/plugins/artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 import BetterCodeBlockHeader from "@/plugins/thread-better-code-blocks/variants/base/Header";
 import HighlightedCodeWrapper from "@/plugins/thread-better-code-blocks/variants/HighlightedCode";
-import { PluginsStatesService } from "@/services/plugins-states";
+import { PluginsStatesService } from "@/services/features/plugins-states";
 
 const BaseCodeBlockWrapper = memo(function BaseCodeBlockWrapper() {
   const { maxHeight, sourceMessageBlockIndex, sourceCodeBlockIndex } =

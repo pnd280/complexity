@@ -1,5 +1,5 @@
 import { useHotkeyRecorder } from "@/components/hotkey-recorder";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 export default function ToggleCommandDialogKeybinding() {
   const { settings, mutation } = useExtensionSettings();

@@ -8,8 +8,8 @@ import debounce from "lodash/debounce";
 
 import { APP_CONFIG } from "@/app.config";
 import { getQueryCacheService } from "@/data/query-client/indexed-db";
-import { cplxApiQueries } from "@/services/cplx-api/query-keys";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { isSubArray } from "@/utils/utils";
 
 export type QueryCacheEntry = {

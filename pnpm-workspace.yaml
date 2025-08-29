@@ -11,3 +11,6 @@ catalogs:
     typescript-eslint: ^8.41.0
   types:
     typescript: ^5.9.2
+
+ignoredBuiltDependencies:
+  - unrs-resolver

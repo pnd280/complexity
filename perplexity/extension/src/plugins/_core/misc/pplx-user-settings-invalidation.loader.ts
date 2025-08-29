@@ -3,7 +3,7 @@ import debounce from "lodash/debounce";
 import { queryClient } from "@/data/query-client";
 import { networkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

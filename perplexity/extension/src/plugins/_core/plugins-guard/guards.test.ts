@@ -11,7 +11,7 @@ import {
   type GuardConditions,
   type GuardCheckParams,
 } from "@/plugins/_core/plugins-guard/guards";
-import type { PluginsStates } from "@/services/plugins-states/types";
+import type { PluginsStates } from "@/services/features/plugins-states/types";
 
 // Mock APP_CONFIG
 vi.mock("@/app.config", () => ({

@@ -1,8 +1,8 @@
 // @ts-check
 import boundariesPlugin from "eslint-plugin-boundaries";
 import tseslint from "typescript-eslint";
-import { boundaryElements } from "./boundaryElements.js";
-import { accessRules } from "./accessRules.js";
+import { elements } from "./elements.js";
+import { rules } from "./rules.js";
 
 export default tseslint.config(
   {
@@ -12,7 +12,7 @@ export default tseslint.config(
 
     settings: {
       "boundaries/include": ["src/**/*"],
-      "boundaries/elements": boundaryElements,
+      "boundaries/elements": elements,
     },
 
     rules: {
@@ -22,7 +22,7 @@ export default tseslint.config(
         "error",
         {
           default: "disallow",
-          rules: accessRules,
+          rules,
         },
       ],
     },

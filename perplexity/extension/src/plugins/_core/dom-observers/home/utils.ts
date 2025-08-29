@@ -1,5 +1,5 @@
 import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { whereAmI } from "@/utils/utils";
 
 export function findSlogan() {

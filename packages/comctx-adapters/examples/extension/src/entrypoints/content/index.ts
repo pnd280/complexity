@@ -1,6 +1,6 @@
+import { BrowserRuntimeAdapter } from "@comctx-adapters/core";
 import defineProxy from "comctx";
 
-import { BrowserRuntimeAdapter } from "@/adapters/browser";
 import { CounterService } from "@/services/counter";
 
 // @ts-ignore

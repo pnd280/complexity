@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { artifactsStore, useArtifactsStore } from "@/plugins/artifacts/store";
 import { getArtifactTitle } from "@/plugins/artifacts/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { scrollToElement } from "@/utils/utils";
 
 export default function AutonomousArtifactVersionsNavigator() {

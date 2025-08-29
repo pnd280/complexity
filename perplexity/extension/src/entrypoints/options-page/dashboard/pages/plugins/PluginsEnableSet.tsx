@@ -22,7 +22,7 @@ import {
   ESSENTIALS_ONLY,
   POWER_USER,
 } from "@/entrypoints/options-page/dashboard/pages/plugins/predefined-configs";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 const presets = [
   {

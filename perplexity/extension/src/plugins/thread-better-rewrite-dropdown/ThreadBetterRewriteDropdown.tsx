@@ -15,8 +15,8 @@ import { DesktopContent } from "@/plugins/language-model-selector/index.public";
 import { MobileContent } from "@/plugins/language-model-selector/index.public";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/index.public";
 import { handleRewrite } from "@/plugins/thread-better-rewrite-dropdown/handle-rewrite";
-import { isLanguageModelCode } from "@/services/cplx-api/remote-resources/pplx-language-models/predicates";
-import type { LanguageModelCode } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
+import { isLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
+import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function ThreadBetterRewriteDropdown() {
   const { messageBlockIndex } = useThreadMessageContext();

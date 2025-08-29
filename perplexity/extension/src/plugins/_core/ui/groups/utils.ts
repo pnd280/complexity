@@ -4,7 +4,7 @@ import type {
   TypedPluginManifest,
 } from "@/data/plugin-registry/types";
 import type { UiGroupId } from "@/plugins/_core/ui/groups/types";
-import { PluginsStatesService } from "@/services/plugins-states";
+import { PluginsStatesService } from "@/services/features/plugins-states";
 
 export function shouldEnableUiGroup({ uiGroup }: { uiGroup: UiGroupId }) {
   const pluginsStates = PluginsStatesService.getEnableStatesCachedSync();

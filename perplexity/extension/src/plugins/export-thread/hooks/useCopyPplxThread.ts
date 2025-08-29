@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { toast } from "@/components/ui/use-toast";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
-import type { ThreadMessageApiResponse } from "@/services/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/pplx-api/query-keys";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { dualClipboardPut } from "@/utils/clipboard-utils";
 import { errorWrapper } from "@/utils/error-wrapper";
 import { ThreadExport } from "@/utils/thread-export";

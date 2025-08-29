@@ -1,4 +1,4 @@
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 export function extensionIconActionListener() {
   chrome.action.onClicked.addListener(async () => {

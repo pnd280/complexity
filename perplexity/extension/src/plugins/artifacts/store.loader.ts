@@ -18,7 +18,7 @@ import {
   getInterpretedArtifactLanguage,
   isAutonomousArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { parseUrl, scrollToElement, whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

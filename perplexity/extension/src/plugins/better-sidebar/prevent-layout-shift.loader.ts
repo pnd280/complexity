@@ -6,11 +6,11 @@ import {
   betterSidebarNormalizeExpandedCssResourceConfig,
 } from "@/plugins/better-sidebar/index.remote-resources";
 import { shouldPreventLayoutShift } from "@/plugins/better-sidebar/utils";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import {
   registerInstantCss,
   removeInstantCss,
-} from "@/services/instant-css/entry.utils";
+} from "@/services/features/instant-css/entry.utils";
 import { getCookie } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

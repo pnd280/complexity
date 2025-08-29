@@ -1,7 +1,7 @@
 import { sharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
 import type { QueryBoxType } from "@/plugins/_core/ui/groups/query-box/types";
-import { isLanguageModelCode } from "@/services/cplx-api/remote-resources/pplx-language-models/predicates";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { isLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function createToolbarPortalContainers({
   queryBoxWrapper,

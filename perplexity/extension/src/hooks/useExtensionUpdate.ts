@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import semver from "semver";
 
 import { APP_CONFIG } from "@/app.config";
-import { CplxVersionsService } from "@/services/cplx-api/remote-resources/versions";
+import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
 
 export default function useExtensionUpdate() {
   const { data: versions, isLoading } = useQuery(CplxVersionsService.query);

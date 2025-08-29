@@ -3,7 +3,7 @@ import { useInsertCss } from "@/hooks/useInsertCss";
 import ExportButton from "@/plugins/export-thread/ExportButton";
 import { hideOpenInAppBtnCssResourceConfig } from "@/plugins/export-thread/index.remote-resources";
 import useCreatePortalContainer from "@/plugins/export-thread/useCreatePortalContainer";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const hideOpenInAppBtnCss = await getVersionedRemoteResource(
   hideOpenInAppBtnCssResourceConfig,

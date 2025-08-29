@@ -1,8 +1,8 @@
 import { useImmer } from "use-immer";
 
 import usePplxUserSettings from "@/hooks/usePplxUserSettings";
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
-import type { LanguageModel } from "@/services/cplx-api/remote-resources/pplx-language-models/types";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function useModelLimits() {
   const { data } = usePplxUserSettings();

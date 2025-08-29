@@ -1,5 +1,5 @@
 import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { errorWrapper } from "@/utils/error-wrapper";
 import { getReactFiberKey } from "@/utils/utils";
 

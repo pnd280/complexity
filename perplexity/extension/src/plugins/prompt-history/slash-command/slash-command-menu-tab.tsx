@@ -6,7 +6,7 @@ import Tooltip from "@/components/Tooltip";
 import { CommandItemSkeleton } from "@/components/ui/command";
 import { TabContent, TabTrigger } from "@/components/ui/tabs";
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 const { PromptHistoryCommandMenuContent } = lazily(
   () => import("@/plugins/prompt-history/slash-command/CommandMenuContent"),

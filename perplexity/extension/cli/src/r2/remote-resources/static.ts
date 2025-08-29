@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import type { RemoteResourceReturnType } from "#/src/services/cplx-api/remote-resources/types";
+import type { RemoteResourceReturnType } from "#/src/services/externals/cplx-api/remote-resources/types";
 
 import { logger } from "@/r2/config";
 import {

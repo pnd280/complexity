@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
-import { ENDPOINTS } from "@/services/pplx-api/endpoints";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { ENDPOINTS } from "@/services/externals/pplx-api/endpoints";
 import { E2E_CONFIG } from "~/e2e/config";
 import { BasePage } from "~/e2e/pages/base.page";
 

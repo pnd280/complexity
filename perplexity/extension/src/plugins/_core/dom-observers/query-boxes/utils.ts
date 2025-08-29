@@ -5,7 +5,7 @@ import {
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { whereAmI } from "@/utils/utils";
 
 const OBSERVER_ID = {

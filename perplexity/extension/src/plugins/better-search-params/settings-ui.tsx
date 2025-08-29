@@ -1,8 +1,8 @@
 import { Switch } from "@/components/ui/switch";
 import { InlineCode } from "@/components/ui/typography";
 import type { PluginId } from "@/data/plugin-registry/types";
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "betterSearchParams";
 

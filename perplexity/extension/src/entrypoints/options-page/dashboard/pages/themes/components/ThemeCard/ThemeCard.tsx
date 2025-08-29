@@ -9,7 +9,7 @@ import type { Theme } from "@/data/dashboard/themes/theme.types";
 import ThemeCardBanner from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeCard/Banner";
 import DisableThemeButton from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeCard/DisableThemeButton";
 import ThemeCardEditButton from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeCard/EditThemeButton";
-import useExtensionSettings from "@/services/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
 
 type ThemeCardProps = {
   theme?: Theme;

@@ -4,7 +4,7 @@ import { ThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-c
 import { useCreatePortalContainers } from "@/plugins/_core/ui/groups/thread-query-edit-button-group/useCreatePortalContainers";
 import { threadQueryHoverNormalizeCssResourceConfig } from "@/plugins/_core/ui/index.remote-resources";
 import ThreadQueryMetricsWrapper from "@/plugins/thread-message-length/QueryWrapper";
-import { getVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources/utils";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 declare module "@/plugins/_core/ui/groups/types" {
   interface UiGroupRegistry {

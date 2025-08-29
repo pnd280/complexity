@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 
-import { PplxLanguageModelsService } from "@/services/cplx-api/remote-resources/pplx-language-models";
-import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { HomePage } from "~/e2e/pages/home.page";
 import { test } from "~/e2e/tests/pro/context.fixtures";
 

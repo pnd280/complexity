@@ -9,7 +9,7 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import useCloudflareTimeout from "@/plugins/cloudflare-timeout-auto-reload/useCloudflareTimeout";
-import { ExtensionSettingsService } from "@/services/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
 export function CloudflareTimeoutActionDialog() {
   const settings = ExtensionSettingsService.cachedSync;

@@ -2,7 +2,7 @@ import {
   initBackgroundWatchdog as initInstantCssBackgroundWatchdog,
   removeBackgroundWatchdog as removeInstantCssBackgroundWatchdog,
 } from "@/plugins/_core/custom-theme/instant-css-background-watchdog";
-import { InstantCssService } from "@/services/instant-css";
+import { InstantCssService } from "@/services/features/instant-css";
 
 export default function listener() {
   hanlder();

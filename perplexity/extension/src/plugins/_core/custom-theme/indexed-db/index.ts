@@ -1,7 +1,7 @@
 import { defineProxyService } from "@webext-core/proxy-service";
 
 import type { Theme } from "@/data/dashboard/themes/theme.types";
-import { db } from "@/services/indexed-db";
+import { db } from "@/services/infra/indexed-db";
 
 class LocalThemesService {
   async add(theme: Theme): Promise<string> {

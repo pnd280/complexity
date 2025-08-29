@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cplxApiQueries } from "@/services/cplx-api/query-keys";
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 
 export default function Psa() {
   const { data } = useQuery(cplxApiQueries.psa.detail());

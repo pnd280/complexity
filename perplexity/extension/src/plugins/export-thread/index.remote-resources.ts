@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import hideOpenInAppBtnCss from "@/plugins/export-thread/hide-open-in-app-btn.css?inline";
-import { defineVersionedRemoteResource } from "@/services/cplx-api/versioned-remote-resources";
+import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const hideOpenInAppBtnCssResourceConfig = defineVersionedRemoteResource({
   name: "plugin.exportThread.hideOpenInAppBtnCss",
