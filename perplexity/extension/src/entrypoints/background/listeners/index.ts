@@ -18,9 +18,10 @@ export function setupBackgroundListeners() {
   for (const [path, module] of Object.entries(entries)) {
     const listener = module.default;
 
-    if (typeof listener !== "function") {
-      throw new Error(`listener is not a function in ${path}`);
-    }
+    invariant(
+      typeof listener == "function",
+      `listener is not a function in ${path}`,
+    );
 
     listener();
   }

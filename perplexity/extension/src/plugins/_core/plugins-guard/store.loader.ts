@@ -4,14 +4,17 @@ import { queryClient } from "@/data/query-client";
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
-import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
-import { getPermissions } from "@/services/infra/extension-permissions/utils";
+import {
+  pluginGuardsStore,
+  type PluginGuardsStoreType,
+} from "@/plugins/_core/plugins-guard/store";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import { getPermissions } from "@/services/infra/extension-permissions/utils";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {
-    "store:pluginGuards": void;
+    "store:pluginGuards": PluginGuardsStoreType;
   }
 }
 
@@ -113,6 +116,8 @@ export default function loader() {
           draft.grantedPermissions = grantedPermissions;
         });
       }
+
+      return pluginGuardsStore.getState();
     },
   });
 }

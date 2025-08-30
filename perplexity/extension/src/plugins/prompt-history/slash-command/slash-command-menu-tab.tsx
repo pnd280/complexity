@@ -18,7 +18,6 @@ declare module "@/plugins/slash-command/store/slices/content-tab" {
   }
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const tabId = "promptHistory" as const;
 
 export function PromptHistorySlashCommandMenuTabContent() {

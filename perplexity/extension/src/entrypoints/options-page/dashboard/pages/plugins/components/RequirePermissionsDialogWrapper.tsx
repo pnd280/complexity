@@ -30,9 +30,8 @@ export default function RequirePermissionsDialogWrapper({
 }) {
   const [open, setOpen] = useState(false);
 
-  const {
-    query: { data: grantedPermissions, isLoading: isPermissionsLoading },
-  } = useExtensionPermissions();
+  const { data: grantedPermissions, isLoading: isPermissionsLoading } =
+    useExtensionPermissions();
 
   const hasAllRequiredPermissions = useMemo(() => {
     if (requiredPermissions == null || grantedPermissions == null) return true;

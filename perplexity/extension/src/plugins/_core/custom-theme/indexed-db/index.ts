@@ -1,9 +1,9 @@
-import { defineProxyService } from "@webext-core/proxy-service";
-
 import type { Theme } from "@/data/dashboard/themes/theme.types";
 import { db } from "@/services/infra/indexed-db";
 
-class LocalThemesService {
+export const backgroundProxyServiceName = "localThemesService";
+
+export class LocalThemesService {
   async add(theme: Theme): Promise<string> {
     return await db.themes.add(theme);
   }
@@ -25,8 +25,3 @@ class LocalThemesService {
     await db.themes.delete(id);
   }
 }
-
-export const [registerService, getLocalThemesService] = defineProxyService(
-  "LocalThemesService",
-  () => new LocalThemesService(),
-);

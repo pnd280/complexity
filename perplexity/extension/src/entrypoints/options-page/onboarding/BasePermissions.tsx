@@ -39,15 +39,17 @@ const basePermissionsDetails: Record<
 };
 
 export default function BasePermissions() {
-  const {
-    query: { data: permissions },
-    handleGrantPermission,
-  } = useExtensionPermissions();
+  const { data: permissions, handleGrantPermission } =
+    useExtensionPermissions();
 
-  const grantedPermissions = new Set([
-    ...(permissions?.permissions ?? []),
-    ...(permissions?.origins ?? []),
-  ]);
+  const grantedPermissions = useMemo(
+    () =>
+      new Set([
+        ...(permissions?.permissions ?? []),
+        ...(permissions?.origins ?? []),
+      ]),
+    [permissions],
+  );
 
   if (!permissions) return null;
 

@@ -21,8 +21,8 @@ import { toast } from "@/components/ui/use-toast";
 import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
-import { PluginsStatesService } from "@/services/features/plugins-states";
 import { PplxApiService } from "@/services/externals/pplx-api";
+import { PluginsStatesService } from "@/services/features/plugins-states";
 import { errorWrapper } from "@/utils/error-wrapper";
 import { fetchTextResource, setCookie } from "@/utils/utils";
 

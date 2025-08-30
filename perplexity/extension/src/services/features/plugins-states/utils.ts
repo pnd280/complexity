@@ -3,8 +3,8 @@ import semver from "semver";
 import { PluginRegistry } from "@/data/plugin-registry/index";
 import type { PluginId } from "@/data/plugin-registry/types";
 import type { FeatureCompatibility } from "@/services/externals/cplx-api/types";
-import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
 import type { PluginsStates } from "@/services/features/plugins-states/types";
+import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
 
 export type PluginStateDetailed = {
   isOutdated: boolean;

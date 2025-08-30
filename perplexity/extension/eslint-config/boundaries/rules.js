@@ -14,7 +14,7 @@ export const rules = [
   {
     from: "plugin-core",
     allow: ["plugin-core", "shared", "plugin", "plugin-public-exports"],
-    disallow: ["plugin-public-exports"],
+    disallow: [],
   },
 
   {

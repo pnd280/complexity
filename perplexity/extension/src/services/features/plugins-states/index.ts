@@ -8,7 +8,6 @@ import {
   type CplxVersions,
   type FeatureCompatibility,
 } from "@/services/externals/cplx-api/types";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import { featureCompatResourceConfig } from "@/services/features/plugins-states/index.remote-resources";
 import type { PluginsStates } from "@/services/features/plugins-states/types";
 import {
@@ -16,6 +15,7 @@ import {
   getEnableStates,
   updatePluginStatesWithFeatureCompat,
 } from "@/services/features/plugins-states/utils";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import { invariant, isInContentScript } from "@/utils/utils";
 
 export class PluginsStatesService {

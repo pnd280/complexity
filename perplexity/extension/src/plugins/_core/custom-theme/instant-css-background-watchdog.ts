@@ -1,9 +1,9 @@
 import { getThemeCss } from "@/plugins/_core/custom-theme/utils";
+import { getInstantCssStorageService } from "@/services/features/instant-css/storage/proxy-register.background-listener";
 import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
-import { InstantCssStorage } from "@/services/features/instant-css/storage.proxy-service";
 
-export const instantCssServiceKey = "customTheme";
+const instantCssServiceKey = "customTheme";
 
 let unwatch: () => void;
 
@@ -21,19 +21,19 @@ export const updateRegistry = async (settings?: ExtensionSettings) => {
     .theme;
 
   if (currentThemeId == null || currentThemeId.length === 0) {
-    await InstantCssStorage.unregister(instantCssServiceKey);
+    await getInstantCssStorageService().unregister(instantCssServiceKey);
     return;
   }
 
   const currentThemeCss = await getThemeCss(currentThemeId);
 
-  const instantCssRegistry = await InstantCssStorage.get();
+  const instantCssRegistry = await getInstantCssStorageService().get();
 
   if (
     instantCssRegistry[instantCssServiceKey] == null ||
     instantCssRegistry[instantCssServiceKey].css !== currentThemeCss
   ) {
-    await InstantCssStorage.register({
+    await getInstantCssStorageService().register({
       id: instantCssServiceKey,
       css: currentThemeCss,
     });

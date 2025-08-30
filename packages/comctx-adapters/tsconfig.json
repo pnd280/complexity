@@ -16,5 +16,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*", "docs/**/*", "*.config.ts"]
+  "include": ["src/**/*"]
 }

@@ -2,7 +2,7 @@ import {
   generateThemeData,
   initialValues,
 } from "@/data/dashboard/themes/utils";
-import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db";
+import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/proxy-register.background-listener";
 
 export default function listener() {
   chrome.runtime.onInstalled.addListener(async (details) => {

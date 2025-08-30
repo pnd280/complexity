@@ -5,12 +5,9 @@ import {
   betterSidebarNormalizeCollapsedCssResourceConfig,
   betterSidebarNormalizeExpandedCssResourceConfig,
 } from "@/plugins/better-sidebar/index.remote-resources";
-import { shouldPreventLayoutShift } from "@/plugins/better-sidebar/utils";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import {
-  registerInstantCss,
-  removeInstantCss,
-} from "@/services/features/instant-css/entry.utils";
+import { InstantCssService } from "@/services/features/instant-css";
+import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import { getCookie } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -23,10 +20,18 @@ export default function loader() {
   asyncLoaderRegistry.register({
     id: "plugin:betterSidebar:instantCss",
     dependencies: ["cache:pluginsStates", "store:pluginGuards"],
-    loader: async ({ "cache:pluginsStates": pluginsStates }) => {
+    loader: async ({
+      "cache:pluginsStates": pluginsStates,
+      "store:pluginGuards": pluginGuardsStore,
+    }) => {
       await applyLayoutShiftPreventionInstantCss({
         enabled:
-          pluginsStates["betterSidebar"] && (await shouldPreventLayoutShift()),
+          pluginsStates["betterSidebar"] &&
+          InstantCssService.hasPermissionsSync({
+            grantedPermissions: pluginGuardsStore.grantedPermissions,
+          }) &&
+          ExtensionSettingsService.cachedSync.plugins.betterSidebar
+            .shouldPreventLayoutShift,
       });
     },
   });
@@ -50,7 +55,9 @@ export async function applyLayoutShiftPreventionInstantCss({
 
   const state = getCookie("isSidebarPinned");
 
-  const action = enabled ? registerInstantCss : removeInstantCss;
+  const action = enabled
+    ? InstantCssService.registerInstantCss
+    : InstantCssService.removeInstantCss;
 
   action({
     id: "plugin:betterSidebar:normalizeLayout",

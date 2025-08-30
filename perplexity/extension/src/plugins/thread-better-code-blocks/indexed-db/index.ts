@@ -1,4 +1,3 @@
-import { defineProxyService } from "@webext-core/proxy-service";
 import { produce } from "immer";
 import merge from "lodash/merge";
 import type { DeepPartial } from "react-hook-form";
@@ -6,7 +5,9 @@ import type { DeepPartial } from "react-hook-form";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 import { db } from "@/services/infra/indexed-db";
 
-class BetterCodeBlocksFineGrainedService {
+export const backgroundProxyServiceName = "betterCodeBlocksFineGrainedService";
+
+export class BetterCodeBlocksFineGrainedService {
   async add(options: BetterCodeBlockFineGrainedOptions): Promise<string> {
     return await db.betterCodeBlocks.add(options);
   }
@@ -54,9 +55,3 @@ class BetterCodeBlocksFineGrainedService {
     await db.betterCodeBlocks.delete(language);
   }
 }
-
-export const [registerService, getBetterCodeBlocksFineGrainedOptionsService] =
-  defineProxyService(
-    "BetterCodeBlocksFineGrainedOptionsService",
-    () => new BetterCodeBlocksFineGrainedService(),
-  );

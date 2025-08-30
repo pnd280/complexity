@@ -5,7 +5,7 @@ import { createWithEqualityFn } from "zustand/traditional";
 import type { PplxSubTier } from "@/plugins/_core/plugins-guard/guards";
 import type { whereAmI } from "@/utils/utils";
 
-type PluginGuardsStoreType = {
+export type PluginGuardsStoreType = {
   grantedPermissions: chrome.runtime.ManifestPermissions[];
   currentLocation: ReturnType<typeof whereAmI>;
   isMobile: boolean;

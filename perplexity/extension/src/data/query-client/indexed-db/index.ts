@@ -1,9 +1,9 @@
-import { defineProxyService } from "@webext-core/proxy-service";
-
 import type { QueryCacheEntry } from "@/data/query-client/utils";
 import { db } from "@/services/infra/indexed-db";
 
-class QueryCacheService {
+export const backgroundProxyServiceName = "queryCacheService";
+
+export class QueryCacheService {
   async add(query: QueryCacheEntry): Promise<string> {
     return await db.queryCache.add(query);
   }
@@ -25,8 +25,3 @@ class QueryCacheService {
     await db.queryCache.delete(key);
   }
 }
-
-export const [registerService, getQueryCacheService] = defineProxyService(
-  "QueryCacheService",
-  () => new QueryCacheService(),
-);

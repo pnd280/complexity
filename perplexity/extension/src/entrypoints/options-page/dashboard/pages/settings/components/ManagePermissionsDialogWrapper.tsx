@@ -21,7 +21,7 @@ export default function ManagePermissionsDialogWrapper({
   children: React.ReactNode;
 }) {
   const {
-    query: { data: grantedPermissions },
+    data: grantedPermissions,
     handleGrantPermission,
     handleRevokePermission,
   } = useExtensionPermissions();

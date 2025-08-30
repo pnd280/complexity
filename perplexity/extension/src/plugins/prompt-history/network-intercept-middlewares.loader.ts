@@ -2,7 +2,7 @@ import { queryClient } from "@/data/query-client";
 import { networkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { parsePerplexityAskEvent } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db";
+import { getPromptHistoryProxyService } from "@/plugins/prompt-history/indexed-db/proxy";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -59,7 +59,7 @@ export default function loader() {
             return skip();
           }
 
-          await getPromptHistoryService().deduplicateAdd({
+          await getPromptHistoryProxyService().deduplicateAdd({
             prompt: promptString,
           });
 

@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { queryClient } from "@/data/query-client";
-import { getBetterCodeBlocksFineGrainedOptionsService } from "@/plugins/thread-better-code-blocks/indexed-db";
+import { getBetterCodeBlocksFineGrainedOptionsProxyService } from "@/plugins/thread-better-code-blocks/indexed-db/proxy";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 
@@ -52,7 +52,7 @@ export default function CreateNewLanguageOptionButton() {
         },
       };
 
-      await getBetterCodeBlocksFineGrainedOptionsService().add(options);
+      await getBetterCodeBlocksFineGrainedOptionsProxyService().add(options);
     },
     onSuccess: () => {
       setOpen(false);

@@ -1,4 +1,3 @@
-import { defineProxyService } from "@webext-core/proxy-service";
 import { storage } from "@wxt-dev/storage";
 import { produce } from "immer";
 
@@ -7,7 +6,9 @@ import type {
   InstantCssSettings,
 } from "@/services/features/instant-css/types";
 
-export class InstantCssStorage {
+export const backgroundProxyServiceName = "instantCssStorageService";
+
+export class InstantCssStorageService {
   static storageItem = storage.defineItem<InstantCssSettings>(
     "local:instantCss",
     {
@@ -17,39 +18,36 @@ export class InstantCssStorage {
   );
 
   static async get(): Promise<InstantCssSettings> {
-    return await InstantCssStorage.storageItem.getValue();
+    return await InstantCssStorageService.storageItem.getValue();
   }
 
   private static async set(
     updater: (draft: InstantCssSettings) => void,
   ): Promise<void> {
-    const newSettings = produce(await InstantCssStorage.get(), updater);
-    await InstantCssStorage.storageItem.setValue(newSettings);
+    const newSettings = produce(await InstantCssStorageService.get(), updater);
+    await InstantCssStorageService.storageItem.setValue(newSettings);
   }
 
   static async reset(): Promise<void> {
-    await InstantCssStorage.storageItem.setValue(
-      InstantCssStorage.storageItem.fallback,
+    await InstantCssStorageService.storageItem.setValue(
+      InstantCssStorageService.storageItem.fallback,
     );
   }
 
   static async register(params: InstantCss & { id: keyof InstantCssSettings }) {
-    await InstantCssStorage.set((draft) => {
+    await InstantCssStorageService.set((draft) => {
       draft[params.id] = params;
     });
   }
 
   static async unregister(id: keyof InstantCssSettings) {
-    await InstantCssStorage.set((draft) => {
+    await InstantCssStorageService.set((draft) => {
       delete draft[id];
     });
   }
 
   static async isRegistered(id: keyof InstantCssSettings) {
-    const settings = await InstantCssStorage.get();
+    const settings = await InstantCssStorageService.get();
     return settings[id] !== undefined;
   }
 }
-
-export const [registerService, getInstantCssStorageService] =
-  defineProxyService("InstantCssStorage", () => InstantCssStorage);

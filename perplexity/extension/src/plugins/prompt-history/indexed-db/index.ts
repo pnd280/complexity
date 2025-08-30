@@ -1,10 +1,11 @@
-import { defineProxyService } from "@webext-core/proxy-service";
 import { nanoid } from "nanoid";
 
 import type { PromptHistory } from "@/plugins/prompt-history/types";
 import { db } from "@/services/infra/indexed-db";
 
-class PromptHistoryService {
+export const backgroundProxyServiceName = "promptHistoryService";
+
+export class PromptHistoryService {
   async add({ prompt }: { prompt: string }): Promise<string> {
     return await db.promptHistory.add({
       id: new Date().getTime().toString() + "-" + nanoid(),
@@ -70,8 +71,3 @@ class PromptHistoryService {
     await db.promptHistory.delete(id);
   }
 }
-
-export const [registerService, getPromptHistoryService] = defineProxyService(
-  "PromptHistoryService",
-  () => new PromptHistoryService(),
-);

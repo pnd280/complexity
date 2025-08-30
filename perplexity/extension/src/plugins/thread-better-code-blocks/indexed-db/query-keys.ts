@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 
-import { getBetterCodeBlocksFineGrainedOptionsService } from "@/plugins/thread-better-code-blocks/indexed-db";
+import { getBetterCodeBlocksFineGrainedOptionsProxyService } from "@/plugins/thread-better-code-blocks/indexed-db/proxy";
 
 export const betterCodeBlocksFineGrainedOptionsQueries = {
   all: () => ["betterCodeBlocksFineGrainedOptions"] as const,
@@ -13,7 +13,8 @@ export const betterCodeBlocksFineGrainedOptionsQueries = {
         queryKey: [
           ...betterCodeBlocksFineGrainedOptionsQueries.list.all(),
         ] as const,
-        queryFn: () => getBetterCodeBlocksFineGrainedOptionsService().getAll(),
+        queryFn: () =>
+          getBetterCodeBlocksFineGrainedOptionsProxyService().getAll(),
       }),
   },
 
@@ -27,7 +28,7 @@ export const betterCodeBlocksFineGrainedOptionsQueries = {
           { language },
         ] as const,
         queryFn: () =>
-          getBetterCodeBlocksFineGrainedOptionsService().get(language),
+          getBetterCodeBlocksFineGrainedOptionsProxyService().get(language),
       }),
   },
 };

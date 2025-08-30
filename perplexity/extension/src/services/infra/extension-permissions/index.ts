@@ -1,6 +1,6 @@
-import { defineProxyService } from "@webext-core/proxy-service";
+export const backgroundProxyServiceName = "extensionPermissionsService";
 
-export class ExtensionPermissions {
+export class ExtensionPermissionsService {
   static getAll() {
     return chrome.permissions.getAll();
   }
@@ -13,6 +13,3 @@ export class ExtensionPermissions {
     return chrome.permissions.remove({ permissions });
   }
 }
-
-export const [registerService, getExtensionPermissionsService] =
-  defineProxyService("ExtensionPermissionsService", () => ExtensionPermissions);

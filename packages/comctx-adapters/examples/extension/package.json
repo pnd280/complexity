@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "@comctx-adapters/core": "workspace:*",
-    "comctx": "^1.4.1",
-    "webext-bridge": "workspace:*"
+    "comctx": "^1.4.1"
   },
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",

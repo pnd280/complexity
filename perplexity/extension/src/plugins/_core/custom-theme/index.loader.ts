@@ -8,12 +8,21 @@ declare module "@/plugins/_core/async-dep-registry" {
     "customTheme:inlineLoader": void;
   }
 }
+
 export default function loader() {
   asyncLoaderRegistry.register({
     id: "customTheme:inlineLoader",
-    dependencies: ["cache:extensionSettings"],
-    loader: async ({ "cache:extensionSettings": extensionSettings }) => {
-      if (await InstantCssService.hasPermissions()) return;
+    dependencies: ["cache:extensionSettings", "store:pluginGuards"],
+    loader: async ({
+      "cache:extensionSettings": extensionSettings,
+      "store:pluginGuards": pluginGuardsStore,
+    }) => {
+      if (
+        InstantCssService.hasPermissionsSync({
+          grantedPermissions: pluginGuardsStore.grantedPermissions,
+        })
+      )
+        return;
 
       const themeId = extensionSettings.theme;
 

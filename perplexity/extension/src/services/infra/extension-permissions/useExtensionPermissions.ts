@@ -8,7 +8,9 @@ import {
 } from "@/services/infra/extension-permissions/utils";
 
 export function useExtensionPermissions() {
-  const query = useQuery(extensionPermissionsQueries.permissions.detail());
+  const { data, isLoading } = useQuery(
+    extensionPermissionsQueries.permissions.detail(),
+  );
 
   const handleGrantPermission = ({
     permissions,
@@ -42,5 +44,5 @@ export function useExtensionPermissions() {
       });
   };
 
-  return { query, handleGrantPermission, handleRevokePermission };
+  return { data, isLoading, handleGrantPermission, handleRevokePermission };
 }

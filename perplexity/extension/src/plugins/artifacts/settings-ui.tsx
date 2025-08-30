@@ -29,7 +29,7 @@ export default function ArtifactsPluginSettingsUi() {
               href="https://cdn.cplx.app/resources/artifacts-instruction.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="x:text-primary x:hover:underline"
+              className="x:text-primary x:underline"
             >
               pre-prompt
             </a>

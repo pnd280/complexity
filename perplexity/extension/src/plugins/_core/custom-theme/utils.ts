@@ -1,6 +1,8 @@
 import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
-import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db";
+import { getLocalThemesProxyService } from "@/plugins/_core/custom-theme/indexed-db/proxy";
+import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/proxy-register.background-listener";
+import { isBackgroundScript } from "@/utils/utils";
 
 export async function getThemeCss(themeId: Theme["id"]) {
   return getBuiltInThemeCss(themeId) || (await getLocalThemeCss(themeId)) || "";
@@ -13,5 +15,9 @@ export function getBuiltInThemeCss(themeId: Theme["id"]) {
 }
 
 export async function getLocalThemeCss(themeId: Theme["id"]) {
-  return (await getLocalThemesService().get(themeId))?.css ?? "";
+  const getService = isBackgroundScript()
+    ? getLocalThemesService
+    : getLocalThemesProxyService;
+
+  return (await getService().get(themeId))?.css ?? "";
 }

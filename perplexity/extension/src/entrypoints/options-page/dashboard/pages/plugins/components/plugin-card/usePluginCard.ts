@@ -13,9 +13,8 @@ export function usePluginCard(pluginId: PluginId) {
   const [searchParams] = useSearchParams();
   const { settings, mutation } = useExtensionSettings();
 
-  const {
-    query: { data: permissions, isLoading: isPermissionsLoading },
-  } = useExtensionPermissions();
+  const { data: permissions, isLoading: isPermissionsLoading } =
+    useExtensionPermissions();
 
   const {
     title,

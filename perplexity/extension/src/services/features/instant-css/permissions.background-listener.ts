@@ -1,5 +1,5 @@
 import { InstantCssService } from "@/services/features/instant-css";
-import { InstantCssInjector } from "@/services/features/instant-css/injector.proxy-service";
+import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/proxy-register.background-listener";
 
 export default function listener() {
   hanlder();
@@ -9,8 +9,8 @@ export default function listener() {
 
 async function hanlder() {
   if (await InstantCssService.hasPermissions()) {
-    InstantCssInjector.registerListeners();
+    getInstantCssInjectorService().registerListeners();
   } else {
-    InstantCssInjector.removeListeners();
+    getInstantCssInjectorService().removeListeners();
   }
 }

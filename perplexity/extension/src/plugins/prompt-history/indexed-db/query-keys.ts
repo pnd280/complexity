@@ -1,6 +1,6 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 
-import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db";
+import { getPromptHistoryProxyService } from "@/plugins/prompt-history/indexed-db/proxy";
 
 export const ITEMS_PER_PAGE = 10;
 
@@ -22,8 +22,8 @@ export const promptHistoryQueries = {
           { searchTerm },
         ] as const,
         queryFn: (ctx) =>
-          getPromptHistoryService().getPaginatedItems({
-            searchTerm: searchTerm,
+          getPromptHistoryProxyService().getPaginatedItems({
+            searchTerm,
             offset: ctx.pageParam * ITEMS_PER_PAGE,
             limit: ITEMS_PER_PAGE,
           }),
@@ -43,7 +43,7 @@ export const promptHistoryQueries = {
     detail: () =>
       queryOptions({
         queryKey: [...promptHistoryQueries.list.all()] as const,
-        queryFn: () => getPromptHistoryService().getAll(),
+        queryFn: () => getPromptHistoryProxyService().getAll(),
       }),
   },
 
@@ -53,7 +53,7 @@ export const promptHistoryQueries = {
       queryOptions({
         queryKey: [...promptHistoryQueries.get.all(), { id }] as const,
         queryFn: async () => {
-          const item = await getPromptHistoryService().get(id);
+          const item = await getPromptHistoryProxyService().get(id);
           if (item == null) throw new Error("Item not found");
           return item;
         },

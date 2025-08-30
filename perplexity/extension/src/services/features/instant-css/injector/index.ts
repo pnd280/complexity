@@ -1,16 +1,40 @@
-import { defineProxyService } from "@webext-core/proxy-service";
-
 import { APP_CONFIG } from "@/app.config";
-import { InstantCssService } from "@/services/features/instant-css";
 import { instantCssCoordinator } from "@/services/features/instant-css/coordinator";
 import type {
   InstantCss,
   InstantCssSettings,
 } from "@/services/features/instant-css/types";
 import { getProcessedCssEntries } from "@/services/features/instant-css/utils";
+import {
+  hasPermissions,
+  hasPermissionsSync,
+} from "@/services/infra/extension-permissions/utils";
 import { invariant, isBackgroundScript } from "@/utils/utils";
 
-export class InstantCssInjector {
+export { backgroundProxyServiceName } from "@/services/features/instant-css/injector/constants";
+
+export class InstantCssInjectorService {
+  static async hasPermissions() {
+    return (
+      APP_CONFIG.BROWSER === "chrome" &&
+      (await hasPermissions(["webNavigation"]))
+    );
+  }
+
+  static hasPermissionsSync({
+    grantedPermissions,
+  }: {
+    grantedPermissions: chrome.runtime.ManifestPermissions[];
+  }) {
+    return (
+      APP_CONFIG.BROWSER === "chrome" &&
+      hasPermissionsSync({
+        requiredPermissions: ["webNavigation"],
+        grantedPermissions,
+      })
+    );
+  }
+
   static async injectCssToTab(tabId: number) {
     instantCssCoordinator.resetTab(tabId);
 
@@ -22,7 +46,7 @@ export class InstantCssInjector {
       const entries = await getProcessedCssEntries();
 
       for (const { id, css, removeAfter, enabled } of entries) {
-        InstantCssInjector.injectCss({
+        InstantCssInjectorService.injectCss({
           id: id as keyof InstantCssSettings,
           tabId,
           css,
@@ -42,7 +66,7 @@ export class InstantCssInjector {
 
     if (!details.url) return;
 
-    await InstantCssInjector.injectCssToTab(details.tabId);
+    await InstantCssInjectorService.injectCssToTab(details.tabId);
   };
 
   static async forceInjectAllPplxTabs() {
@@ -52,7 +76,7 @@ export class InstantCssInjector {
 
     for (const tab of tabs) {
       if (tab.id == null) continue;
-      await InstantCssInjector.injectCssToTab(tab.id);
+      await InstantCssInjectorService.injectCssToTab(tab.id);
     }
   }
 
@@ -76,12 +100,12 @@ export class InstantCssInjector {
       "This method is not allowed in content script",
     );
 
-    InstantCssInjector.removeListeners();
+    InstantCssInjectorService.removeListeners();
 
-    if (!(await InstantCssService.hasPermissions())) return;
+    if (!(await InstantCssInjectorService.hasPermissions())) return;
 
     chrome.webNavigation.onCommitted.addListener(
-      InstantCssInjector.autoInjector,
+      InstantCssInjectorService.autoInjector,
       {
         url: APP_CONFIG["perplexity-ai"].globalMatches.map((match) => ({
           urlMatches: match,
@@ -89,7 +113,9 @@ export class InstantCssInjector {
       },
     );
 
-    chrome.tabs.onRemoved.addListener(InstantCssInjector.tabRemovedHandler);
+    chrome.tabs.onRemoved.addListener(
+      InstantCssInjectorService.tabRemovedHandler,
+    );
   }
 
   static async removeListeners() {
@@ -98,15 +124,14 @@ export class InstantCssInjector {
       "This method is not allowed in content script",
     );
 
-    if (!(await InstantCssService.hasPermissions())) return;
+    if (!(await InstantCssInjectorService.hasPermissions())) return;
 
     chrome.webNavigation.onCommitted.removeListener(
-      InstantCssInjector.autoInjector,
+      InstantCssInjectorService.autoInjector,
     );
 
-    chrome.tabs.onRemoved.removeListener(InstantCssInjector.tabRemovedHandler);
+    chrome.tabs.onRemoved.removeListener(
+      InstantCssInjectorService.tabRemovedHandler,
+    );
   }
 }
-
-export const [registerService, getInstantCssInjectorService] =
-  defineProxyService("InstantCssInjector", () => InstantCssInjector);
