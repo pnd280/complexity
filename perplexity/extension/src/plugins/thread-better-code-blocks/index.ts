@@ -1,11 +1,23 @@
 import { z } from "zod";
 
 import { definePlugin } from "@/data/plugin-registry/utils";
-import { BetterCodeBlockGlobalOptionsSchema } from "@/plugins/thread-better-code-blocks/types";
+import {
+  BetterCodeBlockGlobalOptionsSchema,
+  BetterCodeBlockFineGrainedOptionsSchema,
+  type BetterCodeBlockFineGrainedOptions,
+} from "@/plugins/thread-better-code-blocks/types";
 
 declare module "@/data/plugin-registry/types" {
   interface PluginsSettingsRegistry {
     "thread:betterCodeBlocks": z.infer<typeof schema>;
+  }
+
+  interface PluginsIndexedDbRegistry {
+    "thread:betterCodeBlocks": BetterCodeBlockFineGrainedOptions;
+  }
+
+  interface PluginsDbDataRegistry {
+    "thread:betterCodeBlocks": BetterCodeBlockFineGrainedOptions[];
   }
 }
 
@@ -43,5 +55,14 @@ export default definePlugin({
         showToggleButton: true,
       },
     },
+  },
+  indexedDb: {
+    versions: [
+      {
+        version: 6,
+        schema: "&language",
+      },
+    ],
+    schema: BetterCodeBlockFineGrainedOptionsSchema,
   },
 });

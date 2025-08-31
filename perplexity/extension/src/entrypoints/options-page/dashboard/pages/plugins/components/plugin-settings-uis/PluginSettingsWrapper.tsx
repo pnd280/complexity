@@ -10,7 +10,7 @@ import PluginSettingsPage from "@/entrypoints/options-page/dashboard/pages/plugi
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
 import { default as PluginsListing } from "@/entrypoints/options-page/dashboard/pages/plugins/IndexPage";
 import useClearLocationState from "@/hooks/useClearLocationState";
-import useClearSearchParams from "@/hooks/useClearSearchParams";
+// import useClearSearchParams from "@/hooks/useClearSearchParams";
 
 export default function PluginSettingsWrapper() {
   useClearLocationState();
@@ -34,7 +34,8 @@ export default function PluginSettingsWrapper() {
   const isOpenInFullScreen =
     plugin != null && PLUGIN_SETTINGS_UIS[plugin.id]!.openInFullScreen;
 
-  useClearSearchParams({ enabled: !isFromPluginList });
+  // const searchParamsToCllear = useMemo(() => ["searchTerm"], []);
+  // useClearSearchParams({ enabled: !isFromPluginList, params: searchParamsToCllear });
 
   if (!plugin || !isPluginId(plugin.id)) {
     return null;

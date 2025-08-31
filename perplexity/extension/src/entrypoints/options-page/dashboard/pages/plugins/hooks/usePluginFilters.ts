@@ -74,7 +74,9 @@ export function usePluginFilters() {
       searchParams.delete("excludeCategories");
     }
 
-    setSearchParams(searchParams);
+    setSearchParams(searchParams, {
+      replace: true,
+    });
   };
 
   return { filters, setFilters };

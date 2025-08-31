@@ -1,11 +1,21 @@
 import { z } from "zod";
 
 import { definePlugin } from "@/data/plugin-registry/utils";
+import type { PromptHistory } from "@/plugins/prompt-history/types";
+import { PromptHistorySchema } from "@/plugins/prompt-history/types";
 import { SlashCommandMenuTabShortcutSchema } from "@/plugins/slash-command/shortcuts.types.public";
 
 declare module "@/data/plugin-registry/types" {
   interface PluginsSettingsRegistry {
     promptHistory: z.infer<typeof schema>;
+  }
+
+  interface PluginsIndexedDbRegistry {
+    promptHistory: PromptHistory;
+  }
+
+  interface PluginsDbDataRegistry {
+    promptHistory: PromptHistory[];
   }
 }
 
@@ -43,5 +53,14 @@ export default definePlugin({
         onNavigation: true,
       },
     },
+  },
+  indexedDb: {
+    versions: [
+      {
+        version: 6,
+        schema: "&id, prompt, createdAt",
+      },
+    ],
+    schema: PromptHistorySchema,
   },
 });

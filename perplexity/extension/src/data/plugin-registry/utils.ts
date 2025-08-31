@@ -1,6 +1,7 @@
-import { type ZodSchema } from "zod";
+import type { ZodType } from "zod";
 
 import type {
+  PluginIndexedDbConfig,
   PluginManifest,
   PluginsSettingsSchema,
   TypedPluginManifest,
@@ -9,9 +10,10 @@ import type {
 export type DefinePluginParams<T extends PluginManifest["id"]> = {
   manifest: TypedPluginManifest<T>;
   settingsSchema: {
-    schema: ZodSchema;
+    schema: ZodType;
     fallback: PluginsSettingsSchema[T];
   };
+  indexedDb?: PluginIndexedDbConfig;
 };
 
 export const definePlugin = <T extends PluginManifest["id"]>(

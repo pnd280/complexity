@@ -1,3 +1,7 @@
+import type { Dexie } from "dexie";
+import type { Transaction } from "dexie";
+import type { z } from "zod";
+
 import { PluginRegistry } from "@/data/plugin-registry";
 import type { PluginCategory } from "@/data/plugin-registry/plugin-tags";
 import type { PluginTagValues } from "@/data/plugin-registry/plugin-tags";
@@ -20,10 +24,65 @@ import type { UiGroupId } from "@/plugins/_core/ui/groups/index.public";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PluginsSettingsRegistry {}
 
-export type PluginId = keyof PluginsSettingsRegistry;
-
 export type PluginsSettingsSchema = {
   [K in keyof PluginsSettingsRegistry]: PluginsSettingsRegistry[K];
+};
+
+/**
+ * Registry interface for plugin IDs and their corresponding IndexedDB table and record types.
+ *
+ * Example usage in a plugin:
+ * ```
+ * declare module "@/data/plugin-registry/types" {
+ *   interface PluginsIndexedDbRegistry {
+ *     myPluginTable: MyPluginRecordType;
+ *   }
+ * }
+ * ```
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface PluginsIndexedDbRegistry {}
+
+export type PluginsIndexedDbSchema = {
+  [K in keyof PluginsIndexedDbRegistry]: PluginsIndexedDbRegistry[K];
+};
+
+/**
+ * Registry interface for plugin IDs and their corresponding IndexedDB data for import/export.
+ *
+ * Example usage in a plugin:
+ * ```
+ * declare module "@/data/plugin-registry/types" {
+ *   interface PluginsDbDataRegistry {
+ *     myPluginTable: MyPluginRecordType[];
+ *   }
+ * }
+ * ```
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface PluginsDbDataRegistry {}
+
+export type PluginsDbDataSchema = {
+  [K in keyof PluginsDbDataRegistry]: PluginsDbDataRegistry[K];
+};
+
+export type PluginId = keyof PluginsSettingsRegistry;
+
+export type PluginTables = {
+  [K in keyof PluginsIndexedDbRegistry]: Dexie.Table<
+    PluginsIndexedDbRegistry[K]
+  >;
+};
+
+export type PluginIndexedDbVersion = {
+  version: number;
+  schema: string;
+  upgrade?: (tx: Transaction) => Promise<void> | void;
+};
+
+export type PluginIndexedDbConfig = {
+  versions: PluginIndexedDbVersion[];
+  schema: z.ZodType<any>;
 };
 
 export type PluginManifest = {

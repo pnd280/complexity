@@ -9,21 +9,21 @@ export const backgroundProxyServiceName = "betterCodeBlocksFineGrainedService";
 
 export class BetterCodeBlocksFineGrainedService {
   async add(options: BetterCodeBlockFineGrainedOptions): Promise<string> {
-    return await db.betterCodeBlocks.add(options);
+    return await db["thread:betterCodeBlocks"].add(options);
   }
 
   async get(
     language: string,
   ): Promise<BetterCodeBlockFineGrainedOptions | null> {
-    return (await db.betterCodeBlocks.get(language)) ?? null;
+    return (await db["thread:betterCodeBlocks"].get(language)) ?? null;
   }
 
   async getAll(): Promise<BetterCodeBlockFineGrainedOptions[]> {
-    return await db.betterCodeBlocks.toArray();
+    return await db["thread:betterCodeBlocks"].toArray();
   }
 
   async update(options: BetterCodeBlockFineGrainedOptions): Promise<string> {
-    await db.betterCodeBlocks.put(options);
+    await db["thread:betterCodeBlocks"].put(options);
     return options.language;
   }
 
@@ -47,11 +47,11 @@ export class BetterCodeBlocksFineGrainedService {
       },
     );
 
-    await db.betterCodeBlocks.update(language, newSettings);
+    await db["thread:betterCodeBlocks"].update(language, newSettings);
     return language;
   }
 
   async delete(language: string): Promise<void> {
-    await db.betterCodeBlocks.delete(language);
+    await db["thread:betterCodeBlocks"].delete(language);
   }
 }

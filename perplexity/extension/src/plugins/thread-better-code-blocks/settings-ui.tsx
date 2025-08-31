@@ -31,14 +31,14 @@ export default function BetterCodeBlocksPluginSettingsUi() {
         <Tabs
           value={activeTab}
           onValueChange={({ value }) => {
-            setSearchParams(
-              { tab: value },
-              {
-                state: {
-                  fromPluginList: isFromPluginList,
-                },
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.set("tab", value);
+            setSearchParams(newSearchParams, {
+              state: {
+                fromPluginList: isFromPluginList,
               },
-            );
+              replace: true,
+            });
           }}
         >
           <TabsList className="x:mb-2 x:justify-start">

@@ -23,7 +23,6 @@ declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {
     "plugins:mainWorldCorePlugins": void;
     "plugins:mainWorldCorePlugins:domSelectorsDependants": void;
-    "plugin:pplxThemeLoader": void;
   }
 }
 

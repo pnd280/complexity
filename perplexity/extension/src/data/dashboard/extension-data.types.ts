@@ -1,9 +1,19 @@
 import { z } from "zod";
 
 import { ThemeSchema } from "@/data/dashboard/themes/theme.types";
-import { PromptHistorySchema } from "@/plugins/prompt-history/index.public";
-import { BetterCodeBlockFineGrainedOptionsSchema } from "@/plugins/thread-better-code-blocks/index.public";
+import { PluginRegistry } from "@/data/plugin-registry";
+import type { PluginsDbDataSchema } from "@/data/plugin-registry/types";
 import { ExtensionSettingsSchema } from "@/services/infra/extension-settings/types";
+
+const coreDbSchema = {
+  themes: z.array(ThemeSchema),
+};
+
+const pluginDbSchemas = Object.fromEntries(
+  Object.entries(PluginRegistry.indexedDbTableValidationSchemas).map(
+    ([tableName, schema]) => [tableName, z.array(schema)],
+  ),
+) as unknown as PluginsDbDataSchema;
 
 export const ExtensionDataSchema = z.object({
   settings: z.object({
@@ -13,11 +23,8 @@ export const ExtensionDataSchema = z.object({
     }),
   }),
   db: z.object({
-    themes: z.array(ThemeSchema),
-    betterCodeBlocksFineGrainedOptions: z.array(
-      BetterCodeBlockFineGrainedOptionsSchema,
-    ),
-    promptHistory: z.array(PromptHistorySchema),
+    ...coreDbSchema,
+    ...pluginDbSchemas,
   }),
 });
 
