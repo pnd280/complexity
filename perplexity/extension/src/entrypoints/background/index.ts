@@ -2,6 +2,6 @@
 import "webext-bridge/background";
 // --- [DO NOT REMOVE] ---
 
-import { setupBackgroundListeners } from "@/entrypoints/background/listeners";
+import { setupBackgroundWorkers } from "@/entrypoints/background/workers";
 
-setupBackgroundListeners();
+setupBackgroundWorkers();

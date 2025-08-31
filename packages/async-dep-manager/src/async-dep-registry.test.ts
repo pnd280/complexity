@@ -187,32 +187,23 @@ describe("AsyncDependencyRegistry", () => {
     expect(result.value).toBe("complex value");
   });
 
-  it("should handle duplicate registrations", async () => {
-    // Create with verbose=true to ensure warnings are shown
-    const verboseManager = AsyncDependencyRegistry.create<TestRegistry>({
-      verbose: true,
-    });
+  it("should throw error on duplicate registrations", async () => {
+    const manager = AsyncDependencyRegistry.create<TestRegistry>();
 
-    verboseManager.register({
+    manager.register({
       id: "testSimple",
       dependencies: [],
       loader: async () => "first value",
     });
 
-    verboseManager.register({
-      id: "testSimple",
-      dependencies: [],
-      loader: async () => "second value",
-    });
-
-    const result = await verboseManager.load("testSimple");
-
-    // Now should return "first value" since we keep the first registration
-    expect(result).toBe("first value");
-    expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining(
-        'Dependency with id "testSimple" is already registered. Ignoring new registration.',
-      ),
+    expect(() => {
+      manager.register({
+        id: "testSimple",
+        dependencies: [],
+        loader: async () => "second value",
+      });
+    }).toThrow(
+      'Dependency with id "testSimple" is already registered. Cannot register the same dependency ID multiple times.',
     );
   });
 
@@ -600,7 +591,7 @@ describe("AsyncDependencyRegistry", () => {
 
     vi.clearAllMocks();
 
-    // Register a dependency with duplicate ID (should not log warning)
+    // Register dependencies when verbose is false (should not log info messages)
     manager.register({
       id: "testSimple",
       dependencies: [],
@@ -608,12 +599,15 @@ describe("AsyncDependencyRegistry", () => {
     });
 
     manager.register({
-      id: "testSimple",
-      dependencies: [],
-      loader: async () => "second",
+      id: "testWithDeps",
+      dependencies: ["testSimple"],
+      loader: async ({ testSimple }) => testSimple.length,
     });
 
-    expect(console.warn).not.toHaveBeenCalled();
+    await manager.load("testWithDeps");
+
+    // Should not log state transition info when verbose is false
+    expect(console.info).not.toHaveBeenCalled();
 
     // Change to verbose mode
     manager.setVerbose(true);
@@ -621,14 +615,19 @@ describe("AsyncDependencyRegistry", () => {
     // Clear mocks to start fresh
     vi.clearAllMocks();
 
-    // Register another duplicate (should log warning now)
+    // Register and load new dependencies (should log info messages now)
     manager.register({
-      id: "testSimple",
+      id: "testComplex",
       dependencies: [],
-      loader: async () => "third",
+      loader: async () => ({ value: "verbose test" }),
     });
 
-    expect(console.warn).toHaveBeenCalled();
+    await manager.load("testComplex");
+
+    // Should log state transition info when verbose is true
+    expect(console.info).toHaveBeenCalledWith(
+      expect.stringContaining('Dependency "testComplex" state changed to:'),
+    );
   });
 
   it("should log state transitions and timing when verbose is enabled", async () => {

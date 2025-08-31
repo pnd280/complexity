@@ -17,7 +17,7 @@ const [mainQueryBoxCss, followUpQueryBoxCss] = await Promise.all([
   ),
 ]);
 
-export default function loader() {
+export default function () {
   globalCssStore.getState().registerCssEntry({
     css: mainQueryBoxCss,
     id: "normalize-main-query-box",

@@ -103,12 +103,9 @@ export class AsyncDependencyRegistry<
 
     // Check if dependency is already registered
     if (this.dependencies.has(options.id)) {
-      if (this.verbose) {
-        console.warn(
-          `Dependency with id "${String(options.id)}" is already registered. Ignoring new registration.`,
-        );
-      }
-      return; // Early return to ignore re-registration
+      throw new Error(
+        `Dependency with id "${String(options.id)}" is already registered. Cannot register the same dependency ID multiple times.`,
+      );
     }
 
     this.registrationTimestamps.set(options.id, now);

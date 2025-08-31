@@ -1,6 +1,6 @@
 import { onMessage } from "webext-bridge/background";
 
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/proxy-register.background-listener";
+import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/proxy-register.bg-worker";
 
 declare module "@/types/webext-bridge-overrides" {
   interface EventHandlers {
@@ -8,7 +8,7 @@ declare module "@/types/webext-bridge-overrides" {
   }
 }
 
-export default async function listener() {
+export default async function () {
   onMessage("bg:instantCss:requestInjection", ({ sender }) => {
     const tabId = sender.tabId;
     getInstantCssInjectorService().injectCssToTab(tabId);

@@ -12,7 +12,7 @@ const hideNativeModelSelectorCss = await getVersionedRemoteResource(
   hideNativeModelSelectorCssResourceConfig,
 );
 
-export default function loader() {
+export default function () {
   globalCssStore.getState().registerCssEntry({
     css: hideNativeModelSelectorCss,
     id: "hide-native-model-selector",

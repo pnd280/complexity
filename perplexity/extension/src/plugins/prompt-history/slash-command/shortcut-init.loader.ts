@@ -14,7 +14,7 @@ declare module "@/plugins/_core/async-dep-registry" {
   }
 }
 
-export default function loader() {
+export default function () {
   asyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:shortcut-init",
     dependencies: ["cache:pluginsStates"],

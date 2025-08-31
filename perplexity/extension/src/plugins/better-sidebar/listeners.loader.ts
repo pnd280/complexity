@@ -3,7 +3,7 @@ import { betterSidebarStore } from "@/plugins/better-sidebar/store";
 import { PluginsStatesService } from "@/services/features/plugins-states";
 import { setCookie } from "@/utils/utils";
 
-export default function loader() {
+export default function () {
   betterSidebarStore.subscribe(
     (store) => store.open,
     (open) => {

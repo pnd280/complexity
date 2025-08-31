@@ -1,5 +1,5 @@
 import { enableMapSet } from "immer";
 
-export default function loader() {
+export default function () {
   enableMapSet();
 }

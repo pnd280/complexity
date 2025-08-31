@@ -55,7 +55,7 @@ This repository heavily leverages **Vite's `import.meta.glob`** for automatic mo
 - **Plugin Registry**: Automatically discovers all plugin manifests via `@/plugins/!(_core|_api)/index.ts`
 - **Content Script Loaders**: Auto-loads plugin loaders via `@/plugins/!(_core|_api)/loader.{ts,tsx}` and `@/plugins/**/*.loader.{ts,tsx}`
 - **Settings UIs**: Auto-registers plugin settings components (options-page) via `@/plugins/!(_core|_api)/settings-ui.tsx`
-- **Background Listeners**: Auto-registers event listeners via `@/**/*.background-listener.ts`
+- **Background Listeners**: Auto-registers event listeners via `@/**/*.bg-worker.ts`
 - **Proxy Services**: Auto-registers background services via `@/services/**/*.proxy-service.ts` and `@/**/indexed-db/index.ts`
 - **Internationalization**: Auto-loads locale files via `@/_locales/*.*.ts`, `@/plugins/*/_locales/*.*.ts`, etc.
 

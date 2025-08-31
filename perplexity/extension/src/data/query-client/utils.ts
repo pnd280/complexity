@@ -8,7 +8,7 @@ import debounce from "lodash/debounce";
 
 import { APP_CONFIG } from "@/app.config";
 import { getQueryCacheProxyService } from "@/data/query-client/indexed-db/proxy";
-import { getQueryCacheService } from "@/data/query-client/indexed-db/proxy-register.background-listener";
+import { getQueryCacheService } from "@/data/query-client/indexed-db/proxy-register.bg-worker";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { isBackgroundScript, isSubArray } from "@/utils/utils";

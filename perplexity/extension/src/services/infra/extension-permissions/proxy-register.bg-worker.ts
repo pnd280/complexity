@@ -20,7 +20,7 @@ export function getExtensionPermissionsService(): typeof ExtensionPermissionsSer
   return serviceInstance;
 }
 
-export default function listener() {
+export default function () {
   const [registerService] = defineProxy(
     () => getExtensionPermissionsService(),
     {

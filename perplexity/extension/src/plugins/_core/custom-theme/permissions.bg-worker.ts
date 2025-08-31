@@ -1,10 +1,10 @@
 import {
-  initBackgroundWatchdog as initInstantCssBackgroundWatchdog,
-  removeBackgroundWatchdog as removeInstantCssBackgroundWatchdog,
+  initInstantCssBackgroundWatchdog,
+  removeInstantCssBackgroundWatchdog,
 } from "@/plugins/_core/custom-theme/instant-css-background-watchdog";
 import { InstantCssService } from "@/services/features/instant-css";
 
-export default function listener() {
+export default function () {
   handler();
   chrome.permissions.onAdded.addListener(handler);
   chrome.permissions.onRemoved.addListener(handler);

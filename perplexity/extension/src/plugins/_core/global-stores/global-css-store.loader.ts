@@ -3,7 +3,7 @@ import {
   type GlobalCssStoreRegistry,
 } from "@/plugins/_core/global-stores/global-css-store";
 
-export default function loader() {
+export default function () {
   globalCssStore.subscribe(
     (store) => store,
     (store) => {

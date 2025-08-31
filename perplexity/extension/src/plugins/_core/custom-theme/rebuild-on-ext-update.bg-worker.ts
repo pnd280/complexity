@@ -2,9 +2,9 @@ import {
   generateThemeData,
   initialValues,
 } from "@/data/dashboard/themes/utils";
-import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/proxy-register.background-listener";
+import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/proxy-register.bg-worker";
 
-export default function listener() {
+export default function () {
   chrome.runtime.onInstalled.addListener(async (details) => {
     if (details == null) return;
 

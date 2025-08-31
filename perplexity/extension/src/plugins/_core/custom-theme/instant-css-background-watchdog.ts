@@ -1,5 +1,5 @@
 import { getThemeCss } from "@/plugins/_core/custom-theme/utils";
-import { getInstantCssStorageService } from "@/services/features/instant-css/storage/proxy-register.background-listener";
+import { getInstantCssStorageService } from "@/services/features/instant-css/storage/proxy-register.bg-worker";
 import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
 
@@ -7,12 +7,12 @@ const instantCssServiceKey = "customTheme";
 
 let unwatch: () => void;
 
-export async function initBackgroundWatchdog() {
+export async function initInstantCssBackgroundWatchdog() {
   await updateRegistry(await ExtensionSettingsService.storageItem.getValue());
   unwatch = ExtensionSettingsService.storageItem.watch(updateRegistry);
 }
 
-export async function removeBackgroundWatchdog() {
+export async function removeInstantCssBackgroundWatchdog() {
   unwatch?.();
 }
 

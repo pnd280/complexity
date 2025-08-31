@@ -1,7 +1,7 @@
 import { APP_CONFIG } from "@/app.config";
 import { getOptionsPageUrl } from "@/utils/utils";
 
-export function createDashboardShortcut() {
+export default function () {
   chrome.contextMenus.removeAll();
 
   chrome.contextMenus.create({

@@ -16,7 +16,7 @@ declare module "@/plugins/_core/async-dep-registry" {
   }
 }
 
-export default async function loader() {
+export default async function () {
   asyncLoaderRegistry.register({
     id: "plugin:zenMode",
     dependencies: ["cache:pluginsStates", "cache:extensionSettings"],

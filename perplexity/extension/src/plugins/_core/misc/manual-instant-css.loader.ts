@@ -12,9 +12,9 @@ declare module "@/plugins/_core/async-dep-registry" {
   }
 }
 
-export default async function loader() {
+export default async function () {
   asyncLoaderRegistry.register({
-    id: "customTheme:inlineLoader",
+    id: "misc:manualInstantCss:cometPages",
     dependencies: ["store:pluginGuards"],
     loader: async ({ "store:pluginGuards": pluginGuardsStore }) => {
       if (

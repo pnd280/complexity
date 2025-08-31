@@ -18,7 +18,7 @@ declare module "@/types/webext-bridge-overrides" {
   }
 }
 
-export default async function loader() {
+export default async function () {
   asyncLoaderRegistry.register({
     id: "cache:domSelectors",
     dependencies: [],

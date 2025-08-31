@@ -13,7 +13,7 @@ const normalizeCss = await getVersionedRemoteResource(
   betterSidebarNormalizeCssResourceConfig,
 );
 
-export default function loader() {
+export default function () {
   asyncLoaderRegistry.register({
     id: "betterSidebar:hideNativeSidebar",
     dependencies: ["cache:pluginsStates", "store:pluginGuards"],

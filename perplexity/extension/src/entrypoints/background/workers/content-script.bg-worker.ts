@@ -14,7 +14,7 @@ declare module "@/types/webext-bridge-overrides" {
   }
 }
 
-export function contentScriptListeners() {
+export default function () {
   onMessage("bg:getTabId", ({ sender }) => sender.tabId);
 
   onMessage("bg:comet:getSidecarTabId", async ({ sender }) => {

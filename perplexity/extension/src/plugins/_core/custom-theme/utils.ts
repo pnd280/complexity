@@ -1,7 +1,7 @@
 import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
 import { getLocalThemesProxyService } from "@/plugins/_core/custom-theme/indexed-db/proxy";
-import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/proxy-register.background-listener";
+import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/proxy-register.bg-worker";
 import { isBackgroundScript } from "@/utils/utils";
 
 export async function getThemeCss(themeId: Theme["id"]) {

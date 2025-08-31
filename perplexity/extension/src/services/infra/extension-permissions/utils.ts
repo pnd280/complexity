@@ -1,5 +1,5 @@
 import { getExtensionPermissionsProxyService } from "@/services/infra/extension-permissions/proxy";
-import { getExtensionPermissionsService } from "@/services/infra/extension-permissions/proxy-register.background-listener";
+import { getExtensionPermissionsService } from "@/services/infra/extension-permissions/proxy-register.bg-worker";
 import { isBackgroundScript } from "@/utils/utils";
 
 const getService = isBackgroundScript()

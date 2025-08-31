@@ -9,7 +9,7 @@ declare module "@/types/webext-bridge-overrides" {
   }
 }
 
-export function declarativeNetRequestListener() {
+export default function () {
   onMessage(
     "bg:updateDynamicRules",
     ({ data: { addRules, removeRuleIds } }) => {

@@ -20,7 +20,7 @@ export function getQueryCacheService(): QueryCacheService {
   return serviceInstance;
 }
 
-export default function listener() {
+export default function () {
   const [registerService] = defineProxy(() => getQueryCacheService(), {
     namespace: backgroundProxyServiceName,
   });

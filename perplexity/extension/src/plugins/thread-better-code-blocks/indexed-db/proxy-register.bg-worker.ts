@@ -20,7 +20,7 @@ export function getBetterCodeBlocksFineGrainedOptionsService(): BetterCodeBlocks
   return serviceInstance;
 }
 
-export default function listener() {
+export default function () {
   const [registerService] = defineProxy(
     () => getBetterCodeBlocksFineGrainedOptionsService(),
     {

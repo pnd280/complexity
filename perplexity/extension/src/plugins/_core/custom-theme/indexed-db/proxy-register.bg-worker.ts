@@ -20,7 +20,7 @@ export function getLocalThemesService(): LocalThemesService {
   return serviceInstance;
 }
 
-export default function listener() {
+export default function () {
   const [registerService] = defineProxy(() => getLocalThemesService(), {
     namespace: backgroundProxyServiceName,
   });

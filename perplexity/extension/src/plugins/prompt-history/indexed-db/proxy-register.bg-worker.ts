@@ -20,7 +20,7 @@ export function getPromptHistoryService(): PromptHistoryService {
   return serviceInstance;
 }
 
-export default function listener() {
+export default function () {
   const [registerService] = defineProxy(() => getPromptHistoryService(), {
     namespace: backgroundProxyServiceName,
   });

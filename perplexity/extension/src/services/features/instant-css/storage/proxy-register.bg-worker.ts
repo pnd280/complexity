@@ -20,7 +20,7 @@ export function getInstantCssStorageService(): typeof InstantCssStorageService {
   return serviceInstance;
 }
 
-export default function listener() {
+export default function () {
   const [registerService] = defineProxy(() => getInstantCssStorageService(), {
     namespace: backgroundProxyServiceName,
   });

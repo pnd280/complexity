@@ -27,7 +27,7 @@ declare module "@/plugins/_core/async-dep-registry" {
   }
 }
 
-export default function loader() {
+export default function () {
   allowWindowMessaging("com.complexity.perplexity");
 
   asyncLoaderRegistry.register({

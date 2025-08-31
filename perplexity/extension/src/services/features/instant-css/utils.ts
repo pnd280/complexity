@@ -2,7 +2,7 @@ import { MatchPattern } from "@webext-core/match-patterns";
 
 import { APP_CONFIG } from "@/app.config";
 import { getInstantCssStorageProxyService } from "@/services/features/instant-css/storage/proxy";
-import { getInstantCssStorageService } from "@/services/features/instant-css/storage/proxy-register.background-listener";
+import { getInstantCssStorageService } from "@/services/features/instant-css/storage/proxy-register.bg-worker";
 import { insertCss, isBackgroundScript } from "@/utils/utils";
 
 export const excludeMatchesPatterns = APP_CONFIG[

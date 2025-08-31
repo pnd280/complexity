@@ -1,6 +1,6 @@
 import { ExtensionSettingsService } from "@/services/infra/extension-settings";
 
-export function extensionIconActionListener() {
+export default function () {
   chrome.action.onClicked.addListener(async () => {
     const action = (await ExtensionSettingsService.get()).extensionIconAction;
 

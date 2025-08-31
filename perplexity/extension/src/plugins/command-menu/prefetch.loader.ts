@@ -4,7 +4,7 @@ import { queryClient } from "@/data/query-client";
 import { persistRemoteResources } from "@/data/query-client/utils";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
-export default async function loader() {
+export default async function () {
   new QueryObserver(queryClient, {
     queryKey: pplxApiQueries.spaces.detail().queryKey,
     enabled: false,

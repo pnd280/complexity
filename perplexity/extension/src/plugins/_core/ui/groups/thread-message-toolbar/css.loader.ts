@@ -18,7 +18,7 @@ const [hideNativeCopyButtonsCss, hideNativeRewriteDropdownsCss] =
     ),
   ]);
 
-export default function loader() {
+export default function () {
   globalCssStore.getState().registerCssEntry({
     id: "thread-message-toolbar-hide-native-copy-buttons",
     css: hideNativeCopyButtonsCss,

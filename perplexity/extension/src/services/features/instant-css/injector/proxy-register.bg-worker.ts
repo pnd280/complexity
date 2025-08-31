@@ -18,7 +18,7 @@ export function getInstantCssInjectorService(): typeof InstantCssInjectorService
   return serviceInstance;
 }
 
-export default function listener() {
+export default function () {
   const [registerService] = defineProxy(() => getInstantCssInjectorService(), {
     namespace: backgroundProxyServiceName,
   });
