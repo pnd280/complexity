@@ -50,16 +50,11 @@ The architecture uses a modular plugin system to implement features independentl
 
 ### Module Discovery
 
-This repository heavily leverages **Vite's `import.meta.glob`** for automatic module discovery and registration. This eliminates the need for manual imports and enables a true plugin architecture where:
+- Plugins (+ async dependencies, settings UI)
+- Background services
+- Internationalization lazy loading
 
-- **Plugin Registry**: Automatically discovers all plugin manifests via `@/plugins/!(_core|_api)/index.ts`
-- **Content Script Loaders**: Auto-loads plugin loaders via `@/plugins/!(_core|_api)/loader.{ts,tsx}` and `@/plugins/**/*.loader.{ts,tsx}`
-- **Settings UIs**: Auto-registers plugin settings components (options-page) via `@/plugins/!(_core|_api)/settings-ui.tsx`
-- **Background Listeners**: Auto-registers event listeners via `@/**/*.bg-worker.ts`
-- **Proxy Services**: Auto-registers background services via `@/services/**/*.proxy-service.ts` and `@/**/indexed-db/index.ts`
-- **Internationalization**: Auto-loads locale files via `@/_locales/*.*.ts`, `@/plugins/*/_locales/*.*.ts`, etc.
-
-Create files with the correct naming convention, and they're automatically discovered and integrated into the system without any manual registration steps.
+This repository heavily leverages **Vite's `import.meta.glob`** for automatic module discovery and registration. The entire implementation of a plugin is located in a single directory, and it's automatically discovered and integrated into the system without any manual registration steps.
 
 ### Plugin Structure
 

@@ -5,7 +5,7 @@ import { LuDatabase } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { H1, H3, P } from "@/components/ui/typography";
-import { useExtensionPermissions } from "@/services/infra/extension-permissions/useExtensionPermissions";
+import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 
 const basePermissionsDetails: Record<
   string,

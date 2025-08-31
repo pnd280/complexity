@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@/app.config";
-import { getInstantCssInjectorProxyService } from "@/services/features/instant-css/injector/proxy";
-import { getInstantCssStorageProxyService } from "@/services/features/instant-css/storage/proxy";
+import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/get-service";
+import { getInstantCssStorageService } from "@/services/features/instant-css/storage/get-service";
 import type {
   InstantCss,
   InstantCssSettings,
@@ -8,7 +8,7 @@ import type {
 import {
   hasPermissions,
   hasPermissionsSync,
-} from "@/services/infra/extension-permissions/utils";
+} from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import { invariant, isInContentScript } from "@/utils/utils";
 
 export class InstantCssService {
@@ -42,13 +42,13 @@ export class InstantCssService {
     );
 
     await Promise.all([
-      getInstantCssStorageProxyService().register({
+      getInstantCssStorageService().register({
         id: params.id,
         css: params.css,
         removeAfter: params.removeAfter,
         enabled: params.enabled,
       }),
-      getInstantCssInjectorProxyService().injectCss({
+      getInstantCssInjectorService().injectCss({
         id: params.id,
         tabId: params.tabId,
         css: params.css,
@@ -67,8 +67,8 @@ export class InstantCssService {
     );
 
     await Promise.all([
-      getInstantCssStorageProxyService().unregister(params.id),
-      getInstantCssInjectorProxyService().removeCss({
+      getInstantCssStorageService().unregister(params.id),
+      getInstantCssInjectorService().removeCss({
         tabId: params.tabId,
         css: params.css,
         removeAfter: params.removeAfter,

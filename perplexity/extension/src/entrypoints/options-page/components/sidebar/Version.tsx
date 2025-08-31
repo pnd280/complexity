@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@/app.config";
 import { toast } from "@/components/ui/use-toast";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export default function Version() {
   const { mutation, settings } = useExtensionSettings();

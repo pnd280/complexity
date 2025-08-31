@@ -17,7 +17,7 @@ import {
   getBetterCodeBlockOptions,
 } from "@/plugins/thread-better-code-blocks/utils";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 const [hideNativeCodeBlocksCss, stickyHeaderCss] = await Promise.all([
   getVersionedRemoteResource(hideNativeCodeBlocksCssResourceConfig),

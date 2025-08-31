@@ -1,9 +1,9 @@
 import { LuExternalLink } from "react-icons/lu";
-import { sendMessage } from "webext-bridge/content-script";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
+import { getMarkmapRendererService } from "@/plugins/_core/main-world/markmap-renderer/service/get-service";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 
 export default function OpenAsInteractiveHtml() {
@@ -24,13 +24,9 @@ export default function OpenAsInteractiveHtml() {
         onClick={async () => {
           if (!selectedCodeBlock.content.code) return;
 
-          await sendMessage(
-            "markmapRenderer:openAsInteractiveHtml",
-            {
-              content: selectedCodeBlock.content.code,
-            },
-            "window",
-          );
+          await getMarkmapRendererService().openAsInteractiveHtml({
+            content: selectedCodeBlock.content.code,
+          });
         }}
       >
         <LuExternalLink className="x:size-4" />

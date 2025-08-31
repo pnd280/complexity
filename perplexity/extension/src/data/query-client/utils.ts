@@ -7,11 +7,10 @@ import type { PersistedClient } from "@tanstack/react-query-persist-client";
 import debounce from "lodash/debounce";
 
 import { APP_CONFIG } from "@/app.config";
-import { getQueryCacheProxyService } from "@/data/query-client/indexed-db/proxy";
-import { getQueryCacheService } from "@/data/query-client/indexed-db/proxy-register.bg-worker";
+import { getQueryCacheService } from "@/data/query-client/indexed-db/get-service";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-import { isBackgroundScript, isSubArray } from "@/utils/utils";
+import { isSubArray } from "@/utils/utils";
 
 export type QueryCacheEntry = {
   key: string;
@@ -22,9 +21,7 @@ export type QueryCacheEntry = {
 export const persister = await createDexiePersister();
 
 async function createDexiePersister(idbValidKey = "reactQuery") {
-  const db = isBackgroundScript()
-    ? getQueryCacheService()
-    : getQueryCacheProxyService();
+  const db = getQueryCacheService();
 
   return {
     persistClient: async (client: PersistedClient) => {

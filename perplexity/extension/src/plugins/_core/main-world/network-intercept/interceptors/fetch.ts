@@ -1,5 +1,4 @@
-import { sendMessage } from "webext-bridge/window";
-
+import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/service/proxy";
 import { errorWrapper } from "@/utils/error-wrapper";
 
 export function initFetchInterceptor() {
@@ -36,19 +35,18 @@ export function initFetchInterceptor() {
 }
 
 async function interceptRequest(input: RequestInfo | URL, body: string) {
-  const resp = await sendMessage(
-    "networkIntercept:fetchEvent",
-    {
-      event: "request",
-      payload: {
-        url: constructUrl(input),
-        data: body,
+  const resp =
+    await getNetworkInterceptMiddlewareManagerProxyService().executeMiddlewares(
+      {
+        data: {
+          type: "networkIntercept:fetchEvent",
+          event: "request",
+          payload: { url: constructUrl(input), data: body },
+        },
       },
-    },
-    "content-script",
-  );
+    );
 
-  return resp?.data;
+  return resp.payload.data;
 }
 
 function parseSSEChunk(chunk: string): { event: string; data: string }[] {
@@ -92,7 +90,7 @@ function handleStreamingResponse(response: Response, url: string) {
             const events = parseSSEChunk(chunk);
 
             for (const event of events) {
-              await notifyContentScript(url, response.status, event.data);
+              await log(url, response.status, event.data);
             }
 
             controller.enqueue(result.value);
@@ -116,19 +114,18 @@ function handleStreamingResponse(response: Response, url: string) {
 async function handleRegularResponse(response: Response, url: string) {
   const clonedResponse = response.clone();
   const body = await clonedResponse.text();
-  await notifyContentScript(url, response.status, body);
+  await log(url, response.status, body);
   return response;
 }
 
-async function notifyContentScript(url: string, status: number, data: string) {
-  await sendMessage(
-    "networkIntercept:fetchEvent",
-    {
+async function log(url: string, status: number, data: string) {
+  getNetworkInterceptMiddlewareManagerProxyService().noop({
+    data: {
+      type: "networkIntercept:fetchEvent",
       event: "response",
       payload: { url, status, data },
     },
-    "content-script",
-  );
+  });
 }
 
 function constructUrl(url: unknown) {

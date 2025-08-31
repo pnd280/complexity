@@ -24,19 +24,24 @@ export const elements = [
   },
 
   {
-    type: "plugin-public-exports",
+    type: "plugin-core-public-exports",
     mode: "full",
-    capture: ["pluginName"],
-    pattern: [
-      "src/plugins/*/**/*.public.*",
-      "src/plugins/(_core|_api)/**/*.public.*",
-    ],
+    capture: ["pluginCoreType", "pluginCoreName"],
+    pattern: ["src/plugins/(_api|_core)/*/**/*.public.*"],
   },
 
   {
     type: "plugin-core",
     mode: "full",
-    pattern: ["src/plugins/_api/**/*", "src/plugins/_core/**/*"],
+    capture: ["pluginCoreType", "pluginCoreName"],
+    pattern: ["src/plugins/(_api|_core)/*/**/*"],
+  },
+
+  {
+    type: "plugin-public-exports",
+    mode: "full",
+    capture: ["pluginName"],
+    pattern: ["src/plugins/(!(_api|_core))/**/*.public.*"],
   },
 
   {
@@ -50,6 +55,6 @@ export const elements = [
     type: "plugin",
     mode: "full",
     capture: ["pluginName"],
-    pattern: ["src/plugins/*/**/*"],
+    pattern: ["src/plugins/(!(_api|_core))/**/*"],
   },
 ];

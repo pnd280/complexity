@@ -15,7 +15,7 @@ import {
 import { useBaseThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/hooks/useBaseThemeForm";
 import { DeleteButton } from "@/entrypoints/options-page/dashboard/pages/themes/pages/edit-theme/components/DeleteButton";
 import {
-  getLocalThemesProxyService,
+  getLocalThemesService,
   updateRegistry,
 } from "@/plugins/_core/custom-theme/index.public";
 
@@ -46,7 +46,7 @@ export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
     mutationKey: ["customTheme", "edit", theme.id],
     mutationFn: async (data: ThemeFormValues) => {
       const themeData = generateThemeData(data, initialValues);
-      await getLocalThemesProxyService().update({
+      await getLocalThemesService().update({
         ...theme,
         ...themeData,
         config: data,
@@ -75,7 +75,7 @@ export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
     useMutation({
       mutationKey: ["customTheme", "delete", theme.id],
       mutationFn: async () => {
-        await getLocalThemesProxyService().delete(theme.id);
+        await getLocalThemesService().delete(theme.id);
       },
       onSuccess: () => {
         navigate("..");

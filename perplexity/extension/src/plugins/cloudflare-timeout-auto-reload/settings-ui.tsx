@@ -11,8 +11,8 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { P } from "@/components/ui/typography";
 import type { PluginId } from "@/data/plugin-registry/types";
-import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "cloudflareTimeoutAutoReload";
 

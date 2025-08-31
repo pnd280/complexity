@@ -1,4 +1,4 @@
-import { sendMessage } from "webext-bridge/window";
+import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/service/proxy";
 
 onlyMainWorldGuard();
 
@@ -19,24 +19,23 @@ export function initXhrInterceptor() {
     const send = xhr.send;
     xhr.send = async function (data) {
       if (typeof data === "string") {
-        const resp = await sendMessage(
-          "networkIntercept:xhrEvent",
-          {
-            event: "request",
-            payload: {
-              url: xhrUrl,
-              data,
+        const resp =
+          await getNetworkInterceptMiddlewareManagerProxyService().executeMiddlewares(
+            {
+              data: {
+                type: "networkIntercept:xhrEvent",
+                event: "request",
+                payload: { url: xhrUrl, data },
+              },
             },
-          },
-          "content-script",
-        );
+          );
 
         if (resp != null && typeof resp === "object" && "data" in resp) {
           if (resp.data === "") {
             return;
           }
 
-          data = resp.data;
+          data = resp.payload.data;
         }
       }
 
@@ -44,17 +43,13 @@ export function initXhrInterceptor() {
     };
 
     xhr.addEventListener("load", function () {
-      sendMessage(
-        "networkIntercept:xhrEvent",
-        {
+      getNetworkInterceptMiddlewareManagerProxyService().noop({
+        data: {
+          type: "networkIntercept:xhrEvent",
           event: "response",
-          payload: {
-            url: this.responseURL,
-            data: this.responseText,
-          },
+          payload: { url: xhrUrl, data: this.responseText },
         },
-        "content-script",
-      );
+      });
     });
 
     return xhr;

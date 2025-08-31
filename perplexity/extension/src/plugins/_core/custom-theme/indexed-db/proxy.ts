@@ -14,7 +14,7 @@ let proxyServiceInstance: LocalThemesService | undefined;
 export function getLocalThemesProxyService(): LocalThemesService {
   invariant(
     !isBackgroundScript(),
-    "Use getLocalThemesService to access the non-proxied instance in background script.",
+    "Use getLocalThemesRootService to access the non-proxied instance in background script.",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

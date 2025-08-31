@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { LuLoaderCircle } from "react-icons/lu";
-import { sendMessage } from "webext-bridge/content-script";
 
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
+import { getMarkmapRendererService } from "@/plugins/_core/main-world/markmap-renderer/service/get-service";
 import { getActiveQueryBoxTextbox } from "@/plugins/_core/ui/groups/query-box/utils";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import {
@@ -41,14 +41,10 @@ export default function MarkmapRenderer() {
     data: result,
   } = useMutation({
     mutationFn: async ({ code }: { code: string }) => {
-      return await sendMessage(
-        "markmapRenderer:render",
-        {
-          selector: `#artifact-markmap-container-${selectedCodeBlockLocation?.messageBlockIndex}-${selectedCodeBlockLocation?.codeBlockIndex}`,
-          content: code,
-        },
-        "window",
-      );
+      return await getMarkmapRendererService().render({
+        selector: `#artifact-markmap-container-${selectedCodeBlockLocation?.messageBlockIndex}-${selectedCodeBlockLocation?.codeBlockIndex}`,
+        content: code,
+      });
     },
   });
 

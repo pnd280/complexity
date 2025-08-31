@@ -1,6 +1,5 @@
-import { sendMessage } from "webext-bridge/window";
-
 import type { BeaconEventDataCatalog } from "@/plugins/_core/main-world/network-intercept/listeners.types";
+import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/service/proxy";
 
 export function initBeaconInterceptor() {
   const originalSendBeacon = navigator.sendBeacon;
@@ -13,52 +12,50 @@ export function initBeaconInterceptor() {
     const urlString = url.toString();
 
     const handleData = (stringData: string) => {
-      sendMessage(
-        "networkIntercept:beaconEvent",
-        {
-          event: "request",
-          payload: { url: urlString, data: stringData },
-        },
-        "content-script",
-      )
+      getNetworkInterceptMiddlewareManagerProxyService()
+        .executeMiddlewares({
+          data: {
+            type: "networkIntercept:beaconEvent",
+            event: "request",
+            payload: { url: urlString, data: stringData },
+          },
+        })
         .then((resp) => {
-          resp = resp as BeaconEventDataCatalog["request"]["payload"];
+          const payload =
+            resp.payload as BeaconEventDataCatalog["request"]["payload"];
 
-          if (resp?.data === "") return;
+          if (payload?.data === "") return;
 
-          if (resp?.data && resp.data !== stringData) {
+          if (payload?.data && payload.data !== stringData) {
             data =
               data instanceof Blob
-                ? new Blob([resp.data], { type: data.type })
-                : resp.data;
+                ? new Blob([payload.data], { type: data.type })
+                : payload.data;
           }
 
           const result = originalSendBeacon.call(navigator, url, data);
-          sendMessage(
-            "networkIntercept:beaconEvent",
-            {
+
+          getNetworkInterceptMiddlewareManagerProxyService().noop({
+            data: {
+              type: "networkIntercept:beaconEvent",
               event: "response",
               payload: {
                 url: urlString,
                 success: result,
               },
             },
-            "content-script",
-          );
+          });
         })
         .catch(() => {
           const result = originalSendBeacon.call(navigator, url, data);
-          sendMessage(
-            "networkIntercept:beaconEvent",
-            {
+
+          getNetworkInterceptMiddlewareManagerProxyService().noop({
+            data: {
+              type: "networkIntercept:beaconEvent",
               event: "response",
-              payload: {
-                url: urlString,
-                success: result,
-              },
+              payload: { url: urlString, success: result },
             },
-            "content-script",
-          );
+          });
         });
     };
 

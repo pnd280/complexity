@@ -3,7 +3,7 @@ import { z } from "zod";
 import { ThemeSchema } from "@/data/dashboard/themes/theme.types";
 import { PluginRegistry } from "@/data/plugin-registry";
 import type { PluginsDbDataSchema } from "@/data/plugin-registry/types";
-import { ExtensionSettingsSchema } from "@/services/infra/extension-settings/types";
+import { ExtensionSettingsSchema } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 const coreDbSchema = {
   themes: z.array(ThemeSchema),

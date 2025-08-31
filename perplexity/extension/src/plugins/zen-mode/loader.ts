@@ -6,7 +6,7 @@ import {
 } from "@/plugins/zen-mode/index.remote-resources";
 import { toggleZenMode } from "@/plugins/zen-mode/utils";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import hotkeysJs from "@/utils/hotkeys-js";
 import { insertCss, keysToString } from "@/utils/utils";
 

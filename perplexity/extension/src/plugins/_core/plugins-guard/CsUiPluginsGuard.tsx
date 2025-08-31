@@ -28,7 +28,7 @@ import {
 } from "@/plugins/_core/plugins-guard/guards";
 import { usePluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
 import { PluginsStatesService } from "@/services/features/plugins-states";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import type { whereAmI } from "@/utils/utils";
 
 type CsUiPluginsGuardProps = GuardConditions & {

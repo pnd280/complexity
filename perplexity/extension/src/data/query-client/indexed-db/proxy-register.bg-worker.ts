@@ -9,7 +9,7 @@ import { isBackgroundScript } from "@/utils/utils";
 
 let serviceInstance: QueryCacheService | undefined;
 
-export function getQueryCacheService(): QueryCacheService {
+export function getQueryCacheRootService(): QueryCacheService {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getQueryCacheProxyService instead.",
@@ -21,7 +21,7 @@ export function getQueryCacheService(): QueryCacheService {
 }
 
 export default function () {
-  const [registerService] = defineProxy(() => getQueryCacheService(), {
+  const [registerService] = defineProxy(getQueryCacheRootService, {
     namespace: backgroundProxyServiceName,
   });
 

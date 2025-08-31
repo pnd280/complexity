@@ -11,8 +11,8 @@ import {
   EXTENSION_ICON_ACTIONS as OPTIONS,
   EXTENSION_ICON_ACTIONS_LABEL as OPTIONS_LABEL,
 } from "@/data/dashboard/extension-storage";
-import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export default function ExtensionIconActionSelect() {
   const { settings, mutation } = useExtensionSettings();

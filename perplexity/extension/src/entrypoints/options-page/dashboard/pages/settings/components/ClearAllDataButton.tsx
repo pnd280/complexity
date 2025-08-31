@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Ul } from "@/components/ui/typography";
 import { removeCachedRemoteResources } from "@/data/query-client/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { db } from "@/services/infra/indexed-db";
 
 export default function ClearAllDataButton() {

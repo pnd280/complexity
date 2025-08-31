@@ -1,5 +1,3 @@
-import { allowWindowMessaging } from "webext-bridge/content-script";
-
 import { PluginRegistry } from "@/data/plugin-registry";
 import type {
   PluginId,
@@ -16,7 +14,6 @@ import mermaidRendererPlugin from "@/plugins/_core/main-world/mermaid-renderer/i
 import networkInterceptPlugin from "@/plugins/_core/main-world/network-intercept/index?script&module";
 import reactVdomPlugin from "@/plugins/_core/main-world/react-vdom/index?script&module";
 import spaRouterPlugin from "@/plugins/_core/main-world/spa-router/index?script&module";
-import webextBridgeSetNamespace from "@/plugins/_core/main-world/webext-bridge?script&module";
 import jqueryExtensions from "@/utils/jquery.extensions?script&module";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -27,16 +24,10 @@ declare module "@/plugins/_core/async-dep-registry" {
 }
 
 export default function () {
-  allowWindowMessaging("com.complexity.perplexity");
-
   asyncLoaderRegistry.register({
     id: "plugins:mainWorldCorePlugins",
     dependencies: ["cache:pluginsStates"],
     loader: async ({ "cache:pluginsStates": pluginsStates }) => {
-      await injectMainWorldScript({
-        url: chrome.runtime.getURL(webextBridgeSetNamespace),
-      });
-
       injectMainWorldScript({
         url: chrome.runtime.getURL(jqueryExtensions),
         head: true,

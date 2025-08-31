@@ -4,9 +4,9 @@ import { PluginRegistry } from "@/data/plugin-registry/index";
 import type { PluginId } from "@/data/plugin-registry/types";
 import { PLUGIN_SETTINGS_UIS } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
-import { useExtensionPermissions } from "@/services/infra/extension-permissions/useExtensionPermissions";
-import { hasPermissionsSync } from "@/services/infra/extension-permissions/utils";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
+import { hasPermissionsSync } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export function usePluginCard(pluginId: PluginId) {
   const navigate = useNavigate();

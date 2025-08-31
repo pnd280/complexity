@@ -7,7 +7,7 @@ import ExtensionIconActionSelect from "@/entrypoints/options-page/dashboard/page
 import ManagePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/settings/components/ManagePermissionsDialogWrapper";
 import SettingsItem from "@/entrypoints/options-page/dashboard/pages/settings/SettingsItem";
 import SettingsSection from "@/entrypoints/options-page/dashboard/pages/settings/SettingsSection";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export default function GeneralSection() {
   const navigate = useNavigate();

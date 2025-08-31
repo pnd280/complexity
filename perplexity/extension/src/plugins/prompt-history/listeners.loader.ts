@@ -1,4 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { spaRouterRouteChangeEvent } from "@/plugins/_core/main-world/spa-router/listeners.loader";
 import { handlePromptSave } from "@/plugins/prompt-history/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -22,7 +23,7 @@ export default function () {
       )
         return;
 
-      window.addEventListener("spaRouter:route-change", () => {
+      window.addEventListener(spaRouterRouteChangeEvent, () => {
         handlePromptSave({ url: window.location.pathname, type: "soft" });
       });
 

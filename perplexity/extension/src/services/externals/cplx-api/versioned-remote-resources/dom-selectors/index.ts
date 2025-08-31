@@ -7,8 +7,9 @@ import {
   TEST_ID,
 } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/defaults";
 import { type DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
-import { errorWrapper } from "@/utils/error-wrapper";
 import { invariant } from "@/utils/utils";
+
+export const csProxyServiceName = "domSelectorsService";
 
 export class DomSelectorsService {
   static local: DomSelectors = DOM_SELECTORS;
@@ -19,36 +20,17 @@ export class DomSelectorsService {
 
   static testIds = TEST_ID;
 
-  static get cachedSync() {
-    invariant(
-      isExtensionContext(),
-      "This method is only available in content script, use mainWorldGet instead.",
-    );
-
+  static getCache() {
     return DomSelectorsService.remote ?? DomSelectorsService.local;
   }
 
-  static async mainWorldCached() {
+  static get cachedSync() {
     invariant(
-      isMainWorldContext(),
-      "This method is only available in main world.",
+      isExtensionContext(),
+      "This method is only available in content script, use getCache instead.",
     );
 
-    if (DomSelectorsService.remote != null) return DomSelectorsService.remote;
-
-    const sendMessage = (await import("webext-bridge/window")).sendMessage;
-
-    const [remoteDomSelectors, error] = await errorWrapper(() =>
-      sendMessage("cache:domSelectors", undefined, "content-script"),
-    )();
-
-    if (error) {
-      return DomSelectorsService.local;
-    }
-
-    DomSelectorsService.remote = remoteDomSelectors;
-
-    return remoteDomSelectors;
+    return DomSelectorsService.getCache();
   }
 
   static cplxAttribute(attribute: string): `[data-cplx-component="${string}"]` {

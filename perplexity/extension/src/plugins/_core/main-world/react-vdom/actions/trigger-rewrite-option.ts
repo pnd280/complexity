@@ -1,3 +1,4 @@
+import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/proxy";
 import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
 import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { errorWrapper } from "@/utils/error-wrapper";
@@ -7,7 +8,7 @@ export async function triggerRewriteOption(params: {
   messageBlockIndex: number;
   optionIndex?: number;
 }): Promise<boolean> {
-  const domSelectors = await DomSelectorsService.mainWorldCached();
+  const domSelectors = await getDomSelectorsProxyService().getCache();
 
   const { messageBlockIndex, optionIndex } = params;
 

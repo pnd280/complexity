@@ -2,7 +2,7 @@ import PplxSpace from "@/components/icons/PplxSpace";
 import PplxThread from "@/components/icons/PplxThread";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export const getRawItems = (): CommandItemProps[] => [
   {

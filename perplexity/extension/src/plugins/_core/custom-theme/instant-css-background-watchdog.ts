@@ -1,22 +1,24 @@
 import { getThemeCss } from "@/plugins/_core/custom-theme/utils";
-import { getInstantCssStorageService } from "@/services/features/instant-css/storage/proxy-register.bg-worker";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
-import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
+import { getInstantCssStorageService } from "@/services/features/instant-css/storage/get-service";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
+import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/get-service";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 const instantCssServiceKey = "customTheme";
 
 let unwatch: () => void;
 
 export async function initInstantCssBackgroundWatchdog() {
-  await updateRegistry(await ExtensionSettingsService.storageItem.getValue());
-  unwatch = ExtensionSettingsService.storageItem.watch(updateRegistry);
+  await updateRegistry(await getExtensionSettingsStorageService().getValue());
+  unwatch = ExtensionSettingsStorageService.storageItem.watch(updateRegistry);
 }
 
 export async function removeInstantCssBackgroundWatchdog() {
   unwatch?.();
 }
 
-export const updateRegistry = async (settings?: ExtensionSettings) => {
+export async function updateRegistry(settings?: ExtensionSettings) {
   const currentThemeId = (settings ?? (await ExtensionSettingsService.get()))
     .theme;
 
@@ -38,4 +40,4 @@ export const updateRegistry = async (settings?: ExtensionSettings) => {
       css: currentThemeCss,
     });
   }
-};
+}

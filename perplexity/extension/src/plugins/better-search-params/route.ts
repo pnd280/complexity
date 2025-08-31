@@ -1,6 +1,6 @@
 import type { RouteObject } from "react-router-dom";
-import { sendMessage } from "webext-bridge/content-script";
 
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/service/proxy-register.loader";
 import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
 import {
   parseQuery,
@@ -29,11 +29,8 @@ export const betterSearchParamsRouterRoute: RouteObject = {
     await Promise.all([
       waitUntil({
         condition: async () => {
-          return sendMessage(
-            "networkIntercept:isInitialized",
-            undefined,
-            "window",
-          );
+          return getNetworkInterceptMiddlewareManagerRootService()
+            .overridesReady;
         },
         timeout: 10000,
         interval: 500,

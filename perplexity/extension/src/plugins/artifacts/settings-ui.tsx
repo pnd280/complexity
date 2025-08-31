@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { InlineCode } from "@/components/ui/typography";
 import type { PluginId } from "@/data/plugin-registry/types";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "thread:artifacts";
 

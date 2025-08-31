@@ -1,4 +1,4 @@
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/proxy";
 import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
 import type { MaybePromise } from "@/types/utils.types";
 import { UiUtils } from "@/utils/ui-utils";
@@ -10,7 +10,7 @@ export const locationWaits: Partial<
   let domSelectorsPromise: Promise<DomSelectors> | null = null;
   function getDomSelectors() {
     if (!domSelectorsPromise) {
-      domSelectorsPromise = DomSelectorsService.mainWorldCached();
+      domSelectorsPromise = getDomSelectorsProxyService().getCache();
     }
     return domSelectorsPromise;
   }

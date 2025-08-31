@@ -1,4 +1,4 @@
-import { sendMessage } from "webext-bridge/window";
+import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/service/proxy";
 
 const capturedInstances: Set<WebSocket> = new Set();
 const webSocketOriginalSend = WebSocket.prototype.send;
@@ -18,17 +18,13 @@ function proxyWebSocketInstance(instance: WebSocket) {
   const originalMessage = instance.onmessage;
   instance.onmessage = (event: MessageEvent) => {
     if (typeof event.data === "string") {
-      sendMessage(
-        "networkIntercept:webSocketEvent",
-        {
+      getNetworkInterceptMiddlewareManagerProxyService().noop({
+        data: {
+          type: "networkIntercept:webSocketEvent",
           event: "message",
-          payload: {
-            url: instance.url,
-            data: event.data,
-          },
+          payload: { url: instance.url, data: event.data },
         },
-        "content-script",
-      );
+      });
     }
 
     if (originalMessage) originalMessage.call(instance, event);
@@ -42,24 +38,23 @@ function passivelyCaptureWebSocket() {
     }
 
     if (typeof data === "string") {
-      const resp = await sendMessage(
-        "networkIntercept:webSocketEvent",
-        {
-          event: "send",
-          payload: {
-            url: this.url,
-            data,
+      const resp =
+        await getNetworkInterceptMiddlewareManagerProxyService().executeMiddlewares(
+          {
+            data: {
+              type: "networkIntercept:webSocketEvent",
+              event: "send",
+              payload: { url: this.url, data },
+            },
           },
-        },
-        "content-script",
-      );
+        );
 
       if (resp != null && typeof resp === "object" && "data" in resp) {
         if (resp.data === "") {
           return;
         }
 
-        data = resp.data;
+        data = resp.payload.data;
       }
     } else if (data instanceof Blob) {
       try {

@@ -1,11 +1,11 @@
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/proxy";
 
 export async function setLexicalEditorContent({
   content,
 }: {
   content: string;
 }) {
-  const domSelectors = await DomSelectorsService.mainWorldCached();
+  const domSelectors = await getDomSelectorsProxyService().getCache();
 
   const activeElement = $(
     `${domSelectors.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,
@@ -55,7 +55,7 @@ export async function setLexicalEditorContent({
 }
 
 export async function getLexicalEditorJsonContent() {
-  const domSelectors = await DomSelectorsService.mainWorldCached();
+  const domSelectors = await getDomSelectorsProxyService().getCache();
 
   const activeElement = $(
     `${domSelectors.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,

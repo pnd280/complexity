@@ -1,5 +1,3 @@
-import { sendMessage } from "webext-bridge/content-script";
-
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import {
   betterSidebarNormalizeCollapsedCssResourceConfig,
@@ -7,7 +5,8 @@ import {
 } from "@/plugins/better-sidebar/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { InstantCssService } from "@/services/features/instant-css";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import { sendMessage } from "@/types/chrome-runtime-message";
 import { getCookie } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -49,7 +48,7 @@ export async function applyLayoutShiftPreventionInstantCss({
     getVersionedRemoteResource(betterSidebarNormalizeExpandedCssResourceConfig),
   ]);
 
-  const tabId = await sendMessage("bg:getTabId", undefined, "background");
+  const tabId = await sendMessage("getTabId");
 
   if (!tabId) return;
 

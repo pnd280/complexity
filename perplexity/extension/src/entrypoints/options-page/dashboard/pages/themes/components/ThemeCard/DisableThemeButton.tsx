@@ -1,7 +1,7 @@
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 type DisableThemeButtonProps = {
   theme: Theme;

@@ -9,7 +9,7 @@ import { DomObserver } from "@/plugins/_api/dom-observer/dom-observer";
 import { createDomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { useSpaRouter } from "@/plugins/_core/main-world/spa-router/listeners.loader";
+import { useSpaRouter } from "@/plugins/_core/main-world/spa-router/utils";
 
 export const PANEL_WIDTH = 230;
 

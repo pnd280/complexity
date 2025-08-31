@@ -1,7 +1,14 @@
+import { useStoreWithEqualityFn } from "zustand/traditional";
+
 import { locationWaits } from "@/plugins/_core/main-world/spa-router/location-waits";
+import { getSpaRouterService } from "@/plugins/_core/main-world/spa-router/service/get-service";
+import {
+  spaRouterStore,
+  type SpaRouterStore,
+} from "@/plugins/_core/main-world/spa-router/store";
 import type { MaybePromise } from "@/types/utils.types";
 import { UiUtils } from "@/utils/ui-utils";
-import { isInContentScript, type whereAmI } from "@/utils/utils";
+import { type whereAmI } from "@/utils/utils";
 
 export function applyRouteIdAttribute(location: ReturnType<typeof whereAmI>) {
   $(document.body).attr("location", location);
@@ -39,19 +46,36 @@ export async function waitForRouteChangeComplete(
 }
 
 export async function softNavigate(url: string) {
-  if (!isInContentScript()) {
-    window.history.pushState({}, "", url);
-  } else {
-    const { sendMessage } = await import("webext-bridge/content-script");
-    sendMessage("spaRouter:push", { url }, "window");
-  }
+  getSpaRouterService().push(url);
 }
 
 export async function openInNewTab(url: string) {
-  if (!isInContentScript()) {
-    window.open(url, "_blank");
-  } else {
-    const { sendMessage } = await import("webext-bridge/content-script");
-    sendMessage("spaRouter:openInNewTab", { url }, "window");
-  }
+  getSpaRouterService().openInNewTab(url);
 }
+
+export const spaRouterStoreSubscribe = spaRouterStore.subscribe;
+
+export const spaRouteChangeCompleteSubscribe = (
+  callback: (url: string) => void,
+) => {
+  return spaRouterStore.subscribe(
+    (store) => ({ state: store.state, url: store.url }),
+    ({ state, url }) => {
+      if (state === "complete") callback(url);
+    },
+  );
+};
+
+export const useSpaRouter = <T = SpaRouterStore>(
+  selector?: (state: SpaRouterStore) => T,
+) => {
+  return useStoreWithEqualityFn(
+    spaRouterStore,
+    selector ??
+      ((state) =>
+        ({
+          url: state.url,
+          trigger: state.trigger,
+        }) as T),
+  );
+};

@@ -2,7 +2,7 @@ import { produce } from "immer";
 
 import { PluginRegistry } from "@/data/plugin-registry/index";
 import type { PluginId } from "@/data/plugin-registry/types";
-import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 export const ESSENTIALS_ONLY: ExtensionSettings["plugins"] = produce(
   PluginRegistry.fallbackValues,

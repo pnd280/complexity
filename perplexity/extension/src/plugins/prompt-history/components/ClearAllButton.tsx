@@ -10,14 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { queryClient } from "@/data/query-client";
-import { getPromptHistoryProxyService } from "@/plugins/prompt-history/indexed-db/proxy";
+import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/get-service";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 
 export default function ClearAllButton() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClearAll = () => {
-    getPromptHistoryProxyService().deleteAll();
+    getPromptHistoryService().deleteAll();
     queryClient.invalidateQueries({
       queryKey: promptHistoryQueries.infinite.all(),
     });

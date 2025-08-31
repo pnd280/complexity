@@ -1,7 +1,7 @@
-import { sendMessage } from "webext-bridge/content-script";
-
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/get-service";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import { sendMessage } from "@/types/chrome-runtime-message";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -10,7 +10,11 @@ declare module "@/plugins/_core/async-dep-registry" {
   }
 }
 
-export default function loader() {
+export default async function loader() {
+  const tabId = await sendMessage("getTabId");
+
+  invariant(tabId, "Can not get tab id");
+
   let currentZoom = 1;
 
   async function setZoom(zoomLevel?: number, step: number = 0) {
@@ -21,7 +25,11 @@ export default function loader() {
     }
 
     try {
-      await sendMessage("bg:setTabZoom", { zoom: currentZoom }, "background");
+      await getContentScriptBgUtilsService().setTabZoom({
+        tabId,
+        zoom: currentZoom,
+      });
+
       console.log("Zoom set to:", currentZoom);
       ExtensionSettingsService.set((draft) => {
         draft.plugins["comet:isolatedZoom"].zoomLevel = currentZoom;

@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { LuLoaderCircle } from "react-icons/lu";
-import { sendMessage } from "webext-bridge/content-script";
 
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
+import { getMermaidRendererService } from "@/plugins/_core/main-world/mermaid-renderer/service/get-service";
 import { getActiveQueryBoxTextbox } from "@/plugins/_core/ui/groups/query-box/utils";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import {
@@ -44,12 +44,8 @@ export default function MermaidRenderer() {
     data: result,
   } = useMutation({
     mutationFn: async () => {
-      return await sendMessage(
-        "mermaidRenderer:render",
-        {
-          selector: `#artifact-mermaid-container-${selectedCodeBlockLocation?.messageBlockIndex}-${selectedCodeBlockLocation?.codeBlockIndex}`,
-        },
-        "window",
+      return await getMermaidRendererService().render(
+        `#artifact-mermaid-container-${selectedCodeBlockLocation?.messageBlockIndex}-${selectedCodeBlockLocation?.codeBlockIndex}`,
       );
     },
   });

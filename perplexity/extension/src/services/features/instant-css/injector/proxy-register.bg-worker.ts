@@ -7,7 +7,7 @@ import { isBackgroundScript } from "@/utils/utils";
 
 let serviceInstance: typeof InstantCssInjectorService | undefined;
 
-export function getInstantCssInjectorService(): typeof InstantCssInjectorService {
+export function getInstantCssInjectorRootService(): typeof InstantCssInjectorService {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getInstantCssInjectorProxyService instead.",
@@ -19,7 +19,7 @@ export function getInstantCssInjectorService(): typeof InstantCssInjectorService
 }
 
 export default function () {
-  const [registerService] = defineProxy(() => getInstantCssInjectorService(), {
+  const [registerService] = defineProxy(getInstantCssInjectorRootService, {
     namespace: backgroundProxyServiceName,
   });
 

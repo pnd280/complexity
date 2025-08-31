@@ -1,5 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { threadRawHeadingsCssResourceConfig } from "@/plugins/thread-raw-headings/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { insertCss, whereAmI } from "@/utils/utils";

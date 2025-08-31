@@ -5,9 +5,9 @@ import { toast } from "@/components/ui/use-toast";
 import type { ExtensionData } from "@/data/dashboard/extension-data.types";
 import { queryClient } from "@/data/query-client";
 import ImportDataPasteDialogWrapper from "@/entrypoints/options-page/dashboard/pages/settings/components/ImportDataPasteDialogWrapper";
-import { transfromFlatSchema } from "@/services/infra/extension-settings/migrations";
-import { extensionSettingsQueries } from "@/services/infra/extension-settings/query-keys";
-import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
+import { transfromFlatSchema } from "@/services/infra/extension-api-wrappers/extension-settings/migrations";
+import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import { db } from "@/services/infra/indexed-db";
 import { errorWrapper } from "@/utils/error-wrapper";
 

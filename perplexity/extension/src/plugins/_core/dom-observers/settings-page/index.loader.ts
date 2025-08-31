@@ -7,7 +7,7 @@ import { createDomObserverId } from "@/plugins/_api/dom-observer/dom-observer.ty
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { settingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
 import { findSidebar } from "@/plugins/_core/dom-observers/settings-page/utils";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { whereAmI } from "@/utils/utils";
 
 const cleanup = () => {

@@ -11,7 +11,7 @@ import {
   findSpaceQueryBox,
 } from "@/plugins/_core/dom-observers/query-boxes/utils";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import type { MaybePromise } from "@/types/utils.types";
 import { whereAmI } from "@/utils/utils";
 

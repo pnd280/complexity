@@ -1,0 +1,63 @@
+import { APP_CONFIG } from "@/app.config";
+import { getOptionsPageUrl } from "@/utils/utils";
+
+export const backgroundProxyServiceName = "contentScriptBgUtilsService";
+
+export class ContentScriptBgUtilsService {
+  static async cometGetSidecarTabId({
+    currentTabId,
+  }: {
+    currentTabId: number;
+  }) {
+    const windowId = (await chrome.tabs.get(currentTabId)).windowId;
+
+    if (windowId == null) return;
+
+    const window = await chrome.windows.get(windowId);
+
+    if (window == null) return;
+
+    return (window as any).sidecarTabId as number | undefined;
+  }
+
+  static async openOptionsPage() {
+    chrome.runtime.openOptionsPage();
+  }
+
+  static async openDirectReleaseNotes({ version }: { version: string }) {
+    const optionsPageUrl = getOptionsPageUrl({ isDev: APP_CONFIG.IS_DEV });
+
+    chrome.tabs.create({
+      url: `${optionsPageUrl}#/direct-release-notes?version=${version}`,
+    });
+  }
+
+  static async setTabZoom({ tabId, zoom }: { tabId: number; zoom: number }) {
+    chrome.tabs.setZoomSettings(
+      tabId,
+      {
+        mode: "automatic",
+        scope: "per-tab",
+        defaultZoomFactor: zoom,
+      },
+      function () {
+        if (chrome.runtime.lastError) {
+          console.error(
+            "Failed to set tab zoom settings:",
+            JSON.stringify(chrome.runtime.lastError),
+          );
+          return;
+        }
+
+        chrome.tabs.setZoom(tabId, zoom, () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              "Failed to set tab zoom:",
+              JSON.stringify(chrome.runtime.lastError),
+            );
+          }
+        });
+      },
+    );
+  }
+}

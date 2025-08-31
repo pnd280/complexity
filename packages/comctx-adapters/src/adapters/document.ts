@@ -1,6 +1,12 @@
-import type { Adapter, Message, OnMessage, SendMessage } from "comctx";
+import type { Adapter, OnMessage, SendMessage } from "comctx";
 
 export class DocumentAdapter implements Adapter {
+  private readonly namespace: string;
+
+  constructor(namespace?: string) {
+    this.namespace = namespace ?? "comctx-document-adapter-message";
+  }
+
   sendMessage: SendMessage = (message) => {
     /**
      * Compatible with Firefox
@@ -10,14 +16,25 @@ export class DocumentAdapter implements Adapter {
       typeof (globalThis as any).cloneInto === "function"
         ? (globalThis as any).cloneInto(message, document.defaultView)
         : message;
-    document.dispatchEvent(new CustomEvent("message", { detail }));
+
+    window.postMessage(
+      { type: this.namespace, data: detail },
+      window.location.origin,
+    );
   };
+
   onMessage: OnMessage = (callback) => {
-    const handler = (event: Event) => {
-      callback((event as CustomEvent<Message>).detail);
+    const handler = (event: MessageEvent) => {
+      if (
+        event.origin === window.location.origin &&
+        event.data?.type === this.namespace
+      ) {
+        callback(event.data.data);
+      }
     };
-    document.addEventListener("message", handler);
-    return () => document.removeEventListener("message", handler);
+
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
   };
 }
 

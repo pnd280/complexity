@@ -9,7 +9,7 @@ import { PluginCardHeader } from "@/entrypoints/options-page/dashboard/pages/plu
 import { PluginCardTags } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/PluginCardTags";
 import { PluginLockDownOverlay } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/PluginLockDownOverlay";
 import PluginCardSkeleton from "@/entrypoints/options-page/dashboard/pages/plugins/components/PluginCardSkeleton";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 type PluginCardProps = {
   pluginId: PluginId;
 };

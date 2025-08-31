@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { LuArrowRight, LuExternalLink, LuInfo } from "react-icons/lu";
 import semver from "semver";
-import { sendMessage } from "webext-bridge/content-script";
 
 import { APP_CONFIG } from "@/app.config";
 import {
@@ -15,6 +14,7 @@ import { Image } from "@/components/ui/image";
 import { toast } from "@/components/ui/use-toast";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
+import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/get-service";
 
 export default function ExtensionUpdateInfoDialogWrapper({
   children,
@@ -62,13 +62,9 @@ export default function ExtensionUpdateInfoDialogWrapper({
             onClick={() => {
               if (!latestVersion) return;
 
-              sendMessage(
-                "bg:openDirectReleaseNotes",
-                {
-                  version: latestVersionWithChangelog,
-                },
-                "background",
-              );
+              getContentScriptBgUtilsService().openDirectReleaseNotes({
+                version: latestVersionWithChangelog,
+              });
             }}
           >
             <span>Release Notes</span>

@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

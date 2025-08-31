@@ -41,6 +41,7 @@ export function useHotkeyRecorder({
   const keydownHandler = useEvent((e: KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
 
     const keyName = normalizeKeyName(e.key);
 
@@ -65,16 +66,24 @@ export function useHotkeyRecorder({
 
   const stop = useCallback(() => {
     setIsRecording(false);
-    window.removeEventListener("keydown", keydownHandler);
-    window.removeEventListener("keyup", keyupHandler);
+    window.removeEventListener("keydown", keydownHandler, {
+      capture: true,
+    });
+    window.removeEventListener("keyup", keyupHandler, {
+      capture: true,
+    });
     activeKeysRef.current = new Set();
   }, [keydownHandler, keyupHandler]);
 
   const start = useCallback(() => {
     setIsRecording(true);
     resetKeys();
-    window.addEventListener("keydown", keydownHandler);
-    window.addEventListener("keyup", keyupHandler);
+    window.addEventListener("keydown", keydownHandler, {
+      capture: true,
+    });
+    window.addEventListener("keyup", keyupHandler, {
+      capture: true,
+    });
   }, [resetKeys, keydownHandler, keyupHandler]);
 
   const handleEscape = useEvent((e: KeyboardEvent) => {

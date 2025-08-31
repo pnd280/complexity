@@ -6,8 +6,8 @@ import { getInterpretedArtifactLanguage } from "@/plugins/artifacts/index.public
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 import { getBetterCodeBlockOptions } from "@/plugins/thread-better-code-blocks/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
-import type { ExtensionSettings } from "@/services/infra/extension-settings/types";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 const HighlightedCodeWrapper = memo(() => {
   const { codeBlock, maxHeight, isWrapped } = useMirroredCodeBlockContext();

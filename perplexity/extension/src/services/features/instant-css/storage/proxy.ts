@@ -19,7 +19,7 @@ let proxyServiceInstance: typeof InstantCssStorageService | undefined;
 export function getInstantCssStorageProxyService(): typeof InstantCssStorageService {
   invariant(
     !isBackgroundScript(),
-    "Use getInstantCssStorageService to access the non-proxied instance in background script.",
+    "Use getInstantCssStorageRootService to access the non-proxied instance in background script.",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

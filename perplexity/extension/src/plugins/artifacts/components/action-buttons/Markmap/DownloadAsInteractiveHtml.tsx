@@ -1,9 +1,9 @@
 import { LuDownload } from "react-icons/lu";
-import { sendMessage } from "webext-bridge/content-script";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
+import { getMarkmapRendererService } from "@/plugins/_core/main-world/markmap-renderer/service/get-service";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import {
   formatArtifactTitle,
@@ -35,14 +35,10 @@ export default function DownloadAsInteractiveHtml() {
               getArtifactTitle(selectedCodeBlock.content.language),
             ) || "mindmap";
 
-          await sendMessage(
-            "markmapRenderer:downloadAsInteractiveHtml",
-            {
-              content: selectedCodeBlock.content.code,
-              title,
-            },
-            "window",
-          );
+          await getMarkmapRendererService().downloadAsInteractiveHtml({
+            content: selectedCodeBlock.content.code,
+            title,
+          });
         }}
       >
         <LuDownload className="x:size-4" />

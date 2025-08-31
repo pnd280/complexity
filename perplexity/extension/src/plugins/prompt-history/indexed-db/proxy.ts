@@ -16,7 +16,7 @@ let proxyServiceInstance: PromptHistoryService | undefined;
 export function getPromptHistoryProxyService(): PromptHistoryService {
   invariant(
     !isBackgroundScript(),
-    "Use getPromptHistoryService to access the non-proxied instance in background script.",
+    "Use getPromptHistoryRootService to access the non-proxied instance in background script.",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

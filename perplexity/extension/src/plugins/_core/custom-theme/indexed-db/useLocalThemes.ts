@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getLocalThemesProxyService } from "@/plugins/_core/custom-theme/indexed-db/proxy";
+import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/get-service";
 
 export function useLocalThemes() {
   return useQuery({
     queryKey: ["localThemes"],
-    queryFn: () => getLocalThemesProxyService().getAll(),
+    queryFn: () => getLocalThemesService().getAll(),
   });
 }

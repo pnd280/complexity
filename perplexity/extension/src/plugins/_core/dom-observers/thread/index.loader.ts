@@ -1,5 +1,3 @@
-import { sendMessage } from "webext-bridge/content-script";
-
 import {
   CallbackQueue,
   createTaskId,
@@ -17,7 +15,8 @@ import {
   findMessageBlocksWrapper,
 } from "@/plugins/_core/dom-observers/thread/utils";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
+import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/get-service";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { waitUntil, whereAmI } from "@/utils/utils";
 
@@ -53,8 +52,8 @@ export default function () {
       await waitUntil({
         interval: 50,
         timeout: 2000,
-        condition: () => {
-          return sendMessage("reactVdom:isInitialized", undefined, "window");
+        condition: async () => {
+          return await getReactVdomService().isInitialized();
         },
       });
 

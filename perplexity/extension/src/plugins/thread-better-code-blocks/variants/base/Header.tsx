@@ -8,7 +8,7 @@ import { getBetterCodeBlockOptions } from "@/plugins/thread-better-code-blocks/u
 import ArtifactSimpleModeRenderButton from "@/plugins/thread-better-code-blocks/variants/base/header-buttons/ArtifactSimpleModeRenderButton";
 import { ExpandCollapseButton } from "@/plugins/thread-better-code-blocks/variants/base/header-buttons/ExpandCollapseButton";
 import { WrapToggleButton } from "@/plugins/thread-better-code-blocks/variants/base/header-buttons/WrapToggleButton";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 const BaseCodeBlockWrapperHeader = memo(function BaseCodeBlockWrapperHeader() {
   const { codeBlock, isHorizontalOverflowing, isVerticalOverflowing } =

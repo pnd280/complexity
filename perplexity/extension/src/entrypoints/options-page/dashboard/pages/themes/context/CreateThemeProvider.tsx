@@ -9,7 +9,7 @@ import {
   type ThemeFormContextType,
 } from "@/entrypoints/options-page/dashboard/pages/themes/context/ThemeFormContext";
 import { useBaseThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/hooks/useBaseThemeForm";
-import { getLocalThemesProxyService } from "@/plugins/_core/custom-theme/index.public";
+import { getLocalThemesService } from "@/plugins/_core/custom-theme/index.public";
 
 type CreateThemeProviderProps = {
   children: React.ReactNode;
@@ -34,7 +34,7 @@ export function CreateThemeProvider({ children }: CreateThemeProviderProps) {
     mutationKey: ["customTheme", "create"],
     mutationFn: async (data: ThemeFormValues) => {
       const themeData = generateThemeData(data, initialValues);
-      const savedThemeId = await getLocalThemesProxyService().add({
+      const savedThemeId = await getLocalThemesService().add({
         title: data.title,
         id: `${Date.now()}-${data.title.toLowerCase().replace(/ /g, "-")}`,
         config: data,

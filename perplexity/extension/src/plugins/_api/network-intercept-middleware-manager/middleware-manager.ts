@@ -1,12 +1,14 @@
 import type {
   Middleware,
-  MiddlewareData,
   MiddlewareNameBasedPriority,
 } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager.types";
+import type { MiddlewareData } from "@/plugins/_core/main-world/network-intercept/listeners.types";
 
-class NetworkInterceptMiddlewareManager {
+export class NetworkInterceptMiddlewareManager {
   private static instance: NetworkInterceptMiddlewareManager;
   private middlewares: Middleware[] = [];
+
+  overridesReady = false;
 
   private constructor() {}
 
@@ -16,6 +18,10 @@ class NetworkInterceptMiddlewareManager {
         new NetworkInterceptMiddlewareManager();
     }
     return NetworkInterceptMiddlewareManager.instance;
+  }
+
+  setOverridesReady(overridesReady: boolean): void {
+    NetworkInterceptMiddlewareManager.instance.overridesReady = overridesReady;
   }
 
   addMiddleware(middleware: Middleware): void {
@@ -69,21 +75,21 @@ class NetworkInterceptMiddlewareManager {
     return this.middlewares;
   }
 
-  async executeMiddlewares({ data }: { data: MiddlewareData }) {
+  async executeMiddlewares<T extends MiddlewareData>({
+    data,
+  }: {
+    data: T;
+  }): Promise<T> {
     let currentData = { ...data };
 
     for (const middleware of this.middlewares) {
       try {
         const newData = await middleware.middlewareFn({
           data: currentData,
-          stopPropagation: (data) => {
-            if (data != null) {
-              currentData = {
-                ...currentData,
-                payload: { ...currentData.payload, data },
-              };
+          stopPropagation: (newPayloadData) => {
+            if (newPayloadData != null) {
+              currentData = this.updatePayload(currentData, newPayloadData);
             }
-
             throw new Error("STOP_PROPAGATION");
           },
           skip: () => {
@@ -92,10 +98,7 @@ class NetworkInterceptMiddlewareManager {
           removeMiddleware: () => this.removeMiddleware(middleware.id),
         });
 
-        currentData = {
-          ...currentData,
-          payload: { ...currentData.payload, data: newData },
-        };
+        currentData = this.updatePayload(currentData, newData);
       } catch (error: unknown) {
         if (error instanceof Error && error.message === "STOP_PROPAGATION") {
           break;
@@ -108,7 +111,55 @@ class NetworkInterceptMiddlewareManager {
 
     return currentData;
   }
-}
 
-export const networkInterceptMiddlewareManager =
-  NetworkInterceptMiddlewareManager.getInstance();
+  private updatePayload<T extends MiddlewareData>(
+    currentData: T,
+    newData: string,
+  ): T {
+    if (
+      currentData.type === "networkIntercept:beaconEvent" &&
+      currentData.event === "response"
+    ) {
+      return currentData;
+    }
+
+    return {
+      ...currentData,
+      payload: {
+        ...currentData.payload,
+        data: newData,
+      },
+    };
+  }
+
+  async noop({ data }: { data: MiddlewareData }) {
+    switch (data.type) {
+      case "networkIntercept:webSocketEvent":
+        console.log("%cwebSocketEvent", "color: blue", {
+          event: data.event,
+          payload: data.payload,
+        });
+        break;
+      case "networkIntercept:fetchEvent":
+        console.log("%cfetchEvent", "color: red", {
+          event: data.event,
+          payload: data.payload,
+        });
+        break;
+      case "networkIntercept:beaconEvent":
+        console.log("%cbeaconEvent", "color: purple", {
+          event: data.event,
+          payload: data.payload,
+        });
+        break;
+      case "networkIntercept:xhrEvent":
+        console.log("%cxhrEvent", "color: green", {
+          event: data.event,
+          payload: data.payload,
+        });
+        break;
+      default:
+        break;
+    }
+  }
+}

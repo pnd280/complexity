@@ -16,7 +16,7 @@ let proxyServiceInstance: QueryCacheService | undefined;
 export function getQueryCacheProxyService(): QueryCacheService {
   invariant(
     !isBackgroundScript(),
-    "Use getQueryCacheService to access the non-proxied instance in background script.",
+    "Use getQueryCacheRootService to access the non-proxied instance in background script.",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

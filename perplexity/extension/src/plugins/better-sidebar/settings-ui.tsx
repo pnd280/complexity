@@ -4,7 +4,7 @@ import type { PluginId } from "@/data/plugin-registry/types";
 import RequirePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/plugins/components/RequirePermissionsDialogWrapper";
 import manifest from "@/plugins/better-sidebar";
 import { InstantCssService } from "@/services/features/instant-css";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "betterSidebar";
 

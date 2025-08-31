@@ -1,6 +1,6 @@
 import { Switch } from "@/components/ui/switch";
 import type { PluginId } from "@/data/plugin-registry/types";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "queryBox:submitOnCtrlEnter";
 

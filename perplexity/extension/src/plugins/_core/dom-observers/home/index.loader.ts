@@ -6,7 +6,7 @@ import { DomObserver } from "@/plugins/_api/dom-observer/dom-observer";
 import { createDomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { findSlogan } from "@/plugins/_core/dom-observers/home/utils";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/listeners.loader";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {

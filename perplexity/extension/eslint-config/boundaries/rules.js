@@ -3,29 +3,50 @@
 export const rules = [
   {
     from: "shared",
-    allow: ["shared", "plugin-public-exports"],
+    allow: ["shared", "plugin-core-public-exports", "plugin-public-exports"],
   },
 
   {
     from: "entrypoint",
-    allow: ["entrypoint", "shared", "plugin-public-exports"],
+    allow: [
+      "entrypoint",
+      "shared",
+      "plugin-core-public-exports",
+      "plugin-public-exports",
+    ],
   },
 
   {
     from: "plugin-core",
-    allow: ["plugin-core", "shared", "plugin", "plugin-public-exports"],
-    disallow: [],
+    allow: [
+      "plugin-core",
+      "plugin-core-public-exports",
+      "plugin",
+      "plugin-public-exports",
+      "shared",
+    ],
+    disallow: [
+      [
+        "plugin-core-public-exports",
+        { pluginCoreName: "${from.pluginCoreName}" },
+      ],
+    ],
+    message:
+      "Plugin core '${from.pluginCoreName}' cannot import its own public exports - use direct imports instead",
   },
 
   {
     from: "plugin",
     allow: [
       "plugin-core",
+      "plugin-core-public-exports",
       "plugin-public-exports",
       ["plugin", { pluginName: "${from.pluginName}" }],
       "shared",
     ],
     disallow: [["plugin-public-exports", { pluginName: "${from.pluginName}" }]],
+    message:
+      "Plugin '${from.pluginName}' cannot import its own public exports - use direct imports instead",
   },
 
   {
@@ -36,12 +57,14 @@ export const rules = [
   {
     from: "plugin-settings-ui",
     allow: [
-      "plugin-core",
+      "plugin-core-public-exports",
       "plugin-public-exports",
       ["plugin", { pluginName: "${from.pluginName}" }],
       ["entrypoint", { entrypointName: "options-page" }],
       "shared",
     ],
     disallow: [["plugin-public-exports", { pluginName: "${from.pluginName}" }]],
+    message:
+      "Settings UI '${from.pluginName}' cannot import its own public exports - use direct imports instead",
   },
 ];

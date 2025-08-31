@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export function PostUpdateReleaseNotesDialog() {
   const [open, setOpen] = useState(true);

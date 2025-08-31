@@ -2,7 +2,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { LuLoaderCircle } from "react-icons/lu";
 import type { RouteObject } from "react-router-dom";
 import { redirect, useNavigate } from "react-router-dom";
-import { sendMessage } from "webext-bridge/content-script";
 
 import AsyncButton from "@/components/AsyncButton";
 import CopyButton from "@/components/CopyButton";
@@ -20,7 +19,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/use-toast";
 import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
-import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
 import { PplxApiService } from "@/services/externals/pplx-api";
 import { PluginsStatesService } from "@/services/features/plugins-states";
 import { errorWrapper } from "@/utils/error-wrapper";
@@ -74,8 +72,6 @@ function ArtifactsPrePromptInstallationDialog() {
       navigate("/");
     },
   });
-
-  const { data: versions } = useQuery(CplxVersionsService.query);
 
   return (
     <Dialog

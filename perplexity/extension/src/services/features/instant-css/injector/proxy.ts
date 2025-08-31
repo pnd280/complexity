@@ -17,7 +17,7 @@ let proxyServiceInstance: typeof InstantCssInjectorService | undefined;
 export function getInstantCssInjectorProxyService(): typeof InstantCssInjectorService {
   invariant(
     !isBackgroundScript(),
-    "Use getInstantCssInjectorService to access the non-proxied instance in background script.",
+    "Use getInstantCssInjectorRootService to access the non-proxied instance in background script.",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

@@ -1,5 +1,5 @@
 import { InstantCssService } from "@/services/features/instant-css";
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/proxy-register.bg-worker";
+import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/get-service";
 
 export default function () {
   hanlder();

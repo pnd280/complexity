@@ -5,7 +5,7 @@ import SpacesSearchPageKeybinding from "@/plugins/command-menu/settings-ui/Space
 import ThreadsSearchPageKeybinding from "@/plugins/command-menu/settings-ui/ThreadsSearchPageKeybinding";
 import ToggleCommandDialogKeybinding from "@/plugins/command-menu/settings-ui/ToggleCommandDialogKeybinding";
 import ToggleSidecarKeybinding from "@/plugins/command-menu/settings-ui/ToggleSidecarKeybinding";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "commandMenu";
 

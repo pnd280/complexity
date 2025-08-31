@@ -4,7 +4,7 @@ import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks
 import {
   spaRouteChangeCompleteSubscribe,
   spaRouterStoreSubscribe,
-} from "@/plugins/_core/main-world/spa-router/listeners.loader";
+} from "@/plugins/_core/main-world/spa-router/utils";
 import { ARTIFACT_PLACEHOLDERS } from "@/plugins/artifacts/consts";
 import {
   artifactsStore,

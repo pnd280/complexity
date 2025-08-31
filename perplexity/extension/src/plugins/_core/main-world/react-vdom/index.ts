@@ -1,4 +1,4 @@
-import { setupReactVdomListeners } from "@/plugins/_core/main-world/react-vdom/listeners";
+import registerProxyService from "@/plugins/_core/main-world/react-vdom/service/proxy-register";
 
 declare module "@/plugins/_core/main-world/types" {
   interface MainWorldCorePluginRegistry {
@@ -8,4 +8,4 @@ declare module "@/plugins/_core/main-world/types" {
 
 onlyMainWorldGuard();
 
-setupReactVdomListeners();
+registerProxyService();

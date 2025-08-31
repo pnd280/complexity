@@ -1,8 +1,7 @@
-import { sendMessage } from "webext-bridge/content-script";
-
 import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/_core/dom-observers/thread/message-blocks/index.remote-resources";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
 import { type MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
+import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/get-service";
 import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
@@ -21,16 +20,21 @@ export async function findMessageBlocks(
 
   if ($messageBlockElements.length === 0) return [];
 
-  const messageBlocksFiberData = await sendMessage(
-    "reactVdom:getMessages",
-    {
-      remoteFiberNodePath: remoteFiberNodePath ?? undefined,
-    },
-    "window",
+  let messageBlocksFiberData = await getReactVdomService().getMessages(
+    remoteFiberNodePath ?? undefined,
   );
 
   const nodes = $messageBlockElements.toArray();
   const result: MessageBlock[] = [];
+
+  if (
+    messageBlocksFiberData &&
+    nodes.length !== messageBlocksFiberData.length
+  ) {
+    messageBlocksFiberData = messageBlocksFiberData?.filter(
+      (block) => block.authorUuid,
+    );
+  }
 
   for (let idx = 0; idx < nodes.length; idx += 1) {
     const messageBlockNode = nodes[idx] as HTMLElement;

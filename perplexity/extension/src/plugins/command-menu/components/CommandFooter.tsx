@@ -6,7 +6,7 @@ import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export default function CommandFooter() {
   const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;

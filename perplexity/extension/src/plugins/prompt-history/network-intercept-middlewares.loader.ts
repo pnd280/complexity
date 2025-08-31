@@ -1,8 +1,8 @@
 import { queryClient } from "@/data/query-client";
-import { networkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/service/proxy-register.loader";
 import { parsePerplexityAskEvent } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { getPromptHistoryProxyService } from "@/plugins/prompt-history/indexed-db/proxy";
+import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/get-service";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -26,7 +26,7 @@ export default function () {
       )
         return;
 
-      networkInterceptMiddlewareManager.updateMiddleware({
+      getNetworkInterceptMiddlewareManagerRootService().updateMiddleware({
         id: "submit-prompt-tracker",
         async middlewareFn({ data, skip }) {
           const isWSSend =
@@ -59,7 +59,7 @@ export default function () {
             return skip();
           }
 
-          await getPromptHistoryProxyService().deduplicateAdd({
+          await getPromptHistoryService().deduplicateAdd({
             prompt: promptString,
           });
 

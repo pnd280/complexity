@@ -1,3 +1,9 @@
+export type MiddlewareData =
+  | (WebSocketEventData & { type: "networkIntercept:webSocketEvent" })
+  | (XhrEventData & { type: "networkIntercept:xhrEvent" })
+  | (FetchEventData & { type: "networkIntercept:fetchEvent" })
+  | (BeaconEventData & { type: "networkIntercept:beaconEvent" });
+
 export type WebSocketEventData = {
   event: "send" | "message";
   payload: {

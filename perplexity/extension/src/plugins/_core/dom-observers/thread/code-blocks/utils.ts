@@ -1,10 +1,10 @@
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { sendMessage } from "webext-bridge/content-script";
 
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
+import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/get-service";
 import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 const astCache = new Map<string, any>();
@@ -135,13 +135,9 @@ async function getCodeBlocksContent(
     codeBlockIndex,
   }));
 
-  return sendMessage(
-    "reactVdom:getCodeBlocksContent",
-    {
-      codeBlocks,
-    },
-    "window",
-  );
+  return await getReactVdomService().getCodeBlocksContent({
+    codeBlocks,
+  });
 }
 
 function isCodeBlockInFlight({

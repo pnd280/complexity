@@ -9,7 +9,7 @@ import { isBackgroundScript } from "@/utils/utils";
 
 let serviceInstance: PromptHistoryService | undefined;
 
-export function getPromptHistoryService(): PromptHistoryService {
+export function getPromptHistoryRootService(): PromptHistoryService {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getPromptHistoryProxyService instead.",
@@ -21,7 +21,7 @@ export function getPromptHistoryService(): PromptHistoryService {
 }
 
 export default function () {
-  const [registerService] = defineProxy(() => getPromptHistoryService(), {
+  const [registerService] = defineProxy(getPromptHistoryRootService, {
     namespace: backgroundProxyServiceName,
   });
 

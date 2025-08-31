@@ -19,7 +19,7 @@ let proxyServiceInstance: BetterCodeBlocksFineGrainedService | undefined;
 export function getBetterCodeBlocksFineGrainedOptionsProxyService(): BetterCodeBlocksFineGrainedService {
   invariant(
     !isBackgroundScript(),
-    "Use getBetterCodeBlocksFineGrainedOptionsService to access the non-proxied instance in background script.",
+    "Use getBetterCodeBlocksFineGrainedOptionsRootService to access the non-proxied instance in background script.",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

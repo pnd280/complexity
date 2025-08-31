@@ -1,14 +1,14 @@
 import { produce } from "immer";
 
-import { networkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/service/proxy-register.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
 } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
 import { sharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {
@@ -32,7 +32,7 @@ export default function () {
 
           unsub?.();
 
-          networkInterceptMiddlewareManager.updateMiddleware({
+          getNetworkInterceptMiddlewareManagerRootService().updateMiddleware({
             id: "force-change-language-model",
             middlewareFn({ data, skip }) {
               const isWSSend =

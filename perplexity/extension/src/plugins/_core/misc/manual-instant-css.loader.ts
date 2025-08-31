@@ -1,9 +1,9 @@
 // for Comet-specific pages
 
-import { sendMessage } from "webext-bridge/content-script";
-
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { InstantCssService } from "@/services/features/instant-css";
+import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/get-service";
+import { sendMessage } from "@/types/chrome-runtime-message";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -39,11 +39,9 @@ export default async function () {
 
       console.log("[Instant CSS] Not injected, manual injection requested");
 
-      await sendMessage(
-        "bg:instantCss:requestInjection",
-        undefined,
-        "background",
-      );
+      const tabId = await sendMessage("getTabId");
+
+      await getInstantCssInjectorService().injectCssToTab(tabId);
     },
   });
 }

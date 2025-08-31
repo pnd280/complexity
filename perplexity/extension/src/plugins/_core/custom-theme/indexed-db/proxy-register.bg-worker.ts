@@ -9,7 +9,7 @@ import { isBackgroundScript } from "@/utils/utils";
 
 let serviceInstance: LocalThemesService | undefined;
 
-export function getLocalThemesService(): LocalThemesService {
+export function getLocalThemesRootService(): LocalThemesService {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getLocalThemesProxyService instead.",
@@ -21,7 +21,7 @@ export function getLocalThemesService(): LocalThemesService {
 }
 
 export default function () {
-  const [registerService] = defineProxy(() => getLocalThemesService(), {
+  const [registerService] = defineProxy(getLocalThemesRootService, {
     namespace: backgroundProxyServiceName,
   });
 

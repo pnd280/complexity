@@ -9,7 +9,7 @@ import { isBackgroundScript } from "@/utils/utils";
 
 let serviceInstance: typeof InstantCssStorageService | undefined;
 
-export function getInstantCssStorageService(): typeof InstantCssStorageService {
+export function getInstantCssStorageRootService(): typeof InstantCssStorageService {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getInstantCssStorageProxyService instead.",
@@ -21,7 +21,7 @@ export function getInstantCssStorageService(): typeof InstantCssStorageService {
 }
 
 export default function () {
-  const [registerService] = defineProxy(() => getInstantCssStorageService(), {
+  const [registerService] = defineProxy(getInstantCssStorageRootService, {
     namespace: backgroundProxyServiceName,
   });
 

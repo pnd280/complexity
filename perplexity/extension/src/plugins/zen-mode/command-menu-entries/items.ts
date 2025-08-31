@@ -3,7 +3,7 @@ import { LuLayoutGrid } from "react-icons/lu";
 
 import type { CommandItemProps } from "@/plugins/command-menu/index.public";
 import { toggleZenMode } from "@/plugins/zen-mode/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 type ItemsParams = {
   isZenMode: boolean;

@@ -1,10 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-import { networkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
-import type {
-  Middleware,
-  MiddlewareData,
-} from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager.types";
+import { NetworkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
+import type { Middleware } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager.types";
+import type { MiddlewareData } from "@/plugins/_core/main-world/network-intercept/listeners.types";
+
+const networkInterceptMiddlewareManager =
+  NetworkInterceptMiddlewareManager.getInstance();
 
 describe("middlewareManager", () => {
   beforeEach(() => {
@@ -130,14 +131,14 @@ describe("middlewareManager", () => {
         id: "1",
         middlewareFn: async ({ data }) => {
           order.push(1);
-          return data.payload.data;
+          return "test-data";
         },
       };
       const middleware2: Middleware = {
         id: "2",
         middlewareFn: async ({ data }) => {
           order.push(2);
-          return data.payload.data;
+          return "test-data";
         },
       };
 
@@ -166,14 +167,14 @@ describe("middlewareManager", () => {
         middlewareFn: async ({ data, stopPropagation }) => {
           order.push(1);
           stopPropagation();
-          return data.payload.data;
+          return "test-data";
         },
       };
       const middleware2: Middleware = {
         id: "2",
         middlewareFn: async ({ data }) => {
           order.push(2);
-          return data.payload.data;
+          return "test-data";
         },
       };
 
@@ -227,7 +228,7 @@ describe("middlewareManager", () => {
         id: "test",
         middlewareFn: async ({ removeMiddleware, data }) => {
           removeMiddleware();
-          return data.payload.data;
+          return "test-data";
         },
       };
 

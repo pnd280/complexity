@@ -15,7 +15,7 @@ import {
   getEnableStates,
   updatePluginStatesWithFeatureCompat,
 } from "@/services/features/plugins-states/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-settings";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { invariant, isInContentScript } from "@/utils/utils";
 
 export class PluginsStatesService {

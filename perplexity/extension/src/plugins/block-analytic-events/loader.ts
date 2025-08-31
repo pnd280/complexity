@@ -1,5 +1,5 @@
-import { networkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/service/proxy-register.loader";
 import { parseWebSocketData } from "@/plugins/_core/main-world/network-intercept/web-socket-message-parser";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -14,16 +14,10 @@ export default function loader() {
     dependencies: ["cache:pluginsStates"],
     loader: ({ "cache:pluginsStates": pluginsStates }) => {
       if (pluginsStates?.blockAnalyticEvents === true)
-        networkInterceptMiddlewareManager.addMiddleware({
+        getNetworkInterceptMiddlewareManagerRootService().addMiddleware({
           id: "block-analytic-events",
           priority: { position: "first" },
           middlewareFn({ data, stopPropagation, skip }) {
-            const a: number | null = 1;
-
-            if (!a) {
-              return skip();
-            }
-
             switch (data.type) {
               case "networkIntercept:webSocketEvent": {
                 const wsMessage = parseWebSocketData(data.payload.data);

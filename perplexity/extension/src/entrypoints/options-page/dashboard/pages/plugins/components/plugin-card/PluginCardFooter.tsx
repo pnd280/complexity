@@ -8,7 +8,7 @@ import { Ul } from "@/components/ui/typography";
 import { PluginRegistry } from "@/data/plugin-registry/index";
 import { usePluginCardContext } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/PluginCardContext";
 import RequirePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/plugins/components/RequirePermissionsDialogWrapper";
-import useExtensionSettings from "@/services/infra/extension-settings/useExtensionSettings";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export function PluginCardFooter() {
   const {

@@ -9,7 +9,7 @@ import { isBackgroundScript } from "@/utils/utils";
 
 let serviceInstance: BetterCodeBlocksFineGrainedService | undefined;
 
-export function getBetterCodeBlocksFineGrainedOptionsService(): BetterCodeBlocksFineGrainedService {
+export function getBetterCodeBlocksFineGrainedOptionsRootService(): BetterCodeBlocksFineGrainedService {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getBetterCodeBlocksFineGrainedOptionsProxyService instead.",
@@ -22,7 +22,7 @@ export function getBetterCodeBlocksFineGrainedOptionsService(): BetterCodeBlocks
 
 export default function () {
   const [registerService] = defineProxy(
-    () => getBetterCodeBlocksFineGrainedOptionsService(),
+    getBetterCodeBlocksFineGrainedOptionsRootService,
     {
       namespace: backgroundProxyServiceName,
     },
