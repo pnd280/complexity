@@ -1,9 +1,9 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
 import { defineProxy } from "comctx";
 
 import { mainWorldProxyServiceName } from "@/plugins/_core/main-world/react-vdom/service";
 import type { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service";
-import type { ComctxProxy } from "@/utils/comctx-async-proxy";
+import type { ComctxProxy } from "@/utils/comctx/types";
 
 const [, getService] = defineProxy(() => ({}) as typeof ReactVdomService, {
   namespace: mainWorldProxyServiceName,
@@ -20,7 +20,7 @@ export function getReactVdomProxyService(): ComctxProxy<
   );
 
   proxyServiceInstance ??= getService(
-    new DocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
+    getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
   return proxyServiceInstance as unknown as ComctxProxy<

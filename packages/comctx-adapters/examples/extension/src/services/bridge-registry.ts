@@ -2,7 +2,7 @@ import {
   TabConsumerAdapter,
   BrowserRuntimeAdapter,
 } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { defineProxy } from "comctx";
 
 export class BridgeRegistryService {
   private registeredServices = new Set<string>();

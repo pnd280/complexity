@@ -1,10 +1,10 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { defineProxy } from "comctx";
 
 import {
   csProxyServiceName,
   DomSelectorsService,
 } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
 import { isInContentScript } from "@/utils/utils";
 
 let serviceInstance: typeof DomSelectorsService | undefined;
@@ -25,5 +25,5 @@ export default function () {
     namespace: csProxyServiceName,
   });
 
-  registerService(new DocumentAdapter(`complexity:${csProxyServiceName}`));
+  registerService(getDocumentAdapter(`complexity:${csProxyServiceName}`));
 }

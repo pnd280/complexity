@@ -1,10 +1,10 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { defineProxy } from "comctx";
 
 import {
   mainWorldProxyServiceName,
   MarkmapRendererService,
 } from "@/plugins/_core/main-world/markmap-renderer/service";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
 import { isInContentScript } from "@/utils/utils";
 
 let serviceInstance: MarkmapRendererService | undefined;
@@ -26,7 +26,7 @@ export default function registerProxyService() {
   });
 
   registerService(
-    new DocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
+    getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
   MarkmapRendererService.getInstance().initialize();

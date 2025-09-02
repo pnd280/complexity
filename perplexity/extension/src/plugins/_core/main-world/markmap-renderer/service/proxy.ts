@@ -1,11 +1,11 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
 import { defineProxy } from "comctx";
 
 import {
   mainWorldProxyServiceName,
   type MarkmapRendererService,
 } from "@/plugins/_core/main-world/markmap-renderer/service";
-import type { ComctxProxy } from "@/utils/comctx-async-proxy";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
+import type { ComctxProxy } from "@/utils/comctx/types";
 
 const [, getService] = defineProxy(() => ({}) as MarkmapRendererService, {
   namespace: mainWorldProxyServiceName,
@@ -20,7 +20,7 @@ export function getMarkmapRendererProxyService(): ComctxProxy<MarkmapRendererSer
   );
 
   proxyServiceInstance ??= getService(
-    new DocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
+    getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
   return proxyServiceInstance as unknown as ComctxProxy<MarkmapRendererService>;

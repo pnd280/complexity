@@ -1,5 +1,5 @@
 import { BrowserRuntimeAdapter } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { defineProxy } from "comctx";
 
 import {
   backgroundProxyServiceName,

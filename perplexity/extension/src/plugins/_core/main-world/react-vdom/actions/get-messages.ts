@@ -13,6 +13,9 @@ export type MessageBlockFiberData = {
   displayModel: LanguageModelCode;
   isInFlight: boolean;
   authorUuid: string | null;
+  hasVariants: boolean;
+  isVariantSelected: boolean;
+  variantSiblingId: string | null;
 };
 
 export const localFiberNodePath = [
@@ -79,6 +82,10 @@ export async function getMessages({
           displayModel: entry.display_model,
           isInFlight: entry.status !== "COMPLETED",
           authorUuid: entry.author_id ?? null,
+          hasVariants: entry.side_by_side_metadata != null,
+          isVariantSelected:
+            entry.side_by_side_metadata?.selection_status === "SELECTED",
+          variantSiblingId: entry.side_by_side_metadata?.sibling_uuid,
         }));
       },
     });

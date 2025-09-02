@@ -1,6 +1,5 @@
 import { MatchPattern } from "@webext-core/match-patterns";
 
-import { APP_CONFIG } from "@/app.config";
 import type { MaybePromise } from "@/types/utils.types";
 import { errorWrapper } from "@/utils/error-wrapper";
 
@@ -298,16 +297,8 @@ export const isInContentScript = () => {
   return whereAmI() !== "unknown";
 };
 
-export function isBackgroundScript() {
-  if (APP_CONFIG.BROWSER === "chrome") {
-    return (
-      typeof chrome !== "undefined" &&
-      chrome.tabs !== undefined &&
-      typeof document === "undefined"
-    );
-  }
-
-  return chrome.extension.getBackgroundPage() === window;
+export function isBackgroundScript(): boolean {
+  return (globalThis as any).isBackgroundScript;
 }
 
 export async function injectMainWorldScript({

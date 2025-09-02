@@ -1,5 +1,5 @@
-import { BrowserRuntimeAdapter } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { DocumentAdapter } from "@comctx-adapters/core";
+import { defineProxy } from "comctx";
 
 import { CounterService } from "@/services/counter";
 
@@ -41,42 +41,9 @@ export async function injectMainWorldScript({
 // CONTENT SCRIPT
 
 (async () => {
-  const tabId = await chrome.runtime.sendMessage({
-    type: "getTabId",
-  });
-
-  if (tabId == null) return;
-
   const [registerService] = defineProxy(() => new CounterService(), {
-    namespace: `content-counter@${tabId}`,
+    namespace: "counter",
   });
 
-  const contentService = registerService(new BrowserRuntimeAdapter());
-
-  contentService.onChange((value) => {
-    console.log(value);
-  });
-
-  chrome.runtime.sendMessage({
-    type: "registerBridgeService",
-    details: {
-      namespace: `content-counter@${tabId}`,
-    },
-  });
-
-  if (tabId !== 1581720153) {
-    // In different tabs, use the bridged service of tab 1581720153 from the background script
-    const [, getContentServiceFromAnotherTab] = defineProxy(
-      () => ({}) as CounterService,
-      {
-        namespace: `content-counter@1581720153`,
-      },
-    );
-
-    const contentServiceFromAnotherTab = getContentServiceFromAnotherTab(
-      new BrowserRuntimeAdapter(),
-    );
-
-    contentServiceFromAnotherTab.increment();
-  }
+  registerService(new DocumentAdapter("counter"));
 })();

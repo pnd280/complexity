@@ -1,5 +1,6 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { defineProxy } from "comctx";
+
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
 
 import {
   csProxyServiceName,
@@ -28,5 +29,5 @@ export default function () {
     },
   );
 
-  registerService(new DocumentAdapter(`complexity:${csProxyServiceName}`));
+  registerService(getDocumentAdapter(`complexity:${csProxyServiceName}`));
 }

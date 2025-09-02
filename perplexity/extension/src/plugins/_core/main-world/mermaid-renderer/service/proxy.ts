@@ -1,11 +1,11 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
 import { defineProxy } from "comctx";
 
 import {
   mainWorldProxyServiceName,
   type MermaidRendererService,
 } from "@/plugins/_core/main-world/mermaid-renderer/service";
-import type { ComctxProxy } from "@/utils/comctx-async-proxy";
+import type { ComctxProxy } from "@/utils/comctx/types";
 
 const [, getService] = defineProxy(() => ({}) as MermaidRendererService, {
   namespace: mainWorldProxyServiceName,
@@ -20,7 +20,7 @@ export function getMermaidRendererProxyService(): ComctxProxy<MermaidRendererSer
   );
 
   proxyServiceInstance ??= getService(
-    new DocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
+    getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
   return proxyServiceInstance as unknown as ComctxProxy<MermaidRendererService>;

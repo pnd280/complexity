@@ -36,4 +36,27 @@ export class CounterService {
   public cleanAllListeners() {
     this.listeners = [];
   }
+
+  public object() {
+    return {
+      name: "John Doe",
+      age: 30,
+    };
+  }
+
+  public string() {
+    return "something";
+  }
+
+  public number() {
+    return 1;
+  }
+
+  public boolean() {
+    return true;
+  }
+
+  public array() {
+    return [1, 2, "three"];
+  }
 }

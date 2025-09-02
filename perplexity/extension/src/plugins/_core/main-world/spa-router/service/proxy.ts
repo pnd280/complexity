@@ -1,9 +1,9 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
 import { defineProxy } from "comctx";
 
 import { mainWorldProxyServiceName } from "@/plugins/_core/main-world/spa-router/service";
 import type { SpaRouterService } from "@/plugins/_core/main-world/spa-router/service";
-import type { ComctxProxy } from "@/utils/comctx-async-proxy";
+import type { ComctxProxy } from "@/utils/comctx/types";
 
 const [, getService] = defineProxy(() => ({}) as typeof SpaRouterService, {
   namespace: mainWorldProxyServiceName,
@@ -20,7 +20,7 @@ export function getSpaRouterProxyService(): ComctxProxy<
   );
 
   proxyServiceInstance ??= getService(
-    new DocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
+    getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
   return proxyServiceInstance as unknown as ComctxProxy<

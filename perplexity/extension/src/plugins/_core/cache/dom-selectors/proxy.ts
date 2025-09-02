@@ -1,9 +1,9 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
 import { defineProxy } from "comctx";
 
 import { csProxyServiceName } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import type { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import type { ComctxProxy } from "@/utils/comctx-async-proxy";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
+import type { ComctxProxy } from "@/utils/comctx/types";
 
 const [, getService] = defineProxy(() => ({}) as typeof DomSelectorsService, {
   namespace: csProxyServiceName,
@@ -20,7 +20,7 @@ export function getDomSelectorsProxyService(): ComctxProxy<
   );
 
   proxyServiceInstance ??= getService(
-    new DocumentAdapter(`complexity:${csProxyServiceName}`),
+    getDocumentAdapter(`complexity:${csProxyServiceName}`),
   );
 
   return proxyServiceInstance as unknown as ComctxProxy<

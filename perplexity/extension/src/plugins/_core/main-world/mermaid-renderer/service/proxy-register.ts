@@ -1,5 +1,5 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
+import { defineProxy } from "comctx";
 
 import {
   mainWorldProxyServiceName,
@@ -26,7 +26,7 @@ export default function registerProxyService() {
   });
 
   registerService(
-    new DocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
+    getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
   MermaidRendererService.getInstance().initialize();

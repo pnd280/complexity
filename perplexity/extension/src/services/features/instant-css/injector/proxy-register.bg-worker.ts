@@ -1,5 +1,5 @@
 import { BrowserRuntimeAdapter } from "@comctx-adapters/core";
-import defineProxy from "comctx";
+import { defineProxy } from "comctx";
 
 import { backgroundProxyServiceName } from "@/services/features/instant-css/injector/constants";
 import { InstantCssInjectorService } from "@/services/features/instant-css/injector/index";
