@@ -9,12 +9,9 @@ import type { DefinePluginParams } from "@/data/plugin-registry/utils";
 
 describe("Plugin Settings UI Loader", () => {
   it("should all settings-ui.tsx export the correct pluginId", async () => {
-    const manifestEntries = import.meta.glob(
-      "@/plugins/!(_core|_api)/index.ts",
-      {
-        eager: true,
-      },
-    ) as Record<
+    const manifestEntries = import.meta.glob("@/plugins/!(_core)/index.ts", {
+      eager: true,
+    }) as Record<
       string,
       {
         default: DefinePluginParams<PluginId>;

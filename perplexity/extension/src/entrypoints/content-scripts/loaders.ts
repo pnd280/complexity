@@ -2,10 +2,7 @@ import { invariant } from "@/utils/utils";
 
 export async function executeCsPluginLoaders() {
   const loaders = import.meta.glob(
-    [
-      "@/plugins/!(_core|_api)/loader.{ts,tsx}",
-      "@/plugins/**/*.loader.{ts,tsx}",
-    ],
+    ["@/plugins/!(_core)/loader.{ts,tsx}", "@/plugins/**/*.loader.{ts,tsx}"],
     {
       eager: false,
     },

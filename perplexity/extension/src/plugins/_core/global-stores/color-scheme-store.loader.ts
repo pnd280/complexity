@@ -1,5 +1,5 @@
-import { DomObserver } from "@/plugins/_api/dom-observer/dom-observer";
-import { createDomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
+import { DomObserver } from "@/plugins/_core/dom-observers/_service";
+import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { colorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
 import { UiUtils } from "@/utils/ui-utils";

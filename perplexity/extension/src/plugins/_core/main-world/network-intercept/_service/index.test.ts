@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-import { NetworkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
-import type { Middleware } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager.types";
 import type { MiddlewareData } from "@/plugins/_core/main-world/network-intercept/listeners.types";
+import { NetworkInterceptMiddlewareManager } from "@/plugins/_core/main-world/network-intercept/_service";
+import type { Middleware } from "@/plugins/_core/main-world/network-intercept/_service/types";
 
 const networkInterceptMiddlewareManager =
   NetworkInterceptMiddlewareManager.getInstance();

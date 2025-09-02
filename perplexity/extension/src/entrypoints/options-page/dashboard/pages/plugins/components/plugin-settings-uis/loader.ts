@@ -16,7 +16,7 @@ export type PluginSettingsUIs = Partial<
 export const PLUGIN_SETTINGS_UIS: PluginSettingsUIs = (() => {
   const settingsUis: PluginSettingsUIs = {};
 
-  const entries = import.meta.glob("@/plugins/!(_core|_api)/settings-ui.tsx", {
+  const entries = import.meta.glob("@/plugins/!(_core)/settings-ui.tsx", {
     eager: true,
   }) as Record<
     string,

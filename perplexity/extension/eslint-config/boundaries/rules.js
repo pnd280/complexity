@@ -32,7 +32,7 @@ export const rules = [
       ],
     ],
     message:
-      "Plugin core '${from.pluginCoreName}' cannot import its own public exports - use direct imports instead",
+      "Core plugin '${from.pluginCoreName}' cannot import its own public exports - use direct imports instead",
   },
 
   {

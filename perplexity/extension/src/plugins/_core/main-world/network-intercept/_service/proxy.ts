@@ -1,8 +1,8 @@
 import { DocumentAdapter } from "@comctx-adapters/core";
 import { defineProxy } from "comctx";
 
-import type { NetworkInterceptMiddlewareManager } from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager";
-import { csProxyServiceName } from "@/plugins/_core/main-world/network-intercept/service";
+import type { NetworkInterceptMiddlewareManager } from "@/plugins/_core/main-world/network-intercept/_service";
+import { csProxyServiceName } from "@/plugins/_core/main-world/network-intercept/_service";
 import type { ComctxProxy } from "@/utils/comctx-async-proxy";
 
 const [, getService] = defineProxy(

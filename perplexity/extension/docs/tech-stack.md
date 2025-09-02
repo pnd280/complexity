@@ -9,7 +9,7 @@
 - **TailwindCSS 4**: for both Extension and Content Script UIs (Prefix `x:`)
 - **Zustand**: State management
 - **TanStack Query**: Async state management
-- **[`webext-bridge`](https://github.com/serversideup/webext-bridge)**: Communication between contexts. This is a modified version of webext-bridge which fixes the issue when communicating with window context on Firefox browsers. PR: https://github.com/serversideup/webext-bridge/pull/94
+- **[`comctx`](https://github.com/molvqingtai/comctx)**: RPC communication between execution contexts.
 
 - **I18Next**: Localization (22 languages, including English)
 

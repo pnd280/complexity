@@ -3,7 +3,7 @@ import type {
   PluginId,
   PluginsSettingsRegistry,
 } from "@/data/plugin-registry/types";
-import { InternalWebSocketManager } from "@/plugins/_api/web-socket/internal-web-socket-manager";
+import { InternalWebSocketManager } from "@/plugins/_core/web-socket";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { internalWebSocketStore } from "@/plugins/_core/global-stores/web-socket";
 import type { MainWorldCorePluginId } from "@/plugins/_core/main-world/types";

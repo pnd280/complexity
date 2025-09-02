@@ -95,7 +95,6 @@
     "unified": "^11.0.5",
     "use-immer": "^0.11.0",
     "use-sync-external-store": "^1.5.0",
-    "webext-bridge": "workspace:*",
     "zod": "^4.1.5",
     "zustand": "^5.0.8"
   },

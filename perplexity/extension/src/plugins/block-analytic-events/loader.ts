@@ -1,5 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/service/proxy-register.loader";
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/proxy-register.loader";
 import { parseWebSocketData } from "@/plugins/_core/main-world/network-intercept/web-socket-message-parser";
 
 declare module "@/plugins/_core/async-dep-registry" {

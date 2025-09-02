@@ -13,8 +13,6 @@ The extension operates in FOUR execution contexts:
 - **Content Scripts** - Scripts injected into Perplexity AI web pages to enhance functionality
 - **Main-world Content Scripts** - Scripts that run in Perplexity AI web pages' document Javascript context (able to access low level objects like the `next` router, and the React fiber tree)
 
-Communication between these contexts is facilitated by `webext-bridge` (100% type safety).
-
 ### Directory Structure
 
 ```
@@ -28,7 +26,6 @@ src/
 │   └── options-page/     # Options page UI
 ├── hooks/          # Shared React hooks
 ├── plugins/        # Modular feature implementations
-│   ├── _api/       # Core Abstractions
 │   ├── _core/      # Core Plugins
 │   └── */          # Individual plugins
 ├── services/       # Shared services
@@ -78,7 +75,7 @@ The project enforces strict [dependency boundaries](../eslint-config/boundaries/
 
 1. **Shared** - Common code including components, hooks, services, types, utils, and data
 2. **Entrypoint** - Entry points for different contexts (background, content scripts, options)
-3. **Plugin Core** - Core plugin functionality and APIs (`src/plugins/_api/**/*`, `src/plugins/_core/**/*`)
+3. **Core Plugin** - Core plugin functionality and APIs (`src/plugins/_core/**/*`)
 4. **Plugin** - Individual feature implementations (`src/plugins/*/**/*`)
 5. **Plugin Public Exports** - Public API surfaces for plugins (`src/plugins/*/**/*.public.*`)
 6. **Plugin Settings UI** - Settings UI components for plugins (`src/plugins/*/**/settings-ui.tsx`)
@@ -90,7 +87,7 @@ Dependency flow is strictly controlled where each boundary type can only import 
 ```mermaid
 flowchart TD
     S["Shared<br/><small>Common utilities, components, hooks</small>"]
-    PC["Plugin Core<br/><small>Core plugin functionality & APIs</small>"]
+    PC["Core Plugin<br/><small>Core plugin functionality & APIs</small>"]
     P["Plugin<br/><small>Individual feature implementations</small>"]
     E["Entrypoint<br/><small>Entry points for different contexts</small>"]
 
@@ -118,7 +115,7 @@ Files are categorized based on their location patterns as defined in the ESLint 
 
 - **Shared**: `src/*.ts`, `src/components/**/*`, `src/assets/**/*`, `src/hooks/**/*`, `src/services/**/*`, `src/types/**/*`, `src/utils/**/*`, `src/data/**/*`, `src/**/index.public.ts`
 - **Entrypoint**: `src/entrypoints/*/**/*`
-- **Plugin Core**: `src/plugins/_api/**/*`, `src/plugins/_core/**/*`
+- **Core Plugin**: `src/plugins/_core/**/*`
 - **Plugin**: `src/plugins/*/**/*`
 - **Plugin Public Exports**: `src/plugins/*/**/*.public.*`
 - **Plugin Settings UI**: `src/plugins/*/**/settings-ui.tsx`

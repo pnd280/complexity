@@ -6,8 +6,8 @@ import type {
   MutationCallback,
   ObserverOperation,
   Result,
-} from "@/plugins/_api/dom-observer/dom-observer.types";
-import type { DomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
+} from "@/plugins/_core/dom-observers/_service/types";
+import type { DomObserverId } from "@/plugins/_core/dom-observers/_service/types";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export class DomObserver {

@@ -24,11 +24,6 @@
    pnpm turbo build --filter=./packages/*
    ```
 
-   If you're planning to build for Firefox:
-   - Navigate to the git module `packages/webext-bridge`
-   - Checkout this [PR](https://github.com/serversideup/webext-bridge/pull/94)
-   - Run `turbo build` again
-
 3. Use the official remote configs registry (optional):
    Add the following to the `.env` file in the folder `perplexity/extension`:
 

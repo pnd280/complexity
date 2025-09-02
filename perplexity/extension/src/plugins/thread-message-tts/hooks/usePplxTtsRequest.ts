@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { Socket } from "socket.io-client";
 
 import { APP_CONFIG } from "@/app.config";
-import { InternalWebSocketManager } from "@/plugins/_api/web-socket/internal-web-socket-manager";
+import { InternalWebSocketManager } from "@/plugins/_core/web-socket";
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";
 
 export default function usePplxTtsRequest() {

@@ -1,16 +1,23 @@
 import { APP_CONFIG } from "@/app.config";
-import { InstantCssService } from "@/services/features/instant-css";
 import { instantCssCoordinator } from "@/services/features/instant-css/coordinator";
 import type {
   InstantCss,
   InstantCssSettings,
 } from "@/services/features/instant-css/types";
 import { getProcessedCssEntries } from "@/services/features/instant-css/utils";
+import { hasPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import { invariant, isBackgroundScript } from "@/utils/utils";
 
 export { backgroundProxyServiceName } from "@/services/features/instant-css/injector/constants";
 
 export class InstantCssInjectorService {
+  private static async hasPermissions() {
+    return (
+      APP_CONFIG.BROWSER === "chrome" &&
+      (await hasPermissions(["webNavigation"]))
+    );
+  }
+
   static async injectCssToTab(tabId: number) {
     instantCssCoordinator.resetTab(tabId);
 
@@ -78,7 +85,7 @@ export class InstantCssInjectorService {
 
     InstantCssInjectorService.removeListeners();
 
-    if (!(await InstantCssService.hasPermissions())) return;
+    if (!(await InstantCssInjectorService.hasPermissions())) return;
 
     chrome.webNavigation.onCommitted.addListener(
       InstantCssInjectorService.autoInjector,
@@ -100,7 +107,7 @@ export class InstantCssInjectorService {
       "This method is not allowed in content script",
     );
 
-    if (!(await InstantCssService.hasPermissions())) return;
+    if (!(await InstantCssInjectorService.hasPermissions())) return;
 
     chrome.webNavigation.onCommitted.removeListener(
       InstantCssInjectorService.autoInjector,

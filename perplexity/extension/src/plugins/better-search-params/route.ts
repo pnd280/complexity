@@ -1,6 +1,6 @@
 import type { RouteObject } from "react-router-dom";
 
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/service/proxy-register.loader";
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/proxy-register.loader";
 import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
 import {
   parseQuery,

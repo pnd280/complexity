@@ -36,7 +36,7 @@ export class PluginRegistry {
 }
 
 (() => {
-  const entries = import.meta.glob("@/plugins/!(_core|_api)/index.ts", {
+  const entries = import.meta.glob("@/plugins/!(_core)/index.ts", {
     eager: true,
   }) as Record<string, Record<string, unknown>>;
 

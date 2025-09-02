@@ -1,8 +1,8 @@
 import debounce from "lodash/debounce";
 
-import { DomObserver } from "@/plugins/_api/dom-observer/dom-observer";
-import { createDomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { DomObserver } from "@/plugins/_core/dom-observers/_service";
+import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
 import {
   pplxCookiesStore,
   type Cookie,

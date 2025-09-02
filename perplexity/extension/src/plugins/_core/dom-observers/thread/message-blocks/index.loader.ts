@@ -3,9 +3,9 @@ import debounce from "lodash/debounce";
 import {
   CallbackQueue,
   createTaskId,
-} from "@/plugins/_api/dom-observer/callback-queue";
-import { DomObserver } from "@/plugins/_api/dom-observer/dom-observer";
-import { createDomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
+} from "@/plugins/_core/dom-observers/_service/callback-queue";
+import { DomObserver } from "@/plugins/_core/dom-observers/_service";
+import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { findMessageBlocks } from "@/plugins/_core/dom-observers/thread/message-blocks/utils";

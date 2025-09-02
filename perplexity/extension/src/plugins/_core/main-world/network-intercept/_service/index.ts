@@ -1,8 +1,10 @@
 import type {
   Middleware,
   MiddlewareNameBasedPriority,
-} from "@/plugins/_api/network-intercept-middleware-manager/middleware-manager.types";
+} from "@/plugins/_core/main-world/network-intercept/_service/types";
 import type { MiddlewareData } from "@/plugins/_core/main-world/network-intercept/listeners.types";
+
+export const csProxyServiceName = "networkInterceptService";
 
 export class NetworkInterceptMiddlewareManager {
   private static instance: NetworkInterceptMiddlewareManager;
@@ -135,28 +137,28 @@ export class NetworkInterceptMiddlewareManager {
   async noop({ data }: { data: MiddlewareData }) {
     switch (data.type) {
       case "networkIntercept:webSocketEvent":
-        console.log("%cwebSocketEvent", "color: blue", {
-          event: data.event,
-          payload: data.payload,
-        });
+        // console.log("%cwebSocketEvent", "color: blue", {
+        //   event: data.event,
+        //   payload: data.payload,
+        // });
         break;
       case "networkIntercept:fetchEvent":
-        console.log("%cfetchEvent", "color: red", {
-          event: data.event,
-          payload: data.payload,
-        });
+        // console.log("%cfetchEvent", "color: red", {
+        //   event: data.event,
+        //   payload: data.payload,
+        // });
         break;
       case "networkIntercept:beaconEvent":
-        console.log("%cbeaconEvent", "color: purple", {
-          event: data.event,
-          payload: data.payload,
-        });
+        // console.log("%cbeaconEvent", "color: purple", {
+        //   event: data.event,
+        //   payload: data.payload,
+        // });
         break;
       case "networkIntercept:xhrEvent":
-        console.log("%cxhrEvent", "color: green", {
-          event: data.event,
-          payload: data.payload,
-        });
+        // console.log("%cxhrEvent", "color: green", {
+        //   event: data.event,
+        //   payload: data.payload,
+        // });
         break;
       default:
         break;

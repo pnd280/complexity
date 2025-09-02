@@ -1,7 +1,7 @@
 import {
   CallbackQueue,
   createTaskId,
-} from "@/plugins/_api/dom-observer/callback-queue";
+} from "@/plugins/_core/dom-observers/_service/callback-queue";
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
