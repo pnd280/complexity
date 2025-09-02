@@ -6,10 +6,7 @@
     "incremental": false,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": false,
-    "declaration": true,
-    "outDir": "./dist",
+    "noEmit": true,
     "paths": {
       "@/*": ["./src/*"],
       "~/*": ["./*"]
