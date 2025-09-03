@@ -5,8 +5,8 @@ import { db } from "@/services/infra/indexed-db";
 
 export const backgroundProxyServiceName = "promptHistoryService";
 
-export class PromptHistoryService {
-  async add({ prompt }: { prompt: string }): Promise<string> {
+export class PromptHistoryServiceImpl {
+  static async add({ prompt }: { prompt: string }): Promise<string> {
     return await db.promptHistory.add({
       id: new Date().getTime().toString() + "-" + nanoid(),
       prompt,
@@ -14,7 +14,7 @@ export class PromptHistoryService {
     });
   }
 
-  async deduplicateAdd({ prompt }: { prompt: string }): Promise<string> {
+  static async deduplicateAdd({ prompt }: { prompt: string }): Promise<string> {
     const mostRecentItem = await db.promptHistory.reverse().first();
     if (mostRecentItem?.prompt === prompt) {
       await db.promptHistory.update(mostRecentItem.id, {
@@ -25,19 +25,19 @@ export class PromptHistoryService {
     return await this.add({ prompt });
   }
 
-  async deleteAll(): Promise<void> {
+  static async deleteAll(): Promise<void> {
     await db.promptHistory.clear();
   }
 
-  async get(id: string): Promise<PromptHistory | undefined> {
+  static async get(id: string): Promise<PromptHistory | undefined> {
     return await db.promptHistory.get(id);
   }
 
-  async getAll(): Promise<PromptHistory[]> {
+  static async getAll(): Promise<PromptHistory[]> {
     return await db.promptHistory.reverse().toArray();
   }
 
-  async getPaginatedItems({
+  static async getPaginatedItems({
     searchTerm = "",
     limit = 10,
     offset = 0,
@@ -62,12 +62,14 @@ export class PromptHistoryService {
     return { items, total };
   }
 
-  async update(promptHistory: PromptHistory): Promise<string> {
+  static async update(promptHistory: PromptHistory): Promise<string> {
     await db.promptHistory.put(promptHistory);
     return promptHistory.id;
   }
 
-  async delete(id: string): Promise<void> {
+  static async delete(id: string): Promise<void> {
     await db.promptHistory.delete(id);
   }
 }
+
+export type PromptHistoryService = typeof PromptHistoryServiceImpl;

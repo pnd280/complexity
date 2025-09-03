@@ -2,9 +2,9 @@ import Cplx from "@/components/icons/Cplx";
 import FaArrowUpRight from "@/components/icons/FaArrowUpRight";
 import { Portal } from "@/components/ui/portal";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { useSettingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/get-service";
+import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
 
 export function SettingsDashboardLink() {
   const isMobile = useIsMobileStore((store) => store.isMobile);
@@ -18,8 +18,8 @@ export function SettingsDashboardLink() {
     if ($sidebarWrapper == null || !$sidebarWrapper.length) return null;
 
     const $existingContainer = $sidebarWrapper.find(
-      DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.SETTINGS_PAGE
+      getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
           .CPLX_DASHBOARD_LINK,
       ),
     );
@@ -28,12 +28,12 @@ export function SettingsDashboardLink() {
 
     const $portalContainer = $("<div>")
       .internalComponentAttr(
-        DomSelectorsService.internalAttributes.SETTINGS_PAGE
+        getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
           .CPLX_DASHBOARD_LINK,
       )
       .insertAfter(
         $sidebarWrapper.find(
-          DomSelectorsService.cachedSync.SETTINGS_PAGE.SIDEBAR_CHILD
+          getDomSelectorsRootService().cachedSync.SETTINGS_PAGE.SIDEBAR_CHILD
             .BACK_BUTTON,
         ),
       );

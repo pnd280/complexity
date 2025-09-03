@@ -24,7 +24,7 @@ export default definePlugin({
     tags: ["ui", "cometAssistant"],
     dependentDomObservers: ["thread:messageBlocks"],
     dependentMainWorldCorePlugins: ["spaRouter", "reactVdom"],
-    uiGroup: ["thread:messageBlocks:toolbar"],
+    uiGroup: ["thread:messageBlocks:footer"],
   },
   settingsSchema: {
     schema,

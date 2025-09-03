@@ -10,8 +10,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { queryClient } from "@/data/query-client";
-import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/get-service";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
+import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 
 export default function ClearAllButton() {
   const [isOpen, setIsOpen] = useState(false);

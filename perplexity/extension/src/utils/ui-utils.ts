@@ -1,4 +1,3 @@
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getCookie } from "@/utils/utils";
 
 export class UiUtils {
@@ -16,10 +15,6 @@ export class UiUtils {
     return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
-  }
-
-  static getStickyNavbar() {
-    return $(DomSelectorsService.cachedSync.STICKY_NAVBAR);
   }
 
   static getWordOnCaret(element: HTMLTextAreaElement) {

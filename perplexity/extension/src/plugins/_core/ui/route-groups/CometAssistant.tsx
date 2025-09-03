@@ -2,8 +2,8 @@ import { lazily } from "react-lazily";
 
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
 
-const { default: ThreadMessageToolbarExtraButtonsWrapper } = lazily(
-  () => import("@/plugins/_core/ui/groups/thread-message-toolbar/Wrapper"),
+const { default: ThreadMessageFooterExtraButtonsWrapper } = lazily(
+  () => import("@/plugins/_core/ui/groups/thread-message-footer/Wrapper"),
 );
 const { default: ThreadQueryEditButtonGroupExtraButtonsWrapper } = lazily(
   () =>
@@ -20,7 +20,7 @@ export function CometAssistantComponents() {
 
       <ThreadQueryEditButtonGroupExtraButtonsWrapper />
 
-      <ThreadMessageToolbarExtraButtonsWrapper />
+      <ThreadMessageFooterExtraButtonsWrapper />
     </CsUiPluginsGuard>
   );
 }

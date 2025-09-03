@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@/app.config";
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/get-service";
-import { getInstantCssStorageService } from "@/services/features/instant-css/storage/get-service";
+import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
+import { getInstantCssStorageService } from "@/services/features/instant-css/storage/service-init.bg-worker";
 import type {
   InstantCss,
   InstantCssSettings,

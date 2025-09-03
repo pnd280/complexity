@@ -8,7 +8,7 @@ import type {
 
 export const backgroundProxyServiceName = "instantCssStorageService";
 
-export class InstantCssStorageService {
+export class InstantCssStorageServiceImpl {
   static storageItem = storage.defineItem<InstantCssSettings>(
     "local:instantCss",
     {
@@ -18,36 +18,41 @@ export class InstantCssStorageService {
   );
 
   static async get(): Promise<InstantCssSettings> {
-    return await InstantCssStorageService.storageItem.getValue();
+    return await InstantCssStorageServiceImpl.storageItem.getValue();
   }
 
   private static async set(
     updater: (draft: InstantCssSettings) => void,
   ): Promise<void> {
-    const newSettings = produce(await InstantCssStorageService.get(), updater);
-    await InstantCssStorageService.storageItem.setValue(newSettings);
+    const newSettings = produce(
+      await InstantCssStorageServiceImpl.get(),
+      updater,
+    );
+    await InstantCssStorageServiceImpl.storageItem.setValue(newSettings);
   }
 
   static async reset(): Promise<void> {
-    await InstantCssStorageService.storageItem.setValue(
-      InstantCssStorageService.storageItem.fallback,
+    await InstantCssStorageServiceImpl.storageItem.setValue(
+      InstantCssStorageServiceImpl.storageItem.fallback,
     );
   }
 
   static async register(params: InstantCss & { id: keyof InstantCssSettings }) {
-    await InstantCssStorageService.set((draft) => {
+    await InstantCssStorageServiceImpl.set((draft) => {
       draft[params.id] = params;
     });
   }
 
   static async unregister(id: keyof InstantCssSettings) {
-    await InstantCssStorageService.set((draft) => {
+    await InstantCssStorageServiceImpl.set((draft) => {
       delete draft[id];
     });
   }
 
   static async isRegistered(id: keyof InstantCssSettings) {
-    const settings = await InstantCssStorageService.get();
+    const settings = await InstantCssStorageServiceImpl.get();
     return settings[id] !== undefined;
   }
 }
+
+export type InstantCssStorageService = typeof InstantCssStorageServiceImpl;

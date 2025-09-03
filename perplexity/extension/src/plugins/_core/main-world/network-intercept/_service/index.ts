@@ -6,24 +6,25 @@ import type { MiddlewareData } from "@/plugins/_core/main-world/network-intercep
 
 export const csProxyServiceName = "networkInterceptService";
 
-export class NetworkInterceptMiddlewareManager {
-  private static instance: NetworkInterceptMiddlewareManager;
+export class NetworkInterceptMiddlewareManagerImpl {
+  private static instance: NetworkInterceptMiddlewareManagerImpl;
   private middlewares: Middleware[] = [];
 
   overridesReady = false;
 
   private constructor() {}
 
-  static getInstance(): NetworkInterceptMiddlewareManager {
-    if (NetworkInterceptMiddlewareManager.instance == null) {
-      NetworkInterceptMiddlewareManager.instance =
-        new NetworkInterceptMiddlewareManager();
+  static getInstance(): NetworkInterceptMiddlewareManagerImpl {
+    if (NetworkInterceptMiddlewareManagerImpl.instance == null) {
+      NetworkInterceptMiddlewareManagerImpl.instance =
+        new NetworkInterceptMiddlewareManagerImpl();
     }
-    return NetworkInterceptMiddlewareManager.instance;
+    return NetworkInterceptMiddlewareManagerImpl.instance;
   }
 
   setOverridesReady(overridesReady: boolean): void {
-    NetworkInterceptMiddlewareManager.instance.overridesReady = overridesReady;
+    NetworkInterceptMiddlewareManagerImpl.instance.overridesReady =
+      overridesReady;
   }
 
   addMiddleware(middleware: Middleware): void {
@@ -165,3 +166,6 @@ export class NetworkInterceptMiddlewareManager {
     }
   }
 }
+
+export type NetworkInterceptMiddlewareManager =
+  NetworkInterceptMiddlewareManagerImpl;

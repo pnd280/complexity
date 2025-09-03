@@ -2,6 +2,7 @@ import React from "react";
 import { LuX } from "react-icons/lu";
 
 import { useEvent } from "@/hooks/useEvent";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import FloatingToggle from "@/plugins/thread-toc/FloatingToggle";
 import TocItem from "@/plugins/thread-toc/TocItem";
@@ -11,7 +12,6 @@ import {
   usePanelPosition,
 } from "@/plugins/thread-toc/usePanelPosition";
 import { useThreadTocItems } from "@/plugins/thread-toc/useThreadTocItems";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
 import { scrollToElement } from "@/utils/utils";
 
@@ -47,7 +47,7 @@ export function ThreadToc() {
     const tabState = new URLSearchParams(window.location.search).get(
       activeTopMostId.toString(),
     );
-    return tabState != null && !["d", "r"].includes(tabState);
+    return tabState != null && !["d", "r", "t"].includes(tabState);
   }, [isOverflowing, tocItems]);
 
   if (!shouldShowToc || threadWrapper == null) return null;
@@ -99,8 +99,9 @@ export function ThreadToc() {
               item={item}
               onClick={() => {
                 const $element = $(
-                  `${DomSelectorsService.cplxAttribute(
-                    DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
+                  `${getDomSelectorsRootService().cplxAttribute(
+                    getDomSelectorsRootService().internalAttributes.THREAD
+                      .MESSAGE.BLOCK,
                   )}[data-index="${item.id}"]`,
                 );
                 if ($element.length)
@@ -108,8 +109,9 @@ export function ThreadToc() {
               }}
               onContextMenu={() => {
                 const $element = $(
-                  `${DomSelectorsService.cplxAttribute(
-                    DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
+                  `${getDomSelectorsRootService().cplxAttribute(
+                    getDomSelectorsRootService().internalAttributes.THREAD
+                      .MESSAGE.BLOCK,
                   )}[data-index="${item.id}"]`,
                 );
                 if ($element.length && $element.height() != null)

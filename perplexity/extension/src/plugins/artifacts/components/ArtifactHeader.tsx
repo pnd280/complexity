@@ -2,6 +2,7 @@ import { LuList, LuRefreshCcw, LuX } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import PreviewToggle from "@/plugins/artifacts/components/PreviewToggle";
 import { artifactsStore, useArtifactsStore } from "@/plugins/artifacts/store";
@@ -13,7 +14,6 @@ import {
   isAutonomousArtifactLanguageString,
   isArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { scrollToElement } from "@/utils/utils";
 
 export default function ArtifactHeader() {
@@ -52,10 +52,11 @@ export default function ArtifactHeader() {
             artifactsStore.getState().selectedCodeBlockLocation;
           if (!selectedCodeBlockLocation) return;
 
-          const selector = `${DomSelectorsService.cplxAttribute(
-            DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
-          )}[data-index="${selectedCodeBlockLocation.messageBlockIndex}"] ${DomSelectorsService.cplxAttribute(
-            DomSelectorsService.internalAttributes.THREAD.MESSAGE
+          const selector = `${getDomSelectorsRootService().cplxAttribute(
+            getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
+              .BLOCK,
+          )}[data-index="${selectedCodeBlockLocation.messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
+            getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
               .MIRRORED_CODE_BLOCK,
           )}[data-index="${selectedCodeBlockLocation.codeBlockIndex}"]`;
 

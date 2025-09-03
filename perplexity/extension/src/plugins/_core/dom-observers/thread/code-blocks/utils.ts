@@ -2,10 +2,10 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/get-service";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 
 const astCache = new Map<string, any>();
 const mdAstProcessor = unified().use(remarkParse).use(remarkGfm);
@@ -33,7 +33,9 @@ async function processCodeBlocksForMessageBlock(
   }
 
   const $codeBlockElements = $(messageBlock.nodes.$answer)
-    .find(DomSelectorsService.cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER)
+    .find(
+      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER,
+    )
     .toArray();
 
   if ($codeBlockElements.length === 0) return [];
@@ -44,12 +46,13 @@ async function processCodeBlocksForMessageBlock(
 
       $codeBlock
         .internalComponentAttr(
-          DomSelectorsService.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
+          getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
+            .CODE_BLOCK,
         )
         .attr("data-index", codeBlockIndex);
 
       const $nativeCopyButton = $codeBlock.find(
-        DomSelectorsService.cachedSync.THREAD.MESSAGE.CODE_BLOCK
+        getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK
           .NATIVE_COPY_BUTTON,
       );
 
@@ -155,10 +158,10 @@ function isCodeBlockInFlight({
   if (!isMessageBlockInFlight) return false;
 
   const codeBlock = document.querySelector(
-    `${DomSelectorsService.cplxAttribute(
-      DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
-    )}[data-index="${messageBlockIndex}"] ${DomSelectorsService.cplxAttribute(
-      DomSelectorsService.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
+    `${getDomSelectorsRootService().cplxAttribute(
+      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
+    )}[data-index="${messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
+      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
     )}[data-index="${codeBlockIndex}"]`,
   );
 
@@ -171,10 +174,10 @@ function isCodeBlockInFlight({
   }
 
   const hasNextCodeBlock = document.querySelector(
-    `${DomSelectorsService.cplxAttribute(
-      DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
-    )}[data-index="${messageBlockIndex}"] ${DomSelectorsService.cplxAttribute(
-      DomSelectorsService.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
+    `${getDomSelectorsRootService().cplxAttribute(
+      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
+    )}[data-index="${messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
+      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
     )}[data-index="${codeBlockIndex + 1}"]`,
   );
 

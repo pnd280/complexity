@@ -10,6 +10,7 @@ import {
 import {
   softNavigate,
   openInNewTab,
+  useSpaRouter,
 } from "@/plugins/_core/main-world/spa-router/utils";
 import { useCurrentPage } from "@/plugins/command-menu/hooks/useCurrentPage";
 import SpaceBadge from "@/plugins/command-menu/pages/threads/SpaceBadge";
@@ -24,6 +25,8 @@ type ThreadItemProps = {
 };
 
 const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
+  const url = useSpaRouter((state) => state.url);
+
   const currentPage = useCurrentPage();
 
   const isSpaceThreadsPage = currentPage?.pageId === "spaceThreads";
@@ -74,7 +77,7 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
                 text={thread.title.slice(0, 500)}
               />
             </div>
-            {window.location.pathname.includes(thread.slug) && (
+            {url.includes(thread.slug) && (
               <Badge variant="outline">
                 {t("plugin-command-menu.common.current")}
               </Badge>

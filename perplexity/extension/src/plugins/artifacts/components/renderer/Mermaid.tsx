@@ -4,7 +4,7 @@ import { LuLoaderCircle } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
-import { getMermaidRendererService } from "@/plugins/_core/main-world/mermaid-renderer/service/get-service";
+import { getMermaidRendererService } from "@/plugins/_core/main-world/mermaid-renderer/service/service-init";
 import { getActiveQueryBoxTextbox } from "@/plugins/_core/ui/groups/query-box/utils";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import {

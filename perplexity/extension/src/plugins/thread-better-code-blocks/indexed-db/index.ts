@@ -7,27 +7,31 @@ import { db } from "@/services/infra/indexed-db";
 
 export const backgroundProxyServiceName = "betterCodeBlocksFineGrainedService";
 
-export class BetterCodeBlocksFineGrainedService {
-  async add(options: BetterCodeBlockFineGrainedOptions): Promise<string> {
+export class BetterCodeBlocksFineGrainedServiceImpl {
+  static async add(
+    options: BetterCodeBlockFineGrainedOptions,
+  ): Promise<string> {
     return await db["thread:betterCodeBlocks"].add(options);
   }
 
-  async get(
+  static async get(
     language: string,
   ): Promise<BetterCodeBlockFineGrainedOptions | null> {
     return (await db["thread:betterCodeBlocks"].get(language)) ?? null;
   }
 
-  async getAll(): Promise<BetterCodeBlockFineGrainedOptions[]> {
+  static async getAll(): Promise<BetterCodeBlockFineGrainedOptions[]> {
     return await db["thread:betterCodeBlocks"].toArray();
   }
 
-  async update(options: BetterCodeBlockFineGrainedOptions): Promise<string> {
+  static async update(
+    options: BetterCodeBlockFineGrainedOptions,
+  ): Promise<string> {
     await db["thread:betterCodeBlocks"].put(options);
     return options.language;
   }
 
-  async updateDraft({
+  static async updateDraft({
     language,
     newDraft,
   }: {
@@ -51,7 +55,10 @@ export class BetterCodeBlocksFineGrainedService {
     return language;
   }
 
-  async delete(language: string): Promise<void> {
+  static async delete(language: string): Promise<void> {
     await db["thread:betterCodeBlocks"].delete(language);
   }
 }
+
+export type BetterCodeBlocksFineGrainedService =
+  typeof BetterCodeBlocksFineGrainedServiceImpl;

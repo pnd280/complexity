@@ -1,8 +1,8 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import type { QueryBoxesDomObserverStoreType } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { isLexical } from "@/plugins/_core/ui/groups/query-box/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 const OBSERVER_ID = "submit-on-ctrl-enter";
 
@@ -11,7 +11,10 @@ function isModifierEnterPressed(e: KeyboardEvent) {
 }
 
 function isTypeaheadMenuPresent() {
-  return $(DomSelectorsService.cachedSync.QUERY_BOX.TYPEAHEAD_MENU).length > 0;
+  return (
+    $(getDomSelectorsRootService().cachedSync.QUERY_BOX.TYPEAHEAD_MENU).length >
+    0
+  );
 }
 
 function submitOnCtrlEnter(

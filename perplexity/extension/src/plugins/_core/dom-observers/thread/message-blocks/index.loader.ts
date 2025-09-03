@@ -1,12 +1,12 @@
 import debounce from "lodash/debounce";
 
+import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { DomObserver } from "@/plugins/_core/dom-observers/_service";
 import {
   CallbackQueue,
   createTaskId,
 } from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
 import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { findMessageBlocks } from "@/plugins/_core/dom-observers/thread/message-blocks/utils";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
@@ -73,11 +73,16 @@ async function onMutation() {
   const $threadMessagesContainer =
     threadDomObserverStore.getState().$messageBlocksWrapper;
 
-  if (
-    $threadMessagesContainer == null ||
-    !hasContentChanged($threadMessagesContainer)
-  )
+  if ($threadMessagesContainer == null) {
     return;
+  }
+
+  if (
+    !hasContentChanged($threadMessagesContainer) &&
+    threadMessageBlocksDomObserverStore.getState().messageBlocks != null
+  ) {
+    return;
+  }
 
   const messageBlocks = await findMessageBlocks($threadMessagesContainer);
 

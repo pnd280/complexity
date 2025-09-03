@@ -1,3 +1,3 @@
-import registerProxyService from "@/plugins/_core/main-world/markmap-renderer/service/proxy-register";
+import registerProxyService from "@/plugins/_core/main-world/markmap-renderer/service/service-init";
 
 registerProxyService();

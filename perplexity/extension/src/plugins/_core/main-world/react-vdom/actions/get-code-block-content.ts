@@ -1,5 +1,5 @@
 import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { errorWrapper } from "@/utils/error-wrapper";
 import { getReactFiberKey } from "@/utils/utils";
 
@@ -52,10 +52,10 @@ function buildCodeBlockSelector(
   messageBlockIndex: number,
   codeBlockIndex: number,
 ): string {
-  return `${DomSelectorsService.cplxAttribute(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
-  )}[data-index="${messageBlockIndex}"] ${DomSelectorsService.cplxAttribute(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
+  return `${DomSelectorsServiceImpl.cplxAttribute(
+    DomSelectorsServiceImpl.internalAttributes.THREAD.MESSAGE.BLOCK,
+  )}[data-index="${messageBlockIndex}"] ${DomSelectorsServiceImpl.cplxAttribute(
+    DomSelectorsServiceImpl.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
   )}[data-index="${codeBlockIndex}"] pre`;
 }
 

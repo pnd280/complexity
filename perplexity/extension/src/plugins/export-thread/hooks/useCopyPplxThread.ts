@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { toast } from "@/components/ui/use-toast";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { dualClipboardPut } from "@/utils/clipboard-utils";
@@ -106,7 +106,8 @@ async function copyMessageWithCitations({
     if (!$footer || !$footer.length) return;
 
     const $copyButton = $footer.find(
-      DomSelectorsService.cachedSync.THREAD.MESSAGE.FOOTER_CHILD.COPY_BUTTON,
+      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+        .COPY_BUTTON,
     );
 
     if (!$copyButton.length) return;

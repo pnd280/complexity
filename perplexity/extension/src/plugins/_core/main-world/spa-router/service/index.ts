@@ -1,6 +1,6 @@
 export const mainWorldProxyServiceName = "spaRouterService";
 
-export class SpaRouterService {
+export class SpaRouterServiceImpl {
   static push(url: string) {
     window.history.pushState({}, "", url);
   }
@@ -13,3 +13,5 @@ export class SpaRouterService {
     window.open(url, "_blank");
   }
 }
+
+export type SpaRouterService = typeof SpaRouterServiceImpl;

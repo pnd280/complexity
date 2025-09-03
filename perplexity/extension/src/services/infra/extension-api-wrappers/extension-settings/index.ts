@@ -2,7 +2,7 @@ import { produce } from "immer";
 import z from "zod";
 
 import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
-import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/get-service";
+import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 import {
   ExtensionSettingsSchema,
   type ExtensionSettings,

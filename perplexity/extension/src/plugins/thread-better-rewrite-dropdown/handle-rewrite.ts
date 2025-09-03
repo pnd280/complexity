@@ -1,11 +1,11 @@
 import { produce } from "immer";
 
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/proxy-register.loader";
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
 } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/get-service";
+import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export const handleRewrite = ({

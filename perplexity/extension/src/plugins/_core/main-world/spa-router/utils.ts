@@ -1,7 +1,7 @@
 import { useStoreWithEqualityFn } from "zustand/traditional";
 
 import { locationWaits } from "@/plugins/_core/main-world/spa-router/location-waits";
-import { getSpaRouterService } from "@/plugins/_core/main-world/spa-router/service/get-service";
+import { getSpaRouterService } from "@/plugins/_core/main-world/spa-router/service/service-init";
 import {
   spaRouterStore,
   type SpaRouterStore,

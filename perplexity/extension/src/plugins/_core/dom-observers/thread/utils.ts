@@ -1,7 +1,7 @@
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function findPageWrapper() {
   const existingPageWrapper =
@@ -10,17 +10,19 @@ export function findPageWrapper() {
   if (
     isInternalNodeExists({
       node: existingPageWrapper,
-      selector: DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.THREAD.PAGE_WRAPPER,
+      selector: getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
       ),
     })
   )
     return;
 
-  const $pageWrapper = $(DomSelectorsService.cachedSync.THREAD.PAGE_WRAPPER);
+  const $pageWrapper = $(
+    getDomSelectorsRootService().cachedSync.THREAD.PAGE_WRAPPER,
+  );
 
   $pageWrapper.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.PAGE_WRAPPER,
+    getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
   );
 
   threadDomObserverStore.setState({
@@ -34,19 +36,19 @@ export function findNavbar() {
   if (
     isInternalNodeExists({
       node: existingNavbar,
-      selector: DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.THREAD.NAVBAR,
+      selector: getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR,
       ),
     })
   )
     return;
 
-  const $navbar = $(DomSelectorsService.cachedSync.THREAD.NAVBAR);
+  const $navbar = $(getDomSelectorsRootService().cachedSync.THREAD.NAVBAR);
 
   if (!$navbar.length) return;
 
   $navbar.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.NAVBAR,
+    getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR,
   );
 
   threadDomObserverStore.setState({
@@ -61,8 +63,8 @@ export function findNavbarOverflowMenuButtonWrapper() {
   if (
     isInternalNodeExists({
       node: existingOverflowMenuButtonWrapper,
-      selector: DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.THREAD.NAVBAR_CHILD
+      selector: getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR_CHILD
           .OVERFLOW_MENU_BUTTON_WRAPPER,
       ),
     })
@@ -74,7 +76,7 @@ export function findNavbarOverflowMenuButtonWrapper() {
   if (!$navbar || !$navbar[0]) return;
 
   const $overflowMenuButtonWrapper = $navbar.find(
-    DomSelectorsService.cachedSync.SICKY_NAVBAR_CHILD
+    getDomSelectorsRootService().cachedSync.SICKY_NAVBAR_CHILD
       .OVERFLOW_MENU_BUTTON_WRAPPER,
   );
 
@@ -87,7 +89,7 @@ export function findNavbarOverflowMenuButtonWrapper() {
   }
 
   $overflowMenuButtonWrapper.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.NAVBAR_CHILD
+    getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR_CHILD
       .OVERFLOW_MENU_BUTTON_WRAPPER,
   );
 
@@ -102,17 +104,17 @@ export function findWrapper() {
   if (
     isInternalNodeExists({
       node: existingWrapper,
-      selector: DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.THREAD.WRAPPER,
+      selector: getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.THREAD.WRAPPER,
       ),
     })
   )
     return;
 
-  const $wrapper = $(DomSelectorsService.cachedSync.THREAD.WRAPPER);
+  const $wrapper = $(getDomSelectorsRootService().cachedSync.THREAD.WRAPPER);
 
   $wrapper.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.WRAPPER,
+    getDomSelectorsRootService().internalAttributes.THREAD.WRAPPER,
   );
 
   threadDomObserverStore.setState({
@@ -127,8 +129,9 @@ export function findMessageBlocksWrapper() {
   if (
     isInternalNodeExists({
       node: existingWrapper,
-      selector: DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.THREAD.MESSAGE_BLOCKS_WRAPPER,
+      selector: getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.THREAD
+          .MESSAGE_BLOCKS_WRAPPER,
       ),
     })
   )
@@ -139,19 +142,19 @@ export function findMessageBlocksWrapper() {
 
     let $target = $(
       isMobile
-        ? DomSelectorsService.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.MOBILE
-            .NORMAL
-        : DomSelectorsService.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.DESKTOP
-            .NORMAL,
+        ? getDomSelectorsRootService().cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER
+            .MOBILE.NORMAL
+        : getDomSelectorsRootService().cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER
+            .DESKTOP.NORMAL,
     );
 
     if (!$target.length) {
       $target = $(
         isMobile
-          ? DomSelectorsService.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.MOBILE
-              .BRANCHED
-          : DomSelectorsService.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.DESKTOP
-              .BRANCHED,
+          ? getDomSelectorsRootService().cachedSync.THREAD
+              .MESSAGE_BLOCKS_WRAPPER.MOBILE.BRANCHED
+          : getDomSelectorsRootService().cachedSync.THREAD
+              .MESSAGE_BLOCKS_WRAPPER.DESKTOP.BRANCHED,
       );
     }
 
@@ -159,7 +162,8 @@ export function findMessageBlocksWrapper() {
   })();
 
   $messageBlocksWrapper.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE_BLOCKS_WRAPPER,
+    getDomSelectorsRootService().internalAttributes.THREAD
+      .MESSAGE_BLOCKS_WRAPPER,
   );
 
   threadDomObserverStore.setState({
@@ -173,21 +177,21 @@ export function findPopper() {
   if (
     isInternalNodeExists({
       node: existingPopper,
-      selector: DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.THREAD.POPPER.DESKTOP,
+      selector: getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.THREAD.POPPER.DESKTOP,
       ),
     })
   )
     return;
 
   const $popper = $(document.body).find(
-    `>${DomSelectorsService.cachedSync.THREAD.POPPER.DESKTOP}`,
+    `>${getDomSelectorsRootService().cachedSync.THREAD.POPPER.DESKTOP}`,
   );
 
   if (!$popper.length) return;
 
   $popper.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.POPPER.DESKTOP,
+    getDomSelectorsRootService().internalAttributes.THREAD.POPPER.DESKTOP,
   );
 
   threadDomObserverStore.setState({

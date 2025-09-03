@@ -2,6 +2,7 @@ import { createListCollection } from "@ark-ui/react";
 
 import { Select, SelectContext, SelectTrigger } from "@/components/ui/select";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
 import { useScopedQueryBoxContext } from "@/plugins/_core/ui/groups/query-box/context/context";
 import { useSharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
@@ -12,7 +13,6 @@ import BetterLanguageModelSelectorTriggerButton from "@/plugins/language-model-s
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import { getSelectItems } from "@/plugins/language-model-selector/utils";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function LanguageModelSelector() {
   const { isMobile } = useIsMobileStore();
@@ -41,7 +41,7 @@ export function LanguageModelSelector() {
         itemToValue: (item) => item.id,
       })}
       data-testid={
-        DomSelectorsService.testIds.QUERY_BOX.LANGUAGE_MODEL_SELECTOR
+        getDomSelectorsRootService().testIds.QUERY_BOX.LANGUAGE_MODEL_SELECTOR
       }
       open={isOpen}
       value={[selectedLanguageModel]}

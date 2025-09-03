@@ -1,5 +1,5 @@
+import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import type { BeaconEventDataCatalog } from "@/plugins/_core/main-world/network-intercept/listeners.types";
-import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/proxy";
 
 export function initBeaconInterceptor() {
   const originalSendBeacon = navigator.sendBeacon;

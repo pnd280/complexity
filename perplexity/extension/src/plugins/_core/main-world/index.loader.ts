@@ -3,10 +3,10 @@ import type {
   PluginId,
   PluginsSettingsRegistry,
 } from "@/data/plugin-registry/types";
-import { InternalWebSocketManager } from "@/plugins/_core/web-socket";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { internalWebSocketStore } from "@/plugins/_core/global-stores/web-socket";
 import type { MainWorldCorePluginId } from "@/plugins/_core/main-world/types";
+import { InternalWebSocketManager } from "@/plugins/_core/web-socket";
 import { injectMainWorldScript } from "@/utils/utils";
 
 import markmapRendererPlugin from "@/plugins/_core/main-world/markmap-renderer?script&module";

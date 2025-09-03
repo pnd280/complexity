@@ -1,3 +1,4 @@
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import {
   CallbackQueue,
   createTaskId,
@@ -5,7 +6,6 @@ import {
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { whereAmI } from "@/utils/utils";
 
 const OBSERVER_ID = {
@@ -51,7 +51,7 @@ export function findMainQueryBox() {
 
   queryBoxesDomObserverStore.getState().setTextboxNodes({
     main: $mainQueryBoxTextbox.find(
-      DomSelectorsService.cachedSync.QUERY_BOX.TEXTBOX.MAIN,
+      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.MAIN,
     )[0],
   });
 }
@@ -95,7 +95,7 @@ export function findSpaceQueryBox() {
 
   queryBoxesDomObserverStore.getState().setTextboxNodes({
     space: $spaceQueryBox.find(
-      DomSelectorsService.cachedSync.QUERY_BOX.TEXTBOX.SPACE,
+      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.SPACE,
     )[0],
   });
 }
@@ -147,7 +147,7 @@ export async function findFollowUpQueryBox() {
 
   queryBoxesDomObserverStore.getState().setTextboxNodes({
     followUp: $followUpQueryBox.find(
-      DomSelectorsService.cachedSync.QUERY_BOX.TEXTBOX.FOLLOW_UP,
+      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.FOLLOW_UP,
     )[0],
   });
 }

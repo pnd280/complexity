@@ -17,7 +17,7 @@ import { triggerRewriteOption } from "@/plugins/_core/main-world/react-vdom/acti
 
 export const mainWorldProxyServiceName = "reactVdomService";
 
-export class ReactVdomService {
+export class ReactVdomServiceImpl {
   static isInitialized(): boolean {
     return true;
   }
@@ -57,3 +57,5 @@ export class ReactVdomService {
     return getLexicalEditorJsonContent();
   }
 }
+
+export type ReactVdomService = typeof ReactVdomServiceImpl;

@@ -4,7 +4,7 @@ import AsyncButton from "@/components/AsyncButton";
 import { Button } from "@/components/ui/button";
 import type { ExtensionData } from "@/data/dashboard/extension-data.types";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
-import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/get-service";
+import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 import { db as indexedDb } from "@/services/infra/indexed-db";
 
 export default function ExportDataButtons() {

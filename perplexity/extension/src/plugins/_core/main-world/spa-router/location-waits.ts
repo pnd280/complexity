@@ -1,4 +1,4 @@
-import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/proxy";
+import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
 import type { MaybePromise } from "@/types/utils.types";
 import { UiUtils } from "@/utils/ui-utils";

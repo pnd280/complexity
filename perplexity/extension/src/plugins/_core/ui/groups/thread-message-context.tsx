@@ -6,20 +6,6 @@ export const ThreadMessageContext = createContext<{
   messageBlockIndex: 0,
 });
 
-export function ThreadMessageToolbarContextProvider({
-  children,
-  messageBlockIndex,
-}: {
-  children: React.ReactNode;
-  messageBlockIndex: number;
-}) {
-  return (
-    <ThreadMessageContext value={{ messageBlockIndex }}>
-      {children}
-    </ThreadMessageContext>
-  );
-}
-
 export function useThreadMessageContext() {
   const context = use(ThreadMessageContext);
 

@@ -1,8 +1,8 @@
+import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import {
   CallbackQueue,
   createTaskId,
 } from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadCodeBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/code-blocks/store";
 import { findCodeBlocks } from "@/plugins/_core/dom-observers/thread/code-blocks/utils";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";

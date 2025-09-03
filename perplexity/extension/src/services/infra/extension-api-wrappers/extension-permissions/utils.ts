@@ -1,4 +1,4 @@
-import { getExtensionPermissionsService } from "@/services/infra/extension-api-wrappers/extension-permissions/get-service";
+import { getExtensionPermissionsService } from "@/services/infra/extension-api-wrappers/extension-permissions/service-init.bg-worker";
 
 export async function getPermissions(): Promise<chrome.permissions.Permissions> {
   return getExtensionPermissionsService().getAll();

@@ -11,7 +11,7 @@ import { invariant } from "@/utils/utils";
 
 export const csProxyServiceName = "domSelectorsService";
 
-export class DomSelectorsService {
+export class DomSelectorsServiceImpl {
   static local: DomSelectors = DOM_SELECTORS;
 
   static remote: DomSelectors | null = null;
@@ -21,7 +21,7 @@ export class DomSelectorsService {
   static testIds = TEST_ID;
 
   static getCache() {
-    return DomSelectorsService.remote ?? DomSelectorsService.local;
+    return DomSelectorsServiceImpl.remote ?? DomSelectorsServiceImpl.local;
   }
 
   static get cachedSync() {
@@ -30,10 +30,11 @@ export class DomSelectorsService {
       "This method is only available in content script, use getCache instead.",
     );
 
-    return DomSelectorsService.getCache();
+    return DomSelectorsServiceImpl.getCache();
   }
 
   static cplxAttribute(attribute: string): `[data-cplx-component="${string}"]` {
     return `[data-cplx-component="${attribute}"]`;
   }
 }
+export type DomSelectorsService = typeof DomSelectorsServiceImpl;

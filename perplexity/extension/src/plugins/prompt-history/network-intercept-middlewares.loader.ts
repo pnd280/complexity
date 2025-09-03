@@ -1,9 +1,9 @@
 import { queryClient } from "@/data/query-client";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/proxy-register.loader";
+import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import { parsePerplexityAskEvent } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/get-service";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
+import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

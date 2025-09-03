@@ -23,7 +23,7 @@ export default definePlugin({
     dependentDomObservers: ["thread:messageBlocks"],
     dependentMainWorldCorePlugins: ["spaRouter", "reactVdom"],
     dependentPlugins: ["queryBox:languageModelSelector"],
-    uiGroup: ["thread:messageBlocks:toolbar"],
+    uiGroup: ["thread:messageBlocks:footer"],
   },
   settingsSchema: {
     schema,

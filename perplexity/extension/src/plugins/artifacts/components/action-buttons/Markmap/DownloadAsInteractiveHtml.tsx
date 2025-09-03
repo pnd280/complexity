@@ -3,7 +3,7 @@ import { LuDownload } from "react-icons/lu";
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
-import { getMarkmapRendererService } from "@/plugins/_core/main-world/markmap-renderer/service/get-service";
+import { getMarkmapRendererService } from "@/plugins/_core/main-world/markmap-renderer/service/service-init";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import {
   formatArtifactTitle,

@@ -1,11 +1,11 @@
 import { useDebounce, useWindowSize } from "@uidotdev/usehooks";
 import debounce from "lodash/debounce";
 
+import { DomObserver } from "@/plugins/_core/dom-observers/_service";
 import {
   CallbackQueue,
   createTaskId,
 } from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
 import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";

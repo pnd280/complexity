@@ -1,8 +1,8 @@
 import { getThemeCss } from "@/plugins/_core/custom-theme/utils";
-import { getInstantCssStorageService } from "@/services/features/instant-css/storage/get-service";
+import { getInstantCssStorageService } from "@/services/features/instant-css/storage/service-init.bg-worker";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
-import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/get-service";
+import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 const instantCssServiceKey = "customTheme";

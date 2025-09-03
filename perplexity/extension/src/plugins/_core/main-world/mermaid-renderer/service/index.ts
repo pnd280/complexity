@@ -15,17 +15,17 @@ declare module "@/plugins/_core/main-world/types" {
 
 export const mainWorldProxyServiceName = "mermaidRendererService";
 
-export class MermaidRendererService {
-  private static instance: MermaidRendererService | null = null;
+export class MermaidRendererServiceImpl {
+  private static instance: MermaidRendererServiceImpl | null = null;
   private importPromise: Promise<void> | null = null;
 
   private constructor() {}
 
   static getInstance() {
-    if (!MermaidRendererService.instance) {
-      MermaidRendererService.instance = new MermaidRendererService();
+    if (!MermaidRendererServiceImpl.instance) {
+      MermaidRendererServiceImpl.instance = new MermaidRendererServiceImpl();
     }
-    return MermaidRendererService.instance;
+    return MermaidRendererServiceImpl.instance;
   }
 
   initialize() {
@@ -166,8 +166,10 @@ export class MermaidRendererService {
   }
 
   async waitForInitialization() {
-    while (!MermaidRendererService.getInstance().isInitialized()) {
+    while (!MermaidRendererServiceImpl.getInstance().isInitialized()) {
       await sleep(100);
     }
   }
 }
+
+export type MermaidRendererService = MermaidRendererServiceImpl;

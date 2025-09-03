@@ -1,5 +1,5 @@
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export default function usePortalContainer() {
   const popper = useThreadDomObserverStore(
@@ -14,7 +14,10 @@ function findOptionsGridHeader(popper: HTMLElement | null) {
   if (!popper) return null;
 
   const $header = $(popper)
-    .find(DomSelectorsService.cachedSync.THREAD.MESSAGE.IMAGE_GEN.OPTIONS_GRID)
+    .find(
+      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.IMAGE_GEN
+        .OPTIONS_GRID,
+    )
     .prev();
 
   if (!$header.length) return null;

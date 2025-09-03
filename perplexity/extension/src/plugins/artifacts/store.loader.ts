@@ -18,7 +18,7 @@ import {
   getInterpretedArtifactLanguage,
   isAutonomousArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { parseUrl, scrollToElement, whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -169,10 +169,11 @@ const handleArtifactBlockClick = (location: CodeBlockLocation) => {
     draft.selectedCodeBlockLocation = location;
     draft.state = "preview";
 
-    const selector = `${DomSelectorsService.cplxAttribute(
-      DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
-    )}[data-index="${location.messageBlockIndex}"] ${DomSelectorsService.cplxAttribute(
-      DomSelectorsService.internalAttributes.THREAD.MESSAGE.MIRRORED_CODE_BLOCK,
+    const selector = `${getDomSelectorsRootService().cplxAttribute(
+      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
+    )}[data-index="${location.messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
+      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
+        .MIRRORED_CODE_BLOCK,
     )}[data-index="${location.codeBlockIndex}"]`;
     scrollToElement($(selector), -100);
   });

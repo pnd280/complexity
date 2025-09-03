@@ -11,8 +11,8 @@ declare module "@/plugins/_core/main-world/types" {
 
 export const mainWorldProxyServiceName = "markmapRendererService";
 
-export class MarkmapRendererService {
-  private static instance: MarkmapRendererService | null = null;
+export class MarkmapRendererServiceImpl {
+  private static instance: MarkmapRendererServiceImpl | null = null;
   private importPromise: Promise<void> | null = null;
 
   private constructor() {}
@@ -21,10 +21,10 @@ export class MarkmapRendererService {
   private currentMarkmapInstance: Markmap | null = null;
 
   static getInstance() {
-    if (!MarkmapRendererService.instance) {
-      MarkmapRendererService.instance = new MarkmapRendererService();
+    if (!MarkmapRendererServiceImpl.instance) {
+      MarkmapRendererServiceImpl.instance = new MarkmapRendererServiceImpl();
     }
-    return MarkmapRendererService.instance;
+    return MarkmapRendererServiceImpl.instance;
   }
 
   initialize() {
@@ -172,8 +172,10 @@ export class MarkmapRendererService {
   }
 
   async waitForInitialization() {
-    while (!MarkmapRendererService.getInstance().isInitialized()) {
+    while (!MarkmapRendererServiceImpl.getInstance().isInitialized()) {
       await sleep(100);
     }
   }
 }
+
+export type MarkmapRendererService = MarkmapRendererServiceImpl;

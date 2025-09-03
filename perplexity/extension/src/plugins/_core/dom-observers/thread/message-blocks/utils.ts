@@ -1,8 +1,8 @@
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/_core/dom-observers/thread/message-blocks/index.remote-resources";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
 import { type MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/get-service";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const remoteFiberNodePath = (
@@ -106,7 +106,7 @@ function processMessageBlock(
 
   $wrapper
     .internalComponentAttr(
-      DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
+      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
     )
     .attr("data-index", index);
 
@@ -126,7 +126,9 @@ function processMessageBlock(
   const content: MessageBlock["content"] = {
     title:
       messageBlockFiber?.title ??
-      $query.find(DomSelectorsService.cachedSync.THREAD.MESSAGE.QUERY).text(),
+      $query
+        .find(getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.QUERY)
+        .text(),
     answer: messageBlockFiber?.answer ?? "",
     webResults: messageBlockFiber?.webResults ?? [],
     displayModel: messageBlockFiber?.displayModel ?? "",
@@ -152,7 +154,7 @@ function processMessageBlock(
 }
 
 function parseMessageBlock($messageBlock: JQuery<Element>) {
-  const SELECTORS = DomSelectorsService.cachedSync.THREAD.MESSAGE;
+  const SELECTORS = getDomSelectorsRootService().cachedSync.THREAD.MESSAGE;
 
   const $elements = $messageBlock.find(
     [
@@ -171,17 +173,17 @@ function parseMessageBlock($messageBlock: JQuery<Element>) {
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
 
   $query.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE.QUERY,
+    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.QUERY,
   );
   $queryEditButtonGroup.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE
+    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
       .QUERY_EDIT_BUTTON_GROUP,
   );
   $answer.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE.ANSWER,
+    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.ANSWER,
   );
   $footer.internalComponentAttr(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE.FOOTER,
+    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.FOOTER,
   );
 
   return {
@@ -212,8 +214,9 @@ function getMessageBlockStates({
   $wrapper.attr("data-inflight", isInFlight ? "true" : "false");
 
   const isEditingQuery =
-    $query.find(DomSelectorsService.cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY)
-      .length > 0;
+    $query.find(
+      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY,
+    ).length > 0;
 
   const existingReadOnlyAttr = $wrapper.attr("data-read-only");
   if (existingReadOnlyAttr != null && existingReadOnlyAttr === "false") {
@@ -226,7 +229,8 @@ function getMessageBlockStates({
 
   const isQueryEditButtonGroupPresent =
     $query.find(
-      DomSelectorsService.cachedSync.THREAD.MESSAGE.QUERY_EDIT_BUTTON_GROUP,
+      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE
+        .QUERY_EDIT_BUTTON_GROUP,
     ).length > 0;
 
   $wrapper.attr(

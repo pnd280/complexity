@@ -7,6 +7,7 @@ import {
   CommandItemRightAttributes,
   CommandItemTitle,
 } from "@/components/ui/command";
+import { useSpaRouter } from "@/plugins/_core/main-world/spa-router/utils";
 import CommandItemGuard from "@/plugins/command-menu/components/CommandItemGuard";
 import NavigationItemsFooter from "@/plugins/command-menu/items/navigations/Footer";
 import { getRawItems } from "@/plugins/command-menu/items/navigations/items";
@@ -23,7 +24,8 @@ const locationMap = {
 } as const satisfies Record<string, ReturnType<typeof whereAmI>>;
 
 export default function NavigationItems() {
-  const location = whereAmI();
+  const url = useSpaRouter((state) => state.url);
+  const location = whereAmI(url);
 
   const items = useMemo(
     () =>

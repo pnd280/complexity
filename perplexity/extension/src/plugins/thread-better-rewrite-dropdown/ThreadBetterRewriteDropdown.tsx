@@ -27,7 +27,7 @@ export function ThreadBetterRewriteDropdown() {
     useState<LanguageModelCode | null>("claude2");
 
   useRegisteredGlobalCssEntry({
-    entryIds: ["thread-message-toolbar-hide-native-rewrite-dropdowns"],
+    entryIds: ["thread-message-footer-hide-native-rewrite-dropdowns"],
     subscriberId: "thread-better-rewrite-dropdown#" + messageBlockIndex,
   });
 

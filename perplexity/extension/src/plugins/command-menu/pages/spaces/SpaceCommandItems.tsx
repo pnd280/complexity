@@ -12,6 +12,7 @@ import {
 import { CommandItemSkeleton } from "@/components/ui/command";
 import {
   openInNewTab,
+  useSpaRouter,
   softNavigate,
 } from "@/plugins/_core/main-world/spa-router/utils";
 import SpacesSearchItemsFooter from "@/plugins/command-menu/pages/spaces/Footer";
@@ -26,6 +27,8 @@ import { emojiCodeToString } from "@/utils/utils";
 
 export default function SpaceCommandItems() {
   useCommandMenuStore((store) => store.open);
+
+  const url = useSpaRouter((state) => state.url);
 
   const sidecarOpen = useCommandMenuStore((store) => store.sidecarOpen);
 
@@ -87,7 +90,7 @@ export default function SpaceCommandItems() {
                     )}
                     <div className="x:line-clamp-1">{space.title}</div>
                   </div>
-                  {window.location.pathname.includes(space.slug) && (
+                  {url.includes(space.slug) && (
                     <Badge variant="outline">
                       {t("plugin-command-menu.navigation.current")}
                     </Badge>

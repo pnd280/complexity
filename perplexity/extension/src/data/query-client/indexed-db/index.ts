@@ -3,25 +3,27 @@ import { db } from "@/services/infra/indexed-db";
 
 export const backgroundProxyServiceName = "queryCacheService";
 
-export class QueryCacheService {
-  async add(query: QueryCacheEntry): Promise<string> {
+export class QueryCacheServiceImpl {
+  static async add(query: QueryCacheEntry): Promise<string> {
     return await db.queryCache.add(query);
   }
 
-  async get(key: string): Promise<QueryCacheEntry | undefined> {
+  static async get(key: string): Promise<QueryCacheEntry | undefined> {
     return await db.queryCache.get(key);
   }
 
-  async getAll(): Promise<QueryCacheEntry[]> {
+  static async getAll(): Promise<QueryCacheEntry[]> {
     return await db.queryCache.toArray();
   }
 
-  async update(key: string, query: QueryCacheEntry): Promise<string> {
+  static async update(key: string, query: QueryCacheEntry): Promise<string> {
     await db.queryCache.put(query);
     return key;
   }
 
-  async delete(key: string): Promise<void> {
+  static async delete(key: string): Promise<void> {
     await db.queryCache.delete(key);
   }
 }
+
+export type QueryCacheService = typeof QueryCacheServiceImpl;

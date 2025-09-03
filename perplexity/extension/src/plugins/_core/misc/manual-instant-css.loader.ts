@@ -2,7 +2,7 @@
 
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { InstantCssService } from "@/services/features/instant-css";
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/get-service";
+import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
 import { sendMessage } from "@/types/chrome-runtime-message";
 import { whereAmI } from "@/utils/utils";
 

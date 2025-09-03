@@ -1,6 +1,6 @@
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { settingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
 import { isInternalNodeExists } from "@/plugins/_core/dom-observers/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 
 export function findSidebar() {
   const existingSidebar =
@@ -9,21 +9,23 @@ export function findSidebar() {
   if (
     isInternalNodeExists({
       node: existingSidebar,
-      selector: DomSelectorsService.cplxAttribute(
-        DomSelectorsService.internalAttributes.SETTINGS_PAGE.SIDEBAR_WRAPPER,
+      selector: getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
+          .SIDEBAR_WRAPPER,
       ),
     })
   )
     return;
 
   const $sidebar = $(
-    DomSelectorsService.cachedSync.SETTINGS_PAGE.SIDEBAR_WRAPPER,
+    getDomSelectorsRootService().cachedSync.SETTINGS_PAGE.SIDEBAR_WRAPPER,
   );
 
   if (!$sidebar.length) return;
 
   $sidebar.internalComponentAttr(
-    DomSelectorsService.internalAttributes.SETTINGS_PAGE.SIDEBAR_WRAPPER,
+    getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
+      .SIDEBAR_WRAPPER,
   );
 
   settingsPageDomObserverStore.setState({

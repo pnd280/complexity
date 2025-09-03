@@ -1,10 +1,11 @@
+import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { DomObserver } from "@/plugins/_core/dom-observers/_service";
 import {
   CallbackQueue,
   createTaskId,
 } from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
 import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import {
   findNavbarOverflowMenuButtonWrapper,
@@ -15,9 +16,8 @@ import {
   findMessageBlocksWrapper,
 } from "@/plugins/_core/dom-observers/thread/utils";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/get-service";
+import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { waitUntil, whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {
@@ -71,15 +71,13 @@ function cleanup() {
   threadDomObserverStore.getState().resetStore();
 
   $(
-    DomSelectorsService.cplxAttribute(
-      DomSelectorsService.internalAttributes.THREAD.PAGE_WRAPPER,
+    getDomSelectorsRootService().cplxAttribute(
+      getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
     ),
   ).internalComponentAttr(null);
 }
 
 function observeThread(location: ReturnType<typeof whereAmI>) {
-  cleanup();
-
   if (location === "thread") {
     DomObserver.create(createDomObserverId("thread"), {
       target: document.body,
@@ -134,5 +132,7 @@ function observeThread(location: ReturnType<typeof whereAmI>) {
         ]);
       },
     });
+  } else {
+    cleanup();
   }
 }

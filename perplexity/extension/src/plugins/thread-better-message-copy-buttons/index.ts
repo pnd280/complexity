@@ -21,7 +21,7 @@ export default definePlugin({
       "Copy message content without citations. More formatting options coming soon",
     categories: ["thread", "comet"],
     tags: ["ui", "cometAssistant"],
-    uiGroup: ["thread:messageBlocks:toolbar"],
+    uiGroup: ["thread:messageBlocks:footer"],
     dependentDomObservers: ["thread:messageBlocks"],
     dependentMainWorldCorePlugins: ["spaRouter", "reactVdom"],
   },

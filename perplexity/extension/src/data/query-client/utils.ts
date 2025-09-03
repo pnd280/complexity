@@ -7,7 +7,7 @@ import type { PersistedClient } from "@tanstack/react-query-persist-client";
 import debounce from "lodash/debounce";
 
 import { APP_CONFIG } from "@/app.config";
-import { getQueryCacheService } from "@/data/query-client/indexed-db/get-service";
+import { getQueryCacheService } from "@/data/query-client/indexed-db/service-init.bg-worker";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { isSubArray } from "@/utils/utils";

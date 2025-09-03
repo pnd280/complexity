@@ -2,7 +2,7 @@ import {
   getActiveQueryBoxTextbox,
   isLexical,
 } from "@/plugins/_core/ui/groups/query-box/utils";
-import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/get-service";
+import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import { getTextContent } from "@/utils/lexical-utils";
 
 export const handlePromptSave = async (params?: {

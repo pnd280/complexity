@@ -1,6 +1,6 @@
-import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/proxy";
+import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
-import { DomSelectorsService } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
+import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { errorWrapper } from "@/utils/error-wrapper";
 import { getReactFiberKey } from "@/utils/utils";
 
@@ -12,10 +12,10 @@ export async function triggerRewriteOption(params: {
 
   const { messageBlockIndex, optionIndex } = params;
 
-  const selector = `${DomSelectorsService.cplxAttribute(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
-  )}[data-index="${messageBlockIndex}"] ${DomSelectorsService.cplxAttribute(
-    DomSelectorsService.internalAttributes.THREAD.MESSAGE.FOOTER,
+  const selector = `${DomSelectorsServiceImpl.cplxAttribute(
+    DomSelectorsServiceImpl.internalAttributes.THREAD.MESSAGE.BLOCK,
+  )}[data-index="${messageBlockIndex}"] ${DomSelectorsServiceImpl.cplxAttribute(
+    DomSelectorsServiceImpl.internalAttributes.THREAD.MESSAGE.FOOTER,
   )} ${domSelectors.THREAD.MESSAGE.FOOTER_CHILD.REWRITE_BUTTON}`;
 
   const $rewriteButtonWrapper = $(selector).parent().parent();

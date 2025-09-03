@@ -43,7 +43,7 @@ const CopyButton = memo(function CopyButton({
   );
 
   useRegisteredGlobalCssEntry({
-    entryIds: ["thread-message-toolbar-hide-native-copy-buttons"],
+    entryIds: ["thread-message-footer-hide-native-copy-buttons"],
     subscriberId: "thread-better-message-copy-button#" + messageBlockIndex,
   });
 

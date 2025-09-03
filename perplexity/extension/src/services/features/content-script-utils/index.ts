@@ -3,7 +3,7 @@ import { getOptionsPageUrl } from "@/utils/utils";
 
 export const backgroundProxyServiceName = "contentScriptBgUtilsService";
 
-export class ContentScriptBgUtilsService {
+export class ContentScriptBgUtilsServiceImpl {
   static async cometGetSidecarTabId({
     currentTabId,
   }: {
@@ -61,3 +61,6 @@ export class ContentScriptBgUtilsService {
     );
   }
 }
+
+export type ContentScriptBgUtilsService =
+  typeof ContentScriptBgUtilsServiceImpl;
