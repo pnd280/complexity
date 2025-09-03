@@ -27,7 +27,7 @@ export const ENDPOINTS = {
   RESOURCES: {
     THREADS: {
       GET_ONE: (threadSlug: string) =>
-        `https://www.perplexity.ai/rest/thread/${threadSlug}?version=2.18&source=default`,
+        `https://www.perplexity.ai/rest/thread/${threadSlug}?version=2.18&source=default&limit=9999`,
       GET_ALL:
         "https://www.perplexity.ai/rest/thread/list_ask_threads?version=2.18&source=default",
     },
