@@ -24,10 +24,14 @@ describe("Plugin Settings UI Loader", () => {
       expect(pluginId).toBeDefined();
 
       const settingsUiPath = filePath.replace("index.ts", "settings-ui.tsx");
+      const settingsUiIndexPath = filePath.replace(
+        "index.ts",
+        "settings-ui/index.tsx",
+      );
 
       const fsPath = path.join(process.cwd(), settingsUiPath);
 
-      if (!fs.existsSync(fsPath)) {
+      if (!fs.existsSync(fsPath) && !fs.existsSync(settingsUiIndexPath)) {
         continue;
       }
 

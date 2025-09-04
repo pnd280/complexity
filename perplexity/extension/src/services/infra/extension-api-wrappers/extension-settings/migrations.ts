@@ -32,9 +32,9 @@ export const migrations = {
   3: (oldSettings: ExtensionSettings): ExtensionSettings => {
     const [result, error] = errorWrapper(() => {
       return produce(oldSettings, (draft) => {
-        draft.plugins.commandMenu.keybindings.toggle =
-          // @ts-expect-error
-          oldSettings.plugins.commandMenu.hotkey;
+        draft.plugins.commandMenu.keybindings.toggle = [
+          (oldSettings.plugins.commandMenu as any).hotkey,
+        ];
       });
     })();
 

@@ -24,7 +24,7 @@ export class PluginRegistry {
   static zodSchema = z.object({});
   static fallbackValues = {} as PluginsSettingsSchema;
 
-  static readonly LATEST_INDEXED_DB_VERSION = 7;
+  static readonly LATEST_INDEXED_DB_VERSION = 8;
   static indexedDbVersions: Record<
     number,
     {
@@ -61,11 +61,17 @@ export class PluginRegistry {
 
     // Accumulate IndexedDB schemas by version, preventing conflicts
     if (params.indexedDb) {
-      PluginRegistry.indexedDbTableValidationSchemas[params.manifest.id] =
-        params.indexedDb.schema;
+      if (params.indexedDb.schema) {
+        PluginRegistry.indexedDbTableValidationSchemas[params.manifest.id] =
+          params.indexedDb.schema;
+      }
 
-      for (const versionConfig of params.indexedDb.versions) {
-        const { version, schema, upgrade } = versionConfig;
+      const sortedVersions = [...params.indexedDb.versions].sort(
+        (a, b) => a.version - b.version,
+      );
+
+      for (const versionConfig of sortedVersions) {
+        const { version, schema, tableName, upgrade } = versionConfig;
 
         invariant(
           version <= PluginRegistry.LATEST_INDEXED_DB_VERSION,
@@ -73,6 +79,20 @@ export class PluginRegistry {
             `but the latest supported version is ${PluginRegistry.LATEST_INDEXED_DB_VERSION}. ` +
             `Please manually increase PluginRegistry.LATEST_INDEXED_DB_VERSION and review the schema changes.`,
         );
+
+        if (!schema) {
+          if (!PluginRegistry.indexedDbVersions[version]) {
+            PluginRegistry.indexedDbVersions[version] = {
+              schemas: {},
+              upgrades: [],
+            };
+          }
+
+          if (upgrade) {
+            PluginRegistry.indexedDbVersions[version].upgrades.push(upgrade);
+          }
+          continue;
+        }
 
         if (!PluginRegistry.indexedDbVersions[version]) {
           PluginRegistry.indexedDbVersions[version] = {
@@ -84,13 +104,37 @@ export class PluginRegistry {
         const existingSchemas =
           PluginRegistry.indexedDbVersions[version].schemas;
 
+        let finalTableName = tableName;
+        if (!finalTableName) {
+          for (let prevVersion = version - 1; prevVersion >= 1; prevVersion--) {
+            const prevVersionData =
+              PluginRegistry.indexedDbVersions[prevVersion];
+            if (prevVersionData?.schemas) {
+              const prevPluginVersion = sortedVersions.find(
+                (v) => v.version === prevVersion,
+              );
+              if (prevPluginVersion) {
+                if (prevPluginVersion.tableName) {
+                  finalTableName = prevPluginVersion.tableName;
+                  break;
+                }
+                if (params.manifest.id in prevVersionData.schemas) {
+                  finalTableName = params.manifest.id;
+                  break;
+                }
+              }
+            }
+          }
+          finalTableName = finalTableName ?? params.manifest.id;
+        }
+
         invariant(
-          !(params.manifest.id in existingSchemas),
-          `IndexedDB schema collision: Table "${params.manifest.id}" is already defined for version ${version}. ` +
+          !(finalTableName in existingSchemas),
+          `IndexedDB schema collision: Table "${finalTableName}" is already defined for version ${version}. ` +
             `Plugin "${params.manifest.id}" attempted to redefine it.`,
         );
 
-        existingSchemas[params.manifest.id] = schema;
+        existingSchemas[finalTableName] = schema;
 
         if (upgrade) {
           PluginRegistry.indexedDbVersions[version].upgrades.push(upgrade);

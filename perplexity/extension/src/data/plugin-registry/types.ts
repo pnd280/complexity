@@ -76,13 +76,14 @@ export type PluginTables = {
 
 export type PluginIndexedDbVersion = {
   version: number;
-  schema: string;
+  schema?: string;
+  tableName?: string;
   upgrade?: (tx: Transaction) => Promise<void> | void;
 };
 
 export type PluginIndexedDbConfig = {
   versions: PluginIndexedDbVersion[];
-  schema: z.ZodType<any>;
+  schema?: z.ZodType<any>;
 };
 
 export type PluginManifest = {

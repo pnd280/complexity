@@ -61,17 +61,13 @@ export class IndexedDbService extends Dexie {
     for (const versionNum of sortedVersions) {
       const versionData = allVersions.get(versionNum)!;
 
-      if (Object.keys(versionData.schemas).length > 0) {
-        this.version(versionNum).stores(versionData.schemas);
-      }
-
-      if (versionData.upgrades.length > 0) {
-        this.version(versionNum).upgrade(async (tx) => {
+      this.version(versionNum)
+        .stores(versionData.schemas)
+        .upgrade(async (tx) => {
           for (const upgradeFunc of versionData.upgrades) {
             await upgradeFunc(tx);
           }
         });
-      }
     }
   }
 

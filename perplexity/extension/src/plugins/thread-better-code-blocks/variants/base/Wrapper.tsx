@@ -5,7 +5,7 @@ import HighlightedCodeWrapper from "@/plugins/thread-better-code-blocks/variants
 import { PluginsStatesService } from "@/services/features/plugins-states";
 
 const BaseCodeBlockWrapper = memo(function BaseCodeBlockWrapper() {
-  const { maxHeight, sourceMessageBlockIndex, sourceCodeBlockIndex } =
+  const { maxHeight, maxWidth, sourceMessageBlockIndex, sourceCodeBlockIndex } =
     useMirroredCodeBlockContext();
 
   const isArtifactEnabled =
@@ -24,9 +24,13 @@ const BaseCodeBlockWrapper = memo(function BaseCodeBlockWrapper() {
         "x:relative x:my-4 x:flex x:flex-col x:rounded-lg x:border x:border-border/50 x:bg-secondary x:font-mono x:transition-all",
         {
           "x:overflow-hidden": maxHeight === 0,
+          "x:w-(--max-width-percentage)": maxWidth > 0,
           "x:border-primary": isArtifactEnabled && isSelectedArtifactCodeBlock,
         },
       )}
+      style={{
+        maxWidth: maxWidth > 0 ? `${maxWidth}%` : undefined,
+      }}
     >
       <BetterCodeBlockHeader />
       <HighlightedCodeWrapper />

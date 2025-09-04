@@ -48,7 +48,10 @@ export const elements = [
     type: "plugin-settings-ui",
     mode: "full",
     capture: ["pluginName"],
-    pattern: ["src/plugins/*/**/settings-ui.tsx"],
+    pattern: [
+      "src/plugins/*/**/settings-ui.tsx",
+      "src/plugins/*/**/settings-ui/index.tsx",
+    ],
   },
 
   {

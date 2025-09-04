@@ -55,6 +55,7 @@ export default defineConfig(() => ({
         "public/**/*",
         "!src/entrypoints/options-page/**/*",
         "!src/plugins/**/settings-ui.tsx",
+        "!src/plugins/**/settings-ui/**/*",
       ],
     }),
     vitePluginReloadOnDynamicallyInjectedStyleChanges({
@@ -97,7 +98,7 @@ export default defineConfig(() => ({
   },
 
   test: {
-    exclude: ["node_modules", "e2e/**", "dist/**"],
+    exclude: ["node_modules", "e2e/**", "dist/**", "release/**"],
     setupFiles: ["./tests/vitest.setup.ts"],
   },
 }));

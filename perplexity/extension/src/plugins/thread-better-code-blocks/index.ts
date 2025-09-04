@@ -54,13 +54,46 @@ export default definePlugin({
         value: 500,
         showToggleButton: true,
       },
+      maxWidth: {
+        enabled: false,
+        value: 100,
+      },
     },
   },
   indexedDb: {
     versions: [
       {
         version: 6,
+        tableName: "betterCodeBlocks",
         schema: "&language",
+      },
+      {
+        version: 8,
+        tableName: "thread:betterCodeBlocks",
+        schema: "&language",
+        upgrade: async (tx) => {
+          const oldTable = tx.table("betterCodeBlocks");
+
+          const newTable = tx.table("thread:betterCodeBlocks");
+
+          const oldData = await oldTable.toArray();
+
+          for (const record of oldData) {
+            const migratedRecord = {
+              ...record,
+              maxWidth: {
+                enabled: false,
+                value: 100,
+              },
+            };
+
+            await newTable.add(migratedRecord);
+          }
+
+          console.log(
+            `Migrated ${oldData.length} records from betterCodeBlocks to thread:betterCodeBlocks`,
+          );
+        },
       },
     ],
     schema: BetterCodeBlockFineGrainedOptionsSchema,

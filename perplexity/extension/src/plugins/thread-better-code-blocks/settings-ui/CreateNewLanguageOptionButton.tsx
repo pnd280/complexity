@@ -44,6 +44,10 @@ export default function CreateNewLanguageOptionButton() {
           showToggleButton: false,
           value: 500,
         },
+        maxWidth: {
+          enabled: false,
+          value: 100,
+        },
         placeholderText: {
           enabled: false,
           title: "",

@@ -13,6 +13,10 @@ export const BetterCodeBlockGlobalOptionsSchema = z.object({
     value: z.number(),
     showToggleButton: z.boolean(),
   }),
+  maxWidth: z.object({
+    enabled: z.boolean(),
+    value: z.number(),
+  }),
 });
 
 export type BetterCodeBlockGlobalOptions = z.infer<
