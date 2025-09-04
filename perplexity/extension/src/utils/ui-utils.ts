@@ -1,8 +1,21 @@
 import { DomSelectorsService } from "@/services/cplx-api/versioned-remote-resources/dom-selectors";
+import { getCookie } from "@/utils/utils";
 
 export class UiUtils {
-  static isDarkTheme() {
-    return $("html").attr("data-color-scheme") === "dark";
+  static getCurrentColorScheme(): "dark" | "light" {
+    const cookieSetting = getCookie("colorScheme");
+    if (cookieSetting === "dark" || cookieSetting === "light") {
+      return cookieSetting;
+    }
+
+    const documentAttribute = $("html").attr("data-color-scheme");
+    if (documentAttribute === "dark" || documentAttribute === "light") {
+      return documentAttribute;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   }
 
   static getStickyNavbar() {

@@ -17,7 +17,10 @@ export function getSelection(textarea: HTMLTextAreaElement): TextboxSelection {
   return {
     start: textarea.selectionStart,
     end: textarea.selectionEnd,
-    value: textarea.value,
+    value: textarea.value.substring(
+      textarea.selectionStart,
+      textarea.selectionEnd,
+    ),
   };
 }
 

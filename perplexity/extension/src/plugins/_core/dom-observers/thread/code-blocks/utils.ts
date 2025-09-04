@@ -14,17 +14,18 @@ export async function findCodeBlocks(
   messageBlocks: MessageBlock[],
 ): Promise<CodeBlock[][]> {
   const codeBlocksChunksPromises = messageBlocks.map((messageBlock, index) =>
-    processCodeBlocksForMessageBlock(messageBlock, index, messageBlocks),
+    processCodeBlocksForMessageBlock(messageBlocks, index),
   );
 
   return Promise.all(codeBlocksChunksPromises);
 }
 
 async function processCodeBlocksForMessageBlock(
-  messageBlock: MessageBlock | null,
-  messageBlockIndex: number,
   messageBlocks: MessageBlock[],
+  messageBlockIndex: number,
 ): Promise<CodeBlock[]> {
+  const messageBlock = messageBlocks[messageBlockIndex];
+
   if (!messageBlock) return [];
 
   if (messageBlock.states.isVirtualized) {

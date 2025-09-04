@@ -9,7 +9,7 @@ import {
   type ThemeFormContextType,
 } from "@/entrypoints/options-page/dashboard/pages/themes/context/ThemeFormContext";
 import { useBaseThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/hooks/useBaseThemeForm";
-import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db";
+import { getLocalThemesService } from "@/plugins/_core/custom-theme/index.public";
 
 type CreateThemeProviderProps = {
   children: React.ReactNode;

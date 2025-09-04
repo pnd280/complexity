@@ -106,7 +106,7 @@ export class MermaidRenderer {
     try {
       await MermaidRenderer.waitForInitialization();
 
-      const isDarkTheme = UiUtils.isDarkTheme();
+      const isDarkTheme = UiUtils.getCurrentColorScheme() === "dark";
 
       const config: MermaidConfig = {
         startOnLoad: false,

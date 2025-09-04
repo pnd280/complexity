@@ -1,4 +1,4 @@
-import { usePplxCookiesStore } from "@/plugins/_core/global-stores/pplx-cookies-store";
+import { usePplxCookiesStore } from "@/plugins/_core/global-stores/index.public";
 
 export default function usePplxIncognitoMode(): boolean {
   const { cookies } = usePplxCookiesStore();

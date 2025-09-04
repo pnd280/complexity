@@ -21,6 +21,8 @@ export async function findMessageBlocks(
     `>${DomSelectorsService.cachedSync.THREAD.MESSAGE.OUTER_WRAPPER}`,
   );
 
+  if ($messageBlockElements.length === 0) return [];
+
   const messageBlocksFiberData = await sendMessage(
     "reactVdom:getMessages",
     {
@@ -29,26 +31,27 @@ export async function findMessageBlocks(
     "window",
   );
 
-  const messageBlocksPromises = $messageBlockElements
-    .toArray()
-    .map((messageBlockNode, idx) => {
-      return processMessageBlock(
-        messageBlocksFiberData?.[idx],
-        $(messageBlockNode),
-        idx,
-      );
-    });
+  const nodes = $messageBlockElements.toArray();
+  const result: MessageBlock[] = [];
 
-  const resolvedMessageBlocks = await Promise.all(messageBlocksPromises);
+  for (let idx = 0; idx < nodes.length; idx += 1) {
+    const messageBlockNode = nodes[idx] as HTMLElement;
+    const block = processMessageBlock(
+      messageBlocksFiberData?.[idx],
+      $(messageBlockNode),
+      idx,
+    );
+    if (block) result.push(block);
+  }
 
-  return resolvedMessageBlocks.filter(Boolean) as MessageBlock[];
+  return result;
 }
 
-async function processMessageBlock(
+function processMessageBlock(
   messageBlockFiber: MessageBlockFiberData | undefined,
   $wrapper: JQuery<HTMLElement>,
   index: number,
-): Promise<MessageBlock | null> {
+): MessageBlock | null {
   $wrapper
     .internalComponentAttr(
       DomSelectorsService.internalAttributes.THREAD.MESSAGE.BLOCK,
@@ -79,36 +82,41 @@ async function processMessageBlock(
     authorUuid: messageBlockFiber?.authorUuid ?? "",
   };
 
-  const states: MessageBlock["states"] = getMessageBlockStates({
+  const isVirtualized = $answer.length === 0;
+  const states = getMessageBlockStates({
     messageBlockNodes: nodes,
     messageBlockFiber,
+    isVirtualized,
   });
 
   return {
     nodes,
     content,
-    states,
+    states: {
+      ...states,
+      isVirtualized,
+    },
   };
 }
 
 function parseMessageBlock($messageBlock: JQuery<Element>) {
-  const selectors = DomSelectorsService.cachedSync.THREAD.MESSAGE;
+  const SELECTORS = DomSelectorsService.cachedSync.THREAD.MESSAGE;
 
   const $elements = $messageBlock.find(
     [
-      selectors.QUERY_WRAPPER,
-      selectors.SOURCES,
-      selectors.ANSWER,
-      selectors.FOOTER,
+      SELECTORS.QUERY_WRAPPER,
+      SELECTORS.SOURCES,
+      SELECTORS.ANSWER,
+      SELECTORS.FOOTER,
     ].join(", "),
   );
 
-  const $query = $elements.filter(selectors.QUERY_WRAPPER);
-  const $sources = $elements.filter(selectors.SOURCES);
-  const $answer = $elements.filter(selectors.ANSWER);
-  const $footer = $elements.filter(selectors.FOOTER);
+  const $query = $elements.filter(SELECTORS.QUERY_WRAPPER);
+  const $sources = $elements.filter(SELECTORS.SOURCES);
+  const $answer = $elements.filter(SELECTORS.ANSWER);
+  const $footer = $elements.filter(SELECTORS.FOOTER);
 
-  const $queryEditButtonGroup = $query.find(selectors.QUERY_EDIT_BUTTON_GROUP);
+  const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
 
   $query.internalComponentAttr(
     DomSelectorsService.internalAttributes.THREAD.MESSAGE.QUERY,
@@ -137,16 +145,13 @@ function parseMessageBlock($messageBlock: JQuery<Element>) {
 function getMessageBlockStates({
   messageBlockNodes,
   messageBlockFiber,
+  isVirtualized,
 }: {
   messageBlockNodes: MessageBlock["nodes"];
   messageBlockFiber: MessageBlockFiberData | undefined;
-}): MessageBlock["states"] {
+  isVirtualized: boolean;
+}): Omit<MessageBlock["states"], "isVirtualized"> {
   const { $wrapper, $query, $footer } = messageBlockNodes;
-
-  const hasInnerWrapper =
-    $wrapper.find(DomSelectorsService.cachedSync.THREAD.MESSAGE.INNER_WRAPPER)
-      .length > 0;
-  const isVirtualized = !hasInnerWrapper;
 
   const isInFlight = isVirtualized
     ? false
@@ -158,29 +163,28 @@ function getMessageBlockStates({
     $query.find(DomSelectorsService.cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY)
       .length > 0;
 
-  const isReadOnly = (() => {
-    const existingReadOnlyAttr = $wrapper.attr("data-read-only");
+  const existingReadOnlyAttr = $wrapper.attr("data-read-only");
+  if (existingReadOnlyAttr != null && existingReadOnlyAttr === "false") {
+    return {
+      isReadOnly: false,
+      isInFlight,
+      isEditingQuery,
+    };
+  }
 
-    if (existingReadOnlyAttr != null && existingReadOnlyAttr === "false")
-      return false;
+  const isQueryEditButtonGroupPresent =
+    $query.find(
+      DomSelectorsService.cachedSync.THREAD.MESSAGE.QUERY_EDIT_BUTTON_GROUP,
+    ).length > 0;
 
-    const isQueryEditButtonGroupPresent =
-      $query.find(
-        DomSelectorsService.cachedSync.THREAD.MESSAGE.QUERY_EDIT_BUTTON_GROUP,
-      ).length > 0;
-
-    $wrapper.attr(
-      "data-read-only",
-      isQueryEditButtonGroupPresent ? "false" : "true",
-    );
-
-    return !isQueryEditButtonGroupPresent;
-  })();
+  $wrapper.attr(
+    "data-read-only",
+    isQueryEditButtonGroupPresent ? "false" : "true",
+  );
 
   return {
-    isReadOnly,
+    isReadOnly: !isQueryEditButtonGroupPresent,
     isInFlight,
     isEditingQuery,
-    isVirtualized,
   };
 }

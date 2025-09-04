@@ -2,9 +2,9 @@ import { LuPlus } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
-import { ThemeSections } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeSections";
-import { useLocalThemes } from "@/plugins/_core/custom-theme/indexed-db/useLocalThemes";
 import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes";
+import { ThemeSections } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeSections";
+import { useLocalThemes } from "@/plugins/_core/custom-theme/index.public";
 
 export function ThemesListing() {
   const navigate = useNavigate();

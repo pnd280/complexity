@@ -1,5 +1,5 @@
-import { HomepageUpdateAnnouncer } from "@/components/HomepageUpdateAnnouncer";
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
+import HomepageUpdateAnnouncer from "@/plugins/_core/ui/route-groups/Home/HomepageUpdateAnnouncer";
 
 export function HomepageComponents() {
   return (

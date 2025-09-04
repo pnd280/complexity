@@ -1,7 +1,9 @@
-import { internalWebSocketStore } from "@/plugins/_core/global-stores/web-socket";
+import { internalWebSocketStore } from "@/plugins/_core/global-stores/index.public";
 import { ENDPOINTS } from "@/services/pplx-api/endpoints";
 
-export async function saveSettingViaFetch(settings: Record<string, unknown>) {
+export async function saveUserSettingsViaFetch(
+  settings: Record<string, unknown>,
+) {
   const resp = await fetch(ENDPOINTS.USER_SETTINGS.UPDATE, {
     method: "PUT",
     body: JSON.stringify({
@@ -15,7 +17,7 @@ export async function saveSettingViaFetch(settings: Record<string, unknown>) {
   return resp.ok;
 }
 
-export async function saveSettingViaWebSocket(
+export async function saveUserSettingsViaWebSocket(
   settings: Record<string, unknown>,
 ) {
   try {

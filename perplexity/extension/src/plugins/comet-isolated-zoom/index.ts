@@ -10,7 +10,7 @@ declare module "@/data/plugin-registry/types" {
 
 const schema = z.object({
   enabled: z.boolean(),
-  zoomLevel: z.number().min(0.25).max(5).default(1),
+  zoomLevel: z.number().min(0.25).max(5).prefault(1),
 });
 
 export default definePlugin({

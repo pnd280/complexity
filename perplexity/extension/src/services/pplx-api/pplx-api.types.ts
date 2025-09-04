@@ -143,3 +143,18 @@ export const SpaceThreadsApiResponseSchema = ThreadsSearchApiResponseSchema;
 export type SpaceThreadsApiResponse = z.infer<
   typeof SpaceThreadsApiResponseSchema
 >;
+
+export const PplxAiProfileApiResponseSchema = z.object({
+  has_profile: z.boolean(),
+  bio: z.string().nullable(),
+  location: z.string().nullable(),
+  language: z.string().nullable(),
+  response_language: z.string().nullable(),
+  location_lat: z.string().nullable(),
+  location_lng: z.string().nullable(),
+  disabled: z.boolean(),
+});
+
+export type PplxAiProfileApiResponse = z.infer<
+  typeof PplxAiProfileApiResponseSchema
+>;

@@ -10,7 +10,6 @@ export type AnchorSlice = {
     inputField: HTMLElement | null;
     contentActions: {
       getWordAtCaret: () => ReturnType<typeof getWordAtCaret>;
-      getSelectedText: () => ReturnType<typeof getSelection>;
       insertText: (text: string) => void;
       deleteTriggerPhrase: () => void;
       setSelection: (
@@ -41,7 +40,6 @@ export type AnchorSlice = {
             } | null,
           ) => void;
           getWordAtCaret: () => ReturnType<typeof getWordAtCaret>;
-          getSelectedText: () => ReturnType<typeof getSelection>;
           insertText: (text: string) => void;
           deleteTriggerPhrase: () => void;
           scrollIntoCaretView: () => void;
@@ -56,7 +54,9 @@ export type AnchorSlice = {
   };
   bufferText: string | null;
   bufferTextCaretPosition: number | null;
+  bufferRichText: string | null;
   setBufferText: (bufferText: string | null) => void;
+  setBufferRichText: (bufferRichText: string | null) => void;
   setBufferTextCaretPosition: (bufferTextCaretPosition: number | null) => void;
   restoreText: () => void;
 };
@@ -105,7 +105,10 @@ export const createAnchorSlice: BoundStateCreator<AnchorSlice> = (
   },
   bufferText: null,
   bufferTextCaretPosition: null,
-
+  bufferRichText: null,
+  setBufferRichText: (bufferRichText) => {
+    set({ bufferRichText });
+  },
   setBufferText: (bufferText) => {
     set({ bufferText });
   },

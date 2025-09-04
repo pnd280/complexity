@@ -9,7 +9,7 @@ describe("safeMerge function", () => {
     config: z.object({
       enabled: z.boolean(),
       settings: z.object({
-        retryCount: z.number().int(),
+        retryCount: z.int(),
         timeout: z.number().positive().optional(),
         advanced: z.object({
           logLevel: z.enum(["debug", "info", "warn", "error"]),
@@ -54,7 +54,7 @@ describe("safeMerge function", () => {
     id: z.string().optional(),
     name: z.string(),
     age: z.number().positive(),
-    email: z.string().email(),
+    email: z.email(),
     tags: z.array(z.string()).optional(),
     preferences: z.object({
       theme: z.enum(["light", "dark"]),
@@ -313,17 +313,18 @@ describe("safeMerge function", () => {
   });
 
   test("produces result potentially invalid according to top-level schema constraints (e.g., refine)", () => {
-    const refineSchema = z
-      .object({
-        minVal: z.number(),
-        maxVal: z.number(),
-      })
-      .refine((data) => data.minVal < data.maxVal, {
-        message: "minVal must be less than maxVal",
-        path: ["minVal"], // Indicate the path related to the error
-      });
     // Define the base object schema separately for safeMerge
-    const baseObjectSchema = refineSchema._def.schema;
+    const baseObjectSchema = z.object({
+      minVal: z.number(),
+      maxVal: z.number(),
+    });
+    const refineSchema = baseObjectSchema.refine(
+      (data) => data.minVal < data.maxVal,
+      {
+        path: ["minVal"],
+        error: "minVal must be less than maxVal",
+      },
+    );
 
     type RefineType = z.infer<typeof refineSchema>;
 
@@ -353,7 +354,7 @@ describe("safeMerge function", () => {
     // The merged result is indeed invalid according to the full schema
     const finalValidation = refineSchema.safeParse(mergedResult);
     expect(finalValidation.success).toBe(false);
-    expect(finalValidation.error?.errors[0]?.message).toBe(
+    expect(finalValidation.error?.issues[0]?.message).toBe(
       "minVal must be less than maxVal",
     );
   });

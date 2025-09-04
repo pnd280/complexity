@@ -3,7 +3,10 @@
 import { APP_CONFIG } from "@/app.config";
 import { PluginRegistry } from "@/data/plugin-registry";
 import { defineRemoteResource } from "@/services/cplx-api/remote-resources";
-import { FeatureCompatibilitySchema } from "@/services/cplx-api/types";
+import {
+  FeatureCompatibilitySchema,
+  type FeatureCompatibility,
+} from "@/services/cplx-api/types";
 
 export const featureCompatResourceConfig = defineRemoteResource({
   resourcePath: "feature-compat.json",
@@ -13,6 +16,6 @@ export const featureCompatResourceConfig = defineRemoteResource({
       key,
       APP_CONFIG.VERSION,
     ]),
-  ),
+  ) as FeatureCompatibility,
   zodSchema: FeatureCompatibilitySchema,
 });

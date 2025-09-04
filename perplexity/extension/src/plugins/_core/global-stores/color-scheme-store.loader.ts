@@ -2,7 +2,7 @@ import { DomObserver } from "@/plugins/_api/dom-observer/dom-observer";
 import { createDomObserverId } from "@/plugins/_api/dom-observer/dom-observer.types";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { colorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
-import { getCookie } from "@/utils/utils";
+import { UiUtils } from "@/utils/ui-utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {
@@ -15,7 +15,7 @@ export default function loader() {
     id: "store:colorScheme",
     dependencies: ["cache:extensionSettings"],
     loader: () => {
-      $("html").attr("data-color-scheme", getCurrentColorScheme());
+      $("html").attr("data-color-scheme", UiUtils.getCurrentColorScheme());
 
       DomObserver.create(createDomObserverId("misc", "colorScheme"), {
         target: $("html")[0]!,
@@ -34,16 +34,4 @@ export default function loader() {
       });
     },
   });
-}
-
-function getCurrentColorScheme(): "dark" | "light" {
-  const cookieSetting = getCookie("colorScheme");
-
-  if (cookieSetting !== "dark" && cookieSetting !== "light") {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
-
-  return cookieSetting;
 }
