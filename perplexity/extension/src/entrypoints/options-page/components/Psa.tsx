@@ -5,9 +5,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 
 export default function Psa() {
-  const { data } = useQuery(cplxApiQueries.psa.detail());
+  const { data, isSuccess } = useQuery(cplxApiQueries.psa.detail());
 
-  if (data == null) return null;
+  if (isSuccess && data.length === 0) return null;
 
   return (
     <div
