@@ -7,6 +7,8 @@ import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 export default function Psa() {
   const { data } = useQuery(cplxApiQueries.psa.detail());
 
+  if (data == null) return null;
+
   return (
     <div
       id="psa"

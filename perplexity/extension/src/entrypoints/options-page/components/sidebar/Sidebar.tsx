@@ -3,6 +3,7 @@ import { LuExternalLink, LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { NavLink, useMatch } from "react-router-dom";
 
 import SponsorDialogWrapper from "@/components/SponsorDialogWrapper";
+import CometCompatibility from "@/entrypoints/options-page/components/CometCompatibility";
 import { type NavItem } from "@/entrypoints/options-page/components/sidebar/nav-items";
 import { useOptionsPageSidebarStore } from "@/entrypoints/options-page/components/sidebar/store";
 import Version from "@/entrypoints/options-page/components/sidebar/Version";
@@ -95,6 +96,8 @@ export default function Sidebar() {
 
       <div className="x:sticky x:bottom-0 x:z-10 x:flex x:shrink-0 x:flex-col x:gap-4 x:bg-background x:p-4">
         <SidebarUpdateAnnouncer />
+
+        <CometCompatibility />
 
         <SponsorDialogWrapper>
           <div className="x:group x:relative x:w-full x:cursor-pointer x:rounded-xl x:border x:border-border/50 x:bg-secondary x:p-4 x:text-sm x:font-medium x:shadow-lg x:transition-all x:hover:scale-105 x:hover:border-primary x:hover:bg-primary/10 x:md:text-balance">
