@@ -5,7 +5,6 @@ import { createWithEqualityFn } from "zustand/traditional";
 import { createAnchorSlice } from "@/plugins/slash-command/store/slices/anchor";
 import { createContentTabSlice } from "@/plugins/slash-command/store/slices/content-tab";
 import { createStatesSlice } from "@/plugins/slash-command/store/slices/states";
-import { statesSubscriptions } from "@/plugins/slash-command/store/slices/states/subs";
 import type { SlashCommandMenuStoreType } from "@/plugins/slash-command/store/types";
 
 export const slashCommandMenuStore =
@@ -22,7 +21,3 @@ export const slashCommandMenuStore =
   );
 
 export const useSlashCommandMenuStore = slashCommandMenuStore;
-
-(() => {
-  statesSubscriptions(slashCommandMenuStore);
-})();

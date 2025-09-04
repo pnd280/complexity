@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { getThemeCss } from "@/plugins/_core/custom-theme/utils";
 import { InstantCssService } from "@/services/instant-css";
-import { getThemeCss } from "@/utils/pplx-theme-loader-utils";
 import { insertCss } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

@@ -1,5 +1,6 @@
 body {
-  &[location="thread"], &[location="comet_assistant"] {
+  &[location="thread"],
+  &[location="comet_assistant"] {
     /* Message Block Dividers */
     [data-cplx-component="message-block"] {
       .border-b.md\:pb-12.max-w-threadContentWidth {

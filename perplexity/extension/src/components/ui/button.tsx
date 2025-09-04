@@ -14,7 +14,7 @@ const buttonVariants = cva(
         outline:
           "x:border x:border-border/50 x:bg-transparent x:text-muted-foreground x:hover:text-foreground",
         primary:
-          "x:bg-primary x:text-white x:hover:bg-primary/80 x:dark:text-[oklch(var(--dark-background-color-100))]",
+          "x:bg-primary x:text-white x:hover:bg-primary/80 x:dark:text-primary-foreground",
         secondary:
           "x:bg-secondary x:text-secondary-foreground x:hover:bg-secondary/80",
         ghost:

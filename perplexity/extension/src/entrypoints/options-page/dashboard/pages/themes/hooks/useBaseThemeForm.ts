@@ -9,7 +9,7 @@ import {
 import { generateThemeData } from "@/data/dashboard/themes/utils";
 
 export function useBaseThemeForm(defaultValues: DeepRequired<ThemeFormValues>) {
-  const form = useForm({
+  const form = useForm<ThemeFormValues>({
     resolver: zodResolver(ThemeFormSchema),
     mode: "onChange",
     defaultValues,

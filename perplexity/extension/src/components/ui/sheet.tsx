@@ -67,8 +67,7 @@ export function SheetContent({
               "x:h-[100dvh]": side === "left" || side === "right",
               "x:h-auto x:max-h-[75vh] x:!w-screen":
                 side === "top" || side === "bottom",
-              "x:data-[state=closed]:animate-out x:data-[state=open]:animate-in":
-                true,
+              "x:data-[state=closed]:animate-out x:data-[state=open]:animate-in": true,
               "x:data-[state=closed]:slide-out-to-left x:data-[state=open]:slide-in-from-left":
                 side === "left",
               "x:data-[state=closed]:slide-out-to-right x:data-[state=open]:slide-in-from-right":
@@ -77,8 +76,7 @@ export function SheetContent({
                 side === "top",
               "x:data-[state=closed]:slide-out-to-bottom x:data-[state=open]:slide-in-from-bottom":
                 side === "bottom",
-              "x:data-[state=closed]:duration-300 x:data-[state=open]:duration-300":
-                true,
+              "x:data-[state=closed]:duration-300 x:data-[state=open]:duration-300": true,
             },
             className,
           )}

@@ -59,7 +59,9 @@ export default function loader() {
             return skip();
           }
 
-          await getPromptHistoryService().deduplicateAdd(promptString);
+          await getPromptHistoryService().deduplicateAdd({
+            prompt: promptString,
+          });
 
           queryClient.invalidateQueries({
             queryKey: promptHistoryQueries.list.all(),

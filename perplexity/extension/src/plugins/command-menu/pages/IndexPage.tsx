@@ -8,8 +8,8 @@ import ZenModeCommandMenuEntriesWrapper from "@/plugins/zen-mode/index.public";
 const IndexPage = memo(() => {
   return (
     <CommandPage pageId={null}>
-      <SearchItems />
       <ActionItems />
+      <SearchItems />
       <NavigationItems />
       <ZenModeCommandMenuEntriesWrapper />
       <CommandEmpty>{t("plugin-command-menu.common.noResults")}</CommandEmpty>

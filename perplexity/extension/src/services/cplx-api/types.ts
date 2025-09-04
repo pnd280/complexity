@@ -18,7 +18,7 @@ export const SemverSchema = z
         }),
       ),
     {
-      message: "Invalid semver",
+      error: "Invalid semver",
     },
   )
   .transform((v) => semver.coerce(v, { includePrerelease: true })!.toString());
@@ -45,7 +45,7 @@ export const CplxVersionsSchema = CplxVersionsApiResponseSchema.transform(
 export type CplxVersions = z.infer<typeof CplxVersionsSchema>;
 
 export const FeatureCompatibilitySchema = z.record(
-  z.string() as z.ZodType<PluginId>,
+  z.custom<PluginId>((val) => typeof val === "string"),
   SemverSchema,
 );
 

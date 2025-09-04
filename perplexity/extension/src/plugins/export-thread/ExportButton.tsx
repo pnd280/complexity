@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/popover";
 import { toast } from "@/components/ui/use-toast";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
-import { useCopyPplxThread } from "@/hooks/useCopyPplxThread";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import type { ExportOption } from "@/plugins/export-thread/export-options";
 import { ExportActions } from "@/plugins/export-thread/ExportActions";
 import { ExportFormatSelect } from "@/plugins/export-thread/ExportFormatSelect";
+import { useCopyPplxThread } from "@/plugins/export-thread/hooks/useCopyPplxThread";
 import { parseUrl } from "@/utils/utils";
 
 const ExportButton = memo(function ExportButton() {

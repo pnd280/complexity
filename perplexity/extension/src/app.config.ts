@@ -9,7 +9,7 @@ const EnvVarsSchema = z.object({
   VITE_TARGET_BROWSER: z
     .enum(["chrome", "firefox"])
     .optional()
-    .default("chrome"),
+    .prefault("chrome"),
   VITE_CPLX_CDN_URL: z.string().optional(),
   DEV: z.string().or(z.boolean()).optional(),
 });

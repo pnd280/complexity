@@ -3,11 +3,11 @@
   background: --alpha(var(--primary) / 30%);
 }
 
-:root {
-  --background-super-color-100: 59.28% 0.131 255.75;
-  --background-super-color: 44.28% 0.131 255.75;
-  --dark-background-super-color-100: 95% 0.039 255.75;
-  --dark-background-super-color: 74.28% 0.131 255.75;
+body {
+  --super-bg-color: 59.28% 0.131 255.75;
+  --super-color: 44.28% 0.131 255.75;
+  --dark-super-bg-color: 95% 0.039 255.75;
+  --dark-super-color: 74.28% 0.131 255.75;
 
   --primary: oklch(44.28% 0.131 255.75);
   --ring: oklch(44.28% 0.131 255.75);
@@ -15,10 +15,10 @@
   caret-color: var(--primary);
 }
 
-:root[data-color-scheme="dark"] {
+:root[data-color-scheme="dark"] body {
   --primary: oklch(74.28% 0.131 255.75);
   --ring: oklch(74.28% 0.131 255.75);
 
-  --background-super-color-100: var(--dark-background-super-color-100);
-  --background-super-color: var(--dark-background-super-color);
+  --super-bg-color: var(--dark-super-bg-color);
+  --super-color: var(--dark-super-color);
 }

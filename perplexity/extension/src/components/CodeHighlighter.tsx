@@ -3,7 +3,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import lightStyle from "react-syntax-highlighter/dist/esm/styles/prism/vs";
 import darkStyle from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 
-import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
+import { UiUtils } from "@/utils/ui-utils";
 
 const INTERPRETED_LANGUAGES: Record<string, string> = {
   html: "markup",
@@ -23,7 +23,9 @@ const CodeHighlighter = memo(function CodeHighlighter({
 }: ComponentProps<typeof SyntaxHighlighter> & {
   codeRef?: RefObject<HTMLDivElement | null>;
 }) {
-  const colorScheme = useColorSchemeStore((state) => state.colorScheme);
+  const colorScheme = useMemo(() => {
+    return UiUtils.getCurrentColorScheme();
+  }, []);
 
   const interpretedLanguage = language
     ? (INTERPRETED_LANGUAGES[language] ?? language)

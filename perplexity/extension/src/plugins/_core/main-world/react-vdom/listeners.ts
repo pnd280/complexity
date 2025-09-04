@@ -9,7 +9,10 @@ import {
 } from "@/plugins/_core/main-world/react-vdom/actions/get-code-block-content";
 import type { MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
 import { getMessages } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
-import { setLexicalEditorContent } from "@/plugins/_core/main-world/react-vdom/actions/lexical";
+import {
+  getLexicalEditorJsonContent,
+  setLexicalEditorContent,
+} from "@/plugins/_core/main-world/react-vdom/actions/lexical";
 import { triggerRewriteOption } from "@/plugins/_core/main-world/react-vdom/actions/trigger-rewrite-option";
 
 declare module "@/types/webext-bridge-overrides" {
@@ -29,6 +32,7 @@ declare module "@/types/webext-bridge-overrides" {
       optionIndex?: number;
     }) => boolean;
     "reactVdom:setLexicalEditorContent": (params: { content: string }) => void;
+    "reactVdom:getLexicalEditorJsonContent": () => string | undefined;
   }
 }
 
@@ -49,6 +53,10 @@ export async function setupReactVdomListeners() {
 
   onMessage("reactVdom:setLexicalEditorContent", ({ data }) => {
     setLexicalEditorContent(data);
+  });
+
+  onMessage("reactVdom:getLexicalEditorJsonContent", () => {
+    return getLexicalEditorJsonContent();
   });
 
   onMessage("reactVdom:isInitialized", () => {

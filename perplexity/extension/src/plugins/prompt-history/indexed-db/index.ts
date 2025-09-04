@@ -5,15 +5,15 @@ import type { PromptHistory } from "@/plugins/prompt-history/types";
 import { db } from "@/services/indexed-db";
 
 class PromptHistoryService {
-  async add(prompt: string): Promise<string> {
+  async add({ prompt }: { prompt: string }): Promise<string> {
     return await db.promptHistory.add({
-      prompt,
       id: new Date().getTime().toString() + "-" + nanoid(),
+      prompt,
       createdAt: new Date().getTime(),
     });
   }
 
-  async deduplicateAdd(prompt: string): Promise<string> {
+  async deduplicateAdd({ prompt }: { prompt: string }): Promise<string> {
     const mostRecentItem = await db.promptHistory.reverse().first();
     if (mostRecentItem?.prompt === prompt) {
       await db.promptHistory.update(mostRecentItem.id, {
@@ -21,7 +21,7 @@ class PromptHistoryService {
       });
       return mostRecentItem.id;
     }
-    return await this.add(prompt);
+    return await this.add({ prompt });
   }
 
   async deleteAll(): Promise<void> {

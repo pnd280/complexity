@@ -43,8 +43,7 @@ export default function FilterBase<T extends string>({
               <Tooltip key={key} content={description}>
                 <CommandItem
                   className={cn({
-                    "x:m-1 x:w-max x:cursor-pointer x:rounded-md x:border x:border-transparent x:px-2 x:py-0.5 x:text-sm x:transition-colors x:hover:bg-primary/10 x:aria-selected:bg-secondary x:aria-selected:text-foreground":
-                      true,
+                    "x:m-1 x:w-max x:cursor-pointer x:rounded-md x:border x:border-transparent x:px-2 x:py-0.5 x:text-sm x:transition-colors x:hover:bg-primary/10 x:aria-selected:bg-secondary x:aria-selected:text-foreground": true,
                     "x:border x:border-success/50 x:bg-success/20! x:text-success!":
                       itemState === "include",
                     "x:border x:border-dashed x:border-destructive x:bg-destructive/20! x:text-muted-foreground!":

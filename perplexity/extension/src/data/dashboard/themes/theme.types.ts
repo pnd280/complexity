@@ -4,16 +4,20 @@ import type { BuiltInColorValue } from "@/data/dashboard/themes/built-in-colors"
 
 export const ThemeFormSchema = z
   .object({
-    title: z.string().min(1, { message: "A title is required" }),
+    title: z.string().min(1, {
+      error: "A title is required",
+    }),
     accentColor: z
       .string()
       .regex(/^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/, {
-        message: "Must be a valid hex color (e.g. #72AEFD)",
+        error: "Must be a valid hex color (e.g. #72AEFD)",
       })
       .transform((val) => val.toUpperCase())
       .or(z.literal(""))
       .optional(),
-    builtInAccentColor: z.string() as z.ZodType<BuiltInColorValue>,
+    builtInAccentColor: z.custom<BuiltInColorValue>(
+      (val) => typeof val === "string",
+    ),
     accentColorSelection: z.enum(["built-in", "custom", "default"]),
     fonts: z.object({
       ui: z.string().optional(),
@@ -30,8 +34,8 @@ export const ThemeFormSchema = z
       return true;
     },
     {
-      message: "Accent color is required when custom color is selected",
       path: ["accentColor"],
+      error: "Accent color is required when custom color is selected",
     },
   )
   .refine(
@@ -42,9 +46,9 @@ export const ThemeFormSchema = z
       return true;
     },
     {
-      message:
-        "Built-in accent color is required when built-in color is selected",
       path: ["builtInAccentColor"],
+      error:
+        "Built-in accent color is required when built-in color is selected",
     },
   );
 
@@ -52,7 +56,7 @@ export type ThemeFormValues = z.infer<typeof ThemeFormSchema>;
 
 export const ThemeSchema = z.object({
   id: z.string().refine((id) => /^[a-zA-Z0-9-]+$/.test(id), {
-    message: "Must only contains a-z, A-Z, 0-9, and -",
+    error: "Must only contains a-z, A-Z, 0-9, and -",
   }),
   title: z.string(),
   description: z.string().optional(),

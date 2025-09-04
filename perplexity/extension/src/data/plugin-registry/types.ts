@@ -1,9 +1,10 @@
 import { PluginRegistry } from "@/data/plugin-registry";
 import type { PluginCategory } from "@/data/plugin-registry/plugin-tags";
 import type { PluginTagValues } from "@/data/plugin-registry/plugin-tags";
-import type { CoreDomObserverId } from "@/plugins/_core/dom-observers/types";
-import type { MainWorldCorePluginId } from "@/plugins/_core/main-world/types";
-import type { UiGroupId } from "@/plugins/_core/ui/groups/types";
+import type { CoreDomObserverId } from "@/plugins/_core/dom-observers/index.public";
+
+import type { MainWorldCorePluginId } from "@/plugins/_core/main-world/index.public";
+import type { UiGroupId } from "@/plugins/_core/ui/groups/index.public";
 
 /**
  * Registry interface for plugin IDs and their corresponding persistent settings schema.

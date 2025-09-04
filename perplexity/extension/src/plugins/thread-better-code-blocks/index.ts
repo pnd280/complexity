@@ -13,7 +13,7 @@ const schema = z
   .object({
     enabled: z.boolean(),
   })
-  .merge(BetterCodeBlockGlobalOptionsSchema);
+  .extend(BetterCodeBlockGlobalOptionsSchema.shape);
 
 export default definePlugin({
   manifest: {

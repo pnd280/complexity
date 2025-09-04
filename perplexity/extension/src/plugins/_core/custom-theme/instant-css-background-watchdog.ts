@@ -1,7 +1,7 @@
+import { getThemeCss } from "@/plugins/_core/custom-theme/utils";
 import { ExtensionSettingsService } from "@/services/extension-settings";
 import type { ExtensionSettings } from "@/services/extension-settings/types";
 import { InstantCssStorage } from "@/services/instant-css/storage.proxy-service";
-import { getThemeCss } from "@/utils/pplx-theme-loader-utils";
 
 export const instantCssServiceKey = "customTheme";
 

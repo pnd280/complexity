@@ -8,9 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useCopyPplxThread } from "@/hooks/useCopyPplxThread";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
+import { useCopyPplxThread } from "@/plugins/export-thread/index.public";
 
 type CopyButtonProps = {
   messageBlockIndex: number;

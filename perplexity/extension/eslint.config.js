@@ -8,7 +8,7 @@ import {
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-import boundariesConfig from "./eslint-config/boundaries.js";
+import boundariesConfig from "./eslint-config/boundaries/index.js";
 import tanstackQueryConfig from "./eslint-config/tanstack-query.js";
 
 const commonIgnores = [

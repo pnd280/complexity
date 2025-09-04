@@ -60,7 +60,7 @@ export function createTextboxAdapter(element: HTMLElement) {
       utils.setSelection(element as any, position.start, position.end);
     },
     getWordAtCaret: () => utils.getWordAtCaret(element as any),
-    getSelectedText: () => utils.getSelection(element as any),
+    getSelection: () => utils.getSelection(element as any),
     insertText,
     deleteTriggerPhrase: () => {
       const { start, end } = utils.getWordAtCaret(element as any);
@@ -68,6 +68,5 @@ export function createTextboxAdapter(element: HTMLElement) {
       deleteSelectedText();
     },
     scrollIntoCaretView,
-    getSelection: () => utils.getSelection(element as any),
   };
 }

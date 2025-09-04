@@ -1,6 +1,37 @@
-import { sendMessage } from "webext-bridge/content-script";
-
 import type { TextboxSelection } from "@/utils/textarea-utils";
+
+export function getTextContent({
+  element,
+  omitDecorators = false,
+}: {
+  element: HTMLElement;
+  omitDecorators?: boolean;
+}): string {
+  let text = "";
+
+  function traverse(n: Node) {
+    if (n.nodeType === Node.TEXT_NODE) {
+      text += n.textContent ?? "";
+    } else if (n.nodeType === Node.ELEMENT_NODE) {
+      const el = n as HTMLElement;
+
+      if (el.tagName === "BR") {
+        text += "\n";
+      } else if (el.getAttribute("data-lexical-decorator") === "true") {
+        if (!omitDecorators) {
+          text += "\uFFFC";
+        }
+      } else {
+        for (const child of n.childNodes) {
+          traverse(child);
+        }
+      }
+    }
+  }
+
+  traverse(element);
+  return text;
+}
 
 export function setSelection(
   element: HTMLElement,
@@ -28,12 +59,18 @@ export function setSelection(
         });
         offset += n.textContent?.length ?? 0;
       } else if (n.nodeType === Node.ELEMENT_NODE) {
-        if ((n as HTMLElement).tagName === "BR") {
-          offset += 1; // Count <br> as newline character
-        }
+        const element = n as HTMLElement;
 
-        for (const child of n.childNodes) {
-          traverse(child);
+        if (element.tagName === "BR") {
+          offset += 1; // Count <br> as newline character
+        } else if (element.getAttribute("data-lexical-decorator") === "true") {
+          // Treat lexical decorator as a single character
+          offset += 1;
+        } else {
+          // Traverse children for regular elements
+          for (const child of n.childNodes) {
+            traverse(child);
+          }
         }
       }
     }
@@ -109,12 +146,18 @@ export function getSelection(element: HTMLElement): TextboxSelection {
         textNodes.push({ node: n, start: offset, end: offset + length });
         offset += length;
       } else if (n.nodeType === Node.ELEMENT_NODE) {
-        if ((n as Element).tagName === "BR") {
-          offset += 1;
-        }
+        const element = n as HTMLElement;
 
-        for (const child of n.childNodes) {
-          traverse(child);
+        if (element.tagName === "BR") {
+          offset += 1;
+        } else if (element.getAttribute("data-lexical-decorator") === "true") {
+          // Treat lexical decorator as a single character
+          offset += 1;
+        } else {
+          // Traverse children for regular elements
+          for (const child of n.childNodes) {
+            traverse(child);
+          }
         }
       }
     }
@@ -142,7 +185,7 @@ export function getSelection(element: HTMLElement): TextboxSelection {
     return {
       start: 0,
       end: 0,
-      value: element.innerText.replace(/^\n\s/, "") ?? "",
+      value: getTextContent({ element }),
     };
   }
 
@@ -160,10 +203,12 @@ export function getSelection(element: HTMLElement): TextboxSelection {
     range.endOffset,
   );
 
+  const fullText = getTextContent({ element });
+
   return {
     start,
     end,
-    value: element.innerText.replace(/^\n\s/, "") ?? "",
+    value: start === end ? fullText : fullText.substring(start, end),
   };
 }
 
@@ -172,37 +217,33 @@ export function insertText(
   text: string,
   position?: number,
 ): void {
-  function insertTextAtPosition(
-    originalText: string,
-    insertText: string,
-    position: number,
-  ): string {
-    const beforeInsertion = originalText.substring(0, position);
-    const afterInsertion = originalText.substring(position);
-    return beforeInsertion + insertText + afterInsertion;
+  if (position != null) {
+    setSelection(element, position, position);
   }
 
   element.focus();
 
-  requestAnimationFrame(() => {
-    const newValue = insertTextAtPosition(
-      element.innerText,
-      text,
-      position ?? element.innerText.length,
-    );
+  const lines = text.split(/\r?\n/);
 
-    sendMessage(
-      "reactVdom:setLexicalEditorContent",
-      { content: newValue },
-      "window",
-    ).then(() => {
-      const newCaretPos = (position ?? element.innerText.length) + text.length;
-      setSelection(element, newCaretPos, newCaretPos);
-    });
+  lines.forEach((line, index) => {
+    if (line) {
+      document.execCommand("insertText", false, line);
+    }
+
+    if (index < lines.length - 1) {
+      const enterEvent = new KeyboardEvent("keydown", {
+        key: "Enter",
+        shiftKey: true,
+        bubbles: true,
+        cancelable: true,
+      });
+      element.dispatchEvent(enterEvent);
+    }
   });
 }
 
-export function deleteSelectedText(_element: HTMLElement): void {
+export function deleteSelectedText(element: HTMLElement): void {
+  element.focus();
   document.execCommand("insertText", false, "");
 }
 

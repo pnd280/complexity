@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { internalWebSocketStore } from "@/plugins/_core/global-stores/web-socket";
+import { internalWebSocketStore } from "@/plugins/_core/global-stores/index.public";
 import type { ImageModel } from "@/services/cplx-api/remote-resources/pplx-image-models/types";
 import { ENDPOINTS } from "@/services/pplx-api/endpoints";
 import type {
@@ -13,8 +13,10 @@ import type {
   PplxUserSettingsApiResponse,
   SpaceDetails,
   ThreadsSearchPayload,
+  PplxAiProfileApiResponse,
 } from "@/services/pplx-api/pplx-api.types";
 import {
+  PplxAiProfileApiResponseSchema,
   PplxOrgSettingsApiResponseSchema,
   SpaceDetailsSchema,
   SpaceFileDownloadUrlApiResponseSchema,
@@ -26,8 +28,8 @@ import {
   ThreadsSearchApiResponseSchema,
 } from "@/services/pplx-api/pplx-api.types";
 import {
-  saveSettingViaFetch,
-  saveSettingViaWebSocket,
+  saveUserSettingsViaFetch,
+  saveUserSettingsViaWebSocket,
 } from "@/services/pplx-api/utils";
 import { fetchTextResource, jsonUtils } from "@/utils/utils";
 
@@ -72,22 +74,59 @@ export class PplxApiService {
     return data;
   }
 
-  private static async saveSetting(
+  private static async saveUserSettings(
     settings: Partial<PplxUserSettingsApiResponse>,
     method: "websocket" | "fetch" = "fetch",
   ) {
     if (method === "fetch") {
-      return saveSettingViaFetch(settings);
+      return saveUserSettingsViaFetch(settings);
     } else {
-      return saveSettingViaWebSocket(settings);
+      return saveUserSettingsViaWebSocket(settings);
     }
+  }
+
+  static async fetchAiProfile(): Promise<PplxAiProfileApiResponse> {
+    const resp = await fetchTextResource(ENDPOINTS.AI_PROFILE.INDEX);
+
+    return PplxAiProfileApiResponseSchema.parse(jsonUtils.safeParse(resp));
+  }
+
+  static async saveAiProfile(
+    profile: Partial<PplxAiProfileApiResponse>,
+  ): Promise<boolean> {
+    const resp = await fetch(ENDPOINTS.AI_PROFILE.UPDATE, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "save_profile",
+        updated_profile: { ...profile, version: "2.18" },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return resp.ok;
+  }
+
+  static async toggleAiProfileBio() {
+    const resp = await fetch(ENDPOINTS.AI_PROFILE.UPDATE, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "toggle_disabled",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return resp.ok;
   }
 
   static async setDefaultImageGenModel(
     selectedImageGenModel: ImageModel["code"],
     method: "websocket" | "fetch" = "fetch",
   ) {
-    return this.saveSetting(
+    return this.saveUserSettings(
       { default_image_generation_model: selectedImageGenModel },
       method,
     );

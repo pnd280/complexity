@@ -11,7 +11,7 @@ type ItemsParams = {
 
 export const getRawItems = ({ isZenMode }: ItemsParams): CommandItemProps[] => [
   {
-    eager: false,
+    eager: true,
     group: "Zen Mode",
     icon: isZenMode ? LuGrid3X3 : LuLayoutGrid,
     keybinding: ExtensionSettingsService.cachedSync.plugins["zenMode"].hotkey,

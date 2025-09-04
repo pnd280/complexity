@@ -80,7 +80,7 @@ export default function CsUiRoot() {
         }}
       />
 
-      {/* <ReactQueryDevtools /> */}
+      <ReactQueryDevtools />
     </>
   );
 }

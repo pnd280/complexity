@@ -30,8 +30,7 @@ export const DOM_SELECTORS: DomSelectors = {
     },
     MESSAGE: {
       OUTER_WRAPPER: "div:not([class]),.erp-sidecar\\:pb-0.pb-16",
-      INNER_WRAPPER:
-        ".dark\\:divide-borderMainDark\\/50:has(>.isolate.mx-auto)",
+      INNER_WRAPPER: "> div > div > .bg-transparent",
       QUERY_WRAPPER: ".isolate.mx-auto > .max-w-threadContentWidth:first-child",
       QUERY: ".group\\/query",
       QUERY_EDIT_BUTTON_GROUP:
@@ -59,7 +58,7 @@ export const DOM_SELECTORS: DomSelectors = {
         /** The outermost container that wraps the pre & code block */
         WRAPPER: "div.w-full.md\\:max-w-\\[90vw\\]:has(>pre)",
         NATIVE_HEADER: ".codeWrapper>div:first-child",
-        NATIVE_COPY_BUTTON: 'button:has(svg[data-icon="copy"])',
+        NATIVE_COPY_BUTTON: 'button[data-testid="copy-code-button"]',
       },
     },
     POPPER: {

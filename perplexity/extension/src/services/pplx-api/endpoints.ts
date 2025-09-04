@@ -17,6 +17,13 @@ export const ENDPOINTS = {
       "https://www.perplexity.ai/rest/enterprise/user/organization?version=2.15&source=default",
   },
 
+  AI_PROFILE: {
+    INDEX:
+      "https://www.perplexity.ai/rest/user/get_user_ai_profile?version=2.18&source=default",
+    UPDATE:
+      "https://www.perplexity.ai/rest/user/save_user_ai_profile?version=2.18&source=default",
+  },
+
   RESOURCES: {
     THREADS: {
       GET_ONE: (threadSlug: string) =>

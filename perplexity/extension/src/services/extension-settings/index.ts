@@ -1,5 +1,6 @@
 import { storage } from "@wxt-dev/storage";
 import { produce } from "immer";
+import z from "zod";
 
 import { DEFAULT_EXTENSION_SETTINGS } from "@/services/extension-settings/defaults";
 import { migrations } from "@/services/extension-settings/migrations";
@@ -36,7 +37,7 @@ export class ExtensionSettingsService {
     const validationResult = ExtensionSettingsSchema.safeParse(value);
 
     if (!validationResult.success) {
-      console.error(validationResult.error.format());
+      console.error(z.treeifyError(validationResult.error));
 
       const merged = safeMerge(
         ExtensionSettingsSchema,

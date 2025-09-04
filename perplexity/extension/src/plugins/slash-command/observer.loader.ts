@@ -60,6 +60,18 @@ export default function loader() {
           store.setOpen(true);
         });
       });
+
+      slashCommandMenuStore.subscribe(
+        (state) => state.open,
+        (open) => {
+          if (open) return;
+
+          requestAnimationFrame(() => {
+            slashCommandMenuStore.getState().anchor.inputField?.focus();
+            slashCommandMenuStore.getState().restoreText();
+          });
+        },
+      );
     },
   });
 }

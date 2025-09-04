@@ -16,7 +16,7 @@ import { z } from "zod";
  * @param defaults The default values to use when data is missing or invalid.
  * @returns An object containing merged data where valid values from data override defaults.
  */
-export function safeMerge<T extends z.AnyZodObject>(
+export function safeMerge<T extends z.ZodObject<any>>(
   schema: T,
   data: unknown,
   defaults: z.infer<T>,
@@ -41,7 +41,7 @@ export function safeMerge<T extends z.AnyZodObject>(
       ) {
         result[key] = safeMerge(fieldSchema, fieldValue, result[key]);
       } else {
-        const fieldResult = (fieldSchema as z.ZodTypeAny).safeParse(fieldValue);
+        const fieldResult = (fieldSchema as z.ZodType).safeParse(fieldValue);
         if (fieldResult.success) {
           result[key] = fieldResult.data;
         }

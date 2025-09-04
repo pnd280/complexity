@@ -26,7 +26,7 @@ export const getRawItems = ({
     eager: true,
     group: t("plugin-command-menu.groups.actions"),
     icon: FaPlus,
-    keybinding: [],
+    keybinding: [getPlatform() === "mac" ? Key.Meta : Key.Control, "i"],
     keywords: ["actions"],
     onSelect: () => softNavigate("/"),
     priority: 0,
