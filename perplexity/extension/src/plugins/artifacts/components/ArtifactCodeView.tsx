@@ -2,10 +2,16 @@ import type { CSSProperties, ReactNode } from "react";
 
 import CodeHighlighter from "@/components/CodeHighlighter";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
+import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import { getInterpretedArtifactLanguage } from "@/plugins/artifacts/utils";
 
 export default function ArtifactCodeView() {
+  const colorScheme = useColorSchemeStore(
+    (state) => state.colorScheme,
+    deepEqual,
+  );
+
   const selectedCodeBlockLocation = useArtifactsStore(
     (state) => state.selectedCodeBlockLocation,
   );
@@ -47,6 +53,7 @@ export default function ArtifactCodeView() {
     >
       <CodeHighlighter
         showLineNumbers
+        colorScheme={colorScheme === "light" ? "light" : "dark"}
         language={language}
         lineNumberStyle={lineNumberStyle}
         PreTag={preTag}

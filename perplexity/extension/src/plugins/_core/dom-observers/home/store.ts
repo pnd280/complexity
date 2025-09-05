@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
 type HomeDomObserverStoreType = {
-  $slogan: JQuery<HTMLElement> | null;
+  slogan: HTMLElement | null;
   resetStore: () => void;
 };
 
@@ -12,10 +12,10 @@ export const homeDomObserverStore =
     subscribeWithSelector(
       immer(
         (set): HomeDomObserverStoreType => ({
-          $slogan: null,
+          slogan: null,
           resetStore: () => {
             set({
-              $slogan: null,
+              slogan: null,
             });
           },
         }),

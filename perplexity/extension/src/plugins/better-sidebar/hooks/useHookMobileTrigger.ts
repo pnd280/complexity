@@ -6,21 +6,19 @@ import { betterSidebarStore } from "@/plugins/better-sidebar/store";
 const attrId = "better-sidebar-mobile-trigger-hook";
 
 export default function useHookMobileTrigger() {
-  const $mobileTrigger = useSidebarDomObserverStore(
-    (state) => state.$mobileTrigger,
+  const mobileTrigger = useSidebarDomObserverStore(
+    (state) => state.mobileTrigger,
+    deepEqual,
   );
 
   useEffect(() => {
-    if (!$mobileTrigger) return;
+    if (mobileTrigger == null) return;
 
-    const mobileTriggerElement = $mobileTrigger[0];
-    if (!mobileTriggerElement) return;
-
-    const isHooked = mobileTriggerElement.getAttribute(attrId) === "true";
+    const isHooked = mobileTrigger.getAttribute(attrId) === "true";
 
     if (isHooked) return;
 
-    mobileTriggerElement.setAttribute(attrId, "true");
+    mobileTrigger.setAttribute(attrId, "true");
 
     const clickHandler = (e: Event) => {
       e.preventDefault();
@@ -28,11 +26,11 @@ export default function useHookMobileTrigger() {
       betterSidebarStore.getState().setOpen(true);
     };
 
-    mobileTriggerElement.addEventListener("click", clickHandler);
+    mobileTrigger.addEventListener("click", clickHandler);
 
     return () => {
-      mobileTriggerElement.removeEventListener("click", clickHandler);
-      mobileTriggerElement.removeAttribute(attrId);
+      mobileTrigger.removeEventListener("click", clickHandler);
+      mobileTrigger.removeAttribute(attrId);
     };
-  }, [$mobileTrigger]);
+  }, [mobileTrigger]);
 }

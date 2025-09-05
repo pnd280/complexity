@@ -9,6 +9,9 @@ export const DOM_SELECTORS: DomSelectors = {
   PAGE_CHILD_WRAPPER: ".h-\\[100dvh\\] > [class^=erp][style^=padding]",
   SIDEBAR: {
     WRAPPER: ".group\\/sidebar",
+    CHILD: {
+      MENU: ".group\\/sidebar-menu",
+    },
     MOBILE_TRIGGER:
       ".h-headerHeight.absolute button:has(svg.tabler-icon-menu-2)",
   },
@@ -20,12 +23,12 @@ export const DOM_SELECTORS: DomSelectors = {
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: `.h-headerHeight.absolute + div > div > div:last-child`,
-        BRANCHED: `.h-headerHeight.absolute + div > div > div:last-child`,
+        NORMAL: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
+        BRANCHED: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
       },
       MOBILE: {
-        NORMAL: `.h-headerHeight.absolute + div > div > div:last-child`,
-        BRANCHED: `.h-headerHeight.absolute + div > div > div:last-child`,
+        NORMAL: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
+        BRANCHED: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
       },
     },
     MESSAGE: {
@@ -99,7 +102,7 @@ export const DOM_SELECTORS: DomSelectors = {
     },
   },
   SETTINGS_PAGE: {
-    SIDEBAR_WRAPPER: ".w-sideBarWidth, .scrollable-container",
+    SIDEBAR_WRAPPER: ".w-sideBarWidth:has(+.scrollable-container)",
     SIDEBAR_CHILD: {
       BACK_BUTTON: ".mb-3.ml-2.flex.md\\:px-2",
     },
@@ -123,6 +126,9 @@ export const INTERNAL_ATTRIBUTES = {
   SIDEBAR: {
     WRAPPER: "sidebar-wrapper",
     MOBILE_TRIGGER: "sidebar-mobile-trigger",
+    CHILD: {
+      MENU: "sidebar-menu",
+    },
   },
   HOME: {
     SLOGAN: "home-slogan",

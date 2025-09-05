@@ -1,20 +1,16 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 import {
-  CallbackQueue,
-  createTaskId,
-} from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
+  observeNavbarOverflowMenuButtonWrapper,
+  observeNavbar,
+  observePopper,
+  observeWrapper,
+  observePageWrapper,
+  observeMessageBlocksWrapper,
+} from "@/plugins/_core/dom-observers/thread/observers";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import {
-  findNavbarOverflowMenuButtonWrapper,
-  findNavbar,
-  findPopper,
-  findWrapper,
-  findPageWrapper,
-  findMessageBlocksWrapper,
-} from "@/plugins/_core/dom-observers/thread/utils";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
 import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
@@ -57,82 +53,77 @@ export default function () {
         },
       });
 
-      observeThread(whereAmI());
-
-      spaRouteChangeCompleteSubscribe((url) => {
-        observeThread(whereAmI(url));
-      });
+      spaRouteChangeCompleteSubscribe(
+        (url) => {
+          observeThread(whereAmI(url));
+        },
+        {
+          immediate: true,
+        },
+      );
     },
   });
 }
 
 function cleanup() {
-  DomObserver.destroy(createDomObserverId("thread"));
-  threadDomObserverStore.getState().resetStore();
-
-  $(
-    getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
-    ),
-  ).internalComponentAttr(null);
+  domObserverService.unsubscribe(createDomObserverId("thread", "pageWrapper"));
+  domObserverService.unsubscribe(createDomObserverId("thread", "navbar"));
+  domObserverService.unsubscribe(
+    createDomObserverId("thread", "navbarOverflowMenuButton"),
+  );
+  domObserverService.unsubscribe(createDomObserverId("thread", "wrapper"));
+  domObserverService.unsubscribe(
+    createDomObserverId("thread", "messageBlocksWrapper"),
+  );
+  domObserverService.unsubscribe(createDomObserverId("thread", "popper"));
 }
 
 function observeThread(location: ReturnType<typeof whereAmI>) {
+  cleanup();
+
   if (location === "thread") {
-    DomObserver.create(createDomObserverId("thread"), {
-      target: document.body,
-      config: { childList: true, subtree: true },
-      onMutation: () => {
-        CallbackQueue.getInstance().enqueueArray([
-          {
-            id: createTaskId("thread", "pageWrapper"),
-            callback: findPageWrapper,
-          },
-          {
-            id: createTaskId("thread", "navbar"),
-            callback: findNavbar,
-          },
-          {
-            id: createTaskId("thread", "navbarOverflowMenuButton"),
-            callback: findNavbarOverflowMenuButtonWrapper,
-          },
-          {
-            id: createTaskId("thread", "wrapper"),
-            callback: findWrapper,
-          },
-          {
-            id: createTaskId("thread", "messageBlocksWrapper"),
-            callback: findMessageBlocksWrapper,
-          },
-          {
-            id: createTaskId("thread", "popper"),
-            callback: findPopper,
-          },
-        ]);
-      },
+    observePageWrapper({
+      observerId: createDomObserverId("thread", "pageWrapper"),
+    });
+
+    observeNavbar({
+      observerId: createDomObserverId("thread", "navbar"),
+    });
+
+    observeNavbarOverflowMenuButtonWrapper({
+      observerId: createDomObserverId("thread", "navbarOverflowMenuButton"),
+    });
+
+    observeWrapper({
+      observerId: createDomObserverId("thread", "wrapper"),
+    });
+
+    observeMessageBlocksWrapper({
+      observerId: createDomObserverId("thread", "messageBlocksWrapper"),
+    });
+
+    observePopper({
+      observerId: createDomObserverId("thread", "popper"),
     });
   } else if (location === "comet_assistant") {
-    DomObserver.create(createDomObserverId("thread"), {
-      target: document.body,
-      config: { childList: true, subtree: true },
-      onMutation: () => {
-        CallbackQueue.getInstance().enqueueArray([
-          {
-            id: createTaskId("thread", "pageWrapper"),
-            callback: findPageWrapper,
-          },
-          {
-            id: createTaskId("thread", "wrapper"),
-            callback: findWrapper,
-          },
-          {
-            id: createTaskId("thread", "messageBlocksWrapper"),
-            callback: findMessageBlocksWrapper,
-          },
-        ]);
-      },
+    observePageWrapper({
+      observerId: createDomObserverId("thread", "pageWrapper"),
+    });
+
+    observeWrapper({
+      observerId: createDomObserverId("thread", "wrapper"),
+    });
+
+    observeMessageBlocksWrapper({
+      observerId: createDomObserverId("thread", "messageBlocksWrapper"),
     });
   } else {
-    cleanup();
+    threadDomObserverStore.getState().resetStore();
+
+    $(
+      getDomSelectorsRootService().cplxAttribute(
+        getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
+      ),
+    ).internalComponentAttr(null);
   }
 }

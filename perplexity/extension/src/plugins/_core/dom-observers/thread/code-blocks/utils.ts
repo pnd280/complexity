@@ -2,9 +2,9 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 
 const astCache = new Map<string, any>();
@@ -32,15 +32,15 @@ async function processCodeBlocksForMessageBlock(
     return parseCodeBlocksFromString(messageBlock);
   }
 
-  const $codeBlockElements = $(messageBlock.nodes.$answer)
+  const codeBlockElements = $(messageBlock.nodes.$answer)
     .find(
       getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER,
     )
     .toArray();
 
-  if ($codeBlockElements.length === 0) return [];
+  if (codeBlockElements.length === 0) return [];
 
-  const codeBlocks = $codeBlockElements.map(
+  const codeBlocks = codeBlockElements.map(
     (codeBlockElement, codeBlockIndex) => {
       const $codeBlock = $(codeBlockElement);
 

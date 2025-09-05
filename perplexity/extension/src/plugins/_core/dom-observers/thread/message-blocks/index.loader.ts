@@ -1,16 +1,13 @@
 import debounce from "lodash/debounce";
 
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
-import {
-  CallbackQueue,
-  createTaskId,
-} from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { findMessageBlocks } from "@/plugins/_core/dom-observers/thread/message-blocks/utils";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 
 declare module "@/plugins/_core/dom-observers/types" {
   interface CoreDomObserverRegistry {
@@ -40,27 +37,32 @@ export default function () {
     },
   });
 }
-function cleanup() {
-  DomObserver.destroy(createDomObserverId("thread", "messageBlocks"));
-  threadMessageBlocksDomObserverStore.getState().resetStore();
-}
 
 function observeThreadMessageBlocks() {
   threadDomObserverStore.subscribe(
     (store) => store.$messageBlocksWrapper,
     ($threadMessageBlocksWrapper) => {
-      cleanup();
+      domObserverService.unsubscribe(
+        createDomObserverId("thread", "messageBlocks"),
+      );
 
       if (
         $threadMessageBlocksWrapper == null ||
         !$threadMessageBlocksWrapper[0]
-      )
+      ) {
+        threadMessageBlocksDomObserverStore.getState().resetStore();
         return;
+      }
 
-      DomObserver.create(createDomObserverId("thread", "messageBlocks"), {
-        target: $threadMessageBlocksWrapper[0],
-        config: { childList: true, subtree: true },
-        onMutation,
+      domObserverService.subscribe({
+        id: createDomObserverId("thread", "messageBlocks"),
+        selector: `${getDomSelectorsRootService().cplxAttribute(
+          getDomSelectorsRootService().internalAttributes.THREAD
+            .MESSAGE_BLOCKS_WRAPPER,
+        )} *`,
+        onAdd: onMutation,
+        onRemove: onMutation,
+        existingCheck: true,
       });
     },
     {
@@ -69,7 +71,7 @@ function observeThreadMessageBlocks() {
   );
 }
 
-async function onMutation() {
+const onMutation = debounce(async () => {
   const $threadMessagesContainer =
     threadDomObserverStore.getState().$messageBlocksWrapper;
 
@@ -113,15 +115,10 @@ async function onMutation() {
     store.states.isInFlight = isAnyMessageBlockInFlight;
   });
 
-  CallbackQueue.getInstance().enqueue(
-    async () => {
-      threadMessageBlocksDomObserverStore.setState({
-        messageBlocks,
-      });
-    },
-    createTaskId("thread", "messageBlocks"),
-  );
-}
+  threadMessageBlocksDomObserverStore.setState({
+    messageBlocks,
+  });
+}, 100);
 
 function hasContentChanged($threadMessagesContainer: JQuery<HTMLElement>) {
   const prevTextContent =
@@ -138,5 +135,5 @@ function hasContentChanged($threadMessagesContainer: JQuery<HTMLElement>) {
 }
 
 const scheduleObserverForceTrigger = debounce(() => {
-  DomObserver.forceTrigger(createDomObserverId("thread", "messageBlocks"));
+  onMutation();
 }, 100);

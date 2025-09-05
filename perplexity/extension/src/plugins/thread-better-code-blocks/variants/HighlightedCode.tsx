@@ -2,6 +2,7 @@ import { useDebounce, useWindowSize } from "@uidotdev/usehooks";
 import type { ReactNode, RefObject } from "react";
 
 import CodeHighlighter from "@/components/CodeHighlighter";
+import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
 import { getInterpretedArtifactLanguage } from "@/plugins/artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
@@ -10,6 +11,11 @@ import { ExtensionSettingsService } from "@/services/infra/extension-api-wrapper
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 const HighlightedCodeWrapper = memo(() => {
+  const colorScheme = useColorSchemeStore(
+    (state) => state.colorScheme,
+    deepEqual,
+  );
+
   const { codeBlock, maxHeight, isWrapped } = useMirroredCodeBlockContext();
 
   const isInFlight = codeBlock?.states.isInFlight;
@@ -59,6 +65,7 @@ const HighlightedCodeWrapper = memo(() => {
       >
         <CodeHighlighter
           showLineNumbers={showLineNumbers}
+          colorScheme={colorScheme === "light" ? "light" : "dark"}
           language={interpretedLanguage}
           codeRef={codeRef}
           PreTag={PreTag}

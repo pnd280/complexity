@@ -10,7 +10,7 @@ import {
   useThreadMessageBlocksDomObserverStore,
 } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
-import { useThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-context";
+import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import { DesktopContent } from "@/plugins/language-model-selector/index.public";
 import { MobileContent } from "@/plugins/language-model-selector/index.public";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/index.public";
@@ -19,7 +19,7 @@ import { isLanguageModelCode } from "@/services/externals/cplx-api/remote-resour
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function ThreadBetterRewriteDropdown() {
-  const { messageBlockIndex } = useThreadMessageContext();
+  const messageBlockIndex = useThreadMessageIndexContext();
 
   const { isMobile } = useIsMobileStore();
   const [isOpen, setIsOpen] = useState(false);

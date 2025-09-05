@@ -1,9 +1,9 @@
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { useThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-context";
+import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export function QueryMetrics() {
-  const { messageBlockIndex } = useThreadMessageContext();
+  const messageBlockIndex = useThreadMessageIndexContext();
 
   const title = useThreadMessageBlocksDomObserverStore(
     (store) => store.messageBlocks?.[messageBlockIndex]?.content.title,

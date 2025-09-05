@@ -1,25 +1,15 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 import {
-  CallbackQueue,
-  createTaskId,
-} from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
-import {
-  findFollowUpQueryBox,
-  findMainQueryBox,
-  findSpaceQueryBox,
-} from "@/plugins/_core/dom-observers/query-boxes/utils";
+  observeFollowUpQueryBox,
+  observeMainQueryBox,
+  observeSpaceQueryBox,
+} from "@/plugins/_core/dom-observers/query-boxes/observers";
+import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
-import type { MaybePromise } from "@/types/utils.types";
 import { whereAmI } from "@/utils/utils";
-
-const cleanup = () => {
-  DomObserver.destroy(createDomObserverId("queryBoxes", "home"));
-  DomObserver.destroy(createDomObserverId("queryBoxes", "collection"));
-  DomObserver.destroy(createDomObserverId("queryBoxes", "followUp"));
-};
 
 declare module "@/plugins/_core/dom-observers/types" {
   interface CoreDomObserverRegistry {
@@ -49,44 +39,52 @@ export default function () {
       )
         return;
 
-      observeQueryBoxes(whereAmI());
-      spaRouteChangeCompleteSubscribe((url) => {
-        observeQueryBoxes(whereAmI(url));
-      });
+      spaRouteChangeCompleteSubscribe(
+        (url) => {
+          observeQueryBoxes(whereAmI(url));
+        },
+        {
+          immediate: true,
+        },
+      );
     },
   });
 }
 
-async function observeQueryBoxes(location: ReturnType<typeof whereAmI>) {
-  if (
-    !shouldEnableCoreObserver({
-      coreObserverId: "queryBoxes",
-    })
-  )
-    return;
+function cleanup() {
+  domObserverService.unsubscribe(createDomObserverId("queryBoxes", "home"));
+  domObserverService.unsubscribe(
+    createDomObserverId("queryBoxes", "comet_ntp"),
+  );
+  domObserverService.unsubscribe(
+    createDomObserverId("queryBoxes", "collection"),
+  );
+  domObserverService.unsubscribe(createDomObserverId("queryBoxes", "thread"));
+}
 
+function observeQueryBoxes(location: ReturnType<typeof whereAmI>) {
   cleanup();
 
-  const handlerMap: Partial<
-    Record<ReturnType<typeof whereAmI>, () => MaybePromise<void>>
+  const observerMap: Partial<
+    Record<
+      ReturnType<typeof whereAmI>,
+      ({ observerId }: { observerId: string }) => () => void
+    >
   > = {
-    home: findMainQueryBox,
-    comet_ntp: findMainQueryBox,
-    collection: findSpaceQueryBox,
-    thread: findFollowUpQueryBox,
+    home: observeMainQueryBox,
+    comet_ntp: observeMainQueryBox,
+    collection: observeSpaceQueryBox,
+    thread: observeFollowUpQueryBox,
   };
 
-  const handler = handlerMap[location];
+  const handler = observerMap[location];
 
-  if (!handler) return;
+  if (handler == null) {
+    queryBoxesDomObserverStore.getState().resetStore();
+    return;
+  }
 
-  DomObserver.create(createDomObserverId("queryBoxes", location), {
-    target: document.body,
-    config: { childList: true, subtree: true },
-    onMutation: () =>
-      CallbackQueue.getInstance().enqueue(
-        handler,
-        createTaskId("queryBoxes", location),
-      ),
+  handler({
+    observerId: createDomObserverId("queryBoxes", location),
   });
 }

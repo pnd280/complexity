@@ -1,4 +1,4 @@
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 
 const OBSERVER_ID = "query-edit-button-group-wrapper";

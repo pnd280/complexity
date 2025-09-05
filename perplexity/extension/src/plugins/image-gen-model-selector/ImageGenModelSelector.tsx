@@ -11,9 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import usePplxUserSettings from "@/hooks/usePplxUserSettings";
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
-import { useImageGenModelSelectorStore } from "@/plugins/image-gen-popover/store";
-import usePortalContainer from "@/plugins/image-gen-popover/usePortalContainer";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { useImageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
+import usePortalContainer from "@/plugins/image-gen-model-selector/usePortalContainer";
 import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-image-models";
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { isReactNode } from "@/types/utils.types";

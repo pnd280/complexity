@@ -1,8 +1,8 @@
 @reference "../../assets/index.css";
 
-[cplx-main-query-box],
-[cplx-space-query-box],
-[cplx-follow-up-query-box] {
+[data-cplx-component="cplx-main-query-box"],
+[data-cplx-component="cplx-space-query-box"],
+[data-cplx-component="cplx-follow-up-query-box"] {
   [data-cplx-component="query-box-components-wrapper"]
     [data-cplx-component="query-box-pplx-left-toolbar-components-wrapper"]
     > :nth-child(2) {
@@ -10,9 +10,9 @@
   }
 }
 
-[cplx-main-query-box],
-[cplx-follow-up-query-box],
-[cplx-space-query-box] {
+[data-cplx-component="cplx-main-query-box"],
+[data-cplx-component="cplx-follow-up-query-box"],
+[data-cplx-component="cplx-space-query-box"] {
   [data-cplx-component="query-box-cplx-right-toolbar-components-left-wrapper"]
     + div {
     display: none;

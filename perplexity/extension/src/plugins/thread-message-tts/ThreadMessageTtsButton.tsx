@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useEvent } from "@/hooks/useEvent";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { useThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-context";
+import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import usePplxTtsRequest from "@/plugins/thread-message-tts/hooks/usePplxTtsRequest";
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";
 import { TTS_VOICES } from "@/plugins/thread-message-tts/types";
@@ -19,7 +19,7 @@ import { PplxTtsPlayerCoordinator } from "@/plugins/thread-message-tts/utils/coo
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export function ThreadMessageTtsButton() {
-  const { messageBlockIndex } = useThreadMessageContext();
+  const messageBlockIndex = useThreadMessageIndexContext();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [playing, setPlaying] = useState(false);

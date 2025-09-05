@@ -2,22 +2,26 @@ import Cplx from "@/components/icons/Cplx";
 import FaArrowUpRight from "@/components/icons/FaArrowUpRight";
 import { Portal } from "@/components/ui/portal";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useSettingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
 import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
 
 export function SettingsDashboardLink() {
   const isMobile = useIsMobileStore((store) => store.isMobile);
 
-  const $sidebarWrapper = useSettingsPageDomObserverStore(
-    (store) => store.$sidebarWrapper,
+  const sidebarWrapper = useSettingsPageDomObserverStore(
+    (store) => store.sidebarWrapper,
     isMobile ? undefined : deepEqual,
   );
 
   const portalContainer = useMemo(() => {
-    if ($sidebarWrapper == null || !$sidebarWrapper.length) return null;
+    if (!sidebarWrapper) return null;
 
-    const $existingContainer = $sidebarWrapper.find(
+    const $sidebarWrapper = $(sidebarWrapper);
+
+    if (!$sidebarWrapper.length) return null;
+
+    const $existingContainer = $(sidebarWrapper).find(
       getDomSelectorsRootService().cplxAttribute(
         getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
           .CPLX_DASHBOARD_LINK,
@@ -32,14 +36,14 @@ export function SettingsDashboardLink() {
           .CPLX_DASHBOARD_LINK,
       )
       .insertAfter(
-        $sidebarWrapper.find(
+        $(sidebarWrapper).find(
           getDomSelectorsRootService().cachedSync.SETTINGS_PAGE.SIDEBAR_CHILD
             .BACK_BUTTON,
         ),
       );
 
     return $portalContainer[0];
-  }, [$sidebarWrapper]);
+  }, [sidebarWrapper]);
 
   if (portalContainer == null) return null;
 

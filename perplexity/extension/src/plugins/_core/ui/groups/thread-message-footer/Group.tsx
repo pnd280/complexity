@@ -1,7 +1,7 @@
 import { Portal } from "@/components/ui/portal";
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
-import { ThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-context";
 import { useCreatePortalContainers } from "@/plugins/_core/ui/groups/thread-message-footer/useCreatePortalContainers";
+import { ThreadMessageIndexContextProvider } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import ThreadBetterMessageCopyButtonWrapper from "@/plugins/thread-better-message-copy-buttons/Wrapper";
 import ThreadBetterRewriteDropdownWrapper from "@/plugins/thread-better-rewrite-dropdown/Wrapper";
 import ThreadMessageMetricsWrapper from "@/plugins/thread-message-length/MessageWrapper";
@@ -18,9 +18,9 @@ export function ThreadMessageFooterExtraButtons() {
 
   return portalContainers.map((portalContainer, index) => (
     <Portal key={index} container={portalContainer as HTMLElement}>
-      <ThreadMessageContext value={{ messageBlockIndex: index }}>
+      <ThreadMessageIndexContextProvider messageBlockIndex={index}>
         <MemoizedWrapper />
-      </ThreadMessageContext>
+      </ThreadMessageIndexContextProvider>
     </Portal>
   ));
 }

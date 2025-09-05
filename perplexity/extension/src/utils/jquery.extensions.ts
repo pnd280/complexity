@@ -27,6 +27,18 @@ function internalComponentAttr(
     return this.removeAttr("data-cplx-component");
   }
 
+  const existingValue = this.attr("data-cplx-component");
+
+  if (
+    existingValue != null &&
+    existingValue.length > 0 &&
+    existingValue !== value
+  ) {
+    throw new Error(
+      `"${value}": Overriding "data-cplx-component" is not allowed, explicitly remove it first`,
+    );
+  }
+
   return this.attr("data-cplx-component", value);
 }
 

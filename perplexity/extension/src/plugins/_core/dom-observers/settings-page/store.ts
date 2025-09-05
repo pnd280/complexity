@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
 type SettingsPageDomObserverStoreType = {
-  $sidebarWrapper: JQuery<HTMLElement> | null;
+  sidebarWrapper: HTMLElement | null;
   resetStore: () => void;
 };
 
@@ -12,10 +12,10 @@ export const settingsPageDomObserverStore =
     subscribeWithSelector(
       immer(
         (set): SettingsPageDomObserverStoreType => ({
-          $sidebarWrapper: null,
+          sidebarWrapper: null,
           resetStore: () => {
             set({
-              $sidebarWrapper: null,
+              sidebarWrapper: null,
             });
           },
         }),

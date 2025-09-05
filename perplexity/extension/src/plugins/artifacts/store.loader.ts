@@ -18,7 +18,7 @@ import {
   getInterpretedArtifactLanguage,
   isAutonomousArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { parseUrl, scrollToElement, whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

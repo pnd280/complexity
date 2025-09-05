@@ -1,6 +1,6 @@
 /* @reference "../../../../../assets/index.css";
 
-[cplx-follow-up-query-box] {
+[data-cplx-component="cplx-follow-up-query-box"] {
   & > div > div {
     @apply x:py-3;
   }

@@ -1,4 +1,4 @@
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import type { AnchorSlice } from "@/plugins/slash-command/store/slices/anchor";
 import { createTextboxAdapter } from "@/plugins/slash-command/textbox-adapter";
 import { whereAmI } from "@/utils/utils";

@@ -1,7 +1,7 @@
 @reference "../../../../../assets/index.css";
 
-[cplx-main-query-box],
-[cplx-space-query-box] {
+[data-cplx-component="cplx-main-query-box"],
+[data-cplx-component="cplx-space-query-box"] {
   [data-cplx-component="query-box-components-wrapper"] {
     & > :nth-child(2) {
       grid-column-start: 1 !important;

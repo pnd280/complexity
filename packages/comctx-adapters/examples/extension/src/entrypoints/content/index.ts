@@ -1,4 +1,4 @@
-import { DocumentAdapter } from "@comctx-adapters/core";
+import { ChromiumDocumentAdapter } from "@comctx-adapters/core";
 import { defineProxy } from "comctx";
 
 import { CounterService } from "@/services/counter";
@@ -45,5 +45,5 @@ export async function injectMainWorldScript({
     namespace: "counter",
   });
 
-  registerService(new DocumentAdapter("counter"));
+  registerService(new ChromiumDocumentAdapter("counter"));
 })();

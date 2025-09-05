@@ -1,6 +1,6 @@
 import { Portal } from "@/components/ui/portal";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { ThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-context";
+import { ThreadMessageIndexContextProvider } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import { useCreatePortalContainers } from "@/plugins/_core/ui/groups/thread-query-edit-button-group/useCreatePortalContainers";
 import { threadQueryHoverNormalizeCssResourceConfig } from "@/plugins/_core/ui/index.remote-resources";
 import ThreadQueryMetricsWrapper from "@/plugins/thread-message-length/QueryWrapper";
@@ -26,9 +26,9 @@ export function ThreadQueryEditButtonGroupExtraButtons() {
 
   return portalContainers.map((portalContainer, messageBlockIndex) => (
     <Portal key={messageBlockIndex} container={portalContainer as HTMLElement}>
-      <ThreadMessageContext value={{ messageBlockIndex }}>
+      <ThreadMessageIndexContextProvider messageBlockIndex={messageBlockIndex}>
         <MemoizedWrapper />
-      </ThreadMessageContext>
+      </ThreadMessageIndexContextProvider>
     </Portal>
   ));
 }

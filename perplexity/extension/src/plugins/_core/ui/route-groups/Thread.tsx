@@ -16,7 +16,7 @@ const { default: ExportThreadWrapper } = lazily(
   () => import("@/plugins/export-thread/Wrapper"),
 );
 const { default: ImageGenModelSelectorWrapper } = lazily(
-  () => import("@/plugins/image-gen-popover/Wrapper"),
+  () => import("@/plugins/image-gen-model-selector/Wrapper"),
 );
 const { default: BetterCodeBlocksWrapper } = lazily(
   () => import("@/plugins/thread-better-code-blocks/Wrapper"),

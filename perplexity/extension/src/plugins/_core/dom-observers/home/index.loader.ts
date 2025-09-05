@@ -1,12 +1,9 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
-import {
-  CallbackQueue,
-  createTaskId,
-} from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
-import { findSlogan } from "@/plugins/_core/dom-observers/home/utils";
+import { observeSlogan } from "@/plugins/_core/dom-observers/home/observers";
+import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {
@@ -39,30 +36,31 @@ export default function () {
       // )
       //   return;
 
-      observeHome(whereAmI());
-
-      spaRouteChangeCompleteSubscribe((url) => {
-        observeHome(whereAmI(url));
-      });
+      spaRouteChangeCompleteSubscribe(
+        (url) => {
+          observeHome(whereAmI(url));
+        },
+        {
+          immediate: true,
+        },
+      );
     },
   });
 }
 
-const cleanup = () => {
-  DomObserver.destroy(createDomObserverId("home"));
-};
+function cleanup() {
+  domObserverService.unsubscribe(createDomObserverId("home", "slogan"));
+}
 
 function observeHome(location: ReturnType<typeof whereAmI>) {
   cleanup();
 
-  if (location !== "home" && location !== "comet_ntp") return;
+  if (location !== "home" && location !== "comet_ntp") {
+    homeDomObserverStore.getState().resetStore();
+    return;
+  }
 
-  DomObserver.create(createDomObserverId("home"), {
-    target: document.body,
-    config: { childList: true, subtree: true },
-    onMutation: () =>
-      CallbackQueue.getInstance().enqueueArray([
-        { callback: findSlogan, id: createTaskId("home", "slogan") },
-      ]),
+  observeSlogan({
+    observerId: createDomObserverId("home", "slogan"),
   });
 }

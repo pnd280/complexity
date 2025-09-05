@@ -1,6 +1,4 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
-import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
 import { colorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
 import { UiUtils } from "@/utils/ui-utils";
 
@@ -17,20 +15,25 @@ export default function () {
     loader: () => {
       $("html").attr("data-color-scheme", UiUtils.getCurrentColorScheme());
 
-      DomObserver.create(createDomObserverId("misc", "colorScheme"), {
-        target: $("html")[0]!,
-        config: {
-          subtree: false,
-          childList: false,
-          attributes: true,
-          attributeFilter: ["data-color-scheme"],
-        },
-        onMutation: () => {
-          colorSchemeStore.setState((state) => {
-            state.colorScheme =
-              $("html").attr("data-color-scheme") === "dark" ? "dark" : "light";
-          });
-        },
+      const handler = () => {
+        colorSchemeStore.setState((state) => {
+          state.colorScheme =
+            document.documentElement.getAttribute("data-color-scheme") ===
+            "dark"
+              ? "dark"
+              : "light";
+        });
+      };
+
+      handler();
+
+      const observer = new MutationObserver(handler);
+
+      observer.observe(document.documentElement, {
+        subtree: false,
+        childList: false,
+        attributes: true,
+        attributeFilter: ["data-color-scheme"],
       });
     },
   });

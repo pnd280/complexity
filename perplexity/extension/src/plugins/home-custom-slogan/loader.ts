@@ -1,5 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
@@ -64,10 +64,10 @@ export default function loader() {
       if (!pluginsStates["home:customSlogan"]) return;
 
       homeDomObserverStore.subscribe(
-        (store) => store.$slogan,
-        ($slogan) => {
-          if (!$slogan || !$slogan[0]) return;
-          setupCustomSlogan({ location: whereAmI(), slogan: $slogan[0] });
+        (store) => store.slogan,
+        (slogan) => {
+          if (!slogan || document.body.contains(slogan)) return;
+          setupCustomSlogan({ location: whereAmI(), slogan });
         },
       );
     },

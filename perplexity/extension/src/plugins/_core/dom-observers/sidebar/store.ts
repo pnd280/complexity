@@ -3,8 +3,9 @@ import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
 type SidebarDomObserverStoreType = {
-  $wrapper: JQuery<HTMLElement> | null;
-  $mobileTrigger: JQuery<HTMLElement> | null;
+  wrapper: HTMLElement | null;
+  mobileTrigger: HTMLElement | null;
+  menu: HTMLElement | null;
   resetStore: () => void;
 };
 
@@ -13,12 +14,14 @@ export const sidebarDomObserverStore =
     subscribeWithSelector(
       immer(
         (set): SidebarDomObserverStoreType => ({
-          $wrapper: null,
-          $mobileTrigger: null,
+          wrapper: null,
+          mobileTrigger: null,
+          menu: null,
           resetStore: () => {
             set({
-              $wrapper: null,
-              $mobileTrigger: null,
+              wrapper: null,
+              mobileTrigger: null,
+              menu: null,
             });
           },
         }),

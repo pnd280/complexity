@@ -2,7 +2,7 @@ import { invariant } from "@/utils/utils";
 
 export async function executeCsPluginLoaders() {
   const loaders = import.meta.glob(
-    ["@/plugins/!(_core)/loader.{ts,tsx}", "@/plugins/**/*.loader.{ts,tsx}"],
+    ["@/plugins/**/loader.{ts,tsx}", "@/plugins/**/*.loader.{ts,tsx}"],
     {
       eager: false,
     },
@@ -21,7 +21,12 @@ export async function executeCsPluginLoaders() {
 
   const executionPromises = importedModules.map(async ({ path, module }) => {
     invariant("default" in module, `Loader "${path}" has no default export`);
-    await Promise.resolve((module.default as () => void | Promise<void>)());
+
+    try {
+      await Promise.resolve((module.default as () => void | Promise<void>)());
+    } catch (error) {
+      console.error(`[CS-LOADER MODULE EXECUTION ERROR] ${path}:`, error);
+    }
   });
 
   await Promise.all(executionPromises);

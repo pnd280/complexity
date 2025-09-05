@@ -1,4 +1,4 @@
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { sharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
 import type { QueryBoxType } from "@/plugins/_core/ui/groups/query-box/types";
 import { isLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";

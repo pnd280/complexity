@@ -6,11 +6,11 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { useThreadMessageContext } from "@/plugins/_core/ui/groups/thread-message-context";
+import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export function MessageMetrics() {
-  const { messageBlockIndex } = useThreadMessageContext();
+  const messageBlockIndex = useThreadMessageIndexContext();
 
   const answer = useThreadMessageBlocksDomObserverStore(
     (store) => store.messageBlocks?.[messageBlockIndex]?.content.answer,

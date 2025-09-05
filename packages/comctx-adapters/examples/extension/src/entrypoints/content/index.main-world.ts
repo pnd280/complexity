@@ -1,6 +1,6 @@
 // INJECTED SCRIPT
 
-import { DocumentAdapter } from "@comctx-adapters/core";
+import { ChromiumDocumentAdapter } from "@comctx-adapters/core";
 import { defineProxy } from "comctx";
 
 import type { CounterService } from "@/services/counter";
@@ -10,7 +10,7 @@ import type { CounterService } from "@/services/counter";
     namespace: "counter",
   });
 
-  const counterService = getService(new DocumentAdapter("counter"));
+  const counterService = getService(new ChromiumDocumentAdapter("counter"));
 
   console.log("object", await counterService.object());
   console.log("string", await counterService.string());

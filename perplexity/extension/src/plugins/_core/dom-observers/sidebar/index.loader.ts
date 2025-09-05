@@ -1,14 +1,10 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 import {
-  CallbackQueue,
-  createTaskId,
-} from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
-import {
-  findMobileTrigger,
-  findSidebarWrapper,
-} from "@/plugins/_core/dom-observers/sidebar/utils";
+  observeMobileTrigger,
+  observeSidebarWrapper,
+} from "@/plugins/_core/dom-observers/sidebar/observers";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {
@@ -40,20 +36,21 @@ export default function () {
   });
 }
 
+function cleanup() {
+  domObserverService.unsubscribe(createDomObserverId("sidebar", "wrapper"));
+  domObserverService.unsubscribe(
+    createDomObserverId("sidebar", "mobile-trigger"),
+  );
+}
+
 async function observeSidebar() {
-  DomObserver.create(createDomObserverId("sidebar", "wrapper"), {
-    target: document.body,
-    config: { childList: true, subtree: true },
-    onMutation: () =>
-      CallbackQueue.getInstance().enqueueArray([
-        {
-          callback: findSidebarWrapper,
-          id: createTaskId("sidebar", "wrapper"),
-        },
-        {
-          callback: findMobileTrigger,
-          id: createTaskId("sidebar", "mobile-trigger"),
-        },
-      ]),
+  cleanup();
+
+  observeSidebarWrapper({
+    observerId: createDomObserverId("sidebar", "wrapper"),
+  });
+
+  observeMobileTrigger({
+    observerId: createDomObserverId("sidebar", "mobile-trigger"),
   });
 }

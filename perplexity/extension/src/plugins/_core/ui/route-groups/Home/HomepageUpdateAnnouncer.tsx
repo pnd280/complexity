@@ -6,14 +6,18 @@ import { useHomeDomObserverStore } from "@/plugins/_core/dom-observers/home/stor
 export default function HomepageUpdateAnnouncer() {
   const { isUpdateAvailable } = useExtensionUpdate();
 
-  const $slogan = useHomeDomObserverStore((store) => store.$slogan);
+  const slogan = useHomeDomObserverStore((store) => store.slogan, deepEqual);
 
-  if (!$slogan || !$slogan.length || !isUpdateAvailable) return null;
+  const anchor = useMemo(() => {
+    if (!slogan) return null;
+    return $(slogan).find(">*").first()[0];
+  }, [slogan]);
 
-  const $anchor = $slogan.find(">*").first();
+  if (!anchor || document.body.contains(anchor) || !isUpdateAvailable)
+    return null;
 
   return (
-    <Portal container={$anchor[0]}>
+    <Portal container={anchor}>
       <ExtensionUpdateInfoDialogWrapper>
         <div className="x:w-64 x:text-xs x:text-muted-foreground">
           A new version of Complexity is available!

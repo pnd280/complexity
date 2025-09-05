@@ -57,7 +57,14 @@ export const spaRouterStoreSubscribe = spaRouterStore.subscribe;
 
 export const spaRouteChangeCompleteSubscribe = (
   callback: (url: string) => void,
+  options: {
+    immediate?: boolean;
+  } = {},
 ) => {
+  if (options.immediate) {
+    callback(spaRouterStore.getState().url);
+  }
+
   return spaRouterStore.subscribe(
     (store) => ({ state: store.state, url: store.url }),
     ({ state, url }) => {

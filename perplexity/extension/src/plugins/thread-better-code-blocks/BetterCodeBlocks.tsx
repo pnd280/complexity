@@ -96,7 +96,7 @@ function ContextWrapper({
             settings.maxHeight.enabled && settings.maxHeight.collapseByDefault
               ? settings.maxHeight.value
               : 9999,
-          maxWidth: settings.maxWidth.value,
+          maxWidth: settings.maxWidth.enabled ? settings.maxWidth.value : 100,
           isHorizontalOverflowing: false,
           isVerticalOverflowing: false,
         }}

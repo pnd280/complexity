@@ -3,7 +3,7 @@ import { lazily } from "react-lazily";
 import { withPluginsGuard } from "@/plugins/_core/plugins-guard/withPluginsGuard";
 
 const { ImageGenModelSelector } = lazily(
-  () => import("@/plugins/image-gen-popover/ImageGenModelSelector"),
+  () => import("@/plugins/image-gen-model-selector/ImageGenModelSelector"),
 );
 
 const ImageGenModelSelectorWrapper = withPluginsGuard(ImageGenModelSelector, {

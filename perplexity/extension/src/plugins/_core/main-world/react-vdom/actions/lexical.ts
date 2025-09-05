@@ -1,4 +1,4 @@
-import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsProxyService } from "@/plugins/_core/dom-selectors/service-init.loader";
 
 export async function setLexicalEditorContent({
   content,

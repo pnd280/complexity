@@ -1,19 +1,10 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { DomObserver } from "@/plugins/_core/dom-observers/_service";
-import {
-  CallbackQueue,
-  createTaskId,
-} from "@/plugins/_core/dom-observers/_service/callback-queue";
-import { createDomObserverId } from "@/plugins/_core/dom-observers/_service/types";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
+import { observeSidebar } from "@/plugins/_core/dom-observers/settings-page/observers";
 import { settingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
-import { findSidebar } from "@/plugins/_core/dom-observers/settings-page/utils";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { whereAmI } from "@/utils/utils";
-
-const cleanup = () => {
-  DomObserver.destroy(createDomObserverId("settingsPage", "topNavWrapper"));
-  settingsPageDomObserverStore.getState().resetStore();
-};
 
 declare module "@/plugins/_core/dom-observers/types" {
   interface CoreDomObserverRegistry {
@@ -32,29 +23,33 @@ export default function () {
     id: "coreDomObserver:settingsPage",
     dependencies: ["cache:pluginsStates", "cache:domSelectors"],
     loader: () => {
-      observeSettingsPage(whereAmI());
-
-      spaRouteChangeCompleteSubscribe((url) => {
-        observeSettingsPage(whereAmI(url));
-      });
+      spaRouteChangeCompleteSubscribe(
+        (url) => {
+          observeSettingsPage(whereAmI(url));
+        },
+        {
+          immediate: true,
+        },
+      );
     },
   });
+}
+
+function cleanup() {
+  domObserverService.unsubscribe(
+    createDomObserverId("settingsPage", "topNavWrapper"),
+  );
 }
 
 async function observeSettingsPage(location: ReturnType<typeof whereAmI>) {
   cleanup();
 
-  if (location !== "settings") return;
+  if (location !== "settings") {
+    settingsPageDomObserverStore.getState().resetStore();
+    return;
+  }
 
-  DomObserver.create(createDomObserverId("settingsPage", "topNavWrapper"), {
-    target: document.body,
-    config: { childList: true, subtree: true },
-    onMutation: () =>
-      CallbackQueue.getInstance().enqueueArray([
-        {
-          callback: findSidebar,
-          id: createTaskId("settingsPage", "topNavWrapper"),
-        },
-      ]),
+  observeSidebar({
+    observerId: createDomObserverId("settingsPage", "topNavWrapper"),
   });
 }

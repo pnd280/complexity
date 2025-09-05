@@ -1,4 +1,4 @@
-import { getDomSelectorsProxyService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsProxyService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { errorWrapper } from "@/utils/error-wrapper";

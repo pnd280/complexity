@@ -5,6 +5,9 @@ export const DomSelectorsSchema = z.object({
   PAGE_CHILD_WRAPPER: z.string(),
   SIDEBAR: z.object({
     WRAPPER: z.string(),
+    CHILD: z.object({
+      MENU: z.string(),
+    }),
     MOBILE_TRIGGER: z.string(),
   }),
   THREAD: z.object({

@@ -14,7 +14,7 @@ export default function Psa() {
   return (
     <div
       id="psa"
-      className="x:max-h-[250px] x:overflow-y-auto x:border-b x:bg-primary/10 x:p-4"
+      className="x:hidden x:max-h-[250px] x:overflow-y-auto x:border-b x:bg-primary/10 x:p-4 x:md:block"
     >
       {data ? (
         <MarkdownRenderer markdown={data} className="x:text-foreground" />

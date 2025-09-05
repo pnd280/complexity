@@ -1,153 +1,100 @@
-import { useState } from "react";
+import { useStore } from "zustand";
+import { createStore, type StoreApi } from "zustand/vanilla";
 
-import {
-  RadioGroup,
-  RadioRoot,
-  RadioItem,
-  RadioItemControl,
-  RadioIndicator,
-  RadioItemText,
-  RadioLabel,
-  RadioItemHiddenInput,
-} from "@/components/ui/radio";
+type CountStore = {
+  count: number;
+  increment: () => void;
+  decrement: () => void;
+  reset: () => void;
+};
 
-export function Playground() {
-  const [simpleValue, setSimpleValue] = useState("react");
-  const [compoundValue, setCompoundValue] = useState("horizontal");
-  const [sizeValue, setSizeValue] = useState("base");
+const CounterContext = createContext<StoreApi<CountStore> | null>(null);
+
+function CounterDisplay() {
+  const countStore = useContext(CounterContext);
+  if (!countStore)
+    throw new Error("CounterDisplay must be used within CounterProvider");
+  const { count } = useStore(countStore);
 
   return (
-    <div className="x:flex x:flex-col x:gap-10 x:p-6">
-      <section>
-        <h2 className="x:mb-4 x:text-xl x:font-semibold">
-          Simple RadioGroup Example
-        </h2>
-        <RadioGroup
-          label="Select a framework"
-          value={simpleValue}
-          options={[
-            { value: "react", label: "React" },
-            { value: "vue", label: "Vue" },
-            { value: "svelte", label: "Svelte" },
-            { value: "solid", label: "Solid" },
-          ]}
-          onValueChange={(details) => {
-            if (details.value) setSimpleValue(details.value);
-          }}
-        />
-        <div className="x:mt-2 x:text-sm x:text-muted-foreground">
-          Selected: {simpleValue}
-        </div>
-      </section>
+    <div className="text-2xl font-bold text-center mb-4">
+      <span className="text-blue-600">Count: </span>
+      <span className="text-gray-800">{count}</span>
+    </div>
+  );
+}
 
-      <section>
-        <h2 className="x:mb-4 x:text-xl x:font-semibold">
-          Horizontal RadioGroup
-        </h2>
-        <RadioGroup
-          label="Select a framework"
-          orientation="horizontal"
-          value={simpleValue}
-          options={[
-            { value: "react", label: "React" },
-            { value: "vue", label: "Vue" },
-            { value: "svelte", label: "Svelte" },
-            { value: "solid", label: "Solid" },
-          ]}
-          onValueChange={(details) => {
-            if (details.value) setSimpleValue(details.value);
-          }}
-        />
-      </section>
+function CounterControls() {
+  const countStore = useContext(CounterContext);
+  if (!countStore)
+    throw new Error("CounterControls must be used within CounterProvider");
+  const { increment, decrement } = useStore(countStore);
 
-      <section>
-        <h2 className="x:mb-4 x:text-xl x:font-semibold">
-          Compound Component API
-        </h2>
-        <RadioRoot
-          value={compoundValue}
-          onValueChange={(details) => {
-            if (details.value) setCompoundValue(details.value);
-          }}
-        >
-          <RadioLabel>Layout Orientation</RadioLabel>
+  return (
+    <div className="flex gap-2 justify-center mb-4">
+      <button
+        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+        onClick={decrement}
+      >
+        -
+      </button>
+      <button
+        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+        onClick={increment}
+      >
+        +
+      </button>
+    </div>
+  );
+}
 
-          <div className="x:mt-2 x:flex x:flex-col x:gap-2">
-            <RadioItem value="horizontal">
-              <RadioItemControl>
-                <RadioIndicator />
-              </RadioItemControl>
-              <RadioItemText>Horizontal</RadioItemText>
-              <RadioItemHiddenInput />
-            </RadioItem>
+function CounterReset() {
+  const countStore = useContext(CounterContext);
+  if (!countStore)
+    throw new Error("CounterReset must be used within CounterProvider");
+  const { reset, count } = useStore(countStore);
 
-            <RadioItem value="vertical">
-              <RadioItemControl>
-                <RadioIndicator />
-              </RadioItemControl>
-              <RadioItemText>Vertical</RadioItemText>
-              <RadioItemHiddenInput />
-            </RadioItem>
-          </div>
-        </RadioRoot>
-        <div className="x:mt-2 x:text-sm x:text-muted-foreground">
-          Selected: {compoundValue}
-        </div>
-      </section>
+  return (
+    <div className="text-center">
+      <button
+        disabled={count === 0}
+        className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={reset}
+      >
+        Reset
+      </button>
+    </div>
+  );
+}
 
-      <section>
-        <h2 className="x:mb-4 x:text-xl x:font-semibold">Size Variants</h2>
-        <div className="x:flex x:flex-col x:gap-6">
-          <RadioRoot
-            value={sizeValue}
-            onValueChange={(details) => {
-              if (details.value) setSizeValue(details.value);
-            }}
-          >
-            <RadioLabel>Select a size</RadioLabel>
+function Counter() {
+  const [countStore] = useState(() =>
+    createStore<CountStore>((set) => ({
+      count: 0,
+      increment: () =>
+        set((state: { count: number }) => ({ count: state.count + 1 })),
+      decrement: () =>
+        set((state: { count: number }) => ({ count: state.count - 1 })),
+      reset: () => set({ count: 0 }),
+    })),
+  );
 
-            <div className="x:mt-2 x:flex x:flex-col x:gap-4">
-              <RadioItem value="sm" size="sm">
-                <RadioItemControl size="sm">
-                  <RadioIndicator size="sm" />
-                </RadioItemControl>
-                <RadioItemText size="sm">Small</RadioItemText>
-                <RadioItemHiddenInput />
-              </RadioItem>
+  return (
+    <CounterContext.Provider value={countStore}>
+      <div className="border border-gray-300 rounded-lg p-6 bg-white shadow-sm">
+        <CounterDisplay />
+        <CounterControls />
+        <CounterReset />
+      </div>
+    </CounterContext.Provider>
+  );
+}
 
-              <RadioItem value="base" size="base">
-                <RadioItemControl size="base">
-                  <RadioIndicator size="base" />
-                </RadioItemControl>
-                <RadioItemText size="base">Base (Default)</RadioItemText>
-                <RadioItemHiddenInput />
-              </RadioItem>
-
-              <RadioItem value="lg" size="lg">
-                <RadioItemControl size="lg">
-                  <RadioIndicator size="lg" />
-                </RadioItemControl>
-                <RadioItemText size="lg">Large</RadioItemText>
-                <RadioItemHiddenInput />
-              </RadioItem>
-            </div>
-          </RadioRoot>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="x:mb-4 x:text-xl x:font-semibold">Disabled State</h2>
-        <RadioGroup
-          disabled
-          label="Disabled RadioGroup"
-          options={[
-            { value: "option1", label: "Option 1" },
-            { value: "option2", label: "Option 2" },
-            { value: "option3", label: "Option 3" },
-          ]}
-          defaultValue="option1"
-        />
-      </section>
+export function Playground() {
+  return (
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <Counter />
+      <Counter />
     </div>
   );
 }

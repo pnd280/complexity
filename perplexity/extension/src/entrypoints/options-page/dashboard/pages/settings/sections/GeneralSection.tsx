@@ -33,7 +33,7 @@ export default function GeneralSection() {
           }
         />
       </SettingsItem>
-      <SettingsItem
+      {/* <SettingsItem
         title={
           <div className="x:flex x:items-center x:gap-2">
             <LuLeafyGreen className="x:text-success" />
@@ -60,7 +60,7 @@ export default function GeneralSection() {
             })
           }
         />
-      </SettingsItem>
+      </SettingsItem> */}
       <SettingsItem
         title="Onboarding"
         description="Go through the onboarding experience again"

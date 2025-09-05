@@ -1,5 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getDomSelectorsRootService } from "@/plugins/_core/cache/dom-selectors/service-init.loader";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
 import styles from "@/plugins/drag-n-drop-file-to-upload-in-thread/styles.css?inline";
@@ -26,35 +26,31 @@ export default function loader() {
     loader: ({ "cache:pluginsStates": pluginsStates }) => {
       if (!pluginsStates["thread:dragAndDropFileToUploadInThread"]) return;
 
-      const cleanup = ($wrapper: JQuery<HTMLElement> | null) => {
+      const cleanup = () => {
         $overlay?.remove();
         removeCss?.();
-
-        if ($wrapper)
-          $wrapper.removeAttr(
-            getDomSelectorsRootService().internalAttributes.THREAD
-              .ATTACHMENT_DROP_ZONE,
-          );
       };
 
       threadDomObserverStore.subscribe(
         (store) => store.$wrapper,
         ($wrapper) => {
-          cleanup($wrapper);
+          cleanup();
 
           if (!$wrapper || !$wrapper.length) return;
 
           if (
             !$wrapper.length ||
-            $wrapper.internalComponentAttr() ===
+            $wrapper.attr(
               getDomSelectorsRootService().internalAttributes.THREAD
-                .ATTACHMENT_DROP_ZONE
+                .ATTACHMENT_DROP_ZONE,
+            ) === "true"
           )
             return;
 
-          $wrapper.internalComponentAttr(
+          $wrapper.attr(
             getDomSelectorsRootService().internalAttributes.THREAD
               .ATTACHMENT_DROP_ZONE,
+            "true",
           );
 
           removeCss = insertCss({

@@ -11,6 +11,10 @@ export function setupBackgroundWorkers() {
       `listener is not a function in ${path}`,
     );
 
-    worker();
+    try {
+      worker();
+    } catch (error) {
+      console.error(`[BG-WORKER MODULE REGISTRATION ERROR] ${path}:`, error);
+    }
   }
 }

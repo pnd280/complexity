@@ -1,13 +1,13 @@
 import { useSidebarDomObserverStore } from "@/plugins/_core/dom-observers/sidebar/store";
 
 export default function usePortalContainer() {
-  const $navtiveSidebarWrapper = useSidebarDomObserverStore(
-    (store) => store.$wrapper,
+  const nativeSidebarWrapper = useSidebarDomObserverStore(
+    (store) => store.wrapper,
     deepEqual,
   );
 
   return useMemo(() => {
-    if (!$navtiveSidebarWrapper) return null;
+    if (!nativeSidebarWrapper) return null;
 
     const $existingContainer = $("#better-sidebar-container");
 
@@ -19,8 +19,8 @@ export default function usePortalContainer() {
 
     $container.attr("id", "better-sidebar-container");
 
-    $navtiveSidebarWrapper.before($container);
+    $(nativeSidebarWrapper).before($container);
 
     return $container[0];
-  }, [$navtiveSidebarWrapper]);
+  }, [nativeSidebarWrapper]);
 }
