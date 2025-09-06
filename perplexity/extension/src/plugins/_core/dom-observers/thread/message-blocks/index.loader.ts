@@ -56,10 +56,16 @@ function observeThreadMessageBlocks() {
 
       domObserverService.subscribe({
         id: createDomObserverId("thread", "messageBlocks"),
-        selector: `${getDomSelectorsRootService().cplxAttribute(
-          getDomSelectorsRootService().internalAttributes.THREAD
-            .MESSAGE_BLOCKS_WRAPPER,
-        )} *`,
+        selector: [
+          `${getDomSelectorsRootService().cplxAttribute(
+            getDomSelectorsRootService().internalAttributes.THREAD
+              .MESSAGE_BLOCKS_WRAPPER,
+          )} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.QUERY_WRAPPER} *`,
+          `${getDomSelectorsRootService().cplxAttribute(
+            getDomSelectorsRootService().internalAttributes.THREAD
+              .MESSAGE_BLOCKS_WRAPPER,
+          )} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.ANSWER} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.ANSWER_TEXT_CONTENT} *`,
+        ],
         onAdd: onMutation,
         onRemove: onMutation,
         existingCheck: true,

@@ -18,26 +18,32 @@ export type MessageBlockFiberData = {
   variantSiblingId: string | null;
 };
 
-export const localFiberNodePath = [
-  "return",
-  "memoizedState",
-  "next",
-  "next",
-  "memoizedState",
-  "current",
-  "results",
-];
+export const localFiberNodePath = ["memoizedProps", "children"];
+
+let $messagesContainer: JQuery<HTMLElement> | null = null;
+
+function getMessagesContainer() {
+  if (
+    $messagesContainer == null ||
+    !document.body.contains($messagesContainer[0] ?? null)
+  ) {
+    $messagesContainer = $(
+      DomSelectorsServiceImpl.cplxAttribute(
+        DomSelectorsServiceImpl.internalAttributes.THREAD
+          .MESSAGE_BLOCKS_WRAPPER,
+      ),
+    );
+  }
+
+  return $messagesContainer;
+}
 
 export async function getMessages({
   remoteFiberNodePath,
 }: { remoteFiberNodePath?: string[] } = {}): Promise<
   MessageBlockFiberData[] | null
 > {
-  const $messagesContainer = $(
-    DomSelectorsServiceImpl.cplxAttribute(
-      DomSelectorsServiceImpl.internalAttributes.THREAD.MESSAGE_BLOCKS_WRAPPER,
-    ),
-  );
+  const $messagesContainer = getMessagesContainer();
 
   if (!$messagesContainer[0]) return null;
 
@@ -61,32 +67,36 @@ export async function getMessages({
             node,
             remoteFiberNodePath ?? localFiberNodePath,
           ) as any[]
-        ).map((entry) => ({
-          title: entry.query_str,
-          backendUuid: entry.backend_uuid,
-          answer: (entry.blocks as any[])
-            .filter((block) => block.intended_usage === "ask_text")
-            .map((chunk: any) => chunk.markdown_block.chunks.join(""))
-            .join(""),
-          webResults: (entry.blocks as any[])
-            .filter((block) => block.intended_usage === "web_results")
-            .map((chunk: any) =>
-              chunk.web_result_block.web_results.map((result: any) => ({
-                name: result.name,
-                url: result.url,
-                snippet: result.snippet,
-              })),
-            )
-            .flat(),
+        ).map((entryNode) => {
+          const entry = entryNode.props.result;
 
-          displayModel: entry.display_model,
-          isInFlight: entry.status !== "COMPLETED",
-          authorUuid: entry.author_id ?? null,
-          hasVariants: entry.side_by_side_metadata != null,
-          isVariantSelected:
-            entry.side_by_side_metadata?.selection_status === "SELECTED",
-          variantSiblingId: entry.side_by_side_metadata?.sibling_uuid,
-        }));
+          return {
+            title: entry.query_str,
+            backendUuid: entry.backend_uuid,
+            answer: (entry.blocks as any[])
+              .filter((block) => block.intended_usage === "ask_text")
+              .map((chunk: any) => chunk.markdown_block.chunks.join(""))
+              .join(""),
+            webResults: (entry.blocks as any[])
+              .filter((block) => block.intended_usage === "web_results")
+              .map((chunk: any) =>
+                chunk.web_result_block.web_results.map((result: any) => ({
+                  name: result.name,
+                  url: result.url,
+                  snippet: result.snippet,
+                })),
+              )
+              .flat(),
+
+            displayModel: entry.display_model,
+            isInFlight: entry.status !== "COMPLETED",
+            authorUuid: entry.author_id ?? null,
+            hasVariants: entry.side_by_side_metadata != null,
+            isVariantSelected:
+              entry.side_by_side_metadata?.selection_status === "SELECTED",
+            variantSiblingId: entry.side_by_side_metadata?.sibling_uuid,
+          };
+        });
       },
     });
   })();

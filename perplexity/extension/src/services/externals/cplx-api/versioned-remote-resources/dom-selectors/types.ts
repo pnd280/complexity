@@ -34,6 +34,7 @@ export const DomSelectorsSchema = z.object({
       STICKY_HEADER: z.string(),
       SOURCES: z.string(),
       ANSWER: z.string(),
+      ANSWER_TEXT_CONTENT: z.string(),
       FOOTER: z.string(),
       FOOTER_CHILD: z.object({
         REWRITE_BUTTON: z.string(),

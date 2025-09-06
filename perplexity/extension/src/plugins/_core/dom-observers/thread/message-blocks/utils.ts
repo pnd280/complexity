@@ -20,8 +20,8 @@ export async function findMessageBlocks(
 
   if ($messageBlockElements.length === 0) return [];
 
-  const messageBlocksFiberData = filterABExperimentalBlocks(
-    await getReactVdomService().getMessages(remoteFiberNodePath ?? undefined),
+  const messageBlocksFiberData = await getReactVdomService().getMessages(
+    remoteFiberNodePath ?? undefined,
   );
 
   const nodes = $messageBlockElements.toArray();
@@ -35,61 +35,6 @@ export async function findMessageBlocks(
       idx,
     );
     if (block) result.push(block);
-  }
-
-  return result;
-}
-
-function filterABExperimentalBlocks(
-  messageBlocksFiberData: MessageBlockFiberData[] | null,
-): MessageBlockFiberData[] | null {
-  if (!messageBlocksFiberData || messageBlocksFiberData.length === 0) {
-    return messageBlocksFiberData;
-  }
-
-  const result: MessageBlockFiberData[] = [];
-  let i = 0;
-  const len = messageBlocksFiberData.length;
-
-  while (i < len) {
-    const currentBlock = messageBlocksFiberData[i];
-
-    if (!currentBlock) {
-      i++;
-      continue;
-    }
-
-    if (!currentBlock.hasVariants) {
-      result.push(currentBlock);
-      i++;
-      continue;
-    }
-
-    let selectedVariantInGroup = currentBlock;
-    let isSelectedVariantFound = currentBlock.isVariantSelected;
-    const currentVariantSiblingId = currentBlock.variantSiblingId;
-
-    i++;
-    while (i < len) {
-      const nextBlockInGroup = messageBlocksFiberData[i];
-
-      if (
-        !nextBlockInGroup ||
-        !nextBlockInGroup.hasVariants ||
-        nextBlockInGroup.variantSiblingId !== currentVariantSiblingId
-      ) {
-        break;
-      }
-
-      if (!isSelectedVariantFound && nextBlockInGroup.isVariantSelected) {
-        selectedVariantInGroup = nextBlockInGroup;
-        isSelectedVariantFound = true;
-      }
-
-      i++;
-    }
-
-    result.push(selectedVariantInGroup);
   }
 
   return result;
