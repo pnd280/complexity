@@ -26,8 +26,8 @@ export type BrowserRuntimeEvents = keyof EventHandlers extends infer K
     : never
   : never;
 
-export function addMessageListener<T extends keyof EventHandlers>(handlers: {
-  [K in T]: (
+export function onMessage(handlers: {
+  [K in keyof EventHandlers]?: (
     message: TypedMessage<K>,
     sender: chrome.runtime.MessageSender,
   ) => EventHandlerReturn<K>;
@@ -36,12 +36,7 @@ export function addMessageListener<T extends keyof EventHandlers>(handlers: {
     const handler = handlers[message.type as keyof typeof handlers];
     if (handler != null) {
       try {
-        const response = handler(message as any, sender);
-        if (response !== undefined) {
-          sendResponse(response);
-          return true;
-        }
-        return false;
+        sendResponse(handler(message as any, sender));
       } catch (error) {
         console.error("Error handling message:", error);
         sendResponse(undefined);

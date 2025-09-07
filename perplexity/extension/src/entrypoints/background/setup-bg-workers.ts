@@ -8,7 +8,7 @@ export function setupBackgroundWorkers() {
 
     invariant(
       typeof worker == "function",
-      `listener is not a function in ${path}`,
+      `[BG-WORKER MODULE REGISTRATION ERROR] Default export is not a function in ${path}`,
     );
 
     try {
