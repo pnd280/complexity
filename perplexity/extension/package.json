@@ -1,6 +1,6 @@
 {
   "name": "pplx-ext",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "author": "pnd280",
   "type": "module",
   "scripts": {
@@ -47,8 +47,8 @@
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.2.15",
-    "@tanstack/react-query": "^5.87.0",
-    "@tanstack/react-query-persist-client": "^5.87.0",
+    "@tanstack/react-query": "^5.87.1",
+    "@tanstack/react-query-persist-client": "^5.87.1",
     "@types/howler": "^2.2.12",
     "@uidotdev/usehooks": "^2.4.1",
     "@webext-core/match-patterns": "^1.0.3",
@@ -108,7 +108,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.13",
     "@tanstack/eslint-plugin-query": "^5.86.0",
-    "@tanstack/react-query-devtools": "^5.87.0",
+    "@tanstack/react-query-devtools": "^5.87.1",
     "@types/chrome": "0.1.6",
     "@types/culori": "^4.0.1",
     "@types/jquery": "^3.5.33",

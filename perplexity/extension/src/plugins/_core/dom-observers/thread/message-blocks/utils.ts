@@ -1,4 +1,5 @@
 import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/_core/dom-observers/thread/message-blocks/index.remote-resources";
+import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { type MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
@@ -27,24 +28,28 @@ export async function findMessageBlocks(
   const nodes = $messageBlockElements.toArray();
   const result: MessageBlock[] = [];
 
-  for (let idx = 0; idx < nodes.length; idx += 1) {
-    const messageBlockNode = nodes[idx] as HTMLElement;
-    const block = processMessageBlock(
-      messageBlocksFiberData?.[idx],
-      $(messageBlockNode),
-      idx,
-    );
+  for (let index = 0; index < nodes.length; index += 1) {
+    const messageBlockNode = nodes[index] as HTMLElement;
+    const block = parseMessageBlock({
+      messageBlockFiber: messageBlocksFiberData?.[index],
+      $wrapper: $(messageBlockNode),
+      index,
+    });
     if (block) result.push(block);
   }
 
   return result;
 }
 
-function processMessageBlock(
-  messageBlockFiber: MessageBlockFiberData | undefined,
-  $wrapper: JQuery<HTMLElement>,
-  index: number,
-): MessageBlock | null {
+function parseMessageBlock({
+  messageBlockFiber,
+  $wrapper,
+  index,
+}: {
+  messageBlockFiber: MessageBlockFiberData | undefined;
+  $wrapper: JQuery<HTMLElement>;
+  index: number;
+}): MessageBlock | null {
   if (messageBlockFiber?.hasVariants && !messageBlockFiber.isVariantSelected) {
     return null;
   }
@@ -55,9 +60,8 @@ function processMessageBlock(
     )
     .attr("data-index", index);
 
-  const parsedBlock = parseMessageBlock($wrapper);
   const { $query, $queryEditButtonGroup, $sources, $answer, $footer } =
-    parsedBlock;
+    getComponentNodes({ $wrapper, index });
 
   const nodes: MessageBlock["nodes"] = {
     $wrapper,
@@ -98,10 +102,75 @@ function processMessageBlock(
   };
 }
 
-function parseMessageBlock($messageBlock: JQuery<Element>) {
+function getComponentNodes({
+  $wrapper,
+  index,
+}: {
+  $wrapper: JQuery<Element>;
+  index: number;
+}) {
   const SELECTORS = getDomSelectorsRootService().cachedSync.THREAD.MESSAGE;
+  const existingNodes = getExistingNodes(index);
 
-  const $elements = $messageBlock.find(
+  const nodes = existingNodes
+    ? refreshStaleNodes(existingNodes, $wrapper, SELECTORS)
+    : findFreshNodes($wrapper, SELECTORS);
+
+  setInternalAttributes(nodes);
+
+  return nodes;
+}
+
+function getExistingNodes(index: number) {
+  return threadMessageBlocksDomObserverStore.getState().messageBlocks?.[index]
+    ?.nodes;
+}
+
+function isNodeStale($node: JQuery<Element>): boolean {
+  return $node[0] == null || !document.contains($node[0]);
+}
+
+function refreshStaleNodes(
+  existingNodes: MessageBlock["nodes"],
+  $wrapper: JQuery<Element>,
+  SELECTORS: ReturnType<
+    typeof getDomSelectorsRootService
+  >["cachedSync"]["THREAD"]["MESSAGE"],
+) {
+  const nodes = { ...existingNodes };
+
+  if (isNodeStale(nodes.$query)) {
+    nodes.$query = $wrapper.find(SELECTORS.QUERY_WRAPPER);
+  }
+
+  if (isNodeStale(nodes.$sources)) {
+    nodes.$sources = $wrapper.find(SELECTORS.SOURCES);
+  }
+
+  if (isNodeStale(nodes.$answer)) {
+    nodes.$answer = $wrapper.find(SELECTORS.ANSWER);
+  }
+
+  if (isNodeStale(nodes.$footer)) {
+    nodes.$footer = $wrapper.find(SELECTORS.FOOTER);
+  }
+
+  if (isNodeStale(nodes.$queryEditButtonGroup)) {
+    nodes.$queryEditButtonGroup = nodes.$query.find(
+      SELECTORS.QUERY_EDIT_BUTTON_GROUP,
+    );
+  }
+
+  return nodes;
+}
+
+function findFreshNodes(
+  $wrapper: JQuery<Element>,
+  SELECTORS: ReturnType<
+    typeof getDomSelectorsRootService
+  >["cachedSync"]["THREAD"]["MESSAGE"],
+): MessageBlock["nodes"] {
+  const $elements = $wrapper.find(
     [
       SELECTORS.QUERY_WRAPPER,
       SELECTORS.SOURCES,
@@ -114,31 +183,28 @@ function parseMessageBlock($messageBlock: JQuery<Element>) {
   const $sources = $elements.filter(SELECTORS.SOURCES);
   const $answer = $elements.filter(SELECTORS.ANSWER);
   const $footer = $elements.filter(SELECTORS.FOOTER);
-
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
 
-  $query.internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.QUERY,
-  );
-  $queryEditButtonGroup.internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
-      .QUERY_EDIT_BUTTON_GROUP,
-  );
-  $answer.internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.ANSWER,
-  );
-  $footer.internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.FOOTER,
-  );
-
   return {
-    $messageBlock,
+    $wrapper: $wrapper as JQuery<HTMLElement>,
     $query,
-    $queryEditButtonGroup,
     $sources,
     $answer,
     $footer,
+    $queryEditButtonGroup,
   };
+}
+
+function setInternalAttributes(nodes: MessageBlock["nodes"]) {
+  const internalAttrs =
+    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE;
+
+  nodes.$query.internalComponentAttr(internalAttrs.QUERY);
+  nodes.$queryEditButtonGroup.internalComponentAttr(
+    internalAttrs.QUERY_EDIT_BUTTON_GROUP,
+  );
+  nodes.$answer.internalComponentAttr(internalAttrs.ANSWER);
+  nodes.$footer.internalComponentAttr(internalAttrs.FOOTER);
 }
 
 function getMessageBlockStates({

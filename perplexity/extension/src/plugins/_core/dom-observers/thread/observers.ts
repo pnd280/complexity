@@ -1,7 +1,7 @@
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
+import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
-import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 
 export function observePageWrapper({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({

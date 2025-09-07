@@ -19,7 +19,7 @@
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
     "@crxjs/vite-plugin": "^2.2.0",
-    "@types/chrome": "0.1.5",
+    "@types/chrome": "0.1.6",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
     "globals": "^16.3.0",

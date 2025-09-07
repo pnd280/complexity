@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
 import styles from "@/plugins/drag-n-drop-file-to-upload-in-thread/styles.css?inline";
 import { insertCss } from "@/utils/utils";

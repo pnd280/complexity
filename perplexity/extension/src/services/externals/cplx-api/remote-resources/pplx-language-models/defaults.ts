@@ -46,7 +46,7 @@ export const pplxLocalLanguageModels = {
       label: "GPT-5 Thinking",
       shortLabel: "GPT-5 Thinking",
       code: "gpt5_thinking",
-      isReasoning: false,
+      isReasoning: true,
       limitKey: "gpt4_limit",
       isMax: false,
       icon: "openai",

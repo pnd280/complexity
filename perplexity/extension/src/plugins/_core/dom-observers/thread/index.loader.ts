@@ -1,7 +1,4 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { domObserverService } from "@/services/features/dom-observer";
-import { createDomObserverId } from "@/services/features/dom-observer/types";
 import {
   observeNavbarOverflowMenuButtonWrapper,
   observeNavbar,
@@ -12,8 +9,11 @@ import {
 } from "@/plugins/_core/dom-observers/thread/observers";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 import { waitUntil, whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {

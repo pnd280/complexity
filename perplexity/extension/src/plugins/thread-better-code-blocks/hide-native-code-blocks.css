@@ -3,8 +3,7 @@
   display: none;
 }
 
-[data-cplx-component="mirrored-code-block"]:not(:empty)
-  + div.w-full.md\:max-w-\[90vw\]:not(.overflow-x-auto) {
+div.w-full.md\:max-w-\[90vw\]:not(.overflow-x-auto) {
   visibility: hidden;
 }
 
