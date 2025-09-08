@@ -18,28 +18,6 @@ export const jsonUtils = {
   },
 };
 
-export async function waitForHydration() {
-  await Promise.all([
-    waitForElement({
-      selector: "html[data-color-scheme]",
-      timeout: 5000,
-      interval: 100,
-    }),
-    waitForNextjsGlobalObj(),
-  ]);
-}
-
-export async function waitForNextjsGlobalObj(): Promise<void> {
-  return new Promise((resolve) => {
-    const interval = setInterval(() => {
-      if ($(document.body).attr("data-nextjs-router-ready") !== undefined) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 100);
-  });
-}
-
 export function escapeHtmlTags(html: string) {
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }

@@ -1,19 +1,19 @@
 # Architecture
 
-This is a browser extension that heavily modifies (monkey-patches) Perplexity AI web pages to enhance functionality. Modularity is key to the extension's design; in other words, each feature (plugin) should be able to work with as few dependencies as possible.
+## At a Glance
 
-## Core Architecture Components
+A browser extension that provides client-side modifications to the Perplexity AI interface. Strives for clean code organization.
 
-### Contexts
+## Execution Contexts
 
-The extension operates in FOUR execution contexts:
+The extension operates across **four execution contexts**:
 
-- **Extension UI** - User interfaces like options page, popup, and sidepanel
-- **Background Service Worker** - Long-running script that handles tasks even when the extension UI is not open
-- **Content Scripts** - Scripts injected into Perplexity AI web pages to enhance functionality
-- **Main-world Content Scripts** - Scripts that run in Perplexity AI web pages' document Javascript context (able to access low level objects like the `next` router, and the React fiber tree)
+- **Extension UI** - Options page (Settings Dashboard)
+- **Background** - Long-running tasks, persists when UI is closed
+- **Content Scripts** - Injected into Perplexity pages for functionality enhancement
+- **Main-world Content Scripts** - Runs in page's document context (intercepts network requests, router, React fiber tree)
 
-### Directory Structure
+## Directory Structure
 
 ```
 src/
@@ -21,51 +21,40 @@ src/
 ├── components/     # Shared UI components
 ├── data/           # Shared data sources and constants
 ├── entrypoints/    # Entry points for different contexts
-│   ├── background/       # Background service worker
-│   ├── content-scripts/  # Content scripts
-│   └── options-page/     # Options page UI
 ├── hooks/          # Shared React hooks
 ├── plugins/        # Modular feature implementations
-│   ├── _core/      # Core Plugins
-│   └── */          # Individual plugins
+│   ├── _core/      # Core plugin functionality
+│   └── */          # Individual feature plugins
 ├── services/       # Shared services
-├── types/          # Shared TypeScript type definitions
+├── types/          # TypeScript type definitions
 └── utils/          # Shared utility functions
 ```
 
-## Plugin System
+## Plugin System (Overview)
 
-The architecture uses a modular plugin system to implement features independently:
+Modular architecture for independent feature implementation:
 
-- Each plugin resides in its own directory under `src/plugins/`.
-- Plugins can be enabled/disabled. When a plugin is disabled, its side effects should be unloaded and any dependent plugins should also be disabled.
-- Plugins use a centralized registry system for discovery, configuration, and dependency management.
-  - [Plugin Registry](../src/data/plugin-registry/index.ts)
-  - [Plugin Loaders Registry](../src/entrypoints/content-scripts/loaders.ts)
-  - [Settings UI](../src/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader.ts)
-  - Refer to [Build your own plugin](./build-your-own-plugin.md) for more details
+- **Modular**: Each plugin in its own `src/plugins/` directory
+- **Discoverable**: Auto-registered via Vite's `import.meta.glob`
+- **Configurable**: Enable/disable with automatic side-effect cleanup
+- **Dependency-aware**: Dependent plugins auto-disabled when dependencies are disabled
+
+### Central Registries
+
+- [Plugin Registry](../src/data/plugin-registry/index.ts) - Core plugin definitions
+- [Plugin Loaders Registry](../src/entrypoints/content-scripts/loaders.ts) - Run arbitrary code when plugin is loaded
+- [Settings UI Loader](../src/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader.ts) - Configuration interfaces
 
 ### Module Discovery
 
-- Plugins (+ async dependencies, settings UI)
+Automatic discovery and registration via **Vite's `import.meta.glob`** for:
+
+- Plugin implementations and async dependencies
 - Background services
-- Internationalization lazy loading
+- Settings UI components
+- Internationalization modules
 
-This repository heavily leverages **Vite's `import.meta.glob`** for automatic module discovery and registration. The entire implementation of a plugin is located in a single directory, and it's automatically discovered and integrated into the system without any manual registration steps.
-
-### Plugin Structure
-
-The folder structure is similar to a typical feature-based structure, where each feature folder contains its own components, hooks, services, types, utils, and data:
-
-```
-plugins/feature-name/
-├── components/   # UI components
-├── hooks/        # React hooks
-├── index.ts      # Entry point
-├── store.ts      # State management
-├── utils.ts      # Utility functions
-└── types.ts      # Type definitions
-```
+> **See [Build Your Own Plugin](./build-your-own-plugin.md) for detailed structure, APIs, and examples.**
 
 ## Dependency Boundaries
 
@@ -120,10 +109,13 @@ Files are categorized based on their location patterns as defined in the ESLint 
 - **Plugin Public Exports**: `src/plugins/*/**/*.public.*`
 - **Plugin Settings UI**: `src/plugins/*/**/settings-ui.tsx`
 
-## Data
+## Data & Persistence
 
-- Persistence via Extension's Storage and IndexedDB
+- **Extension Storage**: Configuration and lightweight data
+- **IndexedDB**: Complex data structures and caching
 
-## Technology Stack
+## Related Docs
 
-See [Tech Stack](./tech-stack.md)
+- [Build Your Own Plugin](./build-your-own-plugin.md) - Plugin development guide
+- [Tech Stack](./tech-stack.md) - Technologies and tools overview
+- [DX](./dx.md) - Development setup and workflows

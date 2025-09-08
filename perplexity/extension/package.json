@@ -36,7 +36,7 @@
     "zip:firefox": "pnpm dx:firefox gulp createPackage"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.22.0",
+    "@ark-ui/react": "^5.23.0",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@comctx-adapters/core": "workspace:*",
     "@complexity/async-dep-registry": "workspace:*",
@@ -108,8 +108,8 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.13",
     "@tanstack/eslint-plugin-query": "^5.86.0",
-    "@tanstack/react-query-devtools": "^5.87.1",
-    "@types/chrome": "0.1.6",
+    "@tanstack/react-query-devtools": "^5.87.3",
+    "@types/chrome": "0.1.9",
     "@types/culori": "^4.0.1",
     "@types/jquery": "^3.5.33",
     "@types/lodash": "^4.17.20",
@@ -124,7 +124,7 @@
     "@vitest/ui": "^3.2.4",
     "browserslist": "^4.25.4",
     "caniuse-lite": "^1.0.30001741",
-    "chalk": "^5.6.0",
+    "chalk": "^5.6.2",
     "eslint": "catalog:lint",
     "eslint-plugin-boundaries": "^5.0.1",
     "glob": "^11.0.3",
@@ -141,11 +141,10 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.13",
     "tailwindcss-animate": "^1.0.7",
-    "ts-morph": "^26.0.0",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
     "unimport": "^5.2.0",
-    "vite": "^7.1.4",
+    "vite": "^7.1.5",
     "vitest": "^3.2.4"
   },
   "engines": {

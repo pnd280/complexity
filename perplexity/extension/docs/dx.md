@@ -1,21 +1,21 @@
-# DX
+# Developer Experience (DX)
 
-## Environment Setup
+## Who this is for
 
-### Requirements
+Contributors and developers working on the Complexity Perplexity Extension.
+
+## Requirements
 
 - Node.js ^22
 - PNPM package manager
 - Any Chromium-based browser (Chrome, Edge, Brave, etc.)
   - **Firefox is NOT supported for running the dev environment**
 
-## Development Workflow
+## Quickstart
 
-### Getting Started
+1. **Clone the repository**
 
-1. Clone the repository
-
-2. Install dependencies:
+2. **Install dependencies:**
 
    ```bash
    pnpm i -g turbo
@@ -24,27 +24,47 @@
    pnpm turbo build --filter=./packages/*
    ```
 
-3. Use the official remote configs registry (optional):
-   Add the following to the `.env` file in the folder `perplexity/extension`:
+3. **Optional: Use official remote configs registry**
 
-   ```.env
+   Add to `.env` file in `perplexity/extension`:
+
+   ```env
    VITE_CPLX_CDN_URL=https://cdn.cplx.app
    ```
 
-4. Start the development server:
+4. **Start the development server:**
 
    ```bash
    cd perplexity/extension
    pnpm turbo dev
    ```
 
-   - At the current size of the project, dev server might take up to 30 seconds to finish transpiling the necessary code for the extension to work **initially**.
-   - HMR not working? Refer to [HMR Support](./hmr.md).
+5. **Load the extension:**
+   - Enable "Developer mode" on `chrome://extensions`
+   - Load unpacked extension from `perplexity/extension/dist/chrome` folder
 
-5. Enable "Developer mode" on `chrome://extensions`
-6. Load the extension from the `perplexity/extension/dist/chrome` folder
+> **Note:** Initial transpilation may take up to 30 seconds. HMR issues? See [HMR Support](./hmr.md).
 
-### Build Process
+## Common Tasks
+
+### Linting and Formatting
+
+- `pnpm lint`: Run ESLint
+- `pnpm lintq`: Run ESLint (errors only)
+- `pnpm lintf`: Run ESLint with auto-fix
+- `pnpm fmt`: Format all code with Prettier
+- `pnpm clean`: Delete `node_modules` and `dist` directories
+
+### Testing
+
+- **Unit tests (Vitest):**
+  - `pnpm test`: Run tests
+  - `pnpm test:ui`: Run tests with UI
+
+- **E2E tests (Playwright):**
+  - Currently boilerplate only; unreliable due to Cloudflare protection
+
+## Build & Distribution
 
 ```bash
 # Build for Chrome
@@ -57,44 +77,40 @@ pnpm turbo build:firefox
 pnpm turbo zip:all
 ```
 
-## Developer Tools
+## Editor Setup (VSCode)
 
 > [!TIP]
-> For the best experience on VSCode, it is strongly recommended to open the `/perplexity/extension` as a dedicated workspace.
+> For the best experience, open `/perplexity/extension` as a dedicated workspace.
 
-### Linting and Formatting
+### Configuration Features
 
-- Prettier TailwindCSS class sorting
-- In addition to common TypeScript/React ESLint rules, this project includes some specific rules:
-  - Enforces strict null checks ([`@typescript-eslint/strict-boolean-expressions`](https://typescript-eslint.io/rules/strict-boolean-expressions/))
-  - Enforces specific filename casing (`PascalCase`, `kebab-case`, `camelCase`)
-  - Provides automatic global imports via `unimport` (see [config](../src/types/unimport.config.ts))
-  - Enforces import scoping via [`eslint-plugin-boundaries`](https://github.com/javierbrea/eslint-plugin-boundaries) to maintain a clean architecture with clear dependency directions (see [config](../eslint-config/boundaries.js))
+- File exclusions to keep explorer clean
+- TailwindCSS (v4) IntelliSense support for jQuery methods
+- Adjust `typescript.tsserver.maxTsServerMemory` to match your system specs
 
-### Development Commands
+### ESLint Rules
 
-- `pnpm lint`: Run ESLint
-- `pnpm lintq`: Run ESLint but only show errors
-- `pnpm lintf`: Run ESLint with auto-fix
-- `pnpm fmt`: Format all code with Prettier
-- `pnpm clean`: Delete `node_modules` and `dist` directories
-- Unit tests with Vitest
-  - `pnpm test`: Run tests
-  - `pnpm test:ui`: Run tests with UI
-- End-to-end tests with Playwright
-  - Currently only boilerplate code, working unreliable due to Cloudflare protection
+In addition to common TypeScript/React rules, this project includes:
 
-## Editor Experience
+- Strict null checks ([`@typescript-eslint/strict-boolean-expressions`](https://typescript-eslint.io/rules/strict-boolean-expressions/))
+- Filename casing enforcement (`PascalCase`, `kebab-case`, `camelCase`)
+- Automatic global imports via `unimport` ([config](../src/types/unimport.config.ts))
+- Import scoping via [`eslint-plugin-boundaries`](https://github.com/javierbrea/eslint-plugin-boundaries) ([config](../eslint-config/boundaries.js))
 
-### VSCode Integration `.vscode/settings.json`
+## Troubleshooting
 
-- File exclusions to keep the explorer clean
-- You might want to adjust `typescript.tsserver.maxTsServerMemory` to match your system's specs
-- TailwindCSS (v4) IntelliSense support for jQuery's methods
+### Development Server
 
-## Misc
+- **Initial build time:** Up to 30 seconds for first transpilation
+- **HMR not working?** See [HMR Support](./hmr.md)
 
-- You will see that the project uses `lazily` from `react-lazily` to lazy load React components. So why not `React.lazy`?
-  - `react-lazily` supports named exports with shorter syntax
-  - `React.lazy` doesn't play well with VSCode's Typescript references, which means it always show `0 references` for the lazy loaded components
-  - See https://github.com/microsoft/TypeScript/issues/50957#issuecomment-2562425998
+### Code Quality
+
+- **Prettier:** Includes TailwindCSS class sorting
+- **React components:** Uses `react-lazily` instead of `React.lazy` for better VSCode TypeScript references ([issue](https://github.com/microsoft/TypeScript/issues/50957#issuecomment-2562425998))
+
+## Related Docs
+
+- [Tech Stack](./tech-stack.md) - Technologies and tools overview
+- [HMR](./hmr.md) - Hot Module Replacement troubleshooting
+- [Architecture](./architecture.md) - System structure and boundaries

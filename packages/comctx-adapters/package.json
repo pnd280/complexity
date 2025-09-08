@@ -25,7 +25,7 @@
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
-    "@types/chrome": "0.1.6",
+    "@types/chrome": "0.1.9",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
     "globals": "^16.3.0",
