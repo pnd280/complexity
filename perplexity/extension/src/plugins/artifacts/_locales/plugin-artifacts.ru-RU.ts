@@ -1,4 +1,6 @@
-import { dt, type LanguageMessages } from "@complexity/i18n";
+import { dt } from "@complexity/i18n";
+
+import type { Translations } from "@/plugins/artifacts/_locales/index";
 
 export default {
   placeholder: {
@@ -49,4 +51,4 @@ export default {
     noSvg: "SVG не найден",
     previewUrl: "Не удалось создать URL превью",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

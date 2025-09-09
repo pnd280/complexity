@@ -1,6 +1,6 @@
+import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
-import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
 
 export function observeSlogan({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({

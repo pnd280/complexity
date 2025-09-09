@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/_locales/index";
 
 export default {
   sidebar: {
@@ -37,4 +37,4 @@ export default {
     },
     dismiss: "닫기",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

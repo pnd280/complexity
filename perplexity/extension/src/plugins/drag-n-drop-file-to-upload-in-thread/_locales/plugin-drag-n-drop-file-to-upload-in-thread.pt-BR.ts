@@ -1,7 +1,7 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/drag-n-drop-file-to-upload-in-thread/_locales/index";
 
 export default {
   dropZone: {
     message: "Solte seus arquivos aqui",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/_locales/index";
 
 export default {
   sidebar: {
@@ -38,4 +38,4 @@ export default {
     },
     dismiss: "Ignora",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

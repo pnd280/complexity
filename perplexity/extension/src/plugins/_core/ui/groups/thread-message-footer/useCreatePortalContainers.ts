@@ -1,5 +1,5 @@
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 
 const OBSERVER_ID = "cplx-thread-message-footer-extra-buttons-wrapper";
 

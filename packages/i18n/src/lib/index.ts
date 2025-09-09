@@ -5,5 +5,6 @@ export {
   type DotPaths,
   type Params,
   type PathsWithParams,
+  type TranslationShape,
 } from "@/lib/init";
 export { type TranslationsRegistry } from "@/lib/registry";

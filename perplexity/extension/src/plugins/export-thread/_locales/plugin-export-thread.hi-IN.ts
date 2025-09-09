@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/export-thread/_locales/index";
 
 export default {
   action: "निर्यात करें",
@@ -17,4 +17,4 @@ export default {
       unknownError: "अज्ञात त्रुटि हुई",
     },
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

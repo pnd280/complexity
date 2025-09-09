@@ -1,4 +1,4 @@
-import { type LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/command-menu/_locales/index";
 
 export default {
   sidecar: {
@@ -89,4 +89,4 @@ export default {
     noResults: "Nema rezultata",
     current: "Trenutno",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

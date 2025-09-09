@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";

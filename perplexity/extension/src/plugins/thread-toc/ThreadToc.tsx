@@ -2,8 +2,8 @@ import React from "react";
 import { LuX } from "react-icons/lu";
 
 import { useEvent } from "@/hooks/useEvent";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import FloatingToggle from "@/plugins/thread-toc/FloatingToggle";
 import TocItem from "@/plugins/thread-toc/TocItem";
 import { useHandleTouch } from "@/plugins/thread-toc/useHandleTouch";

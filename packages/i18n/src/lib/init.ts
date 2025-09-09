@@ -11,6 +11,14 @@ export type LanguageMessages = {
   [key: string]: I18nMessage | LanguageMessages;
 };
 
+export type TranslationShape<T> = {
+  [K in keyof T]: T[K] extends string
+    ? string
+    : T[K] extends object
+      ? TranslationShape<T[K]>
+      : T[K];
+};
+
 type Join<K, P> = K extends string
   ? P extends string
     ? `${K}.${P}`

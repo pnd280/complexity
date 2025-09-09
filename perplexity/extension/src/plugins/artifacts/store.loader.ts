@@ -1,6 +1,7 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadCodeBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/code-blocks/store";
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import {
   spaRouteChangeCompleteSubscribe,
   spaRouterStoreSubscribe,
@@ -18,7 +19,6 @@ import {
   getInterpretedArtifactLanguage,
   isAutonomousArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { parseUrl, scrollToElement, whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

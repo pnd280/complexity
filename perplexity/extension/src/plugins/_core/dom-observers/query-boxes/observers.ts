@@ -1,6 +1,6 @@
+import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
-import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { whereAmI } from "@/utils/utils";
 
 const OBSERVER_ID = {

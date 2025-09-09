@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/export-thread/_locales/index";
 
 export default {
   action: "匯出",
@@ -17,4 +17,4 @@ export default {
       unknownError: "發生未知錯誤",
     },
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

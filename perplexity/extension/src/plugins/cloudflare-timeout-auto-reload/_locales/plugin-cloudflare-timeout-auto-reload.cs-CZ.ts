@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/cloudflare-timeout-auto-reload/_locales/index";
 
 export default {
   actionDialog: {
@@ -8,4 +8,4 @@ export default {
     reload: "Znovu načíst",
     dismiss: "Zavřít",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

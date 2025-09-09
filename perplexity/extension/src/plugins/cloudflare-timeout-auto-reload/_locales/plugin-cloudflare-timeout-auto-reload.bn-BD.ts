@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/cloudflare-timeout-auto-reload/_locales/index";
 
 export default {
   actionDialog: {
@@ -8,4 +8,4 @@ export default {
     reload: "পুনরায় লোড করুন",
     dismiss: "বন্ধ করুন",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

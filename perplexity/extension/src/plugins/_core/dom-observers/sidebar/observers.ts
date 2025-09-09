@@ -1,7 +1,7 @@
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
+import { sidebarDomObserverStore } from "@/plugins/_core/dom-observers/sidebar/store";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
-import { sidebarDomObserverStore } from "@/plugins/_core/dom-observers/sidebar/store";
 
 export function observeSidebarWrapper({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({

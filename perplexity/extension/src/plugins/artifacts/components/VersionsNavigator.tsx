@@ -1,8 +1,8 @@
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 
 import { Button } from "@/components/ui/button";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { artifactsStore, useArtifactsStore } from "@/plugins/artifacts/store";
 import { getArtifactTitle } from "@/plugins/artifacts/utils";
 import { scrollToElement } from "@/utils/utils";

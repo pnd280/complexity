@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/export-thread/_locales/index";
 
 export default {
   action: "Exportieren",
@@ -17,4 +17,4 @@ export default {
       unknownError: "Unbekannter Fehler aufgetreten",
     },
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

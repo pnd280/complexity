@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/export-thread/_locales/index";
 
 export default {
   action: "내보내기",
@@ -17,4 +17,4 @@ export default {
       unknownError: "알 수 없는 오류가 발생했습니다",
     },
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

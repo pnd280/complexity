@@ -2,8 +2,8 @@ import { LuList, LuRefreshCcw, LuX } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import PreviewToggle from "@/plugins/artifacts/components/PreviewToggle";
 import { artifactsStore, useArtifactsStore } from "@/plugins/artifacts/store";
 import type { ArtifactLanguage } from "@/plugins/artifacts/types";

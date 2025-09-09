@@ -1,6 +1,6 @@
 import { queryClient } from "@/data/query-client";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
+import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 

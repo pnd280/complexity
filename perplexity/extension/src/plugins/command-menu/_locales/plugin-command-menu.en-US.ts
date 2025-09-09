@@ -1,4 +1,4 @@
-import { type LanguageMessages } from "@complexity/i18n";
+import type { LanguageMessages } from "@complexity/i18n";
 
 export default {
   sidecar: {
