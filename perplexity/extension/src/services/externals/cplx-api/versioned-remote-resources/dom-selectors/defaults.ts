@@ -53,6 +53,7 @@ export const DOM_SELECTORS: DomSelectors = {
         MISC_BUTTON: "button:has(svg.tabler-icon-dots)",
       },
       IMAGE_GEN: {
+        HEADER: "div:has(+.gap-sm.grid.grid-cols-2)",
         OPTIONS_GRID: ".gap-sm.grid.grid-cols-2",
       },
       CODE_BLOCK: {
@@ -146,9 +147,6 @@ export const INTERNAL_ATTRIBUTES = {
     WRAPPER: "thread-wrapper",
     MESSAGE_BLOCKS_WRAPPER: "thread-message-blocks-wrapper",
     TOC_CONTAINER: "thread-toc-container",
-    POPPER: {
-      DESKTOP: "thread-popper-desktop",
-    },
     MESSAGE: {
       BLOCK: "message-block",
       QUERY: "message-block-query",

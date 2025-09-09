@@ -161,29 +161,3 @@ export function observeMessageBlocksWrapper({
     existingCheck: true,
   });
 }
-
-export function observePopper({ observerId }: { observerId: string }) {
-  return domObserverService.subscribe({
-    id: observerId,
-    selector: getDomSelectorsRootService().cachedSync.THREAD.POPPER.DESKTOP,
-    onAdd: (node) => {
-      const $popper = $(node as HTMLElement);
-
-      if (!$popper.length) return;
-
-      $popper.internalComponentAttr(
-        getDomSelectorsRootService().internalAttributes.THREAD.POPPER.DESKTOP,
-      );
-
-      threadDomObserverStore.setState({
-        $popper,
-      });
-    },
-    onRemove: () => {
-      threadDomObserverStore.setState({
-        $popper: null,
-      });
-    },
-    existingCheck: true,
-  });
-}

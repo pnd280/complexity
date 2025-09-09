@@ -8,7 +8,6 @@ type ThreadDomObserverStoreType = {
   $overflowMenuButtonWrapper: JQuery<HTMLElement> | null;
   $wrapper: JQuery<HTMLElement> | null;
   $messageBlocksWrapper: JQuery<HTMLElement> | null;
-  $popper: JQuery<HTMLElement> | null;
   states: {
     isInFlight: boolean; // >= 1 message is in-flight
   };
@@ -25,7 +24,6 @@ export const threadDomObserverStore =
           $wrapper: null,
           $pageWrapper: null,
           $messageBlocksWrapper: null,
-          $popper: null,
           states: {
             isInFlight: false,
           },
@@ -35,7 +33,6 @@ export const threadDomObserverStore =
               $overflowMenuButtonWrapper: null,
               $wrapper: null,
               $pageWrapper: null,
-              $popper: null,
               $messageBlocksWrapper: null,
               states: {
                 isInFlight: false,

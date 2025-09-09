@@ -3,12 +3,13 @@ import { defineProxy } from "comctx";
 
 import {
   backgroundProxyServiceName,
-  DeclarativeNetRequestService,
+  DeclarativeNetRequestServiceImpl,
+  type DeclarativeNetRequestService,
 } from "@/services/infra/extension-api-wrappers/declarative-net-request";
 import { isBackgroundScript } from "@/utils/utils";
 
-let rootServiceInstance: typeof DeclarativeNetRequestService | undefined;
-let proxyServiceInstance: typeof DeclarativeNetRequestService | undefined;
+let rootServiceInstance: DeclarativeNetRequestService | undefined;
+let proxyServiceInstance: DeclarativeNetRequestService | undefined;
 
 const [registerService, getService] = defineProxy(
   getDeclarativeNetRequestRootService,
@@ -18,18 +19,18 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getDeclarativeNetRequestRootService(): typeof DeclarativeNetRequestService {
+export function getDeclarativeNetRequestRootService(): DeclarativeNetRequestService {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getDeclarativeNetRequestProxyService instead.",
   );
 
-  rootServiceInstance ??= DeclarativeNetRequestService;
+  rootServiceInstance ??= DeclarativeNetRequestServiceImpl;
 
   return rootServiceInstance;
 }
 
-export function getDeclarativeNetRequestProxyService(): typeof DeclarativeNetRequestService {
+export function getDeclarativeNetRequestProxyService(): DeclarativeNetRequestService {
   invariant(
     !isBackgroundScript(),
     "Use getDeclarativeNetRequestRootService to access the non-proxied instance in background script.",
@@ -40,7 +41,7 @@ export function getDeclarativeNetRequestProxyService(): typeof DeclarativeNetReq
   return proxyServiceInstance;
 }
 
-export function getDeclarativeNetRequestService(): typeof DeclarativeNetRequestService {
+export function getDeclarativeNetRequestService(): DeclarativeNetRequestService {
   return isBackgroundScript()
     ? getDeclarativeNetRequestRootService()
     : getDeclarativeNetRequestProxyService();

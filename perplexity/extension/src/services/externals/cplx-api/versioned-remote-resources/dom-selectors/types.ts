@@ -43,6 +43,7 @@ export const DomSelectorsSchema = z.object({
         MISC_BUTTON: z.string(),
       }),
       IMAGE_GEN: z.object({
+        HEADER: z.string(),
         OPTIONS_GRID: z.string(),
       }),
       CODE_BLOCK: z.object({

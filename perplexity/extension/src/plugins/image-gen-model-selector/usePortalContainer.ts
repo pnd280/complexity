@@ -1,26 +1,29 @@
-import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 
 export default function usePortalContainer() {
-  const popper = useThreadDomObserverStore(
-    (state) => state.$popper?.[0] ?? null,
-    deepEqual,
-  );
+  const [wrapper, setWrapper] = useState<HTMLElement | null>(null);
 
-  return useMemo(() => findOptionsGridHeader(popper), [popper]);
-}
+  useEffect(() => {
+    domObserverService.subscribe({
+      id: createDomObserverId("thread", "imageGenPopper"),
+      selector: `${getDomSelectorsRootService().cachedSync.THREAD.POPPER.DESKTOP} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.IMAGE_GEN.HEADER}`,
+      onAdd: (node) => {
+        setWrapper(node as HTMLElement);
+      },
+      onRemove: () => {
+        setWrapper(null);
+      },
+      existingCheck: true,
+    });
 
-function findOptionsGridHeader(popper: HTMLElement | null) {
-  if (!popper) return null;
+    return () => {
+      domObserverService.unsubscribe(
+        createDomObserverId("thread", "imageGenPopper"),
+      );
+    };
+  }, []);
 
-  const $header = $(popper)
-    .find(
-      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.IMAGE_GEN
-        .OPTIONS_GRID,
-    )
-    .prev();
-
-  if (!$header.length) return null;
-
-  return $header[0];
+  return wrapper;
 }

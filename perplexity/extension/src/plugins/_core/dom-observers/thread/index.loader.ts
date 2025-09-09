@@ -2,7 +2,6 @@ import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import {
   observeNavbarOverflowMenuButtonWrapper,
   observeNavbar,
-  observePopper,
   observeWrapper,
   observePageWrapper,
   observeMessageBlocksWrapper,
@@ -75,7 +74,6 @@ function cleanup() {
   domObserverService.unsubscribe(
     createDomObserverId("thread", "messageBlocksWrapper"),
   );
-  domObserverService.unsubscribe(createDomObserverId("thread", "popper"));
 }
 
 function observeThread(location: ReturnType<typeof whereAmI>) {
@@ -100,10 +98,6 @@ function observeThread(location: ReturnType<typeof whereAmI>) {
 
     observeMessageBlocksWrapper({
       observerId: createDomObserverId("thread", "messageBlocksWrapper"),
-    });
-
-    observePopper({
-      observerId: createDomObserverId("thread", "popper"),
     });
   } else if (location === "comet_assistant") {
     observePageWrapper({
