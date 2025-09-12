@@ -19,7 +19,7 @@
     "@complexity/typescript-config": "workspace:*",
     "@types/node": "22.17.2",
     "chalk": "^5.6.2",
-    "globals": "^16.3.0",
+    "globals": "16.4.0",
     "tsup": "^8.5.0",
     "typescript": "catalog:types"
   }

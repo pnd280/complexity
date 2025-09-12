@@ -19,7 +19,6 @@ Contributors and developers working on the Complexity Perplexity Extension.
 
    ```bash
    pnpm i -g turbo
-   git submodule update --init --recursive
    pnpm install
    pnpm turbo build --filter=./packages/*
    ```
