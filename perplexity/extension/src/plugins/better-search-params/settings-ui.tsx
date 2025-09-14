@@ -43,6 +43,10 @@ export default function SpacesThreadsForceWritingModePluginSettingsUi() {
           <InlineCode className="x:ml-1">web</InlineCode>
           <InlineCode className="x:ml-1">social</InlineCode>
           <InlineCode className="x:ml-1">scholar</InlineCode>
+          <div className="x:inline-block x:space-x-1">
+            <InlineCode className="x:ml-1">edgar</InlineCode>
+            <span>(Finance)</span>
+          </div>
         </div>
         <div>
           <span>Available values for </span>

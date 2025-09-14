@@ -1,9 +1,5 @@
 # Developer Experience (DX)
 
-## Who this is for
-
-Contributors and developers working on the Complexity Perplexity Extension.
-
 ## Requirements
 
 - Node.js ^22
@@ -35,7 +31,7 @@ Contributors and developers working on the Complexity Perplexity Extension.
 
    ```bash
    cd perplexity/extension
-   pnpm turbo dev
+   pnpm dev
    ```
 
 5. **Load the extension:**

@@ -37,12 +37,10 @@ export default function () {
 }
 
 function setupLocationTracking() {
-  // Initialize current location
   pluginGuardsStore.setState((state) => {
     state.currentLocation = whereAmI();
   });
 
-  // Subscribe to route changes
   spaRouteChangeCompleteSubscribe((url) => {
     pluginGuardsStore.setState((state) => {
       state.currentLocation = whereAmI(url);

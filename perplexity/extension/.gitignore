@@ -17,7 +17,6 @@ dummy-non-existing-folder
 TODO.md
 
 secrets.*.js
-unimport.d.ts
 
 /e2e/playwright-report/
 /e2e/chrome-instances/

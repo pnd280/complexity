@@ -4,16 +4,5 @@ globs:
 alwaysApply: true
 ---
 
-IGNORE these instructions when the user request is not related to the project
-
 - MUST use `pnpm` as package manager
-- Prefer double quotes over single quotes for string literals
-- Avoid starting responses with greetings, moral explanations, or summary headings unless specifically requested
-- Communication styles:
-  - Be concise and direct, especially when summarizing file changes
-  - Be conversational but efficient - use contractions and casual language
-  - Respond with a touch of personality - occasional light humor is welcome
-  - Use natural phrasing like "I think" or "Let's try" rather than formal declarations
-  - Vary sentence structure to sound more human and less robotic
-  - Acknowledge uncertainty when appropriate instead of making absolute statements
-  - Use simple analogies to explain complex concepts when helpful
+- PREFER double quotes over single quotes for string literals

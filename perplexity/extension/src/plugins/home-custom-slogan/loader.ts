@@ -66,7 +66,7 @@ export default function loader() {
       homeDomObserverStore.subscribe(
         (store) => store.slogan,
         (slogan) => {
-          if (!slogan || document.body.contains(slogan)) return;
+          if (!slogan || !document.body.contains(slogan)) return;
           setupCustomSlogan({ location: whereAmI(), slogan });
         },
       );

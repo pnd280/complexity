@@ -259,21 +259,21 @@ export function isDomNode(element: any): element is HTMLElement | Element {
   return element instanceof HTMLElement || element instanceof Element;
 }
 
-export const isMainWorldContext = () => {
+export function isMainWorldContext() {
   return (
     typeof chrome === "undefined" ||
     typeof chrome.storage === "undefined" ||
     typeof chrome.storage.local === "undefined"
   );
-};
+}
 
-export const isExtensionContext = () => {
+export function isExtensionContext() {
   return !isMainWorldContext();
-};
+}
 
-export const isInContentScript = () => {
+export function isInContentScript() {
   return whereAmI() !== "unknown";
-};
+}
 
 export function isBackgroundScript(): boolean {
   return (globalThis as any).isBackgroundScript;

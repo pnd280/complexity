@@ -1,70 +1,12 @@
-import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import { unified } from "unified";
-
 import { threadCodeBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/code-blocks/store";
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 
-const astCache = new Map<string, any>();
-const mdAstProcessor = unified().use(remarkParse).use(remarkGfm);
-
-export async function findCodeBlocks(
-  messageBlocks: MessageBlock[],
-): Promise<CodeBlock[][]> {
-  const codeBlocksChunksPromises = messageBlocks.map((messageBlock, index) =>
-    parseCodeBlocks(messageBlocks, index),
-  );
-
-  return Promise.all(codeBlocksChunksPromises);
-}
-
-async function parseCodeBlocks(
-  messageBlocks: MessageBlock[],
+export function getExistingCodeBlocks(
   messageBlockIndex: number,
-): Promise<CodeBlock[]> {
-  const messageBlock = messageBlocks[messageBlockIndex];
-
-  if (!messageBlock) return [];
-
-  if (messageBlock.states.isVirtualized) {
-    return parseCodeBlocksFromString(messageBlock);
-  }
-
-  const codeBlockElements = messageBlock.nodes.$answer
-    .find(
-      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER,
-    )
-    .toArray();
-
-  if (codeBlockElements.length === 0) return [];
-
-  const existingCodeBlocks = getExistingCodeBlocks(messageBlockIndex);
-  const codeBlocks = codeBlockElements.map((codeBlockElement, codeBlockIndex) =>
-    createOrRefreshCodeBlock({
-      codeBlockElement,
-      codeBlockIndex,
-      messageBlocks,
-      messageBlockIndex,
-      existingCodeBlock: existingCodeBlocks?.[codeBlockIndex],
-    }),
-  );
-
-  const codeBlockContents = await getCodeBlocksContent(
-    messageBlockIndex,
-    codeBlocks.map((_, index) => index),
-  );
-
-  return codeBlocks.map((block, idx) => ({
-    nodes: block.nodes,
-    content: codeBlockContents[idx] || getFallbackContent(block.nodes),
-    states: block.states,
-  }));
-}
-
-function getExistingCodeBlocks(messageBlockIndex: number): CodeBlock[] | null {
+): CodeBlock[] | null {
   return (
     threadCodeBlocksDomObserverStore.getState().codeBlocksChunks?.[
       messageBlockIndex
@@ -72,11 +14,11 @@ function getExistingCodeBlocks(messageBlockIndex: number): CodeBlock[] | null {
   );
 }
 
-function isNodeStale($node: JQuery<Element> | null): boolean {
+export function isNodeStale($node: JQuery<Element> | null): boolean {
   return $node == null || $node[0] == null || !document.contains($node[0]);
 }
 
-function createOrRefreshCodeBlock({
+export function createOrRefreshCodeBlock({
   codeBlockElement,
   codeBlockIndex,
   messageBlocks,
@@ -109,7 +51,7 @@ function createOrRefreshCodeBlock({
   return { nodes, states };
 }
 
-function refreshStaleCodeBlockNodes(
+export function refreshStaleCodeBlockNodes(
   existingNodes: CodeBlock["nodes"],
   $codeBlock: JQuery<Element>,
 ): CodeBlock["nodes"] {
@@ -129,7 +71,7 @@ function refreshStaleCodeBlockNodes(
   return nodes;
 }
 
-function createFreshCodeBlockNodes(
+export function createFreshCodeBlockNodes(
   $codeBlock: JQuery<Element>,
 ): CodeBlock["nodes"] {
   const $nativeCopyButton = $codeBlock.find(
@@ -143,7 +85,7 @@ function createFreshCodeBlockNodes(
   };
 }
 
-function setCodeBlockAttributes(
+export function setCodeBlockAttributes(
   nodes: CodeBlock["nodes"],
   codeBlockIndex: number,
 ) {
@@ -154,7 +96,7 @@ function setCodeBlockAttributes(
     .attr("data-index", codeBlockIndex);
 }
 
-function getFallbackContent(nodes: CodeBlock["nodes"]): {
+export function getFallbackContent(nodes: CodeBlock["nodes"]): {
   language: string;
   code: string;
 } {
@@ -165,41 +107,7 @@ function getFallbackContent(nodes: CodeBlock["nodes"]): {
   };
 }
 
-function parseCodeBlocksFromString(messageBlock: MessageBlock): CodeBlock[] {
-  const content = messageBlock.content.answer;
-
-  let ast = astCache.get(content);
-  if (ast == null) {
-    ast = mdAstProcessor.parse(content);
-    astCache.set(content, ast);
-  }
-
-  const codeBlocks: CodeBlock[] = [];
-
-  for (const [index, node] of ast.children.entries()) {
-    if (node.type !== "code") continue;
-
-    codeBlocks.push({
-      nodes: {
-        $wrapper: null,
-        $nativeCopyButton: null,
-      },
-      content: {
-        language: node.lang ?? "text",
-        code: node.value,
-      },
-      states: {
-        isInFlight:
-          messageBlock.states.isInFlight &&
-          ast.children[index + 1]?.type == null,
-      },
-    } satisfies CodeBlock);
-  }
-
-  return codeBlocks;
-}
-
-async function getCodeBlocksContent(
+export async function getCodeBlocksContent(
   messageBlockIndex: number,
   codeBlockIndices: number[],
 ): Promise<Array<{ language: string; code: string } | null>> {
@@ -215,7 +123,7 @@ async function getCodeBlocksContent(
   });
 }
 
-function isCodeBlockInFlight({
+export function isCodeBlockInFlight({
   messageBlocks,
   messageBlockIndex,
   codeBlockIndex,

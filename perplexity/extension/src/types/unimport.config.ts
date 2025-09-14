@@ -1,9 +1,7 @@
 import type { UnimportPluginOptions } from "unimport/unplugin";
 
-import { normalizePath } from "../utils/normalize-path";
-
 const unimportConfig: Partial<UnimportPluginOptions> = {
-  dts: "./src/types/unimport.d.ts",
+  dts: "src/types/unimport.d.ts",
   presets: [
     "react",
     {
@@ -11,11 +9,11 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       imports: ["lazy", "use", "createContext", "useDeferredValue", "memo"],
     },
     {
-      from: normalizePath("src/utils/js-context-guards.ts"),
+      from: "@/utils/js-context-guards.ts",
       imports: ["onlyMainWorldGuard", "onlyExtensionGuard"],
     },
     {
-      from: normalizePath("src/utils/utils.ts"),
+      from: "@/utils/utils.ts",
       imports: [
         "sleep",
         "isMainWorldContext",
@@ -24,7 +22,7 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       ],
     },
     {
-      from: normalizePath("src/utils/deep-equal.ts"),
+      from: "@/utils/deep-equal.ts",
       imports: ["deepEqual"],
     },
     {
@@ -40,7 +38,7 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
     },
     {
       name: "cn",
-      from: normalizePath("src/utils/cn.ts"),
+      from: "@/utils/cn.ts",
     },
     {
       name: "Key",
