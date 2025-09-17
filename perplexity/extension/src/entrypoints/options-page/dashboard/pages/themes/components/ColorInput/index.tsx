@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
 import type { ThemeFormValues } from "@/data/dashboard/themes/theme.types";
-import BuiltInColorPicker from "@/entrypoints/options-page/dashboard/pages/themes/components/color-input/BuiltInColorPicker";
+import BuiltInColorPicker from "@/entrypoints/options-page/dashboard/pages/themes/components/ColorInput/BuiltInColorPicker";
 
 type ColorInputProps = {
   value: string | undefined;

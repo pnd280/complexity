@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.883.0",
-    "@dotenvx/dotenvx": "^1.49.0",
+    "@dotenvx/dotenvx": "^1.49.1",
     "chrome-webstore-upload": "^3.2.0",
     "commander": "^13.1.0",
     "glob": "^11.0.3",
@@ -31,7 +31,7 @@
     "@types/mime-types": "^2.1.4",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
-    "prettier": "^3.6.2",
+    "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint"
   }

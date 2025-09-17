@@ -14,8 +14,7 @@
 [data-cplx-component="cplx-follow-up-query-box"],
 [data-cplx-component="cplx-space-query-box"] {
   [data-cplx-component="query-box-cplx-right-toolbar-components-left-wrapper"]
-    + span
-    + div {
+    ~ div:has(> span > button > div > div > svg.tabler-icon-cpu) {
     display: none;
   }
 }

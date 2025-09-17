@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryClient } from "@/data/query-client";
+import { useEvent } from "@/hooks/useEvent";
 import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
 import {
   requestPermissions,
@@ -12,37 +13,39 @@ export function useExtensionPermissions() {
     extensionPermissionsQueries.permissions.detail(),
   );
 
-  const handleGrantPermission = ({
-    permissions,
-  }: {
-    permissions: chrome.runtime.ManifestPermissions[];
-  }) => {
-    requestPermissions(permissions)
-      .then(() => {
+  const handleGrantPermission = useEvent(
+    async ({
+      permissions,
+    }: {
+      permissions: chrome.runtime.ManifestPermissions[];
+    }) => {
+      try {
+        await requestPermissions(permissions);
         queryClient.invalidateQueries({
           queryKey: extensionPermissionsQueries.permissions.all(),
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         alert(`Error granting permissions: ${error}`);
-      });
-  };
+      }
+    },
+  );
 
-  const handleRevokePermission = ({
-    permissions,
-  }: {
-    permissions: chrome.runtime.ManifestPermissions[];
-  }) => {
-    revokePermissions(permissions)
-      .then(() => {
+  const handleRevokePermission = useEvent(
+    async ({
+      permissions,
+    }: {
+      permissions: chrome.runtime.ManifestPermissions[];
+    }) => {
+      try {
+        await revokePermissions(permissions);
         queryClient.invalidateQueries({
           queryKey: extensionPermissionsQueries.permissions.all(),
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         alert(`Error revoking permissions: ${error}`);
-      });
-  };
+      }
+    },
+  );
 
   return { data, isLoading, handleGrantPermission, handleRevokePermission };
 }

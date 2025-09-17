@@ -8,9 +8,9 @@ export default function NeedHelp() {
   return (
     <div className="x:mx-auto x:flex x:max-w-2xl x:flex-col x:items-center x:gap-4 x:px-2 x:md:gap-8 x:md:px-4">
       <H1 className="x:text-center x:text-balance">Need Help?</H1>
-      <div className="x:w-full x:text-center x:text-balance">
-        If you need help with setting up or using Complexity, you can reach out
-        to us via support channels listed below.
+      <div className="x:w-full x:text-center">
+        <div>Having trouble configuring or using Complexity?</div>
+        <div>Connect with us through the support options available below.</div>
       </div>
       <div className="x:flex x:items-center x:gap-4">
         <Button asChild className="x:w-max" size="lg" variant="outline">

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/steps";
 import { H1, H2, H3, P } from "@/components/ui/typography";
 import BasePermissions from "@/entrypoints/options-page/onboarding/BasePermissions";
-import BetaNotifications from "@/entrypoints/options-page/onboarding/BetaNotifications";
+import MultiLingualSupport from "@/entrypoints/options-page/onboarding/MultiLingualSupport";
 import DashboardAccess from "@/entrypoints/options-page/onboarding/DashboardAccess";
 import ExtensionIconAction from "@/entrypoints/options-page/onboarding/ExtensionIconAction";
 import NeedHelp from "@/entrypoints/options-page/onboarding/NeedHelp";
@@ -50,7 +50,7 @@ const steps = [
   {
     title: "Beta Notifications",
     description: "Beta notifications",
-    component: <BetaNotifications />,
+    component: <MultiLingualSupport />,
   },
   {
     title: "Need Help?",

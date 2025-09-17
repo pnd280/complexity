@@ -4,7 +4,7 @@ import { LuDatabase } from "react-icons/lu";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { H1, H3, P } from "@/components/ui/typography";
+import { H1, H3, P, Ul } from "@/components/ui/typography";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 
 const basePermissionsDetails: Record<
@@ -20,19 +20,17 @@ const basePermissionsDetails: Record<
     permissions: ["storage"],
     title: "Extension Storage Access",
     description: (
-      <div>
-        <div>
-          <div>Store your settings locally in extension storage.</div>
-          <div>
-            The extension does NOT have access to browsing history, bookmarks,
-            or other data.
-          </div>
-        </div>
-        <div className="x:mt-2">
+      <Ul>
+        <li>Store your settings/data locally in the browser</li>
+        <li>
+          The extension does NOT have access to browsing history, bookmarks, or
+          other data.
+        </li>
+        <li>
           This permission is automatically granted when installing the
           extension.
-        </div>
-      </div>
+        </li>
+      </Ul>
     ),
     icon: LuDatabase,
   },

@@ -20,7 +20,7 @@ export default function CometCompatibility() {
 
   return (
     <div
-      className="x:group x:relative x:flex x:w-full x:cursor-pointer x:flex-col x:items-start x:gap-2 x:rounded-lg x:border x:border-border/50 x:bg-secondary x:p-4 x:text-sm x:font-medium x:shadow-lg x:transition-all x:hover:scale-105 x:hover:border-primary x:hover:bg-primary/10"
+      className="x:group x:relative x:flex x:w-full x:cursor-pointer x:flex-col x:items-start x:gap-2 x:rounded-xl x:border x:border-border/50 x:bg-secondary x:p-4 x:text-sm x:font-medium x:shadow-lg x:transition-all x:hover:scale-105 x:hover:border-primary x:hover:bg-primary/10"
       onClick={handleClick}
     >
       <span className="x:flex-1 x:text-left x:text-sm">

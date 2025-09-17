@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { ColorInput } from "@/entrypoints/options-page/dashboard/pages/themes/components/color-input";
+import { ColorInput } from "@/entrypoints/options-page/dashboard/pages/themes/components/ColorInput";
 import { useThemeFormContext } from "@/entrypoints/options-page/dashboard/pages/themes/context";
 
 export function ThemeForm() {

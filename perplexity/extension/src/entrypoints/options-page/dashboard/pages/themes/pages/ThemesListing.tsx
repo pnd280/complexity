@@ -1,8 +1,10 @@
 import { LuPlus } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
+import { APP_CONFIG } from "@/app.config";
 import { Button } from "@/components/ui/button";
 import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes";
+import InstantCssEnable from "@/entrypoints/options-page/dashboard/pages/themes/components/InstantCssEnable";
 import { ThemeSections } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeSections";
 import { useLocalThemes } from "@/plugins/_core/custom-theme/index.public";
 
@@ -22,13 +24,17 @@ export function ThemesListing() {
             Customize your Perplexity appearance
           </p>
         </div>
-        <Button
-          className="x:mx-auto x:md:mx-0 x:md:mt-auto"
-          onClick={() => navigate("new")}
-        >
-          <LuPlus className="x:mr-2 x:size-5" />
-          Create New Theme
-        </Button>
+        <div className="x:flex x:items-center x:gap-2">
+          {APP_CONFIG.BROWSER === "chrome" && <InstantCssEnable />}
+
+          <Button
+            className="x:mx-auto x:md:mx-0 x:md:mt-auto"
+            onClick={() => navigate("new")}
+          >
+            <LuPlus className="x:mr-2 x:size-5" />
+            Create New Theme
+          </Button>
+        </div>
       </div>
 
       <ThemeSections
