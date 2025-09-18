@@ -4,6 +4,7 @@ import {
   type Persister,
 } from "@tanstack/react-query-persist-client";
 import type { PersistedClient } from "@tanstack/react-query-persist-client";
+import { storage } from "@wxt-dev/storage";
 import debounce from "lodash/debounce";
 
 import { APP_CONFIG } from "@/app.config";
@@ -17,6 +18,8 @@ export type QueryCacheEntry = {
   clientData: PersistedClient;
   timestamp: number;
 };
+
+export const softCacheBusterKey = "local:cdnCacheBuster";
 
 export const persister = await createDexiePersister();
 
@@ -59,8 +62,19 @@ async function createDexiePersister(idbValidKey = "reactQuery") {
   } satisfies Persister;
 }
 
-export const persistRemoteResources = debounce(
+let isFreshSession = true;
+
+export const persistQueryClient = debounce(
   async ({ queryClient }: { queryClient: QueryClient }) => {
+    const isForcefullyInvalidated = await storage.getItem(softCacheBusterKey);
+
+    if (!isFreshSession && isForcefullyInvalidated === "invalidated") {
+      console.log("[CPLX] Cache forcefully invalidated. Wont persist.");
+      return;
+    }
+
+    isFreshSession = false;
+
     persistQueryClientSave({
       queryClient,
       persister,
@@ -73,47 +87,57 @@ export const persistRemoteResources = debounce(
   300,
 );
 
+const EXCLUDE_KEYS = [cplxApiQueries.cacheBuster.detail().queryKey];
+
+const INCLUDE_KEYS = [
+  cplxApiQueries.all(),
+  pplxApiQueries.spaces.all(),
+  pplxApiQueries.threads.infinite.detail({
+    initialPageParam: 0,
+    searchValue: "",
+  }).queryKey,
+] as unknown as any[][];
+
+export function setQueriesDefaults(queryClient: QueryClient) {
+  queryClient.setQueryDefaults(cplxApiQueries.all(), {
+    gcTime: Infinity,
+    staleTime: 1000,
+  });
+
+  queryClient.setQueryDefaults(cplxApiQueries.remoteResource.all(), {
+    gcTime: Infinity,
+    staleTime: 1000 * 60 * 60 * 12,
+  });
+
+  queryClient.setQueryDefaults(cplxApiQueries.versionedRemoteResource.all(), {
+    gcTime: Infinity,
+    staleTime: 1000 * 60 * 60 * 12,
+  });
+
+  queryClient.setQueryDefaults(pplxApiQueries.spaces.all(), {
+    staleTime: 10000,
+  });
+}
+
 function shouldDehydrateQuery(query: Query) {
   const queryKey = query.queryKey;
 
-  const excludes = [cplxApiQueries.cacheBuster.detail().queryKey];
-
-  if (excludes.some((exclude) => queryKey.includes(exclude))) {
+  if (EXCLUDE_KEYS.some((exclude) => queryKey.includes(exclude))) {
     return false;
   }
 
-  const includes = [
-    cplxApiQueries.all(),
-    pplxApiQueries.spaces.all(),
-    pplxApiQueries.threads.infinite.detail({
-      initialPageParam: 0,
-      searchValue: "",
-    }).queryKey,
-  ] as unknown as any[][];
-
-  const shouldPersist = includes.some(
+  const shouldPersist = INCLUDE_KEYS.some(
     (query) => Array.isArray(queryKey) && isSubArray(query, queryKey),
   );
 
   return shouldPersist;
 }
 
-export async function removeCachedRemoteResources({
-  queryClient,
+export async function invalidateQueryClientCache({
+  newCacheBuster,
 }: {
-  queryClient: QueryClient;
-}) {
-  queryClient.removeQueries({
-    queryKey: cplxApiQueries.all(),
-  });
-
-  // queryClient.removeQueries({
-  //   queryKey: cplxApiQueries.remoteResource.all(),
-  // });
-
-  // queryClient.removeQueries({
-  //   queryKey: cplxApiQueries.versionedRemoteResource.all(),
-  // });
-
-  persistRemoteResources({ queryClient });
+  newCacheBuster?: string;
+} = {}) {
+  storage.setItem(softCacheBusterKey, newCacheBuster ?? "invalidated");
+  getQueryCacheService().delete("reactQuery");
 }

@@ -39,8 +39,12 @@ export default function () {
       {
         selectedModel: state.selectedLanguageModel,
       },
-      remoteInternalSearchStatesStatesFiberPathStr.split("."),
-      remoteInternalSearchStatesValidateFiberPathStr.split("."),
+      {
+        remoteValidationFiberPath:
+          remoteInternalSearchStatesValidateFiberPathStr.split("."),
+        remoteStatesFiberPath:
+          remoteInternalSearchStatesStatesFiberPathStr.split("."),
+      },
     );
 
     setModelCookie({

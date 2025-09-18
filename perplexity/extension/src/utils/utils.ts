@@ -541,7 +541,13 @@ export function waitUntil(params: {
   });
 }
 
-export function isSubArray(arr1: string[], arr2: string[]) {
+/**
+ * Checks if arr1 is a subsequence of arr2 (all elements of arr1 appear in arr2 in the same order, but not necessarily consecutive).
+ * @param arr1 - The array to check if it's a subsequence
+ * @param arr2 - The array to check against
+ * @returns True if arr1 is a subsequence of arr2, false otherwise
+ */
+export function isSubArray(arr1: unknown[], arr2: unknown[]) {
   if (arr1.length > arr2.length) return false;
 
   let j = 0;

@@ -2,11 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { persistQueryClientRestore } from "@tanstack/react-query-persist-client";
 
 import { APP_CONFIG } from "@/app.config";
-import { persister } from "@/data/query-client/utils";
-import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-
-export const softCacheBusterKey = "local:cdnCacheBuster";
+import { persister, setQueriesDefaults } from "@/data/query-client/utils";
 
 export async function initNewPersistentQueryClient() {
   const queryClient = new QueryClient();
@@ -29,27 +25,6 @@ export async function initNewPersistentQueryClient() {
   }
 
   return queryClient;
-}
-
-function setQueriesDefaults(queryClient: QueryClient) {
-  queryClient.setQueryDefaults(cplxApiQueries.all(), {
-    gcTime: Infinity,
-    staleTime: 1000,
-  });
-
-  queryClient.setQueryDefaults(cplxApiQueries.remoteResource.all(), {
-    gcTime: Infinity,
-    staleTime: 1000 * 60 * 60 * 12,
-  });
-
-  queryClient.setQueryDefaults(cplxApiQueries.versionedRemoteResource.all(), {
-    gcTime: Infinity,
-    staleTime: 1000 * 60 * 60 * 12,
-  });
-
-  queryClient.setQueryDefaults(pplxApiQueries.spaces.all(), {
-    staleTime: 10000,
-  });
 }
 
 export const queryClient = await initNewPersistentQueryClient().catch(

@@ -14,6 +14,7 @@ import type {
   SpaceDetails,
   ThreadsSearchPayload,
   PplxAiProfileApiResponse,
+  PplxAuthSessionApiResponse,
 } from "@/services/externals/pplx-api/pplx-api.types";
 import {
   PplxAiProfileApiResponseSchema,
@@ -38,7 +39,7 @@ export class PplxApiService {
     return fetchTextResource(ENDPOINTS.MAINTENANCE_STATUS);
   }
 
-  static async fetchAuthSession() {
+  static async fetchAuthSession(): Promise<PplxAuthSessionApiResponse> {
     const resp = await fetchTextResource(ENDPOINTS.AUTH_SESSION);
 
     const data = jsonUtils.safeParse(resp);

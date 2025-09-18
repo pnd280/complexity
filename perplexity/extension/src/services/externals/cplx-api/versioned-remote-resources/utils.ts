@@ -2,7 +2,7 @@ import semver from "semver";
 
 import { APP_CONFIG } from "@/app.config";
 import { queryClient } from "@/data/query-client";
-import { persistRemoteResources } from "@/data/query-client/utils";
+import { persistQueryClient } from "@/data/query-client/utils";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { VersionedRemoteResourceListingSchema } from "@/services/externals/cplx-api/versioned-remote-resources/types";
 import type { VersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/types";
@@ -29,7 +29,7 @@ export async function getVersionedRemoteResource<T>(
     }),
   )();
 
-  persistRemoteResources({ queryClient });
+  persistQueryClient({ queryClient });
 
   if (error) return resourceConfig.fallback;
 

@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 import AsyncButton from "@/components/AsyncButton";
@@ -12,19 +11,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Ul } from "@/components/ui/typography";
-import { removeCachedRemoteResources } from "@/data/query-client/utils";
+import { invalidateQueryClientCache } from "@/data/query-client/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { db } from "@/services/infra/indexed-db";
 
 export default function ClearAllDataButton() {
-  const queryClient = useQueryClient();
-
   const navigate = useNavigate();
 
   const handleClearData = async () => {
     await ExtensionSettingsService.reset();
     await db.clearAll();
-    removeCachedRemoteResources({ queryClient });
+    invalidateQueryClientCache();
     navigate("/plugins");
   };
 

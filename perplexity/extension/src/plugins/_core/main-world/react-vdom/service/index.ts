@@ -77,8 +77,13 @@ export class ReactVdomServiceImpl {
 
   static async setInternalSearchStates(
     states: Partial<InternalSearchStatesObserverStoreType>,
-    remoteValidationFiberPath?: string[],
-    remoteStatesFiberPath?: string[],
+    {
+      remoteValidationFiberPath,
+      remoteStatesFiberPath,
+    }: {
+      remoteValidationFiberPath?: string[];
+      remoteStatesFiberPath?: string[];
+    } = {},
   ): Promise<void> {
     return setInternalSearchStates({
       states,

@@ -8,6 +8,7 @@ import {
   pluginGuardsStore,
   type PluginGuardsStoreType,
 } from "@/plugins/_core/plugins-guard/store";
+import type { PplxAuthSessionApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { getPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
@@ -19,6 +20,16 @@ declare module "@/plugins/_core/async-dep-registry" {
   }
 }
 
+export const pplxAuthQueryObserver = new QueryObserver(
+  queryClient,
+  pplxApiQueries.auth.detail(),
+);
+
+export const pplxAuthOrgStatusQueryObserver = new QueryObserver(
+  queryClient,
+  pplxApiQueries.auth.orgStatus.detail(),
+);
+
 export default function () {
   asyncLoaderRegistry.register({
     id: "store:pluginGuards",
@@ -29,6 +40,7 @@ export default function () {
       setupLocationTracking();
       setupMobileStateSubscription();
       setupAuthenticationTracking(extensionSettings);
+
       await setupPermissionsTracking();
 
       return pluginGuardsStore.getState();
@@ -62,46 +74,57 @@ function setupMobileStateSubscription() {
   );
 }
 
-function setupAuthenticationTracking(extensionSettings: ExtensionSettings) {
-  const pplxAuthQueryObserver = new QueryObserver(
-    queryClient,
-    pplxApiQueries.auth.detail(),
-  );
+export function initAuthStatus({
+  data,
+  extensionSettings,
+}: {
+  data: PplxAuthSessionApiResponse;
+  extensionSettings?: ExtensionSettings;
+}) {
+  const userData = data.user;
 
-  pplxAuthQueryObserver.subscribe((data) => {
-    if (data.data == null) return;
+  pluginGuardsStore.setState((state) => {
+    state.isLoggedIn = Object.keys(data).length > 0;
+    const hasActiveSub =
+      userData.subscription_status != null &&
+      userData.subscription_status !== "none";
 
-    const userData = data.data.user;
+    state.hasActiveSub = hasActiveSub;
 
-    pluginGuardsStore.setState((state) => {
-      state.isLoggedIn = Object.keys(data.data).length > 0;
-      const hasActiveSub =
-        userData.subscription_status != null &&
-        userData.subscription_status !== "none";
-
-      state.hasActiveSub = hasActiveSub;
-
-      if (hasActiveSub) {
-        if (
-          extensionSettings.devMode &&
-          extensionSettings.devTools?.overrideSubscriptionTier
-        ) {
-          state.subTier = extensionSettings.devTools.overrideSubscriptionTier;
-          return;
-        }
-
-        state.subTier = userData.subscription_tier === "max" ? "max" : "pro";
+    if (hasActiveSub) {
+      if (
+        extensionSettings &&
+        extensionSettings.devMode &&
+        extensionSettings.devTools?.overrideSubscriptionTier
+      ) {
+        state.subTier = extensionSettings.devTools.overrideSubscriptionTier;
+        return;
       }
-    });
+
+      state.subTier = userData.subscription_tier === "max" ? "max" : "pro";
+    }
+  });
+}
+
+function setupAuthenticationTracking(extensionSettings: ExtensionSettings) {
+  pplxAuthQueryObserver.subscribe((data) => {
+    if (
+      data.status !== "success" ||
+      data.fetchStatus !== "idle" ||
+      data.data == null
+    )
+      return;
+
+    initAuthStatus({ data: data.data, extensionSettings });
   });
 
-  const pplxAuthOrgStatusQueryObserver = new QueryObserver(
-    queryClient,
-    pplxApiQueries.auth.orgStatus.detail(),
-  );
-
   pplxAuthOrgStatusQueryObserver.subscribe((data) => {
-    if (!data.data) return;
+    if (
+      data.status !== "success" ||
+      data.fetchStatus !== "idle" ||
+      data.data == null
+    )
+      return;
 
     pluginGuardsStore.setState((state) => {
       state.isOrgMember = data.data.is_in_organization;

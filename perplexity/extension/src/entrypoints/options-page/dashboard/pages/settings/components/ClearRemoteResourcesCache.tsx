@@ -1,12 +1,13 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { storage } from "@wxt-dev/storage";
 
 import { Button } from "@/components/ui/button";
-import { removeCachedRemoteResources } from "@/data/query-client/utils";
+import {
+  invalidateQueryClientCache,
+  softCacheBusterKey,
+} from "@/data/query-client/utils";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 
 export default function ClearRemoteResourcesCache() {
-  const queryClient = useQueryClient();
-
   const [buttonText, setButtonText] = useToggleButtonText({
     defaultText: "Clear cache",
   });
@@ -15,7 +16,8 @@ export default function ClearRemoteResourcesCache() {
     <Button
       variant="outline"
       onClick={() => {
-        removeCachedRemoteResources({ queryClient });
+        storage.setItem(softCacheBusterKey, "invalidated");
+        invalidateQueryClientCache();
         setButtonText("Cache cleared");
       }}
     >
