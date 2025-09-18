@@ -7,7 +7,7 @@ import {
   parsePerplexityAskEvent,
 } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
-import { sharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
+import { betterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -67,7 +67,7 @@ export default function () {
 
                 if (!isRetry) {
                   const { selectedLanguageModel } =
-                    sharedQueryBoxStore.getState();
+                    betterLanguageModelSelectorStore.getState();
                   draft.model_preference = selectedLanguageModel;
                 }
               });

@@ -1,4 +1,8 @@
-import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
+import { localFiberNodePath } from "@/plugins/_core/dom-observers/thread/message-blocks/remote-resources/fallback";
+import {
+  findReactFiberNodeValue,
+  walkFiberNode,
+} from "@/plugins/_core/main-world/react-vdom/utils";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { errorWrapper } from "@/utils/error-wrapper";
@@ -18,8 +22,6 @@ export type MessageBlockFiberData = {
   variantSiblingId: string | null;
 };
 
-export const localFiberNodePath = ["memoizedProps", "children"];
-
 let $messagesContainer: JQuery<HTMLElement> | null = null;
 
 function getMessagesContainer() {
@@ -38,7 +40,7 @@ function getMessagesContainer() {
   return $messagesContainer;
 }
 
-export async function getMessages({
+export async function getThreadMessages({
   remoteFiberNodePath,
 }: { remoteFiberNodePath?: string[] } = {}): Promise<
   MessageBlockFiberData[] | null
@@ -114,8 +116,4 @@ export async function getMessages({
   }
 
   return messages;
-}
-
-function walkFiberNode(fiberNode: any, path: string[]) {
-  return path.reduce((acc, key) => acc[key], fiberNode);
 }

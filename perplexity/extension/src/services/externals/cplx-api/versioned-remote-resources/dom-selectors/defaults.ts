@@ -61,6 +61,7 @@ export const DOM_SELECTORS: DomSelectors = {
         WRAPPER: "div.w-full.md\\:max-w-\\[90vw\\]:has(>pre)",
         NATIVE_HEADER: ".codeWrapper>div:first-child",
         NATIVE_COPY_BUTTON: 'button[data-testid="copy-code-button"]',
+        LANGUAGE_INDICATOR: "[data-testid='code-language-indicator']",
       },
     },
     POPPER: {
@@ -78,6 +79,7 @@ export const DOM_SELECTORS: DomSelectors = {
       MAIN: 'body[location="home"] .grow.block',
       SPACE: 'body[location="collection"] .grow.block',
       FOLLOW_UP: 'body[location="thread"] .grow.block',
+      COMET_ASSISTANT: 'body[location="comet_assistant"] .grow.block',
       ARBITRARY: ".grow.block",
     },
     ATTR_WRAPPER: "> div > div > div",
@@ -89,6 +91,7 @@ export const DOM_SELECTORS: DomSelectors = {
       MAIN: "#ask-input",
       SPACE: "#ask-input",
       FOLLOW_UP: "#ask-input",
+      COMET_ASSISTANT: "#ask-input",
       EDIT_QUERY: "div[contenteditable='true'][role='textbox']:not([id])",
       ARBITRARY: "#ask-input,div[contenteditable='true'][role='textbox']",
     },
@@ -101,6 +104,10 @@ export const DOM_SELECTORS: DomSelectors = {
     TYPEAHEAD_MENU: "#typeahead-menu",
     CONTENT_EDITABLE: {
       TEXTCONTENT_NODE: '[data-lexical-text="true"]',
+    },
+    SEARCH_TYPE_RADIO: {
+      ITEM: `div:not([data-cplx-component]) > div[role=radiogroup] > div > span > button`,
+      CHECKED_ITEM: `div:not([data-cplx-component]) > div[role=radiogroup] > div > span > button[data-state=checked]`,
     },
   },
   SETTINGS_PAGE: {

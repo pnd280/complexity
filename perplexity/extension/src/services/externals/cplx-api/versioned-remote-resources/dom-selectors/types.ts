@@ -50,6 +50,7 @@ export const DomSelectorsSchema = z.object({
         WRAPPER: z.string(),
         NATIVE_HEADER: z.string(),
         NATIVE_COPY_BUTTON: z.string(),
+        LANGUAGE_INDICATOR: z.string(),
       }),
     }),
     POPPER: z.object({
@@ -66,6 +67,7 @@ export const DomSelectorsSchema = z.object({
       MAIN: z.string(),
       SPACE: z.string(),
       FOLLOW_UP: z.string(),
+      COMET_ASSISTANT: z.string(),
       ARBITRARY: z.string(),
     }),
     ATTR_WRAPPER: z.string(),
@@ -77,6 +79,7 @@ export const DomSelectorsSchema = z.object({
       MAIN: z.string(),
       SPACE: z.string(),
       FOLLOW_UP: z.string(),
+      COMET_ASSISTANT: z.string(),
       EDIT_QUERY: z.string(),
       ARBITRARY: z.string(),
     }),
@@ -88,6 +91,10 @@ export const DomSelectorsSchema = z.object({
     TYPEAHEAD_MENU: z.string(),
     CONTENT_EDITABLE: z.object({
       TEXTCONTENT_NODE: z.string(),
+    }),
+    SEARCH_TYPE_RADIO: z.object({
+      ITEM: z.string(),
+      CHECKED_ITEM: z.string(),
     }),
   }),
   SETTINGS_PAGE: z.object({

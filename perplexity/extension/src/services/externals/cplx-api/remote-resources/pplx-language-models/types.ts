@@ -17,7 +17,7 @@ export type LanguageModel = z.infer<typeof LanguageModelSchema>;
 export const LanguageModelsListSchema = z.object({
   search: z.array(LanguageModelSchema),
   research: z.array(LanguageModelSchema),
-  labs: z.array(LanguageModelSchema),
+  studio: z.array(LanguageModelSchema),
 });
 
 export type LanguageModelsList = z.infer<typeof LanguageModelsListSchema>;
@@ -39,4 +39,4 @@ export type ResearchLanguageModelCode =
   (typeof pplxLocalLanguageModels)["research"][number]["code"];
 
 export type LabsLanguageModelCode =
-  (typeof pplxLocalLanguageModels)["labs"][number]["code"];
+  (typeof pplxLocalLanguageModels)["studio"][number]["code"];

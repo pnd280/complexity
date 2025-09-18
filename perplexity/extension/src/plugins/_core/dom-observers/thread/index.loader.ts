@@ -7,7 +7,7 @@ import {
   observeMessageBlocksWrapper,
 } from "@/plugins/_core/dom-observers/thread/observers";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
+import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
@@ -38,7 +38,7 @@ export default function () {
     ],
     loader: async () => {
       if (
-        !shouldEnableCoreObserver({
+        !shouldEnableCoreDomObserver({
           coreObserverId: "thread",
         })
       )

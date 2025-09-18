@@ -79,12 +79,14 @@ export default function loader() {
           main: store.textbox.main,
           space: store.textbox.space,
           followUp: store.textbox.followUp,
+          cometAssistant: store.textbox.cometAssistant,
         }),
-        ({ main, space, followUp }) => {
+        ({ main, space, followUp, cometAssistant }) => {
           submitOnCtrlEnter({
             main,
             space,
             followUp,
+            cometAssistant,
           });
         },
         {

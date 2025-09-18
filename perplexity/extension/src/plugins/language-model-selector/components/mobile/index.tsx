@@ -4,7 +4,7 @@ import { usePluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
 import LanguageModelGroup from "@/plugins/language-model-selector/components/mobile/LanguageModelGroup";
 import { getAdvancedStandaloneModels } from "@/plugins/language-model-selector/utils";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import { languageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
+import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 
 export default function MobileContent({ ...props }: DialogProps) {
   const subTier = usePluginGuardsStore((store) => store.subTier);
@@ -18,7 +18,7 @@ export default function MobileContent({ ...props }: DialogProps) {
     [],
   );
   const labsModels = useMemo(
-    () => PplxLanguageModelsService.allModels.labs,
+    () => PplxLanguageModelsService.allModels.studio,
     [],
   );
   const advancedModels = useMemo(() => getAdvancedStandaloneModels(), []);
@@ -34,7 +34,7 @@ export default function MobileContent({ ...props }: DialogProps) {
           title={
             subTier === "max" ? (
               <div className="x:flex x:items-center x:gap-1">
-                <languageModelTypeIcons.search className="x:size-4" />
+                <LanguageModelTypeIcons.search className="x:size-4" />
                 <span>Search</span>
               </div>
             ) : (
@@ -48,7 +48,7 @@ export default function MobileContent({ ...props }: DialogProps) {
             <LanguageModelGroup
               title={
                 <div className="x:flex x:items-center x:gap-1">
-                  <languageModelTypeIcons.research className="x:size-4" />
+                  <LanguageModelTypeIcons.research className="x:size-4" />
                   <span>Research</span>
                 </div>
               }
@@ -57,7 +57,7 @@ export default function MobileContent({ ...props }: DialogProps) {
             <LanguageModelGroup
               title={
                 <div className="x:flex x:items-center x:gap-1">
-                  <languageModelTypeIcons.labs className="x:size-4" />
+                  <LanguageModelTypeIcons.studio className="x:size-4" />
                   <span>Labs</span>
                 </div>
               }

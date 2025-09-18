@@ -29,3 +29,11 @@ export function findReactFiberNodeValue<T>({
   //   })
   // );
 }
+
+export function walkFiberNode(fiberNode: any, path: string[]) {
+  try {
+    return path.reduce((acc, key) => acc[key], fiberNode);
+  } catch {
+    return null;
+  }
+}

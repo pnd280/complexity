@@ -7,6 +7,7 @@ const OBSERVER_ID = {
   MAIN_QUERY_BOX: "cplx-main-query-box",
   SPACE_QUERY_BOX: "cplx-space-query-box",
   FOLLOW_UP_QUERY_BOX: "cplx-follow-up-query-box",
+  COMET_ASSISTANT_QUERY_BOX: "cplx-comet-assistant-query-box",
 };
 
 export function observeMainQueryBox({ observerId }: { observerId: string }) {
@@ -136,6 +137,54 @@ export function observeFollowUpQueryBox({
       });
       queryBoxesDomObserverStore.getState().setTextboxNodes({
         followUp: $textbox[0],
+      });
+    },
+    onRemove: cleanup,
+    existingCheck: true,
+  });
+}
+
+export function observeCometAssistantQueryBox({
+  observerId,
+}: {
+  observerId: string;
+}) {
+  function cleanup() {
+    queryBoxesDomObserverStore.getState().setWrapperNodes({
+      cometAssistant: null,
+    });
+    queryBoxesDomObserverStore.getState().setTextboxNodes({
+      cometAssistant: null,
+    });
+  }
+
+  return domObserverService.subscribe({
+    id: observerId,
+    selector:
+      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.COMET_ASSISTANT,
+    onAdd: (node) => {
+      if (whereAmI() !== "comet_assistant") {
+        cleanup();
+        return;
+      }
+
+      const $textbox = $(node as HTMLElement);
+
+      const $wrapper = $textbox
+        .parents(
+          getDomSelectorsRootService().cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
+        )
+        .first();
+
+      if (!$wrapper.length) return;
+
+      $wrapper.internalComponentAttr(OBSERVER_ID.COMET_ASSISTANT_QUERY_BOX);
+
+      queryBoxesDomObserverStore.getState().setWrapperNodes({
+        cometAssistant: $wrapper[0],
+      });
+      queryBoxesDomObserverStore.getState().setTextboxNodes({
+        cometAssistant: $textbox[0],
       });
     },
     onRemove: cleanup,

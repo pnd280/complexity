@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { Input } from "@/components/ui/input";
@@ -10,12 +10,15 @@ import { keysToString } from "@/utils/utils";
 export function SearchInput() {
   const { isMobile } = useIsMobileStore();
   const { filters, setFilters } = usePluginFilters();
+  const [, startTransition] = useTransition();
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFilters({
-        ...filters,
-        searchTerm: e.target.value,
+      startTransition(() => {
+        setFilters({
+          ...filters,
+          searchTerm: e.target.value,
+        });
       });
     },
     [filters, setFilters],

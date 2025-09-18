@@ -20,7 +20,7 @@ declare module "@/plugins/_core/async-dep-registry" {
   }
 }
 
-export default function () {
+export default function csUiRootLoader() {
   asyncLoaderRegistry.register({
     id: "csui:root",
     dependencies: [

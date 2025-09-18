@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { localFiberNodePath } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
+import { localFiberNodePath } from "@/plugins/_core/dom-observers/thread/message-blocks/remote-resources/fallback";
 import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const messageBlocksReactFiberNodePathResourceConfig =

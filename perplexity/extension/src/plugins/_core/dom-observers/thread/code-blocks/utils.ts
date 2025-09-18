@@ -102,7 +102,12 @@ export function getFallbackContent(nodes: CodeBlock["nodes"]): {
 } {
   return {
     language:
-      nodes.$wrapper?.find(".text-text-200.font-thin:last").text() || "text",
+      nodes.$wrapper
+        ?.find(
+          getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK
+            .LANGUAGE_INDICATOR,
+        )
+        .text() || "text",
     code: nodes.$wrapper?.find("code:last").text() || "",
   };
 }

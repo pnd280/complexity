@@ -2,13 +2,19 @@ import { LuCpu } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import { Separator } from "@/components/ui/separator";
-import { useSharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
+import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import { languageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
+import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 import type { LanguageModelType } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
+const advancedModeLabelMap: Record<LanguageModelType, string> = {
+  search: "Search",
+  research: "Research",
+  studio: "Labs",
+};
+
 export default function BetterLanguageModelSelectorTriggerButton() {
-  const selectedLanguageModel = useSharedQueryBoxStore(
+  const selectedLanguageModel = useBetterLanguageModelSelectorStore(
     (state) => state.selectedLanguageModel,
   );
 
@@ -29,7 +35,7 @@ export default function BetterLanguageModelSelectorTriggerButton() {
   );
 
   const TypeIcon = useMemo(
-    () => (type ? languageModelTypeIcons[type as LanguageModelType] : LuCpu),
+    () => (type ? LanguageModelTypeIcons[type as LanguageModelType] : LuCpu),
     [type],
   );
 
@@ -49,7 +55,8 @@ export default function BetterLanguageModelSelectorTriggerButton() {
         <span className="x:truncate">
           {isAuto
             ? type
-              ? `${type.charAt(0).toUpperCase()}${type.slice(1)}`
+              ? (advancedModeLabelMap[type as LanguageModelType] ??
+                `${type.charAt(0).toUpperCase()}${type.slice(1)}`)
               : modelInfo?.shortLabel
             : modelInfo?.shortLabel}
         </span>

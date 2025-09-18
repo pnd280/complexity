@@ -14,9 +14,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { useSharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
+import { useForceWritingModeStore } from "@/plugins/force-writing-mode/store";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const normalizeCss = await getVersionedRemoteResource(
@@ -35,7 +35,7 @@ export function ForceWritingModeToggle() {
     id: "spaces-threads-force-writing-mode-normalize",
   });
 
-  const { forceWritingMode, setForceWritingMode } = useSharedQueryBoxStore(
+  const { forceWritingMode, setForceWritingMode } = useForceWritingModeStore(
     (store) => ({
       forceWritingMode: store.spacesThreadsForceWritingMode,
       setForceWritingMode: store.setSpacesThreadsForceWritingMode,

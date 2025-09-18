@@ -7,7 +7,7 @@ import {
   getAdvancedStandaloneModels,
   getModelsByType,
 } from "@/plugins/language-model-selector/utils";
-import { languageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
+import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
 
 export default function DesktopContent() {
@@ -22,8 +22,16 @@ export default function DesktopContent() {
   const subTier = usePluginGuardsStore((store) => store.subTier);
 
   const searchModels = useMemo(() => getModelsByType("search"), []);
+  const searchFastModel = useMemo(
+    () => searchModels.filter((model) => !model.isReasoning),
+    [searchModels],
+  );
+  const searchReasoningModel = useMemo(
+    () => searchModels.filter((model) => model.isReasoning),
+    [searchModels],
+  );
   const researchModels = useMemo(() => getModelsByType("research"), []);
-  const labsModels = useMemo(() => getModelsByType("labs"), []);
+  const labsModels = useMemo(() => getModelsByType("studio"), []);
   const advancedModels = useMemo(() => getAdvancedStandaloneModels(), []);
 
   return (
@@ -38,14 +46,28 @@ export default function DesktopContent() {
           title={
             subTier === "max" ? (
               <div className="x:flex x:items-center x:gap-1">
-                <languageModelTypeIcons.search className="x:size-4" />
-                <span>Search</span>
+                <LanguageModelTypeIcons.search className="x:size-4" />
+                <span>Standard</span>
               </div>
             ) : (
               <span>Standard</span>
             )
           }
-          models={searchModels}
+          models={searchFastModel}
+          tooltipPlacement="left"
+        />
+        <LanguageModelGroup
+          title={
+            subTier === "max" ? (
+              <div className="x:flex x:items-center x:gap-1">
+                <LanguageModelTypeIcons.search className="x:size-4" />
+                <span>Reasoning</span>
+              </div>
+            ) : (
+              <span>Reasoning</span>
+            )
+          }
+          models={searchReasoningModel}
           tooltipPlacement="left"
         />
         {subTier === "max" && (
@@ -53,7 +75,7 @@ export default function DesktopContent() {
             <LanguageModelGroup
               title={
                 <div className="x:flex x:items-center x:gap-1">
-                  <languageModelTypeIcons.research className="x:size-4" />
+                  <LanguageModelTypeIcons.research className="x:size-4" />
                   <span>Research</span>
                 </div>
               }
@@ -63,7 +85,7 @@ export default function DesktopContent() {
             <LanguageModelGroup
               title={
                 <div className="x:flex x:items-center x:gap-1">
-                  <languageModelTypeIcons.labs className="x:size-4" />
+                  <LanguageModelTypeIcons.studio className="x:size-4" />
                   <span>Labs</span>
                 </div>
               }

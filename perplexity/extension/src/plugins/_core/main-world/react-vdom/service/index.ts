@@ -1,18 +1,23 @@
+import type { InternalSearchStatesObserverStoreType } from "@/plugins/_core/dom-observers/internal-search-states/store";
 import {
   getCodeBlockContent,
   getCodeBlocksContent,
   type CodeBlockContent,
   type CodeBlockContentParams,
   type CodeBlocksContentParams,
-} from "@/plugins/_core/main-world/react-vdom/actions/get-code-block-content";
+} from "@/plugins/_core/main-world/react-vdom/actions/code-block-content";
 import {
-  getMessages,
-  type MessageBlockFiberData,
-} from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
+  getInternalSearchStates,
+  setInternalSearchStates,
+} from "@/plugins/_core/main-world/react-vdom/actions/internal-search-states";
 import {
   getLexicalEditorJsonContent,
   setLexicalEditorContent,
 } from "@/plugins/_core/main-world/react-vdom/actions/lexical";
+import {
+  getThreadMessages,
+  type MessageBlockFiberData,
+} from "@/plugins/_core/main-world/react-vdom/actions/thread-messages";
 import { triggerRewriteOption } from "@/plugins/_core/main-world/react-vdom/actions/trigger-rewrite-option";
 
 export const mainWorldProxyServiceName = "reactVdomService";
@@ -22,10 +27,10 @@ export class ReactVdomServiceImpl {
     return true;
   }
 
-  static async getMessages(
+  static async getThreadMessages(
     remoteFiberNodePath?: string[],
   ): Promise<MessageBlockFiberData[] | null> {
-    return getMessages({ remoteFiberNodePath });
+    return getThreadMessages({ remoteFiberNodePath });
   }
 
   static async getCodeBlocksContent(
@@ -55,6 +60,31 @@ export class ReactVdomServiceImpl {
 
   static async getLexicalEditorJsonContent(): Promise<string | undefined> {
     return getLexicalEditorJsonContent();
+  }
+
+  static async getInternalSearchStates({
+    remoteValidationFiberPath,
+    remoteStatesFiberPath,
+  }: {
+    remoteValidationFiberPath?: string[];
+    remoteStatesFiberPath?: string[];
+  }): Promise<InternalSearchStatesObserverStoreType> {
+    return getInternalSearchStates({
+      remoteValidationFiberPath,
+      remoteStatesFiberPath,
+    });
+  }
+
+  static async setInternalSearchStates(
+    states: Partial<InternalSearchStatesObserverStoreType>,
+    remoteValidationFiberPath?: string[],
+    remoteStatesFiberPath?: string[],
+  ): Promise<void> {
+    return setInternalSearchStates({
+      states,
+      remoteValidationFiberPath,
+      remoteStatesFiberPath,
+    });
   }
 }
 

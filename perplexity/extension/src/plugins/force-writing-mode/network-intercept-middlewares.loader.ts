@@ -6,7 +6,7 @@ import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
 } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { sharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
+import { forceWritingModeStore } from "@/plugins/force-writing-mode/store";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {
@@ -25,7 +25,7 @@ export default function () {
         id: "spaces-threads-force-writing-mode",
         middlewareFn({ data, skip }) {
           const enable =
-            sharedQueryBoxStore.getState().spacesThreadsForceWritingMode;
+            forceWritingModeStore.getState().spacesThreadsForceWritingMode;
 
           if (!enable) return skip();
 

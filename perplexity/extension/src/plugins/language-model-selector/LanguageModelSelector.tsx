@@ -5,19 +5,19 @@ import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
 import { useScopedQueryBoxContext } from "@/plugins/_core/ui/groups/query-box/context/context";
-import { useSharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
 import { getActiveQueryBoxTextbox } from "@/plugins/_core/ui/groups/query-box/utils";
 import DesktopContent from "@/plugins/language-model-selector/components/desktop";
 import MobileContent from "@/plugins/language-model-selector/components/mobile";
 import BetterLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/TriggerButton";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
+import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { getSelectItems } from "@/plugins/language-model-selector/utils";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function LanguageModelSelector() {
   const { isMobile } = useIsMobileStore();
   const { selectedLanguageModel, setSelectedLanguageModel } =
-    useSharedQueryBoxStore((store) => ({
+    useBetterLanguageModelSelectorStore((store) => ({
       selectedLanguageModel: store.selectedLanguageModel,
       setSelectedLanguageModel: store.setSelectedLanguageModel,
     }));

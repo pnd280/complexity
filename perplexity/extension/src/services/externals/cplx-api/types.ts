@@ -1,5 +1,5 @@
 import semver from "semver";
-import { z, type ZodSchema } from "zod";
+import { z } from "zod";
 
 import { APP_CONFIG } from "@/app.config";
 import type { PluginId } from "@/data/plugin-registry/types";
@@ -62,12 +62,12 @@ export interface ICplxApiService {
 
   fetchRemoteResource<T>(params: {
     resourcePath: string;
-    zodSchema: ZodSchema<T>;
+    zodSchema: z.ZodType<T>;
   }): Promise<T>;
 
   fetchVersionedRemoteResource<T>(params: {
     resourcePath: string;
-    zodSchema: ZodSchema<T>;
+    zodSchema: z.ZodType<T>;
   }): Promise<T>;
 
   fetchSoftCacheBuster(): Promise<string>;

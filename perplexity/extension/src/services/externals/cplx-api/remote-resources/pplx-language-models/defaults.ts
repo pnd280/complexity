@@ -112,7 +112,7 @@ export const pplxLocalLanguageModels = {
       label: "Auto",
       shortLabel: "Auto",
       code: "pplx_pro",
-      isReasoning: true,
+      isReasoning: false,
       icon: "auto",
     },
   ],
@@ -153,7 +153,7 @@ export const pplxLocalLanguageModels = {
       icon: "auto",
     },
   ],
-  labs: [
+  studio: [
     {
       label: "Claude 4 Sonnet Thinking",
       shortLabel: "Sonnet Thinking",

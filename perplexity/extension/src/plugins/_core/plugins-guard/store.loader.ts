@@ -108,21 +108,30 @@ function setupAuthenticationTracking(extensionSettings: ExtensionSettings) {
     });
   });
 
-  pluginGuardsStore.subscribe(
-    (state) => state.isLoggedIn,
-    (isLoggedIn) => {
-      new QueryObserver(
-        queryClient,
-        pplxApiQueries.userSettings.detail(isLoggedIn),
-      ).subscribe((data) => {
-        if (!data.data) return;
+  // const unsubscribeLoginGuard = pluginGuardsStore.subscribe(
+  //   (state) => state.isLoggedIn,
+  //   (isLoggedIn) => {
+  //     if (isLoggedIn === false) return;
 
-        pluginGuardsStore.setState((state) => {
-          state.hasActiveSub = data.data.subscription_status !== "none";
-        });
-      });
-    },
-  );
+  //     setTimeout(() => {
+  //       unsubscribeLoginGuard();
+  //     }, 0);
+
+  //     new QueryObserver(
+  //       queryClient,
+  //       pplxApiQueries.userSettings.detail(isLoggedIn),
+  //     ).subscribe((data) => {
+  //       if (!data.data) return;
+
+  //       pluginGuardsStore.setState((state) => {
+  //         state.hasActiveSub = data.data.subscription_status !== "none";
+  //       });
+  //     });
+  //   },
+  //   {
+  //     fireImmediately: true,
+  //   },
+  // );
 }
 
 async function setupPermissionsTracking() {

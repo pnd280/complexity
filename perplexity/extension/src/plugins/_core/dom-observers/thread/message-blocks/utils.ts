@@ -1,8 +1,8 @@
-import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/_core/dom-observers/thread/message-blocks/index.remote-resources";
+import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/_core/dom-observers/thread/message-blocks/remote-resources/index.remote-resources";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { type MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/get-messages";
+import { type MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/thread-messages";
 import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
@@ -21,7 +21,7 @@ export async function findMessageBlocks(
 
   if ($messageBlockElements.length === 0) return [];
 
-  const messageBlocksFiberData = await getReactVdomService().getMessages(
+  const messageBlocksFiberData = await getReactVdomService().getThreadMessages(
     remoteFiberNodePath ?? undefined,
   );
 

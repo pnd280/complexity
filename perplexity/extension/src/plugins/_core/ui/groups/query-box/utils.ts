@@ -1,7 +1,13 @@
+import { produce } from "immer";
+
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { sharedQueryBoxStore } from "@/plugins/_core/ui/groups/query-box/shared-store";
+import { pplxCookiesStore } from "@/plugins/_core/global-stores/pplx-cookies-store";
 import type { QueryBoxType } from "@/plugins/_core/ui/groups/query-box/types";
-import { isLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
+import type {
+  LanguageModelCode,
+  LanguageModelType,
+} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { setCookie } from "@/utils/utils";
 
 export function createToolbarPortalContainers({
   queryBoxWrapper,
@@ -118,18 +124,6 @@ function findOrCreateContainer({
   return $newContainer;
 }
 
-export function populateDefaults() {
-  const selectedLanguageModel = localStorage.getItem("cplx.selected-model");
-
-  if (!selectedLanguageModel || !isLanguageModelCode(selectedLanguageModel)) {
-    return;
-  }
-
-  sharedQueryBoxStore
-    .getState()
-    .setSelectedLanguageModel(selectedLanguageModel);
-}
-
 export function getActiveQueryBoxTextbox({
   type,
 }: {
@@ -164,4 +158,61 @@ export function isLexical(textbox: HTMLElement) {
   return (
     textbox.isContentEditable && textbox.hasAttribute("data-lexical-editor")
   );
+}
+
+export function setModelCookie({
+  type,
+  modelCode,
+}: {
+  type: LanguageModelType;
+  modelCode: LanguageModelCode;
+}) {
+  const cookie = pplxCookiesStore
+    .getState()
+    .cookies.find((cookie) => cookie.name === "pplx.search-models-v4");
+
+  if (!cookie) {
+    return;
+  }
+
+  const parsedCookie = JSON.parse(decodeURIComponent(cookie.value)) as Record<
+    LanguageModelType,
+    LanguageModelCode
+  >;
+
+  if (parsedCookie == null) return;
+
+  const newValue = produce(parsedCookie, (draft) => {
+    if (draft[type] == null) {
+      draft[type] = modelCode;
+    } else {
+      draft[type] = modelCode;
+    }
+  });
+
+  pplxCookiesStore.setState({
+    cookies: [
+      ...pplxCookiesStore.getState().cookies,
+      { name: "pplx.search-models-v4", value: JSON.stringify(newValue) },
+    ],
+  });
+
+  setCookie("pplx.search-models-v4", JSON.stringify(newValue), 30);
+}
+
+export function getModelCookie({ type }: { type: LanguageModelType }) {
+  const cookie = pplxCookiesStore
+    .getState()
+    .cookies.find((cookie) => cookie.name === "pplx.search-models-v4");
+
+  if (!cookie) {
+    return null;
+  }
+
+  const parsedCookie = JSON.parse(decodeURIComponent(cookie.value)) as Record<
+    LanguageModelType,
+    LanguageModelCode
+  >;
+
+  return (parsedCookie[type] as keyof typeof parsedCookie) ?? null;
 }

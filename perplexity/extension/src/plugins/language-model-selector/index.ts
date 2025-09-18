@@ -23,7 +23,7 @@ export default definePlugin({
     categories: ["queryBox"],
     tags: ["deprecated", "ui", "pplxPro"],
     uiGroup: ["queryBoxes:toolbar:main", "queryBoxes:toolbar:followUp"],
-    dependentDomObservers: ["queryBoxes"],
+    dependentDomObservers: ["queryBoxes", "internalSearchStates"],
     dependentMainWorldCorePlugins: [
       "networkIntercept",
       "spaRouter",

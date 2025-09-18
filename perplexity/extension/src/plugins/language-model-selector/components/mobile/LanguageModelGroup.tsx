@@ -66,14 +66,16 @@ export default function MobileLanguageModelGroup({
             key={model.code}
             item={model.code}
             value={model.code}
-            className="x:flex x:items-center x:justify-between x:gap-2 x:p-4 x:text-base x:text-foreground"
+            className="x:gap-2 x:p-4 x:text-base"
           >
-            <div className="x:flex x:items-center x:gap-2">
-              <Icon className="x:size-4" />
-              <span className="x:truncate">{model.label}</span>
-            </div>
-            <div className="x:text-xs x:text-muted-foreground">
-              {tooltipContent}
+            <div className="x:flex x:w-full x:items-center x:justify-between x:gap-2">
+              <div className="x:flex x:items-center x:gap-2">
+                <Icon className="x:size-4" />
+                <span className="x:truncate">{model.label}</span>
+              </div>
+              <div className="x:text-xs x:text-muted-foreground">
+                {tooltipContent}
+              </div>
             </div>
           </ItemComp>
         );

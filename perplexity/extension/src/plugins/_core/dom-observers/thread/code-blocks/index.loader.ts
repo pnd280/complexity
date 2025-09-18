@@ -2,7 +2,7 @@ import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { findCodeBlocks } from "@/plugins/_core/dom-observers/thread/code-blocks/parser";
 import { threadCodeBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/code-blocks/store";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
+import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {
   interface CoreDomObserverRegistry {
@@ -25,7 +25,7 @@ export default function () {
     ],
     loader: () => {
       if (
-        !shouldEnableCoreObserver({
+        !shouldEnableCoreDomObserver({
           coreObserverId: "thread:codeBlocks",
         })
       )

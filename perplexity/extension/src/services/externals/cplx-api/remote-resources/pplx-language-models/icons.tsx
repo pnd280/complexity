@@ -16,7 +16,7 @@ import type {
   LanguageModelType,
 } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
-export const languageModelIcons: Record<LanguageModelIcon, React.ElementType> &
+export const LanguageModelIcons: Record<LanguageModelIcon, React.ElementType> &
   Record<string, React.ElementType> = {
   claude: SiClaude,
   openai: SiOpenai,
@@ -29,11 +29,11 @@ export const languageModelIcons: Record<LanguageModelIcon, React.ElementType> &
   research: PplxResearch,
 };
 
-export const languageModelTypeIcons: Record<
+export const LanguageModelTypeIcons: Record<
   LanguageModelType,
   React.ElementType
 > = {
   search: PplxSearch,
   research: PplxResearch,
-  labs: PplxLabsResearch,
+  studio: PplxLabsResearch,
 };

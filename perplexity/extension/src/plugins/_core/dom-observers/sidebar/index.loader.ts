@@ -3,7 +3,7 @@ import {
   observeMobileTrigger,
   observeSidebarWrapper,
 } from "@/plugins/_core/dom-observers/sidebar/observers";
-import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
+import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
 
@@ -25,7 +25,7 @@ export default function () {
     dependencies: ["cache:pluginsStates", "cache:domSelectors"],
     loader: () => {
       if (
-        !shouldEnableCoreObserver({
+        !shouldEnableCoreDomObserver({
           coreObserverId: "sidebar",
         })
       )

@@ -1,6 +1,6 @@
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxLocalLanguageModels } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/defaults";
-import { languageModelIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
+import { LanguageModelIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 import { pplxLanguageModelsResourceConfig } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/index.remote-resources";
 import { type LanguageModelsList } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { getRemoteResource } from "@/services/externals/cplx-api/remote-resources/utils";
@@ -22,5 +22,5 @@ export class PplxLanguageModelsService {
 
   static allModels: LanguageModelsList = PplxLanguageModelsService.localModels;
 
-  static icons = languageModelIcons;
+  static icons = LanguageModelIcons;
 }

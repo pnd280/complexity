@@ -1,14 +1,7 @@
 [data-cplx-component="cplx-space-query-box"] {
-  [data-cplx-component="query-box-cplx-right-toolbar-components-left-wrapper"]
-    + div
-    + span {
-    order: -1;
-  }
-
   &[data-cplx-force-writing-mode="true"] {
     [data-cplx-component="query-box-cplx-right-toolbar-components-left-wrapper"]
-      + div
-      + span {
+      ~ span:has(> button[data-testid="sources-switcher-button"]) {
       display: none;
     }
   }

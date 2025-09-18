@@ -35,7 +35,7 @@ export function isResearchLanguageModelCode(
 export function isLabsLanguageModelCode(
   value: string,
 ): value is LabsLanguageModelCode {
-  return PplxLanguageModelsService.allModels.labs.some(
+  return PplxLanguageModelsService.allModels.studio.some(
     (model) => model.code === value,
   );
 }

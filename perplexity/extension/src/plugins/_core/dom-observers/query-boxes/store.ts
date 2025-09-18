@@ -7,24 +7,28 @@ export type QueryBoxesDomObserverStoreType = {
     main: HTMLElement | null;
     space: HTMLElement | null;
     followUp: HTMLElement | null;
+    cometAssistant: HTMLElement | null;
   };
 
   setWrapperNodes: (wrapper: {
     main?: HTMLElement | null;
     space?: HTMLElement | null;
     followUp?: HTMLElement | null;
+    cometAssistant?: HTMLElement | null;
   }) => void;
 
   textbox: {
     main: HTMLElement | null;
     space: HTMLElement | null;
     followUp: HTMLElement | null;
+    cometAssistant: HTMLElement | null;
   };
 
   setTextboxNodes: (textbox: {
     main?: HTMLElement | null;
     space?: HTMLElement | null;
     followUp?: HTMLElement | null;
+    cometAssistant?: HTMLElement | null;
   }) => void;
 
   resetStore: () => void;
@@ -39,11 +43,13 @@ export const queryBoxesDomObserverStore =
             main: null,
             space: null,
             followUp: null,
+            cometAssistant: null,
           },
           textbox: {
             main: null,
             space: null,
             followUp: null,
+            cometAssistant: null,
           },
 
           setWrapperNodes: (wrapper) => {
@@ -70,11 +76,13 @@ export const queryBoxesDomObserverStore =
                 main: null,
                 space: null,
                 followUp: null,
+                cometAssistant: null,
               },
               textbox: {
                 main: null,
                 space: null,
                 followUp: null,
+                cometAssistant: null,
               },
             });
           },

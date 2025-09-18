@@ -19,8 +19,23 @@ function filterAndMapSelectItems(
 }
 
 export function getSelectItems() {
+  const searchModels = getModelsByType("search");
+  const searchFastModel = searchModels.filter((model) => !model.isReasoning);
+  const searchReasoningModel = searchModels.filter(
+    (model) => model.isReasoning,
+  );
+  const researchModels = getModelsByType("research");
+  const labsModels = getModelsByType("studio");
+  const advancedModels = getAdvancedStandaloneModels();
+
   return filterAndMapSelectItems(
-    Object.values(PplxLanguageModelsService.allModels).flat(),
+    Object.values([
+      searchFastModel,
+      searchReasoningModel,
+      researchModels,
+      labsModels,
+      advancedModels,
+    ]).flat(),
   );
 }
 
@@ -46,7 +61,7 @@ export function getAdvancedStandaloneModels() {
   );
 
   const labsAuto = structuredClone(
-    PplxLanguageModelsService.allModels.labs.find(
+    PplxLanguageModelsService.allModels.studio.find(
       (model) => model.code === "pplx_beta",
     ),
   );

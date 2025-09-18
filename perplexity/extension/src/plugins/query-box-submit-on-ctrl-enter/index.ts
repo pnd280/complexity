@@ -19,7 +19,7 @@ export default definePlugin({
     settingsUiRouteSegment: "query-box-submit-on-ctrl-enter",
     title: `Submit on ${getPlatform() === "mac" ? "Cmd" : "Ctrl"}+Enter`,
     description: `Insert new line on Enter, submit on ${getPlatform() === "mac" ? "Cmd" : "Ctrl"}+Enter`,
-    categories: ["queryBox"],
+    categories: ["queryBox", "comet"],
     tags: [],
     dependentDomObservers: ["queryBoxes"],
     dependentMainWorldCorePlugins: ["spaRouter"],

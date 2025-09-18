@@ -40,11 +40,6 @@ export default function LanguageModelGroup({
 
   if (models.length === 0) return null;
 
-  const reasoningModels = models.filter((model) => model.isReasoning);
-  const fastModels = models.filter((model) => !model.isReasoning);
-
-  const showDivider = reasoningModels.length > 0 && fastModels.length > 0;
-
   return (
     <GroupComp className="x:m-0 x:p-0">
       {titleTooltip != null ? (
@@ -63,17 +58,7 @@ export default function LanguageModelGroup({
           {title}
         </LabelComp>
       )}
-
-      {fastModels.map((model) => renderModelItem(model))}
-
-      {showDivider && (
-        <div className="x:mx-2 x:my-2 x:flex x:items-center x:gap-2 x:text-xs x:text-muted-foreground">
-          <div>Reasoning</div>
-          <div className="x:h-[0.5px] x:w-full x:bg-border/75" />
-        </div>
-      )}
-
-      {reasoningModels.map((model) => renderModelItem(model))}
+      {models.map((model) => renderModelItem(model))}
     </GroupComp>
   );
 

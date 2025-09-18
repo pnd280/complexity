@@ -4,7 +4,7 @@ import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { findMessageBlocks } from "@/plugins/_core/dom-observers/thread/message-blocks/utils";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
+import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
@@ -27,7 +27,7 @@ export default function () {
     dependencies: ["cache:pluginsStates"],
     loader: () => {
       if (
-        !shouldEnableCoreObserver({
+        !shouldEnableCoreDomObserver({
           coreObserverId: "thread:messageBlocks",
         })
       )

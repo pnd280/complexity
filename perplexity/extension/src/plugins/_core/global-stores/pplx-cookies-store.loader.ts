@@ -24,10 +24,20 @@ export default function () {
   });
 }
 
-export function parseCookies() {
+function parseCookies() {
+  let prevCookieString = "";
+
   return debounce(
     () => {
-      const cookieStrings = document.cookie.split(";");
+      const currentCookieString = document.cookie;
+
+      if (currentCookieString === prevCookieString) {
+        return;
+      }
+
+      prevCookieString = currentCookieString;
+
+      const cookieStrings = currentCookieString.split(";");
 
       const parsedCookies: Cookie[] = cookieStrings
         .map((cookieStr) => {
@@ -57,7 +67,7 @@ export function parseCookies() {
         pplxCookiesStore.setState({ cookies: parsedCookies });
       }
     },
-    300,
+    150,
     { leading: true, trailing: true },
   );
 }

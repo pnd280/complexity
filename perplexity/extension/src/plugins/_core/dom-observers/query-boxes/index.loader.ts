@@ -1,11 +1,12 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import {
+  observeCometAssistantQueryBox,
   observeFollowUpQueryBox,
   observeMainQueryBox,
   observeSpaceQueryBox,
 } from "@/plugins/_core/dom-observers/query-boxes/observers";
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
-import { shouldEnableCoreObserver } from "@/plugins/_core/dom-observers/utils";
+import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
@@ -33,7 +34,7 @@ export default function () {
     ],
     loader: () => {
       if (
-        !shouldEnableCoreObserver({
+        !shouldEnableCoreDomObserver({
           coreObserverId: "queryBoxes",
         })
       )
@@ -60,6 +61,9 @@ function cleanup() {
     createDomObserverId("queryBoxes", "collection"),
   );
   domObserverService.unsubscribe(createDomObserverId("queryBoxes", "thread"));
+  domObserverService.unsubscribe(
+    createDomObserverId("queryBoxes", "comet_assistant"),
+  );
 }
 
 function observeQueryBoxes(location: ReturnType<typeof whereAmI>) {
@@ -75,6 +79,7 @@ function observeQueryBoxes(location: ReturnType<typeof whereAmI>) {
     comet_ntp: observeMainQueryBox,
     collection: observeSpaceQueryBox,
     thread: observeFollowUpQueryBox,
+    comet_assistant: observeCometAssistantQueryBox,
   };
 
   const handler = observerMap[location];

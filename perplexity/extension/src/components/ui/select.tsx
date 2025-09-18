@@ -164,8 +164,8 @@ export function SelectItem({
           {...props}
         >
           <div
-            className={cn({
-              "x:flex x:w-full x:items-center x:justify-between x:gap-4":
+            className={cn("x:w-full", {
+              "x:flex x:items-center x:justify-between x:gap-4":
                 checkboxOnSingleItem || multiple,
             })}
           >

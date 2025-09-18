@@ -6,7 +6,7 @@ import type {
 import type { CoreDomObserverId } from "@/plugins/_core/dom-observers/types";
 import { PluginsStatesService } from "@/services/features/plugins-states";
 
-export function shouldEnableCoreObserver({
+export function shouldEnableCoreDomObserver({
   coreObserverId,
 }: {
   coreObserverId: CoreDomObserverId;

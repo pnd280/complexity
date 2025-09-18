@@ -514,13 +514,25 @@ export function waitUntil(params: {
   const { condition, timeout = 5000, interval = 500 } = params;
 
   return new Promise((resolve) => {
-    const intervalId = setInterval(async () => {
+    let isRunning = false;
+    let intervalId: NodeJS.Timeout;
+
+    const checkCondition = async () => {
+      if (isRunning) return;
+
+      isRunning = true;
       const [result, error] = await errorWrapper(condition)();
+      isRunning = false;
+
       if (!error && result === true) {
         clearInterval(intervalId);
         resolve();
       }
-    }, interval);
+    };
+
+    checkCondition();
+
+    intervalId = setInterval(checkCondition, interval);
 
     setTimeout(() => {
       clearInterval(intervalId);
