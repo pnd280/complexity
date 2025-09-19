@@ -1,6 +1,7 @@
 import { DropdownMenuContent } from "@/components/ui/dropdown-menu";
 import { SelectContent } from "@/components/ui/select";
 import { usePluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
+import { ScopedQueryBoxContext } from "@/plugins/_core/ui/groups/query-box/_context/context";
 import LanguageModelGroup from "@/plugins/language-model-selector/components/desktop/LanguageModelGroup";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import {
@@ -20,6 +21,9 @@ export default function DesktopContent() {
   const Comp = component === "dropdown" ? DropdownMenuContent : SelectContent;
 
   const subTier = usePluginGuardsStore((store) => store.subTier);
+
+  const isCometAssistant =
+    use(ScopedQueryBoxContext)?.store.type === "comet-assistant";
 
   const searchModels = useMemo(() => getModelsByType("search"), []);
   const searchFastModel = useMemo(
@@ -70,7 +74,7 @@ export default function DesktopContent() {
           models={searchReasoningModel}
           tooltipPlacement="left"
         />
-        {subTier === "max" && (
+        {subTier === "max" && !isCometAssistant && (
           <div className="x:flex x:flex-col x:gap-1">
             <LanguageModelGroup
               title={
@@ -95,7 +99,7 @@ export default function DesktopContent() {
           </div>
         )}
 
-        {subTier === "pro" && (
+        {subTier === "pro" && !isCometAssistant && (
           <LanguageModelGroup
             title={<span>Advanced</span>}
             models={advancedModels}

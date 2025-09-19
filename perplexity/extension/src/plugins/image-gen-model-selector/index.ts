@@ -19,7 +19,7 @@ export default definePlugin({
     title: "Image Generation Model Selector",
     description: "Enable selection of different image generation models",
     categories: ["thread"],
-    tags: ["deprecated", "ui", "desktopOnly", "pplxPro"],
+    tags: ["ui", "desktopOnly", "pplxPro"],
     dependentDomObservers: ["thread"],
     dependentMainWorldCorePlugins: ["spaRouter", "webSocket"],
   },

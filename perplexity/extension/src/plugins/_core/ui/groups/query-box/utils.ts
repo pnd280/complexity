@@ -139,6 +139,8 @@ export function getActiveQueryBoxTextbox({
     space: getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.SPACE,
     "follow-up":
       getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.FOLLOW_UP,
+    "comet-assistant":
+      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.COMET_ASSISTANT,
   };
 
   return $(selectorMap[type]);

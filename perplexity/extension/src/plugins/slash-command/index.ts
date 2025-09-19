@@ -21,7 +21,11 @@ export default definePlugin({
       "Allows you to use various slash commands to quickly access advanced features",
     categories: ["misc"],
     tags: ["slashCommand", "desktopOnly"],
-    uiGroup: ["queryBoxes:toolbar:main", "queryBoxes:toolbar:followUp"],
+    uiGroup: [
+      "queryBoxes:toolbar:main",
+      "queryBoxes:toolbar:space",
+      "queryBoxes:toolbar:followUp",
+    ],
     dependentDomObservers: ["queryBoxes"],
     dependentMainWorldCorePlugins: ["spaRouter", "networkIntercept"],
   },

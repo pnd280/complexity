@@ -72,6 +72,7 @@ export const DomSelectorsSchema = z.object({
     }),
     ATTR_WRAPPER: z.string(),
     ATTR_WRAPPER_CHILD: z.object({
+      COMET_ASSISTANT: z.string(),
       LEFT_ATTR_WRAPPER: z.string(),
       RIGHT_ATTR_WRAPPER: z.string(),
     }),

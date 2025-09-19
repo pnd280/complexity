@@ -1,5 +1,5 @@
-import type { ScopedQueryBoxStoreType } from "@/plugins/_core/ui/groups/query-box/context/scoped-store";
-import { createQueryBoxScopedStore } from "@/plugins/_core/ui/groups/query-box/context/scoped-store";
+import type { ScopedQueryBoxStoreType } from "@/plugins/_core/ui/groups/query-box/_context/scoped-store";
+import { createQueryBoxScopedStore } from "@/plugins/_core/ui/groups/query-box/_context/scoped-store";
 
 type ScopedQueryBoxContext = {
   store: ScopedQueryBoxStoreType;

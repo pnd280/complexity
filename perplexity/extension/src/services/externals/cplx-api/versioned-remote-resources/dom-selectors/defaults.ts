@@ -84,6 +84,7 @@ export const DOM_SELECTORS: DomSelectors = {
     },
     ATTR_WRAPPER: "> div > div > div",
     ATTR_WRAPPER_CHILD: {
+      COMET_ASSISTANT: "> div > div > div > div:last-child",
       LEFT_ATTR_WRAPPER: ">div:nth-child(2)",
       RIGHT_ATTR_WRAPPER: ">div:nth-child(3)",
     },
@@ -179,6 +180,7 @@ export const INTERNAL_ATTRIBUTES = {
       "query-box-cplx-right-toolbar-components-left-wrapper",
     CPLX_RIGHT_TOOLBAR_COMPONENTS_RIGHT_WRAPPER:
       "query-box-cplx-right-toolbar-components-right-wrapper",
+    COMET_ASSISTANT: "query-box-comet-assistant-toolbar-wrapper",
   },
   SPACES_PAGE: {
     SPACE_CARD: "space-card",

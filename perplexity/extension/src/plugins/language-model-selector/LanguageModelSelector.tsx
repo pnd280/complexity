@@ -4,8 +4,12 @@ import { Select, SelectContext, SelectTrigger } from "@/components/ui/select";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
-import { useScopedQueryBoxContext } from "@/plugins/_core/ui/groups/query-box/context/context";
+import {
+  ScopedQueryBoxContext,
+  useScopedQueryBoxContext,
+} from "@/plugins/_core/ui/groups/query-box/_context/context";
 import { getActiveQueryBoxTextbox } from "@/plugins/_core/ui/groups/query-box/utils";
+import CometAssistantLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/CometAssistantTriggerButton";
 import DesktopContent from "@/plugins/language-model-selector/components/desktop";
 import MobileContent from "@/plugins/language-model-selector/components/mobile";
 import BetterLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/TriggerButton";
@@ -29,6 +33,9 @@ export function LanguageModelSelector() {
   const selectItems = useMemo(getSelectItems, []);
 
   useRegisterGlobalCss();
+
+  const isCometAssistant =
+    use(ScopedQueryBoxContext)?.store.type === "comet-assistant";
 
   return (
     <Select
@@ -67,7 +74,11 @@ export function LanguageModelSelector() {
       }}
     >
       <SelectTrigger variant="noStyle" className="x:m-0 x:p-0">
-        <BetterLanguageModelSelectorTriggerButton />
+        {isCometAssistant ? (
+          <CometAssistantLanguageModelSelectorTriggerButton />
+        ) : (
+          <BetterLanguageModelSelectorTriggerButton />
+        )}
       </SelectTrigger>
       <LanguageModelSelectorContext
         value={{
@@ -75,7 +86,7 @@ export function LanguageModelSelector() {
           setHighlightedItem,
         }}
       >
-        {isMobile ? (
+        {isMobile && !isCometAssistant ? (
           <SelectContext>
             {({ open, setOpen }) => (
               <MobileContent

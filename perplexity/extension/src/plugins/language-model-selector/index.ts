@@ -20,9 +20,14 @@ export default definePlugin({
     settingsUiRouteSegment: "query-box-language-model-selector",
     title: "Better Language Model Selector",
     description: "Take complete control of all available language models",
-    categories: ["queryBox"],
-    tags: ["deprecated", "ui", "pplxPro"],
-    uiGroup: ["queryBoxes:toolbar:main", "queryBoxes:toolbar:followUp"],
+    categories: ["queryBox", "comet"],
+    tags: ["ui", "pplxPro", "cometAssistant"],
+    uiGroup: [
+      "queryBoxes:toolbar:main",
+      "queryBoxes:toolbar:space",
+      "queryBoxes:toolbar:followUp",
+      "queryBoxes:toolbar:cometAssistant",
+    ],
     dependentDomObservers: ["queryBoxes", "internalSearchStates"],
     dependentMainWorldCorePlugins: [
       "networkIntercept",

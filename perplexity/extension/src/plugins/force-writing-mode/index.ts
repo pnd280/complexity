@@ -21,7 +21,7 @@ export default definePlugin({
     description:
       "Force AI responses in Space's threads to use the old writing mode (toggleable)",
     categories: ["misc"],
-    uiGroup: ["queryBoxes:toolbar:main"],
+    uiGroup: ["queryBoxes:toolbar:space"],
     dependentDomObservers: ["queryBoxes"],
     dependentMainWorldCorePlugins: ["spaRouter"],
   },
