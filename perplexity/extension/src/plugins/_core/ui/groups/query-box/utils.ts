@@ -174,6 +174,13 @@ export function setModelCookie({
     .cookies.find((cookie) => cookie.name === "pplx.search-models-v4");
 
   if (!cookie) {
+    setCookie(
+      "pplx.search-models-v4",
+      JSON.stringify({
+        [type]: modelCode,
+      }),
+      30,
+    );
     return;
   }
 
@@ -182,7 +189,16 @@ export function setModelCookie({
     LanguageModelCode
   >;
 
-  if (parsedCookie == null) return;
+  if (parsedCookie == null) {
+    setCookie(
+      "pplx.search-models-v4",
+      JSON.stringify({
+        [type]: modelCode,
+      }),
+      30,
+    );
+    return;
+  }
 
   const newValue = produce(parsedCookie, (draft) => {
     if (draft[type] == null) {
