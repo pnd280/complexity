@@ -73,4 +73,6 @@ export interface ICplxApiService {
   fetchSoftCacheBuster(): Promise<string>;
 
   fetchPsa(): Promise<string>;
+
+  fetchCometPatchTutorial(): Promise<string>;
 }

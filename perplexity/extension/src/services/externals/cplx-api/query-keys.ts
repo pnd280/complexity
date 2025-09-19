@@ -70,4 +70,13 @@ export const cplxApiQueries = {
         queryFn: () => CplxApiService.fetchPsa(),
       }),
   },
+
+  cometPatchTutorial: {
+    all: () => [...cplxApiQueries.all(), "cometPatchTutorial"] as const,
+    detail: () =>
+      queryOptions({
+        queryKey: [...cplxApiQueries.cometPatchTutorial.all()] as const,
+        queryFn: () => CplxApiService.fetchCometPatchTutorial(),
+      }),
+  },
 };

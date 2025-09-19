@@ -105,7 +105,7 @@
     "@crxjs/vite-plugin": "^2.2.0",
     "@playwright/test": "^1.55.0",
     "@tailwindcss/cli": "^4.1.13",
-    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/typography": "^0.5.17",
     "@tailwindcss/vite": "^4.1.13",
     "@tanstack/eslint-plugin-query": "^5.89.0",
     "@tanstack/react-query-devtools": "^5.89.0",

@@ -1,4 +1,4 @@
-**Close all running Comet instances and run the following command**
+**After running the following command, RESTART the browser.**
 
 ### Windows
 

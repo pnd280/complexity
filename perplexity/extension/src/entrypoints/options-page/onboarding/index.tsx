@@ -1,6 +1,7 @@
 import { LuCheck } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 
+import { APP_CONFIG } from "@/app.config";
 import Cplx from "@/components/icons/Cplx";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,46 +14,73 @@ import {
 } from "@/components/ui/steps";
 import { H1, H2, H3, P } from "@/components/ui/typography";
 import BasePermissions from "@/entrypoints/options-page/onboarding/BasePermissions";
+import CometPatch from "@/entrypoints/options-page/onboarding/CometPatch";
 import ExtensionIconAction from "@/entrypoints/options-page/onboarding/ExtensionIconAction";
 import MultiLingualSupport from "@/entrypoints/options-page/onboarding/MultiLingualSupport";
 import PluginEcosystem from "@/entrypoints/options-page/onboarding/PluginEcosystem";
 import SupportChannels from "@/entrypoints/options-page/onboarding/SupportChannels";
 
-const steps = [
-  {
-    title: "Introduction",
-    description: "Welcome",
-    component: <FirstStep />,
-  },
-  {
-    title: "Permissions",
-    description: "Required permissions",
-    component: <BasePermissions />,
-  },
-  {
-    title: "Extension Icon Action",
-    description: "Choose what a left-click on the icon does",
-    component: <ExtensionIconAction />,
-  },
-  {
-    title: "Plugin Ecosystem",
-    description: "Plugin ecosystem",
-    component: <PluginEcosystem />,
-  },
-  {
-    title: "Multilingual Support",
-    description: "Language and translations",
-    component: <MultiLingualSupport />,
-  },
-  {
-    title: "Need Help?",
-    description: "Need help?",
-    component: <SupportChannels />,
-  },
-];
+const steps = (
+  [
+    {
+      title: "Introduction",
+      description: "Welcome",
+      component: <FirstStep />,
+      skipable: true,
+    },
+    {
+      title: "Choose your browser",
+      description: "Choose your browser",
+      component: <CometPatch />,
+      skipable: false,
+    },
+    {
+      title: "Permissions",
+      description: "Required permissions",
+      component: <BasePermissions />,
+      skipable: true,
+    },
+    {
+      title: "Extension Icon Action",
+      description: "Choose what a left-click on the icon does",
+      component: <ExtensionIconAction />,
+      skipable: true,
+    },
+    {
+      title: "Plugin Ecosystem",
+      description: "Plugin ecosystem",
+      component: <PluginEcosystem />,
+      skipable: true,
+    },
+    {
+      title: "Multilingual Support",
+      description: "Language and translations",
+      component: <MultiLingualSupport />,
+      skipable: true,
+    },
+    {
+      title: "Need Help?",
+      description: "Need help?",
+      component: <SupportChannels />,
+      skipable: true,
+    },
+  ] satisfies Array<{
+    title: string;
+    description: string;
+    component: React.ReactNode;
+    skipable: boolean;
+  }>
+).filter((step) => {
+  if (APP_CONFIG.BROWSER === "firefox") {
+    return step.title !== "Comet Patch";
+  }
+  return true;
+});
 
 export function Onboarding() {
   const navigate = useNavigate();
+
+  const [currentStep, setCurrentStep] = useState(0);
 
   return (
     <div className="x:flex x:min-h-screen x:bg-background">
@@ -60,7 +88,11 @@ export function Onboarding() {
         <div className="x:flex x:justify-center x:rounded-lg x:py-4 x:md:py-8">
           <Steps
             count={steps.length}
-            onStepChange={() => window.scrollTo(0, 0)}
+            step={currentStep}
+            onStepChange={(details) => {
+              setCurrentStep(details.step);
+              window.scrollTo(0, 0);
+            }}
           >
             {steps.map((step, index) => (
               <StepsContent key={index} index={index}>
@@ -91,7 +123,9 @@ export function Onboarding() {
                     {hasPrevStep && (
                       <StepsPrevTrigger>Previous</StepsPrevTrigger>
                     )}
-                    {hasNextStep && <StepsNextTrigger>Next</StepsNextTrigger>}
+                    {hasNextStep && steps[currentStep]!.skipable && (
+                      <StepsNextTrigger>Next</StepsNextTrigger>
+                    )}
                     {!hasNextStep && (
                       <Button
                         size="lg"

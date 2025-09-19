@@ -68,7 +68,7 @@ export class ReactVdomServiceImpl {
   }: {
     remoteValidationFiberPath?: string[];
     remoteStatesFiberPath?: string[];
-  }): Promise<InternalSearchStatesObserverStoreType> {
+  }): Promise<InternalSearchStatesObserverStoreType | null> {
     return getInternalSearchStates({
       remoteValidationFiberPath,
       remoteStatesFiberPath,

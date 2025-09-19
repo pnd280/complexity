@@ -8,6 +8,10 @@ import {
 import { internalSearchStatesObserverStore } from "@/plugins/_core/dom-observers/internal-search-states/store";
 import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
 import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import {
+  isLanguageModelCode,
+  isSearchMode,
+} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 
 declare module "@/plugins/_core/dom-observers/types" {
   interface CoreDomObserverRegistry {
@@ -42,7 +46,22 @@ export default function () {
               remoteInternalSearchStatesStatesFiberPathStr.split("."),
           });
 
-          internalSearchStatesObserverStore.setState(states);
+          if (states == null) return;
+
+          internalSearchStatesObserverStore.setState((store) => {
+            store.sources = states.sources;
+
+            if (
+              states.selectedModel != null &&
+              isLanguageModelCode(states.selectedModel)
+            ) {
+              store.selectedModel = states.selectedModel;
+            }
+
+            if (states.searchMode != null && isSearchMode(states.searchMode)) {
+              store.searchMode = states.searchMode;
+            }
+          });
         }, 100),
       );
 

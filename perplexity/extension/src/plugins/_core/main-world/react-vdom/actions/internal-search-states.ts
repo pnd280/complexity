@@ -44,19 +44,13 @@ export async function getInternalSearchStates({
 }: {
   remoteValidationFiberPath?: string[];
   remoteStatesFiberPath?: string[];
-}): Promise<InternalSearchStatesObserverStoreType> {
+}): Promise<InternalSearchStatesObserverStoreType | null> {
   const statesFiberNode = getStatesNodePath({
     remoteStatesFiberPath,
     remoteValidationFiberPath,
   });
 
-  if (statesFiberNode == null) {
-    return {
-      sources: [],
-      selectedModel: null,
-      searchMode: "search",
-    };
-  }
+  if (statesFiberNode == null) return null;
 
   return {
     sources: deepClone(statesFiberNode.sources) ?? [],

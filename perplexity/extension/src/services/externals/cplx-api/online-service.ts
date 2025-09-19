@@ -86,4 +86,12 @@ export class CplxApiOnlineService implements ICplxApiService {
       }).toString(),
     );
   }
+
+  async fetchCometPatchTutorial() {
+    return fetchTextResource(
+      getUrl({
+        path: "/assets/comet-patch-tutorial.md",
+      }).toString(),
+    );
+  }
 }

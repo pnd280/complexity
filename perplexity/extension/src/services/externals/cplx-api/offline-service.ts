@@ -35,4 +35,8 @@ export class CplxApiOfflineService implements ICplxApiService {
   async fetchPsa(): Promise<string> {
     throw new Error("Not available in offline mode");
   }
+
+  async fetchCometPatchTutorial(): Promise<string> {
+    throw new Error("Not available in offline mode");
+  }
 }

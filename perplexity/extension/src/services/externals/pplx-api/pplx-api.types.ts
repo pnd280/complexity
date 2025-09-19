@@ -13,8 +13,20 @@ export type PplxUserSettingsApiResponse = z.infer<
   typeof PplxUserSettingsApiResponseSchema
 >;
 
-// TODO: type this
-export type PplxAuthSessionApiResponse = any;
+export type PplxAuthSessionApiResponse = {
+  user: {
+    name: string;
+    email: string;
+    image: string;
+    id: string;
+    username: string;
+    subscription_status: string;
+    subscription_source: string;
+    payment_tier: string;
+    subscription_tier: string;
+    org_uuid: string;
+  };
+};
 
 export const PplxOrgSettingsApiResponseSchema = z.object({
   is_in_organization: z.boolean(),

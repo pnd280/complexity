@@ -1,7 +1,9 @@
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import { searchModelType } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/consts";
 import type {
   LabsLanguageModelCode,
   LanguageModel,
+  LanguageModelType,
   ResearchLanguageModelCode,
   SearchLanguageModelCode,
 } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
@@ -38,4 +40,8 @@ export function isLabsLanguageModelCode(
   return PplxLanguageModelsService.allModels.studio.some(
     (model) => model.code === value,
   );
+}
+
+export function isSearchMode(value: string): value is LanguageModelType {
+  return searchModelType.includes(value as LanguageModelType);
 }
