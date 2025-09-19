@@ -47,3 +47,18 @@ code::before,
 code::after {
   content: "" !important;
 }
+
+@keyframes blob {
+  0%, 100% {
+    border-radius: 42% 58% 60% 40% / 40% 38% 62% 60%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  33% {
+    border-radius: 58% 42% 40% 60% / 60% 62% 38% 40%;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+  66% {
+    border-radius: 50% 50% 65% 35% / 35% 65% 35% 65%;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+}

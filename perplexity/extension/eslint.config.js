@@ -22,7 +22,7 @@ export default tseslint.config(
   baseConfig,
   {
     ...baseTypescriptConfig[0],
-    ignores: [...commonIgnores, "**/*.js", "src/types/unimport.d.ts"],
+    ignores: [...commonIgnores, "**/*.js"],
   },
   {
     ...baseImportConfig[0],

@@ -13,12 +13,10 @@ import {
 } from "@/components/ui/steps";
 import { H1, H2, H3, P } from "@/components/ui/typography";
 import BasePermissions from "@/entrypoints/options-page/onboarding/BasePermissions";
-import MultiLingualSupport from "@/entrypoints/options-page/onboarding/MultiLingualSupport";
-import DashboardAccess from "@/entrypoints/options-page/onboarding/DashboardAccess";
 import ExtensionIconAction from "@/entrypoints/options-page/onboarding/ExtensionIconAction";
-import NeedHelp from "@/entrypoints/options-page/onboarding/NeedHelp";
+import MultiLingualSupport from "@/entrypoints/options-page/onboarding/MultiLingualSupport";
 import PluginEcosystem from "@/entrypoints/options-page/onboarding/PluginEcosystem";
-import useIsFromAlpha from "@/entrypoints/options-page/onboarding/useIsFromAlpha";
+import SupportChannels from "@/entrypoints/options-page/onboarding/SupportChannels";
 
 const steps = [
   {
@@ -32,14 +30,8 @@ const steps = [
     component: <BasePermissions />,
   },
   {
-    title: "Dashboard Access",
-    description: "Dashboard access",
-    component: <DashboardAccess />,
-  },
-  {
     title: "Extension Icon Action",
-    description:
-      "Customize the behavior when left-click on the extension's icon",
+    description: "Choose what a left-click on the icon does",
     component: <ExtensionIconAction />,
   },
   {
@@ -48,14 +40,14 @@ const steps = [
     component: <PluginEcosystem />,
   },
   {
-    title: "Beta Notifications",
-    description: "Beta notifications",
+    title: "Multilingual Support",
+    description: "Language and translations",
     component: <MultiLingualSupport />,
   },
   {
     title: "Need Help?",
     description: "Need help?",
-    component: <NeedHelp />,
+    component: <SupportChannels />,
   },
 ];
 
@@ -120,40 +112,30 @@ export function Onboarding() {
 }
 
 function FirstStep() {
-  const fromAlpha = useIsFromAlpha();
-
   return (
     <div className="x:my-8 x:flex x:flex-col x:items-center x:justify-center x:space-y-8 x:md:my-16 x:md:space-y-12">
       <H1 className="x:text-center x:text-balance">
         Meet the better version of Perplexity AI
       </H1>
       <div className="x:space-y-8 x:text-center x:md:space-y-12">
-        <div className="x:relative">
-          <div className="x:group x:relative x:z-0 x:mt-8 x:flex x:flex-col x:place-items-center x:transition-all x:before:absolute x:before:h-[300px] x:before:w-full x:before:-translate-x-1/2 x:before:rounded-full x:before:bg-gradient-to-br x:before:from-transparent x:before:to-primary x:before:opacity-10 x:before:blur-2xl x:before:duration-1000 x:before:ease-in-out x:before:content-[''] x:before:animate-in x:before:fade-in x:before:zoom-in-0 x:after:absolute x:after:-z-20 x:after:h-[180px] x:after:w-[240px] x:after:translate-x-1/3 x:after:bg-conic-180 x:after:from-primary x:after:via-primary x:after:opacity-40 x:after:blur-2xl x:after:duration-1000 x:after:ease-in-out x:after:content-[''] x:after:animate-in x:after:fade-in x:after:zoom-in-0 x:sm:before:w-[560px] x:md:mt-12 x:md:before:h-[400px] x:md:after:h-[240px] x:md:after:w-[320px] x:lg:mt-0 x:lg:mb-0 x:before:lg:h-[480px]">
+        <div className="x:relative x:before:absolute x:before:right-8 x:before:bottom-8 x:before:-z-30 x:before:h-[280px] x:before:w-[280px] x:before:animate-[blob_35s_ease-in-out_infinite_reverse] x:before:bg-primary/8 x:before:opacity-60 x:before:blur-2xl x:before:content-[''] x:md:before:right-12 x:md:before:bottom-12 x:md:before:h-[360px] x:md:before:w-[360px]">
+          <div className="x:group x:relative x:z-0 x:mt-8 x:flex x:flex-col x:place-items-center x:transition-all x:before:absolute x:before:top-1/2 x:before:left-1/2 x:before:h-[360px] x:before:w-[360px] x:before:-translate-x-1/2 x:before:-translate-y-1/2 x:before:rounded-full x:before:bg-gradient-to-b x:before:from-primary/30 x:before:to-transparent x:before:opacity-60 x:before:blur-3xl x:before:duration-700 x:before:ease-out x:before:content-[''] x:group-hover:before:scale-110 x:group-hover:before:opacity-80 x:after:absolute x:after:top-1/2 x:after:left-1/2 x:after:-z-20 x:after:h-[520px] x:after:w-[520px] x:after:-translate-x-1/2 x:after:-translate-y-1/2 x:after:animate-[blob_28s_ease-in-out_infinite] x:after:bg-primary/10 x:after:opacity-70 x:after:blur-3xl x:after:duration-[10000ms] x:after:ease-in-out x:after:content-[''] x:md:before:h-[440px] x:md:before:w-[440px] x:md:after:h-[640px] x:md:after:w-[640px] x:lg:mt-0 x:lg:mb-0">
             <Cplx
-              className="x:mx-auto x:size-32 x:fill-foreground x:md:size-48"
+              className="x:relative x:z-10 x:mx-auto x:size-32 x:fill-foreground x:md:size-48"
               primary="var(--primary)"
             />
           </div>
         </div>
         <div className="x:relative x:z-10">
-          {fromAlpha ? (
-            <H2 className="x:text-lg x:text-muted-foreground x:md:text-xl">
-              A brand new version of Complexity is here!
-            </H2>
-          ) : (
-            <>
-              <H2 className="x:text-lg x:text-muted-foreground x:md:text-xl">
-                Let&apos;s get started with a quick setup
-              </H2>
-              <Link
-                to="/"
-                className="x:cursor-pointer x:text-center x:text-base x:leading-relaxed x:text-muted-foreground x:underline x:md:text-lg"
-              >
-                or skip and take me to the dashboard
-              </Link>
-            </>
-          )}
+          <H2 className="x:text-lg x:text-muted-foreground x:md:text-xl">
+            Let&apos;s get started with a quick setup
+          </H2>
+          <Link
+            to="/"
+            className="x:cursor-pointer x:text-center x:text-xs x:leading-relaxed x:text-muted-foreground x:underline x:md:text-base"
+          >
+            or skip and take me to the dashboard
+          </Link>
         </div>
       </div>
     </div>

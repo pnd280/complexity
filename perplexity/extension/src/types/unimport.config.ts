@@ -1,7 +1,7 @@
 import type { UnimportPluginOptions } from "unimport/unplugin";
 
 const unimportConfig: Partial<UnimportPluginOptions> = {
-  dts: "src/types/unimport.d.ts",
+  dts: false,
   presets: [
     "react",
     {

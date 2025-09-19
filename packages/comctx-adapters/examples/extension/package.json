@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@comctx-adapters/core": "workspace:*",
-    "comctx": "1.4.2"
+    "comctx": "^1.4.3"
   },
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",
@@ -26,6 +26,6 @@
     "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
-    "vite": "^7.1.5"
+    "vite": "^7.1.6"
   }
 }
