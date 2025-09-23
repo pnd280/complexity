@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import normalizeCollapsedCss from "@/plugins/better-sidebar/normalize-collapsed.css?inline";
-import normalizeExpandedCss from "@/plugins/better-sidebar/normalize-expanded.css?inline";
-import normalizeCss from "@/plugins/better-sidebar/normalize.css?inline";
+import normalizeCollapsedCss from "@/plugins/better-sidebar/assets/collapsed.css?inline";
+import normalizeExpandedCss from "@/plugins/better-sidebar/assets/expanded.css?inline";
+import normalizeCss from "@/plugins/better-sidebar/assets/styles.css?inline";
 import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const betterSidebarNormalizeCssResourceConfig =

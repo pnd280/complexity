@@ -1,5 +1,6 @@
-import { LuAlignJustify, LuWrapText } from "react-icons/lu";
+import { LuWrapText } from "react-icons/lu";
 
+import { MdiWrapDisabled } from "@/components/icons/MdiWrapDisabled";
 import Tooltip from "@/components/Tooltip";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 
@@ -19,7 +20,7 @@ export function WrapToggleButton() {
         onClick={() => setIsWrapped(!isWrapped)}
       >
         {isWrapped ? (
-          <LuAlignJustify className="x:size-4" />
+          <MdiWrapDisabled className="x:size-4" />
         ) : (
           <LuWrapText className="x:size-4" />
         )}

@@ -44,7 +44,7 @@ body {
       @apply x:xl:max-w-[500px];
     }
 
-    & + div .grow.block > div {
+    & + div .relative > .bg-base {
       @apply x:xl:shadow-none;
     }
 

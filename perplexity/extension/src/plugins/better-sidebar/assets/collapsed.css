@@ -1,9 +1,9 @@
-@reference "../../assets/index.css";
+@reference "../../../assets/index.css";
 
 .h-dvh > .group\/sidebar {
   display: none;
 
   & + [class^="erp"][style^="padding"] {
-    @apply x:md:pl-[272px]!;
+    @apply x:md:pl-2!;
   }
 }

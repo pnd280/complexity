@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import normalizeCss from "@/plugins/artifacts/normalize.css?inline";
+import normalizeCss from "@/plugins/artifacts/styles.css?inline";
 import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const normalizeCssResourceConfig = defineVersionedRemoteResource({
