@@ -162,6 +162,8 @@ export function isLexical(textbox: HTMLElement) {
   );
 }
 
+const cookieName = "pplx.search-models-v4";
+
 export function setModelCookie({
   type,
   modelCode,
@@ -171,14 +173,15 @@ export function setModelCookie({
 }) {
   const cookie = pplxCookiesStore
     .getState()
-    .cookies.find((cookie) => cookie.name === "pplx.search-models-v4");
+    .cookies.find((cookie) => cookie.name === cookieName);
 
   if (!cookie) {
     setCookie(
-      "pplx.search-models-v4",
+      cookieName,
       JSON.stringify({
-        [type]: modelCode,
-      }),
+        ...getDefaultModelCookie(),
+        ...{ [type]: modelCode },
+      } satisfies Record<LanguageModelType, LanguageModelCode>),
       30,
     );
     return;
@@ -191,9 +194,10 @@ export function setModelCookie({
 
   if (parsedCookie == null) {
     setCookie(
-      "pplx.search-models-v4",
+      cookieName,
       JSON.stringify({
-        [type]: modelCode,
+        ...getDefaultModelCookie(),
+        ...{ [type]: modelCode },
       }),
       30,
     );
@@ -211,17 +215,17 @@ export function setModelCookie({
   pplxCookiesStore.setState({
     cookies: [
       ...pplxCookiesStore.getState().cookies,
-      { name: "pplx.search-models-v4", value: JSON.stringify(newValue) },
+      { name: cookieName, value: JSON.stringify(newValue) },
     ],
   });
 
-  setCookie("pplx.search-models-v4", JSON.stringify(newValue), 30);
+  setCookie(cookieName, JSON.stringify(newValue), 30);
 }
 
 export function getModelCookie({ type }: { type: LanguageModelType }) {
   const cookie = pplxCookiesStore
     .getState()
-    .cookies.find((cookie) => cookie.name === "pplx.search-models-v4");
+    .cookies.find((cookie) => cookie.name === cookieName);
 
   if (!cookie) {
     return null;
@@ -233,4 +237,12 @@ export function getModelCookie({ type }: { type: LanguageModelType }) {
   >;
 
   return (parsedCookie[type] as keyof typeof parsedCookie) ?? null;
+}
+
+function getDefaultModelCookie(): Record<LanguageModelType, LanguageModelCode> {
+  return {
+    search: "pplx_pro",
+    research: "pplx_alpha",
+    studio: "pplx_beta",
+  };
 }

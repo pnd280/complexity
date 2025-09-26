@@ -1,16 +1,32 @@
 export const pplxLocalLanguageModels = {
   search: [
     {
+      label: "Claude 4.5 Sonnet",
+      shortLabel: "Sonnet 4.5",
+      code: "claude45sonnet",
+      isReasoning: false,
+      limitKey: "gpt4_limit",
+      icon: "claude",
+    },
+    {
       label: "Claude 4 Sonnet",
-      shortLabel: "Sonnet",
+      shortLabel: "Sonnet 4",
       code: "claude2",
       isReasoning: false,
       limitKey: "gpt4_limit",
       icon: "claude",
     },
     {
+      label: "Claude 4.5 Sonnet Thinking",
+      shortLabel: "Sonnet 4.5 Thinking",
+      code: "claude45sonnetthinking",
+      isReasoning: true,
+      limitKey: "gpt4_limit",
+      icon: "claude",
+    },
+    {
       label: "Claude 4 Sonnet Thinking",
-      shortLabel: "Sonnet Thinking",
+      shortLabel: "Sonnet 4 Thinking",
       code: "claude37sonnetthinking",
       isReasoning: true,
       limitKey: "gpt4_limit",
@@ -107,6 +123,13 @@ export const pplxLocalLanguageModels = {
       isReasoning: false,
       limitKey: "gpt4_limit",
       icon: "perplexity",
+    },
+    {
+      label: "Auto (Upgraded)",
+      shortLabel: "Auto",
+      code: "pplx_pro_upgraded",
+      isReasoning: false,
+      icon: "auto",
     },
     {
       label: "Auto",

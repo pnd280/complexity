@@ -11,6 +11,7 @@ import { SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import { isSearchLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type LanguageModelGroupProps = {
@@ -91,6 +92,14 @@ export default function LanguageModelGroup({
           item={model.code}
           value={model.code}
           className="x:flex x:cursor-pointer x:items-center x:justify-start x:gap-2 x:text-foreground"
+          onClick={() => {
+            if (!isSearchLanguageModelCode(model.code)) return;
+
+            localStorage.setItem(
+              "cplx.last-selected-language-model",
+              model.code,
+            );
+          }}
         >
           <Icon className="x:size-4" />
           <span className="x:truncate">{model.label}</span>
