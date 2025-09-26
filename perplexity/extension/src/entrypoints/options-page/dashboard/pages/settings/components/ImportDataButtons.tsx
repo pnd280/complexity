@@ -3,12 +3,12 @@ import { storage } from "@wxt-dev/storage";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import type { ExtensionData } from "@/data/dashboard/extension-data.types";
-import { queryClient } from "@/data/query-client";
 import ImportDataPasteDialogWrapper from "@/entrypoints/options-page/dashboard/pages/settings/components/ImportDataPasteDialogWrapper";
 import { transfromFlatSchema } from "@/services/infra/extension-api-wrappers/extension-settings/migrations";
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import { db } from "@/services/infra/indexed-db";
+import { queryClient } from "@/services/infra/query-client";
 import { errorWrapper } from "@/utils/error-wrapper";
 
 export default function ImportDataButtons() {

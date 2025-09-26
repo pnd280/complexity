@@ -1,8 +1,8 @@
 import { APP_CONFIG } from "@/app.config";
-import { queryClient } from "@/data/query-client";
-import { persistQueryClient } from "@/data/query-client/utils";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import type { RemoteResource } from "@/services/externals/cplx-api/remote-resources/types";
+import { queryClient } from "@/services/infra/query-client";
+import { persistQueryClient } from "@/services/infra/query-client/utils";
 import { errorWrapper } from "@/utils/error-wrapper";
 
 export async function getRemoteResource<T>(

@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { queryClient } from "@/data/query-client";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
+import { queryClient } from "@/services/infra/query-client";
 import { isInContentScript } from "@/utils/utils";
 
 export function useExtensionSettingsMutation() {

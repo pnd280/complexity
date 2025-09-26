@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { initNewPersistentQueryClient } from "@/data/query-client";
 import useCdnRemoteResourcesInvalidator from "@/hooks/useCdnRemoteResourcesInvalidator";
+import { initNewPersistentQueryClient } from "@/services/infra/query-client";
 
 const isolatedQueryClient = await initNewPersistentQueryClient().catch(
   (error) => {

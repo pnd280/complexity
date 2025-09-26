@@ -1,8 +1,8 @@
 import { QueryObserver } from "@tanstack/react-query";
 
-import { queryClient } from "@/data/query-client";
-import { persistQueryClient } from "@/data/query-client/utils";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import { queryClient } from "@/services/infra/query-client";
+import { persistQueryClient } from "@/services/infra/query-client/utils";
 
 export default async function () {
   new QueryObserver(queryClient, {

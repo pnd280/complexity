@@ -1,11 +1,11 @@
 import { storage } from "@wxt-dev/storage";
 
 import { Button } from "@/components/ui/button";
+import useToggleButtonText from "@/hooks/useToggleButtonText";
 import {
   invalidateQueryClientCache,
   softCacheBusterKey,
-} from "@/data/query-client/utils";
-import useToggleButtonText from "@/hooks/useToggleButtonText";
+} from "@/services/infra/query-client/utils";
 
 export default function ClearRemoteResourcesCache() {
   const [buttonText, setButtonText] = useToggleButtonText({

@@ -1,5 +1,5 @@
-import type { QueryCacheEntry } from "@/data/query-client/utils";
 import { db } from "@/services/infra/indexed-db";
+import type { QueryCacheEntry } from "@/services/infra/query-client/utils";
 
 export const backgroundProxyServiceName = "queryCacheService";
 

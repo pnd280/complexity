@@ -2,7 +2,10 @@ import { QueryClient } from "@tanstack/react-query";
 import { persistQueryClientRestore } from "@tanstack/react-query-persist-client";
 
 import { APP_CONFIG } from "@/app.config";
-import { persister, setQueriesDefaults } from "@/data/query-client/utils";
+import {
+  persister,
+  setQueriesDefaults,
+} from "@/services/infra/query-client/utils";
 
 export async function initNewPersistentQueryClient() {
   const queryClient = new QueryClient();

@@ -1,12 +1,12 @@
 import { FaFile } from "react-icons/fa";
 
 import Tooltip from "@/components/Tooltip";
-import { queryClient } from "@/data/query-client";
 import type {
   Space,
   SpaceFilesApiResponse,
 } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import { queryClient } from "@/services/infra/query-client";
 
 export default function SpaceItemFiles({
   file,

@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import { Portal } from "@/components/ui/portal";
-import { queryClient } from "@/data/query-client";
 import { useInsertCss } from "@/hooks/useInsertCss";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useThreadCodeBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/code-blocks/store";
@@ -18,6 +17,7 @@ import {
 } from "@/plugins/thread-better-code-blocks/utils";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import { queryClient } from "@/services/infra/query-client";
 
 const [hideNativeCodeBlocksCss, stickyHeaderCss] = await Promise.all([
   getVersionedRemoteResource(hideNativeCodeBlocksCssResourceConfig),

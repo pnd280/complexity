@@ -1,11 +1,11 @@
 import { QueryObserver } from "@tanstack/react-query";
 
-import { queryClient } from "@/data/query-client";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
 import { imageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
 import { isImageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import { queryClient } from "@/services/infra/query-client";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

@@ -1,6 +1,5 @@
 import { QueryObserver } from "@tanstack/react-query";
 
-import { queryClient } from "@/data/query-client";
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
@@ -12,6 +11,7 @@ import type { PplxAuthSessionApiResponse } from "@/services/externals/pplx-api/p
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { getPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
+import { queryClient } from "@/services/infra/query-client";
 import { whereAmI } from "@/utils/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {

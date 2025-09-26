@@ -5,10 +5,10 @@ import { lazily } from "react-lazily";
 import { RouterProvider } from "react-router-dom";
 
 import { APP_CONFIG } from "@/app.config";
-import { queryClient } from "@/data/query-client";
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import CsUiRoot from "@/plugins/_core/ui/_root/CsUiRoot";
 import { createRouter } from "@/plugins/_core/ui/_root/router";
+import { queryClient } from "@/services/infra/query-client";
 
 const { RemoteResourcesInvalidator } = lazily(
   () => import("@/plugins/_core/ui/_root/RemoteResourcesInvalidator"),

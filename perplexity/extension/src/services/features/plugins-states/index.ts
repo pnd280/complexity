@@ -1,5 +1,4 @@
 import { APP_CONFIG } from "@/app.config";
-import { queryClient } from "@/data/query-client";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { getRemoteResource } from "@/services/externals/cplx-api/remote-resources/utils";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
@@ -16,6 +15,7 @@ import {
   updatePluginStatesWithFeatureCompat,
 } from "@/services/features/plugins-states/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import { queryClient } from "@/services/infra/query-client";
 import { invariant, isInContentScript } from "@/utils/utils";
 
 export class PluginsStatesService {

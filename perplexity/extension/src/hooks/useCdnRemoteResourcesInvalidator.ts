@@ -1,11 +1,11 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { storage } from "@wxt-dev/storage";
 
+import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import {
   invalidateQueryClientCache,
   softCacheBusterKey,
-} from "@/data/query-client/utils";
-import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
+} from "@/services/infra/query-client/utils";
 
 export default function useCdnRemoteResourcesInvalidator({
   callback,

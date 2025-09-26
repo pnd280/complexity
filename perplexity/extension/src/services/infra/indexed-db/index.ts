@@ -5,7 +5,7 @@ import { legacyThemeMigration } from "@/data/dashboard/themes/migration";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
 import { PluginRegistry } from "@/data/plugin-registry";
 import type { PluginTables } from "@/data/plugin-registry/types";
-import type { QueryCacheEntry } from "@/data/query-client/utils";
+import type { QueryCacheEntry } from "@/services/infra/query-client/utils";
 
 export class IndexedDbService extends Dexie {
   queryCache!: Table<QueryCacheEntry>;

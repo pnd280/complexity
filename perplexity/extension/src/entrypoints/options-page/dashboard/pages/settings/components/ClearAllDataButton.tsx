@@ -11,9 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Ul } from "@/components/ui/typography";
-import { invalidateQueryClientCache } from "@/data/query-client/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { db } from "@/services/infra/indexed-db";
+import { invalidateQueryClientCache } from "@/services/infra/query-client/utils";
 
 export default function ClearAllDataButton() {
   const navigate = useNavigate();

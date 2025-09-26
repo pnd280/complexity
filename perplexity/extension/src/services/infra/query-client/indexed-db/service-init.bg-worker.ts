@@ -5,7 +5,7 @@ import {
   backgroundProxyServiceName,
   QueryCacheServiceImpl,
   type QueryCacheService,
-} from "@/data/query-client/indexed-db";
+} from "@/services/infra/query-client/indexed-db";
 import { isBackgroundScript } from "@/utils/utils";
 
 let rootServiceInstance: QueryCacheService | undefined;

@@ -8,9 +8,9 @@ import { storage } from "@wxt-dev/storage";
 import debounce from "lodash/debounce";
 
 import { APP_CONFIG } from "@/app.config";
-import { getQueryCacheService } from "@/data/query-client/indexed-db/service-init.bg-worker";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import { getQueryCacheService } from "@/services/infra/query-client/indexed-db/service-init.bg-worker";
 import { isSubArray } from "@/utils/utils";
 
 export type QueryCacheEntry = {

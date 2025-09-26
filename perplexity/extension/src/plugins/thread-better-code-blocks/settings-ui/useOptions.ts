@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { toast } from "@/components/ui/use-toast";
-import { queryClient } from "@/data/query-client";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import { getBetterCodeBlocksFineGrainedOptionsService } from "@/plugins/thread-better-code-blocks/indexed-db/service-init.bg-worker";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
+import { queryClient } from "@/services/infra/query-client";
 
 type UseOptionsProps = {
   language?: string;
