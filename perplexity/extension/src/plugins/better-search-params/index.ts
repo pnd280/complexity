@@ -16,10 +16,10 @@ export default definePlugin({
   manifest: {
     id: "betterSearchParams",
     settingsUiRouteSegment: "better-search-params",
-    title: "Better Search Params",
+    title: "Better Omnibox Search Params",
     description:
-      "Extends search param to include model, focus modes, and incognito mode, etc.",
-    categories: ["featured", "misc"],
+      'Default omnibox searches always use "Sonar/Auto" model.\nUse this plugin to search with different models, focus modes, and incognito mode, etc.',
+    categories: ["misc"],
     tags: ["new"],
     dependentMainWorldCorePlugins: ["spaRouter", "networkIntercept"],
   },

@@ -7,7 +7,7 @@ import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
 import { keysToString } from "@/utils/utils";
 
-export function SearchInput() {
+export default function SearchInput() {
   const { isMobile } = useIsMobileStore();
   const { filters, setFilters } = usePluginFilters();
   const [, startTransition] = useTransition();

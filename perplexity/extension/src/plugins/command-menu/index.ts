@@ -25,7 +25,7 @@ export default definePlugin({
     settingsUiRouteSegment: "command-menu",
     title: "Command Menu",
     description: "Quickly navigate around and invoke actions",
-    categories: ["featured", "misc"],
+    categories: ["misc"],
     tags: ["ui", "desktopOnly"],
     dependentMainWorldCorePlugins: ["spaRouter", "webSocket"],
   },

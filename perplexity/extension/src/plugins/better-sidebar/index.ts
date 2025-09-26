@@ -20,7 +20,7 @@ export default definePlugin({
     settingsUiRouteSegment: "better-sidebar",
     title: "Better Sidebar",
     description: "Vanilla sidebar sucks hard, replaces it with a better one!",
-    categories: ["featured", "misc"],
+    categories: ["misc"],
     tags: ["ui", "desktopOnly"],
     dependentDomObservers: ["sidebar"],
     dependentMainWorldCorePlugins: ["spaRouter"],

@@ -1,25 +1,9 @@
-import { PluginsFilter } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter";
-import { PluginSections } from "@/entrypoints/options-page/dashboard/pages/plugins/components/PluginSections";
-import { SearchInput } from "@/entrypoints/options-page/dashboard/pages/plugins/components/SearchInput";
-import { useFilteredPlugins } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilteredPlugins";
-import { usePluginCategories } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginCategories";
-import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
+import PluginSections from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-sections/PluginSections";
+import PluginsFilter from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter";
+import SearchInput from "@/entrypoints/options-page/dashboard/pages/plugins/components/SearchInput";
 import PluginsEnableSet from "@/entrypoints/options-page/dashboard/pages/plugins/PluginsEnableSet";
 
 export default function IndexPage() {
-  const { filters } = usePluginFilters();
-
-  const filteredPluginIds = useFilteredPlugins({
-    searchTerm: filters.searchTerm,
-    selectedTags: filters.tags,
-    excludeTags: filters.excludeTags,
-    categories: filters.categories,
-  });
-
-  const { pluginsByCategory } = usePluginCategories({
-    filteredPluginIds,
-  });
-
   return (
     <div className="x:flex x:size-full x:flex-col x:gap-4 x:md:mt-0">
       <div className="x:flex x:flex-col x:items-center x:justify-between x:md:flex-row">
@@ -35,7 +19,7 @@ export default function IndexPage() {
         <PluginsFilter />
       </div>
 
-      <PluginSections pluginsByCategory={pluginsByCategory} />
+      <PluginSections />
     </div>
   );
 }

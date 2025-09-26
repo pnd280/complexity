@@ -40,31 +40,6 @@ export default function LanguageModelSelectorPluginSettingsUi() {
       />
       {settings.plugins["queryBox:languageModelSelector"].enabled && (
         <div className="x:flex x:flex-col x:gap-2">
-          <Switch
-            className="x:items-start"
-            textLabel={
-              <div>
-                <div className="x:text-sm">
-                  Respect default Space&apos;s model
-                </div>
-                <div className="x:text-sm x:text-muted-foreground">
-                  Automatically switch to the default model when entering a
-                  Space
-                </div>
-              </div>
-            }
-            checked={
-              settings.plugins["queryBox:languageModelSelector"]
-                .respectDefaultSpaceModel ?? false
-            }
-            onCheckedChange={({ checked }) => {
-              mutation.mutate((draft) => {
-                draft.plugins[
-                  "queryBox:languageModelSelector"
-                ].respectDefaultSpaceModel = checked;
-              });
-            }}
-          />
           {settings.devMode && (
             <Switch
               textLabel="Change timezone"
@@ -85,7 +60,7 @@ export default function LanguageModelSelectorPluginSettingsUi() {
       )}
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/zQYVag4.png"
+          src="https://images2.imgbox.com/07/e4/p9QJLuax_o.png"
           alt="language-model-selector"
           className="x:w-full"
         />

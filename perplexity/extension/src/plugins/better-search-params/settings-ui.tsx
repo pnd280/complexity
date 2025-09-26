@@ -1,3 +1,9 @@
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Image } from "@/components/ui/image";
 import { Switch } from "@/components/ui/switch";
 import { InlineCode } from "@/components/ui/typography";
 import type { PluginId } from "@/data/plugin-registry/types";
@@ -23,10 +29,28 @@ export default function SpacesThreadsForceWritingModePluginSettingsUi() {
       />
 
       <div className="x:flex x:flex-col x:gap-4">
-        <div>
-          <span className="x:text-sm x:text-muted-foreground">
-            Query format:
-          </span>
+        <div className="x:flex x:flex-col x:gap-2">
+          <div className="x:flex x:items-center x:gap-2">
+            <span className="x:text-sm x:text-muted-foreground">
+              Query format:
+            </span>
+            <HoverCard>
+              <HoverCardTrigger>
+                <div className="x:text-sm x:text-muted-foreground x:underline x:decoration-dashed x:underline-offset-4">
+                  (where do I use this?)
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="x:mx-auto x:w-full x:max-w-[700px]">
+                  <Image
+                    src="https://images2.imgbox.com/a8/75/vfYWRB5p_o.png"
+                    alt="better-search-params"
+                    className="x:w-full"
+                  />
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          </div>
           <InlineCode>
             https://www.perplexity.ai/<mark>#</mark>?q=%s&model=
             <mark>&#123;model&#125;</mark>

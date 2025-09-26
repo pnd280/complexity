@@ -34,7 +34,7 @@ export default definePlugin({
     settingsUiRouteSegment: "prompt-history",
     title: "Prompt History",
     description: "Reuse previous prompts",
-    categories: ["featured", "queryBox"],
+    categories: ["queryBox"],
     tags: ["slashCommand"],
     dependentDomObservers: ["queryBoxes"],
     dependentPlugins: ["slashCommand"],

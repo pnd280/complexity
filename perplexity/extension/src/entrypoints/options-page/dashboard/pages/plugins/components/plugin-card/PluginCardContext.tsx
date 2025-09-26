@@ -10,6 +10,7 @@ import {
 } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/usePluginLockdown";
 import type { PluginSettingsUIs } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 type PluginCardContextType = {
   pluginId: PluginId;
@@ -21,6 +22,7 @@ type PluginCardContextType = {
   };
   state: {
     isLoading: boolean;
+    isEnabled: boolean;
     isLockedDown: boolean;
     areAllDependentPluginsEnabled: boolean;
     areAnyDependentPluginsDisabled: boolean;
@@ -52,17 +54,34 @@ export function PluginCardProvider({
   const lockdownText = getLockdownText(pluginId, pluginsStates);
   const lockdownSubText = getLockdownSubText(pluginId, pluginsStates);
 
-  const value = {
-    pluginId,
-    pluginInfo,
-    state: {
-      ...state,
+  const isEnabled =
+    useExtensionSettings().settings?.plugins[pluginId].enabled ?? false;
+
+  const value = useMemo(
+    () =>
+      ({
+        pluginId,
+        pluginInfo,
+        state: {
+          ...state,
+          isEnabled,
+          isLockedDown,
+          lockdownText,
+          lockdownSubText,
+        },
+        actions,
+      }) satisfies PluginCardContextType,
+    [
+      pluginId,
+      pluginInfo,
+      state,
+      isEnabled,
       isLockedDown,
       lockdownText,
       lockdownSubText,
-    },
-    actions,
-  } satisfies PluginCardContextType;
+      actions,
+    ],
+  );
 
   return <PluginCardContext value={value}>{children}</PluginCardContext>;
 }

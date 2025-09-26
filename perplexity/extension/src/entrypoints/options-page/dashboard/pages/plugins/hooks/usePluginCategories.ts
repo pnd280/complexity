@@ -8,7 +8,7 @@ export function usePluginCategories({
   filteredPluginIds: PluginId[];
 }) {
   return useMemo(() => {
-    const pluginsByCategory = Object.keys(PLUGIN_CATEGORIES).reduce<
+    const pluginsByCat = Object.keys(PLUGIN_CATEGORIES).reduce<
       Record<string, PluginId[]>
     >((acc, category) => {
       acc[category] = [];
@@ -18,15 +18,15 @@ export function usePluginCategories({
     for (const pluginId of filteredPluginIds) {
       const plugin = PluginRegistry.manifests[pluginId];
       for (const category of plugin.categories) {
-        pluginsByCategory[category] = pluginsByCategory[category] || [];
-        pluginsByCategory[category].push(pluginId);
+        pluginsByCat[category] = pluginsByCat[category] || [];
+        pluginsByCat[category].push(pluginId);
       }
     }
 
-    for (const category in pluginsByCategory) {
-      if (!pluginsByCategory[category]) continue;
+    for (const category in pluginsByCat) {
+      if (!pluginsByCat[category]) continue;
 
-      pluginsByCategory[category].sort((a, b) => {
+      pluginsByCat[category].sort((a, b) => {
         const titleA = PluginRegistry.manifests[a].title;
         const titleB = PluginRegistry.manifests[b].title;
         const isCoreA = titleA.endsWith(": Core");
@@ -38,12 +38,13 @@ export function usePluginCategories({
       });
     }
 
-    const nonEmptyCategories = Object.fromEntries(
-      Object.entries(pluginsByCategory).filter(([, ids]) => ids.length > 0),
+    const filteredPluginsByCat = Object.fromEntries(
+      Object.entries(pluginsByCat).filter(([, ids]) => ids.length > 0),
     );
 
     return {
-      pluginsByCategory: nonEmptyCategories,
+      pluginsByCat,
+      filteredPluginsByCat,
     };
   }, [filteredPluginIds]);
 }

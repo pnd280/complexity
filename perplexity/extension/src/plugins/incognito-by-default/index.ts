@@ -18,7 +18,7 @@ export default definePlugin({
     settingsUiRouteSegment: "incognito-by-default",
     title: "Incognito By Default",
     description: "Automatically turns on incognito mode on new tabs",
-    categories: ["featured", "misc"],
+    categories: ["misc"],
     tags: ["new"],
     dependentMainWorldCorePlugins: ["spaRouter"],
   },

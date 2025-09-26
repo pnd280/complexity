@@ -158,16 +158,25 @@ function traverseFiberTree({
   containerKey: string;
   validationPath: string[];
 }): string | null {
-  const queue = [{ node: rootFiber, path: `${containerKey}.alternate` }];
+  const MAX_DEPTH = 100;
+  const queue = [
+    { node: rootFiber, path: `${containerKey}.alternate`, depth: 0 },
+  ];
   const visited = new WeakSet();
+  let maxDepthReached = false;
 
   while (queue.length > 0) {
     const current = queue.shift();
     if (current == null) continue;
 
-    const { node: currentNode, path } = current;
+    const { node: currentNode, path, depth } = current;
 
     if (currentNode == null || visited.has(currentNode)) continue;
+
+    if (depth >= MAX_DEPTH) {
+      maxDepthReached = true;
+      continue;
+    }
     visited.add(currentNode);
 
     if (walkFiberNode(currentNode, validationPath) != null) {
@@ -178,6 +187,7 @@ function traverseFiberTree({
       queue.push({
         node: currentNode.child,
         path: `${path}.child`,
+        depth: depth + 1,
       });
     }
 
@@ -185,8 +195,16 @@ function traverseFiberTree({
       queue.push({
         node: currentNode.sibling,
         path: `${path}.sibling`,
+        depth: depth + 1,
       });
     }
+  }
+
+  if (maxDepthReached) {
+    console.warn(
+      `[InternalSearchStates] Maximum traversal depth (${MAX_DEPTH}) reached but target node not found. ` +
+        `Validation path: ${validationPath.join(".")}`,
+    );
   }
 
   return null;

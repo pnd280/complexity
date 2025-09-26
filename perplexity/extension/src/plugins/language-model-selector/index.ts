@@ -10,7 +10,6 @@ declare module "@/data/plugin-registry/types" {
 
 const schema = z.object({
   enabled: z.boolean(),
-  respectDefaultSpaceModel: z.boolean(),
   changeTimezone: z.boolean(),
 });
 
@@ -39,7 +38,6 @@ export default definePlugin({
     schema,
     fallback: {
       enabled: false,
-      respectDefaultSpaceModel: false,
       changeTimezone: false,
     },
   },

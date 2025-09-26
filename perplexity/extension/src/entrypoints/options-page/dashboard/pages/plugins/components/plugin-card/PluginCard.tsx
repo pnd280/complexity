@@ -16,7 +16,13 @@ type PluginCardProps = {
 
 const PluginCardContent = memo(() => {
   const {
-    state: { isLoading, isLockedDown, lockdownText, lockdownSubText },
+    state: {
+      isLoading,
+      isLockedDown,
+      lockdownText,
+      lockdownSubText,
+      isEnabled,
+    },
   } = usePluginCardContext();
 
   const { settings } = useExtensionSettings();
@@ -29,7 +35,14 @@ const PluginCardContent = memo(() => {
 
   return (
     <div className="x:relative">
-      <Card className="x:flex x:h-full x:flex-col x:bg-secondary">
+      <Card
+        className={cn(
+          "x:flex x:h-full x:flex-col x:bg-secondary x:transition-all",
+          {
+            "x:border-primary/10 x:bg-primary/5 x:shadow-2xl": isEnabled,
+          },
+        )}
+      >
         <PluginCardHeader />
         <PluginCardTags />
         <PluginCardFooter />

@@ -3,6 +3,7 @@ type ImageProps = {
   alt: string;
   className?: string;
   minHeight?: string;
+  minWidth?: string;
 };
 
 export function Image({
@@ -10,6 +11,7 @@ export function Image({
   alt,
   className = "",
   minHeight = "200px",
+  minWidth = "200px",
 }: ImageProps) {
   const [loaded, setLoaded] = useState(false);
 
@@ -23,7 +25,11 @@ export function Image({
       <img
         src={src}
         alt={alt}
-        className={`x:w-full ${!loaded ? `x:min-h-[${minHeight}]` : ""} ${className}`}
+        className={className}
+        style={{
+          minWidth: !loaded ? minWidth : undefined,
+          minHeight: !loaded ? minHeight : undefined,
+        }}
         onLoad={() => setLoaded(true)}
       />
     </div>

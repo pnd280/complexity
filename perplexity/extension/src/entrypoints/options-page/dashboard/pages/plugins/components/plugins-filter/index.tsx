@@ -12,7 +12,7 @@ import TagsFilter from "@/entrypoints/options-page/dashboard/pages/plugins/compo
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 
-export function PluginsFilter() {
+export default function PluginsFilter() {
   const { isMobile } = useIsMobileStore();
 
   const [open, setOpen] = useState(false);
