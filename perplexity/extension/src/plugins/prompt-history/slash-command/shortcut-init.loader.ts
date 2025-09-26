@@ -1,5 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { tabId } from "@/plugins/prompt-history/slash-command/slash-command-menu-tab";
+const pageId = "promptHistory" as const;
 import {
   getAnchor,
   slashCommandMenuStore,
@@ -50,16 +50,17 @@ export default function () {
               anchor.positioningOptions,
             );
             store.anchor.actions.setContentActions(anchor.contentActions);
-            store.setActiveContentTab(tabId);
+            store.pushPage({
+              pageId,
+              args: undefined,
+            });
 
             store.setOpen(true);
           });
         });
       } else {
-        slashCommandMenuStore.getState().registerContentTabCommandShortcut({
-          tab: tabId,
-          commandShortcuts: shortcut.value,
-        });
+        // Note: Command shortcuts are now handled by the page system
+        // The mapping is done in pages/utils.ts
       }
     },
   });

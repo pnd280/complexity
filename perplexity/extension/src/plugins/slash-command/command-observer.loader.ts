@@ -1,9 +1,9 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { slashCommandMenuStore } from "@/plugins/slash-command/store";
 import {
-  getMatchedContentTabCommand,
+  getMatchedPageCommand,
   isAllowedKey,
-} from "@/plugins/slash-command/store/slices/content-tab/utils";
+} from "@/plugins/slash-command/store/slices/pages/utils";
 import { getAnchor } from "@/plugins/slash-command/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -36,11 +36,11 @@ export default function () {
           )
             return;
 
-          const command = getMatchedContentTabCommand({
+          const pageId = getMatchedPageCommand({
             wordAtCaret: wordAtCaret.value,
           });
 
-          if (!command) return;
+          if (!pageId) return;
 
           e.stopPropagation();
           e.preventDefault();
@@ -56,7 +56,12 @@ export default function () {
           store.anchor.actions.setInputField(target);
           store.anchor.actions.setPositioningOptions(anchor.positioningOptions);
           store.anchor.actions.setContentActions(anchor.contentActions);
-          store.setActiveContentTab(command);
+
+          store.pushPage({
+            pageId,
+            args: undefined,
+          });
+
           store.setOpen(true);
         });
       });

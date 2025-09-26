@@ -3,7 +3,4 @@ export * from "@/plugins/prompt-history/indexed-db/query-keys";
 
 export * from "@/plugins/prompt-history/types";
 
-export {
-  PromptHistorySlashCommandMenuTabContent,
-  PromptHistorySlashCommandMenuTabTrigger,
-} from "@/plugins/prompt-history/slash-command/slash-command-menu-tab";
+export { default as PromptHistoryPage } from "@/plugins/prompt-history/slash-command/CommandMenuPage";
