@@ -2,6 +2,6 @@
 # 	path = packages/webext-bridge
 # 	url = https://github.com/serversideup/webext-bridge
 
-[submodule "packages/weasound"]
-	path = packages/weasound
-	url = https://github.com/Yahweasel/weasound
+# [submodule "packages/weasound"]
+# 	path = packages/weasound
+# 	url = https://github.com/Yahweasel/weasound

@@ -1,0 +1,42 @@
+{
+  "name": "weasound",
+  "version": "1.2.9",
+  "description": "Portable PCM audio capture and playback for browsers",
+  "private": false,
+  "type": "module",
+  "main": "./dist/main.js",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "pnpm run build:worklets && node scripts/generate-worklet-imports.js && pnpm run build:main",
+    "build:worklets": "tsup --config tsup.worklets.config.ts",
+    "build:main": "tsup --config tsup.main.config.ts",
+    "fmt": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yahweasel/weasound.git"
+  },
+  "keywords": [
+    "audio",
+    "pcm",
+    "capture",
+    "playback",
+    "browser"
+  ],
+  "author": "Yahweasel",
+  "license": "ISC",
+  "devDependencies": {
+    "@complexity/typescript-config": "workspace:*",
+    "@types/node": "22.17.2",
+    "libav.js": "4.5.6",
+    "prettier": "catalog:lint",
+    "terser": "^5.44.0",
+    "tsup": "^8.5.0",
+    "typescript": "catalog:types"
+  }
+}

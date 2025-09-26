@@ -1,0 +1,6 @@
+.turbo/
+node_modules/
+src/*-js.ts
+weasound.js
+weasound.min.js
+dist/

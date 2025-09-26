@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <title>Playback demo</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../dist/weasound.min.js"></script>
+
+    <script type="text/javascript">
+      LibAV = { base: "../../node_modules/libav.js/dist" };
+    </script>
+    <script
+      type="text/javascript"
+      src="../../node_modules/libav.js/dist/libav-4.5.6.0-default.js"
+    ></script>
+
+    <script type="text/javascript">
+      async function go() {
+        const fileBox = document.getElementById("file");
+        if (!fileBox.files.length) return;
+        const file = fileBox.files[0];
+
+        const methodBox = document.getElementById("method");
+        const method = methodBox.value;
+
+        // Create a playback
+        const ac = new AudioContext();
+        const playback = await Weasound.createAudioPlayback(ac, {
+          demandedType: method,
+        });
+        (playback.unsharedNode() || playback.sharedNode()).connect(
+          ac.destination,
+        );
+
+        const libav = await LibAV.LibAV();
+
+        let filter_graph = -1,
+          buffersrc_ctx,
+          buffersink_ctx;
+
+        // Open the file
+        await libav.mkreadaheadfile("in", file);
+        const [fmt_ctx, streams] = await libav.ff_init_demuxer_file("in");
+        let streamIdx = -1;
+        for (let i = 0; i < streams.length; i++) {
+          if (streams[i].codec_type === libav.AVMEDIA_TYPE_AUDIO) {
+            streamIdx = i;
+            break;
+          }
+        }
+        if (streamIdx < 0) {
+          alert("Could not find audio track");
+          return;
+        }
+        const stream = streams[streamIdx];
+
+        // Open the decoder
+        const [, c, pkt, frame] = await libav.ff_init_decoder(
+          streams[streamIdx].codec_id,
+          streams[streamIdx].codecpar,
+        );
+
+        // Decode and play
+        while (true) {
+          const [res, packets] = await libav.ff_read_multi(fmt_ctx, pkt, null, {
+            limit: 1,
+          });
+
+          if (!packets || !packets[streamIdx]) continue;
+
+          // Decode them
+          const frames = await libav.ff_decode_multi(
+            c,
+            pkt,
+            frame,
+            packets[streamIdx],
+          );
+
+          if (!frames.length) continue;
+
+          // Filter them to get the correct format and framerate
+          if (filter_graph < 0) {
+            [filter_graph, buffersrc_ctx, buffersink_ctx] =
+              await libav.ff_init_filter_graph(
+                "aresample",
+                {
+                  sample_rate: frames[0].sample_rate,
+                  sample_fmt: frames[0].format,
+                  channel_layout: frames[0].channel_layout,
+                },
+                {
+                  sample_rate: ac.sampleRate,
+                  sample_fmt: libav.AV_SAMPLE_FMT_FLT,
+                  channel_layout: 4,
+                },
+              );
+          }
+          const filterFrames = await libav.ff_filter_multi(
+            buffersrc_ctx,
+            buffersink_ctx,
+            frame,
+            frames,
+          );
+          for (const frame of filterFrames) {
+            const latency = playback.play([frame.data]);
+            console.log(`Estimated latency: ${latency}`);
+
+            // Don't get too far ahead!
+            if (latency > 200) await new Promise((res) => setTimeout(res, 100));
+          }
+
+          if (res === 0 || res === libav.AVERROR_EOF) break;
+        }
+      }
+    </script>
+
+    <p>
+      NOTE: This will only play the formats that libav.js's default variant
+      supports. Try an Opus file!
+    </p>
+    <label for="method">Playback type:</label>
+    <select name="method" id="method">
+      <option value="">Default</option>
+      <option value="shared-awp">Shared AudioWorkletProcessor</option>
+      <option value="shared-sp">Shared ScriptProcessor</option>
+      <option value="ab">AudioBuffers</option>
+      <option value="awp">Private AudioWorkletProcessor</option>
+      <option value="sp">Private ScriptProcessor</option></select
+    ><br />
+    <input type="file" id="file" onchange="go();" />
+  </body>
+</html>

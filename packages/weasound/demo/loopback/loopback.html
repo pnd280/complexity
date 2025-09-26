@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <title>Loopback demo</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../dist/weasound.min.js"></script>
+
+    <script type="text/javascript">
+      LibAV = { base: "../../node_modules/libav.js/dist" };
+    </script>
+    <script
+      type="text/javascript"
+      src="../../node_modules/libav.js/dist/libav-4.5.6.0-default.js"
+    ></script>
+
+    <script type="text/javascript">
+      async function go() {
+        const ms = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+          },
+        });
+        const ac = new AudioContext();
+
+        const capMethodBox = document.getElementById("cap-method");
+        const capMethod = capMethodBox.value;
+        const playMethodBox = document.getElementById("play-method");
+        const playMethod = playMethodBox.value;
+
+        // Create a capture
+        const capture = await Weasound.createAudioCapture(ac, ms, {
+          demandedType: capMethod,
+        });
+
+        // Create a playback
+        const playback = await Weasound.createAudioPlayback(ac, {
+          demandedType: playMethod,
+        });
+        (playback.unsharedNode() || playback.sharedNode()).connect(
+          ac.destination,
+        );
+
+        // Create the resampler
+        const libav = await LibAV.LibAV({ noworker: true });
+        const frame = await libav.av_frame_alloc();
+        const [filter_graph, buffersrc_ctx, buffersink_ctx] =
+          await libav.ff_init_filter_graph(
+            "aresample",
+            {
+              sample_rate: capture.getSampleRate(),
+              sample_fmt: libav.AV_SAMPLE_FMT_FLT,
+              channel_layout: 4,
+            },
+            {
+              sample_rate: ac.sampleRate,
+              sample_fmt: libav.AV_SAMPLE_FMT_FLT,
+              channel_layout: 4,
+            },
+          );
+
+        // And pipe the data thru
+        capture.on("data", async (data) => {
+          const filterFrames = await libav.ff_filter_multi(
+            buffersrc_ctx,
+            buffersink_ctx,
+            frame,
+            [
+              {
+                data: data[0],
+                channel_layout: 4,
+                format: libav.AV_SAMPLE_FMT_FLT,
+                sample_rate: capture.getSampleRate(),
+              },
+            ],
+          );
+          for (const frame of filterFrames) {
+            const latencyIn = capture.getLatency();
+            const latencyOut = playback.play([frame.data]);
+            console.log(
+              `Estimated latency: ${latencyIn} in + ${latencyOut} out`,
+            );
+          }
+        });
+      }
+    </script>
+
+    <label for="cap-method">Capture type:</label>
+    <select name="cap-method" id="cap-method">
+      <option value="">Default</option>
+      <option value="shared-sp">Shared ScriptProcessor</option>
+      <option value="mstp">MediaStreamTrackProcessor (Chrome only)</option>
+      <option value="awp">AudioWorkletProcessor</option>
+      <option value="mr">MediaRecorder PCM (Chrome only)</option>
+      <option value="mropus">MediaRecorder Opus (lossy)</option>
+      <option value="sp">ScriptProcessor</option></select
+    ><br />
+    <label for="play-method">Playback type:</label>
+    <select name="play-method" id="play-method">
+      <option value="">Default</option>
+      <option value="shared-awp">Shared AudioWorkletProcessor</option>
+      <option value="shared-sp">Shared ScriptProcessor</option>
+      <option value="ab">AudioBuffers</option>
+      <option value="awp">Private AudioWorkletProcessor</option>
+      <option value="sp">Private ScriptProcessor</option></select
+    ><br />
+    <button onclick="go();">Go</button>
+  </body>
+</html>
