@@ -13,6 +13,7 @@ import {
 import { Ul } from "@/components/ui/typography";
 import { PluginRegistry } from "@/data/plugin-registry";
 import usePplxIncognitoMode from "@/hooks/usePplxIncognitoMode";
+import { errorDialogManager } from "@/plugins/_core/plugins-guard/error-manager";
 import {
   type GuardConditions,
   type AdditionalCheckParams,
@@ -46,7 +47,43 @@ function CsUiPluginsGuardError({
   errorMessage,
   customMessage,
 }: Omit<CsUiPluginsGuardProps, "children"> & { errorMessage?: string }) {
-  const [open, setOpen] = useState(true);
+  const componentKey = useMemo(
+    () =>
+      errorDialogManager.generateComponentKey({
+        dependentPluginIds,
+        location,
+        customMessage,
+        errorMessage,
+      }),
+    [dependentPluginIds, location, customMessage, errorMessage],
+  );
+
+  const [open, setOpen] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const [shouldShowDialog] = useState(() =>
+    errorDialogManager.registerError(componentKey, handleClose),
+  );
+
+  useEffect(() => {
+    if (shouldShowDialog) {
+      setOpen(true);
+    }
+    return () => {
+      errorDialogManager.unregisterCallback(componentKey, handleClose);
+    };
+  }, [componentKey, shouldShowDialog, handleClose]);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!newOpen) {
+      errorDialogManager.clearError(componentKey);
+    } else {
+      setOpen(true);
+    }
+  };
 
   const traces = useErrorTraces({
     errorMessage,
@@ -56,12 +93,17 @@ function CsUiPluginsGuardError({
   });
   const pluginsError = usePluginsError(dependentPluginIds);
 
+  if (!shouldShowDialog) {
+    return null;
+  }
+
   return (
     <Dialog
-      defaultOpen
       closeOnInteractOutside={false}
       open={open}
-      onOpenChange={({ open }) => setOpen(open)}
+      onOpenChange={({ open: newOpen }: { open: boolean }) =>
+        handleOpenChange(newOpen)
+      }
     >
       <DialogContent>
         <DialogHeader>
@@ -222,23 +264,43 @@ export default function CsUiPluginsGuard(
           return null;
         }
 
-        if (retryCount < 3) {
-          setRetryCount((prevCount) => prevCount + 1);
-          return null;
-        } else {
-          setError(boundaryError);
-          return (
-            <CsUiPluginsGuardError
-              {...props}
-              errorMessage={boundaryError.message}
-            />
-          );
-        }
+        return (
+          <RenderError
+            boundaryError={boundaryError}
+            setRetryCount={setRetryCount}
+            setError={setError}
+            retryCount={retryCount}
+          />
+        );
       }}
     >
       <Suspense fallback={props.suspenseFallback}>{props.children}</Suspense>
     </ErrorBoundary>
   );
+}
+
+function RenderError({
+  boundaryError,
+  setRetryCount,
+  setError,
+  retryCount,
+}: {
+  boundaryError: Error;
+  setRetryCount: React.Dispatch<React.SetStateAction<number>>;
+  setError: React.Dispatch<React.SetStateAction<Error | null>>;
+  retryCount: number;
+}) {
+  useEffect(() => {
+    if (retryCount < 3) {
+      setRetryCount((prev) => (prev < 3 ? prev + 1 : prev));
+      return;
+    }
+
+    setError(boundaryError);
+  }, [retryCount, setRetryCount, setError, boundaryError]);
+
+  // Never render UI here; let the parent branch render CsUiPluginsGuardError
+  return null;
 }
 
 function useErrorTraces({
