@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { definePlugin } from "@/data/plugin-registry/utils";
-import { TtsVoiceSchema } from "@/plugins/thread-message-tts/types";
 
 declare module "@/data/plugin-registry/types" {
   interface PluginsSettingsRegistry {
@@ -11,7 +10,7 @@ declare module "@/data/plugin-registry/types" {
 
 const schema = z.object({
   enabled: z.boolean(),
-  voice: TtsVoiceSchema,
+  playbackRate: z.number().min(0.75).max(2),
 });
 
 export default definePlugin({
@@ -30,7 +29,7 @@ export default definePlugin({
     schema,
     fallback: {
       enabled: false,
-      voice: "Mike",
+      playbackRate: 1,
     },
   },
 });

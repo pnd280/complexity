@@ -5,28 +5,23 @@ import { APP_CONFIG } from "@/app.config";
 import { InternalWebSocketManager } from "@/plugins/_core/web-socket";
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";
 
-export default function usePplxTtsRequest() {
+type UsePplxTtsRequestProps = {
+  onBufferUpdate?: (chunk: Int16Array) => void;
+  onStreamComplete: () => void;
+  onError?: () => void;
+};
+
+export default function usePplxTtsRequest({
+  onBufferUpdate,
+  onError,
+  onStreamComplete,
+}: UsePplxTtsRequestProps) {
   const socketRef = useRef<Socket | null>(null);
 
-  const abort = useCallback(() => {
-    const socket = socketRef.current;
-    if (socket) {
-      socket.disconnect();
-    }
-  }, []);
+  const { reset, mutateAsync, isPending } = useMutation({
+    mutationFn: async (params?: { voice: TtsVoice; backendUuid: string }) => {
+      invariant(params?.backendUuid, "backendUuid is required");
 
-  const mutation = useMutation({
-    mutationFn: async ({
-      backendUuid,
-      voice,
-      onBufferUpdate,
-      onError,
-    }: {
-      backendUuid: string;
-      voice?: TtsVoice;
-      onBufferUpdate?: (chunk: Int16Array) => void;
-      onError?: () => void;
-    }) => {
       socketRef.current =
         await InternalWebSocketManager.getInstance().handShake({
           upgrade: APP_CONFIG.BROWSER === "chrome",
@@ -34,15 +29,13 @@ export default function usePplxTtsRequest() {
 
       const socket = socketRef.current;
 
-      if (socket == null) {
-        throw new Error("No socket found");
-      }
+      invariant(socket != null, "No socket found");
 
       const handleAudio = (packet: {
         data: ArrayLike<number>;
         uuid: string;
       }) => {
-        if (packet.uuid === backendUuid && packet.data != null) {
+        if (packet.uuid === params?.backendUuid && packet.data != null) {
           onBufferUpdate?.(new Int16Array(packet.data));
         }
       };
@@ -58,6 +51,8 @@ export default function usePplxTtsRequest() {
           packet.data[1].status === "failed"
         ) {
           onError?.();
+          abort();
+          onStreamComplete();
         }
       };
 
@@ -68,9 +63,11 @@ export default function usePplxTtsRequest() {
         is_page: false,
         version: "2.13",
         completed: true,
-        uuid: backendUuid,
-        preset: voice ?? "Mike",
+        uuid: params?.backendUuid,
+        preset: params?.voice ?? "Mike",
       });
+
+      onStreamComplete();
 
       socket.off("audio", handleAudio);
       socket.io.off("packet", handleError);
@@ -78,6 +75,12 @@ export default function usePplxTtsRequest() {
       socket.disconnect();
     },
   });
+
+  const abort = useCallback(() => {
+    socketRef.current?.disconnect();
+    socketRef.current = null;
+    reset();
+  }, [reset]);
 
   useEffect(() => {
     return () => {
@@ -87,6 +90,7 @@ export default function usePplxTtsRequest() {
 
   return {
     abort,
-    mutation,
+    isPending,
+    playTts: mutateAsync,
   };
 }

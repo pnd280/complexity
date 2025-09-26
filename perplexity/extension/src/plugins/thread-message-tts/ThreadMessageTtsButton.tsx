@@ -1,3 +1,4 @@
+import { useLocalStorage } from "@uidotdev/usehooks";
 import { FaStopCircle } from "react-icons/fa";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { LuLoaderCircle } from "react-icons/lu";
@@ -9,103 +10,72 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEvent } from "@/hooks/useEvent";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import usePplxTtsRequest from "@/plugins/thread-message-tts/hooks/usePplxTtsRequest";
+import { PplxTtsPlayerCoordinator } from "@/plugins/thread-message-tts/player/coordinator";
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";
 import { TTS_VOICES } from "@/plugins/thread-message-tts/types";
-import { PplxTtsPlayerCoordinator } from "@/plugins/thread-message-tts/utils/coordinator";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export function ThreadMessageTtsButton() {
   const messageBlockIndex = useThreadMessageIndexContext();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [firstChunkArrived, setFirstChunkArrived] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const coordinator = useMemo(() => PplxTtsPlayerCoordinator.getInstance(), []);
 
-  const {
-    mutation: { mutateAsync: playTts, isPending },
-    abort,
-  } = usePplxTtsRequest();
+  const backendUuid =
+    threadMessageBlocksDomObserverStore.getState().messageBlocks?.[
+      messageBlockIndex
+    ]?.content.backendUuid;
 
-  const onPlayerComplete = useEvent(() => {
-    if (isPending) return;
-    setPlaying(false);
-    setFirstChunkArrived(false);
-    abort();
-  });
-
-  const onPlayerStop = useEvent(() => {
-    setPlaying(false);
-    setFirstChunkArrived(false);
-    abort();
-  });
-
-  const [player] = useState(() =>
-    PplxTtsPlayerCoordinator.getInstance().createPlayer({
-      onStart: () => {
-        setFirstChunkArrived(true);
-      },
-      onComplete: onPlayerComplete,
-      stop: onPlayerStop,
-    }),
+  const [voice, setVoice] = useLocalStorage<TtsVoice>(
+    "cplx.plugins.thread:messageTts.voice",
+    "Mike",
   );
 
-  const stopTts = useCallback(() => {
-    PplxTtsPlayerCoordinator.getInstance().stopAllPlayers();
-  }, []);
+  const { playTts, isPending, abort } = usePplxTtsRequest({
+    onBufferUpdate: (chunk: Int16Array) =>
+      coordinator.getPlayer().addChunk(chunk),
+    onStreamComplete: () => coordinator.getPlayer().finishStream(),
+    onError: () => {
+      setIsPlaying(false);
+    },
+  });
 
   const initTts = useCallback(
     async (params?: { voice: TtsVoice }) => {
-      if (playing) {
-        stopTts();
+      if (isPlaying) {
+        coordinator.stopAllPlayers();
         return;
       }
 
-      stopTts();
+      coordinator.stopAllPlayers();
       abort();
-      player.startSession();
-      setPlaying(true);
-
-      const backendUuid =
-        threadMessageBlocksDomObserverStore.getState().messageBlocks?.[
-          messageBlockIndex
-        ]?.content.backendUuid;
+      coordinator.startSession({
+        onAudioStart: () => setIsPlaying(true),
+        onAudioComplete: () => {
+          abort();
+          setIsPlaying(false);
+        },
+        onPlayerStop: () => {
+          abort();
+          setIsPlaying(false);
+        },
+      });
 
       if (!backendUuid) {
         console.error("No backendUuid found");
-        setPlaying(false);
+        setIsPlaying(false);
         return;
       }
 
-      const extensionSettings =
-        await ExtensionSettingsService.getWithoutCacheInvalidation();
-      const selectedVoice =
-        params?.voice || extensionSettings.plugins["thread:messageTts"].voice;
-
-      playTts({
-        backendUuid,
-        voice: selectedVoice,
-        onBufferUpdate: (chunk: Int16Array) => player.addChunk(chunk),
-        onError: () => {
-          setPlaying(false);
-        },
-      });
+      playTts({ voice: params?.voice ?? voice, backendUuid });
     },
-    [playing, player, messageBlockIndex, stopTts, playTts, abort],
+    [abort, backendUuid, isPlaying, playTts, voice, coordinator],
   );
 
-  useEffect(() => {
-    return () => {
-      stopTts();
-      player.clearBuffer();
-      PplxTtsPlayerCoordinator.getInstance().removePlayer(player);
-    };
-  }, [player, stopTts]);
-
-  if (playing && !firstChunkArrived) {
+  if (!isPlaying && isPending) {
     return (
       <div className="x:rounded-full x:p-2 x:text-muted-foreground">
         <LuLoaderCircle className="x:size-4 x:animate-spin" />
@@ -121,13 +91,13 @@ export function ThreadMessageTtsButton() {
       onOpenChange={({ open }) => setMenuOpen(open)}
       onSelect={({ value }) => {
         initTts({ voice: value as TtsVoice });
-        ExtensionSettingsService.set((draft) => {
-          draft.plugins["thread:messageTts"].voice = value as TtsVoice;
-        });
+        setVoice(value as TtsVoice);
       }}
     >
       <Tooltip
-        content={playing ? t("common.misc.stop") : t("common.misc.speakAloud")}
+        content={
+          isPlaying ? t("common.misc.stop") : t("common.misc.speakAloud")
+        }
       >
         <DropdownMenuTrigger asChild>
           <div
@@ -141,7 +111,7 @@ export function ThreadMessageTtsButton() {
               initTts();
             }}
             onContextMenu={(e) => {
-              if (playing) {
+              if (isPlaying) {
                 return;
               }
 
@@ -149,7 +119,7 @@ export function ThreadMessageTtsButton() {
               setMenuOpen(true);
             }}
           >
-            {playing ? (
+            {isPlaying ? (
               <FaStopCircle className="x:size-4 x:text-primary" />
             ) : (
               <HiOutlineSpeakerWave className="x:size-4" />
