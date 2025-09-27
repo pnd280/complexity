@@ -1,7 +1,7 @@
 import debounce from "lodash/debounce";
 
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { queryClient } from "@/services/infra/query-client";
 
@@ -21,7 +21,7 @@ export default function () {
         pluginsStates?.imageGenModelSelector === true;
 
       if (shouldInvalidatePplxUserSettings) {
-        getNetworkInterceptMiddlewareManagerRootService().addMiddleware({
+        NetworkInterceptMiddlewareManagerService.Root.addMiddleware({
           id: "invalidate-pplx-user-settings",
           middlewareFn({ data, skip }) {
             const isSSEResponse =

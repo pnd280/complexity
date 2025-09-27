@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
@@ -21,7 +21,7 @@ export default function () {
     loader: ({ "cache:pluginsStates": pluginsStates }) => {
       if (!pluginsStates["queryBox:spacesThreadsForceWritingMode"]) return;
 
-      getNetworkInterceptMiddlewareManagerRootService().updateMiddleware({
+      NetworkInterceptMiddlewareManagerService.Root.updateMiddleware({
         id: "spaces-threads-force-writing-mode",
         middlewareFn({ data, skip }) {
           const enable =

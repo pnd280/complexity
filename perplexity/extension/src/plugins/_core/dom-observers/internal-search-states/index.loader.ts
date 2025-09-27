@@ -7,7 +7,7 @@ import {
 } from "@/plugins/_core/dom-observers/internal-search-states/remote-resources/fetched-resources";
 import { internalSearchStatesObserverStore } from "@/plugins/_core/dom-observers/internal-search-states/store";
 import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import {
   isLanguageModelCode,
   isSearchMode,
@@ -39,12 +39,13 @@ export default function () {
 
       const observer = new MutationObserver(
         debounce(async () => {
-          const states = await getReactVdomService().getInternalSearchStates({
-            remoteValidationFiberPath:
-              remoteInternalSearchStatesValidateFiberPathStr.split("."),
-            remoteStatesFiberPath:
-              remoteInternalSearchStatesStatesFiberPathStr.split("."),
-          });
+          const states =
+            await ReactVdomService.Instance.getInternalSearchStates({
+              remoteValidationFiberPath:
+                remoteInternalSearchStatesValidateFiberPathStr.split("."),
+              remoteStatesFiberPath:
+                remoteInternalSearchStatesStatesFiberPathStr.split("."),
+            });
 
           if (states == null) return;
 

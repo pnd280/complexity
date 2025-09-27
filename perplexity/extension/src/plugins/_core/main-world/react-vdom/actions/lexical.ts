@@ -1,11 +1,11 @@
-import { getDomSelectorsProxyService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 
 export async function setLexicalEditorContent({
   content,
 }: {
   content: string;
 }) {
-  const domSelectors = await getDomSelectorsProxyService().getCache();
+  const domSelectors = await DomSelectorsService.Proxy.getCache();
 
   const activeElement = $(
     `${domSelectors.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,
@@ -55,7 +55,7 @@ export async function setLexicalEditorContent({
 }
 
 export async function getLexicalEditorJsonContent() {
-  const domSelectors = await getDomSelectorsProxyService().getCache();
+  const domSelectors = await DomSelectorsService.Proxy.getCache();
 
   const activeElement = $(
     `${domSelectors.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,

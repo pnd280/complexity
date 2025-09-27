@@ -1,7 +1,7 @@
 import { MatchPattern } from "@webext-core/match-patterns";
 
 import { APP_CONFIG } from "@/app.config";
-import { getInstantCssStorageService } from "@/services/features/instant-css/storage/service-init.bg-worker";
+import { InstantCssStorageService } from "@/services/features/instant-css/storage/service-init.bg-worker";
 import { insertCss } from "@/utils/dom-utils/generics";
 
 export const excludeMatchesPatterns = APP_CONFIG[
@@ -13,7 +13,7 @@ export const matchesPatterns = APP_CONFIG["perplexity-ai"].globalMatches.map(
 );
 
 export async function getProcessedCssEntries() {
-  const settings = await getInstantCssStorageService().get();
+  const settings = await InstantCssStorageService.Instance.get();
 
   return [
     ...Object.entries(settings).map(([id, entry]) => ({

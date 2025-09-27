@@ -4,7 +4,7 @@ import {
   remoteInternalSearchStatesValidateFiberPathStr,
 } from "@/plugins/_core/dom-observers/internal-search-states/remote-resources/fetched-resources";
 import { internalSearchStatesObserverStore } from "@/plugins/_core/dom-observers/internal-search-states/store";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { setModelCookie } from "@/plugins/_core/ui/groups/query-box/utils";
 import {
   betterLanguageModelSelectorStore,
@@ -94,7 +94,7 @@ function syncToInternalSearchStates(): void {
       return;
     }
 
-    getReactVdomService().setInternalSearchStates(
+    ReactVdomService.Instance.setInternalSearchStates(
       {
         selectedModel: state.selectedLanguageModel,
       },

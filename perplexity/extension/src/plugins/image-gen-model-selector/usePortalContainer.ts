@@ -1,4 +1,4 @@
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
 
@@ -8,7 +8,7 @@ export default function usePortalContainer() {
   useEffect(() => {
     domObserverService.subscribe({
       id: createDomObserverId("thread", "imageGenPopper"),
-      selector: `${getDomSelectorsRootService().cachedSync.THREAD.POPPER.DESKTOP} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.IMAGE_GEN.HEADER}`,
+      selector: `${DomSelectorsService.Root.cachedSync.THREAD.POPPER.DESKTOP} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.IMAGE_GEN.HEADER}`,
       onAdd: (node) => {
         setWrapper(node as HTMLElement);
       },

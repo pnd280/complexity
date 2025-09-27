@@ -1,10 +1,10 @@
 import { InstantCssService } from "@/services/features/instant-css";
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
+import { InstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
 
 export default async function () {
   chrome.runtime.onStartup.addListener(async () => {
     if (!(await InstantCssService.hasPermissions())) return;
 
-    await getInstantCssInjectorService().forceInjectAllPplxTabs();
+    await InstantCssInjectorService.Instance.forceInjectAllPplxTabs();
   });
 }

@@ -1,7 +1,7 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadCodeBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/code-blocks/store";
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import {
   spaRouteChangeCompleteSubscribe,
   spaRouterStoreSubscribe,
@@ -170,10 +170,10 @@ const handleArtifactBlockClick = (location: CodeBlockLocation) => {
     draft.selectedCodeBlockLocation = location;
     draft.state = "preview";
 
-    const selector = `${getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
-    )}[data-index="${location.messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
+    const selector = `${DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.BLOCK,
+    )}[data-index="${location.messageBlockIndex}"] ${DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE
         .MIRRORED_CODE_BLOCK,
     )}[data-index="${location.codeBlockIndex}"]`;
     scrollToElement($(selector), -100);

@@ -4,12 +4,12 @@ import { defineProxy } from "comctx";
 import {
   backgroundProxyServiceName,
   DeclarativeNetRequestServiceImpl,
-  type DeclarativeNetRequestService,
+  type DeclarativeNetRequestService as DeclarativeNetRequestServiceType,
 } from "@/services/infra/extension-api-wrappers/declarative-net-request";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: DeclarativeNetRequestService | undefined;
-let proxyServiceInstance: DeclarativeNetRequestService | undefined;
+let rootServiceInstance: DeclarativeNetRequestServiceType | undefined;
+let proxyServiceInstance: DeclarativeNetRequestServiceType | undefined;
 
 const [registerService, getService] = defineProxy(
   getDeclarativeNetRequestRootService,
@@ -19,7 +19,7 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getDeclarativeNetRequestRootService(): DeclarativeNetRequestService {
+function getDeclarativeNetRequestRootService(): DeclarativeNetRequestServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getDeclarativeNetRequestProxyService instead.",
@@ -30,7 +30,7 @@ export function getDeclarativeNetRequestRootService(): DeclarativeNetRequestServ
   return rootServiceInstance;
 }
 
-export function getDeclarativeNetRequestProxyService(): DeclarativeNetRequestService {
+function getDeclarativeNetRequestProxyService(): DeclarativeNetRequestServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getDeclarativeNetRequestRootService to access the non-proxied instance in background script.",
@@ -41,11 +41,19 @@ export function getDeclarativeNetRequestProxyService(): DeclarativeNetRequestSer
   return proxyServiceInstance;
 }
 
-export function getDeclarativeNetRequestService(): DeclarativeNetRequestService {
-  return isBackgroundScript()
-    ? getDeclarativeNetRequestRootService()
-    : getDeclarativeNetRequestProxyService();
-}
+export const DeclarativeNetRequestService = {
+  get Root() {
+    return getDeclarativeNetRequestRootService();
+  },
+  get Proxy() {
+    return getDeclarativeNetRequestProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getDeclarativeNetRequestRootService()
+      : getDeclarativeNetRequestProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

@@ -1,5 +1,5 @@
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 
 const OBSERVER_ID = "query-edit-button-group-wrapper";
 
@@ -20,7 +20,7 @@ export function useCreatePortalContainers(): (Element | null)[] {
     );
 
     const $existingPortalContainer = $target.find(
-      `div${getDomSelectorsRootService().cplxAttribute(OBSERVER_ID)}`,
+      `div${DomSelectorsService.Root.cplxAttribute(OBSERVER_ID)}`,
     );
 
     if ($existingPortalContainer[0]) return $existingPortalContainer[0];

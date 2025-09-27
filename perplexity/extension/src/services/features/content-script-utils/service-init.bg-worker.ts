@@ -4,12 +4,12 @@ import { defineProxy } from "comctx";
 import {
   backgroundProxyServiceName,
   ContentScriptBgUtilsServiceImpl,
-  type ContentScriptBgUtilsService,
+  type ContentScriptBgUtilsService as ContentScriptBgUtilsServiceType,
 } from "@/services/features/content-script-utils";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: ContentScriptBgUtilsService | undefined;
-let proxyServiceInstance: ContentScriptBgUtilsService | undefined;
+let rootServiceInstance: ContentScriptBgUtilsServiceType | undefined;
+let proxyServiceInstance: ContentScriptBgUtilsServiceType | undefined;
 
 const [registerService, getService] = defineProxy(
   getContentScriptBgUtilsRootService,
@@ -19,7 +19,7 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getContentScriptBgUtilsRootService(): ContentScriptBgUtilsService {
+function getContentScriptBgUtilsRootService(): ContentScriptBgUtilsServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getContentScriptBgUtilsProxyService instead.",
@@ -30,7 +30,7 @@ export function getContentScriptBgUtilsRootService(): ContentScriptBgUtilsServic
   return rootServiceInstance;
 }
 
-export function getContentScriptBgUtilsProxyService(): ContentScriptBgUtilsService {
+function getContentScriptBgUtilsProxyService(): ContentScriptBgUtilsServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getContentScriptBgUtilsRootService to access the non-proxied instance in background script.",
@@ -41,11 +41,19 @@ export function getContentScriptBgUtilsProxyService(): ContentScriptBgUtilsServi
   return proxyServiceInstance;
 }
 
-export function getContentScriptBgUtilsService(): ContentScriptBgUtilsService {
-  return isBackgroundScript()
-    ? getContentScriptBgUtilsRootService()
-    : getContentScriptBgUtilsProxyService();
-}
+export const ContentScriptBgUtilsService = {
+  get Root() {
+    return getContentScriptBgUtilsRootService();
+  },
+  get Proxy() {
+    return getContentScriptBgUtilsProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getContentScriptBgUtilsRootService()
+      : getContentScriptBgUtilsProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

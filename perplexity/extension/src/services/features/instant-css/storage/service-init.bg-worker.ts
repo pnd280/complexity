@@ -4,12 +4,12 @@ import { defineProxy } from "comctx";
 import {
   backgroundProxyServiceName,
   InstantCssStorageServiceImpl,
-  type InstantCssStorageService,
+  type InstantCssStorageService as InstantCssStorageServiceType,
 } from "@/services/features/instant-css/storage";
 import { invariant, isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: InstantCssStorageService | undefined;
-let proxyServiceInstance: InstantCssStorageService | undefined;
+let rootServiceInstance: InstantCssStorageServiceType | undefined;
+let proxyServiceInstance: InstantCssStorageServiceType | undefined;
 
 const [registerService, getService] = defineProxy(
   getInstantCssStorageRootService,
@@ -19,7 +19,7 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getInstantCssStorageRootService(): InstantCssStorageService {
+function getInstantCssStorageRootService(): InstantCssStorageServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getInstantCssStorageProxyService instead.",
@@ -30,7 +30,7 @@ export function getInstantCssStorageRootService(): InstantCssStorageService {
   return rootServiceInstance;
 }
 
-export function getInstantCssStorageProxyService(): InstantCssStorageService {
+function getInstantCssStorageProxyService(): InstantCssStorageServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getInstantCssStorageRootService to access the non-proxied instance in background script.",
@@ -41,11 +41,19 @@ export function getInstantCssStorageProxyService(): InstantCssStorageService {
   return proxyServiceInstance;
 }
 
-export function getInstantCssStorageService(): InstantCssStorageService {
-  return isBackgroundScript()
-    ? getInstantCssStorageRootService()
-    : getInstantCssStorageProxyService();
-}
+export const InstantCssStorageService = {
+  get Root() {
+    return getInstantCssStorageRootService();
+  },
+  get Proxy() {
+    return getInstantCssStorageProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getInstantCssStorageRootService()
+      : getInstantCssStorageProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

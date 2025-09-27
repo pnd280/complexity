@@ -4,7 +4,7 @@ import { redirect } from "react-router-dom";
 
 import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes";
 import Page from "@/entrypoints/options-page/components/Page";
-import { getLocalThemesService } from "@/plugins/_core/custom-theme/index.public";
+import { LocalThemesService } from "@/plugins/_core/custom-theme/index.public";
 
 const { CreateThemePage } = lazily(
   () =>
@@ -42,7 +42,7 @@ export const ThemesPageRoutes: RouteObject[] = [
 
           if (!themeId) return redirect("/themes");
 
-          const localTheme = await getLocalThemesService().get(themeId);
+          const localTheme = await LocalThemesService.Instance.get(themeId);
 
           if (!localTheme) return redirect("/themes");
 
@@ -63,7 +63,7 @@ export const ThemesPageRoutes: RouteObject[] = [
 
           if (builtInTheme) return redirect("/themes");
 
-          const localTheme = await getLocalThemesService().get(themeId);
+          const localTheme = await LocalThemesService.Instance.get(themeId);
 
           if (!localTheme) return redirect("/themes");
 

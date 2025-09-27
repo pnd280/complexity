@@ -1,7 +1,7 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import type { QueryBoxesDomObserverStoreType } from "@/plugins/_core/dom-observers/query-boxes/store";
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { isLexical } from "@/plugins/_core/ui/groups/query-box/utils";
 
 const OBSERVER_ID = "submit-on-ctrl-enter";
@@ -12,8 +12,7 @@ function isModifierEnterPressed(e: KeyboardEvent) {
 
 function isTypeaheadMenuPresent() {
   return (
-    $(getDomSelectorsRootService().cachedSync.QUERY_BOX.TYPEAHEAD_MENU).length >
-    0
+    $(DomSelectorsService.Root.cachedSync.QUERY_BOX.TYPEAHEAD_MENU).length > 0
   );
 }
 

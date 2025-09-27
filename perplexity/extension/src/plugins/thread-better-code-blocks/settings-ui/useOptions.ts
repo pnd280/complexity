@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { toast } from "@/components/ui/use-toast";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
-import { getBetterCodeBlocksFineGrainedOptionsService } from "@/plugins/thread-better-code-blocks/indexed-db/service-init.bg-worker";
+import { BetterCodeBlocksFineGrainedService } from "@/plugins/thread-better-code-blocks/indexed-db/service-init.bg-worker";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 import { queryClient } from "@/services/infra/query-client";
 
@@ -21,7 +21,7 @@ export default function useOptions({ language }: UseOptionsProps = {}) {
 
   const fineGrainedMutation = useMutation({
     mutationKey: ["better-code-blocks-options", "update", language],
-    mutationFn: getBetterCodeBlocksFineGrainedOptionsService().updateDraft,
+    mutationFn: BetterCodeBlocksFineGrainedService.Instance.updateDraft,
     onError: (error) => {
       toast({
         title: "❌ Failed to update options",
@@ -41,7 +41,7 @@ export default function useOptions({ language }: UseOptionsProps = {}) {
     mutationKey: ["better-code-blocks-options", "delete", language],
     mutationFn: async () => {
       if (!language) return;
-      await getBetterCodeBlocksFineGrainedOptionsService().delete(language);
+      await BetterCodeBlocksFineGrainedService.Instance.delete(language);
     },
     onError: (error) => {
       toast({

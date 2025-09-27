@@ -4,12 +4,12 @@ import { defineProxy } from "comctx";
 import {
   backgroundProxyServiceName,
   InstantCssInjectorServiceImpl,
-  type InstantCssInjectorService,
+  type InstantCssInjectorService as InstantCssInjectorServiceType,
 } from "@/services/features/instant-css/injector";
 import { invariant, isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: InstantCssInjectorService | undefined;
-let proxyServiceInstance: InstantCssInjectorService | undefined;
+let rootServiceInstance: InstantCssInjectorServiceType | undefined;
+let proxyServiceInstance: InstantCssInjectorServiceType | undefined;
 
 const [registerService, getService] = defineProxy(
   getInstantCssInjectorRootService,
@@ -19,7 +19,7 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getInstantCssInjectorRootService(): InstantCssInjectorService {
+function getInstantCssInjectorRootService(): InstantCssInjectorServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getInstantCssInjectorProxyService instead.",
@@ -30,7 +30,7 @@ export function getInstantCssInjectorRootService(): InstantCssInjectorService {
   return rootServiceInstance;
 }
 
-export function getInstantCssInjectorProxyService(): InstantCssInjectorService {
+function getInstantCssInjectorProxyService(): InstantCssInjectorServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getInstantCssInjectorRootService to access the non-proxied instance in background script.",
@@ -41,11 +41,19 @@ export function getInstantCssInjectorProxyService(): InstantCssInjectorService {
   return proxyServiceInstance;
 }
 
-export function getInstantCssInjectorService(): InstantCssInjectorService {
-  return isBackgroundScript()
-    ? getInstantCssInjectorRootService()
-    : getInstantCssInjectorProxyService();
-}
+export const InstantCssInjectorService = {
+  get Root() {
+    return getInstantCssInjectorRootService();
+  },
+  get Proxy() {
+    return getInstantCssInjectorProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getInstantCssInjectorRootService()
+      : getInstantCssInjectorProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

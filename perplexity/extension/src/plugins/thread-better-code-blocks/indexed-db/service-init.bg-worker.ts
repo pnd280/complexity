@@ -4,12 +4,12 @@ import { defineProxy } from "comctx";
 import {
   backgroundProxyServiceName,
   BetterCodeBlocksFineGrainedServiceImpl,
-  type BetterCodeBlocksFineGrainedService,
+  type BetterCodeBlocksFineGrainedService as BetterCodeBlocksFineGrainedServiceType,
 } from "@/plugins/thread-better-code-blocks/indexed-db";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: BetterCodeBlocksFineGrainedService | undefined;
-let proxyServiceInstance: BetterCodeBlocksFineGrainedService | undefined;
+let rootServiceInstance: BetterCodeBlocksFineGrainedServiceType | undefined;
+let proxyServiceInstance: BetterCodeBlocksFineGrainedServiceType | undefined;
 
 const [registerService, getService] = defineProxy(
   getBetterCodeBlocksFineGrainedOptionsRootService,
@@ -19,7 +19,7 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getBetterCodeBlocksFineGrainedOptionsRootService(): BetterCodeBlocksFineGrainedService {
+function getBetterCodeBlocksFineGrainedOptionsRootService(): BetterCodeBlocksFineGrainedServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getBetterCodeBlocksFineGrainedProxyService instead.",
@@ -30,7 +30,7 @@ export function getBetterCodeBlocksFineGrainedOptionsRootService(): BetterCodeBl
   return rootServiceInstance;
 }
 
-export function getBetterCodeBlocksFineGrainedOptionsProxyService(): BetterCodeBlocksFineGrainedService {
+function getBetterCodeBlocksFineGrainedOptionsProxyService(): BetterCodeBlocksFineGrainedServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getBetterCodeBlocksFineGrainedRootService to access the non-proxied instance in background script.",
@@ -41,11 +41,19 @@ export function getBetterCodeBlocksFineGrainedOptionsProxyService(): BetterCodeB
   return proxyServiceInstance;
 }
 
-export function getBetterCodeBlocksFineGrainedOptionsService(): BetterCodeBlocksFineGrainedService {
-  return isBackgroundScript()
-    ? getBetterCodeBlocksFineGrainedOptionsRootService()
-    : getBetterCodeBlocksFineGrainedOptionsProxyService();
-}
+export const BetterCodeBlocksFineGrainedService = {
+  get Root() {
+    return getBetterCodeBlocksFineGrainedOptionsRootService();
+  },
+  get Proxy() {
+    return getBetterCodeBlocksFineGrainedOptionsProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getBetterCodeBlocksFineGrainedOptionsRootService()
+      : getBetterCodeBlocksFineGrainedOptionsProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

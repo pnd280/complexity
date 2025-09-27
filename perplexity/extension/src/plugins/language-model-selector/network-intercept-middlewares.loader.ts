@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
@@ -32,7 +32,7 @@ export default function () {
 
           unsub?.();
 
-          getNetworkInterceptMiddlewareManagerRootService().updateMiddleware({
+          NetworkInterceptMiddlewareManagerService.Root.updateMiddleware({
             id: "force-change-language-model",
             middlewareFn({ data, skip }) {
               const isWSSend =

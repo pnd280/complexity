@@ -3,14 +3,14 @@ import { defineProxy } from "comctx";
 import {
   mainWorldProxyServiceName,
   MarkmapRendererServiceImpl,
-  type MarkmapRendererService,
+  type MarkmapRendererService as MarkmapRendererServiceType,
 } from "@/plugins/_core/main-world/markmap-renderer/service";
 import { isInContentScript } from "@/utils/misc/utils";
 import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
 import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
-let rootServiceInstance: MarkmapRendererService | undefined;
-let proxyServiceInstance: MarkmapRendererService | undefined;
+let rootServiceInstance: MarkmapRendererServiceType | undefined;
+let proxyServiceInstance: MarkmapRendererServiceType | undefined;
 
 const [registerService, getService] = defineProxy(
   getMarkmapRendererRootService,
@@ -20,7 +20,7 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getMarkmapRendererRootService(): MarkmapRendererService {
+function getMarkmapRendererRootService(): MarkmapRendererServiceType {
   invariant(
     isInContentScript() && isMainWorldContext(),
     "This method is only allowed in main world, use getMarkmapRendererProxyService instead.",
@@ -31,7 +31,7 @@ export function getMarkmapRendererRootService(): MarkmapRendererService {
   return rootServiceInstance;
 }
 
-export function getMarkmapRendererProxyService(): ComctxProxy<MarkmapRendererService> {
+function getMarkmapRendererProxyService(): ComctxProxy<MarkmapRendererServiceType> {
   invariant(
     !isMainWorldContext(),
     "Use getMarkmapRendererRootService to access the non-proxied instance in main world.",
@@ -41,14 +41,22 @@ export function getMarkmapRendererProxyService(): ComctxProxy<MarkmapRendererSer
     getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
-  return proxyServiceInstance as unknown as ComctxProxy<MarkmapRendererService>;
+  return proxyServiceInstance as unknown as ComctxProxy<MarkmapRendererServiceType>;
 }
 
-export function getMarkmapRendererService(): ComctxProxy<MarkmapRendererService> {
-  return isMainWorldContext()
-    ? (getMarkmapRendererRootService() as any)
-    : getMarkmapRendererProxyService();
-}
+export const MarkmapRendererService = {
+  get Root() {
+    return getMarkmapRendererRootService();
+  },
+  get Proxy() {
+    return getMarkmapRendererProxyService();
+  },
+  get Instance(): ComctxProxy<MarkmapRendererServiceType> {
+    return isMainWorldContext()
+      ? (getMarkmapRendererRootService() as any)
+      : getMarkmapRendererProxyService();
+  },
+};
 
 export default function registerProxyService() {
   registerService(

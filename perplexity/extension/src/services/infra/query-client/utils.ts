@@ -10,7 +10,7 @@ import debounce from "lodash/debounce";
 import { APP_CONFIG } from "@/app.config";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-import { getQueryCacheService } from "@/services/infra/query-client/indexed-db/service-init.bg-worker";
+import { QueryCacheService } from "@/services/infra/query-client/indexed-db/service-init.bg-worker";
 import { isSubArray } from "@/utils/misc/utils";
 
 export type QueryCacheEntry = {
@@ -24,12 +24,12 @@ export const softCacheBusterKey = "local:cdnCacheBuster";
 export const persister = await createDexiePersister();
 
 async function createDexiePersister(idbValidKey = "reactQuery") {
-  const db = getQueryCacheService();
+  const Db = QueryCacheService.Instance;
 
   return {
     persistClient: async (client: PersistedClient) => {
       try {
-        await db.update(idbValidKey, {
+        await Db.update(idbValidKey, {
           key: idbValidKey,
           clientData: client,
           timestamp: Date.now(),
@@ -40,7 +40,7 @@ async function createDexiePersister(idbValidKey = "reactQuery") {
     },
     restoreClient: async () => {
       try {
-        const item = await db.get(idbValidKey);
+        const item = await Db.get(idbValidKey);
 
         if (!item?.clientData) {
           return undefined;
@@ -54,7 +54,7 @@ async function createDexiePersister(idbValidKey = "reactQuery") {
     },
     removeClient: async () => {
       try {
-        await db.delete(idbValidKey);
+        await Db.delete(idbValidKey);
       } catch (error) {
         console.error("Failed to remove query client:", error);
       }
@@ -139,5 +139,5 @@ export async function invalidateQueryClientCache({
   newCacheBuster?: string;
 } = {}) {
   storage.setItem(softCacheBusterKey, newCacheBuster ?? "invalidated");
-  getQueryCacheService().delete("reactQuery");
+  QueryCacheService.Instance.delete("reactQuery");
 }

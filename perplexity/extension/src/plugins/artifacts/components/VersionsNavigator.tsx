@@ -2,7 +2,7 @@ import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { artifactsStore, useArtifactsStore } from "@/plugins/artifacts/store";
 import { getArtifactTitle } from "@/plugins/artifacts/utils";
 import { scrollToElement } from "@/utils/dom-utils/generics";
@@ -62,11 +62,10 @@ export default function AutonomousArtifactVersionsNavigator() {
             artifactsStore.getState().selectedCodeBlockLocation;
           if (!selectedCodeBlockLocation) return;
 
-          const selector = `${getDomSelectorsRootService().cplxAttribute(
-            getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
-              .BLOCK,
-          )}[data-index="${selectedCodeBlockLocation.messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
-            getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
+          const selector = `${DomSelectorsService.Root.cplxAttribute(
+            DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.BLOCK,
+          )}[data-index="${selectedCodeBlockLocation.messageBlockIndex}"] ${DomSelectorsService.Root.cplxAttribute(
+            DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE
               .MIRRORED_CODE_BLOCK,
           )}[data-index="${selectedCodeBlockLocation.codeBlockIndex}"]`;
 

@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { InstantCssService } from "@/services/features/instant-css";
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
+import { InstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
 import { sendMessage } from "@/types/chrome-runtime-message";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -31,7 +31,7 @@ export default async function () {
 
       const tabId = await sendMessage("getTabId");
 
-      await getInstantCssInjectorService().injectCssToTab(tabId);
+      await InstantCssInjectorService.Instance.injectCssToTab(tabId);
     },
   });
 }

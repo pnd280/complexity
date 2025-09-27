@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
@@ -32,10 +32,7 @@ async function setupCustomSlogan({
 
   if (!$slogan.length) return;
 
-  $slogan.attr(
-    getDomSelectorsRootService().internalAttributes.HOME.SLOGAN,
-    "true",
-  );
+  $slogan.attr(DomSelectorsService.Root.internalAttributes.HOME.SLOGAN, "true");
 
   const $sloganContent = $("<span>").html(sloganText);
 
@@ -44,7 +41,7 @@ async function setupCustomSlogan({
       "x:text-balance x:text-3xl x:md:text-4xl x:animate-in x:fade-in-0",
     )
     .attr(
-      `${getDomSelectorsRootService().internalAttributes.HOME.SLOGAN}-content`,
+      `${DomSelectorsService.Root.internalAttributes.HOME.SLOGAN}-content`,
       "true",
     );
 

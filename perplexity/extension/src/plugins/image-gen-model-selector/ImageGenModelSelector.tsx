@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import usePplxUserSettings from "@/hooks/usePplxUserSettings";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useImageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
 import usePortalContainer from "@/plugins/image-gen-model-selector/usePortalContainer";
 import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-image-models";
@@ -42,8 +42,7 @@ export function ImageGenModelSelector() {
     <Portal container={portalContainer}>
       <Select
         data-testid={
-          getDomSelectorsRootService().testIds.QUERY_BOX
-            .IMAGE_GEN_MODEL_SELECTOR
+          DomSelectorsService.Root.testIds.QUERY_BOX.IMAGE_GEN_MODEL_SELECTOR
         }
         collection={createListCollection({
           items: PplxImageModelsService.allModels.map((model) => model.code),

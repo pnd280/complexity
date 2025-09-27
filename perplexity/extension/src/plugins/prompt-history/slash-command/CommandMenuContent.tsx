@@ -16,7 +16,7 @@ import ClearAllButton from "@/plugins/prompt-history/components/ClearAllButton";
 import useLoadMoreItems from "@/plugins/prompt-history/hooks/useLoadMoreItems";
 import { usePromptHistory } from "@/plugins/prompt-history/hooks/usePromptHistory";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
-import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
+import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import PromptHistoryCommandMenuItem from "@/plugins/prompt-history/slash-command/CommandMenuItem";
 import { queryClient } from "@/services/infra/query-client";
 import { keysToString } from "@/utils/misc/utils";
@@ -54,7 +54,7 @@ export function PromptHistoryCommandMenuContent() {
   });
 
   const deleteItem = useCallback((id: string) => {
-    getPromptHistoryService().delete(id);
+    PromptHistoryService.Instance.delete(id);
 
     queryClient.invalidateQueries({
       queryKey: promptHistoryQueries.infinite.all(),

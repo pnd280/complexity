@@ -2,7 +2,7 @@ import {
   generateThemeData,
   initialValues,
 } from "@/data/dashboard/themes/utils";
-import { getLocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/service-init.bg-worker";
+import { LocalThemesService } from "@/plugins/_core/custom-theme/indexed-db/service-init.bg-worker";
 
 export default function () {
   chrome.runtime.onInstalled.addListener(async (details) => {
@@ -12,7 +12,7 @@ export default function () {
 
     console.log("Rebuilding custom themes");
 
-    const themes = await getLocalThemesService().getAll();
+    const themes = await LocalThemesService.Instance.getAll();
 
     for (const theme of themes) {
       const config = theme.config;
@@ -21,7 +21,7 @@ export default function () {
 
       const newData = generateThemeData(config, initialValues);
 
-      await getLocalThemesService().update({
+      await LocalThemesService.Instance.update({
         ...theme,
         ...newData,
       });

@@ -14,7 +14,7 @@ import { Image } from "@/components/ui/image";
 import { toast } from "@/components/ui/use-toast";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
-import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
+import { ContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
 
 export default function ExtensionUpdateInfoDialogWrapper({
   children,
@@ -62,7 +62,7 @@ export default function ExtensionUpdateInfoDialogWrapper({
             onClick={() => {
               if (!latestVersion) return;
 
-              getContentScriptBgUtilsService().openDirectReleaseNotes({
+              ContentScriptBgUtilsService.Instance.openDirectReleaseNotes({
                 version: latestVersionWithChangelog,
               });
             }}

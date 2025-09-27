@@ -1,4 +1,4 @@
-import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import { initFetchInterceptor } from "@/plugins/_core/main-world/network-intercept/interceptors/fetch";
 import { initBeaconInterceptor } from "@/plugins/_core/main-world/network-intercept/interceptors/navigator-beacon";
 import { initWebSocketInterceptor } from "@/plugins/_core/main-world/network-intercept/interceptors/web-socket";
@@ -17,4 +17,4 @@ initXhrInterceptor();
 initWebSocketInterceptor();
 initBeaconInterceptor();
 
-getNetworkInterceptMiddlewareManagerProxyService().setOverridesReady(true);
+NetworkInterceptMiddlewareManagerService.Proxy.setOverridesReady(true);

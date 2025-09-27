@@ -3,12 +3,14 @@ import { defineProxy } from "comctx";
 
 import {
   backgroundProxyServiceName,
-  ExtensionSettingsStorageService,
+  ExtensionSettingsStorageService as ExtensionSettingsStorageServiceType,
 } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: typeof ExtensionSettingsStorageService | undefined;
-let proxyServiceInstance: typeof ExtensionSettingsStorageService | undefined;
+let rootServiceInstance: typeof ExtensionSettingsStorageServiceType | undefined;
+let proxyServiceInstance:
+  | typeof ExtensionSettingsStorageServiceType
+  | undefined;
 
 const [registerService, getService] = defineProxy(
   getExtensionSettingsStorageRootService,
@@ -18,18 +20,18 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getExtensionSettingsStorageRootService(): typeof ExtensionSettingsStorageService {
+function getExtensionSettingsStorageRootService(): typeof ExtensionSettingsStorageServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getExtensionSettingsStorageProxyService instead.",
   );
 
-  rootServiceInstance ??= ExtensionSettingsStorageService;
+  rootServiceInstance ??= ExtensionSettingsStorageServiceType;
 
   return rootServiceInstance;
 }
 
-export function getExtensionSettingsStorageProxyService(): typeof ExtensionSettingsStorageService {
+function getExtensionSettingsStorageProxyService(): typeof ExtensionSettingsStorageServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getExtensionSettingsStorageRootService to access the non-proxied instance in background script.",
@@ -40,11 +42,19 @@ export function getExtensionSettingsStorageProxyService(): typeof ExtensionSetti
   return proxyServiceInstance;
 }
 
-export function getExtensionSettingsStorageService(): typeof ExtensionSettingsStorageService {
-  return isBackgroundScript()
-    ? getExtensionSettingsStorageRootService()
-    : getExtensionSettingsStorageProxyService();
-}
+export const ExtensionSettingsStorageService = {
+  get Root() {
+    return getExtensionSettingsStorageRootService();
+  },
+  get Proxy() {
+    return getExtensionSettingsStorageProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getExtensionSettingsStorageRootService()
+      : getExtensionSettingsStorageProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

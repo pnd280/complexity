@@ -3,7 +3,7 @@ import { defineProxy } from "comctx";
 import {
   csProxyServiceName,
   DomSelectorsServiceImpl,
-  type DomSelectorsService,
+  type DomSelectorsService as DomSelectorsServiceType,
 } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import {
   isMainWorldContext,
@@ -13,15 +13,15 @@ import {
 import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
 import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
-let rootServiceInstance: DomSelectorsService | undefined;
-let proxyServiceInstance: ComctxProxy<DomSelectorsService> | undefined;
+let rootServiceInstance: DomSelectorsServiceType | undefined;
+let proxyServiceInstance: ComctxProxy<DomSelectorsServiceType> | undefined;
 
 const [registerService, getProxy] = defineProxy(getDomSelectorsRootService, {
   namespace: csProxyServiceName,
   backup: false,
 });
 
-export function getDomSelectorsRootService(): DomSelectorsService {
+function getDomSelectorsRootService(): DomSelectorsServiceType {
   invariant(
     isInContentScript() && !isMainWorldContext(),
     "This method is only allowed in content script, use getDomSelectorsProxyService instead.",
@@ -32,7 +32,7 @@ export function getDomSelectorsRootService(): DomSelectorsService {
   return rootServiceInstance;
 }
 
-export function getDomSelectorsProxyService(): ComctxProxy<DomSelectorsService> {
+function getDomSelectorsProxyService(): ComctxProxy<DomSelectorsServiceType> {
   invariant(
     isMainWorldContext(),
     "Use getDomSelectorsRootService to access the non-proxied instance in content script.",
@@ -40,10 +40,24 @@ export function getDomSelectorsProxyService(): ComctxProxy<DomSelectorsService> 
 
   proxyServiceInstance ??= getProxy(
     getDocumentAdapter(`complexity:${csProxyServiceName}`),
-  ) as unknown as ComctxProxy<DomSelectorsService>;
+  ) as unknown as ComctxProxy<DomSelectorsServiceType>;
 
   return proxyServiceInstance;
 }
+
+export const DomSelectorsService = {
+  get Root() {
+    return getDomSelectorsRootService();
+  },
+  get Proxy() {
+    return getDomSelectorsProxyService();
+  },
+  get Instance() {
+    return isInContentScript()
+      ? getDomSelectorsProxyService()
+      : getDomSelectorsRootService();
+  },
+};
 
 export default function () {
   registerService(getDocumentAdapter(`complexity:${csProxyServiceName}`));

@@ -2,7 +2,7 @@ import {
   getActiveQueryBoxTextbox,
   isLexical,
 } from "@/plugins/_core/ui/groups/query-box/utils";
-import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
+import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import { getTextContent } from "@/utils/dom-utils/lexical-utils";
 
 export const handlePromptSave = async (params?: {
@@ -29,7 +29,7 @@ export const handlePromptSave = async (params?: {
 
   if (prompt == null || prompt?.length === 0 || prompt.trim() === "") return;
 
-  await getPromptHistoryService().deduplicateAdd({
+  await PromptHistoryService.Instance.deduplicateAdd({
     prompt,
   });
 };

@@ -1,5 +1,5 @@
 import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { whereAmI } from "@/utils/misc/utils";
 
@@ -22,7 +22,7 @@ export function observeMainQueryBox({ observerId }: { observerId: string }) {
 
   return domObserverService.subscribe({
     id: observerId,
-    selector: getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.MAIN,
+    selector: DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.MAIN,
     onAdd: (node) => {
       if (whereAmI() !== "home" && whereAmI() !== "comet_ntp") {
         cleanup();
@@ -33,7 +33,7 @@ export function observeMainQueryBox({ observerId }: { observerId: string }) {
 
       const $wrapper = $textbox
         .parents(
-          getDomSelectorsRootService().cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
+          DomSelectorsService.Root.cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
         )
         .first();
 
@@ -65,7 +65,7 @@ export function observeSpaceQueryBox({ observerId }: { observerId: string }) {
 
   return domObserverService.subscribe({
     id: observerId,
-    selector: getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.SPACE,
+    selector: DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.SPACE,
     onAdd: (node) => {
       if (whereAmI() !== "collection") {
         cleanup();
@@ -76,7 +76,7 @@ export function observeSpaceQueryBox({ observerId }: { observerId: string }) {
 
       const $wrapper = $textbox
         .parents(
-          getDomSelectorsRootService().cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
+          DomSelectorsService.Root.cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
         )
         .first();
 
@@ -112,8 +112,7 @@ export function observeFollowUpQueryBox({
 
   return domObserverService.subscribe({
     id: observerId,
-    selector:
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.FOLLOW_UP,
+    selector: DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.FOLLOW_UP,
     onAdd: (node) => {
       if (whereAmI() !== "thread") {
         cleanup();
@@ -124,7 +123,7 @@ export function observeFollowUpQueryBox({
 
       const $wrapper = $textbox
         .parents(
-          getDomSelectorsRootService().cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
+          DomSelectorsService.Root.cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
         )
         .first();
 
@@ -161,7 +160,7 @@ export function observeCometAssistantQueryBox({
   return domObserverService.subscribe({
     id: observerId,
     selector:
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.COMET_ASSISTANT,
+      DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.COMET_ASSISTANT,
     onAdd: (node) => {
       if (whereAmI() !== "comet_assistant") {
         cleanup();
@@ -172,7 +171,7 @@ export function observeCometAssistantQueryBox({
 
       const $wrapper = $textbox
         .parents(
-          getDomSelectorsRootService().cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
+          DomSelectorsService.Root.cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
         )
         .first();
 

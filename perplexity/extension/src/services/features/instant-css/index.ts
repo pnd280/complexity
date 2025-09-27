@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@/app.config";
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
-import { getInstantCssStorageService } from "@/services/features/instant-css/storage/service-init.bg-worker";
+import { InstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
+import { InstantCssStorageService } from "@/services/features/instant-css/storage/service-init.bg-worker";
 import type {
   InstantCss,
   InstantCssSettings,
@@ -42,13 +42,13 @@ export class InstantCssService {
     );
 
     await Promise.all([
-      getInstantCssStorageService().register({
+      InstantCssStorageService.Instance.register({
         id: params.id,
         css: params.css,
         removeAfter: params.removeAfter,
         enabled: params.enabled,
       }),
-      getInstantCssInjectorService().injectCss({
+      InstantCssInjectorService.Instance.injectCss({
         id: params.id,
         tabId: params.tabId,
         css: params.css,
@@ -67,8 +67,8 @@ export class InstantCssService {
     );
 
     await Promise.all([
-      getInstantCssStorageService().unregister(params.id),
-      getInstantCssInjectorService().removeCss({
+      InstantCssStorageService.Instance.unregister(params.id),
+      InstantCssInjectorService.Instance.removeCss({
         tabId: params.tabId,
         css: params.css,
         removeAfter: params.removeAfter,

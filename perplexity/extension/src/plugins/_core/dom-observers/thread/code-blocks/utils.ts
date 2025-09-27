@@ -1,8 +1,8 @@
 import { threadCodeBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/code-blocks/store";
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 
 export function getExistingCodeBlocks(
   messageBlockIndex: number,
@@ -63,7 +63,7 @@ export function refreshStaleCodeBlockNodes(
 
   if (isNodeStale(nodes.$nativeCopyButton)) {
     nodes.$nativeCopyButton = $codeBlock.find(
-      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK
+      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK
         .NATIVE_COPY_BUTTON,
     );
   }
@@ -75,7 +75,7 @@ export function createFreshCodeBlockNodes(
   $codeBlock: JQuery<Element>,
 ): CodeBlock["nodes"] {
   const $nativeCopyButton = $codeBlock.find(
-    getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK
+    DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK
       .NATIVE_COPY_BUTTON,
   );
 
@@ -91,7 +91,7 @@ export function setCodeBlockAttributes(
 ) {
   nodes.$wrapper
     ?.internalComponentAttr(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
     )
     .attr("data-index", codeBlockIndex);
 }
@@ -104,7 +104,7 @@ export function getFallbackContent(nodes: CodeBlock["nodes"]): {
     language:
       nodes.$wrapper
         ?.find(
-          getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK
+          DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK
             .LANGUAGE_INDICATOR,
         )
         .text() || "text",
@@ -123,7 +123,7 @@ export async function getCodeBlocksContent(
     codeBlockIndex,
   }));
 
-  return await getReactVdomService().getCodeBlocksContent({
+  return await ReactVdomService.Instance.getCodeBlocksContent({
     codeBlocks,
   });
 }
@@ -143,10 +143,10 @@ export function isCodeBlockInFlight({
   if (!isMessageBlockInFlight) return false;
 
   const codeBlock = document.querySelector(
-    `${getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
-    )}[data-index="${messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
+    `${DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.BLOCK,
+    )}[data-index="${messageBlockIndex}"] ${DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
     )}[data-index="${codeBlockIndex}"]`,
   );
 
@@ -159,10 +159,10 @@ export function isCodeBlockInFlight({
   }
 
   const hasNextCodeBlock = document.querySelector(
-    `${getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
-    )}[data-index="${messageBlockIndex}"] ${getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
+    `${DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.BLOCK,
+    )}[data-index="${messageBlockIndex}"] ${DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.CODE_BLOCK,
     )}[data-index="${codeBlockIndex + 1}"]`,
   );
 

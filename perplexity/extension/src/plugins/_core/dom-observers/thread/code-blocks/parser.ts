@@ -10,7 +10,7 @@ import {
   getExistingCodeBlocks,
 } from "@/plugins/_core/dom-observers/thread/code-blocks/utils";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 
 const astCache = new Map<string, any>();
 const mdAstProcessor = unified().use(remarkParse).use(remarkGfm);
@@ -38,9 +38,7 @@ async function parseCodeBlocks(
   }
 
   const codeBlockElements = messageBlock.nodes.$answer
-    .find(
-      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER,
-    )
+    .find(DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER)
     .toArray();
 
   if (codeBlockElements.length === 0) return [];

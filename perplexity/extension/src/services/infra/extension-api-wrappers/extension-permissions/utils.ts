@@ -1,19 +1,19 @@
-import { getExtensionPermissionsService } from "@/services/infra/extension-api-wrappers/extension-permissions/service-init.bg-worker";
+import { ExtensionPermissionsService } from "@/services/infra/extension-api-wrappers/extension-permissions/service-init.bg-worker";
 
 export async function getPermissions(): Promise<chrome.permissions.Permissions> {
-  return getExtensionPermissionsService().getAll();
+  return ExtensionPermissionsService.Instance.getAll();
 }
 
 export async function requestPermissions(
   permissions: chrome.runtime.ManifestPermissions[],
 ): Promise<boolean> {
-  return getExtensionPermissionsService().request(permissions);
+  return ExtensionPermissionsService.Instance.request(permissions);
 }
 
 export async function revokePermissions(
   permissions: chrome.runtime.ManifestPermissions[],
 ): Promise<boolean> {
-  return getExtensionPermissionsService().remove(permissions);
+  return ExtensionPermissionsService.Instance.remove(permissions);
 }
 
 export async function hasPermissions(

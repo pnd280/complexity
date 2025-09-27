@@ -4,19 +4,19 @@ import { defineProxy } from "comctx";
 import {
   backgroundProxyServiceName,
   QueryCacheServiceImpl,
-  type QueryCacheService,
+  type QueryCacheService as QueryCacheServiceType,
 } from "@/services/infra/query-client/indexed-db";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: QueryCacheService | undefined;
-let proxyServiceInstance: QueryCacheService | undefined;
+let rootServiceInstance: QueryCacheServiceType | undefined;
+let proxyServiceInstance: QueryCacheServiceType | undefined;
 
 const [registerService, getService] = defineProxy(getQueryCacheRootService, {
   namespace: backgroundProxyServiceName,
   backup: false,
 });
 
-export function getQueryCacheRootService(): QueryCacheService {
+function getQueryCacheRootService(): QueryCacheServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getQueryCacheProxyService instead.",
@@ -27,7 +27,7 @@ export function getQueryCacheRootService(): QueryCacheService {
   return rootServiceInstance;
 }
 
-export function getQueryCacheProxyService(): QueryCacheService {
+function getQueryCacheProxyService(): QueryCacheServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getQueryCacheRootService to access the non-proxied instance in background script.",
@@ -38,11 +38,19 @@ export function getQueryCacheProxyService(): QueryCacheService {
   return proxyServiceInstance;
 }
 
-export function getQueryCacheService(): QueryCacheService {
-  return isBackgroundScript()
-    ? getQueryCacheRootService()
-    : getQueryCacheProxyService();
-}
+export const QueryCacheService = {
+  get Root() {
+    return getQueryCacheRootService();
+  },
+  get Proxy() {
+    return getQueryCacheProxyService();
+  },
+  get Instance(): QueryCacheServiceType {
+    return isBackgroundScript()
+      ? (getQueryCacheRootService() as any)
+      : getQueryCacheProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

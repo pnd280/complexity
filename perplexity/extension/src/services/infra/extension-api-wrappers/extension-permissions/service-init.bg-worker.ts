@@ -3,12 +3,12 @@ import { defineProxy } from "comctx";
 
 import {
   backgroundProxyServiceName,
-  ExtensionPermissionsService,
+  ExtensionPermissionsService as ExtensionPermissionsServiceType,
 } from "@/services/infra/extension-api-wrappers/extension-permissions";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: typeof ExtensionPermissionsService | undefined;
-let proxyServiceInstance: typeof ExtensionPermissionsService | undefined;
+let rootServiceInstance: typeof ExtensionPermissionsServiceType | undefined;
+let proxyServiceInstance: typeof ExtensionPermissionsServiceType | undefined;
 
 const [registerService, getService] = defineProxy(
   getExtensionPermissionsRootService,
@@ -18,18 +18,18 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-export function getExtensionPermissionsRootService(): typeof ExtensionPermissionsService {
+function getExtensionPermissionsRootService(): typeof ExtensionPermissionsServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getExtensionPermissionsProxyService instead.",
   );
 
-  rootServiceInstance ??= ExtensionPermissionsService;
+  rootServiceInstance ??= ExtensionPermissionsServiceType;
 
   return rootServiceInstance;
 }
 
-export function getExtensionPermissionsProxyService(): typeof ExtensionPermissionsService {
+function getExtensionPermissionsProxyService(): typeof ExtensionPermissionsServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getExtensionPermissionsRootService to access the non-proxied instance in background script.",
@@ -40,11 +40,19 @@ export function getExtensionPermissionsProxyService(): typeof ExtensionPermissio
   return proxyServiceInstance;
 }
 
-export function getExtensionPermissionsService(): typeof ExtensionPermissionsService {
-  return isBackgroundScript()
-    ? getExtensionPermissionsRootService()
-    : getExtensionPermissionsProxyService();
-}
+export const ExtensionPermissionsService = {
+  get Root() {
+    return getExtensionPermissionsRootService();
+  },
+  get Proxy() {
+    return getExtensionPermissionsProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getExtensionPermissionsRootService()
+      : getExtensionPermissionsProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());

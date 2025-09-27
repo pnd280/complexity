@@ -1,4 +1,4 @@
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import type { AnchorSlice } from "@/plugins/slash-command/store/slices/anchor";
 import { createTextboxAdapter } from "@/plugins/slash-command/textbox-adapter";
 import { whereAmI } from "@/utils/misc/utils";
@@ -16,13 +16,13 @@ function isQueryBoxTextbox(
 
   if (
     target.matches(
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY,
+      DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY,
     )
   )
     return false;
 
   return Object.entries(
-    getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX,
+    DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX,
   ).some(([_, selector]) => target.matches(selector));
 }
 
@@ -32,9 +32,9 @@ function isEditQueryBoxTextbox(
   if (!mightBeTextbox(target)) return false;
 
   return target.matches(
-    `${getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.QUERY,
-    )} ${getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY}`,
+    `${DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.QUERY,
+    )} ${DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY}`,
   );
 }
 
@@ -72,7 +72,7 @@ export function getAnchor(
 > | null {
   if (isQueryBoxTextbox(target)) {
     const anchor = $(target).closest(
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
+      DomSelectorsService.Root.cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
     )[0];
 
     if (!anchor) return null;

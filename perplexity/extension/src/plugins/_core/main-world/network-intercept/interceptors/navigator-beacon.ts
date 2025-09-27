@@ -1,4 +1,4 @@
-import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import type { BeaconEventDataCatalog } from "@/plugins/_core/main-world/network-intercept/listeners.types";
 
 export function initBeaconInterceptor() {
@@ -12,14 +12,13 @@ export function initBeaconInterceptor() {
     const urlString = url.toString();
 
     const handleData = (stringData: string) => {
-      getNetworkInterceptMiddlewareManagerProxyService()
-        .executeMiddlewares({
-          data: {
-            type: "networkIntercept:beaconEvent",
-            event: "request",
-            payload: { url: urlString, data: stringData },
-          },
-        })
+      NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares({
+        data: {
+          type: "networkIntercept:beaconEvent",
+          event: "request",
+          payload: { url: urlString, data: stringData },
+        },
+      })
         .then((resp) => {
           const payload =
             resp.payload as BeaconEventDataCatalog["request"]["payload"];
@@ -35,7 +34,7 @@ export function initBeaconInterceptor() {
 
           const result = originalSendBeacon.call(navigator, url, data);
 
-          getNetworkInterceptMiddlewareManagerProxyService().noop({
+          NetworkInterceptMiddlewareManagerService.Proxy.noop({
             data: {
               type: "networkIntercept:beaconEvent",
               event: "response",
@@ -49,7 +48,7 @@ export function initBeaconInterceptor() {
         .catch(() => {
           const result = originalSendBeacon.call(navigator, url, data);
 
-          getNetworkInterceptMiddlewareManagerProxyService().noop({
+          NetworkInterceptMiddlewareManagerService.Proxy.noop({
             data: {
               type: "networkIntercept:beaconEvent",
               event: "response",

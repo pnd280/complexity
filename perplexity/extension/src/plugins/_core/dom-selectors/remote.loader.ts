@@ -1,5 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domSelectorsResourceConfig } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/index.remote-resources";
 import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
@@ -17,7 +17,7 @@ export default async function () {
     loader: async () => {
       const data = await getVersionedRemoteResource(domSelectorsResourceConfig);
 
-      getDomSelectorsRootService().remote = data;
+      DomSelectorsService.Root.remote = data;
 
       return data;
     },

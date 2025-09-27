@@ -5,7 +5,7 @@ import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observe
 import { findMessageBlocks } from "@/plugins/_core/dom-observers/thread/message-blocks/utils";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
 
@@ -57,14 +57,14 @@ function observeThreadMessageBlocks() {
       domObserverService.subscribe({
         id: createDomObserverId("thread", "messageBlocks"),
         selector: [
-          `${getDomSelectorsRootService().cplxAttribute(
-            getDomSelectorsRootService().internalAttributes.THREAD
+          `${DomSelectorsService.Root.cplxAttribute(
+            DomSelectorsService.Root.internalAttributes.THREAD
               .MESSAGE_BLOCKS_WRAPPER,
-          )} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.QUERY_WRAPPER} *`,
-          `${getDomSelectorsRootService().cplxAttribute(
-            getDomSelectorsRootService().internalAttributes.THREAD
+          )} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.QUERY_WRAPPER} *`,
+          `${DomSelectorsService.Root.cplxAttribute(
+            DomSelectorsService.Root.internalAttributes.THREAD
               .MESSAGE_BLOCKS_WRAPPER,
-          )} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.ANSWER} ${getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.ANSWER_TEXT_CONTENT} *`,
+          )} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER_TEXT_CONTENT} *`,
         ],
         onAdd: onMutation,
         onRemove: onMutation,

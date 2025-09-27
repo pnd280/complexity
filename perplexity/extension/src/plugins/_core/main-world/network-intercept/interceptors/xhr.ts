@@ -1,4 +1,4 @@
-import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 
 onlyMainWorldGuard();
 
@@ -20,7 +20,7 @@ export function initXhrInterceptor() {
     xhr.send = async function (data) {
       if (typeof data === "string") {
         const resp =
-          await getNetworkInterceptMiddlewareManagerProxyService().executeMiddlewares(
+          await NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares(
             {
               data: {
                 type: "networkIntercept:xhrEvent",
@@ -43,7 +43,7 @@ export function initXhrInterceptor() {
     };
 
     xhr.addEventListener("load", function () {
-      getNetworkInterceptMiddlewareManagerProxyService().noop({
+      NetworkInterceptMiddlewareManagerService.Proxy.noop({
         data: {
           type: "networkIntercept:xhrEvent",
           event: "response",

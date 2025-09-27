@@ -8,8 +8,8 @@ import {
 } from "@/plugins/_core/dom-observers/thread/observers";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
 import { shouldEnableCoreDomObserver } from "@/plugins/_core/dom-observers/utils";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
@@ -48,7 +48,7 @@ export default function () {
         interval: 50,
         timeout: 2000,
         condition: async () => {
-          return await getReactVdomService().isInitialized();
+          return await ReactVdomService.Instance.isInitialized();
         },
       });
 
@@ -115,8 +115,8 @@ function observeThread(location: ReturnType<typeof whereAmI>) {
     threadDomObserverStore.getState().resetStore();
 
     $(
-      getDomSelectorsRootService().cplxAttribute(
-        getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
+      DomSelectorsService.Root.cplxAttribute(
+        DomSelectorsService.Root.internalAttributes.THREAD.PAGE_WRAPPER,
       ),
     ).internalComponentAttr(null);
   }

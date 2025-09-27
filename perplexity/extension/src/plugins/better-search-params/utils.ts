@@ -1,6 +1,6 @@
 import { produce } from "immer";
 
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
@@ -34,7 +34,7 @@ export function setupTempInterceptor({
     return;
   }
 
-  getNetworkInterceptMiddlewareManagerRootService().addMiddleware({
+  NetworkInterceptMiddlewareManagerService.Root.addMiddleware({
     id: interceptorId,
     middlewareFn({ data, skip, stopPropagation }) {
       const isWSSend =
@@ -54,7 +54,7 @@ export function setupTempInterceptor({
 
       if (parsedData == null) return skip();
 
-      getNetworkInterceptMiddlewareManagerRootService().removeMiddleware(
+      NetworkInterceptMiddlewareManagerService.Root.removeMiddleware(
         interceptorId,
       );
 
@@ -90,7 +90,7 @@ export function setupTempInterceptor({
   });
 
   return () => {
-    getNetworkInterceptMiddlewareManagerRootService().removeMiddleware(
+    NetworkInterceptMiddlewareManagerService.Root.removeMiddleware(
       interceptorId,
     );
   };

@@ -1,11 +1,11 @@
 import { produce } from "immer";
 
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
 } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export const handleRewrite = ({
@@ -15,7 +15,7 @@ export const handleRewrite = ({
   selectedModel: LanguageModelCode;
   messageBlockIndex: number;
 }) => {
-  getNetworkInterceptMiddlewareManagerRootService().addMiddleware({
+  NetworkInterceptMiddlewareManagerService.Root.addMiddleware({
     id: "instant-rewrite-model-change",
     middlewareFn({ data, skip }) {
       const isWSSend =
@@ -39,7 +39,7 @@ export const handleRewrite = ({
 
       if (!isRetry) return skip();
 
-      getNetworkInterceptMiddlewareManagerRootService().removeMiddleware(
+      NetworkInterceptMiddlewareManagerService.Root.removeMiddleware(
         "instant-rewrite-model-change",
       );
 
@@ -60,12 +60,12 @@ export const handleRewrite = ({
   });
 
   setTimeout(() => {
-    getNetworkInterceptMiddlewareManagerRootService().removeMiddleware(
+    NetworkInterceptMiddlewareManagerService.Root.removeMiddleware(
       "instant-rewrite-model-change",
     );
   }, 1000);
 
-  getReactVdomService().triggerRewriteOption({
+  ReactVdomService.Instance.triggerRewriteOption({
     messageBlockIndex,
     optionIndex: 3,
   });

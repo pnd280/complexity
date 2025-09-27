@@ -1,9 +1,10 @@
 import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/_core/dom-observers/thread/message-blocks/remote-resources/index.remote-resources";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { type MessageBlockFiberData } from "@/plugins/_core/main-world/react-vdom/actions/thread-messages";
-import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+import { type DomSelectorsService as DomSelectorsServiceType } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const remoteFiberNodePath = (
@@ -21,9 +22,10 @@ export async function findMessageBlocks(
 
   if ($messageBlockElements.length === 0) return [];
 
-  const messageBlocksFiberData = await getReactVdomService().getThreadMessages(
-    remoteFiberNodePath ?? undefined,
-  );
+  const messageBlocksFiberData =
+    await ReactVdomService.Instance.getThreadMessages(
+      remoteFiberNodePath ?? undefined,
+    );
 
   const nodes = $messageBlockElements.toArray();
   const result: MessageBlock[] = [];
@@ -56,7 +58,7 @@ function parseMessageBlock({
 
   $wrapper
     .internalComponentAttr(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE.BLOCK,
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.BLOCK,
     )
     .attr("data-index", index);
 
@@ -76,7 +78,7 @@ function parseMessageBlock({
     title:
       messageBlockFiber?.title ??
       $query
-        .find(getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.QUERY)
+        .find(DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.QUERY)
         .text(),
     answer: messageBlockFiber?.answer ?? "",
     webResults: messageBlockFiber?.webResults ?? [],
@@ -109,7 +111,7 @@ function getComponentNodes({
   $wrapper: JQuery<Element>;
   index: number;
 }) {
-  const SELECTORS = getDomSelectorsRootService().cachedSync.THREAD.MESSAGE;
+  const SELECTORS = DomSelectorsService.Root.cachedSync.THREAD.MESSAGE;
   const existingNodes = getExistingNodes(index);
 
   const nodes = existingNodes
@@ -133,9 +135,7 @@ function isNodeStale($node: JQuery<Element>): boolean {
 function refreshStaleNodes(
   existingNodes: MessageBlock["nodes"],
   $wrapper: JQuery<Element>,
-  SELECTORS: ReturnType<
-    typeof getDomSelectorsRootService
-  >["cachedSync"]["THREAD"]["MESSAGE"],
+  SELECTORS: DomSelectorsServiceType["cachedSync"]["THREAD"]["MESSAGE"],
 ) {
   const nodes = { ...existingNodes };
 
@@ -166,9 +166,7 @@ function refreshStaleNodes(
 
 function findFreshNodes(
   $wrapper: JQuery<Element>,
-  SELECTORS: ReturnType<
-    typeof getDomSelectorsRootService
-  >["cachedSync"]["THREAD"]["MESSAGE"],
+  SELECTORS: DomSelectorsServiceType["cachedSync"]["THREAD"]["MESSAGE"],
 ): MessageBlock["nodes"] {
   const $elements = $wrapper.find(
     [
@@ -197,7 +195,7 @@ function findFreshNodes(
 
 function setInternalAttributes(nodes: MessageBlock["nodes"]) {
   const internalAttrs =
-    getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE;
+    DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE;
 
   nodes.$query.internalComponentAttr(internalAttrs.QUERY);
   nodes.$queryEditButtonGroup.internalComponentAttr(
@@ -226,7 +224,7 @@ function getMessageBlockStates({
 
   const isEditingQuery =
     $query.find(
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY,
+      DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.EDIT_QUERY,
     ).length > 0;
 
   const existingReadOnlyAttr = $wrapper.attr("data-read-only");
@@ -240,7 +238,7 @@ function getMessageBlockStates({
 
   const isQueryEditButtonGroupPresent =
     $query.find(
-      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE
+      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE
         .QUERY_EDIT_BUTTON_GROUP,
     ).length > 0;
 

@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
 import styles from "@/plugins/drag-n-drop-file-to-upload-in-thread/styles.css?inline";
 import { insertCss } from "@/utils/dom-utils/generics";
@@ -41,14 +41,14 @@ export default function loader() {
           if (
             !$wrapper.length ||
             $wrapper.attr(
-              getDomSelectorsRootService().internalAttributes.THREAD
+              DomSelectorsService.Root.internalAttributes.THREAD
                 .ATTACHMENT_DROP_ZONE,
             ) === "true"
           )
             return;
 
           $wrapper.attr(
-            getDomSelectorsRootService().internalAttributes.THREAD
+            DomSelectorsService.Root.internalAttributes.THREAD
               .ATTACHMENT_DROP_ZONE,
             "true",
           );
@@ -59,7 +59,7 @@ export default function loader() {
           });
 
           $overlay = $(`
-        <div data-cplx-component="${getDomSelectorsRootService().internalAttributes.THREAD.ATTACHMENT_DROP_ZONE}" class="cplx-file-upload-overlay">
+        <div data-cplx-component="${DomSelectorsService.Root.internalAttributes.THREAD.ATTACHMENT_DROP_ZONE}" class="cplx-file-upload-overlay">
           <div class="cplx-file-upload-overlay__content">
             <div>${t("plugin-drag-n-drop-file-to-upload-in-thread.dropZone.message")}</div>
           </div>

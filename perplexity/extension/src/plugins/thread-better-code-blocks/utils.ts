@@ -1,5 +1,5 @@
 import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 import { queryClient } from "@/services/infra/query-client";
@@ -15,7 +15,7 @@ export function createMirroredPortalContainer(
   if (
     $existingPortalContainer[0] &&
     $existingPortalContainer.internalComponentAttr() ===
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE
         .MIRRORED_CODE_BLOCK
   ) {
     return $existingPortalContainer[0];
@@ -23,7 +23,7 @@ export function createMirroredPortalContainer(
 
   const $portalContainer = $("<div>")
     .internalComponentAttr(
-      getDomSelectorsRootService().internalAttributes.THREAD.MESSAGE
+      DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE
         .MIRRORED_CODE_BLOCK,
     )
     .attr({

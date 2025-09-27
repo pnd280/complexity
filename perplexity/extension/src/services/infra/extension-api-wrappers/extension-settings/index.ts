@@ -1,8 +1,8 @@
 import { produce } from "immer";
 import z from "zod";
 
-import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
-import { getExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
+import { ExtensionSettingsStorageService as ExtensionSettingsStorageServiceStatic } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
+import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 import {
   ExtensionSettingsSchema,
   type ExtensionSettings,
@@ -24,7 +24,7 @@ export class ExtensionSettingsService {
       "This method is only allowed to be called once in a content script",
     );
 
-    const value = await getExtensionSettingsStorageService().getValue();
+    const value = await ExtensionSettingsStorageService.Instance.getValue();
 
     const validationResult = ExtensionSettingsSchema.safeParse(value);
 
@@ -37,12 +37,12 @@ export class ExtensionSettingsService {
       const merged = safeMerge(
         ExtensionSettingsSchema,
         value,
-        ExtensionSettingsStorageService.storageItem.fallback,
+        ExtensionSettingsStorageServiceStatic.storageItem.fallback,
       );
 
       ExtensionSettingsService.cachedValue = merged;
 
-      await getExtensionSettingsStorageService().setValue(merged);
+      await ExtensionSettingsStorageService.Instance.setValue(merged);
 
       return merged;
     }
@@ -63,7 +63,7 @@ export class ExtensionSettingsService {
       "This method is only allowed in content scripts",
     );
 
-    return await getExtensionSettingsStorageService().getValue();
+    return await ExtensionSettingsStorageService.Instance.getValue();
   }
 
   public static get safeCachedSync(): ExtensionSettings | null {
@@ -99,7 +99,7 @@ export class ExtensionSettingsService {
       updater,
     );
 
-    await getExtensionSettingsStorageService().setValue(newSettings);
+    await ExtensionSettingsStorageService.Instance.setValue(newSettings);
 
     return newSettings;
   }
@@ -108,8 +108,8 @@ export class ExtensionSettingsService {
    * Resets the extension settings to default values
    */
   public static async reset() {
-    await getExtensionSettingsStorageService().setValue(
-      ExtensionSettingsStorageService.storageItem.fallback,
+    await ExtensionSettingsStorageService.Instance.setValue(
+      ExtensionSettingsStorageServiceStatic.storageItem.fallback,
     );
   }
 }

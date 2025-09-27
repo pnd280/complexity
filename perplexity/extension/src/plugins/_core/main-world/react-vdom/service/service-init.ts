@@ -3,21 +3,21 @@ import { defineProxy } from "comctx";
 import {
   mainWorldProxyServiceName,
   ReactVdomServiceImpl,
-  type ReactVdomService,
+  type ReactVdomService as ReactVdomServiceType,
 } from "@/plugins/_core/main-world/react-vdom/service";
 import { isInContentScript } from "@/utils/misc/utils";
 import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
 import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
-let rootServiceInstance: ReactVdomService | undefined;
-let proxyServiceInstance: ReactVdomService | undefined;
+let rootServiceInstance: ReactVdomServiceType | undefined;
+let proxyServiceInstance: ReactVdomServiceType | undefined;
 
 const [registerService, getService] = defineProxy(getReactVdomRootService, {
   namespace: mainWorldProxyServiceName,
   backup: false,
 });
 
-export function getReactVdomRootService(): ReactVdomService {
+function getReactVdomRootService(): ReactVdomServiceType {
   invariant(
     isInContentScript() && isMainWorldContext(),
     "This method is only allowed in main world, use getReactVdomProxyService instead.",
@@ -28,7 +28,7 @@ export function getReactVdomRootService(): ReactVdomService {
   return rootServiceInstance;
 }
 
-export function getReactVdomProxyService(): ComctxProxy<ReactVdomService> {
+function getReactVdomProxyService(): ComctxProxy<ReactVdomServiceType> {
   invariant(
     !isMainWorldContext(),
     "Use getReactVdomRootService to access the non-proxied instance in main world.",
@@ -38,14 +38,22 @@ export function getReactVdomProxyService(): ComctxProxy<ReactVdomService> {
     getDocumentAdapter(`complexity:${mainWorldProxyServiceName}`),
   );
 
-  return proxyServiceInstance as unknown as ComctxProxy<ReactVdomService>;
+  return proxyServiceInstance as unknown as ComctxProxy<ReactVdomServiceType>;
 }
 
-export function getReactVdomService(): ComctxProxy<ReactVdomService> {
-  return isMainWorldContext()
-    ? (getReactVdomRootService() as any)
-    : getReactVdomProxyService();
-}
+export const ReactVdomService = {
+  get Root() {
+    return getReactVdomRootService();
+  },
+  get Proxy() {
+    return getReactVdomProxyService();
+  },
+  get Instance(): ComctxProxy<ReactVdomServiceType> {
+    return isMainWorldContext()
+      ? (getReactVdomRootService() as any)
+      : getReactVdomProxyService();
+  },
+};
 
 export default function registerProxyService() {
   registerService(

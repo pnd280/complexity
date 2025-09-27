@@ -1,5 +1,5 @@
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 
 export default function useObserver() {
   const $overflowMenuButtonWrapper = useThreadDomObserverStore(
@@ -10,8 +10,8 @@ export default function useObserver() {
   return useMemo(() => {
     if ($overflowMenuButtonWrapper == null || !$overflowMenuButtonWrapper[0]) {
       $(
-        getDomSelectorsRootService().cplxAttribute(
-          getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR_CHILD
+        DomSelectorsService.Root.cplxAttribute(
+          DomSelectorsService.Root.internalAttributes.THREAD.NAVBAR_CHILD
             .EXPORT_THREAD_BUTTON,
         ),
       ).remove();
@@ -22,8 +22,8 @@ export default function useObserver() {
     const $wrapper = $($overflowMenuButtonWrapper[0]).parent();
 
     const $existingPortalContainer = $wrapper.find(
-      getDomSelectorsRootService().cplxAttribute(
-        getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR_CHILD
+      DomSelectorsService.Root.cplxAttribute(
+        DomSelectorsService.Root.internalAttributes.THREAD.NAVBAR_CHILD
           .EXPORT_THREAD_BUTTON,
       ),
     );
@@ -31,7 +31,7 @@ export default function useObserver() {
     if ($existingPortalContainer.length) return $existingPortalContainer[0];
 
     const $portalContainer = $("<div>").internalComponentAttr(
-      getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR_CHILD
+      DomSelectorsService.Root.internalAttributes.THREAD.NAVBAR_CHILD
         .EXPORT_THREAD_BUTTON,
     );
 

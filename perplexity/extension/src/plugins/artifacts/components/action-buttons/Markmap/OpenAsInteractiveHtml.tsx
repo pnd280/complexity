@@ -3,7 +3,7 @@ import { LuExternalLink } from "react-icons/lu";
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
-import { getMarkmapRendererService } from "@/plugins/_core/main-world/markmap-renderer/service/service-init";
+import { MarkmapRendererService } from "@/plugins/_core/main-world/markmap-renderer/service/service-init";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 
 export default function OpenAsInteractiveHtml() {
@@ -24,7 +24,7 @@ export default function OpenAsInteractiveHtml() {
         onClick={async () => {
           if (!selectedCodeBlock.content.code) return;
 
-          await getMarkmapRendererService().openAsInteractiveHtml({
+          await MarkmapRendererService.Instance.openAsInteractiveHtml({
             content: selectedCodeBlock.content.code,
           });
         }}

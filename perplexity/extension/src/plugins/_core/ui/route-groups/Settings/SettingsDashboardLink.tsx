@@ -3,8 +3,8 @@ import FaArrowUpRight from "@/components/icons/FaArrowUpRight";
 import { Portal } from "@/components/ui/portal";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import { useSettingsPageDomObserverStore } from "@/plugins/_core/dom-observers/settings-page/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { ContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
 
 export function SettingsDashboardLink() {
   const isMobile = useIsMobileStore((store) => store.isMobile);
@@ -22,8 +22,8 @@ export function SettingsDashboardLink() {
     if (!$sidebarWrapper.length) return null;
 
     const $existingContainer = $(sidebarWrapper).find(
-      getDomSelectorsRootService().cplxAttribute(
-        getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
+      DomSelectorsService.Root.cplxAttribute(
+        DomSelectorsService.Root.internalAttributes.SETTINGS_PAGE
           .CPLX_DASHBOARD_LINK,
       ),
     );
@@ -32,12 +32,12 @@ export function SettingsDashboardLink() {
 
     const $portalContainer = $("<div>")
       .internalComponentAttr(
-        getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
+        DomSelectorsService.Root.internalAttributes.SETTINGS_PAGE
           .CPLX_DASHBOARD_LINK,
       )
       .insertAfter(
         $(sidebarWrapper).find(
-          getDomSelectorsRootService().cachedSync.SETTINGS_PAGE.SIDEBAR_CHILD
+          DomSelectorsService.Root.cachedSync.SETTINGS_PAGE.SIDEBAR_CHILD
             .BACK_BUTTON,
         ),
       );
@@ -52,7 +52,7 @@ export function SettingsDashboardLink() {
       <div
         className="x:mx-3 x:flex x:cursor-pointer x:items-center x:justify-start x:gap-1 x:rounded-lg x:px-3 x:py-2 x:text-sm x:font-medium x:text-foreground x:transition-all x:hover:bg-primary-foreground"
         onClick={() => {
-          getContentScriptBgUtilsService().openOptionsPage();
+          ContentScriptBgUtilsService.Instance.openOptionsPage();
         }}
       >
         <div className="x:flex x:items-center x:gap-1.5">

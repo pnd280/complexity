@@ -3,7 +3,7 @@ import { LuX } from "react-icons/lu";
 
 import { useEvent } from "@/hooks/useEvent";
 import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import FloatingToggle from "@/plugins/thread-toc/FloatingToggle";
 import TocItem from "@/plugins/thread-toc/TocItem";
 import { useHandleTouch } from "@/plugins/thread-toc/useHandleTouch";
@@ -99,9 +99,9 @@ export function ThreadToc() {
               item={item}
               onClick={() => {
                 const $element = $(
-                  `${getDomSelectorsRootService().cplxAttribute(
-                    getDomSelectorsRootService().internalAttributes.THREAD
-                      .MESSAGE.BLOCK,
+                  `${DomSelectorsService.Root.cplxAttribute(
+                    DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE
+                      .BLOCK,
                   )}[data-index="${item.id}"]`,
                 );
                 if ($element.length)
@@ -109,9 +109,9 @@ export function ThreadToc() {
               }}
               onContextMenu={() => {
                 const $element = $(
-                  `${getDomSelectorsRootService().cplxAttribute(
-                    getDomSelectorsRootService().internalAttributes.THREAD
-                      .MESSAGE.BLOCK,
+                  `${DomSelectorsService.Root.cplxAttribute(
+                    DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE
+                      .BLOCK,
                   )}[data-index="${item.id}"]`,
                 );
                 if ($element.length && $element.height() != null)

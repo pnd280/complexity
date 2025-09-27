@@ -1,5 +1,5 @@
 import { InstantCssService } from "@/services/features/instant-css";
-import { getInstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
+import { InstantCssInjectorService } from "@/services/features/instant-css/injector/service-init.bg-worker";
 
 export default function () {
   hanlder();
@@ -9,8 +9,8 @@ export default function () {
 
 async function hanlder() {
   if (await InstantCssService.hasPermissions()) {
-    getInstantCssInjectorService().registerListeners();
+    InstantCssInjectorService.Instance.registerListeners();
   } else {
-    getInstantCssInjectorService().removeListeners();
+    InstantCssInjectorService.Instance.removeListeners();
   }
 }

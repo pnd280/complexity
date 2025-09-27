@@ -1,6 +1,6 @@
 import { produce } from "immer";
 
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { pplxCookiesStore } from "@/plugins/_core/global-stores/pplx-cookies-store";
 import type { QueryBoxType } from "@/plugins/_core/ui/groups/query-box/types";
 import type {
@@ -24,29 +24,29 @@ export function createToolbarPortalContainers({
   };
 } {
   const $queryBoxComponentsWrapper = $(queryBoxWrapper).find(
-    getDomSelectorsRootService().cachedSync.QUERY_BOX.ATTR_WRAPPER,
+    DomSelectorsService.Root.cachedSync.QUERY_BOX.ATTR_WRAPPER,
   );
 
   $queryBoxComponentsWrapper.internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
+    DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
       .COMPONENTS_WRAPPER,
   );
 
   // --- Left Toolbar ---
   const $pplxLeftToolbarWrapper = $queryBoxComponentsWrapper.find(
-    getDomSelectorsRootService().cachedSync.QUERY_BOX.ATTR_WRAPPER_CHILD
+    DomSelectorsService.Root.cachedSync.QUERY_BOX.ATTR_WRAPPER_CHILD
       .LEFT_ATTR_WRAPPER,
   );
 
   $pplxLeftToolbarWrapper.internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
+    DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
       .PPLX_LEFT_TOOLBAR_COMPONENTS_WRAPPER,
   );
 
   const $leftToolbarLeftContainer = findOrCreateContainer({
     $parentElement: $pplxLeftToolbarWrapper,
     internalAttribute:
-      getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
+      DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
         .CPLX_LEFT_TOOLBAR_COMPONENTS_LEFT_WRAPPER,
     position: "prepend",
   });
@@ -54,26 +54,26 @@ export function createToolbarPortalContainers({
   const $leftToolbarRightContainer = findOrCreateContainer({
     $parentElement: $pplxLeftToolbarWrapper,
     internalAttribute:
-      getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
+      DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
         .CPLX_LEFT_TOOLBAR_COMPONENTS_RIGHT_WRAPPER,
     position: "append",
   });
 
   // --- Right Toolbar ---
   const $pplxRightToolbarWrapper = $queryBoxComponentsWrapper.find(
-    getDomSelectorsRootService().cachedSync.QUERY_BOX.ATTR_WRAPPER_CHILD
+    DomSelectorsService.Root.cachedSync.QUERY_BOX.ATTR_WRAPPER_CHILD
       .RIGHT_ATTR_WRAPPER,
   );
 
   $pplxRightToolbarWrapper.internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
+    DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
       .PPLX_RIGHT_TOOLBAR_COMPONENTS_WRAPPER,
   );
 
   const $rightToolbarLeftContainer = findOrCreateContainer({
     $parentElement: $pplxRightToolbarWrapper,
     internalAttribute:
-      getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
+      DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
         .CPLX_RIGHT_TOOLBAR_COMPONENTS_LEFT_WRAPPER,
     position: "prepend",
   });
@@ -103,8 +103,7 @@ function findOrCreateContainer({
     return null;
   }
 
-  const selector =
-    getDomSelectorsRootService().cplxAttribute(internalAttribute);
+  const selector = DomSelectorsService.Root.cplxAttribute(internalAttribute);
   const $existingContainer = $parentElement.find(selector);
 
   if ($existingContainer.length) {
@@ -131,16 +130,16 @@ export function getActiveQueryBoxTextbox({
 } = {}): JQuery<HTMLTextAreaElement> {
   if (!type)
     return $(
-      `${getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,
+      `${DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,
     );
 
   const selectorMap: Record<QueryBoxType, string> = {
-    main: getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.MAIN,
-    space: getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.SPACE,
+    main: DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.MAIN,
+    space: DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.SPACE,
     "follow-up":
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.FOLLOW_UP,
+      DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.FOLLOW_UP,
     "comet-assistant":
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.TEXTBOX.COMET_ASSISTANT,
+      DomSelectorsService.Root.cachedSync.QUERY_BOX.TEXTBOX.COMET_ASSISTANT,
   };
 
   return $(selectorMap[type]);
@@ -150,9 +149,7 @@ export function getActiveQueryBox({ type }: { type?: QueryBoxType } = {}) {
   return getActiveQueryBoxTextbox({
     type,
   })
-    .parents(
-      getDomSelectorsRootService().cachedSync.QUERY_BOX.WRAPPER.ARBITRARY,
-    )
+    .parents(DomSelectorsService.Root.cachedSync.QUERY_BOX.WRAPPER.ARBITRARY)
     .first();
 }
 

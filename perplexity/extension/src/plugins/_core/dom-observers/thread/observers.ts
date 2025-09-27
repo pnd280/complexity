@@ -1,19 +1,19 @@
 import { isMobileStore } from "@/hooks/use-is-mobile-store";
 import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 
 export function observePageWrapper({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({
     id: observerId,
-    selector: getDomSelectorsRootService().cachedSync.THREAD.PAGE_WRAPPER,
+    selector: DomSelectorsService.Root.cachedSync.THREAD.PAGE_WRAPPER,
     onAdd: (node) => {
       const $pageWrapper = $(node as HTMLElement);
 
       if (!$pageWrapper.length) return;
 
       $pageWrapper.internalComponentAttr(
-        getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
+        DomSelectorsService.Root.internalAttributes.THREAD.PAGE_WRAPPER,
       );
 
       threadDomObserverStore.setState({
@@ -32,14 +32,14 @@ export function observePageWrapper({ observerId }: { observerId: string }) {
 export function observeNavbar({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({
     id: observerId,
-    selector: getDomSelectorsRootService().cachedSync.THREAD.NAVBAR,
+    selector: DomSelectorsService.Root.cachedSync.THREAD.NAVBAR,
     onAdd: (node) => {
       const $navbar = $(node as HTMLElement);
 
       if (!$navbar.length) return;
 
       $navbar.internalComponentAttr(
-        getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR,
+        DomSelectorsService.Root.internalAttributes.THREAD.NAVBAR,
       );
 
       threadDomObserverStore.setState({
@@ -62,8 +62,8 @@ export function observeNavbarOverflowMenuButtonWrapper({
 }) {
   return domObserverService.subscribe({
     id: observerId,
-    selector: `${getDomSelectorsRootService().cachedSync.THREAD.NAVBAR} ${
-      getDomSelectorsRootService().cachedSync.SICKY_NAVBAR_CHILD
+    selector: `${DomSelectorsService.Root.cachedSync.THREAD.NAVBAR} ${
+      DomSelectorsService.Root.cachedSync.SICKY_NAVBAR_CHILD
         .OVERFLOW_MENU_BUTTON_WRAPPER
     }`,
     onAdd: (node) => {
@@ -72,7 +72,7 @@ export function observeNavbarOverflowMenuButtonWrapper({
       if (!$overflowMenuButtonWrapper.length) return;
 
       $overflowMenuButtonWrapper.internalComponentAttr(
-        getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR_CHILD
+        DomSelectorsService.Root.internalAttributes.THREAD.NAVBAR_CHILD
           .OVERFLOW_MENU_BUTTON_WRAPPER,
       );
 
@@ -92,14 +92,14 @@ export function observeNavbarOverflowMenuButtonWrapper({
 export function observeWrapper({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({
     id: observerId,
-    selector: getDomSelectorsRootService().cachedSync.THREAD.WRAPPER,
+    selector: DomSelectorsService.Root.cachedSync.THREAD.WRAPPER,
     onAdd: (node) => {
       const $wrapper = $(node as HTMLElement);
 
       if (!$wrapper.length) return;
 
       $wrapper.internalComponentAttr(
-        getDomSelectorsRootService().internalAttributes.THREAD.WRAPPER,
+        DomSelectorsService.Root.internalAttributes.THREAD.WRAPPER,
       );
 
       threadDomObserverStore.setState({
@@ -123,16 +123,16 @@ export function observeMessageBlocksWrapper({
   const isMobile = isMobileStore.getState().isMobile;
 
   let selector = isMobile
-    ? getDomSelectorsRootService().cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER
-        .MOBILE.NORMAL
-    : getDomSelectorsRootService().cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER
-        .DESKTOP.NORMAL;
+    ? DomSelectorsService.Root.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.MOBILE
+        .NORMAL
+    : DomSelectorsService.Root.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.DESKTOP
+        .NORMAL;
 
   if (!selector.length) {
     selector = isMobile
-      ? getDomSelectorsRootService().cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER
-          .MOBILE.BRANCHED
-      : getDomSelectorsRootService().cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER
+      ? DomSelectorsService.Root.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.MOBILE
+          .BRANCHED
+      : DomSelectorsService.Root.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER
           .DESKTOP.BRANCHED;
   }
 
@@ -145,7 +145,7 @@ export function observeMessageBlocksWrapper({
       if (!$messageBlocksWrapper.length) return;
 
       $messageBlocksWrapper.internalComponentAttr(
-        getDomSelectorsRootService().internalAttributes.THREAD
+        DomSelectorsService.Root.internalAttributes.THREAD
           .MESSAGE_BLOCKS_WRAPPER,
       );
 

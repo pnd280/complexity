@@ -4,7 +4,7 @@ import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
-import { getMermaidRendererService } from "@/plugins/_core/main-world/mermaid-renderer/service/service-init";
+import { MermaidRendererService } from "@/plugins/_core/main-world/mermaid-renderer/service/service-init";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 
 export default function MermaidOpenInPlayground() {
@@ -25,7 +25,7 @@ export default function MermaidOpenInPlayground() {
         onClick={async () => {
           if (!selectedCodeBlock.content.code) return;
 
-          const url = await getMermaidRendererService().getPlaygroundUrl(
+          const url = await MermaidRendererService.Instance.getPlaygroundUrl(
             selectedCodeBlock.content.code,
           );
 

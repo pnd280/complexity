@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { toast } from "@/components/ui/use-toast";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
@@ -109,7 +109,7 @@ async function copyMessageWithCitations({
     if (!$footer || !$footer.length) return;
 
     const $copyButton = $footer.find(
-      getDomSelectorsRootService().cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
         .COPY_BUTTON,
     );
 

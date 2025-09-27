@@ -1,5 +1,5 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { getNetworkInterceptMiddlewareManagerRootService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import { parseWebSocketData } from "@/plugins/_core/main-world/network-intercept/web-socket-message-parser";
 
 declare module "@/plugins/_core/async-dep-registry" {
@@ -14,7 +14,7 @@ export default function loader() {
     dependencies: ["cache:pluginsStates"],
     loader: ({ "cache:pluginsStates": pluginsStates }) => {
       if (pluginsStates?.blockAnalyticEvents === true)
-        getNetworkInterceptMiddlewareManagerRootService().addMiddleware({
+        NetworkInterceptMiddlewareManagerService.Root.addMiddleware({
           id: "block-analytic-events",
           priority: { position: "first" },
           middlewareFn({ data, stopPropagation, skip }) {

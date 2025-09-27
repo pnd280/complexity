@@ -1,11 +1,11 @@
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 
 export function useCreatePortalContainer(wrapper: HTMLElement | null) {
   if (!wrapper) return null;
 
   const $existingPortalContainer = $(
-    getDomSelectorsRootService().cplxAttribute(
-      getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
+    DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
         .COMET_ASSISTANT,
     ),
   );
@@ -13,15 +13,14 @@ export function useCreatePortalContainer(wrapper: HTMLElement | null) {
   if ($existingPortalContainer[0]) return $existingPortalContainer[0];
 
   const $target = $(wrapper).find(
-    getDomSelectorsRootService().cachedSync.QUERY_BOX.ATTR_WRAPPER_CHILD
+    DomSelectorsService.Root.cachedSync.QUERY_BOX.ATTR_WRAPPER_CHILD
       .COMET_ASSISTANT,
   );
 
   if (!$target.length) return null;
 
   const $container = $("<div>").internalComponentAttr(
-    getDomSelectorsRootService().internalAttributes.QUERY_BOX_CHILD
-      .COMET_ASSISTANT,
+    DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD.COMET_ASSISTANT,
   );
 
   $target.prepend($container);

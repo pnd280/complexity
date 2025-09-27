@@ -1,4 +1,4 @@
-import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 
 const capturedInstances: Set<WebSocket> = new Set();
 const webSocketOriginalSend = WebSocket.prototype.send;
@@ -18,7 +18,7 @@ function proxyWebSocketInstance(instance: WebSocket) {
   const originalMessage = instance.onmessage;
   instance.onmessage = (event: MessageEvent) => {
     if (typeof event.data === "string") {
-      getNetworkInterceptMiddlewareManagerProxyService().noop({
+      NetworkInterceptMiddlewareManagerService.Proxy.noop({
         data: {
           type: "networkIntercept:webSocketEvent",
           event: "message",
@@ -39,7 +39,7 @@ function passivelyCaptureWebSocket() {
 
     if (typeof data === "string") {
       const resp =
-        await getNetworkInterceptMiddlewareManagerProxyService().executeMiddlewares(
+        await NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares(
           {
             data: {
               type: "networkIntercept:webSocketEvent",

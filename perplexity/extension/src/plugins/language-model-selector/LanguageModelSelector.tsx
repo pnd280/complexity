@@ -2,7 +2,7 @@ import { createListCollection } from "@ark-ui/react";
 
 import { Select, SelectContext, SelectTrigger } from "@/components/ui/select";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
-import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
 import {
   ScopedQueryBoxContext,
@@ -48,7 +48,7 @@ export function LanguageModelSelector() {
         itemToValue: (item) => item.id,
       })}
       data-testid={
-        getDomSelectorsRootService().testIds.QUERY_BOX.LANGUAGE_MODEL_SELECTOR
+        DomSelectorsService.Root.testIds.QUERY_BOX.LANGUAGE_MODEL_SELECTOR
       }
       open={isOpen}
       value={[selectedLanguageModel]}

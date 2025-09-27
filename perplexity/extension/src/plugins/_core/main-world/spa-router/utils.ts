@@ -1,7 +1,7 @@
 import { useStoreWithEqualityFn } from "zustand/traditional";
 
 import { locationWaits } from "@/plugins/_core/main-world/spa-router/location-waits";
-import { getSpaRouterService } from "@/plugins/_core/main-world/spa-router/service/service-init";
+import { SpaRouterService } from "@/plugins/_core/main-world/spa-router/service/service-init";
 import {
   spaRouterStore,
   type SpaRouterStore,
@@ -46,11 +46,11 @@ export async function waitForRouteChangeComplete(
 }
 
 export async function softNavigate(url: string) {
-  getSpaRouterService().push(url);
+  SpaRouterService.Instance.push(url);
 }
 
 export async function openInNewTab(url: string) {
-  getSpaRouterService().openInNewTab(url);
+  SpaRouterService.Instance.openInNewTab(url);
 }
 
 export const spaRouterStoreSubscribe = spaRouterStore.subscribe;

@@ -1,4 +1,4 @@
-import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
 import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export function initFetchInterceptor() {
@@ -36,15 +36,13 @@ export function initFetchInterceptor() {
 
 async function interceptRequest(input: RequestInfo | URL, body: string) {
   const resp =
-    await getNetworkInterceptMiddlewareManagerProxyService().executeMiddlewares(
-      {
-        data: {
-          type: "networkIntercept:fetchEvent",
-          event: "request",
-          payload: { url: constructUrl(input), data: body },
-        },
+    await NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares({
+      data: {
+        type: "networkIntercept:fetchEvent",
+        event: "request",
+        payload: { url: constructUrl(input), data: body },
       },
-    );
+    });
 
   return resp.payload.data;
 }
@@ -119,7 +117,7 @@ async function handleRegularResponse(response: Response, url: string) {
 }
 
 async function log(url: string, status: number, data: string) {
-  getNetworkInterceptMiddlewareManagerProxyService().noop({
+  NetworkInterceptMiddlewareManagerService.Proxy.noop({
     data: {
       type: "networkIntercept:fetchEvent",
       event: "response",

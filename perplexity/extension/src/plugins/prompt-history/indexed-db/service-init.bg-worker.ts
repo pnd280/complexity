@@ -4,19 +4,19 @@ import { defineProxy } from "comctx";
 import {
   backgroundProxyServiceName,
   PromptHistoryServiceImpl,
-  type PromptHistoryService,
+  type PromptHistoryService as PromptHistoryServiceType,
 } from "@/plugins/prompt-history/indexed-db";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: PromptHistoryService | undefined;
-let proxyServiceInstance: PromptHistoryService | undefined;
+let rootServiceInstance: PromptHistoryServiceType | undefined;
+let proxyServiceInstance: PromptHistoryServiceType | undefined;
 
 const [registerService, getService] = defineProxy(getPromptHistoryRootService, {
   namespace: backgroundProxyServiceName,
   backup: false,
 });
 
-export function getPromptHistoryRootService(): PromptHistoryService {
+function getPromptHistoryRootService(): PromptHistoryServiceType {
   invariant(
     isBackgroundScript(),
     "This method is only allowed in background script, use getPromptHistoryProxyService instead.",
@@ -27,7 +27,7 @@ export function getPromptHistoryRootService(): PromptHistoryService {
   return rootServiceInstance;
 }
 
-export function getPromptHistoryProxyService(): PromptHistoryService {
+function getPromptHistoryProxyService(): PromptHistoryServiceType {
   invariant(
     !isBackgroundScript(),
     "Use getPromptHistoryRootService to access the non-proxied instance in background script.",
@@ -38,11 +38,19 @@ export function getPromptHistoryProxyService(): PromptHistoryService {
   return proxyServiceInstance;
 }
 
-export function getPromptHistoryService(): PromptHistoryService {
-  return isBackgroundScript()
-    ? getPromptHistoryRootService()
-    : getPromptHistoryProxyService();
-}
+export const PromptHistoryService = {
+  get Root() {
+    return getPromptHistoryRootService();
+  },
+  get Proxy() {
+    return getPromptHistoryProxyService();
+  },
+  get Instance() {
+    return isBackgroundScript()
+      ? getPromptHistoryRootService()
+      : getPromptHistoryProxyService();
+  },
+};
 
 export default function () {
   registerService(new BrowserRuntimeAdapter());
