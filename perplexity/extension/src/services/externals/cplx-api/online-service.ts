@@ -10,7 +10,7 @@ import {
   fetchResourceWithSchema,
   getUrl,
 } from "@/services/externals/cplx-api/utils";
-import { fetchTextResource } from "@/utils/utils";
+import { fetchTextResource } from "@/utils/misc/utils";
 export class CplxApiOnlineService implements ICplxApiService {
   async fetchChangelog({ version }: { version?: string } = {}) {
     const targetVersion = version ?? APP_CONFIG.VERSION;

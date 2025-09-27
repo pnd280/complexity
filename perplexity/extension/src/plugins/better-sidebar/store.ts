@@ -2,7 +2,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
-import { getCookie } from "@/utils/utils";
+import { getCookie } from "@/utils/dom-utils/generics";
 
 export type BetterSidebarStoreType = {
   open: boolean;

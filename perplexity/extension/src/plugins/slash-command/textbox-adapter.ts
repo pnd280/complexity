@@ -1,8 +1,8 @@
 import { isLexical } from "@/plugins/_core/ui/groups/query-box/utils";
 import { slashCommandMenuStore } from "@/plugins/slash-command/store";
-import * as lexicalUtils from "@/utils/lexical-utils";
-import * as textareaUtils from "@/utils/textarea-utils";
-import { UiUtils } from "@/utils/ui-utils";
+import { scrollIntoCaretView } from "@/utils/dom-utils/generics";
+import * as lexicalUtils from "@/utils/dom-utils/lexical-utils";
+import * as textareaUtils from "@/utils/dom-utils/textarea-utils";
 
 type TextboxUtils = typeof lexicalUtils | typeof textareaUtils;
 
@@ -13,11 +13,11 @@ function getUtils(element: HTMLElement): TextboxUtils {
 export function createTextboxAdapter(element: HTMLElement) {
   const utils = getUtils(element);
 
-  const scrollIntoCaretView = () => {
+  const selectiveScrollIntoCaretView = () => {
     if (isLexical(element)) {
       lexicalUtils.scrollIntoCaretView(element);
     } else {
-      UiUtils.scrollIntoCaretView(element as HTMLTextAreaElement);
+      scrollIntoCaretView(element as HTMLTextAreaElement);
     }
   };
 
@@ -48,7 +48,7 @@ export function createTextboxAdapter(element: HTMLElement) {
       utils.insertText(element as HTMLTextAreaElement, text);
     }
 
-    scrollIntoCaretView();
+    selectiveScrollIntoCaretView();
   };
 
   return {
@@ -67,6 +67,6 @@ export function createTextboxAdapter(element: HTMLElement) {
       utils.setSelection(element as any, start, end);
       deleteSelectedText();
     },
-    scrollIntoCaretView,
+    scrollIntoCaretView: selectiveScrollIntoCaretView,
   };
 }

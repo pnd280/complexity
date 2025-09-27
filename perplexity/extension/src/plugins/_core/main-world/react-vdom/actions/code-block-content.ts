@@ -1,7 +1,7 @@
 import { findReactFiberNodeValue } from "@/plugins/_core/main-world/react-vdom/utils";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import { errorWrapper } from "@/utils/error-wrapper";
-import { getReactFiberKey } from "@/utils/utils";
+import { getReactFiberKey } from "@/utils/dom-utils/generics";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export type CodeBlockContentParams = {
   messageBlockIndex: number;

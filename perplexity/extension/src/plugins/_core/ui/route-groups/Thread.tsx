@@ -13,7 +13,7 @@ const { default: ArtifactsWrapper } = lazily(
   () => import("@/plugins/artifacts/Wrapper"),
 );
 const { default: ExportThreadWrapper } = lazily(
-  () => import("@/plugins/export-thread/Wrapper"),
+  () => import("@/plugins/thread-export/Wrapper"),
 );
 const { default: ImageGenModelSelectorWrapper } = lazily(
   () => import("@/plugins/image-gen-model-selector/Wrapper"),

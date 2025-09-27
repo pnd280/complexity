@@ -4,7 +4,8 @@ import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/servic
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { insertCss, whereAmI } from "@/utils/utils";
+import { insertCss } from "@/utils/dom-utils/generics";
+import { whereAmI } from "@/utils/misc/utils";
 
 let removeCss: (() => void) | null = null;
 

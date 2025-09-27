@@ -19,7 +19,7 @@ import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-
 import { getPromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import PromptHistoryCommandMenuItem from "@/plugins/prompt-history/slash-command/CommandMenuItem";
 import { queryClient } from "@/services/infra/query-client";
-import { keysToString } from "@/utils/utils";
+import { keysToString } from "@/utils/misc/utils";
 
 export function PromptHistoryCommandMenuContent() {
   const [searchValue, setSearchValue] = useState("");

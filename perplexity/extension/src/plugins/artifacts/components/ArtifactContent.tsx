@@ -6,7 +6,7 @@ import { ARTIFACT_INITIAL_STATE } from "@/plugins/artifacts/consts";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
 import type { ArtifactLanguage } from "@/plugins/artifacts/types";
 import { getInterpretedArtifactLanguage } from "@/plugins/artifacts/utils";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 export default function ArtifactContent() {
   const selectedCodeBlockLocation = useArtifactsStore(

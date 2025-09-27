@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
 import { ThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeForm";
 import { EditThemeProvider } from "@/entrypoints/options-page/dashboard/pages/themes/context";
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export function EditThemePage() {
   const theme = useLoaderData<Theme | undefined>();

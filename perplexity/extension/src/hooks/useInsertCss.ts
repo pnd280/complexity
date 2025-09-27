@@ -1,4 +1,4 @@
-import { insertCss } from "@/utils/utils";
+import { insertCss } from "@/utils/dom-utils/generics";
 
 type CleanupFunction = () => void;
 

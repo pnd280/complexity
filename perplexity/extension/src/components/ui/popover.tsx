@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import type { RefObject } from "react";
 
 import { Portal } from "@/components/ui/portal";
-import { untrapWheel } from "@/utils/utils";
+import { untrapWheel } from "@/utils/dom-utils/generics";
 
 export const PopoverRootProvider = ArkPopover.RootProvider;
 

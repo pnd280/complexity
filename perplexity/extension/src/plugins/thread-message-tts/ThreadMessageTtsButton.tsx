@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEvent } from "@/hooks/useEvent";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
 import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
 import usePplxTtsRequest from "@/plugins/thread-message-tts/hooks/usePplxTtsRequest";
@@ -45,14 +46,15 @@ export function ThreadMessageTtsButton() {
 
   const initTts = useCallback(
     async (params?: { voice: TtsVoice }) => {
+      coordinator.stopAllPlayers();
+
       if (isPlaying) {
-        coordinator.stopAllPlayers();
         return;
       }
 
-      coordinator.stopAllPlayers();
       abort();
-      coordinator.startSession({
+
+      await coordinator.startSession({
         onAudioStart: () => setIsPlaying(true),
         onAudioComplete: () => {
           abort();
@@ -74,6 +76,19 @@ export function ThreadMessageTtsButton() {
     },
     [abort, backendUuid, isPlaying, playTts, voice, coordinator],
   );
+
+  const cleanup = useEvent(() => {
+    if (!isPlaying) return;
+
+    coordinator.getPlayer().clearBuffer();
+    coordinator.stopAllPlayers();
+  });
+
+  useEffect(() => {
+    return () => {
+      cleanup();
+    };
+  }, [cleanup]);
 
   if (!isPlaying && isPending) {
     return (

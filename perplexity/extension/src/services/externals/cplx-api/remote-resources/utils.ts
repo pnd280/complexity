@@ -3,7 +3,7 @@ import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import type { RemoteResource } from "@/services/externals/cplx-api/remote-resources/types";
 import { queryClient } from "@/services/infra/query-client";
 import { persistQueryClient } from "@/services/infra/query-client/utils";
-import { errorWrapper } from "@/utils/error-wrapper";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export async function getRemoteResource<T>(
   resourceConfig: RemoteResource<T>,

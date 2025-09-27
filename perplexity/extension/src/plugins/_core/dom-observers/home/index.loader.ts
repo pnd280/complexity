@@ -4,7 +4,7 @@ import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
-import { whereAmI } from "@/utils/utils";
+import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {
   interface CoreDomObserverRegistry {

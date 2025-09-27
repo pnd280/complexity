@@ -9,7 +9,7 @@ import {
   getModelsByType,
 } from "@/plugins/language-model-selector/utils";
 import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 export default function DesktopContent() {
   const context = use(LanguageModelSelectorContext);

@@ -4,7 +4,7 @@ import omit from "lodash/omit";
 import { APP_CONFIG } from "@/app.config";
 import { DEFAULT_EXTENSION_SETTINGS } from "@/services/infra/extension-api-wrappers/extension-settings/defaults";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
-import { errorWrapper } from "@/utils/error-wrapper";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export const migrations = {
   2: async () => {

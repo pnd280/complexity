@@ -1,5 +1,5 @@
 import { getNetworkInterceptMiddlewareManagerProxyService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
-import { errorWrapper } from "@/utils/error-wrapper";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export function initFetchInterceptor() {
   const originalFetch = window.fetch;

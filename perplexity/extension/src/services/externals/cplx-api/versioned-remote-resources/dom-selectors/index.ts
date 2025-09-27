@@ -7,7 +7,7 @@ import {
   TEST_ID,
 } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/defaults";
 import { type DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export const csProxyServiceName = "domSelectorsService";
 

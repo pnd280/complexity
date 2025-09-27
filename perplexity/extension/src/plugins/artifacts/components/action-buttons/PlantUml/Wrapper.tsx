@@ -3,7 +3,7 @@ import { LuExternalLink } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useArtifactsStore } from "@/plugins/artifacts/store";
-import { generatePlantUMLUrl } from "@/utils/plant-uml";
+import { generatePlantUMLUrl } from "@/utils/wrappers/plant-uml";
 
 export default function PlantUmlArtifactsActionButtonsWrapper() {
   const { selectedCodeBlockLocation } = useArtifactsStore();

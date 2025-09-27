@@ -9,7 +9,7 @@ import {
   hasPermissions,
   hasPermissionsSync,
 } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
-import { invariant, isInContentScript } from "@/utils/utils";
+import { invariant, isInContentScript } from "@/utils/misc/utils";
 
 export class InstantCssService {
   static async hasPermissions() {

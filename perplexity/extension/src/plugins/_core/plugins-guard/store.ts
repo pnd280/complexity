@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
 import type { PplxSubTier } from "@/plugins/_core/plugins-guard/guards";
-import type { whereAmI } from "@/utils/utils";
+import type { whereAmI } from "@/utils/misc/utils";
 
 export type PluginGuardsStoreType = {
   grantedPermissions: chrome.runtime.ManifestPermissions[];

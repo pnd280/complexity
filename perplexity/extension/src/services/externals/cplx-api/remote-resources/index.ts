@@ -1,6 +1,6 @@
 import type { RemoteResource } from "@/services/externals/cplx-api/remote-resources/types";
 import { remoteResourceTypes } from "@/services/externals/cplx-api/types";
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export function defineRemoteResource<T>(
   resourceConfig: RemoteResource<T>,

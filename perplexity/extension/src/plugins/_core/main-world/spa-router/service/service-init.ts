@@ -5,9 +5,9 @@ import {
   SpaRouterServiceImpl,
   type SpaRouterService,
 } from "@/plugins/_core/main-world/spa-router/service";
-import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
-import type { ComctxProxy } from "@/utils/comctx/types";
-import { isInContentScript } from "@/utils/utils";
+import { isInContentScript } from "@/utils/misc/utils";
+import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
+import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
 let rootServiceInstance: SpaRouterService | undefined;
 let proxyServiceInstance: SpaRouterService | undefined;

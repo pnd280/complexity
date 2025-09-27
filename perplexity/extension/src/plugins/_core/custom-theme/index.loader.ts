@@ -1,7 +1,7 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { getThemeCss } from "@/plugins/_core/custom-theme/utils";
 import { InstantCssService } from "@/services/features/instant-css";
-import { insertCss } from "@/utils/utils";
+import { insertCss } from "@/utils/dom-utils/generics";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

@@ -15,7 +15,7 @@ import {
 import {
   generatePlantUMLUrl,
   generateTextPlantUMLUrl,
-} from "@/utils/plant-uml";
+} from "@/utils/wrappers/plant-uml";
 
 const SVGContent = memo(function SVGContent({ svg }: { svg: string }) {
   useEffect(() => {

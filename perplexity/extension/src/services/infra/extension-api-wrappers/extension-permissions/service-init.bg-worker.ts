@@ -5,7 +5,7 @@ import {
   backgroundProxyServiceName,
   ExtensionPermissionsService,
 } from "@/services/infra/extension-api-wrappers/extension-permissions";
-import { isBackgroundScript } from "@/utils/utils";
+import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: typeof ExtensionPermissionsService | undefined;
 let proxyServiceInstance: typeof ExtensionPermissionsService | undefined;

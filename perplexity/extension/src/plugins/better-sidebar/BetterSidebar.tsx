@@ -35,7 +35,7 @@ import {
   useBetterSidebarStore,
 } from "@/plugins/better-sidebar/store";
 import usePortalContainer from "@/plugins/better-sidebar/usePortalContainer";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 const items = [
   {

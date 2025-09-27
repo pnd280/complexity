@@ -5,9 +5,9 @@ import {
   NetworkInterceptMiddlewareManagerImpl,
   type NetworkInterceptMiddlewareManager,
 } from "@/plugins/_core/main-world/network-intercept/_service";
-import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
-import type { ComctxProxy } from "@/utils/comctx/types";
-import { isInContentScript } from "@/utils/utils";
+import { isInContentScript } from "@/utils/misc/utils";
+import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
+import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
 let rootServiceInstance: NetworkInterceptMiddlewareManager | undefined;
 let proxyServiceInstance: NetworkInterceptMiddlewareManager | undefined;

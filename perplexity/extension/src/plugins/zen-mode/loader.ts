@@ -7,8 +7,9 @@ import {
 import { toggleZenMode } from "@/plugins/zen-mode/utils";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import hotkeysJs from "@/utils/hotkeys-js";
-import { insertCss, keysToString } from "@/utils/utils";
+import { insertCss } from "@/utils/dom-utils/generics";
+import { keysToString } from "@/utils/misc/utils";
+import hotkeysJs from "@/utils/wrappers/hotkeys-js";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

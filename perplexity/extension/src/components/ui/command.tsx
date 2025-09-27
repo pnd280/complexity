@@ -7,8 +7,8 @@ import { LuSearch as Search } from "react-icons/lu";
 
 import type { DialogProps } from "@/components/ui/dialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
-import { isInContentScript } from "@/utils/utils";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
+import { isInContentScript } from "@/utils/misc/utils";
 
 export function Command({
   className,

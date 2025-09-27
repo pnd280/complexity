@@ -9,7 +9,7 @@ import {
 } from "@/plugins/_core/global-stores/color-scheme-store";
 import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
-import type { whereAmI } from "@/utils/utils";
+import type { whereAmI } from "@/utils/misc/utils";
 
 type ActionItemsParams = {
   colorScheme: ColorScheme;

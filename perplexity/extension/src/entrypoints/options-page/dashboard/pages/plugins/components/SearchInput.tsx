@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
-import { keysToString } from "@/utils/utils";
+import { keysToString } from "@/utils/misc/utils";
 
 export default function SearchInput() {
   const { isMobile } = useIsMobileStore();

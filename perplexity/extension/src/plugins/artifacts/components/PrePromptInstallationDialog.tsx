@@ -21,8 +21,9 @@ import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
 import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
 import { PplxApiService } from "@/services/externals/pplx-api";
 import { PluginsStatesService } from "@/services/features/plugins-states";
-import { errorWrapper } from "@/utils/error-wrapper";
-import { fetchTextResource, setCookie } from "@/utils/utils";
+import { setCookie } from "@/utils/dom-utils/generics";
+import { fetchTextResource } from "@/utils/misc/utils";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 function ArtifactsPrePromptInstallationDialog() {
   const navigate = useNavigate();

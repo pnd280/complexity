@@ -1,8 +1,8 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { getRawItems } from "@/plugins/command-menu/items/searches/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";
-import hotkeysJs from "@/utils/hotkeys-js";
-import { keysToString } from "@/utils/utils";
+import { keysToString } from "@/utils/misc/utils";
+import hotkeysJs from "@/utils/wrappers/hotkeys-js";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

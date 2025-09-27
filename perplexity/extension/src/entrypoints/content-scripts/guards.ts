@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import { APP_CONFIG } from "@/app.config";
 import { WarningDialog } from "@/components/ExtensionContextInvalidationWatchdog";
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export function contentScriptGuards() {
   ignoreInvalidPages();

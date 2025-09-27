@@ -3,8 +3,8 @@ import type { MermaidConfig } from "mermaid";
 import pako from "pako";
 import svgPanZoom from "svg-pan-zoom";
 
-import { UiUtils } from "@/utils/ui-utils";
-import { injectMainWorldScriptBlock } from "@/utils/utils";
+import { getCurrentColorScheme } from "@/utils/dom-utils/generics";
+import { injectMainWorldScriptBlock } from "@/utils/dom-utils/generics";
 import packageJson from "~/package.json";
 
 declare module "@/plugins/_core/main-world/types" {
@@ -80,7 +80,7 @@ export class MermaidRendererServiceImpl {
     try {
       await this.waitForInitialization();
 
-      const isDarkTheme = UiUtils.getCurrentColorScheme() === "dark";
+      const isDarkTheme = getCurrentColorScheme() === "dark";
 
       const config: MermaidConfig = {
         startOnLoad: false,

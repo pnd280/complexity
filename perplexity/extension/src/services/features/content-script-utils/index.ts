@@ -1,5 +1,5 @@
 import { APP_CONFIG } from "@/app.config";
-import { getOptionsPageUrl } from "@/utils/utils";
+import { getOptionsPageUrl } from "@/utils/misc/utils";
 
 export const backgroundProxyServiceName = "contentScriptBgUtilsService";
 

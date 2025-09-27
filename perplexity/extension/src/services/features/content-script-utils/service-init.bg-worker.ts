@@ -6,7 +6,7 @@ import {
   ContentScriptBgUtilsServiceImpl,
   type ContentScriptBgUtilsService,
 } from "@/services/features/content-script-utils";
-import { isBackgroundScript } from "@/utils/utils";
+import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: ContentScriptBgUtilsService | undefined;
 let proxyServiceInstance: ContentScriptBgUtilsService | undefined;

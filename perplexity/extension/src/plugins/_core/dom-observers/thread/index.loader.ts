@@ -13,7 +13,7 @@ import { getReactVdomService } from "@/plugins/_core/main-world/react-vdom/servi
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
-import { waitUntil, whereAmI } from "@/utils/utils";
+import { waitUntil, whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/_core/dom-observers/types" {
   interface CoreDomObserverRegistry {

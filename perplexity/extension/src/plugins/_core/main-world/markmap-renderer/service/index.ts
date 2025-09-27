@@ -1,7 +1,7 @@
 import throttle from "lodash/throttle";
 import type { Markmap } from "markmap-view";
 
-import { injectMainWorldScriptBlock } from "@/utils/utils";
+import { injectMainWorldScriptBlock } from "@/utils/dom-utils/generics";
 
 declare module "@/plugins/_core/main-world/types" {
   interface MainWorldCorePluginRegistry {

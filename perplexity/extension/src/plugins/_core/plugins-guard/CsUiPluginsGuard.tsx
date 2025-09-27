@@ -30,7 +30,7 @@ import {
 import { usePluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
 import { PluginsStatesService } from "@/services/features/plugins-states";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import type { whereAmI } from "@/utils/utils";
+import type { whereAmI } from "@/utils/misc/utils";
 
 type CsUiPluginsGuardProps = GuardConditions & {
   children: React.ReactNode;

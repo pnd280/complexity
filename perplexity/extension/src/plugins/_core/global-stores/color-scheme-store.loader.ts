@@ -1,6 +1,6 @@
 import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { colorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
-import { UiUtils } from "@/utils/ui-utils";
+import { getCurrentColorScheme } from "@/utils/dom-utils/generics";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {
@@ -13,7 +13,7 @@ export default function () {
     id: "store:colorScheme",
     dependencies: ["cache:extensionSettings"],
     loader: () => {
-      $("html").attr("data-color-scheme", UiUtils.getCurrentColorScheme());
+      $("html").attr("data-color-scheme", getCurrentColorScheme());
 
       const handler = () => {
         colorSchemeStore.setState((state) => {

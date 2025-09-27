@@ -4,7 +4,7 @@ import { LuCodesandbox, LuLoaderCircle } from "react-icons/lu";
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { artifactsStore } from "@/plugins/artifacts/store";
-import { createSandbox } from "@/utils/sandpack";
+import { createSandbox } from "@/utils/wrappers/sandpack";
 
 export default function SandpackArtifactActionButtonsWrapper() {
   const { mutate: createCodeSandbox, isPending } = useMutation({

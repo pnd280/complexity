@@ -6,7 +6,7 @@ import {
   DeclarativeNetRequestServiceImpl,
   type DeclarativeNetRequestService,
 } from "@/services/infra/extension-api-wrappers/declarative-net-request";
-import { isBackgroundScript } from "@/utils/utils";
+import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: DeclarativeNetRequestService | undefined;
 let proxyServiceInstance: DeclarativeNetRequestService | undefined;

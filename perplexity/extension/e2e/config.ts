@@ -1,4 +1,4 @@
-import { normalizePath } from "@/utils/normalize-path";
+import { normalizePath } from "@/utils/misc/normalize-path";
 
 export const E2E_CONFIG = {
   HEADLESS: process.env.E2E_HEADLESS !== "false",

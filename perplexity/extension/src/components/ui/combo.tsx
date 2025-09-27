@@ -11,7 +11,7 @@ import {
 } from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
-import { untrapWheel } from "@/utils/utils";
+import { untrapWheel } from "@/utils/dom-utils/generics";
 
 type ComboboxContext = {
   portal: boolean;

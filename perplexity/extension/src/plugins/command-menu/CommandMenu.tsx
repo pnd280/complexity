@@ -15,8 +15,8 @@ import SpacesPage from "@/plugins/command-menu/pages/spaces/Page";
 import ThreadsPage from "@/plugins/command-menu/pages/threads/Page";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
-import { keysToString } from "@/utils/utils";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
+import { keysToString } from "@/utils/misc/utils";
 
 export function CommandMenu() {
   const {

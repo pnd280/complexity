@@ -114,7 +114,8 @@ export class PplxStreamingTtsPlayer {
     latencyMs: number,
     durationSamples: number,
   ) {
-    if (!this.audioContext) return;
+    if (this.audioContext == null || this.audioContext.sampleRate == null)
+      return;
 
     const durationMs = (durationSamples / this.audioContext.sampleRate) * 1000;
     const totalMs = Math.max(0, latencyMs + durationMs);
@@ -133,12 +134,20 @@ export class PplxStreamingTtsPlayer {
   }
 
   private async initAudioContext() {
-    if (!this.audioContext) {
+    if (!this.isSessionActive) {
+      return;
+    }
+
+    if (!this.audioContext || this.audioContext.state === "closed") {
       this.audioContext = new AudioContext();
     }
 
     if (this.audioContext.state === "suspended") {
       await this.audioContext.resume();
+    }
+
+    if (!this.isSessionActive) {
+      return;
     }
 
     let playbackOptions: AudioAPI.AudioPlaybackOptions = {};
@@ -154,17 +163,30 @@ export class PplxStreamingTtsPlayer {
       };
     }
 
+    if (!this.isSessionActive || this.audioContext == null) {
+      return;
+    }
+
     this.weasoundPlayback = await AudioAPI.createAudioPlayback(
       this.audioContext,
       playbackOptions,
     );
+
+    if (!this.isSessionActive || this.weasoundPlayback == null) {
+      return;
+    }
 
     this.weasoundPlayback.setPlaybackRate(this.playbackRate);
 
     const audioNode =
       this.weasoundPlayback.unsharedNode() ||
       this.weasoundPlayback.sharedNode();
-    if (audioNode) {
+    if (
+      audioNode != null &&
+      this.audioContext != null &&
+      this.audioContext.destination != null &&
+      this.isSessionActive
+    ) {
       audioNode.connect(this.audioContext.destination);
     }
 
@@ -268,7 +290,7 @@ export class PplxStreamingTtsPlayer {
       this.weasoundPlayback = null;
     }
 
-    if (this.audioContext) {
+    if (this.audioContext && this.audioContext.state !== "closed") {
       this.audioContext.close();
       this.audioContext = null;
     }

@@ -14,7 +14,7 @@ import {
   isAutonomousArtifactLanguageString,
   isArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { scrollToElement } from "@/utils/utils";
+import { scrollToElement } from "@/utils/dom-utils/generics";
 
 export default function ArtifactHeader() {
   const selectedCodeBlockLocation = useArtifactsStore(

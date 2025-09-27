@@ -1,7 +1,7 @@
 import React from "react";
 
 import type { PluginId } from "@/data/plugin-registry/types";
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export type PluginSettingsUIs = Partial<
   Record<

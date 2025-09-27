@@ -5,7 +5,7 @@ import {
   backgroundProxyServiceName,
   ExtensionSettingsStorageService,
 } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
-import { isBackgroundScript } from "@/utils/utils";
+import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: typeof ExtensionSettingsStorageService | undefined;
 let proxyServiceInstance: typeof ExtensionSettingsStorageService | undefined;

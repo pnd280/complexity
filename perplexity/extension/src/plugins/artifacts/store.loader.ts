@@ -19,7 +19,8 @@ import {
   getInterpretedArtifactLanguage,
   isAutonomousArtifactLanguageString,
 } from "@/plugins/artifacts/utils";
-import { parseUrl, scrollToElement, whereAmI } from "@/utils/utils";
+import { scrollToElement } from "@/utils/dom-utils/generics";
+import { parseUrl, whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

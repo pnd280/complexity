@@ -13,7 +13,7 @@ import NavigationItemsFooter from "@/plugins/command-menu/items/navigations/Foot
 import { getRawItems } from "@/plugins/command-menu/items/navigations/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import { getGroupedItems } from "@/plugins/command-menu/utils";
-import { whereAmI } from "@/utils/utils";
+import { whereAmI } from "@/utils/misc/utils";
 
 const locationMap = {
   home: "home",

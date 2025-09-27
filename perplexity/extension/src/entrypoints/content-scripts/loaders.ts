@@ -1,6 +1,13 @@
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export async function executeCsPluginLoaders() {
+  import.meta.glob(
+    ["@/plugins/**/lib-loader.ts", "@/plugins/**/*.lib-loader.ts"],
+    {
+      eager: true,
+    },
+  );
+
   const loaders = import.meta.glob(
     ["@/plugins/**/loader.{ts,tsx}", "@/plugins/**/*.loader.{ts,tsx}"],
     {

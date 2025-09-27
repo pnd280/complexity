@@ -7,7 +7,7 @@ import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versio
 import { InstantCssService } from "@/services/features/instant-css";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { sendMessage } from "@/types/chrome-runtime-message";
-import { getCookie } from "@/utils/utils";
+import { getCookie } from "@/utils/dom-utils/generics";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

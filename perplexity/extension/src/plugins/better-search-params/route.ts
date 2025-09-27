@@ -7,7 +7,7 @@ import {
   setupTempInterceptor,
 } from "@/plugins/better-search-params/utils";
 import { PluginsStatesService } from "@/services/features/plugins-states";
-import { waitUntil } from "@/utils/utils";
+import { waitUntil } from "@/utils/misc/utils";
 
 export const betterSearchParamsRouterRoute: RouteObject = {
   path: "",

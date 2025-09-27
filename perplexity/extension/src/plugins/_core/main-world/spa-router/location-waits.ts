@@ -1,8 +1,8 @@
 import { getDomSelectorsProxyService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
 import type { MaybePromise } from "@/types/utils.types";
-import { UiUtils } from "@/utils/ui-utils";
-import type { whereAmI } from "@/utils/utils";
+import { waitForSpaIdle } from "@/utils/dom-utils/generics";
+import type { whereAmI } from "@/utils/misc/utils";
 
 export const locationWaits: Partial<
   Record<ReturnType<typeof whereAmI>, () => MaybePromise<boolean>>
@@ -16,7 +16,7 @@ export const locationWaits: Partial<
   }
 
   async function checkThreadLoaded() {
-    await UiUtils.waitForSpaIdle();
+    await waitForSpaIdle();
     return true;
   }
 

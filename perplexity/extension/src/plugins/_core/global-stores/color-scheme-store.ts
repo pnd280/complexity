@@ -2,7 +2,8 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
-import { setCookie, whereAmI } from "@/utils/utils";
+import { setCookie } from "@/utils/dom-utils/generics";
+import { whereAmI } from "@/utils/misc/utils";
 
 export type ColorScheme = "light" | "dark" | "system";
 

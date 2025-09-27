@@ -7,8 +7,8 @@ import {
   ExtensionSettingsSchema,
   type ExtensionSettings,
 } from "@/services/infra/extension-api-wrappers/extension-settings/types";
-import { safeMerge } from "@/utils/safe-merge";
-import { invariant, isInContentScript } from "@/utils/utils";
+import { safeMerge } from "@/utils/misc/safe-merge";
+import { invariant, isInContentScript } from "@/utils/misc/utils";
 
 export class ExtensionSettingsService {
   private static cachedValue: ExtensionSettings | null = null;

@@ -29,11 +29,11 @@ export class PplxTtsPlayerCoordinator {
     return this.player;
   }
 
-  public startSession(params: {
+  public async startSession(params: {
     onAudioStart?: () => void;
     onAudioComplete?: () => void;
     onPlayerStop?: () => void;
-  }): void {
+  }): Promise<void> {
     const player = this.getPlayer();
 
     if (player.isActive()) {
@@ -47,7 +47,7 @@ export class PplxTtsPlayerCoordinator {
     });
     this.onPlayerStop = params.onPlayerStop ?? null;
 
-    player.startSession();
+    await player.startSession();
   }
 
   public stopAllPlayers(): void {

@@ -12,7 +12,7 @@ import CommandItemGuard from "@/plugins/command-menu/components/CommandItemGuard
 import { getRawItems } from "@/plugins/command-menu/items/actions/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import { getGroupedItems } from "@/plugins/command-menu/utils";
-import { whereAmI } from "@/utils/utils";
+import { whereAmI } from "@/utils/misc/utils";
 
 export default function ActionItems() {
   const location = whereAmI();

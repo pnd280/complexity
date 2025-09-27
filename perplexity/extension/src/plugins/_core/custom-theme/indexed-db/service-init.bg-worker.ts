@@ -6,7 +6,7 @@ import {
   LocalThemesServiceImpl,
   type LocalThemesService,
 } from "@/plugins/_core/custom-theme/indexed-db";
-import { isBackgroundScript } from "@/utils/utils";
+import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: LocalThemesService | undefined;
 let proxyServiceInstance: LocalThemesService | undefined;

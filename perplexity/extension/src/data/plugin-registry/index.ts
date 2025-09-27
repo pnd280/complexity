@@ -17,7 +17,7 @@ import type {
   PluginsSettingsSchema,
 } from "@/data/plugin-registry/types";
 import type { DefinePluginParams } from "@/data/plugin-registry/utils";
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export class PluginRegistry {
   static manifests: PluginManifestsMap = {} as PluginManifestsMap;

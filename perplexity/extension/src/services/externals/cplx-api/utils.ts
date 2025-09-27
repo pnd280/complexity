@@ -1,7 +1,7 @@
 import type { ZodSchema } from "zod";
 
 import { APP_CONFIG } from "@/app.config";
-import { fetchTextResource } from "@/utils/utils";
+import { fetchTextResource } from "@/utils/misc/utils";
 
 export function getTParam({ interval = 0 }: { interval?: number } = {}) {
   if (interval <= 0) return Date.now();

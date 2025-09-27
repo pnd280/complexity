@@ -2,7 +2,7 @@ import {
   parseWebSocketData as _parseWebSocketData,
   encodeWebSocketData as _encodeWebSocketData,
 } from "@/plugins/_core/main-world/network-intercept/web-socket-message-parser";
-import { jsonUtils } from "@/utils/utils";
+import { jsonUtils } from "@/utils/misc/utils";
 
 type PplxAskEvent = {
   params: any;

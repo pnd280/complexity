@@ -6,7 +6,7 @@ import {
   BetterCodeBlocksFineGrainedServiceImpl,
   type BetterCodeBlocksFineGrainedService,
 } from "@/plugins/thread-better-code-blocks/indexed-db";
-import { isBackgroundScript } from "@/utils/utils";
+import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: BetterCodeBlocksFineGrainedService | undefined;
 let proxyServiceInstance: BetterCodeBlocksFineGrainedService | undefined;

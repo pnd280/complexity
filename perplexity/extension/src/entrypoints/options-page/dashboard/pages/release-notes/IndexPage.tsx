@@ -6,8 +6,8 @@ import ChangelogRenderer from "@/components/changelog/ChangelogRenderer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useVersionPagination } from "@/entrypoints/options-page/dashboard/pages/release-notes/hooks/useVersionPagination";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
-import { cn } from "@/utils/cn";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
+import { cn } from "@/utils/wrappers/cn";
 
 export function IndexPage() {
   const { loadedVersions, hasMore, loadNextVersions, changelogQueries } =

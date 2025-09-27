@@ -7,7 +7,7 @@ import { FaCheck } from "react-icons/fa6";
 import { LuChevronDown as ChevronDown } from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
-import { untrapWheel } from "@/utils/utils";
+import { untrapWheel } from "@/utils/dom-utils/generics";
 
 type SelectLocalContext = {
   portal: boolean;

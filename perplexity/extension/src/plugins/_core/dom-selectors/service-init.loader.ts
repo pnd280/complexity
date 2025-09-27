@@ -5,13 +5,13 @@ import {
   DomSelectorsServiceImpl,
   type DomSelectorsService,
 } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
-import type { ComctxProxy } from "@/utils/comctx/types";
 import {
   isMainWorldContext,
   invariant,
   isInContentScript,
-} from "@/utils/utils";
+} from "@/utils/misc/utils";
+import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
+import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
 let rootServiceInstance: DomSelectorsService | undefined;
 let proxyServiceInstance: ComctxProxy<DomSelectorsService> | undefined;

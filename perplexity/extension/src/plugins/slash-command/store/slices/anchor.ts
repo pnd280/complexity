@@ -1,7 +1,10 @@
 import type { UsePopoverProps } from "@ark-ui/react";
 
 import type { BoundStateCreator } from "@/plugins/slash-command/store/types";
-import type { getSelection, getWordAtCaret } from "@/utils/textarea-utils";
+import type {
+  getSelection,
+  getWordAtCaret,
+} from "@/utils/dom-utils/textarea-utils";
 
 export type AnchorSlice = {
   anchor: {

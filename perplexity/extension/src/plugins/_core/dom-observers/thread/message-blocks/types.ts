@@ -1,5 +1,5 @@
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import type { PplxWebResult } from "@/utils/thread-export";
+import type { PplxWebResult } from "@/services/features/pplx-thread-export";
 
 export type MessageBlock = {
   nodes: {

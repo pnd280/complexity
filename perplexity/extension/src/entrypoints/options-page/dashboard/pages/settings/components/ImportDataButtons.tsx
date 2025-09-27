@@ -9,7 +9,7 @@ import { extensionSettingsQueries } from "@/services/infra/extension-api-wrapper
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import { db } from "@/services/infra/indexed-db";
 import { queryClient } from "@/services/infra/query-client";
-import { errorWrapper } from "@/utils/error-wrapper";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export default function ImportDataButtons() {
   const fileInputRef = useRef<HTMLInputElement>(null);

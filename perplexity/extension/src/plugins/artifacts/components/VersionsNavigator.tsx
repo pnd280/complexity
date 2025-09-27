@@ -5,7 +5,7 @@ import useThreadCodeBlock from "@/plugins/_core/dom-observers/thread/code-blocks
 import { getDomSelectorsRootService } from "@/plugins/_core/dom-selectors/service-init.loader";
 import { artifactsStore, useArtifactsStore } from "@/plugins/artifacts/store";
 import { getArtifactTitle } from "@/plugins/artifacts/utils";
-import { scrollToElement } from "@/utils/utils";
+import { scrollToElement } from "@/utils/dom-utils/generics";
 
 export default function AutonomousArtifactVersionsNavigator() {
   const selectedCodeBlockLocation = useArtifactsStore(

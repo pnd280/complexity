@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
 import type { RouterEvent } from "@/plugins/_core/main-world/spa-router/spa-router.types";
-import { isInContentScript } from "@/utils/utils";
+import { isInContentScript } from "@/utils/misc/utils";
 
 export type SpaRouterStore = {
   state: "pending" | "complete";

@@ -2,7 +2,7 @@ import { MatchPattern } from "@webext-core/match-patterns";
 
 import { APP_CONFIG } from "@/app.config";
 import { getInstantCssStorageService } from "@/services/features/instant-css/storage/service-init.bg-worker";
-import { insertCss } from "@/utils/utils";
+import { insertCss } from "@/utils/dom-utils/generics";
 
 export const excludeMatchesPatterns = APP_CONFIG[
   "perplexity-ai"

@@ -6,7 +6,7 @@ import {
   InstantCssInjectorServiceImpl,
   type InstantCssInjectorService,
 } from "@/services/features/instant-css/injector";
-import { invariant, isBackgroundScript } from "@/utils/utils";
+import { invariant, isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: InstantCssInjectorService | undefined;
 let proxyServiceInstance: InstantCssInjectorService | undefined;

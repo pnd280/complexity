@@ -6,7 +6,7 @@ import {
   InstantCssStorageServiceImpl,
   type InstantCssStorageService,
 } from "@/services/features/instant-css/storage";
-import { invariant, isBackgroundScript } from "@/utils/utils";
+import { invariant, isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: InstantCssStorageService | undefined;
 let proxyServiceInstance: InstantCssStorageService | undefined;

@@ -12,7 +12,7 @@ import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { getPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import { queryClient } from "@/services/infra/query-client";
-import { whereAmI } from "@/utils/utils";
+import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

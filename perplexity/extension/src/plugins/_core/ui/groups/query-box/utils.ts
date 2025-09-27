@@ -7,7 +7,7 @@ import type {
   LanguageModelCode,
   LanguageModelType,
 } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import { setCookie } from "@/utils/utils";
+import { setCookie } from "@/utils/dom-utils/generics";
 
 export function createToolbarPortalContainers({
   queryBoxWrapper,

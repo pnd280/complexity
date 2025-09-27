@@ -1,7 +1,7 @@
 import { applyLayoutShiftPreventionInstantCss } from "@/plugins/better-sidebar/prevent-layout-shift.loader";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
 import { PluginsStatesService } from "@/services/features/plugins-states";
-import { setCookie } from "@/utils/utils";
+import { setCookie } from "@/utils/dom-utils/generics";
 
 export default function () {
   betterSidebarStore.subscribe(

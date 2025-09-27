@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
-import { useCopyPplxThread } from "@/plugins/export-thread/index.public";
+import { useCopyPplxThread } from "@/plugins/thread-export/index.public";
 
 type CopyButtonProps = {
   messageBlockIndex: number;

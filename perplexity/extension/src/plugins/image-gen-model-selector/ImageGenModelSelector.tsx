@@ -17,7 +17,7 @@ import usePortalContainer from "@/plugins/image-gen-model-selector/usePortalCont
 import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-image-models";
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { isReactNode } from "@/types/utils.types";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 export function ImageGenModelSelector() {
   const portalContainer = usePortalContainer();

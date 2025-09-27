@@ -6,7 +6,7 @@ import { VersionedRemoteResourceListingSchema } from "@/services/externals/cplx-
 import type { VersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/types";
 import { queryClient } from "@/services/infra/query-client";
 import { persistQueryClient } from "@/services/infra/query-client/utils";
-import { errorWrapper } from "@/utils/error-wrapper";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export async function getVersionedRemoteResource<T>(
   resourceConfig: VersionedRemoteResource<T>,

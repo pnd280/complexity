@@ -6,7 +6,7 @@ import type {
 } from "@/services/features/instant-css/types";
 import { getProcessedCssEntries } from "@/services/features/instant-css/utils";
 import { hasPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
-import { invariant, isBackgroundScript } from "@/utils/utils";
+import { invariant, isBackgroundScript } from "@/utils/misc/utils";
 
 export { backgroundProxyServiceName } from "@/services/features/instant-css/injector/constants";
 

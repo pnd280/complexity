@@ -49,7 +49,8 @@ code::after {
 }
 
 @keyframes blob {
-  0%, 100% {
+  0%,
+  100% {
     border-radius: 42% 58% 60% 40% / 40% 38% 62% 60%;
     transform: translate(-50%, -50%) scale(1);
   }

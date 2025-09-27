@@ -16,7 +16,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
-import { keysToString } from "@/utils/utils";
+import { keysToString } from "@/utils/misc/utils";
 
 const SIDEBAR_WIDTH = "264px";
 const SIDEBAR_WIDTH_MOBILE = "18rem";

@@ -11,7 +11,7 @@ import { APP_CONFIG } from "@/app.config";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { getQueryCacheService } from "@/services/infra/query-client/indexed-db/service-init.bg-worker";
-import { isSubArray } from "@/utils/utils";
+import { isSubArray } from "@/utils/misc/utils";
 
 export type QueryCacheEntry = {
   key: string;

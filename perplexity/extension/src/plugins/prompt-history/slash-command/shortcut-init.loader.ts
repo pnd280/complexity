@@ -5,8 +5,8 @@ import {
   slashCommandMenuStore,
 } from "@/plugins/slash-command/index.public";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import hotkeysJs from "@/utils/hotkeys-js";
-import { keysToString } from "@/utils/utils";
+import { keysToString } from "@/utils/misc/utils";
+import hotkeysJs from "@/utils/wrappers/hotkeys-js";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

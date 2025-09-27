@@ -5,9 +5,9 @@ import {
   ReactVdomServiceImpl,
   type ReactVdomService,
 } from "@/plugins/_core/main-world/react-vdom/service";
-import { getDocumentAdapter } from "@/utils/comctx/get-document-adapter";
-import type { ComctxProxy } from "@/utils/comctx/types";
-import { isInContentScript } from "@/utils/utils";
+import { isInContentScript } from "@/utils/misc/utils";
+import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
+import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
 let rootServiceInstance: ReactVdomService | undefined;
 let proxyServiceInstance: ReactVdomService | undefined;

@@ -9,11 +9,11 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       imports: ["lazy", "use", "createContext", "useDeferredValue", "memo"],
     },
     {
-      from: "@/utils/js-context-guards.ts",
+      from: "@/utils/wrappers/js-context-guards.ts",
       imports: ["onlyMainWorldGuard", "onlyExtensionGuard"],
     },
     {
-      from: "@/utils/utils.ts",
+      from: "@/utils/misc/utils.ts",
       imports: [
         "sleep",
         "isMainWorldContext",
@@ -22,7 +22,7 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       ],
     },
     {
-      from: "@/utils/deep-equal.ts",
+      from: "@/utils/wrappers/deep-equal.ts",
       imports: ["deepEqual"],
     },
     {
@@ -38,7 +38,7 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
     },
     {
       name: "cn",
-      from: "@/utils/cn.ts",
+      from: "@/utils/wrappers/cn.ts",
     },
     {
       name: "Key",

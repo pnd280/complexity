@@ -7,8 +7,8 @@ import {
   type SpaRouterStore,
 } from "@/plugins/_core/main-world/spa-router/store";
 import type { MaybePromise } from "@/types/utils.types";
-import { UiUtils } from "@/utils/ui-utils";
-import { type whereAmI } from "@/utils/utils";
+import { waitForSpaIdle } from "@/utils/dom-utils/generics";
+import { type whereAmI } from "@/utils/misc/utils";
 
 export function applyRouteIdAttribute(location: ReturnType<typeof whereAmI>) {
   $(document.body).attr("location", location);
@@ -17,7 +17,7 @@ export function applyRouteIdAttribute(location: ReturnType<typeof whereAmI>) {
 export async function waitForRouteChangeComplete(
   location: ReturnType<typeof whereAmI>,
 ) {
-  const check = locationWaits[location] ?? UiUtils.waitForSpaIdle;
+  const check = locationWaits[location] ?? waitForSpaIdle;
 
   await waitForConditionOrTimeout(check);
 

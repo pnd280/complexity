@@ -16,7 +16,7 @@ import {
 } from "@/services/features/plugins-states/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { queryClient } from "@/services/infra/query-client";
-import { invariant, isInContentScript } from "@/utils/utils";
+import { invariant, isInContentScript } from "@/utils/misc/utils";
 
 export class PluginsStatesService {
   static get featureCompatQuery() {

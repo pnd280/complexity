@@ -23,7 +23,7 @@ import {
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
 import { formatRelativeTime } from "@/services/infra/i18n";
-import { emojiCodeToString } from "@/utils/utils";
+import { emojiCodeToString } from "@/utils/misc/utils";
 
 export default function SpaceCommandItems() {
   useCommandMenuStore((store) => store.open);

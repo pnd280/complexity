@@ -8,8 +8,8 @@ import {
   initializePluginStates,
   updatePluginStatesWithFeatureCompat,
 } from "@/services/features/plugins-states/utils";
-import { isInContentScript } from "@/utils/utils";
-import { invariant } from "@/utils/utils";
+import { isInContentScript } from "@/utils/misc/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export default function usePluginsStates() {
   invariant(

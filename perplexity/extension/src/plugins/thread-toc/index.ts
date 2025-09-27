@@ -17,8 +17,7 @@ export default definePlugin({
     id: "thread:toc",
     settingsUiRouteSegment: "thread-toc",
     title: "Table of Contents",
-    description:
-      "Quickly navigate between messages in a thread. Only shows up when there are more than 2 messages",
+    description: "Quickly navigate between messages in a thread",
     categories: ["thread"],
     tags: ["ui"],
     dependentDomObservers: ["thread:messageBlocks"],

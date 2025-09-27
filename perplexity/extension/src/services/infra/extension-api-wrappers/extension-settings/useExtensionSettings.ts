@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
 import { useExtensionSettingsMutation } from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettingsMutation";
-import { isInContentScript } from "@/utils/utils";
+import { isInContentScript } from "@/utils/misc/utils";
 
 export default function useExtensionSettings() {
   if (isInContentScript())

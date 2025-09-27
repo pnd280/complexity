@@ -7,14 +7,14 @@ import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { internalWebSocketStore } from "@/plugins/_core/global-stores/web-socket";
 import type { MainWorldCorePluginId } from "@/plugins/_core/main-world/types";
 import { InternalWebSocketManager } from "@/plugins/_core/web-socket";
-import { injectMainWorldScript } from "@/utils/utils";
+import { injectMainWorldScript } from "@/utils/dom-utils/generics";
 
 import markmapRendererPlugin from "@/plugins/_core/main-world/markmap-renderer?script&module";
 import mermaidRendererPlugin from "@/plugins/_core/main-world/mermaid-renderer/index?script&module";
 import networkInterceptPlugin from "@/plugins/_core/main-world/network-intercept/index?script&module";
 import reactVdomPlugin from "@/plugins/_core/main-world/react-vdom/index?script&module";
 import spaRouterPlugin from "@/plugins/_core/main-world/spa-router/index?script&module";
-import jqueryExtensions from "@/utils/jquery.extensions?script&module";
+import jqueryExtensions from "@/plugins/_core/misc/jquery-extensions.lib-loader?script&module";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

@@ -17,7 +17,7 @@ import SpaceBadge from "@/plugins/command-menu/pages/threads/SpaceBadge";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import type { ThreadSearchResponseApi } from "@/services/externals/pplx-api/pplx-api.types";
 import { formatRelativeTime } from "@/services/infra/i18n";
-import { jsonUtils } from "@/utils/utils";
+import { jsonUtils } from "@/utils/misc/utils";
 
 type ThreadItemProps = {
   thread: ThreadSearchResponseApi;

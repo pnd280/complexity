@@ -2,7 +2,7 @@ import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
 import { getContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { sendMessage } from "@/types/chrome-runtime-message";
-import { whereAmI } from "@/utils/utils";
+import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/_core/async-dep-registry" {
   interface AsyncLoadersRegistry {

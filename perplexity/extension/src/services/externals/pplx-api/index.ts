@@ -32,7 +32,7 @@ import {
   saveUserSettingsViaFetch,
   saveUserSettingsViaWebSocket,
 } from "@/services/externals/pplx-api/utils";
-import { fetchTextResource, jsonUtils } from "@/utils/utils";
+import { fetchTextResource, jsonUtils } from "@/utils/misc/utils";
 
 export class PplxApiService {
   static async fetchMaintenanceStatus() {

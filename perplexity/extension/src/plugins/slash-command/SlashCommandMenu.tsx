@@ -4,7 +4,7 @@ import { useBlurHandler } from "@/plugins/slash-command/hooks/useBlurHandler";
 import useSlashCommandPanel from "@/plugins/slash-command/hooks/useSlashCommandPanel";
 import IndexPage from "@/plugins/slash-command/pages/IndexPage";
 import { slashCommandMenuStore } from "@/plugins/slash-command/store";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 export function SlashCommandMenu() {
   const popover = useSlashCommandPanel();

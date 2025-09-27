@@ -1,6 +1,6 @@
 import * as parser from "engine.io-parser";
 
-import { jsonUtils } from "@/utils/utils";
+import { jsonUtils } from "@/utils/misc/utils";
 
 export type WebSocketMessage<T = unknown> = {
   messageId?: number;

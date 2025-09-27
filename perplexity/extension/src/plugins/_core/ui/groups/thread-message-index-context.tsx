@@ -1,4 +1,4 @@
-import { invariant } from "@/utils/utils";
+import { invariant } from "@/utils/misc/utils";
 
 export const ThreadMessageIndexContext = createContext<number>(0);
 

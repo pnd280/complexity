@@ -12,8 +12,8 @@ import {
   usePanelPosition,
 } from "@/plugins/thread-toc/usePanelPosition";
 import { useThreadTocItems } from "@/plugins/thread-toc/useThreadTocItems";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/pplx-scrollbar-classes";
-import { scrollToElement } from "@/utils/utils";
+import { scrollToElement } from "@/utils/dom-utils/generics";
+import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 export function ThreadToc() {
   const tocItems = useThreadTocItems();

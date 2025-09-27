@@ -5,9 +5,9 @@ import {
 } from "@/plugins/_core/main-world/react-vdom/utils";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import { errorWrapper } from "@/utils/error-wrapper";
-import type { PplxWebResult } from "@/utils/thread-export";
-import { getReactFiberKey } from "@/utils/utils";
+import type { PplxWebResult } from "@/services/features/pplx-thread-export";
+import { getReactFiberKey } from "@/utils/dom-utils/generics";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export type MessageBlockFiberData = {
   backendUuid: string;
