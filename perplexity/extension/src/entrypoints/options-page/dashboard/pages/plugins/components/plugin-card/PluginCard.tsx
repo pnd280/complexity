@@ -39,7 +39,7 @@ const PluginCardContent = memo(() => {
         className={cn(
           "x:flex x:h-full x:flex-col x:bg-secondary x:transition-all",
           {
-            "x:border-primary/10 x:bg-primary/5 x:shadow-2xl": isEnabled,
+            "x:border-primary/10 x:bg-primary/5 x:shadow-md": isEnabled,
           },
         )}
       >

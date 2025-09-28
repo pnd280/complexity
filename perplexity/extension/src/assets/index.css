@@ -37,6 +37,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-dark: var(--dark);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);

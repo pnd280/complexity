@@ -32,7 +32,7 @@ export function TooltipContent({
       <ArkTooltip.Positioner>
         <ArkTooltip.Content
           className={cn(
-            "x:z-50 x:max-w-[400px] x:overflow-hidden x:rounded-sm x:bg-foreground x:px-2 x:py-1 x:font-sans x:text-xs x:whitespace-pre-line x:text-popover x:shadow-md x:duration-150 x:dark:bg-primary-foreground x:dark:text-popover-foreground",
+            "x:z-50 x:max-w-[400px] x:overflow-hidden x:rounded-md x:border x:border-primary-foreground x:bg-dark x:px-2 x:py-1 x:font-sans x:text-xs x:whitespace-pre-line x:text-popover x:shadow-md x:duration-150 x:dark:bg-background x:dark:text-popover-foreground",
             "x:data-[state=closed]:animate-out x:data-[state=open]:animate-in",
             "x:data-[state=closed]:fade-out-0 x:data-[state=open]:fade-in-0",
             "x:data-[state=closed]:zoom-out-95 x:data-[state=open]:zoom-in-95",

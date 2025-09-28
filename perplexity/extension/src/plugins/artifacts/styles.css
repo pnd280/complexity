@@ -50,7 +50,7 @@ body {
 
     #cplx-artifact {
       height: calc(100dvh - var(--header-height) - 12rem);
-      @apply x:xl:h-[calc(100dvh-var(--header-height)-16px)];
+      @apply x:xl:h-[calc(100dvh-var(--header-height))];
       @apply x:rounded-lg x:xl:rounded-none x:xl:rounded-tl-lg;
       @apply x:xl:border-r-0 x:xl:border-b-0;
 
