@@ -1,7 +1,0 @@
-@reference "../../../../../assets/index.css";
-
-[data-cplx-component="message-block-query-edit-button-group"] {
-  > div {
-    align-items: center;
-  }
-}

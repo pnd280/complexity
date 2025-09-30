@@ -1,11 +1,11 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/_core/main-world/spa-router/utils";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
 import { threadRawHeadingsCssResourceConfig } from "@/plugins/thread-raw-headings/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { insertCss } from "@/utils/dom-utils/generics";
 import { whereAmI } from "@/utils/misc/utils";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:thread:rawHeadings": void;
   }
@@ -14,11 +14,11 @@ declare module "@/plugins/_core/async-dep-registry" {
 let cleanup: () => void | null;
 
 export default function loader() {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:thread:rawHeadings",
-    dependencies: ["cache:pluginsStates"],
-    loader: ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["thread:rawHeadings"]) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["thread:rawHeadings"]) return;
 
       rawHeadings(whereAmI());
 

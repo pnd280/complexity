@@ -3,8 +3,8 @@ import { Dexie, type Table } from "dexie";
 import type { ExtensionData } from "@/data/dashboard/extension-data.types";
 import { legacyThemeMigration } from "@/data/dashboard/themes/migration";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
-import { PluginRegistry } from "@/data/plugin-registry";
-import type { PluginTables } from "@/data/plugin-registry/types";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type { PluginTables } from "@/data/registries/plugins/meta.types";
 import type { QueryCacheEntry } from "@/services/infra/query-client/utils";
 
 export class IndexedDbService extends Dexie {
@@ -41,7 +41,7 @@ export class IndexedDbService extends Dexie {
 
     // Overlay plugin schemas onto existing versions or create new ones
     for (const [versionNum, pluginVersionData] of Object.entries(
-      PluginRegistry.indexedDbVersions,
+      PluginManifestsRegistry.indexedDbVersions,
     )) {
       const version = Number(versionNum);
       const existing = allVersions.get(version) || {

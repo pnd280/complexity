@@ -1,4 +1,4 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import {
   betterSidebarNormalizeCollapsedCssResourceConfig,
   betterSidebarNormalizeExpandedCssResourceConfig,
@@ -9,23 +9,23 @@ import { ExtensionSettingsService } from "@/services/infra/extension-api-wrapper
 import { sendMessage } from "@/types/chrome-runtime-message";
 import { getCookie } from "@/utils/dom-utils/generics";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:betterSidebar:instantCss": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:betterSidebar:instantCss",
-    dependencies: ["cache:pluginsStates", "store:pluginGuards"],
+    dependencies: ["cache:pluginsEnableStates", "store:pluginGuards"],
     loader: async ({
-      "cache:pluginsStates": pluginsStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "store:pluginGuards": pluginGuardsStore,
     }) => {
       await applyLayoutShiftPreventionInstantCss({
         enabled:
-          pluginsStates["betterSidebar"] &&
+          pluginsEnableStates["betterSidebar"] &&
           InstantCssService.hasPermissionsSync({
             grantedPermissions: pluginGuardsStore.grantedPermissions,
           }) &&

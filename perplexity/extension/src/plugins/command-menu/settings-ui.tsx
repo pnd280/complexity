@@ -1,6 +1,6 @@
 import { Image } from "@/components/ui/image";
 import { Switch } from "@/components/ui/switch";
-import type { PluginId } from "@/data/plugin-registry/types";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 import SpacesSearchPageKeybinding from "@/plugins/command-menu/settings-ui/SpacesSearchPageKeybinding";
 import ThreadsSearchPageKeybinding from "@/plugins/command-menu/settings-ui/ThreadsSearchPageKeybinding";
 import ToggleCommandDialogKeybinding from "@/plugins/command-menu/settings-ui/ToggleCommandDialogKeybinding";

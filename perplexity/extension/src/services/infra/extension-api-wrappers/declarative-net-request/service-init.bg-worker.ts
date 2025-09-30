@@ -22,7 +22,7 @@ const [registerService, getService] = defineProxy(
 function getDeclarativeNetRequestRootService(): DeclarativeNetRequestServiceType {
   invariant(
     isBackgroundScript(),
-    "This method is only allowed in background script, use getDeclarativeNetRequestProxyService instead.",
+    "[DeclarativeNetRequestService] Invalid context",
   );
 
   rootServiceInstance ??= DeclarativeNetRequestServiceImpl;
@@ -33,7 +33,7 @@ function getDeclarativeNetRequestRootService(): DeclarativeNetRequestServiceType
 function getDeclarativeNetRequestProxyService(): DeclarativeNetRequestServiceType {
   invariant(
     !isBackgroundScript(),
-    "Use getDeclarativeNetRequestRootService to access the non-proxied instance in background script.",
+    "[DeclarativeNetRequestService] Invalid context",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

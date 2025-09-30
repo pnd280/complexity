@@ -20,7 +20,10 @@ export const imageGenModelSelectorStore =
           selectedImageGenModel: "default",
           setSelectedImageGenModel: async (selectedImageGenModel) => {
             set({ selectedImageGenModel });
-            await PplxApiService.setDefaultImageGenModel(selectedImageGenModel);
+            await PplxApiService.setDefaultImageGenModel(
+              selectedImageGenModel,
+              "fetch",
+            );
             queryClient.invalidateQueries({
               queryKey: pplxApiQueries.userSettings.all(),
             });

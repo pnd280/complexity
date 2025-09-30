@@ -20,13 +20,13 @@ Each plugin follows a feature-based structure in its own directory:
 
 ```
 src/plugins/your-plugin-name/
-├── components/         # UI components
-├── hooks/              # React hooks
-├── index.ts[*]         # Entry point and registration
-├── store.ts            # State management (Zustand)
-├── utils.ts            # Utility functions
-├── types.ts            # Type definitions
-├── settings-ui.tsx[*]  # Optional settings interface
+├── components/            # UI components
+├── hooks/                 # React hooks
+├── index.manifest.ts[*]   # Entry point and registration
+├── store.ts               # State management (Zustand)
+├── utils.ts               # Utility functions
+├── types.ts               # Type definitions
+├── settings-ui.tsx[*]     # Optional settings interface
 ├── **/(*.)loader.ts[*]    # Run arbitrary code when plugin is loaded
 └── **/*.public.ts[*]      # Public exports
 ```
@@ -39,14 +39,8 @@ src/plugins/your-plugin-name/
 Plugins are **automatically discovered** via Vite's `import.meta.glob`:
 
 1. **Create directory** under `src/plugins/your-plugin-name/`
-2. **Add `index.ts`** with plugin registration
+2. **Add `index.manifest.ts`** with plugin registration
 3. **No manual registration** required - system auto-detects valid patterns and integrates
-
-The plugin registry handles:
-
-- Plugin definitions ([Plugin Registry](../src/data/plugin-registry/index.ts))
-- Loading logic ([Loaders Registry](../src/entrypoints/content-scripts/loaders.ts))
-- Settings UI ([Settings Loader](../src/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader.ts))
 
 ## Execution Contexts & Entrypoints
 
@@ -61,9 +55,8 @@ The plugin registry handles:
 
 1. **Register** plugin in `index.ts`
 2. **Observe** page events (routing, DOM changes)
-3. **Intercept** network traffic (if needed) by adding a [middleware](../src/plugins/_core/main-world/network-intercept/_service/index.ts)
-4. **Inject** UI components into Perplexity pages (prioritize React, use the existing design system)
-5. **Store** local state using Zustand, Extension Storage or IndexedDb for persistent storage
+3. **Inject** UI components into Perplexity pages (prioritize React, use the existing design system)
+4. **Store** local state using Zustand, Extension Storage or IndexedDb for persistent storage
 
 ## Core APIs (Observer Pattern)
 
@@ -87,7 +80,7 @@ The extension provides abstracted APIs following the **Observer Pattern**:
 
 _To be documented..._
 
-### 2. Plugin Registration (`index.ts`)
+### 2. Plugin Registration
 
 _To be documented..._
 

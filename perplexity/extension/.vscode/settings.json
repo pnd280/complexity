@@ -75,17 +75,12 @@
   },
   "window.title": "${dirty}pplx-ext${separator}${activeRepositoryBranchName}${separator}${activeEditorShort}",
   "workbench.editor.customLabels.patterns": {
-    "**/src/**/*.remote-resources.ts": "Remote Resources - ${dirname}",
-    "**/src/data/plugin-registry/index.ts": "Plugin Registry",
     "**/src/entrypoints/background/index.ts": "Entrypoint - Background",
     "**/src/entrypoints/content-scripts/index.ts": "Entrypoint - Content Scripts",
-    "**/src/entrypoints/content-scripts/loaders.ts": "Loaders Registry",
     "**/src/entrypoints/options-page/index.tsx": "Entrypoint - Options Page",
     "**/src/manifest.base.ts": "Extension Manifest (Base)",
     "**/src/manifest.chrome.ts": "Extension Manifest (Chrome)",
     "**/src/manifest.firefox.ts": "Extension Manifest (Firefox)",
-    "**/src/plugins/*/index.ts": "Plugin Manifest - ${dirname}",
-    "**/src/plugins/*/loader.{ts,tsx}": "Plugin Loader - ${dirname}",
-    "**/src/plugins/*/settings-ui.{ts,tsx}": "Plugin Settings UI - ${dirname}"
+    "**/src/plugins/**/index.manifest.ts": "Plugin Manifest - ${dirname}"
   }
 }

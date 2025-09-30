@@ -1,5 +1,5 @@
-import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
+import { useThreadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import { useThreadMessageIndexContext } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 import CopyButton from "@/plugins/thread-better-message-copy-buttons/CopyButton";
 
 export function BetterMessageCopyButton() {

@@ -1,7 +1,7 @@
 import { DropdownMenuContent } from "@/components/ui/dropdown-menu";
 import { SelectContent } from "@/components/ui/select";
-import { usePluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
-import { ScopedQueryBoxContext } from "@/plugins/_core/ui/groups/query-box/_context/context";
+import { usePluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
+import { ScopedQueryBoxContext } from "@/plugins/__ui-groups__/elements/query-box/_context/context";
 import LanguageModelGroup from "@/plugins/language-model-selector/components/desktop/LanguageModelGroup";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import {

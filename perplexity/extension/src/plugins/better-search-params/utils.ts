@@ -1,10 +1,10 @@
 import { produce } from "immer";
 
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
-} from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
+} from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type ParsedQuery = {

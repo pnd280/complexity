@@ -1,21 +1,21 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { getRawItems } from "@/plugins/command-menu/items/searches/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import { keysToString } from "@/utils/misc/utils";
 import hotkeysJs from "@/utils/wrappers/hotkeys-js";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:commandMenu:searchItems:setupKeybindings": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:commandMenu:searchItems:setupKeybindings",
-    dependencies: ["cache:pluginsStates"],
-    loader({ "cache:pluginsStates": pluginsStates }) {
-      if (!pluginsStates.commandMenu) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader({ "cache:pluginsEnableStates": pluginsEnableStates }) {
+      if (!pluginsEnableStates.commandMenu) return;
 
       const items = getRawItems();
 

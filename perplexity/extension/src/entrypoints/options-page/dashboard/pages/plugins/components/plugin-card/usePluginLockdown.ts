@@ -1,9 +1,9 @@
-import type { PluginId } from "@/data/plugin-registry/types";
-import type { PluginsStatesDetailed } from "@/services/features/plugins-states/utils";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
+import type { PluginsStates } from "@/plugins/__async-deps__/plugins-states/utils";
 
 export function isPluginLockedDown(
   pluginId: PluginId,
-  pluginsStates: PluginsStatesDetailed,
+  pluginsStates: PluginsStates,
 ) {
   return (
     pluginsStates[pluginId].isOutdated ||
@@ -13,7 +13,7 @@ export function isPluginLockedDown(
 
 export function getLockdownText(
   pluginId: PluginId,
-  pluginsStates: PluginsStatesDetailed,
+  pluginsStates: PluginsStates,
 ) {
   const { isOutdated, isOnMaintenance } = pluginsStates[pluginId];
 
@@ -25,7 +25,7 @@ export function getLockdownText(
 
 export function getLockdownSubText(
   pluginId: PluginId,
-  pluginsStates: PluginsStatesDetailed,
+  pluginsStates: PluginsStates,
 ) {
   const { isOutdated, isOnMaintenance } = pluginsStates[pluginId];
 

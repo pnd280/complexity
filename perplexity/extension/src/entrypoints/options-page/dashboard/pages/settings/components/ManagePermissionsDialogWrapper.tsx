@@ -49,9 +49,10 @@ export default function ManagePermissionsDialogWrapper({
                 permission
               ]?.dependantPlugins.filter(
                 (plugin) =>
-                  !pluginsStates[plugin.id].isOnMaintenance &&
-                  !pluginsStates[plugin.id].isOutdated &&
-                  settings?.plugins[plugin.id]?.enabled,
+                  (!pluginsStates[plugin.id]?.isOnMaintenance &&
+                    !pluginsStates[plugin.id]?.isOutdated &&
+                    settings?.plugins[plugin.id]?.enabled) ??
+                  false,
               );
 
               return (

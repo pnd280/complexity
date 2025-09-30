@@ -1,11 +1,11 @@
 import { produce } from "immer";
 
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
-} from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { ReactVdomService } from "@/plugins/_core/main-world/react-vdom/service/service-init";
+} from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
+import { BetterRewriteDropdownsMainWorldActions } from "@/plugins/thread-better-rewrite-dropdown/_main-world";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export const handleRewrite = ({
@@ -65,7 +65,7 @@ export const handleRewrite = ({
     );
   }, 1000);
 
-  ReactVdomService.Instance.triggerRewriteOption({
+  BetterRewriteDropdownsMainWorldActions.Instance.triggerRewriteOption({
     messageBlockIndex,
     optionIndex: 3,
   });

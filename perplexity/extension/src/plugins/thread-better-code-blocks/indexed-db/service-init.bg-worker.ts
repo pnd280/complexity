@@ -22,7 +22,7 @@ const [registerService, getService] = defineProxy(
 function getBetterCodeBlocksFineGrainedOptionsRootService(): BetterCodeBlocksFineGrainedServiceType {
   invariant(
     isBackgroundScript(),
-    "This method is only allowed in background script, use getBetterCodeBlocksFineGrainedProxyService instead.",
+    "[BetterCodeBlocksFineGrainedService] Invalid context",
   );
 
   rootServiceInstance ??= BetterCodeBlocksFineGrainedServiceImpl;
@@ -33,7 +33,7 @@ function getBetterCodeBlocksFineGrainedOptionsRootService(): BetterCodeBlocksFin
 function getBetterCodeBlocksFineGrainedOptionsProxyService(): BetterCodeBlocksFineGrainedServiceType {
   invariant(
     !isBackgroundScript(),
-    "Use getBetterCodeBlocksFineGrainedRootService to access the non-proxied instance in background script.",
+    "[BetterCodeBlocksFineGrainedService] Invalid context",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

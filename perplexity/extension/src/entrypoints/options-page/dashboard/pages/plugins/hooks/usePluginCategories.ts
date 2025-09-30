@@ -1,6 +1,6 @@
-import { PluginRegistry } from "@/data/plugin-registry/index";
-import { PLUGIN_CATEGORIES } from "@/data/plugin-registry/plugin-tags";
-import type { PluginId } from "@/data/plugin-registry/types";
+import { PLUGIN_CATEGORIES } from "@/data/dashboard/plugin-tags";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 
 export function usePluginCategories({
   filteredPluginIds,
@@ -16,8 +16,8 @@ export function usePluginCategories({
     }, {});
 
     for (const pluginId of filteredPluginIds) {
-      const plugin = PluginRegistry.manifests[pluginId];
-      for (const category of plugin.categories) {
+      const plugin = PluginManifestsRegistry.meta[pluginId];
+      for (const category of plugin.dashboardMeta.categories) {
         pluginsByCat[category] = pluginsByCat[category] || [];
         pluginsByCat[category].push(pluginId);
       }
@@ -27,8 +27,8 @@ export function usePluginCategories({
       if (!pluginsByCat[category]) continue;
 
       pluginsByCat[category].sort((a, b) => {
-        const titleA = PluginRegistry.manifests[a].title;
-        const titleB = PluginRegistry.manifests[b].title;
+        const titleA = PluginManifestsRegistry.meta[a].title;
+        const titleB = PluginManifestsRegistry.meta[b].title;
         const isCoreA = titleA.endsWith(": Core");
         const isCoreB = titleB.endsWith(": Core");
 

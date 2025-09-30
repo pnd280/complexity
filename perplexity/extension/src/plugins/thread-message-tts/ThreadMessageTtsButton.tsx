@@ -11,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useEvent } from "@/hooks/useEvent";
-import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
+import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import { useThreadMessageIndexContext } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 import usePplxTtsRequest from "@/plugins/thread-message-tts/hooks/usePplxTtsRequest";
 import { PplxTtsPlayerCoordinator } from "@/plugins/thread-message-tts/player/coordinator";
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";

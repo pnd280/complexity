@@ -1,6 +1,6 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { homeDomObserverStore } from "@/plugins/_core/dom-observers/home/store";
-import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { homeDomObserverStore } from "@/plugins/__core__/dom-observers/home/store";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
@@ -48,18 +48,18 @@ async function setupCustomSlogan({
   $slogan.append($sloganContent);
 }
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:home:customSlogan": void;
   }
 }
 
 export default function loader() {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:home:customSlogan",
-    dependencies: ["cache:pluginsStates"],
-    loader: ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["home:customSlogan"]) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["home:customSlogan"]) return;
 
       homeDomObserverStore.subscribe(
         (store) => store.slogan,

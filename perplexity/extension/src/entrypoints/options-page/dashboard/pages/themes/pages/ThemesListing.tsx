@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes";
 import InstantCssEnable from "@/entrypoints/options-page/dashboard/pages/themes/components/InstantCssEnable";
 import { ThemeSections } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeSections";
-import { useLocalThemes } from "@/plugins/_core/custom-theme/index.public";
+import { useLocalThemes } from "@/plugins/__core__/custom-theme/indexed-db/useLocalThemes";
 
 export function ThemesListing() {
   const navigate = useNavigate();

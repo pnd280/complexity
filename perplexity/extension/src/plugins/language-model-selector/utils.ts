@@ -1,4 +1,4 @@
-import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
+import { pluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import type {
   LanguageModelCode,

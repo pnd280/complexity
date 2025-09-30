@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import type {
   PluginTagValues,
   PluginCategory,
-} from "@/data/plugin-registry/plugin-tags";
+} from "@/data/dashboard/plugin-tags";
 
 export type PluginFilters = {
   tags: PluginTagValues[];

@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { RadioGroup } from "@/components/ui/radio";
 import { toast } from "@/components/ui/use-toast";
-import { PluginRegistry } from "@/data/plugin-registry/index";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import {
   ALL_PLUGINS,
   ESSENTIALS_ONLY,
@@ -85,7 +85,11 @@ export default function PluginsEnableSet() {
   const [searchParams] = useSearchParams();
   const { settings, mutation } = useExtensionSettings();
   const isDefaultSettings = useMemo(
-    () => isEqual(settings?.plugins, PluginRegistry.fallbackValues),
+    () =>
+      isEqual(
+        settings?.plugins,
+        PluginManifestsRegistry.settingsFallbackValues,
+      ),
     [settings],
   );
   const [open, setOpen] = useState(

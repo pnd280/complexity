@@ -2,8 +2,8 @@ import { cva } from "class-variance-authority";
 
 import Tooltip from "@/components/Tooltip";
 import { Badge } from "@/components/ui/badge";
-import { PLUGIN_TAGS } from "@/data/plugin-registry/plugin-tags";
-import type { PluginTagValues } from "@/data/plugin-registry/plugin-tags";
+import { PLUGIN_TAGS } from "@/data/dashboard/plugin-tags";
+import type { PluginTagValues } from "@/data/dashboard/plugin-tags";
 
 type PluginTagProps = {
   tag: PluginTagValues;

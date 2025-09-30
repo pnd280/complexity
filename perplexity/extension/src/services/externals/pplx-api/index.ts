@@ -1,6 +1,6 @@
+import type { Socket } from "socket.io-client";
 import { z } from "zod";
 
-import { internalWebSocketStore } from "@/plugins/_core/global-stores/index.public";
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { ENDPOINTS } from "@/services/externals/pplx-api/endpoints";
 import type {
@@ -78,11 +78,17 @@ export class PplxApiService {
   private static async saveUserSettings(
     settings: Partial<PplxUserSettingsApiResponse>,
     method: "websocket" | "fetch" = "fetch",
+    socketInstance?: Socket,
   ) {
     if (method === "fetch") {
       return saveUserSettingsViaFetch(settings);
     } else {
-      return saveUserSettingsViaWebSocket(settings);
+      invariant(
+        socketInstance != null,
+        "Please provide a valid socket instance",
+      );
+
+      return saveUserSettingsViaWebSocket(settings, socketInstance);
     }
   }
 
@@ -287,19 +293,18 @@ export class PplxApiService {
       Space,
       "title" | "instructions" | "emoji" | "model_selection" | "description"
     >,
+    socketInstance: Socket,
   ): Promise<Space> {
-    const resp = await internalWebSocketStore
-      .getState()
-      .common?.emitWithAck("create_collection", {
-        version: "2.15",
-        source: "default",
-        title: space.title,
-        description: space.description,
-        emoji: space.emoji,
-        instructions: space.instructions,
-        access: 1,
-        model_selection: space.model_selection,
-      });
+    const resp = await socketInstance.emitWithAck("create_collection", {
+      version: "2.15",
+      source: "default",
+      title: space.title,
+      description: space.description,
+      emoji: space.emoji,
+      instructions: space.instructions,
+      access: 1,
+      model_selection: space.model_selection,
+    });
 
     return SpaceSchema.parse(resp);
   }

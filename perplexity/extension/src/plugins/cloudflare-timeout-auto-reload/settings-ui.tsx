@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { P } from "@/components/ui/typography";
-import type { PluginId } from "@/data/plugin-registry/types";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 

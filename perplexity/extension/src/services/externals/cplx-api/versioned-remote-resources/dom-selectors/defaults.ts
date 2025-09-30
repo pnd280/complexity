@@ -48,9 +48,12 @@ export const DOM_SELECTORS: DomSelectors = {
         ".gap-y-sm.md\\:gap-y-md.flex.flex-col > .flex.items-center.justify-between",
       FOOTER_CHILD: {
         REWRITE_BUTTON: "button:has(svg.tabler-icon-repeat)",
-        COPY_BUTTON: "button[aria-label]:has(svg.tabler-icon-copy)",
-        THUMBS_DOWN_BUTTON: "button:has(svg.tabler-icon-thumb-down)",
-        MISC_BUTTON: "button:has(svg.tabler-icon-dots)",
+        COPY_BUTTON:
+          'button:has(>div>div>svg>path[d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"])',
+        THUMBS_DOWN_BUTTON:
+          'button:has(>div>div>svg>path[d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"])',
+        MISC_BUTTON:
+          'button:has(>div>div>svg>path[d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"])',
       },
       IMAGE_GEN: {
         HEADER: "div:has(+.gap-sm.grid.grid-cols-2)",
@@ -82,9 +85,9 @@ export const DOM_SELECTORS: DomSelectors = {
       COMET_ASSISTANT: 'body[location="comet_assistant"] .grow.block',
       ARBITRARY: ".grow.block",
     },
-    ATTR_WRAPPER: "> div > div > div",
+    ATTR_WRAPPER: "> div > div:not([data-type]) > div",
     ATTR_WRAPPER_CHILD: {
-      COMET_ASSISTANT: "> div > div > div > div:last-child",
+      COMET_ASSISTANT: "> div > div:not([data-type]) > div > div:last-child",
       LEFT_ATTR_WRAPPER: ">div:nth-child(2)",
       RIGHT_ATTR_WRAPPER: ">div:nth-child(3)",
     },
@@ -98,7 +101,7 @@ export const DOM_SELECTORS: DomSelectors = {
     },
     ATTACH_BUTTON: 'button:has([data-icon="paperclip"]):last',
     SUBMIT_BUTTON:
-      'button[aria-label="Submit"], button[aria-label="Dictation"], button:has(svg.tabler-icon-square)',
+      'button[data-testid="submit-button"], button:has(>div>div>svg>path[d="M0 12.6663C0 13.4018 0.59792 13.9997 1.33333 13.9997C2.06875 13.9997 2.66667 13.4018 2.66667 12.6663V11.333C2.66667 10.5975 2.06875 9.99967 1.33333 9.99967C0.59792 9.99967 0 10.5975 0 11.333V12.6663ZM6.66667 5.33301C7.40213 5.33301 8 5.93087 8 6.66634V17.333C8 18.0685 7.40213 18.6663 6.66667 18.6663C5.9312 18.6663 5.33333 18.0685 5.33333 17.333V6.66634C5.33333 5.93087 5.9312 5.33301 6.66667 5.33301ZM10.6667 21.333C10.6667 22.0685 11.2645 22.6663 12 22.6663C12.7355 22.6663 13.3333 22.0685 13.3333 21.333V2.66634C13.3333 1.93093 12.7355 1.33301 12 1.33301C11.2645 1.33301 10.6667 1.93093 10.6667 2.66634V21.333ZM17.3333 5.33301C18.0688 5.33301 18.6667 5.93087 18.6667 6.66634V17.333C18.6667 18.0685 18.0688 18.6663 17.3333 18.6663C16.5979 18.6663 16 18.0685 16 17.333V6.66634C16 5.93087 16.5979 5.33301 17.3333 5.33301ZM24 11.333C24 10.5975 23.4021 9.99967 22.6667 9.99967C21.9312 9.99967 21.3333 10.5975 21.3333 11.333V12.6663C21.3333 13.4018 21.9312 13.9997 22.6667 13.9997C23.4021 13.9997 24 13.4018 24 12.6663V11.333Z"]), button:has(>div>div>svg>path[d="M17 4h-10a3 3 0 0 0 -3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3 -3v-10a3 3 0 0 0 -3 -3z"])',
     FORK_BUTTON: 'button svg[data-icon="code-fork"]',
     PRO_SEARCH_TOGGLE: "button#copilot-toggle",
     INCOGNITO_TOGGLE: ".mr-xs.flex.shrink-0.items-center",

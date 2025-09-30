@@ -1,10 +1,11 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
-import { PluginRegistry } from "@/data/plugin-registry/index";
-import { isPluginId, type PluginId } from "@/data/plugin-registry/types";
+import { PluginSettingsUis } from "@/data/registries/plugin-settings-uis";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import { type PluginId } from "@/data/registries/plugins/meta.types";
+import { isPluginId } from "@/data/registries/plugins/predicates";
 import Page from "@/entrypoints/options-page/components/Page";
-import { PLUGIN_SETTINGS_UIS } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader";
 import PluginSettingsModal from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/PluginSettingsModal";
 import PluginSettingsPage from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/PluginSettingsPage";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
@@ -22,8 +23,8 @@ export default function PluginSettingsWrapper() {
 
   const plugin = useMemo(
     () =>
-      Object.values(PluginRegistry.manifests).find(
-        (p) => p.settingsUiRouteSegment === pluginRouteSegment,
+      Object.values(PluginManifestsRegistry.meta).find(
+        (p) => p.dashboardMeta.uiRouteSegment === pluginRouteSegment,
       ),
     [pluginRouteSegment],
   );
@@ -32,7 +33,7 @@ export default function PluginSettingsWrapper() {
 
   const isFromPluginList = location.state?.fromPluginList === true;
   const isOpenInFullScreen =
-    plugin != null && PLUGIN_SETTINGS_UIS[plugin.id]!.openInFullScreen;
+    plugin != null && PluginSettingsUis[plugin.id]!.openInFullScreen;
 
   // const searchParamsToCllear = useMemo(() => ["searchTerm"], []);
   // useClearSearchParams({ enabled: !isFromPluginList, params: searchParamsToCllear });

@@ -1,24 +1,24 @@
 import { QueryObserver } from "@tanstack/react-query";
 
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { pluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
 import { imageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
 import { isImageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { queryClient } from "@/services/infra/query-client";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:imageGenModelSelector:initStore": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:imageGenModelSelector:initStore",
-    dependencies: ["cache:pluginsStates"],
-    loader: ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["imageGenModelSelector"]) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["imageGenModelSelector"]) return;
 
       initImageGenModelSelectorStore();
     },

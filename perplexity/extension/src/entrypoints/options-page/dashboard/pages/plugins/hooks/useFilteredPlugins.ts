@@ -1,8 +1,8 @@
-import { PluginRegistry } from "@/data/plugin-registry/index";
 import type {
   PluginTagValues,
   PluginCategory,
-} from "@/data/plugin-registry/plugin-tags";
+} from "@/data/dashboard/plugin-tags";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
 
 type UseFilteredPluginsParams = {
   searchTerm: string;
@@ -18,24 +18,30 @@ export function useFilteredPlugins({
   categories,
 }: UseFilteredPluginsParams) {
   const filteredPlugins = useMemo(() => {
-    return Object.values(PluginRegistry.manifests)
+    return Object.values(PluginManifestsRegistry.meta)
       .filter((plugin) => {
         const matchesSearch = (plugin.title + plugin.description)
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
-        const hasTags = plugin.tags !== undefined && plugin.tags.length > 0;
+        const hasTags =
+          plugin.dashboardMeta.tags !== undefined &&
+          plugin.dashboardMeta.tags.length > 0;
 
         const matchesTags =
           selectedTags.length === 0 ||
-          (hasTags && selectedTags.every((tag) => plugin.tags!.includes(tag)));
+          (hasTags &&
+            selectedTags.every((tag) =>
+              plugin.dashboardMeta.tags!.includes(tag),
+            ));
 
         const hasExcludedTags =
-          hasTags && excludeTags.some((tag) => plugin.tags!.includes(tag));
+          hasTags &&
+          excludeTags.some((tag) => plugin.dashboardMeta.tags!.includes(tag));
 
         const matchesCategories =
           categories.length === 0 ||
-          (plugin.categories !== undefined &&
-            plugin.categories.some((category) =>
+          (plugin.dashboardMeta.categories !== undefined &&
+            plugin.dashboardMeta.categories.some((category) =>
               categories.includes(category),
             ));
 

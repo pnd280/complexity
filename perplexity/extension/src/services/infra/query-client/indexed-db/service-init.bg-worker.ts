@@ -17,10 +17,7 @@ const [registerService, getService] = defineProxy(getQueryCacheRootService, {
 });
 
 function getQueryCacheRootService(): QueryCacheServiceType {
-  invariant(
-    isBackgroundScript(),
-    "This method is only allowed in background script, use getQueryCacheProxyService instead.",
-  );
+  invariant(isBackgroundScript(), "[QueryCacheService] Invalid context");
 
   rootServiceInstance ??= QueryCacheServiceImpl;
 
@@ -28,10 +25,7 @@ function getQueryCacheRootService(): QueryCacheServiceType {
 }
 
 function getQueryCacheProxyService(): QueryCacheServiceType {
-  invariant(
-    !isBackgroundScript(),
-    "Use getQueryCacheRootService to access the non-proxied instance in background script.",
-  );
+  invariant(!isBackgroundScript(), "[QueryCacheService] Invalid context");
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());
 

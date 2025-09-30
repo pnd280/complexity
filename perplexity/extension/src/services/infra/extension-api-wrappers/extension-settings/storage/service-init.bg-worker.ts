@@ -3,13 +3,13 @@ import { defineProxy } from "comctx";
 
 import {
   backgroundProxyServiceName,
-  ExtensionSettingsStorageService as ExtensionSettingsStorageServiceType,
+  ExtensionSettingsStorageServiceImpl,
 } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
-let rootServiceInstance: typeof ExtensionSettingsStorageServiceType | undefined;
+let rootServiceInstance: typeof ExtensionSettingsStorageServiceImpl | undefined;
 let proxyServiceInstance:
-  | typeof ExtensionSettingsStorageServiceType
+  | typeof ExtensionSettingsStorageServiceImpl
   | undefined;
 
 const [registerService, getService] = defineProxy(
@@ -20,21 +20,21 @@ const [registerService, getService] = defineProxy(
   },
 );
 
-function getExtensionSettingsStorageRootService(): typeof ExtensionSettingsStorageServiceType {
+function getExtensionSettingsStorageRootService(): typeof ExtensionSettingsStorageServiceImpl {
   invariant(
     isBackgroundScript(),
-    "This method is only allowed in background script, use getExtensionSettingsStorageProxyService instead.",
+    "[ExtensionSettingsStorageService] Invalid context",
   );
 
-  rootServiceInstance ??= ExtensionSettingsStorageServiceType;
+  rootServiceInstance ??= ExtensionSettingsStorageServiceImpl;
 
   return rootServiceInstance;
 }
 
-function getExtensionSettingsStorageProxyService(): typeof ExtensionSettingsStorageServiceType {
+function getExtensionSettingsStorageProxyService(): typeof ExtensionSettingsStorageServiceImpl {
   invariant(
     !isBackgroundScript(),
-    "Use getExtensionSettingsStorageRootService to access the non-proxied instance in background script.",
+    "[ExtensionSettingsStorageService] Invalid context",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

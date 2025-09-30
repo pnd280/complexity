@@ -1,7 +1,7 @@
 import {
   openInNewTab,
   softNavigate,
-} from "@/plugins/_core/main-world/spa-router/utils";
+} from "@/plugins/__core__/_main-world/spa-router/utils";
 import usePplxSpaces from "@/plugins/command-menu/pages/spaces/usePplxSpaces";
 import {
   commandMenuStore,

@@ -1,18 +1,18 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { pplxCookiesStore } from "@/plugins/_core/global-stores/pplx-cookies-store";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { pplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:incognitoByDefault": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:incognitoByDefault",
-    dependencies: ["cache:pluginsStates", "store:pplxCookies"],
-    loader({ "cache:pluginsStates": pluginsStates }) {
-      if (!pluginsStates.incognitoByDefault) return;
+    dependencies: ["cache:pluginsEnableStates", "store:pplxCookies"],
+    loader({ "cache:pluginsEnableStates": pluginsEnableStates }) {
+      if (!pluginsEnableStates.incognitoByDefault) return;
 
       if (
         pplxCookiesStore

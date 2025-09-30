@@ -4,7 +4,7 @@ import { redirect } from "react-router-dom";
 
 import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes";
 import Page from "@/entrypoints/options-page/components/Page";
-import { LocalThemesService } from "@/plugins/_core/custom-theme/index.public";
+import { LocalThemesService } from "@/plugins/__core__/custom-theme/indexed-db/service-init.bg-worker";
 
 const { CreateThemePage } = lazily(
   () =>

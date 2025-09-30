@@ -3,7 +3,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabContent, TabsList, TabTrigger } from "@/components/ui/tabs";
-import type { PluginId } from "@/data/plugin-registry/types";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import CreateNewLanguageOptionButton from "@/plugins/thread-better-code-blocks/settings-ui/CreateNewLanguageOptionButton";
 import BetterCodeBlockFineGrainedOptions from "@/plugins/thread-better-code-blocks/settings-ui/FineGrainedOptions";

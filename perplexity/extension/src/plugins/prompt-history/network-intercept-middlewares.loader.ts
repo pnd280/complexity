@@ -1,27 +1,26 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
-import { parsePerplexityAskEvent } from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
+import { parsePerplexityAskEvent } from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import { queryClient } from "@/services/infra/query-client";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:promptHistory:networkInterceptMiddleware": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:networkInterceptMiddleware",
-    dependencies: ["cache:pluginsStates", "cache:extensionSettings"],
+    dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
     loader: ({
-      "cache:pluginsStates": pluginsStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:extensionSettings": extensionSettings,
     }) => {
       if (
-        !pluginsStates["slashCommand"] ||
-        !pluginsStates["promptHistory"] ||
+        !pluginsEnableStates["promptHistory"] ||
         !extensionSettings.plugins["promptHistory"].trigger.onSubmit
       )
         return;

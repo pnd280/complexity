@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 
-import { threadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import type { MessageBlock } from "@/plugins/_core/dom-observers/thread/message-blocks/types";
+import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
 
 export type TocItem = {
   id: number;

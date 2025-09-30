@@ -2,7 +2,7 @@ import { H2 } from "@/components/ui/typography";
 import {
   PLUGIN_CATEGORIES,
   type PluginCategory,
-} from "@/data/plugin-registry/plugin-tags";
+} from "@/data/dashboard/plugin-tags";
 import NoPluginsFound from "@/entrypoints/options-page/dashboard/pages/plugins/components/NoPluginsFound";
 import { PluginsGrid } from "@/entrypoints/options-page/dashboard/pages/plugins/components/PluginsGrid";
 import { useFilteredPlugins } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilteredPlugins";

@@ -12,9 +12,9 @@ import {
 import { CommandItemSkeleton } from "@/components/ui/command";
 import {
   openInNewTab,
-  useSpaRouter,
   softNavigate,
-} from "@/plugins/_core/main-world/spa-router/utils";
+  useSpaRouter,
+} from "@/plugins/__core__/_main-world/spa-router/utils";
 import SpacesSearchItemsFooter from "@/plugins/command-menu/pages/spaces/Footer";
 import SpacesSearchItemsSidecar from "@/plugins/command-menu/pages/spaces/Sidecar";
 import usePplxSpaces from "@/plugins/command-menu/pages/spaces/usePplxSpaces";

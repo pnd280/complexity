@@ -6,8 +6,8 @@ import {
   CommandItemRightAttributes,
   CommandItemTitle,
 } from "@/components/ui/command";
-import usePplxIncognitoMode from "@/hooks/usePplxIncognitoMode";
-import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
+import { useColorSchemeStore } from "@/plugins/__async-deps__/global-stores/color-scheme-store";
+import usePplxIncognitoMode from "@/plugins/__async-deps__/hooks/usePplxIncognitoMode";
 import CommandItemGuard from "@/plugins/command-menu/components/CommandItemGuard";
 import { getRawItems } from "@/plugins/command-menu/items/actions/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";

@@ -8,7 +8,7 @@ import {
   CommandItemRightAttributes,
   CommandItemTitle,
 } from "@/components/ui/command";
-import { slashCommandMenuStore } from "@/plugins/slash-command/index.public";
+import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
 import { formatRelativeTime } from "@/services/infra/i18n";
 
 type PromptHistoryCommandMenuItem = {

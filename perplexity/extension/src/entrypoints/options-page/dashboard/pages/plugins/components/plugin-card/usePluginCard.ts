@@ -1,8 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { PluginRegistry } from "@/data/plugin-registry/index";
-import type { PluginId } from "@/data/plugin-registry/types";
-import { PLUGIN_SETTINGS_UIS } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader";
+import { PluginSettingsUis } from "@/data/registries/plugin-settings-uis";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 import { hasPermissionsSync } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
@@ -19,16 +19,16 @@ export function usePluginCard(pluginId: PluginId) {
   const {
     title,
     description,
-    tags,
-    settingsUiRouteSegment,
-    requiredPermissions,
-  } = PluginRegistry.manifests[pluginId];
+    dashboardMeta: { tags, uiRouteSegment },
+    extensionPermissions,
+  } = PluginManifestsRegistry.meta[pluginId];
 
   const hasAllRequiredPermissions = useMemo(() => {
-    const grantedPermissions = permissions?.permissions;
+    const grantedPermissions = permissions?.permissions ?? [];
+
+    const requiredPermissions = extensionPermissions?.requiredPermissions;
 
     if (requiredPermissions == null) return true;
-    if (grantedPermissions == null) return false;
 
     return requiredPermissions.every(({ permission }) =>
       hasPermissionsSync({
@@ -36,43 +36,36 @@ export function usePluginCard(pluginId: PluginId) {
         requiredPermissions: [permission],
       }),
     );
-  }, [permissions, requiredPermissions]);
+  }, [permissions, extensionPermissions]);
 
-  const dialogContent = useMemo(
-    () => PLUGIN_SETTINGS_UIS[pluginId],
-    [pluginId],
-  );
+  const dialogContent = useMemo(() => PluginSettingsUis[pluginId], [pluginId]);
 
   const { pluginsStates, isLoading } = usePluginsStates();
 
-  const areAllDependentPluginsEnabled = useMemo(
-    () =>
-      PluginRegistry.manifests?.[pluginId]?.dependentPlugins?.every(
-        (dependentPluginId) => settings?.plugins[dependentPluginId].enabled,
-      ) ?? true,
-    [pluginId, settings],
-  );
+  const areAllDependentPluginsEnabled = useMemo(() => {
+    const allDependencies =
+      PluginManifestsRegistry.getAllPluginDependencies(pluginId);
 
-  const areAnyDependentPluginsDisabled = useMemo(
-    () =>
-      PluginRegistry.manifests?.[pluginId]?.dependentPlugins?.some(
-        (dependentPluginId) =>
-          pluginsStates[dependentPluginId].isOnMaintenance ||
-          pluginsStates[dependentPluginId].isOutdated,
-      ) ?? false,
-    [pluginId, pluginsStates],
-  );
+    if (allDependencies.size === 0) return true;
+
+    return Array.from(allDependencies).every(
+      (dependentPluginId) =>
+        settings?.plugins[dependentPluginId].enabled &&
+        !pluginsStates[dependentPluginId].isOnMaintenance &&
+        !pluginsStates[dependentPluginId].isOutdated,
+    );
+  }, [pluginId, settings, pluginsStates]);
 
   const navigateToPluginDetails = useCallback(() => {
     navigate(
-      `/plugins/${settingsUiRouteSegment}?${new URLSearchParams(searchParams)}`,
+      `/plugins/${uiRouteSegment}?${new URLSearchParams(searchParams)}`,
       {
         state: {
           fromPluginList: true,
         },
       },
     );
-  }, [navigate, searchParams, settingsUiRouteSegment]);
+  }, [navigate, searchParams, uiRouteSegment]);
 
   const togglePlugin = useCallback(
     ({ checked }: { checked: boolean }) => {
@@ -88,7 +81,7 @@ export function usePluginCard(pluginId: PluginId) {
       title,
       description,
       tags,
-      requiredPermissions,
+      requiredPermissions: extensionPermissions?.requiredPermissions,
     },
     state: {
       settings,
@@ -96,7 +89,6 @@ export function usePluginCard(pluginId: PluginId) {
       hasAllRequiredPermissions,
       dialogContent,
       areAllDependentPluginsEnabled,
-      areAnyDependentPluginsDisabled,
     },
     actions: {
       navigateToPluginDetails,

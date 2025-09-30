@@ -1,25 +1,26 @@
 import { produce } from "immer";
 
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
-} from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
+} from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { forceWritingModeStore } from "@/plugins/force-writing-mode/store";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:spacesThreadsForceWritingMode": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:queryBox:spacesThreadsForceWritingMode",
-    dependencies: ["cache:pluginsStates"],
-    loader: ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["queryBox:spacesThreadsForceWritingMode"]) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["queryBox:spacesThreadsForceWritingMode"])
+        return;
 
       NetworkInterceptMiddlewareManagerService.Root.updateMiddleware({
         id: "spaces-threads-force-writing-mode",

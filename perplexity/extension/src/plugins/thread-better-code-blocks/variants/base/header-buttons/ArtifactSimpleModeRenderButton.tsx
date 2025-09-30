@@ -1,12 +1,12 @@
 import { LuPlay } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
-import CsUiPluginsGuard from "@/plugins/_core/plugins-guard/CsUiPluginsGuard";
-import { artifactsStore } from "@/plugins/artifacts/index.public";
+import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
+import { artifactsStore } from "@/plugins/thread-artifacts/index.public";
 import {
   isAutonomousArtifactLanguageString,
   isArtifactLanguageString,
-} from "@/plugins/artifacts/index.public";
+} from "@/plugins/thread-artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 
 export default function ArtifactSimpleModeRenderButton() {

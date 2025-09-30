@@ -22,7 +22,7 @@ const [registerService, getService] = defineProxy(
 function getInstantCssInjectorRootService(): InstantCssInjectorServiceType {
   invariant(
     isBackgroundScript(),
-    "This method is only allowed in background script, use getInstantCssInjectorProxyService instead.",
+    "[InstantCssInjectorService] Invalid context",
   );
 
   rootServiceInstance ??= InstantCssInjectorServiceImpl;
@@ -33,7 +33,7 @@ function getInstantCssInjectorRootService(): InstantCssInjectorServiceType {
 function getInstantCssInjectorProxyService(): InstantCssInjectorServiceType {
   invariant(
     !isBackgroundScript(),
-    "Use getInstantCssInjectorRootService to access the non-proxied instance in background script.",
+    "[InstantCssInjectorService] Invalid context",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

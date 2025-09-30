@@ -9,9 +9,9 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { PluginRegistry } from "@/data/plugin-registry/index";
-import type { PluginId } from "@/data/plugin-registry/types";
-import { PLUGIN_SETTINGS_UIS } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader";
+import { PluginSettingsUis } from "@/data/registries/plugin-settings-uis";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 
 type PluginSettingsModalProps = {
@@ -25,7 +25,7 @@ export default function PluginSettingsModal({
   const { isMobile } = useIsMobileStore();
   const location = useLocation();
 
-  const plugin = PluginRegistry.manifests[pluginId];
+  const plugin = PluginManifestsRegistry.meta[pluginId];
 
   const fromPluginList = location.state?.fromPluginList === true;
 
@@ -54,7 +54,7 @@ export default function PluginSettingsModal({
             {plugin.description}
           </DialogDescription>
         </DialogHeader>
-        <div className="x:mt-4">{PLUGIN_SETTINGS_UIS[pluginId]!.component}</div>
+        <div className="x:mt-4">{PluginSettingsUis[pluginId]!.component}</div>
       </DialogContentComp>
     </DialogComp>
   );

@@ -1,7 +1,7 @@
 import type {
   PluginCategory,
   PluginTagValues,
-} from "@/data/plugin-registry/plugin-tags";
+} from "@/data/dashboard/plugin-tags";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
 
 type FilterSelectionOptions<T extends string> = {

@@ -1,27 +1,27 @@
 import { produce } from "immer";
 
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/_core/main-world/network-intercept/_service/service-init.loader";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { pluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
+import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
-} from "@/plugins/_core/main-world/network-intercept/utils/parse-perplexity-ask-event";
-import { pluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
+} from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { betterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "networkIntercept:languageModelSelector": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "networkIntercept:languageModelSelector",
-    dependencies: ["cache:pluginsStates"],
-    loader: ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["queryBox:languageModelSelector"]) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["queryBox:languageModelSelector"]) return;
 
       let unsub: (() => void) | undefined = undefined; // must do this to prevent strict temporal dead zone on Firefox
 

@@ -58,20 +58,12 @@ Automatic discovery and registration via **Vite's `import.meta.glob`** for:
 
 ## Dependency Boundaries
 
-The project enforces strict [dependency boundaries](../eslint-config/boundaries/index.js).
-
-### Boundary Types
-
-1. **Shared** - Common code including components, hooks, services, types, utils, and data
-2. **Entrypoint** - Entry points for different contexts (background, content scripts, options)
-3. **Core Plugin** - Core plugin functionality and APIs (`src/plugins/_core/**/*`)
-4. **Plugin** - Individual feature implementations (`src/plugins/*/**/*`)
-5. **Plugin Public Exports** - Public API surfaces for plugins (`src/plugins/*/**/*.public.*`)
-6. **Plugin Settings UI** - Settings UI components for plugins (`src/plugins/*/**/settings-ui.tsx`)
+- [Dependency boundaries](../eslint-config/boundaries/index.js).
+- [File naming convention](./file-suffixes.md).
 
 ### Import Rules
 
-Dependency flow is strictly controlled where each boundary type can only import from allowed types. Higher layers can import from lower layers, but not vice versa. This prevents circular dependencies and maintains clean architecture.
+Dependency flow is strictly controlled where each boundary type can only import from allowed types. Higher layers can import from lower layers, but not vice versa.
 
 ```mermaid
 flowchart TD
@@ -97,17 +89,6 @@ flowchart TD
     class PC pluginCore
     class S shared
 ```
-
-### File Categorization
-
-Files are categorized based on their location patterns as defined in the ESLint boundaries configuration:
-
-- **Shared**: `src/*.ts`, `src/components/**/*`, `src/assets/**/*`, `src/hooks/**/*`, `src/services/**/*`, `src/types/**/*`, `src/utils/**/*`, `src/data/**/*`, `src/**/index.public.ts`
-- **Entrypoint**: `src/entrypoints/*/**/*`
-- **Core Plugin**: `src/plugins/_core/**/*`
-- **Plugin**: `src/plugins/*/**/*`
-- **Plugin Public Exports**: `src/plugins/*/**/*.public.*`
-- **Plugin Settings UI**: `src/plugins/*/**/settings-ui.tsx`
 
 ## Data & Persistence
 

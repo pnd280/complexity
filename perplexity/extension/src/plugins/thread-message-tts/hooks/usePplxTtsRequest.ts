@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { Socket } from "socket.io-client";
 
 import { APP_CONFIG } from "@/app.config";
-import { InternalWebSocketManager } from "@/plugins/_core/web-socket";
+import { InternalWebSocketManager } from "@/plugins/__core__/pplx-web-socket";
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";
 
 type UsePplxTtsRequestProps = {
@@ -20,7 +20,7 @@ export default function usePplxTtsRequest({
 
   const { reset, mutateAsync, isPending } = useMutation({
     mutationFn: async (params?: { voice: TtsVoice; backendUuid: string }) => {
-      invariant(params?.backendUuid, "backendUuid is required");
+      invariant(params?.backendUuid, "[ThreadMessageTts] Invalid context");
 
       socketRef.current =
         await InternalWebSocketManager.getInstance().handShake({
@@ -29,7 +29,7 @@ export default function usePplxTtsRequest({
 
       const socket = socketRef.current;
 
-      invariant(socket != null, "No socket found");
+      invariant(socket != null, "[ThreadMessageTts] Invalid context");
 
       const handleAudio = (packet: {
         data: ArrayLike<number>;

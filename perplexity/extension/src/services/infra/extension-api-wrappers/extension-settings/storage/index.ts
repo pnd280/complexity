@@ -13,7 +13,7 @@ export const backgroundProxyServiceName = "extensionSettingsStorageService";
  *
  * Other read-only data (or init a subscription) can be accessed directly via the storageItem.
  */
-export class ExtensionSettingsStorageService {
+export class ExtensionSettingsStorageServiceImpl {
   static storageItem = storage.defineItem<ExtensionSettings>("local:settings", {
     init: () => DEFAULT_EXTENSION_SETTINGS,
     fallback: DEFAULT_EXTENSION_SETTINGS,
@@ -25,25 +25,25 @@ export class ExtensionSettingsStorageService {
 
   static async getValue(): Promise<ExtensionSettings> {
     return (this.operationQueue = this.operationQueue.then(() =>
-      ExtensionSettingsStorageService.storageItem.getValue(),
+      ExtensionSettingsStorageServiceImpl.storageItem.getValue(),
     ));
   }
 
   static async getMeta() {
     return (this.operationQueue = this.operationQueue.then(() =>
-      ExtensionSettingsStorageService.storageItem.getMeta(),
+      ExtensionSettingsStorageServiceImpl.storageItem.getMeta(),
     ));
   }
 
   static async setValue(value: ExtensionSettings) {
     return (this.operationQueue = this.operationQueue.then(() =>
-      ExtensionSettingsStorageService.storageItem.setValue(value),
+      ExtensionSettingsStorageServiceImpl.storageItem.setValue(value),
     ));
   }
 
   static async setMeta(meta: Parameters<typeof storage.setMeta>[0]) {
     return (this.operationQueue = this.operationQueue.then(() =>
-      ExtensionSettingsStorageService.storageItem.setMeta(meta),
+      ExtensionSettingsStorageServiceImpl.storageItem.setMeta(meta),
     ));
   }
 }

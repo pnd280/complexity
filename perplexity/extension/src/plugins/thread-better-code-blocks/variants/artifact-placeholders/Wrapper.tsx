@@ -1,16 +1,16 @@
 import { LuLoaderCircle } from "react-icons/lu";
 
-import type { ArtifactLanguage } from "@/plugins/artifacts/index.public";
-import { ARTIFACT_PLACEHOLDERS } from "@/plugins/artifacts/index.public";
+import type { ArtifactLanguage } from "@/plugins/thread-artifacts/index.public";
+import { ARTIFACT_PLACEHOLDERS } from "@/plugins/thread-artifacts/index.public";
 import {
   artifactsStore,
   useArtifactsStore,
-} from "@/plugins/artifacts/index.public";
+} from "@/plugins/thread-artifacts/index.public";
 import {
   formatArtifactTitle,
   getArtifactTitle,
   getInterpretedArtifactLanguage,
-} from "@/plugins/artifacts/index.public";
+} from "@/plugins/thread-artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 
 const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {

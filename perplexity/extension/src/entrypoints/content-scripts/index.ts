@@ -1,7 +1,11 @@
+import {
+  executeCsLoaders,
+  executeLibCsLoaders,
+} from "@/data/registries/cs-loaders";
 import { contentScriptGuards } from "@/entrypoints/content-scripts/guards";
-import { executeCsPluginLoaders } from "@/entrypoints/content-scripts/loaders";
 
 $(() => {
   contentScriptGuards();
-  executeCsPluginLoaders();
+  executeLibCsLoaders();
+  executeCsLoaders();
 });

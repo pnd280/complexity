@@ -1,8 +1,8 @@
-import { PluginRegistry } from "@/data/plugin-registry/index";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 export const DEFAULT_EXTENSION_SETTINGS: ExtensionSettings = {
-  plugins: PluginRegistry.fallbackValues,
+  plugins: PluginManifestsRegistry.settingsFallbackValues,
   theme: "complexity",
   energySavingMode: false,
   extensionIconAction: "perplexity",

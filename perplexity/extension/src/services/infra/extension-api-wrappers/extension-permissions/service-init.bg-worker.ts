@@ -21,7 +21,7 @@ const [registerService, getService] = defineProxy(
 function getExtensionPermissionsRootService(): typeof ExtensionPermissionsServiceType {
   invariant(
     isBackgroundScript(),
-    "This method is only allowed in background script, use getExtensionPermissionsProxyService instead.",
+    "[ExtensionPermissionsService] Invalid context",
   );
 
   rootServiceInstance ??= ExtensionPermissionsServiceType;
@@ -32,7 +32,7 @@ function getExtensionPermissionsRootService(): typeof ExtensionPermissionsServic
 function getExtensionPermissionsProxyService(): typeof ExtensionPermissionsServiceType {
   invariant(
     !isBackgroundScript(),
-    "Use getExtensionPermissionsRootService to access the non-proxied instance in background script.",
+    "[ExtensionPermissionsService] Invalid context",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

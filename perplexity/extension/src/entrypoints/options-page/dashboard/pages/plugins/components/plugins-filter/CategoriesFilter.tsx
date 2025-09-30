@@ -1,4 +1,4 @@
-import { PLUGIN_CATEGORIES } from "@/data/plugin-registry/plugin-tags";
+import { PLUGIN_CATEGORIES } from "@/data/dashboard/plugin-tags";
 import FilterBase from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter/FilterBase";
 import { usePluginFilterSelection } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilterSelection";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";

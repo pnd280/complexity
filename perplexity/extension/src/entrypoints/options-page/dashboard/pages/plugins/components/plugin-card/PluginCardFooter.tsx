@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CardFooter } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Ul } from "@/components/ui/typography";
-import { PluginRegistry } from "@/data/plugin-registry/index";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import { usePluginCardContext } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/PluginCardContext";
 import RequirePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/plugins/components/RequirePermissionsDialogWrapper";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
@@ -17,7 +17,6 @@ export function PluginCardFooter() {
     state: {
       dialogContent,
       areAllDependentPluginsEnabled,
-      areAnyDependentPluginsDisabled,
       isLockedDown,
       hasAllRequiredPermissions,
     },
@@ -53,19 +52,16 @@ export function PluginCardFooter() {
         !areAllDependentPluginsEnabled && (
           <Tooltip
             content={
-              <div>
-                <div>
-                  One or more dependencies are disabled, please enable them to
-                  use this plugin:
-                </div>
+              <div className="x:m-2">
+                <div>Enable the following plugins:</div>
                 <Ul>
-                  {PluginRegistry.manifests[pluginId]?.dependentPlugins?.map(
-                    (dependentPluginId) => (
-                      <li key={dependentPluginId}>
-                        {PluginRegistry.manifests[dependentPluginId]?.title}
-                      </li>
-                    ),
-                  )}
+                  {Array.from(
+                    PluginManifestsRegistry.getAllPluginDependencies(pluginId),
+                  ).map((dependentPluginId) => (
+                    <li key={dependentPluginId}>
+                      {PluginManifestsRegistry.meta[dependentPluginId].title}
+                    </li>
+                  ))}
                 </Ul>
               </div>
             }
@@ -73,19 +69,6 @@ export function PluginCardFooter() {
             <LuTriangleAlert className="x:size-4 x:text-yellow-300 x:dark:text-yellow-500" />
           </Tooltip>
         )}
-
-      {areAnyDependentPluginsDisabled && (
-        <Tooltip
-          content={
-            <div>
-              This plugin is disabled because one or more of its dependencies
-              are not available.
-            </div>
-          }
-        >
-          <LuTriangleAlert className="x:size-4 x:text-destructive" />
-        </Tooltip>
-      )}
 
       {!isLockedDown && (
         <RequirePermissionsDialogWrapper

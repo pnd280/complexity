@@ -13,7 +13,10 @@ export function contentScriptGuards() {
 function ignoreInvalidPages() {
   const isCloudflareVerificationPage = $(document.body).hasClass("no-js");
 
-  invariant(!isCloudflareVerificationPage, "Cloudflare verification page");
+  invariant(
+    !isCloudflareVerificationPage,
+    "[ContentScriptGuards] Invalid context",
+  );
 }
 
 function checkForExistingExtensionInstance() {

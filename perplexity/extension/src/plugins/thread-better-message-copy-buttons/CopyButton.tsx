@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
-import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
+import { useRegisteredGlobalCssEntry } from "@/plugins/__async-deps__/global-stores/global-css-store";
 import { useCopyPplxThread } from "@/plugins/thread-export/index.public";
 
 type CopyButtonProps = {

@@ -9,7 +9,7 @@ import PplxThread from "@/components/icons/PplxThread";
 import {
   openInNewTab,
   softNavigate,
-} from "@/plugins/_core/main-world/spa-router/utils";
+} from "@/plugins/__core__/_main-world/spa-router/utils";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
 
 export const navigationKeywords = ["navigation", "navigate", "go", "to"];

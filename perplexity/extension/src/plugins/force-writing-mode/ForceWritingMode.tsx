@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
+import { getActiveQueryBox } from "@/plugins/__ui-groups__/elements/query-box/utils";
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
 import { useForceWritingModeStore } from "@/plugins/force-writing-mode/store";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";

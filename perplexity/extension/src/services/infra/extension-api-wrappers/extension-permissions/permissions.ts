@@ -1,5 +1,8 @@
-import { PluginRegistry } from "@/data/plugin-registry";
-import type { PluginManifest } from "@/data/plugin-registry/types";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type {
+  PluginId,
+  PluginMeta,
+} from "@/data/registries/plugins/meta.types";
 
 export const OPTIONAL_PERMISSIONS = [
   "webNavigation",
@@ -9,25 +12,29 @@ type OptionalPermission = (typeof OPTIONAL_PERMISSIONS)[number];
 
 type PermissionDetails = {
   title: string;
-  dependantPlugins: PluginManifest[];
+  dependantPlugins: PluginMeta<PluginId>[];
 };
 
 const permissionToPluginsMap = OPTIONAL_PERMISSIONS.reduce<
-  Record<OptionalPermission, PluginManifest[]>
+  Record<OptionalPermission, PluginMeta<PluginId>[]>
 >(
   (acc, permission) => {
-    acc[permission] = Object.values(PluginRegistry.manifests).filter(
+    acc[permission] = Object.values(PluginManifestsRegistry.meta).filter(
       ({ id }) =>
-        PluginRegistry.manifests[id]?.requiredPermissions?.some(
+        PluginManifestsRegistry.meta[
+          id
+        ].extensionPermissions?.requiredPermissions?.some(
           (req) => req.permission === permission,
         ) ||
-        PluginRegistry.manifests[id]?.optionalPermissions?.some(
+        PluginManifestsRegistry.meta[
+          id
+        ].extensionPermissions?.optionalPermissions?.some(
           (req) => req.permission === permission,
         ),
     );
     return acc;
   },
-  {} as Record<OptionalPermission, PluginManifest[]>,
+  {} as Record<OptionalPermission, PluginMeta<PluginId>[]>,
 );
 
 export const OPTIONAL_PERMISSIONS_DETAILS: Partial<

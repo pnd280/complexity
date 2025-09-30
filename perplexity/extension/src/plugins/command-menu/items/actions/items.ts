@@ -6,8 +6,8 @@ import { getPlatform } from "@/hooks/usePlatformDetection";
 import {
   colorSchemeStore,
   type ColorScheme,
-} from "@/plugins/_core/global-stores/color-scheme-store";
-import { softNavigate } from "@/plugins/_core/main-world/spa-router/utils";
+} from "@/plugins/__async-deps__/global-stores/color-scheme-store";
+import { softNavigate } from "@/plugins/__core__/_main-world/spa-router/utils";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
 import type { whereAmI } from "@/utils/misc/utils";
 

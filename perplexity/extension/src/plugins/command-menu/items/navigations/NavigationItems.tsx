@@ -7,7 +7,7 @@ import {
   CommandItemRightAttributes,
   CommandItemTitle,
 } from "@/components/ui/command";
-import { useSpaRouter } from "@/plugins/_core/main-world/spa-router/utils";
+import { useSpaRouter } from "@/plugins/__core__/_main-world/spa-router/utils";
 import CommandItemGuard from "@/plugins/command-menu/components/CommandItemGuard";
 import NavigationItemsFooter from "@/plugins/command-menu/items/navigations/Footer";
 import { getRawItems } from "@/plugins/command-menu/items/navigations/items";

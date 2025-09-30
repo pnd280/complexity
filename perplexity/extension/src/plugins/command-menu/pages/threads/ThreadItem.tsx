@@ -8,10 +8,10 @@ import {
   CommandItemTitle,
 } from "@/components/ui/command";
 import {
-  softNavigate,
   openInNewTab,
+  softNavigate,
   useSpaRouter,
-} from "@/plugins/_core/main-world/spa-router/utils";
+} from "@/plugins/__core__/_main-world/spa-router/utils";
 import { useCurrentPage } from "@/plugins/command-menu/hooks/useCurrentPage";
 import SpaceBadge from "@/plugins/command-menu/pages/threads/SpaceBadge";
 import { commandMenuStore } from "@/plugins/command-menu/store";

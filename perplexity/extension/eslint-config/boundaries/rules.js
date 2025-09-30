@@ -2,51 +2,21 @@
 
 export const rules = [
   {
-    from: "shared",
-    allow: ["shared", "plugin-core-public-exports", "plugin-public-exports"],
-  },
-
-  {
     from: "entrypoint",
-    allow: [
-      "entrypoint",
-      "shared",
-      "plugin-core-public-exports",
-      "plugin-public-exports",
-    ],
-  },
-
-  {
-    from: "plugin-core",
-    allow: [
-      "plugin-core",
-      "plugin-core-public-exports",
-      "plugin",
-      "plugin-public-exports",
-      "shared",
-    ],
-    disallow: [
-      [
-        "plugin-core-public-exports",
-        { pluginCoreName: "${from.pluginCoreName}" },
-      ],
-    ],
-    message:
-      "Core plugin '${from.pluginCoreName}' cannot import its own public exports - use direct imports instead",
+    allow: ["*"],
   },
 
   {
     from: "plugin",
     allow: [
-      "plugin-core",
-      "plugin-core-public-exports",
-      "plugin-public-exports",
       ["plugin", { pluginName: "${from.pluginName}" }],
+      "plugin-public-exports",
+      "plugin-runtime-deps",
       "shared",
     ],
     disallow: [["plugin-public-exports", { pluginName: "${from.pluginName}" }]],
     message:
-      "Plugin '${from.pluginName}' cannot import its own public exports - use direct imports instead",
+      'Plugin "${from.pluginName}" cannot import its own public exports - use direct imports instead',
   },
 
   {
@@ -55,16 +25,12 @@ export const rules = [
   },
 
   {
-    from: "plugin-settings-ui",
-    allow: [
-      "plugin-core-public-exports",
-      "plugin-public-exports",
-      ["plugin", { pluginName: "${from.pluginName}" }],
-      ["entrypoint", { entrypointName: "options-page" }],
-      "shared",
-    ],
-    disallow: [["plugin-public-exports", { pluginName: "${from.pluginName}" }]],
-    message:
-      "Settings UI '${from.pluginName}' cannot import its own public exports - use direct imports instead",
+    from: "plugin-runtime-deps",
+    allow: ["plugin-runtime-deps", "shared"],
+  },
+
+  {
+    from: "shared",
+    allow: ["shared"],
   },
 ];

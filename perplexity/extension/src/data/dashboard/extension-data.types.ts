@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 import { ThemeSchema } from "@/data/dashboard/themes/theme.types";
-import { PluginRegistry } from "@/data/plugin-registry";
-import type { PluginsDbDataSchema } from "@/data/plugin-registry/types";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type { PluginsDbDataSchema } from "@/data/registries/plugins/meta.types";
 import { ExtensionSettingsSchema } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 const coreDbSchema = {
@@ -10,7 +10,7 @@ const coreDbSchema = {
 };
 
 const pluginDbSchemas = Object.fromEntries(
-  Object.entries(PluginRegistry.indexedDbTableValidationSchemas).map(
+  Object.entries(PluginManifestsRegistry.indexedDbTableValidationSchemas).map(
     ([tableName, schema]) => [tableName, z.array(schema)],
   ),
 ) as unknown as PluginsDbDataSchema;

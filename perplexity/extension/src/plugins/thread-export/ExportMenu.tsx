@@ -12,7 +12,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
-import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
+import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import type { ExportOption } from "@/plugins/thread-export/export-options";
 import { ExportActions } from "@/plugins/thread-export/ExportActions";
 import { ExportFormatSelect } from "@/plugins/thread-export/ExportFormatSelect";

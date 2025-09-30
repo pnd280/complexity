@@ -1,4 +1,4 @@
-import type { PluginId } from "@/data/plugin-registry/types";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 import PluginCard from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card";
 
 type PluginGridProps = {

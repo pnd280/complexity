@@ -1,10 +1,10 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { ContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { sendMessage } from "@/types/chrome-runtime-message";
 import { whereAmI } from "@/utils/misc/utils";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:comet:isolatedZoom": void;
   }
@@ -13,7 +13,7 @@ declare module "@/plugins/_core/async-dep-registry" {
 export default async function loader() {
   const tabId = await sendMessage("getTabId");
 
-  invariant(tabId, "Can not get tab id");
+  invariant(tabId, "[CometIsolatedZoom] Invalid context");
 
   let currentZoom = 1;
 
@@ -39,14 +39,14 @@ export default async function loader() {
     }
   }
 
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:comet:isolatedZoom",
-    dependencies: ["cache:pluginsStates", "cache:extensionSettings"],
+    dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
     loader: async ({
-      "cache:pluginsStates": pluginsStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:extensionSettings": extensionSettings,
     }) => {
-      if (!pluginsStates["comet:isolatedZoom"]) return;
+      if (!pluginsEnableStates["comet:isolatedZoom"]) return;
 
       if (whereAmI() !== "comet_assistant") return;
 

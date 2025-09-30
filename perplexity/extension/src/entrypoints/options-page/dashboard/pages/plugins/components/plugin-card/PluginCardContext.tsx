@@ -1,14 +1,17 @@
 import type { ReactNode } from "react";
 
-import type { PluginTagValues } from "@/data/plugin-registry/plugin-tags";
-import type { PluginId, PluginManifest } from "@/data/plugin-registry/types";
+import type { PluginTagValues } from "@/data/dashboard/plugin-tags";
+import type { PluginSettingsUIs } from "@/data/registries/plugin-settings-uis";
+import type {
+  PluginId,
+  PluginMeta,
+} from "@/data/registries/plugins/meta.types";
 import { usePluginCard } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/usePluginCard";
 import {
   getLockdownSubText,
   getLockdownText,
   isPluginLockedDown,
 } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/usePluginLockdown";
-import type { PluginSettingsUIs } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
@@ -17,15 +20,16 @@ type PluginCardContextType = {
   pluginInfo: {
     title: string;
     description: ReactNode;
-    tags: PluginTagValues[];
-    requiredPermissions: PluginManifest["requiredPermissions"];
+    tags: readonly PluginTagValues[];
+    requiredPermissions: NonNullable<
+      PluginMeta<PluginId>["extensionPermissions"]
+    >["requiredPermissions"];
   };
   state: {
     isLoading: boolean;
     isEnabled: boolean;
     isLockedDown: boolean;
     areAllDependentPluginsEnabled: boolean;
-    areAnyDependentPluginsDisabled: boolean;
     hasAllRequiredPermissions: boolean;
     lockdownText: string;
     lockdownSubText: string;

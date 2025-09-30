@@ -1,4 +1,4 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { commandMenuStore } from "@/plugins/command-menu/index.public";
 import {
   alwaysHideRelatedQuestionsCssResourceConfig,
@@ -11,18 +11,18 @@ import { insertCss } from "@/utils/dom-utils/generics";
 import { keysToString } from "@/utils/misc/utils";
 import hotkeysJs from "@/utils/wrappers/hotkeys-js";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:zenMode": void;
   }
 }
 
 export default async function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:zenMode",
-    dependencies: ["cache:pluginsStates", "cache:extensionSettings"],
-    loader: async ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["commandMenu"] || !pluginsStates["zenMode"]) return;
+    dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["zenMode"]) return;
 
       insertCss({
         css: await getVersionedRemoteResource(zenModeCssResourceConfig),

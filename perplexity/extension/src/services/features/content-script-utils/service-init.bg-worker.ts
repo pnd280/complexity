@@ -22,7 +22,7 @@ const [registerService, getService] = defineProxy(
 function getContentScriptBgUtilsRootService(): ContentScriptBgUtilsServiceType {
   invariant(
     isBackgroundScript(),
-    "This method is only allowed in background script, use getContentScriptBgUtilsProxyService instead.",
+    "[ContentScriptBgUtilsService] Invalid context",
   );
 
   rootServiceInstance ??= ContentScriptBgUtilsServiceImpl;
@@ -33,7 +33,7 @@ function getContentScriptBgUtilsRootService(): ContentScriptBgUtilsServiceType {
 function getContentScriptBgUtilsProxyService(): ContentScriptBgUtilsServiceType {
   invariant(
     !isBackgroundScript(),
-    "Use getContentScriptBgUtilsRootService to access the non-proxied instance in background script.",
+    "[ContentScriptBgUtilsService] Invalid context",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

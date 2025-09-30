@@ -40,7 +40,7 @@ export function generateThemeData(
       (c) => c.value === data.builtInAccentColor,
     );
 
-    invariant(color, "Invalid built-in color");
+    invariant(color, "[ThemesUtils] Invalid context");
     accentPalette = color.color;
   }
 
@@ -91,10 +91,10 @@ type ColorPalette = {
 };
 
 export function generateAccentColorOverrides({ light, dark }: ColorPalette) {
-  invariant(light.super100, "light.super100 is required");
-  invariant(light.super200, "light.super200 is required");
-  invariant(dark.super100, "dark.super100 is required");
-  invariant(dark.super200, "dark.super200 is required");
+  invariant(light.super100, "[ThemesUtils] Invalid context");
+  invariant(light.super200, "[ThemesUtils] Invalid context");
+  invariant(dark.super100, "[ThemesUtils] Invalid context");
+  invariant(dark.super200, "[ThemesUtils] Invalid context");
 
   return dedent`
     ::selection {
@@ -149,7 +149,7 @@ export function generateUiFontsOverrides({
 export function generatePalette(baseHex: string): ColorPalette {
   const baseOklch = oklch(baseHex);
 
-  invariant(baseOklch, "Invalid color");
+  invariant(baseOklch, "[ThemesUtils] Invalid context");
 
   return {
     light: {

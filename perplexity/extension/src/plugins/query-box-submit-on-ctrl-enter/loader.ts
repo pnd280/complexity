@@ -1,8 +1,10 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import type { QueryBoxesDomObserverStoreType } from "@/plugins/_core/dom-observers/query-boxes/store";
-import { queryBoxesDomObserverStore } from "@/plugins/_core/dom-observers/query-boxes/store";
-import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { isLexical } from "@/plugins/_core/ui/groups/query-box/utils";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import {
+  queryBoxesDomObserverStore,
+  type QueryBoxesDomObserverStoreType,
+} from "@/plugins/__core__/dom-observers/query-boxes/store";
+import { isLexical } from "@/plugins/__ui-groups__/elements/query-box/utils";
 
 const OBSERVER_ID = "submit-on-ctrl-enter";
 
@@ -60,18 +62,18 @@ function submitOnCtrlEnter(
   });
 }
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:submitOnCtrlEnter": void;
   }
 }
 
 export default function loader() {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:queryBox:submitOnCtrlEnter",
-    dependencies: ["cache:pluginsStates", "cache:domSelectors"],
-    loader: ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["queryBox:submitOnCtrlEnter"]) return;
+    dependencies: ["cache:pluginsEnableStates", "cache:domSelectors"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["queryBox:submitOnCtrlEnter"]) return;
 
       queryBoxesDomObserverStore.subscribe(
         (store) => ({

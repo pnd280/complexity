@@ -1,7 +1,7 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { threadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { getActiveQueryBox } from "@/plugins/_core/ui/groups/query-box/utils";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import { getActiveQueryBox } from "@/plugins/__ui-groups__/elements/query-box/utils";
 import styles from "@/plugins/drag-n-drop-file-to-upload-in-thread/styles.css?inline";
 import { insertCss } from "@/utils/dom-utils/generics";
 
@@ -13,18 +13,19 @@ const DRAGENTER_EVENT = "dragenter.cplx-file-upload";
 let removeCss: (() => void) | null = null;
 let $overlay: JQuery<HTMLElement> | null = null;
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:thread:dragAndDropFileToUploadInThread": void;
   }
 }
 
 export default function loader() {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:thread:dragAndDropFileToUploadInThread",
-    dependencies: ["cache:pluginsStates"],
-    loader: ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["thread:dragAndDropFileToUploadInThread"]) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["thread:dragAndDropFileToUploadInThread"])
+        return;
 
       const cleanup = () => {
         $overlay?.remove();

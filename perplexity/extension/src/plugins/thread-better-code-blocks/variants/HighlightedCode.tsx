@@ -2,8 +2,8 @@ import { useDebounce, useWindowSize } from "@uidotdev/usehooks";
 import type { ReactNode, RefObject } from "react";
 
 import CodeHighlighter from "@/components/CodeHighlighter";
-import { useColorSchemeStore } from "@/plugins/_core/global-stores/color-scheme-store";
-import { getInterpretedArtifactLanguage } from "@/plugins/artifacts/index.public";
+import { useColorSchemeStore } from "@/plugins/__async-deps__/global-stores/color-scheme-store";
+import { getInterpretedArtifactLanguage } from "@/plugins/thread-artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 import { getBetterCodeBlockOptions } from "@/plugins/thread-better-code-blocks/utils";

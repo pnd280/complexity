@@ -1,18 +1,18 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:betterSidebar:bodySync": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:betterSidebar:bodySync",
-    dependencies: ["cache:pluginsStates"],
-    loader: async ({ "cache:pluginsStates": pluginsStates }) => {
-      if (!pluginsStates["betterSidebar"]) return;
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      if (!pluginsEnableStates["betterSidebar"]) return;
 
       betterSidebarStore.subscribe(
         (state) => state.open,

@@ -1,9 +1,9 @@
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
-import { isAutonomousArtifactLanguageString } from "@/plugins/artifacts/index.public";
+import { PluginsStatesService } from "@/plugins/__async-deps__/plugins-states";
+import { isAutonomousArtifactLanguageString } from "@/plugins/thread-artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
 import ArtifactPlaceholderWrapper from "@/plugins/thread-better-code-blocks/variants/artifact-placeholders/Wrapper";
 import BaseCodeBlockWrapper from "@/plugins/thread-better-code-blocks/variants/base/Wrapper";
-import { PluginsStatesService } from "@/services/features/plugins-states";
 
 const MirroredCodeBlock = memo(function MirroredCodeBlock() {
   const { codeBlock } = useMirroredCodeBlockContext();

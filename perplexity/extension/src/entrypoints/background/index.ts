@@ -1,5 +1,5 @@
-(globalThis as any).isBackgroundScript = true;
+import { setupBackgroundWorkers } from "@/data/registries/bg-workers";
 
-import { setupBackgroundWorkers } from "@/entrypoints/background/setup-bg-workers";
+(globalThis as any).isBackgroundScript = true;
 
 setupBackgroundWorkers();

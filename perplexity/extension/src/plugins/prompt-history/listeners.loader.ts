@@ -1,24 +1,23 @@
-import { asyncLoaderRegistry } from "@/plugins/_core/async-dep-registry";
-import { spaRouterRouteChangeEvent } from "@/plugins/_core/main-world/spa-router/listeners.loader";
+import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { spaRouterRouteChangeEvent } from "@/plugins/__core__/_main-world/spa-router/listeners.loader";
 import { handlePromptSave } from "@/plugins/prompt-history/utils";
 
-declare module "@/plugins/_core/async-dep-registry" {
+declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:promptHistory:listeners": void;
   }
 }
 
 export default function () {
-  asyncLoaderRegistry.register({
+  AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:listeners",
-    dependencies: ["cache:pluginsStates", "cache:extensionSettings"],
+    dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
     loader: ({
-      "cache:pluginsStates": pluginsStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:extensionSettings": extensionSettings,
     }) => {
       if (
-        !pluginsStates["slashCommand"] ||
-        !pluginsStates["promptHistory"] ||
+        !pluginsEnableStates["promptHistory"] ||
         !extensionSettings.plugins["promptHistory"].trigger.onNavigation
       )
         return;

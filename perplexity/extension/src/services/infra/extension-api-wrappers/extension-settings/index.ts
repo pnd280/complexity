@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import z from "zod";
 
-import { ExtensionSettingsStorageService as ExtensionSettingsStorageServiceStatic } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
+import { ExtensionSettingsStorageServiceImpl as ExtensionSettingsStorageServiceStatic } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
 import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 import {
   ExtensionSettingsSchema,
@@ -78,7 +78,7 @@ export class ExtensionSettingsService {
   public static get cachedSync(): ExtensionSettings {
     const settings = ExtensionSettingsService.safeCachedSync;
 
-    invariant(settings, "Extension settings are not initialized");
+    invariant(settings, "[ExtensionSettings] Invalid context");
 
     return settings;
   }

@@ -1,6 +1,6 @@
 import type { DialogProps } from "@/components/ui/dialog";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { usePluginGuardsStore } from "@/plugins/_core/plugins-guard/store";
+import { usePluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
 import LanguageModelGroup from "@/plugins/language-model-selector/components/mobile/LanguageModelGroup";
 import { getAdvancedStandaloneModels } from "@/plugins/language-model-selector/utils";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";

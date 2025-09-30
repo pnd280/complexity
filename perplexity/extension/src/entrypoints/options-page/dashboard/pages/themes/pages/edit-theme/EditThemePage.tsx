@@ -9,7 +9,7 @@ import { invariant } from "@/utils/misc/utils";
 export function EditThemePage() {
   const theme = useLoaderData<Theme | undefined>();
 
-  invariant(theme != null, "Theme not found");
+  invariant(theme != null, "[EditThemePage] Invalid context");
 
   return (
     <EditThemeProvider theme={theme}>

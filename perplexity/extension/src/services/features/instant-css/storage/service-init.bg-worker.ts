@@ -20,10 +20,7 @@ const [registerService, getService] = defineProxy(
 );
 
 function getInstantCssStorageRootService(): InstantCssStorageServiceType {
-  invariant(
-    isBackgroundScript(),
-    "This method is only allowed in background script, use getInstantCssStorageProxyService instead.",
-  );
+  invariant(isBackgroundScript(), "[InstantCssStorageService] Invalid context");
 
   rootServiceInstance ??= InstantCssStorageServiceImpl;
 
@@ -33,7 +30,7 @@ function getInstantCssStorageRootService(): InstantCssStorageServiceType {
 function getInstantCssStorageProxyService(): InstantCssStorageServiceType {
   invariant(
     !isBackgroundScript(),
-    "Use getInstantCssStorageRootService to access the non-proxied instance in background script.",
+    "[InstantCssStorageService] Invalid context",
   );
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());

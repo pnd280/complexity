@@ -5,12 +5,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useRegisteredGlobalCssEntry } from "@/plugins/__async-deps__/global-stores/global-css-store";
 import {
   threadMessageBlocksDomObserverStore,
   useThreadMessageBlocksDomObserverStore,
-} from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
-import { useThreadMessageIndexContext } from "@/plugins/_core/ui/groups/thread-message-index-context";
+} from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import { useThreadMessageIndexContext } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 import { DesktopContent } from "@/plugins/language-model-selector/index.public";
 import { MobileContent } from "@/plugins/language-model-selector/index.public";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/index.public";

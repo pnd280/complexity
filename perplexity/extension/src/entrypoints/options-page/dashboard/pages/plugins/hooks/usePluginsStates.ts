@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { APP_CONFIG } from "@/app.config";
 import useExtensionUpdate from "@/hooks/useExtensionUpdate";
-import { PluginsStatesService } from "@/services/features/plugins-states";
-import { featureCompatResourceConfig } from "@/services/features/plugins-states/index.remote-resources";
+import { PluginsStatesService } from "@/plugins/__async-deps__/plugins-states";
+import { featureCompatResourceConfig } from "@/plugins/__async-deps__/plugins-states/index.remote-resources";
 import {
   initializePluginStates,
   updatePluginStatesWithFeatureCompat,
-} from "@/services/features/plugins-states/utils";
+} from "@/plugins/__async-deps__/plugins-states/utils";
 import { isInContentScript } from "@/utils/misc/utils";
 import { invariant } from "@/utils/misc/utils";
 

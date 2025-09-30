@@ -2,13 +2,13 @@ import { createListCollection } from "@ark-ui/react";
 
 import { Select, SelectContext, SelectTrigger } from "@/components/ui/select";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
-import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
-import { useRegisteredGlobalCssEntry } from "@/plugins/_core/global-stores/global-css-store";
+import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { useRegisteredGlobalCssEntry } from "@/plugins/__async-deps__/global-stores/global-css-store";
 import {
   ScopedQueryBoxContext,
   useScopedQueryBoxContext,
-} from "@/plugins/_core/ui/groups/query-box/_context/context";
-import { getActiveQueryBoxTextbox } from "@/plugins/_core/ui/groups/query-box/utils";
+} from "@/plugins/__ui-groups__/elements/query-box/_context/context";
+import { getActiveQueryBoxTextbox } from "@/plugins/__ui-groups__/elements/query-box/utils";
 import CometAssistantLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/CometAssistantTriggerButton";
 import DesktopContent from "@/plugins/language-model-selector/components/desktop";
 import MobileContent from "@/plugins/language-model-selector/components/mobile";

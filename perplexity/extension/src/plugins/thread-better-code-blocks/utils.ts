@@ -1,5 +1,5 @@
-import type { CodeBlock } from "@/plugins/_core/dom-observers/thread/code-blocks/types";
-import { DomSelectorsService } from "@/plugins/_core/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import type { CodeBlock } from "@/plugins/__core__/dom-observers/thread/code-blocks/types";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 import { queryClient } from "@/services/infra/query-client";

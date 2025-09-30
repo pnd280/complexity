@@ -1,10 +1,10 @@
 import { useDebounce, useWindowSize } from "@uidotdev/usehooks";
 import debounce from "lodash/debounce";
 
-import { useThreadMessageBlocksDomObserverStore } from "@/plugins/_core/dom-observers/thread/message-blocks/store";
-import { useThreadDomObserverStore } from "@/plugins/_core/dom-observers/thread/store";
-import { usePplxCookiesStore } from "@/plugins/_core/global-stores/pplx-cookies-store";
-import { useSpaRouter } from "@/plugins/_core/main-world/spa-router/utils";
+import { usePplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
+import { useSpaRouter } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { useThreadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 
 export const PANEL_WIDTH = 230;
 

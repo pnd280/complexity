@@ -14,10 +14,8 @@ import {
 } from "@/entrypoints/options-page/dashboard/pages/themes/context/ThemeFormContext";
 import { useBaseThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/hooks/useBaseThemeForm";
 import { DeleteButton } from "@/entrypoints/options-page/dashboard/pages/themes/pages/edit-theme/components/DeleteButton";
-import {
-  LocalThemesService,
-  updateRegistry,
-} from "@/plugins/_core/custom-theme/index.public";
+import { LocalThemesService } from "@/plugins/__core__/custom-theme/indexed-db/service-init.bg-worker";
+import { updateRegistry } from "@/plugins/__core__/custom-theme/instant-css-background-watchdog";
 
 type EditThemeProviderProps = {
   children: React.ReactNode;

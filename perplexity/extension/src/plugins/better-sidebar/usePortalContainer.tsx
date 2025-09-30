@@ -1,4 +1,4 @@
-import { useSidebarDomObserverStore } from "@/plugins/_core/dom-observers/sidebar/store";
+import { useSidebarDomObserverStore } from "@/plugins/__core__/dom-observers/sidebar/store";
 
 export default function usePortalContainer() {
   const nativeSidebarWrapper = useSidebarDomObserverStore(

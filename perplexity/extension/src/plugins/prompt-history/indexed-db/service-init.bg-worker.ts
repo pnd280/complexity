@@ -17,10 +17,7 @@ const [registerService, getService] = defineProxy(getPromptHistoryRootService, {
 });
 
 function getPromptHistoryRootService(): PromptHistoryServiceType {
-  invariant(
-    isBackgroundScript(),
-    "This method is only allowed in background script, use getPromptHistoryProxyService instead.",
-  );
+  invariant(isBackgroundScript(), "[PromptHistoryService] Invalid context");
 
   rootServiceInstance ??= PromptHistoryServiceImpl;
 
@@ -28,10 +25,7 @@ function getPromptHistoryRootService(): PromptHistoryServiceType {
 }
 
 function getPromptHistoryProxyService(): PromptHistoryServiceType {
-  invariant(
-    !isBackgroundScript(),
-    "Use getPromptHistoryRootService to access the non-proxied instance in background script.",
-  );
+  invariant(!isBackgroundScript(), "[PromptHistoryService] Invalid context");
 
   proxyServiceInstance ??= getService(new BrowserRuntimeAdapter());
 

@@ -1,4 +1,5 @@
-import { internalWebSocketStore } from "@/plugins/_core/global-stores/index.public";
+import type { Socket } from "socket.io-client";
+
 import { ENDPOINTS } from "@/services/externals/pplx-api/endpoints";
 
 export async function saveUserSettingsViaFetch(
@@ -19,14 +20,13 @@ export async function saveUserSettingsViaFetch(
 
 export async function saveUserSettingsViaWebSocket(
   settings: Record<string, unknown>,
+  socketInstance: Socket,
 ) {
   try {
-    await internalWebSocketStore
-      .getState()
-      .common?.emitWithAck("save_user_settings", settings);
+    await socketInstance.emitWithAck("save_user_settings", settings);
     return true;
   } catch (e) {
-    alert("Failed to save setting");
+    console.error("Failed to save setting", e);
     return false;
   }
 }

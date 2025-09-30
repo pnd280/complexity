@@ -2,62 +2,42 @@
 
 export const elements = [
   {
-    type: "shared",
-    mode: "full",
-    pattern: [
-      "src/*.ts",
-      "src/components/**/*",
-      "src/assets/**/*",
-      "src/hooks/**/*",
-      "src/services/**/*",
-      "src/types/**/*",
-      "src/utils/**/*",
-      "src/data/**/*",
-    ],
-  },
-
-  {
     type: "entrypoint",
     mode: "full",
-    capture: ["entrypointName"],
-    pattern: ["src/entrypoints/*/**/*"],
-  },
-
-  {
-    type: "plugin-core-public-exports",
-    mode: "full",
-    capture: ["pluginCoreName"],
-    pattern: ["src/plugins/_core/*/**/*.public.*"],
-  },
-
-  {
-    type: "plugin-core",
-    mode: "full",
-    capture: ["pluginCoreName"],
-    pattern: ["src/plugins/_core/*/**/*"],
-  },
-
-  {
-    type: "plugin-public-exports",
-    mode: "full",
-    capture: ["pluginName"],
-    pattern: ["src/plugins/!(_core)/**/*.public.*"],
-  },
-
-  {
-    type: "plugin-settings-ui",
-    mode: "full",
-    capture: ["pluginName"],
     pattern: [
+      "src/__registries__/*/**/*",
+      "src/entrypoints/*/**/*",
       "src/plugins/*/**/settings-ui.tsx",
       "src/plugins/*/**/settings-ui/index.tsx",
     ],
   },
 
   {
+    type: "plugin-runtime-deps",
+    mode: "full",
+    pattern: ["src/plugins/{__async-deps__,__core__,__ui-groups__}/**/*"],
+  },
+
+  {
+    type: "plugin-public-exports",
+    mode: "full",
+    capture: ["pluginName"],
+    pattern: ["src/plugins/**/*.public.*"],
+  },
+
+  {
     type: "plugin",
     mode: "full",
     capture: ["pluginName"],
-    pattern: ["src/plugins/!(_core)/**/*"],
+    pattern: ["src/plugins/*/**/*"],
+  },
+
+  {
+    type: "shared",
+    mode: "full",
+    pattern: [
+      "src/*.ts",
+      "src/{components,assets,hooks,services,types,utils,data}/**/*",
+    ],
   },
 ];

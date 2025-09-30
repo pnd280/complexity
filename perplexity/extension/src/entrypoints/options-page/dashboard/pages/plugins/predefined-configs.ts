@@ -1,11 +1,11 @@
 import { produce } from "immer";
 
-import { PluginRegistry } from "@/data/plugin-registry/index";
-import type { PluginId } from "@/data/plugin-registry/types";
+import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type { PluginId } from "@/data/registries/plugins/meta.types";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 export const ESSENTIALS_ONLY: ExtensionSettings["plugins"] = produce(
-  PluginRegistry.fallbackValues,
+  PluginManifestsRegistry.settingsFallbackValues,
   (draft) => {
     draft["thread:toc"].enabled = true;
     draft["thread:exportThread"].enabled = true;
@@ -14,9 +14,8 @@ export const ESSENTIALS_ONLY: ExtensionSettings["plugins"] = produce(
 );
 
 export const POWER_USER: ExtensionSettings["plugins"] = produce(
-  PluginRegistry.fallbackValues,
+  PluginManifestsRegistry.settingsFallbackValues,
   (draft) => {
-    draft["slashCommand"].enabled = true;
     draft["promptHistory"].enabled = true;
     draft["commandMenu"].enabled = true;
     draft["thread:toc"].enabled = true;
@@ -28,7 +27,7 @@ export const POWER_USER: ExtensionSettings["plugins"] = produce(
 );
 
 export const ALL_PLUGINS: ExtensionSettings["plugins"] = produce(
-  PluginRegistry.fallbackValues,
+  PluginManifestsRegistry.settingsFallbackValues,
   (draft) => {
     Object.keys(draft).forEach((key) => {
       const pluginIdKey = key as keyof typeof draft;
