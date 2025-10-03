@@ -30,6 +30,20 @@ export class DomObserver {
 
   private isProcessing = false;
 
+  /**
+   * Fast check to prevent processing extension-injected elements.
+   * This is the PRIMARY defense against infinite loops.
+   */
+  private isExtensionElement(element: Element): boolean {
+    // Ultra-fast attribute check first
+    if (element.hasAttribute("data-cplx-component")) {
+      return true;
+    }
+
+    // Fast ancestor check using closest()
+    return element.closest("[data-cplx-component]") !== null;
+  }
+
   constructor() {
     this.observer = new MutationObserver(this.queueMutations.bind(this));
     this.observer.observe(document.body, {
@@ -223,20 +237,31 @@ export class DomObserver {
       const mutation = mutationsList[i];
       if (!mutation) continue;
 
+      // Filter added nodes
       const addedNodes = mutation.addedNodes;
       for (let j = 0; j < addedNodes.length; j++) {
         const node = addedNodes[j];
         if (node && node.nodeType === Node.ELEMENT_NODE) {
-          this.pendingAddedNodes.push(node as Element);
+          const element = node as Element;
+
+          // CRITICAL: Skip extension elements to prevent infinite loops
+          if (!this.isExtensionElement(element)) {
+            this.pendingAddedNodes.push(element);
+          }
         }
       }
 
+      // Filter removed nodes
       const removedNodes = mutation.removedNodes;
       for (let j = 0; j < removedNodes.length; j++) {
         const node = removedNodes[j];
-
         if (node && node.nodeType === Node.ELEMENT_NODE) {
-          this.pendingRemovedNodes.push(node as Element);
+          const element = node as Element;
+
+          // Skip extension elements for removals too
+          if (!this.isExtensionElement(element)) {
+            this.pendingRemovedNodes.push(element);
+          }
         }
       }
     }
@@ -480,16 +505,6 @@ export class DomObserver {
     if (this.shouldAutoUnsubscribe(subscription)) {
       setTimeout(() => this.unsubscribe(subscriptionId), 0);
     }
-  }
-
-  destroy(): void {
-    this.observer.disconnect();
-    this.selectorCallbacks.clear();
-    this.idToSelectorMap.clear();
-    this.subscriptions.clear();
-    this.pendingAddedNodes = [];
-    this.pendingRemovedNodes = [];
-    this.isProcessing = false;
   }
 }
 
