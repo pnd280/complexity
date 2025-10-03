@@ -39,6 +39,10 @@ export function observeMainQueryBox({ observerId }: { observerId: string }) {
 
       if (!$wrapper.length) return;
 
+      if ($wrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $wrapper.internalComponentAttr(OBSERVER_ID.MAIN_QUERY_BOX);
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
@@ -47,6 +51,8 @@ export function observeMainQueryBox({ observerId }: { observerId: string }) {
       queryBoxesDomObserverStore.getState().setTextboxNodes({
         main: $textbox[0],
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: cleanup,
     existingCheck: true,
@@ -82,6 +88,10 @@ export function observeSpaceQueryBox({ observerId }: { observerId: string }) {
 
       if (!$wrapper.length) return;
 
+      if ($wrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $wrapper.internalComponentAttr(OBSERVER_ID.SPACE_QUERY_BOX);
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
@@ -90,6 +100,8 @@ export function observeSpaceQueryBox({ observerId }: { observerId: string }) {
       queryBoxesDomObserverStore.getState().setTextboxNodes({
         space: $textbox[0],
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: cleanup,
     existingCheck: true,
@@ -130,6 +142,10 @@ export function observeFollowUpQueryBox({
 
       if (!$wrapper.length) return;
 
+      if ($wrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $wrapper.internalComponentAttr(OBSERVER_ID.FOLLOW_UP_QUERY_BOX);
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
@@ -138,6 +154,8 @@ export function observeFollowUpQueryBox({
       queryBoxesDomObserverStore.getState().setTextboxNodes({
         followUp: $textbox[0],
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: cleanup,
     existingCheck: true,
@@ -178,6 +196,10 @@ export function observeCometAssistantQueryBox({
 
       if (!$wrapper.length) return;
 
+      if ($wrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $wrapper.internalComponentAttr(OBSERVER_ID.COMET_ASSISTANT_QUERY_BOX);
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
@@ -186,6 +208,8 @@ export function observeCometAssistantQueryBox({
       queryBoxesDomObserverStore.getState().setTextboxNodes({
         cometAssistant: $textbox[0],
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: cleanup,
     existingCheck: true,

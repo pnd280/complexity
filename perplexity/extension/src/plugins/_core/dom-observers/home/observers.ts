@@ -11,6 +11,10 @@ export function observeSlogan({ observerId }: { observerId: string }) {
 
       if (!$slogan.length) return;
 
+      if ($slogan.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $slogan.internalComponentAttr(
         getDomSelectorsRootService().internalAttributes.HOME.SLOGAN,
       );
@@ -18,6 +22,8 @@ export function observeSlogan({ observerId }: { observerId: string }) {
       homeDomObserverStore.setState({
         slogan: $slogan[0],
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: () => {
       homeDomObserverStore.setState({

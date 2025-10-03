@@ -54,6 +54,23 @@ export class DomObserver {
     this.setupVisibilityTracking();
   }
 
+  /**
+   * Temporarily pause the observer to prevent recursive mutations.
+   */
+  pause(): void {
+    this.observer.disconnect();
+  }
+
+  /**
+   * Resume the observer after DOM modifications are complete.
+   */
+  resume(): void {
+    this.observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
   private setupVisibilityTracking(): void {
     if (typeof document.visibilityState !== "undefined") {
       this.isTabVisible = document.visibilityState === "visible";

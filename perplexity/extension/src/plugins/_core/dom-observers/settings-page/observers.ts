@@ -12,6 +12,10 @@ export function observeSidebar({ observerId }: { observerId: string }) {
 
       if (!$sidebar.length) return;
 
+      if ($sidebar.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $sidebar.internalComponentAttr(
         getDomSelectorsRootService().internalAttributes.SETTINGS_PAGE
           .SIDEBAR_WRAPPER,
@@ -20,6 +24,8 @@ export function observeSidebar({ observerId }: { observerId: string }) {
       settingsPageDomObserverStore.setState({
         sidebarWrapper: $sidebar[0],
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: () => {
       settingsPageDomObserverStore.setState({

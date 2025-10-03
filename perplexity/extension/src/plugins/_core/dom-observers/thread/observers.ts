@@ -12,6 +12,10 @@ export function observePageWrapper({ observerId }: { observerId: string }) {
 
       if (!$pageWrapper.length) return;
 
+      if ($pageWrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $pageWrapper.internalComponentAttr(
         getDomSelectorsRootService().internalAttributes.THREAD.PAGE_WRAPPER,
       );
@@ -19,6 +23,8 @@ export function observePageWrapper({ observerId }: { observerId: string }) {
       threadDomObserverStore.setState({
         $pageWrapper,
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: () => {
       threadDomObserverStore.setState({
@@ -38,6 +44,10 @@ export function observeNavbar({ observerId }: { observerId: string }) {
 
       if (!$navbar.length) return;
 
+      if ($navbar.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $navbar.internalComponentAttr(
         getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR,
       );
@@ -45,6 +55,8 @@ export function observeNavbar({ observerId }: { observerId: string }) {
       threadDomObserverStore.setState({
         $navbar,
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: () => {
       threadDomObserverStore.setState({
@@ -71,6 +83,10 @@ export function observeNavbarOverflowMenuButtonWrapper({
 
       if (!$overflowMenuButtonWrapper.length) return;
 
+      if ($overflowMenuButtonWrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $overflowMenuButtonWrapper.internalComponentAttr(
         getDomSelectorsRootService().internalAttributes.THREAD.NAVBAR_CHILD
           .OVERFLOW_MENU_BUTTON_WRAPPER,
@@ -79,6 +95,8 @@ export function observeNavbarOverflowMenuButtonWrapper({
       threadDomObserverStore.setState({
         $overflowMenuButtonWrapper,
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: () => {
       threadDomObserverStore.setState({
@@ -98,6 +116,10 @@ export function observeWrapper({ observerId }: { observerId: string }) {
 
       if (!$wrapper.length) return;
 
+      if ($wrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $wrapper.internalComponentAttr(
         getDomSelectorsRootService().internalAttributes.THREAD.WRAPPER,
       );
@@ -105,6 +127,8 @@ export function observeWrapper({ observerId }: { observerId: string }) {
       threadDomObserverStore.setState({
         $wrapper,
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: () => {
       threadDomObserverStore.setState({
@@ -144,6 +168,10 @@ export function observeMessageBlocksWrapper({
 
       if (!$messageBlocksWrapper.length) return;
 
+      if ($messageBlocksWrapper.internalComponentAttr()) return;
+
+      domObserverService.pause();
+
       $messageBlocksWrapper.internalComponentAttr(
         getDomSelectorsRootService().internalAttributes.THREAD
           .MESSAGE_BLOCKS_WRAPPER,
@@ -152,6 +180,8 @@ export function observeMessageBlocksWrapper({
       threadDomObserverStore.setState({
         $messageBlocksWrapper,
       });
+
+      requestAnimationFrame(() => domObserverService.resume());
     },
     onRemove: () => {
       threadDomObserverStore.setState({
