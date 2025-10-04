@@ -1,4 +1,4 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import type { AnchorSlice } from "@/plugins/__core__/slash-command/store/slices/anchor";
 import { createTextboxAdapter } from "@/plugins/__core__/slash-command/textbox-adapter";
 import { whereAmI } from "@/utils/misc/utils";

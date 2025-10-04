@@ -2,7 +2,6 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import type { CodeBlock } from "@/plugins/__core__/dom-observers/thread/code-blocks/types";
 import {
   createOrRefreshCodeBlock,
@@ -11,6 +10,7 @@ import {
   getExistingCodeBlocks,
 } from "@/plugins/__core__/dom-observers/thread/code-blocks/utils";
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
 const astCache = new Map<string, any>();
 const mdAstProcessor = unified().use(remarkParse).use(remarkGfm);

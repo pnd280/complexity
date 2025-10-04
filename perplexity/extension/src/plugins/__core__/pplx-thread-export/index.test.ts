@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { PplxThreadExport } from "@/plugins/__async-deps__/pplx-thread-export";
+import { PplxThreadExport } from "@/plugins/__core__/pplx-thread-export";
 import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
 import {
   exportedMessageWithCitations,

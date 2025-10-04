@@ -1,9 +1,9 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import {
   queryBoxesDomObserverStore,
   type QueryBoxesDomObserverStoreType,
 } from "@/plugins/__core__/dom-observers/query-boxes/store";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { isLexical } from "@/plugins/__ui-groups__/elements/query-box/utils";
 
 const OBSERVER_ID = "submit-on-ctrl-enter";

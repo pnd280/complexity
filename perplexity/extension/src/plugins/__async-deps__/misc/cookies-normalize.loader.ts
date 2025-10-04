@@ -12,47 +12,7 @@ export default function () {
     id: "plugin:cookiesNormalization",
     dependencies: [],
     loader: () => {
-      deepResearchTooltipImpressions();
-
-      unifiedEngineTooltip();
-
-      labsTooltip();
+      // ___
     },
   });
-}
-
-function deepResearchTooltipImpressions() {
-  const pplxDeepResearchTooltipImpression = getCookie(
-    "pplx.deep-research-tooltip-impressions",
-  );
-
-  if (
-    pplxDeepResearchTooltipImpression == null ||
-    Number(pplxDeepResearchTooltipImpression) < 10
-  ) {
-    setCookie("pplx.deep-research-tooltip-impressions", "999", 365);
-  }
-}
-
-function unifiedEngineTooltip() {
-  const pplxUnifiedEngineTooltip = getCookie(
-    "pplx.unified-engine-tooltip-shown",
-  );
-
-  if (pplxUnifiedEngineTooltip !== "true") {
-    setCookie("pplx.unified-engine-tooltip-shown", "true", 365);
-  }
-}
-
-function labsTooltip() {
-  const segmentedControlPopoverStudio = getCookie(
-    "segmented-control-popover-studio",
-  );
-
-  if (
-    segmentedControlPopoverStudio == null ||
-    Number(segmentedControlPopoverStudio) < 5
-  ) {
-    setCookie("segmented-control-popover-studio", "999", 365);
-  }
 }

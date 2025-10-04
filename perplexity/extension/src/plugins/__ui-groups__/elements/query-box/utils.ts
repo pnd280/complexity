@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import { pplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import type { QueryBoxType } from "@/plugins/__ui-groups__/elements/query-box/types";
 import type {
   LanguageModelCode,

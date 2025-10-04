@@ -1,9 +1,9 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
 import type { MessageBlockFiberData } from "@/plugins/__core__/dom-observers/_main-world/actions/thread-messages";
 import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/__core__/dom-observers/thread/message-blocks/remote-resources/index.remote-resources";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { type DomSelectorsService as DomSelectorsServiceType } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 

@@ -1,5 +1,5 @@
-import type { PplxWebResult } from "@/plugins/__async-deps__/pplx-thread-export";
 import { localFiberNodePath } from "@/plugins/__core__/dom-observers/thread/message-blocks/remote-resources/fallback";
+import type { PplxWebResult } from "@/plugins/__core__/pplx-thread-export";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getReactFiberKey } from "@/utils/dom-utils/generics";

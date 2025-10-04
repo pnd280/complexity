@@ -1,5 +1,5 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import { queryBoxesDomObserverStore } from "@/plugins/__core__/dom-observers/query-boxes/store";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { whereAmI } from "@/utils/misc/utils";
 

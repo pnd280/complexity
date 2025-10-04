@@ -1,8 +1,0 @@
----
-description: TypeScript Code Style Guidelines
-applyTo: "*.ts,*.tsx"
----
-
-- PREFER using `type` over `interface` for type definitions.
-- DO NOT use TypeScript-specific runtime features (non-erasable syntax) like enums, namespaces, etc.
-- PREFER function object parameter over multiple parameters.

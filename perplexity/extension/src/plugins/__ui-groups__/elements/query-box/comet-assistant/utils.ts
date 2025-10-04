@@ -1,4 +1,4 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
 export function useCreatePortalContainer(wrapper: HTMLElement | null) {
   if (!wrapper) return null;

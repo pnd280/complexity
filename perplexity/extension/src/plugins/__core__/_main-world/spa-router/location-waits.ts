@@ -1,4 +1,4 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
 import type { MaybePromise } from "@/types/utils.types";
 import { waitForSpaIdle } from "@/utils/dom-utils/generics";

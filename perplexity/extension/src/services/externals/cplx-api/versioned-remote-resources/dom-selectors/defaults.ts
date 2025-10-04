@@ -47,7 +47,8 @@ export const DOM_SELECTORS: DomSelectors = {
       FOOTER:
         ".gap-y-sm.md\\:gap-y-md.flex.flex-col > .flex.items-center.justify-between",
       FOOTER_CHILD: {
-        REWRITE_BUTTON: "button:has(svg.tabler-icon-repeat)",
+        REWRITE_BUTTON:
+          'button:has(svg>path[d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3 M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"])',
         COPY_BUTTON:
           'button:has(>div>div>svg>path[d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"])',
         THUMBS_DOWN_BUTTON:

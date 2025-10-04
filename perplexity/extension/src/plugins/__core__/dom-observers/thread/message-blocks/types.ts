@@ -1,4 +1,4 @@
-import type { PplxWebResult } from "@/plugins/__async-deps__/pplx-thread-export";
+import type { PplxWebResult } from "@/plugins/__core__/pplx-thread-export";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export type MessageBlock = {

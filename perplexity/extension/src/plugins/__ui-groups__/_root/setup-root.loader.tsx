@@ -6,7 +6,7 @@ import { RouterProvider } from "react-router-dom";
 
 import { APP_CONFIG } from "@/app.config";
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { createRouter } from "@/plugins/__async-deps__/hash-router/router";
+import { createRouter } from "@/plugins/__core__/hash-router/router";
 import CsUiRoot from "@/plugins/__ui-groups__/_root/CsUiRoot";
 import { queryClient } from "@/services/infra/query-client";
 

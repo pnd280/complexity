@@ -12,7 +12,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-export default function () {
+(function () {
   AsyncLoaderRegistry.register({
     dependencies: [],
     id: "lib:i18n",
@@ -27,4 +27,4 @@ export default function () {
     id: "lib:dayjs",
     loader: initializeDayjsLocale,
   });
-}
+})();

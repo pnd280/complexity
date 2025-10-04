@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import usePplxUserSettings from "@/hooks/usePplxUserSettings";
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { useImageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
 import usePortalContainer from "@/plugins/image-gen-model-selector/usePortalContainer";
 import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-image-models";

@@ -1,8 +1,8 @@
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 
 import { Button } from "@/components/ui/button";
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import {
   artifactsStore,
   useArtifactsStore,

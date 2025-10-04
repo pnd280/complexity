@@ -1,8 +1,5 @@
 {
   "catppuccin-icons.specificFolders": false,
-  "chat.instructionsFilesLocations": {
-    ".cursor/ghc-instructions": true
-  },
   "eslint.useFlatConfig": true,
   "files.associations": {
     "*.css": "tailwindcss"
@@ -28,18 +25,6 @@
     "**/dist/**/*": true,
     "**/node_modules/*/**": true
   },
-  "i18n-ally.annotations": false,
-  "i18n-ally.displayLanguage": "en",
-  "i18n-ally.editor.preferEditor": false,
-  "i18n-ally.enabledFrameworks": ["custom"],
-  "i18n-ally.enabledParsers": ["ts"],
-  "i18n-ally.fullReloadOnChanged": true,
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.localesPaths": ["src/_locales", "src/plugins/*/_locales"],
-  "i18n-ally.namespace": true,
-  "i18n-ally.pathMatcher": "{namespace}.{locale}.ts",
-  "i18n-ally.readonly": true,
-  "i18n-ally.sourceLanguage": "en",
   "npm.exclude": ["**/build", "**/dist/**"],
   "npm.scriptExplorerExclude": ["preinstall"],
   "search.exclude": {
@@ -78,9 +63,7 @@
     "**/src/entrypoints/background/index.ts": "Entrypoint - Background",
     "**/src/entrypoints/content-scripts/index.ts": "Entrypoint - Content Scripts",
     "**/src/entrypoints/options-page/index.tsx": "Entrypoint - Options Page",
-    "**/src/manifest.base.ts": "Extension Manifest (Base)",
-    "**/src/manifest.chrome.ts": "Extension Manifest (Chrome)",
-    "**/src/manifest.firefox.ts": "Extension Manifest (Firefox)",
-    "**/src/plugins/**/index.manifest.ts": "Plugin Manifest - ${dirname}"
+    "**/src/plugins/**/index.manifest.ts": "Plugin Manifest - ${dirname}",
+    "**/src/plugins/**/index.manifest.core.ts": "Core Plugin Manifest - ${dirname}"
   }
 }

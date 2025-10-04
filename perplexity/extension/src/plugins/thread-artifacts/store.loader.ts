@@ -1,11 +1,11 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import {
   spaRouteChangeCompleteSubscribe,
   spaRouterStoreSubscribe,
 } from "@/plugins/__core__/_main-world/spa-router/utils";
 import { threadCodeBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/code-blocks/store";
 import type { CodeBlock } from "@/plugins/__core__/dom-observers/thread/code-blocks/types";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { ARTIFACT_PLACEHOLDERS } from "@/plugins/thread-artifacts/consts";
 import {
   artifactsStore,

@@ -1,5 +1,5 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
 export default function useObserver() {
   const $overflowMenuButtonWrapper = useThreadDomObserverStore(

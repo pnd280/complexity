@@ -1,5 +1,5 @@
 // eslint-disable-next-line boundaries/element-types
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
 export async function setLexicalEditorContent({
   content,

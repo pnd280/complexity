@@ -1,8 +1,8 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
 import { threadCodeBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/code-blocks/store";
 import type { CodeBlock } from "@/plugins/__core__/dom-observers/thread/code-blocks/types";
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
 export function getExistingCodeBlocks(
   messageBlockIndex: number,

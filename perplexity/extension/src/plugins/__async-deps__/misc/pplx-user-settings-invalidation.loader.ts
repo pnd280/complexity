@@ -7,44 +7,52 @@ import { queryClient } from "@/services/infra/query-client";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
-    "networkIntercept:pplxApi": void;
+    "networkIntercept:pplxApi:userSettings:invalidation": void;
   }
 }
 
 export default function () {
   AsyncLoaderRegistry.register({
-    id: "networkIntercept:pplxApi",
-    dependencies: ["cache:pluginsEnableStates"],
-    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
-      const shouldInvalidatePplxUserSettings =
-        pluginsEnableStates["queryBox:languageModelSelector"] ||
-        pluginsEnableStates["imageGenModelSelector"];
+    id: "networkIntercept:pplxApi:userSettings:invalidation",
+    dependencies: [],
+    loader: () => {
+      const unsubscribe = queryClient.getQueryCache().subscribe(({ query }) => {
+        const targetQueryKey = pplxApiQueries.userSettings.all();
 
-      if (shouldInvalidatePplxUserSettings) {
-        NetworkInterceptMiddlewareManagerService.Root.addMiddleware({
-          id: "invalidate-pplx-user-settings",
-          middlewareFn({ data, skip }) {
-            const isSSEResponse =
-              data.type === "networkIntercept:fetchEvent" &&
-              data.event === "response";
+        if (
+          query.queryKey.length === targetQueryKey.length &&
+          (query.queryKey.every(
+            (key: string, index: number) => key === targetQueryKey[index],
+          ) as boolean)
+        ) {
+          if (query.getObserversCount() > 0) {
+            unsubscribe();
+            NetworkInterceptMiddlewareManagerService.Root.addMiddleware({
+              id: "invalidate-pplx-user-settings",
+              middlewareFn({ data, skip }) {
+                const isSSEResponse =
+                  data.type === "networkIntercept:fetchEvent" &&
+                  data.event === "response";
 
-            if (!isSSEResponse) {
-              return skip();
-            }
+                if (!isSSEResponse) {
+                  return skip();
+                }
 
-            const shouldInvalidateSettings =
-              data.payload.url ===
-                "https://www.perplexity.ai/rest/sse/perplexity_ask" &&
-              data.payload.data === "{}";
+                const shouldInvalidateSettings =
+                  data.payload.url ===
+                    "https://www.perplexity.ai/rest/sse/perplexity_ask" &&
+                  data.payload.data === "{}";
 
-            if (shouldInvalidateSettings) {
-              invalidateSettings();
-            }
+                if (shouldInvalidateSettings) {
+                  invalidateSettings();
+                }
 
-            return skip();
-          },
-        });
-      }
+                return skip();
+              },
+            });
+          }
+        }
+      });
     },
   });
 }

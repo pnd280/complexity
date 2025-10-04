@@ -16,8 +16,6 @@ export default function MainQueryBoxWrapper() {
     queryBoxWrapper: mainQueryBoxWrapper,
   });
 
-  console.log(mainQueryBoxWrapper, leftToolbar.leftContainer);
-
   return (
     <ScopedQueryBoxContextProvider storeValue={{ type: "main" }}>
       <Portal container={leftToolbar.leftContainer}>

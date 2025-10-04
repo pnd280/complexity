@@ -1,5 +1,4 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
 import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
 import {
@@ -10,6 +9,7 @@ import {
   observeMessageBlocksWrapper,
 } from "@/plugins/__core__/dom-observers/thread/observers";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
 import { waitUntil, whereAmI } from "@/utils/misc/utils";

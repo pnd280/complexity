@@ -1,4 +1,4 @@
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getReactFiberKey } from "@/utils/dom-utils/generics";
 import { errorWrapper } from "@/utils/wrappers/error-wrapper";

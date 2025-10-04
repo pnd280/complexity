@@ -1,10 +1,10 @@
 import debounce from "lodash/debounce";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { DomSelectorsService } from "@/plugins/__async-deps__/dom-selectors/service-init.loader";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { findMessageBlocks } from "@/plugins/__core__/dom-observers/thread/message-blocks/utils";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
 
