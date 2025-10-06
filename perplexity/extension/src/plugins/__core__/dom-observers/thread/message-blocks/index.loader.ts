@@ -52,6 +52,12 @@ function observeThreadMessageBlocks() {
             DomSelectorsService.Root.internalAttributes.THREAD
               .MESSAGE_BLOCKS_WRAPPER,
           )} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER_TEXT_CONTENT} *`,
+          `${DomSelectorsService.Root.cplxAttribute(
+            DomSelectorsService.Root.internalAttributes.THREAD
+              .MESSAGE_BLOCKS_WRAPPER,
+          )} ${DomSelectorsService.Root.cplxAttribute(
+            DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.QUERY,
+          )} ~ ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER_TEXT_ALTERNATE} *`,
         ],
         onAdd: onMutation,
         onRemove: onMutation,

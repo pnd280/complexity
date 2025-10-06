@@ -5,7 +5,7 @@ import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/ver
 
 export const threadMessageBlocksFiberConfigResourceConfig =
   defineVersionedRemoteResource({
-    name: "message-blocks-react-fiber-node-name",
+    name: "corePlugin.domObservers.thread.messageBlocks.fiberConfig",
     type: "json",
     fallback: localThreadMessageBlocksFiberConfig,
     zodSchema: z.object({

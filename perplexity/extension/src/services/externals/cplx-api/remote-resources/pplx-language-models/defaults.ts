@@ -213,4 +213,14 @@ export const pplxLocalLanguageModels = {
       icon: "auto",
     },
   ],
+  study: [
+    {
+      label: "Auto",
+      shortLabel: "Auto",
+      code: "pplx_study",
+      isReasoning: true,
+      limitKey: "gpt4_limit",
+      icon: "auto",
+    },
+  ],
 } as const;

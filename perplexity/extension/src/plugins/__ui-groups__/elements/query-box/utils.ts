@@ -241,5 +241,6 @@ function getDefaultModelCookie(): Record<LanguageModelType, LanguageModelCode> {
     search: "pplx_pro",
     research: "pplx_alpha",
     studio: "pplx_beta",
+    study: "pplx_study",
   };
 }

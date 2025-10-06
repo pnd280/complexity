@@ -11,6 +11,7 @@ const advancedModeLabelMap: Record<LanguageModelType, string> = {
   search: "Search",
   research: "Research",
   studio: "Labs",
+  study: "Study",
 };
 
 export default function BetterLanguageModelSelectorTriggerButton() {

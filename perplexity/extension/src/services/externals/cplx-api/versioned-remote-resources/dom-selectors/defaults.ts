@@ -12,8 +12,7 @@ export const DOM_SELECTORS: DomSelectors = {
     CHILD: {
       MENU: ".group\\/sidebar-menu",
     },
-    MOBILE_TRIGGER:
-      ".h-headerHeight.absolute button:has(svg.tabler-icon-menu-2)",
+    MOBILE_TRIGGER: `.h-headerHeight.absolute button:has(svg>path[d="M4 6l16 0 M4 12l16 0 M4 18l16 0"])`,
   },
   THREAD: {
     /** The outermost container that wraps the thread container and the query box */
@@ -42,6 +41,7 @@ export const DOM_SELECTORS: DomSelectors = {
       STICKY_HEADER: ".h-headerHeight.absolute",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
       ANSWER: "div[id*='markdown-content-']",
+      ANSWER_TEXT_ALTERNATE: ".max-w-threadContentWidth",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */
       FOOTER:
@@ -55,8 +55,8 @@ export const DOM_SELECTORS: DomSelectors = {
           'button:has(>div>div>svg>path[d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"])',
         THUMBS_DOWN_BUTTON:
           'button:has(>div>div>svg>path[d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"])',
-        MISC_BUTTON:
-          'button:has(>div>div>svg>path[d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"])',
+        MISC_BUTTON_WRAPPER:
+          'div:has(>span>button>div>div>svg>path[d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"])',
       },
       IMAGE_GEN: {
         HEADER: "div:has(+.gap-sm.grid.grid-cols-2)",
@@ -130,8 +130,7 @@ export const DOM_SELECTORS: DomSelectors = {
     THREAD_TITLE:
       ".min-w-0 .cursor-pointer.transition.duration-300.hover\\:opacity-70",
     THREAD_TITLE_INPUT: 'input[placeholder="Untitled"]',
-    OVERFLOW_MENU_BUTTON_WRAPPER:
-      "div:has(>span>button):has(svg.tabler-icon-dots)",
+    OVERFLOW_MENU_BUTTON_WRAPPER: `div:has(>span>button>div>div>svg>path[d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"])`,
   },
 } as const;
 

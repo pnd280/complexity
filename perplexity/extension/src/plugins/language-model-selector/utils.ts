@@ -66,6 +66,12 @@ export function getAdvancedStandaloneModels() {
     ),
   );
 
+  const studyAuto = structuredClone(
+    PplxLanguageModelsService.allModels.study.find(
+      (model) => model.code === "pplx_study",
+    ),
+  );
+
   if (researchAuto != null) {
     researchAuto.label = "Research";
     researchAuto.shortLabel = "Research";
@@ -78,5 +84,11 @@ export function getAdvancedStandaloneModels() {
     labsAuto.icon = "labs";
   }
 
-  return [researchAuto, labsAuto].filter((model) => model != null);
+  if (studyAuto != null) {
+    studyAuto.label = "Study";
+    studyAuto.shortLabel = "Study";
+    studyAuto.icon = "study";
+  }
+
+  return [researchAuto, labsAuto, studyAuto].filter((model) => model != null);
 }

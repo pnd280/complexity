@@ -605,11 +605,11 @@ export function findFiberNodes(
         matches: results.length,
       });
 
-      // resultPaths
-      //   .map((p) => pathToString(p))
-      //   .forEach((path, i) => {
-      //     console.log(`  [${i}]: ${path}`);
-      //   });
+      resultPaths
+        .map((p) => pathToString(p))
+        .forEach((path, i) => {
+          console.log(`  [${i}]: ${path}`);
+        });
     }
 
     if (results.length === 0) {

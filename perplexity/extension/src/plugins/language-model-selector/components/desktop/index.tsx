@@ -36,6 +36,7 @@ export default function DesktopContent() {
   );
   const researchModels = useMemo(() => getModelsByType("research"), []);
   const labsModels = useMemo(() => getModelsByType("studio"), []);
+  const studyModels = useMemo(() => getModelsByType("study"), []);
   const advancedModels = useMemo(() => getAdvancedStandaloneModels(), []);
 
   return (
@@ -60,6 +61,7 @@ export default function DesktopContent() {
           models={searchFastModel}
           tooltipPlacement="left"
         />
+
         <LanguageModelGroup
           title={
             subTier === "max" ? (
@@ -74,6 +76,15 @@ export default function DesktopContent() {
           models={searchReasoningModel}
           tooltipPlacement="left"
         />
+
+        {subTier === "pro" && !isCometAssistant && (
+          <LanguageModelGroup
+            title={<span>Advanced</span>}
+            models={advancedModels}
+            tooltipPlacement="right"
+          />
+        )}
+
         {subTier === "max" && !isCometAssistant && (
           <div className="x:flex x:flex-col x:gap-1">
             <LanguageModelGroup
@@ -96,15 +107,17 @@ export default function DesktopContent() {
               models={labsModels}
               tooltipPlacement="right"
             />
+            <LanguageModelGroup
+              title={
+                <div className="x:flex x:items-center x:gap-1">
+                  <LanguageModelTypeIcons.study className="x:size-4" />
+                  <span>Study</span>
+                </div>
+              }
+              models={studyModels}
+              tooltipPlacement="right"
+            />
           </div>
-        )}
-
-        {subTier === "pro" && !isCometAssistant && (
-          <LanguageModelGroup
-            title={<span>Advanced</span>}
-            models={advancedModels}
-            tooltipPlacement="right"
-          />
         )}
       </div>
     </Comp>

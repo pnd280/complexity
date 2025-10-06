@@ -6,6 +6,7 @@ import type {
   LanguageModelType,
   ResearchLanguageModelCode,
   SearchLanguageModelCode,
+  StudyLanguageModelCode,
 } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function isLanguageModelCode(
@@ -14,7 +15,8 @@ export function isLanguageModelCode(
   return (
     isSearchLanguageModelCode(value) ||
     isResearchLanguageModelCode(value) ||
-    isLabsLanguageModelCode(value)
+    isLabsLanguageModelCode(value) ||
+    isStudyLanguageModelCode(value)
   );
 }
 
@@ -38,6 +40,14 @@ export function isLabsLanguageModelCode(
   value: string,
 ): value is LabsLanguageModelCode {
   return PplxLanguageModelsService.allModels.studio.some(
+    (model) => model.code === value,
+  );
+}
+
+export function isStudyLanguageModelCode(
+  value: string,
+): value is StudyLanguageModelCode {
+  return PplxLanguageModelsService.allModels.study.some(
     (model) => model.code === value,
   );
 }

@@ -34,6 +34,7 @@ export const DomSelectorsSchema = z.object({
       STICKY_HEADER: z.string(),
       SOURCES: z.string(),
       ANSWER: z.string(),
+      ANSWER_TEXT_ALTERNATE: z.string(),
       ANSWER_TEXT_CONTENT: z.string(),
       FOOTER: z.string(),
       FOOTER_CHILD: z.object({
@@ -41,7 +42,7 @@ export const DomSelectorsSchema = z.object({
         REWRITE_BUTTON_WRAPPER: z.string(),
         COPY_BUTTON: z.string(),
         THUMBS_DOWN_BUTTON: z.string(),
-        MISC_BUTTON: z.string(),
+        MISC_BUTTON_WRAPPER: z.string(),
       }),
       IMAGE_GEN: z.object({
         HEADER: z.string(),

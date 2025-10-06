@@ -21,6 +21,10 @@ export default function MobileContent({ ...props }: DialogProps) {
     () => PplxLanguageModelsService.allModels.studio,
     [],
   );
+  const studyModels = useMemo(
+    () => PplxLanguageModelsService.allModels.study,
+    [],
+  );
   const advancedModels = useMemo(() => getAdvancedStandaloneModels(), []);
 
   return (
@@ -43,6 +47,14 @@ export default function MobileContent({ ...props }: DialogProps) {
           }
           models={searchModels}
         />
+
+        {subTier === "pro" && (
+          <LanguageModelGroup
+            title={<span>Advanced</span>}
+            models={advancedModels}
+          />
+        )}
+
         {subTier === "max" && (
           <>
             <LanguageModelGroup
@@ -63,14 +75,16 @@ export default function MobileContent({ ...props }: DialogProps) {
               }
               models={labsModels}
             />
+            <LanguageModelGroup
+              title={
+                <div className="x:flex x:items-center x:gap-1">
+                  <LanguageModelTypeIcons.study className="x:size-4" />
+                  <span>Study</span>
+                </div>
+              }
+              models={studyModels}
+            />
           </>
-        )}
-
-        {subTier === "pro" && (
-          <LanguageModelGroup
-            title={<span>Advanced</span>}
-            models={advancedModels}
-          />
         )}
       </SheetContent>
     </Sheet>

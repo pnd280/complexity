@@ -11,7 +11,7 @@ body[data-cplx-zen-mode="true"] {
     display: none;
 
     & + [class^="erp"][style^="padding"]:not([data-erp="tab"] *) {
-      @apply x:pl-2!;
+      @apply x:pl-0!;
     }
   }
 
@@ -19,9 +19,14 @@ body[data-cplx-zen-mode="true"] {
   &[location="thread"]
     [data-cplx-component="message-block"]:last-of-type
     .first\:mt-0
-    > div:last-child
-    > .animate-in.fade-in {
-    display: none;
+    > div:last-child {
+    .divide-subtlest:has(+ .animate-in.fade-in) {
+      display: none;
+    }
+
+    & > .animate-in.fade-in {
+      display: none;
+    }
   }
 
   &[location="comet_ntp"] [style="margin-left: -36px;"] {

@@ -23,7 +23,7 @@ export function useCreatePortalContainers(): (Element | null)[] {
     messageBlock.nodes.$footer
       .find(
         DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
-          .COPY_BUTTON,
+          .MISC_BUTTON_WRAPPER,
       )
       .before($portalContainer);
 
