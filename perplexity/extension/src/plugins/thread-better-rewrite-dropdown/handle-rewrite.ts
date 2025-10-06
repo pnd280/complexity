@@ -6,7 +6,13 @@ import {
   parsePerplexityAskEvent,
 } from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { BetterRewriteDropdownsMainWorldActions } from "@/plugins/thread-better-rewrite-dropdown/_main-world";
+import { threadBetterRewriteDropdownFiberConfigResourceConfig } from "@/plugins/thread-better-rewrite-dropdown/index.remote-resources";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
+
+const remoteFiberConfig = await getVersionedRemoteResource(
+  threadBetterRewriteDropdownFiberConfigResourceConfig,
+);
 
 export const handleRewrite = ({
   selectedModel,
@@ -67,6 +73,10 @@ export const handleRewrite = ({
 
   BetterRewriteDropdownsMainWorldActions.Instance.triggerRewriteOption({
     messageBlockIndex,
-    optionIndex: 3,
+    optionIndex: 5,
+    fiberConfig: {
+      name: remoteFiberConfig.name,
+      dataNodePath: remoteFiberConfig.dataNodePath,
+    },
   });
 };

@@ -1,17 +1,15 @@
 import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
 import type { MessageBlockFiberData } from "@/plugins/__core__/dom-observers/_main-world/actions/thread-messages";
-import { messageBlocksReactFiberNodePathResourceConfig } from "@/plugins/__core__/dom-observers/thread/message-blocks/remote-resources/index.remote-resources";
+import { threadMessageBlocksFiberConfigResourceConfig } from "@/plugins/__core__/dom-observers/thread/message-blocks/remote-resources/index.remote-resources";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { type DomSelectorsService as DomSelectorsServiceType } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
-const remoteFiberNodePath = (
-  await getVersionedRemoteResource(
-    messageBlocksReactFiberNodePathResourceConfig,
-  )
-).split(".");
+const remoteFiberConfig = await getVersionedRemoteResource(
+  threadMessageBlocksFiberConfigResourceConfig,
+);
 
 export async function findMessageBlocks(
   $threadMessagesContainer: JQuery<HTMLElement>,
@@ -24,20 +22,23 @@ export async function findMessageBlocks(
 
   const messageBlocksFiberData =
     await DomObserversMainWorldActions.Instance.getThreadMessages({
-      remoteFiberNodePath: remoteFiberNodePath ?? undefined,
+      fiberConfig: {
+        name: remoteFiberConfig.name,
+        messageNodePath: remoteFiberConfig.messageNodePath,
+      },
     });
 
   const nodes = $messageBlockElements.toArray();
   const result: MessageBlock[] = [];
 
   for (let index = 0; index < nodes.length; index += 1) {
-    const messageBlockNode = nodes[index] as HTMLElement;
-    const block = parseMessageBlock({
-      messageBlockFiber: messageBlocksFiberData?.[index],
-      $wrapper: $(messageBlockNode),
-      index,
-    });
-    if (block) result.push(block);
+    result.push(
+      parseMessageBlock({
+        messageBlockFiber: messageBlocksFiberData?.[index],
+        $wrapper: $(nodes[index] as HTMLElement),
+        index,
+      }),
+    );
   }
 
   return result;
@@ -51,11 +52,7 @@ function parseMessageBlock({
   messageBlockFiber: MessageBlockFiberData | undefined;
   $wrapper: JQuery<HTMLElement>;
   index: number;
-}): MessageBlock | null {
-  if (messageBlockFiber?.hasVariants && !messageBlockFiber.isVariantSelected) {
-    return null;
-  }
-
+}): MessageBlock {
   $wrapper
     .internalComponentAttr(
       DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.BLOCK,

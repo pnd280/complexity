@@ -26,6 +26,7 @@ export class PluginManifestsRegistry {
   static meta: PluginMetaMap = {} as PluginMetaMap;
   static settingsZodSchema = z.object({});
   static settingsFallbackValues = {} as PluginsSettingsSchema;
+  private static LATEST_INDEXED_DB_VERSION = 8;
   static indexedDbVersions: Record<
     number,
     {
@@ -84,8 +85,6 @@ export class PluginManifestsRegistry {
 
     // Accumulate IndexedDB schemas by version, preventing conflicts
     if (params.indexedDb) {
-      const LATEST_INDEXED_DB_VERSION = 8;
-
       if (params.indexedDb.schema) {
         this.indexedDbTableValidationSchemas[params.id] =
           params.indexedDb.schema;
@@ -99,9 +98,9 @@ export class PluginManifestsRegistry {
         const { version, schema, tableName, upgrade } = versionConfig;
 
         invariant(
-          version <= LATEST_INDEXED_DB_VERSION,
+          version <= this.LATEST_INDEXED_DB_VERSION,
           `Plugin "${params.id}" attempts to declare IndexedDB version ${version}, ` +
-            `but the latest supported version is ${LATEST_INDEXED_DB_VERSION}. ` +
+            `but the latest supported version is ${this.LATEST_INDEXED_DB_VERSION}. ` +
             `Please manually increase LATEST_INDEXED_DB_VERSION and review the schema changes.`,
         );
 

@@ -21,14 +21,14 @@ const [registerService, getService] = defineProxy(getRootService, {
   backup: false,
 });
 
-const Implementation = {
-  isInitialized: () => true,
-  getThreadMessages,
-  getCodeBlocksContent,
-  getCodeBlockContent,
-  getInternalSearchStates,
-  setInternalSearchStates,
-};
+class Implementation {
+  static isInitialized: () => true = () => true;
+  static getThreadMessages = getThreadMessages;
+  static getCodeBlocksContent = getCodeBlocksContent;
+  static getCodeBlockContent = getCodeBlockContent;
+  static getInternalSearchStates = getInternalSearchStates;
+  static setInternalSearchStates = setInternalSearchStates;
+}
 
 let rootServiceInstance: typeof Implementation | undefined;
 let proxyServiceInstance: typeof Implementation | undefined;

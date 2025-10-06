@@ -1,5 +1,3 @@
-import type { MaybePromise } from "@/types/utils.types";
-
 type ErrorWrapperResult<T> = [T, null] | [null, Error];
 
 /**
@@ -9,17 +7,17 @@ type ErrorWrapperResult<T> = [T, null] | [null, Error];
  * @returns A wrapped version of the callback that returns [result, error]
  */
 export function errorWrapper<TResult>(
-  callback: () => Promise<TResult>,
-  errorMessage?: string,
-): () => Promise<ErrorWrapperResult<TResult>>;
-export function errorWrapper<TResult>(
-  callback: () => TResult,
+  callback: () => TResult extends Promise<any> ? never : TResult,
   errorMessage?: string,
 ): () => ErrorWrapperResult<TResult>;
 export function errorWrapper<TResult>(
-  callback: () => MaybePromise<TResult>,
+  callback: () => Promise<TResult> | (TResult | Promise<TResult>),
   errorMessage?: string,
-): () => MaybePromise<ErrorWrapperResult<TResult>> {
+): () => Promise<ErrorWrapperResult<TResult>>;
+export function errorWrapper<TResult>(
+  callback: () => TResult | Promise<TResult>,
+  errorMessage?: string,
+): () => ErrorWrapperResult<TResult> | Promise<ErrorWrapperResult<TResult>> {
   return () => {
     try {
       const result = callback();

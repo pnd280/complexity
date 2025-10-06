@@ -38,6 +38,7 @@ export const DomSelectorsSchema = z.object({
       FOOTER: z.string(),
       FOOTER_CHILD: z.object({
         REWRITE_BUTTON: z.string(),
+        REWRITE_BUTTON_WRAPPER: z.string(),
         COPY_BUTTON: z.string(),
         THUMBS_DOWN_BUTTON: z.string(),
         MISC_BUTTON: z.string(),

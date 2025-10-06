@@ -10,3 +10,17 @@ export const threadBetterRewriteDropdownHideNativeDropdownsCssResourceConfig =
     fallback: hideNativeDropdownsCss,
     zodSchema: z.string(),
   });
+
+export const threadBetterRewriteDropdownFiberConfigResourceConfig =
+  defineVersionedRemoteResource({
+    name: "plugin.threadBetterRewriteDropdown.fiberConfig",
+    type: "json",
+    fallback: {
+      name: "DropDownMenu",
+      dataNodePath: ["memoizedProps", "items"],
+    },
+    zodSchema: z.object({
+      name: z.string(),
+      dataNodePath: z.array(z.string()),
+    }),
+  });

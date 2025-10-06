@@ -1,7 +1,6 @@
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import { getReactFiberKey } from "@/utils/dom-utils/generics";
 import { errorWrapper } from "@/utils/wrappers/error-wrapper";
-import { findReactFiberNodeValue } from "@/utils/wrappers/react-fiber";
+import { getReactFiberKey } from "@/utils/wrappers/react-fiber";
 
 export type CodeBlockContentParams = {
   messageBlockIndex: number;
@@ -37,14 +36,14 @@ export function getCodeBlockContent(
 
   const fiberNode = ($el[0] as any)[getReactFiberKey($el[0])];
 
-  const [code, codeError] = extractCodeContent(fiberNode);
-  if (codeError || code == null) return null;
+  const [code] = extractCodeContent(fiberNode);
+  if (code == null) return null;
 
-  const [language, languageError] = extractLanguageInfo(fiberNode);
+  const [language] = extractLanguageInfo(fiberNode);
 
   return {
     code,
-    language: languageError || language == null ? "text" : language,
+    language: language == null ? "text" : language,
   };
 }
 
@@ -60,26 +59,16 @@ function buildCodeBlockSelector(
 }
 
 function extractCodeContent(fiberNode: any): [string | null, Error | null] {
-  return errorWrapper(() =>
-    findReactFiberNodeValue({
-      fiberNode,
-      condition: (node) => node.memoizedProps.children.props.children != null,
-      select: (node) => node.memoizedProps.children.props.children as string,
-    }),
+  return errorWrapper(
+    () => fiberNode.alternate.memoizedProps.children.props.children,
   )();
 }
 
 function extractLanguageInfo(fiberNode: any): [string | null, Error | null] {
   return errorWrapper(() =>
-    findReactFiberNodeValue({
-      fiberNode,
-      condition: (node) => node.memoizedProps.children.props.className != null,
-      select: (node) => {
-        return node.memoizedProps.children.props.className.replace(
-          /^language-/,
-          "",
-        );
-      },
-    }),
+    fiberNode.alternate.memoizedProps.children.props.className.replace(
+      /^language-/,
+      "",
+    ),
   )();
 }

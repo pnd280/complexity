@@ -1,5 +1,6 @@
 import deepClone from "lodash/cloneDeep";
 
+import FiberSearchService from "@/plugins/__core__/_main-world/fiber-search";
 import {
   localInternalSearchStatesStatesFiberPath,
   localInternalSearchStatesValidateFiberPath,
@@ -59,14 +60,6 @@ export async function getInternalSearchStates({
   };
 }
 
-const cache: {
-  cachedStatesFiberNode: any;
-  cachedPath: string | null;
-} = {
-  cachedStatesFiberNode: null,
-  cachedPath: null,
-};
-
 function getStatesNodePath({
   remoteStatesFiberPath,
   remoteValidationFiberPath,
@@ -74,138 +67,27 @@ function getStatesNodePath({
   remoteStatesFiberPath?: string[];
   remoteValidationFiberPath?: string[];
 }): any {
-  if (cache.cachedStatesFiberNode != null) {
-    const result = walkFiberNode(
-      cache.cachedStatesFiberNode,
-      remoteStatesFiberPath ?? localInternalSearchStatesStatesFiberPath,
-    );
-    if (result != null) {
-      return result;
-    }
-    clearCache();
-  }
+  const validationPath =
+    remoteValidationFiberPath ?? localInternalSearchStatesValidateFiberPath;
+  const statesPath =
+    remoteStatesFiberPath ?? localInternalSearchStatesStatesFiberPath;
 
-  const path = findFiberNodePath({ remoteValidationFiberPath });
-  if (path == null) {
-    return null;
-  }
-
-  const rootElement = document.getElementById("root");
-  if (rootElement == null) {
-    return null;
-  }
-
-  cache.cachedStatesFiberNode = walkFiberNode(rootElement, path.split("."));
-  cache.cachedPath = path;
-
-  if (cache.cachedStatesFiberNode == null) {
-    return null;
-  }
-
-  return walkFiberNode(
-    cache.cachedStatesFiberNode,
-    remoteStatesFiberPath ?? localInternalSearchStatesStatesFiberPath,
-  );
-}
-
-function clearCache(): void {
-  cache.cachedStatesFiberNode = null;
-  cache.cachedPath = null;
-}
-
-function findFiberNodePath({
-  remoteValidationFiberPath,
-}: {
-  remoteValidationFiberPath?: string[];
-}): string | null {
-  const rootElement = document.getElementById("root");
-  if (rootElement == null) {
-    console.warn("[InternalSearchStates] Root element not found");
-    return null;
-  }
-
-  const containerKey = Object.keys(rootElement).find((key) =>
-    key.startsWith("__reactContainer$"),
+  const fiberNode = FiberSearchService.findFiberNodes(
+    {
+      fn: (fiber) => {
+        const validationResult = walkFiberNode(fiber, validationPath);
+        return validationResult != null;
+      },
+    },
+    {
+      rootElementSelector: "#root",
+      maxDepth: 100,
+    },
   );
 
-  if (containerKey == null) {
-    console.warn("[InternalSearchStates] React container not found");
+  if (fiberNode == null) {
     return null;
   }
 
-  const rootFiber = (rootElement[containerKey as keyof HTMLElement] as any)
-    ?.alternate;
-
-  if (rootFiber == null) {
-    console.warn("[InternalSearchStates] Root fiber not found");
-    return null;
-  }
-
-  return traverseFiberTree({
-    rootFiber,
-    containerKey,
-    validationPath:
-      remoteValidationFiberPath ?? localInternalSearchStatesValidateFiberPath,
-  });
-}
-
-function traverseFiberTree({
-  rootFiber,
-  containerKey,
-  validationPath,
-}: {
-  rootFiber: any;
-  containerKey: string;
-  validationPath: string[];
-}): string | null {
-  const MAX_DEPTH = 100;
-  const queue = [
-    { node: rootFiber, path: `${containerKey}.alternate`, depth: 0 },
-  ];
-  const visited = new WeakSet();
-  let maxDepthReached = false;
-
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (current == null) continue;
-
-    const { node: currentNode, path, depth } = current;
-
-    if (currentNode == null || visited.has(currentNode)) continue;
-
-    if (depth >= MAX_DEPTH) {
-      maxDepthReached = true;
-      continue;
-    }
-    visited.add(currentNode);
-
-    if (walkFiberNode(currentNode, validationPath) != null) {
-      return path;
-    }
-
-    if (currentNode.child != null) {
-      queue.push({
-        node: currentNode.child,
-        path: `${path}.child`,
-        depth: depth + 1,
-      });
-    }
-
-    if (currentNode.sibling != null) {
-      queue.push({
-        node: currentNode.sibling,
-        path: `${path}.sibling`,
-        depth: depth + 1,
-      });
-    }
-  }
-
-  if (maxDepthReached) {
-    console.warn(
-      `[InternalSearchStates] Maximum traversal depth (${MAX_DEPTH}) reached but target node not found. ` +
-        `Validation path: ${validationPath.join(".")}`,
-    );
-  }
-
-  return null;
+  return walkFiberNode(fiberNode, statesPath);
 }

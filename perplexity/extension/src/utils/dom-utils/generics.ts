@@ -340,18 +340,6 @@ export function insertCss({
   return removeStyle;
 }
 
-export function getReactPropsKey(element: Element) {
-  return (
-    Object.keys(element).find((key) => key.startsWith("__reactProps$")) || ""
-  );
-}
-
-export function getReactFiberKey(element: Element) {
-  return (
-    Object.keys(element).find((key) => key.startsWith("__reactFiber$")) || ""
-  );
-}
-
 export function onScrollDirectionChange({
   up,
   down,

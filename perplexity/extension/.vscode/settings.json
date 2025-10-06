@@ -35,7 +35,7 @@
     "**/build/**/*": true,
     "**/dist/**/*": true,
     "**/node_modules": true,
-    "**/public/locales/**/*": true
+    "**/src/**/_locales/**/*": true
   },
   "tailwindCSS.experimental.classRegex": [
     [
