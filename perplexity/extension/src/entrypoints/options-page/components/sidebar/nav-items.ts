@@ -1,5 +1,7 @@
-import { BiExtension } from "react-icons/bi";
-import { LuFileText, LuPalette, LuSettings } from "react-icons/lu";
+import TablerFileText from "~icons/tabler/file-text";
+import TablerPalette from "~icons/tabler/palette";
+import TablerPuzzle from "~icons/tabler/puzzle";
+import TablerSettings from "~icons/tabler/settings";
 
 export type NavItem = {
   icon?: React.ElementType;
@@ -11,22 +13,22 @@ export type NavItem = {
 
 export const defaultNavItems: NavItem[] = [
   {
-    icon: BiExtension,
+    icon: TablerPuzzle,
     label: "Plugins",
     path: "/plugins",
   },
   {
-    icon: LuPalette,
+    icon: TablerPalette,
     label: "Themes",
     path: "/themes",
   },
   {
-    icon: LuFileText,
+    icon: TablerFileText,
     label: "Release Notes",
     path: "/release-notes",
   },
   {
-    icon: LuSettings,
+    icon: TablerSettings,
     label: "Settings",
     path: "/settings",
   },

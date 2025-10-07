@@ -1,9 +1,9 @@
-import { LuExternalLink } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useArtifactsStore } from "@/plugins/thread-artifacts/store";
 import { generatePlantUMLUrl } from "@/plugins/thread-artifacts/utils/plant-uml";
+
+import TablerExternalLink from "~icons/tabler/external-link";
 
 export default function PlantUmlArtifactsActionButtonsWrapper() {
   const { selectedCodeBlockLocation } = useArtifactsStore();
@@ -27,7 +27,7 @@ export default function PlantUmlArtifactsActionButtonsWrapper() {
         window.open(url, "_blank");
       }}
     >
-      <LuExternalLink className="x:size-4" />
+      <TablerExternalLink className="x:size-4" />
     </Button>
   );
 }

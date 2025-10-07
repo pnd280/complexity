@@ -1,5 +1,4 @@
 import type { ComponentProps } from "react";
-import { LuExternalLink, LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { NavLink, useMatch } from "react-router-dom";
 
 import { APP_CONFIG } from "@/app.config";
@@ -9,6 +8,10 @@ import { type NavItem } from "@/entrypoints/options-page/components/sidebar/nav-
 import { useOptionsPageSidebarStore } from "@/entrypoints/options-page/components/sidebar/store";
 import Version from "@/entrypoints/options-page/components/sidebar/Version";
 import SidebarUpdateAnnouncer from "@/entrypoints/options-page/components/SidebarUpdateAnnouncer";
+
+import TablerChevronDown from "~icons/tabler/chevron-down";
+import TablerChevronRight from "~icons/tabler/chevron-right";
+import TablerExternalLink from "~icons/tabler/external-link";
 
 const NavItemComponent = ({
   item,
@@ -57,9 +60,9 @@ const NavItemComponent = ({
               }}
             >
               {expanded ? (
-                <LuChevronDown className="x:size-4" />
+                <TablerChevronDown className="x:size-4" />
               ) : (
-                <LuChevronRight className="x:size-4" />
+                <TablerChevronRight className="x:size-4" />
               )}
             </button>
           )}
@@ -111,7 +114,7 @@ export default function Sidebar() {
                 />,
               ]}
             />
-            <LuExternalLink className="x:absolute x:top-2 x:right-2 x:size-3.5 x:text-muted x:group-hover:text-primary" />
+            <TablerExternalLink className="x:absolute x:top-2 x:right-2 x:size-3.5 x:text-muted x:group-hover:text-primary" />
           </div>
         </SponsorDialogWrapper>
       </div>

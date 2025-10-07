@@ -1,10 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { LuCodesandbox, LuLoaderCircle } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { artifactsStore } from "@/plugins/thread-artifacts/store";
 import { createSandbox } from "@/plugins/thread-artifacts/utils/sandpack";
+
+import TablerBrandCodesandbox from "~icons/tabler/brand-codesandbox";
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function SandpackArtifactActionButtonsWrapper() {
   const { mutate: createCodeSandbox, isPending } = useMutation({
@@ -33,9 +35,9 @@ export default function SandpackArtifactActionButtonsWrapper() {
           }}
         >
           {isPending ? (
-            <LuLoaderCircle className="x:size-4 x:animate-spin" />
+            <TablerLoaderCircle className="x:size-4 x:animate-spin" />
           ) : (
-            <LuCodesandbox className="x:size-4" />
+            <TablerBrandCodesandbox className="x:size-4" />
           )}
         </Button>
       </Tooltip>

@@ -1,5 +1,3 @@
-import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
@@ -9,6 +7,9 @@ import {
 } from "@/plugins/thread-artifacts/store";
 import { getArtifactTitle } from "@/plugins/thread-artifacts/utils";
 import { scrollToElement } from "@/utils/dom-utils/generics";
+
+import TablerArrowLeft from "~icons/tabler/arrow-left";
+import TablerArrowRight from "~icons/tabler/arrow-right";
 
 export default function AutonomousArtifactVersionsNavigator() {
   const selectedCodeBlockLocation = useArtifactsStore(
@@ -56,7 +57,7 @@ export default function AutonomousArtifactVersionsNavigator() {
           });
         }}
       >
-        <LuArrowLeft className="x:size-4" />
+        <TablerArrowLeft className="x:size-4" />
       </Button>
       <div
         className="x:line-clamp-1 x:cursor-pointer x:text-sm x:text-muted-foreground"
@@ -92,7 +93,7 @@ export default function AutonomousArtifactVersionsNavigator() {
           });
         }}
       >
-        <LuArrowRight className="x:size-4" />
+        <TablerArrowRight className="x:size-4" />
       </Button>
     </div>
   );

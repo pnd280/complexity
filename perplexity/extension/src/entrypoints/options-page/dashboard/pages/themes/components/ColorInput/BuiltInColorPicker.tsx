@@ -1,6 +1,4 @@
 import { useFormContext } from "react-hook-form";
-import { FaTimesCircle } from "react-icons/fa";
-import { FaPalette } from "react-icons/fa6";
 
 import Tooltip from "@/components/Tooltip";
 import {
@@ -16,6 +14,9 @@ import {
   type ColorPalette,
 } from "@/data/dashboard/themes/built-in-colors";
 import type { ThemeFormValues } from "@/data/dashboard/themes/theme.types";
+
+import TablerCircleXFilled from "~icons/tabler/circle-x-filled";
+import TablerPaletteFilled from "~icons/tabler/palette-filled";
 
 type ColorOptionProps = {
   option: ColorPalette;
@@ -133,14 +134,14 @@ export default function BuiltInColorPicker() {
 
       <ActionOption
         value="custom"
-        icon={<FaPalette />}
+        icon={<TablerPaletteFilled />}
         tooltip="Create custom color"
         isSelected={accentColorSelection === "custom"}
       />
 
       <ActionOption
         value="default"
-        icon={<FaTimesCircle />}
+        icon={<TablerCircleXFilled />}
         tooltip="No color modification"
         isSelected={accentColorSelection === "default"}
       />

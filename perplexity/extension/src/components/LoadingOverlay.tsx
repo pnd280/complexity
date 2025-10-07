@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
-import { LuLoaderCircle } from "react-icons/lu";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function LoadingOverlay({
   className,
@@ -13,7 +14,7 @@ export default function LoadingOverlay({
       )}
       {...props}
     >
-      <LuLoaderCircle className="x:size-8 x:animate-spin x:text-primary" />
+      <TablerLoaderCircle className="x:size-8 x:animate-spin x:text-primary" />
     </div>
   );
 }

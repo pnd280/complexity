@@ -1,16 +1,15 @@
-import type { IconType } from "react-icons";
-import { BiQuestionMark } from "react-icons/bi";
+import TablerQuestionMark from "~icons/tabler/question-mark";
 
 type ResultProps = {
   title: string;
   description: React.ReactNode;
-  icon?: IconType;
+  icon?: React.ElementType;
 };
 
 export function Result({
   title,
   description,
-  icon: Icon = BiQuestionMark,
+  icon: Icon = TablerQuestionMark,
 }: ResultProps) {
   return (
     <div className="x:my-4 x:flex x:flex-col x:items-center x:justify-center x:gap-4 x:p-4">

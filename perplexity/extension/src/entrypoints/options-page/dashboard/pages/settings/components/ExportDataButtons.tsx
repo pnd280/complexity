@@ -1,11 +1,12 @@
-import { LuCheck, LuLoaderCircle } from "react-icons/lu";
-
 import AsyncButton from "@/components/AsyncButton";
 import { Button } from "@/components/ui/button";
 import type { ExtensionData } from "@/data/dashboard/extension-data.types";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 import { db as indexedDb } from "@/services/infra/indexed-db";
+
+import TablerCheck from "~icons/tabler/check";
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function ExportDataButtons() {
   const [copyButtonText, toggleCopyButtonText] = useToggleButtonText({
@@ -32,7 +33,7 @@ export default function ExportDataButtons() {
     await navigator.clipboard.writeText(settings);
     toggleCopyButtonText(
       <div className="x:flex x:items-center x:gap-2">
-        <LuCheck />
+        <TablerCheck />
         <span className="x:text-sm">Copied</span>
       </div>,
     );
@@ -67,7 +68,7 @@ export default function ExportDataButtons() {
         variant="outline"
         loadingText={
           <div className="x:flex x:items-center x:gap-2">
-            <LuLoaderCircle className="x:animate-spin" />
+            <TablerLoaderCircle className="x:animate-spin" />
             <span className="x:text-sm">Exporting</span>
           </div>
         }

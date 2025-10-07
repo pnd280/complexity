@@ -1,9 +1,10 @@
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { cva, type VariantProps } from "class-variance-authority";
 import { type HTMLAttributes } from "react";
-import { LuX } from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
+
+import TablerX from "~icons/tabler/x";
 
 export const Sheet = ArkDialog.Root;
 export const SheetTrigger = ArkDialog.Trigger;
@@ -85,7 +86,7 @@ export function SheetContent({
           {children}
           {closeButton && (
             <SheetClose className="x:absolute x:top-4 x:right-4 x:rounded-sm x:opacity-70 x:ring-ring x:hover:opacity-100 x:focus:ring-2 x:focus:ring-offset-2 x:focus:outline-none x:disabled:pointer-events-none">
-              <LuX className="x:h-4 x:w-4" />
+              <TablerX className="x:h-4 x:w-4" />
               <span className="x:sr-only">Close</span>
             </SheetClose>
           )}

@@ -1,8 +1,9 @@
-import { LuChevronLeft } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 import { ThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeForm";
 import { CreateThemeProvider } from "@/entrypoints/options-page/dashboard/pages/themes/context";
+
+import TablerChevronLeft from "~icons/tabler/chevron-left";
 
 export function CreateThemePage() {
   return (
@@ -12,7 +13,7 @@ export function CreateThemePage() {
           to="/themes"
           className="x:mb-4 x:flex x:items-center x:gap-2 x:text-muted-foreground x:transition x:hover:text-foreground"
         >
-          <LuChevronLeft />
+          <TablerChevronLeft />
           Back to themes
         </Link>
         <div>

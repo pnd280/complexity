@@ -1,10 +1,11 @@
-import { LuChevronLeft } from "react-icons/lu";
 import { Link, useLoaderData } from "react-router-dom";
 
 import type { Theme } from "@/data/dashboard/themes/theme.types";
 import { ThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeForm";
 import { EditThemeProvider } from "@/entrypoints/options-page/dashboard/pages/themes/context";
 import { invariant } from "@/utils/misc/utils";
+
+import TablerChevronLeft from "~icons/tabler/chevron-left";
 
 export function EditThemePage() {
   const theme = useLoaderData<Theme | undefined>();
@@ -18,7 +19,7 @@ export function EditThemePage() {
           to="/themes"
           className="x:mb-4 x:flex x:items-center x:gap-2 x:text-muted-foreground x:transition x:hover:text-foreground"
         >
-          <LuChevronLeft />
+          <TablerChevronLeft />
           Back to themes
         </Link>
         <div>

@@ -1,5 +1,3 @@
-import { LuLoaderCircle } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import {
   FormProvider,
@@ -15,6 +13,8 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { ColorInput } from "@/entrypoints/options-page/dashboard/pages/themes/components/ColorInput";
 import { useThemeFormContext } from "@/entrypoints/options-page/dashboard/pages/themes/context";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export function ThemeForm() {
   const { form, onSubmit, isPending, submitText, footer } =
@@ -163,7 +163,7 @@ export function ThemeForm() {
             }
           >
             {isPending ? (
-              <LuLoaderCircle className="x:size-4 x:animate-spin" />
+              <TablerLoaderCircle className="x:size-4 x:animate-spin" />
             ) : (
               submitText
             )}

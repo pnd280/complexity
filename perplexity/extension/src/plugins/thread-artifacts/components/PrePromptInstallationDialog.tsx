@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { LuLoaderCircle } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 import AsyncButton from "@/components/AsyncButton";
@@ -22,6 +21,8 @@ import { PplxApiService } from "@/services/externals/pplx-api";
 import { setCookie } from "@/utils/dom-utils/generics";
 import { fetchTextResource } from "@/utils/misc/utils";
 import { errorWrapper } from "@/utils/wrappers/error-wrapper";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export function ArtifactsPrePromptInstallationDialog() {
   const navigate = useNavigate();
@@ -139,7 +140,7 @@ export function ArtifactsPrePromptInstallationDialog() {
             disabled={isFetching || !artfiactsInstruction}
             loadingText={
               <div className="x:flex x:items-center x:gap-2">
-                <LuLoaderCircle className="x:animate-spin" />
+                <TablerLoaderCircle className="x:animate-spin" />
                 <span>Installing...</span>
               </div>
             }

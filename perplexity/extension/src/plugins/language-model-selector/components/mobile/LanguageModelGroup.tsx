@@ -1,5 +1,3 @@
-import { LuCpu } from "react-icons/lu";
-
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -11,6 +9,8 @@ import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModel
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import { isSearchLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+
+import TablerCpu from "~icons/tabler/cpu";
 
 type MobileLanguageModelGroupProps = {
   title: React.ReactNode;
@@ -44,7 +44,7 @@ export default function MobileLanguageModelGroup({
         <div className="x:h-px x:w-full x:bg-border/75" />
       </div>
       {models.map((model) => {
-        const Icon = PplxLanguageModelsService.icons[model.icon] ?? LuCpu;
+        const Icon = PplxLanguageModelsService.icons[model.icon] ?? TablerCpu;
 
         const modelLimit =
           modelsLimits[model.code as keyof typeof modelsLimits];

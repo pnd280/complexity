@@ -1,5 +1,4 @@
 import React from "react";
-import { LuX } from "react-icons/lu";
 
 import { useEvent } from "@/hooks/useEvent";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
@@ -14,6 +13,8 @@ import {
 import { useThreadTocItems } from "@/plugins/thread-toc/useThreadTocItems";
 import { scrollToElement } from "@/utils/dom-utils/generics";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
+
+import TablerX from "~icons/tabler/x";
 
 export function ThreadToc() {
   const tocItems = useThreadTocItems();
@@ -80,7 +81,7 @@ export function ThreadToc() {
             className="x:absolute x:top-2 x:right-2 x:cursor-pointer x:rounded-full x:p-1 x:text-muted-foreground x:transition-colors x:hover:text-foreground"
             onClick={handleToggleClose}
           >
-            <LuX className="x:size-4" />
+            <TablerX className="x:size-4" />
           </div>
         )}
         <div

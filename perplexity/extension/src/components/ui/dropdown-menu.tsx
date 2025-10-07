@@ -1,8 +1,9 @@
 import { Menu } from "@ark-ui/react/menu";
 import { Fragment, type HTMLAttributes } from "react";
-import { LuChevronRight as ChevronRight } from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
+
+import TablerChevronRight from "~icons/tabler/chevron-right";
 
 export const DropdownMenuRootProvider = Menu.RootProvider;
 
@@ -123,7 +124,7 @@ export function DropdownMenuSubTrigger({
       {...props}
     >
       <div className="x:mr-2 x:flex x:items-center">{children}</div>
-      <ChevronRight className="x:size-4" />
+      <TablerChevronRight className="x:size-4" />
     </Menu.TriggerItem>
   );
 }

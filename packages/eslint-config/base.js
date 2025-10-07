@@ -2,10 +2,11 @@
 import eslintConfigPrettier from "eslint-config-prettier";
 
 import js from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 import unicornPlugin from "eslint-plugin-unicorn";
 
-export default tseslint.config(
+export default defineConfig([
   js.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
@@ -30,4 +31,4 @@ export default tseslint.config(
       ],
     },
   },
-);
+]);

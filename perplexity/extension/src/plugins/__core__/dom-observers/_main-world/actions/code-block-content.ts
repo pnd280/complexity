@@ -60,15 +60,17 @@ function buildCodeBlockSelector(
 
 function extractCodeContent(fiberNode: any): [string | null, Error | null] {
   return errorWrapper(
-    () => fiberNode.alternate.memoizedProps.children.props.children,
+    () =>
+      (fiberNode.alternate != null ? fiberNode.alternate : fiberNode)
+        .memoizedProps.children.props.children,
   )();
 }
 
 function extractLanguageInfo(fiberNode: any): [string | null, Error | null] {
   return errorWrapper(() =>
-    fiberNode.alternate.memoizedProps.children.props.className.replace(
-      /^language-/,
-      "",
-    ),
+    (fiberNode.alternate != null
+      ? fiberNode.alternate
+      : fiberNode
+    ).memoizedProps.children.props.className.replace(/^language-/, ""),
   )();
 }

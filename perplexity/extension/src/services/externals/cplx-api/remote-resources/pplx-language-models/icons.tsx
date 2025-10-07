@@ -1,11 +1,3 @@
-import { FaShuffle } from "react-icons/fa6";
-import {
-  SiClaude,
-  SiGooglegemini,
-  SiOpenai,
-  SiPerplexity,
-} from "react-icons/si";
-
 import DeepSeek from "@/components/icons/DeepSeek";
 import PplxLabsResearch from "@/components/icons/PplxLabsResearch";
 import PplxResearch from "@/components/icons/PplxResearch";
@@ -17,15 +9,21 @@ import type {
   LanguageModelType,
 } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
+import SiClaude from "~icons/simple-icons/claude";
+import SiGoogleGemini from "~icons/simple-icons/googlegemini";
+import SiOpenai from "~icons/simple-icons/openai";
+import SiPerplexity from "~icons/simple-icons/perplexity";
+import TablerArrowsShuffle from "~icons/tabler/arrows-shuffle";
+
 export const LanguageModelIcons: Record<LanguageModelIcon, React.ElementType> =
   {
     claude: SiClaude,
     openai: SiOpenai,
     xai: XAiIcon,
     perplexity: SiPerplexity,
-    gemini: SiGooglegemini,
+    gemini: SiGoogleGemini,
     deepseek: DeepSeek,
-    auto: FaShuffle,
+    auto: TablerArrowsShuffle,
     labs: PplxLabsResearch,
     research: PplxResearch,
     study: PplxStudy,

@@ -1,4 +1,3 @@
-import { FaRegQuestionCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,8 @@ import ManagePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard
 import SettingsItem from "@/entrypoints/options-page/dashboard/pages/settings/SettingsItem";
 import SettingsSection from "@/entrypoints/options-page/dashboard/pages/settings/SettingsSection";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
+
+import TablerQuestionCircle from "~icons/tabler/question-circle";
 
 export default function GeneralSection() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function GeneralSection() {
         <div className="x:flex x:items-center x:gap-4">
           <HoverCard openDelay={200} closeDelay={200}>
             <HoverCardTrigger>
-              <FaRegQuestionCircle className="x:text-muted-foreground x:transition-all x:hover:text-foreground" />
+              <TablerQuestionCircle className="x:text-muted-foreground x:transition-all x:hover:text-foreground" />
             </HoverCardTrigger>
             <HoverCardContent>
               <div className="x:max-w-[400px] x:rounded-xl x:border x:border-border/50">

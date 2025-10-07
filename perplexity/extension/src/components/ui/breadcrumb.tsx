@@ -1,7 +1,9 @@
 import { Slot } from "@radix-ui/react-slot";
 import type { ComponentProps } from "react";
 import { type ReactNode } from "react";
-import { LuChevronRight, LuEllipsis } from "react-icons/lu";
+
+import TablerChevronRight from "~icons/tabler/chevron-right";
+import TablerDots from "~icons/tabler/dots";
 
 type BreadcrumbProps = ComponentProps<"nav"> & {
   separator?: ReactNode;
@@ -90,7 +92,7 @@ export function BreadcrumbSeparator({
       className={cn("x:[&>svg]:h-3.5 x:[&>svg]:w-3.5", className)}
       {...props}
     >
-      {children ?? <LuChevronRight />}
+      {children ?? <TablerChevronRight />}
     </li>
   );
 }
@@ -109,7 +111,7 @@ export function BreadcrumbEllipsis({
       )}
       {...props}
     >
-      <LuEllipsis className="x:h-4 x:w-4" />
+      <TablerDots className="x:h-4 x:w-4" />
       <span className="x:sr-only">More</span>
     </span>
   );

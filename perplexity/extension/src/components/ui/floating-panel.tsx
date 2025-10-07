@@ -1,9 +1,13 @@
 import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/react/floating-panel";
 import { Slot } from "@radix-ui/react-slot";
 import type { ComponentPropsWithoutRef } from "react";
-import { LuArrowDownLeft, LuMaximize, LuMinus, LuX } from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
+
+import TablerArrowDownLeft from "~icons/tabler/arrow-down-left";
+import TablerMaximize from "~icons/tabler/maximize";
+import TablerMinus from "~icons/tabler/minus";
+import TablerX from "~icons/tabler/x";
 
 const resizeTriggerStyles = {
   base: "x:absolute x:bg-transparent x:touch-action-none",
@@ -189,7 +193,7 @@ export function FloatingPanelCloseTrigger({
       )}
       {...props}
     >
-      {children != null ? children : <LuX className="x:size-4" />}
+      {children != null ? children : <TablerX className="x:size-4" />}
     </ArkFloatingPanel.CloseTrigger>
   );
 }
@@ -217,7 +221,7 @@ export function FloatingPanelResizeTrigger({
 }
 
 const stageIcons = {
-  minimized: <LuMinus className="x:size-4" />,
-  maximized: <LuMaximize className="x:size-4" />,
-  default: <LuArrowDownLeft className="x:size-4" />,
+  minimized: <TablerMinus className="x:size-4" />,
+  maximized: <TablerMaximize className="x:size-4" />,
+  default: <TablerArrowDownLeft className="x:size-4" />,
 };

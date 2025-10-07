@@ -1,8 +1,8 @@
-import { LuWrapText } from "react-icons/lu";
-
-import { MdiWrapDisabled } from "@/components/icons/MdiWrapDisabled";
 import Tooltip from "@/components/Tooltip";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
+
+import TablerTextWrap from "~icons/tabler/text-wrap";
+import TablerTextWrapDisabled from "~icons/tabler/text-wrap-disabled";
 
 export function WrapToggleButton() {
   const { isWrapped, setIsWrapped } = useMirroredCodeBlockContext();
@@ -20,9 +20,9 @@ export function WrapToggleButton() {
         onClick={() => setIsWrapped(!isWrapped)}
       >
         {isWrapped ? (
-          <MdiWrapDisabled className="x:size-4" />
+          <TablerTextWrapDisabled className="x:size-4" />
         ) : (
-          <LuWrapText className="x:size-4" />
+          <TablerTextWrap className="x:size-4" />
         )}
       </div>
     </Tooltip>

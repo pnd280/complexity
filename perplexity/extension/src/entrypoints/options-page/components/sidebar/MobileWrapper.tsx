@@ -1,9 +1,10 @@
-import { LuPanelLeftOpen } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useOptionsPageSidebarStore } from "@/entrypoints/options-page/components/sidebar/store";
 import MyBreadcrumb from "@/entrypoints/options-page/dashboard/pages/plugins/components/MyBreadcrumb";
+
+import LuPanelLeftOpen from "~icons/lucide/panel-left-open";
 
 export default function MobileSidebar({
   children,

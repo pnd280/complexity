@@ -1,5 +1,3 @@
-import { LuTrash2 } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import TablerTrash from "~icons/tabler/trash";
 
 type DeleteButtonProps = {
   isDeleting: boolean;
@@ -27,7 +27,7 @@ export function DeleteButton({ isDeleting, onDelete }: DeleteButtonProps) {
     >
       <DialogTrigger asChild>
         <Button type="button" variant="outline" size="icon">
-          <LuTrash2 />
+          <TablerTrash />
         </Button>
       </DialogTrigger>
       <DialogContent>

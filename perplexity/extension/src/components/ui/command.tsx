@@ -3,12 +3,13 @@ import { Command as CommandPrimitive } from "cmdk";
 import type { ComponentProps } from "react";
 import * as React from "react";
 import { useEffect } from "react";
-import { LuSearch as Search } from "react-icons/lu";
 
 import type { DialogProps } from "@/components/ui/dialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 import { isInContentScript } from "@/utils/misc/utils";
+
+import TablerSearch from "~icons/tabler/search";
 
 export function Command({
   className,
@@ -90,7 +91,7 @@ export function CommandInput({
         {...props}
       />
       {typeof searchIcon === "boolean" && searchIcon && (
-        <Search className="x:mr-2 x:h-4 x:w-4 x:shrink-0 x:opacity-50" />
+        <TablerSearch className="x:mr-2 x:h-4 x:w-4 x:shrink-0 x:opacity-50" />
       )}
       {React.isValidElement(searchIcon) && searchIcon}
     </div>

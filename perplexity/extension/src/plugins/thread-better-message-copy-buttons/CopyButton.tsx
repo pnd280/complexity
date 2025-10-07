@@ -1,5 +1,3 @@
-import { LuCheck, LuCopy, LuLink2Off, LuLoaderCircle } from "react-icons/lu";
-
 import FaMarkdown from "@/components/icons/FaMarkdown";
 import Tooltip from "@/components/Tooltip";
 import {
@@ -11,6 +9,11 @@ import {
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { useRegisteredGlobalCssEntry } from "@/plugins/__async-deps__/global-stores/global-css-store";
 import { useCopyPplxThread } from "@/plugins/thread-export/index.public";
+
+import TablerCheck from "~icons/tabler/check";
+import TablerCopy from "~icons/tabler/copy";
+import TablerLinkOff from "~icons/tabler/link-off";
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 type CopyButtonProps = {
   messageBlockIndex: number;
@@ -24,7 +27,7 @@ const CopyButton = memo(function CopyButton({
   hasSources,
 }: CopyButtonProps) {
   const [triggerIcon, setTriggerIcon] = useToggleButtonText({
-    defaultText: <LuCopy />,
+    defaultText: <TablerCopy className="x:size-3.5" />,
   });
 
   const { copyMessage, isFetching } = useCopyPplxThread();
@@ -36,7 +39,7 @@ const CopyButton = memo(function CopyButton({
       await copyMessage({
         messageBlockIndex,
         withCitations,
-        onComplete: () => setTriggerIcon(<LuCheck />),
+        onComplete: () => setTriggerIcon(<TablerCheck />),
       });
     },
     [copyMessage, isFetching, messageBlockIndex, setTriggerIcon],
@@ -78,7 +81,7 @@ const CopyButton = memo(function CopyButton({
             value={"without-citations" satisfies CopyOptions}
             className="x:flex x:items-center x:gap-2"
           >
-            <LuLink2Off className="x:size-4" />
+            <TablerLinkOff className="x:size-4" />
             <span>
               {t("plugin-better-copy-buttons.options.withoutCitations")}
             </span>
@@ -114,7 +117,7 @@ const CopyButtonTrigger = memo(function CopyButtonTrigger({
       onClick={onClick}
     >
       {isFetching ? (
-        <LuLoaderCircle className="x:size-4 x:animate-spin" />
+        <TablerLoaderCircle className="x:size-4 x:animate-spin" />
       ) : (
         icon
       )}

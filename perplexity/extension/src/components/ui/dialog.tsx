@@ -1,9 +1,10 @@
 import { Dialog as ArkDialog } from "@ark-ui/react";
 import { type HTMLAttributes } from "react";
 import React from "react";
-import { LuX as X } from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
+
+import TablerX from "~icons/tabler/x";
 
 export type DialogProps = ArkDialog.RootProps;
 
@@ -61,7 +62,7 @@ export function DialogContent({
           {children}
           {closeButton && (
             <DialogClose className="x:absolute x:top-4 x:right-4 x:rounded-xl x:opacity-70 x:ring-offset-background x:transition-opacity x:hover:opacity-100 x:focus:ring-2 x:focus:ring-ring x:focus:ring-offset-2 x:focus:outline-none x:disabled:pointer-events-none x:data-[state=open]:bg-primary-foreground x:data-[state=open]:text-muted-foreground">
-              <X className="x:h-4 x:w-4" />
+              <TablerX className="x:h-4 x:w-4" />
               <span className="x:sr-only">Close</span>
             </DialogClose>
           )}

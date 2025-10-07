@@ -1,11 +1,12 @@
 import type { ComponentType, SVGProps } from "react";
-import { HiCheckCircle } from "react-icons/hi2";
-import { LuDatabase } from "react-icons/lu";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { H1, H3, P, Ul } from "@/components/ui/typography";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
+
+import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
+import TablerDatabase from "~icons/tabler/database";
 
 const basePermissionsDetails: Record<
   string,
@@ -32,7 +33,7 @@ const basePermissionsDetails: Record<
         </li>
       </Ul>
     ),
-    icon: LuDatabase,
+    icon: TablerDatabase,
   },
 };
 
@@ -96,7 +97,7 @@ export default function BasePermissions() {
                       >
                         {isGranted ? (
                           <span className="x:flex x:items-center x:gap-1.5 x:md:gap-2">
-                            <HiCheckCircle className="x:h-3.5 x:w-3.5 x:md:h-4 x:md:w-4" />
+                            <TablerCircleCheckFilled className="x:h-3.5 x:w-3.5 x:md:h-4 x:md:w-4" />
                             Granted
                           </span>
                         ) : (

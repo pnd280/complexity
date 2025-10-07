@@ -1,6 +1,5 @@
 import isEqual from "lodash/isEqual";
 import type { ComponentType, SVGProps } from "react";
-import { LuCheck, LuRocket, LuZap } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
@@ -24,13 +23,17 @@ import {
 } from "@/entrypoints/options-page/dashboard/pages/plugins/predefined-configs";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
+import LuZap from "~icons/lucide/zap";
+import TablerCheck from "~icons/tabler/check";
+import TablerRocket from "~icons/tabler/rocket";
+
 const presets = [
   {
     value: "essentials",
     label: (
       <PresetLabel
         label="Essentials Only"
-        LabelIcon={LuCheck}
+        LabelIcon={TablerCheck}
         description="You're new to Perplexity and using the extension for the first time."
       />
     ),
@@ -52,7 +55,7 @@ const presets = [
     label: (
       <PresetLabel
         label="YOLO"
-        LabelIcon={LuRocket}
+        LabelIcon={TablerRocket}
         description="Enabling all plugins without understanding their functionality is not recommended. It's suggested to explore them individually first."
       />
     ),

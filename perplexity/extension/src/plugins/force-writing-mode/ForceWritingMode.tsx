@@ -1,5 +1,4 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { LuPencil } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
@@ -18,6 +17,8 @@ import { getActiveQueryBox } from "@/plugins/__ui-groups__/elements/query-box/ut
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
 import { useForceWritingModeStore } from "@/plugins/force-writing-mode/store";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
+
+import TablerPencil from "~icons/tabler/pencil";
 
 const normalizeCss = await getVersionedRemoteResource(
   normalizeCssResourceConfig,
@@ -75,7 +76,7 @@ export function ForceWritingModeToggle() {
             )}
             onClick={() => setForceWritingMode(!forceWritingMode)}
           >
-            <LuPencil className="x:size-3.5" />
+            <TablerPencil className="x:size-3.5" />
           </button>
         </DialogTrigger>
       </Tooltip>

@@ -1,5 +1,3 @@
-import { LuGripVertical } from "react-icons/lu";
-
 import {
   FloatingPanel,
   FloatingPanelBody,
@@ -8,6 +6,8 @@ import {
   FloatingPanelResizeTrigger,
   FloatingPanelTrigger,
 } from "@/components/ui/floating-panel";
+
+import TablerGripVertical from "~icons/tabler/grip-vertical";
 
 export default function FloatingPanelTest() {
   const [size, setSize] = useState({ width: 1000, height: 500 });
@@ -19,7 +19,7 @@ export default function FloatingPanelTest() {
         <FloatingPanelContent className="x:group x:overflow-hidden x:bg-secondary">
           <div className="x:flex x:h-0 x:items-center x:justify-between x:overflow-hidden x:bg-background x:transition-all x:group-hover:h-auto x:group-hover:p-2">
             <FloatingPanelDragTrigger className="x:ml-auto">
-              <LuGripVertical className="x:size-5 x:text-muted-foreground" />
+              <TablerGripVertical className="x:size-5 x:text-muted-foreground" />
             </FloatingPanelDragTrigger>
           </div>
           <FloatingPanelBody className="x:max-h-(--height)">

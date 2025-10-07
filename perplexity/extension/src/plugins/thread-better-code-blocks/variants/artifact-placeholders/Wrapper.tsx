@@ -1,5 +1,3 @@
-import { LuLoaderCircle } from "react-icons/lu";
-
 import type { ArtifactLanguage } from "@/plugins/thread-artifacts/index.public";
 import { ARTIFACT_PLACEHOLDERS } from "@/plugins/thread-artifacts/index.public";
 import {
@@ -12,6 +10,8 @@ import {
   getInterpretedArtifactLanguage,
 } from "@/plugins/thread-artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
   const { codeBlock, sourceMessageBlockIndex, sourceCodeBlockIndex } =
@@ -65,7 +65,7 @@ const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
         )}
       >
         {codeBlock?.states.isInFlight ? (
-          <LuLoaderCircle className="x:size-4 x:animate-spin x:text-muted-foreground" />
+          <TablerLoaderCircle className="x:size-4 x:animate-spin x:text-muted-foreground" />
         ) : (
           <placeholderElements.icon className="x:size-8" />
         )}

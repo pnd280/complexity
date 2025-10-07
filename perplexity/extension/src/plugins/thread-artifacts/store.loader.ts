@@ -100,7 +100,7 @@ const initializeAutonomousMode = () => {
 
               updateArtifactBlocks({
                 key,
-                newArtifactBlocks: newArtifactBlocks,
+                newArtifactBlocks,
                 codeBlock,
                 messageBlockIndex: chunkIndex,
                 codeBlockIndex,
@@ -132,7 +132,7 @@ const updateArtifactBlocks = ({
 }: {
   newArtifactBlocks: Record<string, ArtifactBlock>;
   key: string;
-  codeBlock: any;
+  codeBlock: CodeBlock;
   messageBlockIndex: number;
   codeBlockIndex: number;
   interpretedLanguage: ArtifactLanguage;
@@ -143,7 +143,7 @@ const updateArtifactBlocks = ({
 
   if (newArtifactBlocks[key]) {
     newArtifactBlocks[key].count++;
-    newArtifactBlocks[key].isInFlight = codeBlock.isInFlight;
+    newArtifactBlocks[key].isInFlight = codeBlock.states.isInFlight;
     newArtifactBlocks[key].location.push(location);
   } else {
     newArtifactBlocks[key] = {
@@ -157,7 +157,7 @@ const updateArtifactBlocks = ({
           codeBlockIndex:
             newArtifactBlocks[key]?.location.at(-1)?.codeBlockIndex ?? 0,
         }),
-      isInFlight: codeBlock.isInFlight,
+      isInFlight: codeBlock.states.isInFlight,
       count: 1,
       location: [location],
     };

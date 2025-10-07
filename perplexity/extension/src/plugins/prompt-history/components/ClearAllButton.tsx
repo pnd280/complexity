@@ -1,5 +1,3 @@
-import { LuTrash } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,6 +10,8 @@ import {
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import { queryClient } from "@/services/infra/query-client";
+
+import TablerTrash from "~icons/tabler/trash";
 
 export default function ClearAllButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +32,7 @@ export default function ClearAllButton() {
       onOpenChange={({ open }) => setIsOpen(open)}
     >
       <DialogTrigger asChild>
-        <LuTrash className="x:size-3.5 x:cursor-pointer x:text-xs x:text-muted-foreground x:transition-colors x:hover:text-foreground x:hover:underline" />
+        <TablerTrash className="x:size-3.5 x:cursor-pointer x:text-xs x:text-muted-foreground x:transition-colors x:hover:text-foreground x:hover:underline" />
       </DialogTrigger>
       <DialogContent data-prompt-history-clear-all-dialog>
         <DialogHeader>

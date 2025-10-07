@@ -1,6 +1,5 @@
 import { useStepsContext } from "@ark-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { FaChrome, FaSpinner } from "react-icons/fa6";
 
 import PplxComet from "@/components/icons/PplxComet";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
@@ -8,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { H1 } from "@/components/ui/typography";
 import { toast } from "@/components/ui/use-toast";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
+
+import TablerBrandChrome from "~icons/tabler/brand-chrome";
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function CometPatch() {
   const context = useStepsContext();
@@ -23,7 +25,7 @@ export default function CometPatch() {
     if (isLoading) {
       return (
         <div className="x:mx-auto x:my-40 x:flex x:max-w-2xl x:flex-col x:items-center x:gap-4 x:px-2 x:md:gap-8 x:md:px-4">
-          <FaSpinner className="x:size-10 x:animate-spin x:text-muted-foreground" />
+          <TablerLoaderCircle className="x:size-10 x:animate-spin x:text-muted-foreground" />
           <div className="x:animate-pulse">
             fetching content, please wait...
           </div>
@@ -95,7 +97,7 @@ export default function CometPatch() {
           className="x:flex x:flex-col x:items-center x:justify-center x:gap-4"
           onClick={() => context.goToNextStep()}
         >
-          <FaChrome className="x:size-30 x:cursor-pointer x:text-muted-foreground x:transition-all x:hover:text-primary" />
+          <TablerBrandChrome className="x:size-30 x:cursor-pointer x:text-muted-foreground x:transition-all x:hover:text-primary" />
           <div className="x:flex x:flex-col x:items-center x:justify-center x:gap-2">
             <div className="x:font-mono x:text-2xl x:font-medium">Chromium</div>
             <div className="x:max-w-[150px] x:text-center x:text-base x:text-muted-foreground">

@@ -1,5 +1,3 @@
-import { LuTriangleAlert } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { CardFooter } from "@/components/ui/card";
@@ -9,6 +7,8 @@ import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import { usePluginCardContext } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/PluginCardContext";
 import RequirePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/plugins/components/RequirePermissionsDialogWrapper";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
+
+import TablerAlertTriangle from "~icons/tabler/alert-triangle";
 
 export function PluginCardFooter() {
   const {
@@ -66,7 +66,7 @@ export function PluginCardFooter() {
               </div>
             }
           >
-            <LuTriangleAlert className="x:size-4 x:text-yellow-300 x:dark:text-yellow-500" />
+            <TablerAlertTriangle className="x:size-4 x:text-yellow-300 x:dark:text-yellow-500" />
           </Tooltip>
         )}
 

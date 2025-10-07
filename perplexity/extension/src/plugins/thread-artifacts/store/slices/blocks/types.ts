@@ -6,7 +6,7 @@ export type CodeBlockLocation = {
 };
 
 export type ArtifactBlock = {
-  Icon: ComponentType<SVGProps<SVGElement>>;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
   count: number;
   title: string;
   description: string;

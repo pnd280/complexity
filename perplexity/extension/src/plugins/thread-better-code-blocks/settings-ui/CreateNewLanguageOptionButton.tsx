@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { LuPlus } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,8 @@ import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-bett
 import { BetterCodeBlocksFineGrainedService } from "@/plugins/thread-better-code-blocks/indexed-db/service-init.bg-worker";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 import { queryClient } from "@/services/infra/query-client";
+
+import TablerPlus from "~icons/tabler/plus";
 
 export default function CreateNewLanguageOptionButton() {
   const [open, setOpen] = useState(false);
@@ -90,7 +91,7 @@ export default function CreateNewLanguageOptionButton() {
       <Tooltip content="Add new rule">
         <DialogTrigger asChild>
           <Button variant="ghost" size="sm">
-            <LuPlus />
+            <TablerPlus />
           </Button>
         </DialogTrigger>
       </Tooltip>

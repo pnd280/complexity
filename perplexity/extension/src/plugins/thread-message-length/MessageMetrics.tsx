@@ -1,5 +1,3 @@
-import { LuInfo } from "react-icons/lu";
-
 import {
   HoverCard,
   HoverCardContent,
@@ -8,6 +6,8 @@ import {
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { useThreadMessageIndexContext } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+
+import TablerInfoCircle from "~icons/tabler/info-circle";
 
 export function MessageMetrics() {
   const messageBlockIndex = useThreadMessageIndexContext();
@@ -41,7 +41,7 @@ export function MessageMetrics() {
           className="x:cursor-pointer x:rounded-full x:p-2 x:text-muted-foreground x:transition-all x:hover:bg-muted/50 x:hover:text-foreground x:active:scale-95"
           tabIndex={0}
         >
-          <LuInfo className="x:size-4" />
+          <TablerInfoCircle className="x:size-4" />
         </div>
       </HoverCardTrigger>
       {metrics && (

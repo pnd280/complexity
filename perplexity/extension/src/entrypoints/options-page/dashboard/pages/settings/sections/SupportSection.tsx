@@ -1,7 +1,3 @@
-import { FaEllipsisH } from "react-icons/fa";
-import { LuGithub, LuMail } from "react-icons/lu";
-import { SiDiscord } from "react-icons/si";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +7,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SettingsItem from "@/entrypoints/options-page/dashboard/pages/settings/SettingsItem";
 import SettingsSection from "@/entrypoints/options-page/dashboard/pages/settings/SettingsSection";
+
+import TablerBrandDiscord from "~icons/tabler/brand-discord";
+import TablerBrandGithub from "~icons/tabler/brand-github";
+import TablerDots from "~icons/tabler/dots";
+import TablerMail from "~icons/tabler/mail";
 
 export default function SupportSection() {
   return (
@@ -22,7 +23,7 @@ export default function SupportSection() {
         <div className="x:flex x:items-center x:gap-4">
           <Button asChild className="x:w-max">
             <a href="https://discord.cplx.app" target="_blank" rel="noreferrer">
-              <SiDiscord className="x:mr-2 x:size-4" />
+              <TablerBrandDiscord className="x:mr-2 x:size-4" />
               <span>Discord</span>
             </a>
           </Button>
@@ -30,7 +31,7 @@ export default function SupportSection() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
-                <FaEllipsisH />
+                <TablerDots />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -40,7 +41,7 @@ export default function SupportSection() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <LuGithub className="x:mr-2 x:size-4" />
+                  <TablerBrandGithub className="x:mr-2 x:size-4" />
                   <span>GitHub Issues</span>
                 </a>
               </DropdownMenuItem>
@@ -50,7 +51,7 @@ export default function SupportSection() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <LuMail className="x:mr-2 x:size-4" />
+                  <TablerMail className="x:mr-2 x:size-4" />
                   <span>pnd280@gmail.com</span>
                 </a>
               </DropdownMenuItem>

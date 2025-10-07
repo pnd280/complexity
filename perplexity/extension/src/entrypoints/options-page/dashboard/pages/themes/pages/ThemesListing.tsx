@@ -1,4 +1,3 @@
-import { LuPlus } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 import { APP_CONFIG } from "@/app.config";
@@ -7,6 +6,8 @@ import { BUILTIN_THEME_REGISTRY } from "@/data/dashboard/themes/built-in-themes"
 import InstantCssEnable from "@/entrypoints/options-page/dashboard/pages/themes/components/InstantCssEnable";
 import { ThemeSections } from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeSections";
 import { useLocalThemes } from "@/plugins/__core__/custom-theme/indexed-db/useLocalThemes";
+
+import TablerPlus from "~icons/tabler/plus";
 
 export function ThemesListing() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export function ThemesListing() {
             className="x:mx-auto x:md:mx-0 x:md:mt-auto"
             onClick={() => navigate("new")}
           >
-            <LuPlus className="x:mr-2 x:size-5" />
+            <TablerPlus className="x:mr-2 x:size-5" />
             Create New Theme
           </Button>
         </div>

@@ -1,16 +1,3 @@
-import {
-  LuCalendar,
-  LuHouse,
-  LuSearch,
-  LuSettings,
-  LuInbox,
-  LuEllipsis,
-  LuPlus,
-  LuMenu,
-  LuPanelLeftOpen,
-  LuPanelLeftClose,
-} from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import { Portal } from "@/components/ui/portal";
 import {
@@ -37,31 +24,42 @@ import {
 import usePortalContainer from "@/plugins/better-sidebar/usePortalContainer";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
+import LuPanelLeftClose from "~icons/lucide/panel-left-close";
+import LuPanelLeftOpen from "~icons/lucide/panel-left-open";
+import TablerCalendar from "~icons/tabler/calendar";
+import TablerDots from "~icons/tabler/dots";
+import TablerHome from "~icons/tabler/home";
+import TablerInbox from "~icons/tabler/inbox";
+import TablerMenu from "~icons/tabler/menu-2";
+import TablerPlus from "~icons/tabler/plus";
+import TablerSearch from "~icons/tabler/search";
+import TablerSettings from "~icons/tabler/settings";
+
 const items = [
   {
     title: "Home",
     url: "#",
-    icon: LuHouse,
+    icon: TablerHome,
   },
   {
     title: "Inbox",
     url: "#",
-    icon: LuInbox,
+    icon: TablerInbox,
   },
   {
     title: "Calendar Calendar Calendar Calendar Calendar",
     url: "#",
-    icon: LuCalendar,
+    icon: TablerCalendar,
   },
   {
     title: "Search",
     url: "#",
-    icon: LuSearch,
+    icon: TablerSearch,
   },
   {
     title: "Settings",
     url: "#",
-    icon: LuSettings,
+    icon: TablerSettings,
   },
 ];
 
@@ -85,17 +83,17 @@ export function BetterSidebar() {
           <SidebarHeader className="x:flex-row x:justify-between">
             <SidebarTrigger className="x:rounded-full x:md:rounded-lg">
               {isMobile ? (
-                <LuMenu className="x:size-4.5" />
+                <TablerMenu className="x:size-4.5" />
               ) : (
                 <LuPanelLeftClose className="x:size-4.5" />
               )}
             </SidebarTrigger>
             <div className="x:flex x:items-center">
               <Button size="icon" variant="ghost">
-                <LuSearch className="x:size-4.5" />
+                <TablerSearch className="x:size-4.5" />
               </Button>
               <Button size="icon" variant="ghost">
-                <LuPlus className="x:size-4.5" />
+                <TablerPlus className="x:size-4.5" />
               </Button>
             </div>
           </SidebarHeader>
@@ -112,7 +110,7 @@ export function BetterSidebar() {
                         </a>
                       </SidebarMenuButton>
                       <SidebarMenuAction showOnHover>
-                        <LuEllipsis />
+                        <TablerDots />
                       </SidebarMenuAction>
                     </SidebarMenuItem>
                   ))}
@@ -131,7 +129,7 @@ export function BetterSidebar() {
                         </a>
                       </SidebarMenuButton>
                       <SidebarMenuAction showOnHover>
-                        <LuEllipsis />
+                        <TablerDots />
                       </SidebarMenuAction>
                     </SidebarMenuItem>
                   ))}
@@ -150,7 +148,7 @@ export function BetterSidebar() {
                         </a>
                       </SidebarMenuButton>
                       <SidebarMenuAction showOnHover>
-                        <LuEllipsis />
+                        <TablerDots />
                       </SidebarMenuAction>
                     </SidebarMenuItem>
                   ))}
@@ -169,7 +167,7 @@ export function BetterSidebar() {
                         </a>
                       </SidebarMenuButton>
                       <SidebarMenuAction showOnHover>
-                        <LuEllipsis />
+                        <TablerDots />
                       </SidebarMenuAction>
                     </SidebarMenuItem>
                   ))}
@@ -188,7 +186,7 @@ export function BetterSidebar() {
                         </a>
                       </SidebarMenuButton>
                       <SidebarMenuAction showOnHover>
-                        <LuEllipsis />
+                        <TablerDots />
                       </SidebarMenuAction>
                     </SidebarMenuItem>
                   ))}
@@ -207,7 +205,7 @@ export function BetterSidebar() {
                         </a>
                       </SidebarMenuButton>
                       <SidebarMenuAction showOnHover>
-                        <LuEllipsis />
+                        <TablerDots />
                       </SidebarMenuAction>
                     </SidebarMenuItem>
                   ))}

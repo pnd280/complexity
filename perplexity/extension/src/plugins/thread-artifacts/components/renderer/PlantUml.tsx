@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { LuLoaderCircle } from "react-icons/lu";
 import svgPanZoom from "svg-pan-zoom";
 
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,8 @@ import {
   generatePlantUMLUrl,
   generateTextPlantUMLUrl,
 } from "@/plugins/thread-artifacts/utils/plant-uml";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 const SVGContent = memo(function SVGContent({ svg }: { svg: string }) {
   useEffect(() => {
@@ -110,7 +111,7 @@ export default function PlantUmlRenderer() {
     <div className="x:relative x:size-full">
       {isPending && (
         <div className="x:absolute x:inset-1/2 x:-translate-x-1/2 x:-translate-y-1/2 x:animate-in x:fade-in">
-          <LuLoaderCircle className="x:size-10 x:animate-spin x:text-muted-foreground" />
+          <TablerLoaderCircle className="x:size-10 x:animate-spin x:text-muted-foreground" />
         </div>
       )}
       {!isPending && error && (

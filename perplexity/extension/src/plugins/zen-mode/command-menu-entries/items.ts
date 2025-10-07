@@ -1,9 +1,9 @@
-import { LuGrid3X3 } from "react-icons/lu";
-import { LuLayoutGrid } from "react-icons/lu";
-
 import type { CommandItemProps } from "@/plugins/command-menu/index.public";
 import { toggleZenMode } from "@/plugins/zen-mode/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+
+import LuGrid3X3 from "~icons/lucide/grid-3x3";
+import LuLayoutGrid from "~icons/lucide/layout-grid";
 
 type ItemsParams = {
   isZenMode: boolean;

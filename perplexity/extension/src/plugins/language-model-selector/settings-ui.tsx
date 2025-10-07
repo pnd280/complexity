@@ -1,9 +1,9 @@
-import { LuCheck } from "react-icons/lu";
-
 import { Image } from "@/components/ui/image";
 import { Switch } from "@/components/ui/switch";
 import type { PluginId } from "@/data/registries/plugins/meta.types";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
+
+import TablerCheck from "~icons/tabler/check";
 
 export const pluginId: PluginId = "queryBox:languageModelSelector";
 
@@ -16,15 +16,16 @@ export default function LanguageModelSelectorPluginSettingsUi() {
     <div className="x:flex x:flex-col x:gap-4 x:overflow-y-auto">
       <div>
         <div className="x:flex x:items-center x:gap-2">
-          <LuCheck className="x:text-primary" /> Take complete control of all
-          available language models.
+          <TablerCheck className="x:text-primary" /> Take complete control of
+          all available language models.
         </div>
         <div className="x:flex x:items-center x:gap-2">
-          <LuCheck className="x:text-primary" /> No ambiguity, no confusion,
+          <TablerCheck className="x:text-primary" /> No ambiguity, no confusion,
           change your preferred one anywhere.
         </div>
         <div className="x:flex x:items-center x:gap-2">
-          <LuCheck className="x:text-primary" /> Supports keyboard navigation.
+          <TablerCheck className="x:text-primary" /> Supports keyboard
+          navigation.
         </div>
       </div>
       <Switch

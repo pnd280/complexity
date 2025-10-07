@@ -6,8 +6,7 @@ import {
   baseTypescriptConfig,
 } from "@complexity/eslint-config";
 import globals from "globals";
-import tseslint from "typescript-eslint";
-
+import { defineConfig } from "eslint/config";
 import boundariesConfig from "./eslint-config/boundaries/index.js";
 import tanstackQueryConfig from "./eslint-config/tanstack-query.js";
 
@@ -18,7 +17,7 @@ const commonIgnores = [
   "**/*.config.ts",
 ];
 
-export default tseslint.config(
+export default defineConfig([
   baseConfig,
   {
     ...baseTypescriptConfig[0],
@@ -26,6 +25,18 @@ export default tseslint.config(
   },
   {
     ...baseImportConfig[0],
+    extends: [
+      {
+        rules: {
+          "import/no-unresolved": [
+            "error",
+            {
+              ignore: ["^~icons/"],
+            },
+          ],
+        },
+      },
+    ],
     ignores: [
       ...commonIgnores,
       "**/*.js",
@@ -35,7 +46,10 @@ export default tseslint.config(
       "vite-plugins/**",
     ],
   },
-  { ...baseReactConfig[0], ignores: [...commonIgnores, "e2e/**"] },
+  {
+    ...baseReactConfig[0],
+    ignores: [...commonIgnores, "e2e/**"],
+  },
   boundariesConfig,
   tanstackQueryConfig,
   {
@@ -49,4 +63,4 @@ export default tseslint.config(
     },
     ignores: [...commonIgnores],
   },
-);
+]);

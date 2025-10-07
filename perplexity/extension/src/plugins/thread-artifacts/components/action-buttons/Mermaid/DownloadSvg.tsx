@@ -1,8 +1,8 @@
-import { LuDownload } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+
+import TablerDownload from "~icons/tabler/download";
 
 export default function MermaidDownloadSvg() {
   return (
@@ -33,7 +33,7 @@ export default function MermaidDownloadSvg() {
           setTimeout(() => URL.revokeObjectURL(url), 100);
         }}
       >
-        <LuDownload className="x:size-4" />
+        <TablerDownload className="x:size-4" />
       </Button>
     </Tooltip>
   );

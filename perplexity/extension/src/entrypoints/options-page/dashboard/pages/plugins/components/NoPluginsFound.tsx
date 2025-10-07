@@ -1,11 +1,11 @@
-import { BiExtension } from "react-icons/bi";
-
 import { Result } from "@/components/Result";
+
+import TablerPuzzle from "~icons/tabler/puzzle";
 
 export default function NoPluginsFound() {
   return (
     <Result
-      icon={BiExtension}
+      icon={TablerPuzzle}
       title="No plugins found"
       description={
         <div className="x:text-balance">

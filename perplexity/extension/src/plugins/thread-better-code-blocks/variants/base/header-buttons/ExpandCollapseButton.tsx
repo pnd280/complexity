@@ -1,7 +1,8 @@
-import { LuChevronDown, LuChevronUp } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
+
+import TablerChevronDown from "~icons/tabler/chevron-down";
+import TablerChevronUp from "~icons/tabler/chevron-up";
 
 type ExpandCollapseButtonProps = {
   defaultMaxHeight: number;
@@ -27,9 +28,9 @@ export function ExpandCollapseButton({
         }
       >
         {maxHeight === defaultMaxHeight ? (
-          <LuChevronDown className="x:size-4" />
+          <TablerChevronDown className="x:size-4" />
         ) : (
-          <LuChevronUp className="x:size-4" />
+          <TablerChevronUp className="x:size-4" />
         )}
       </div>
     </Tooltip>

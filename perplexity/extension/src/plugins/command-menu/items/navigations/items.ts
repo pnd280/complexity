@@ -1,6 +1,4 @@
 import { isHotkeyPressed } from "react-hotkeys-hook";
-import { LuSettings } from "react-icons/lu";
-import { SiPerplexity } from "react-icons/si";
 
 import PplxDiscover from "@/components/icons/PplxDiscover";
 import PplxLabs from "@/components/icons/PplxLabs";
@@ -11,6 +9,9 @@ import {
   softNavigate,
 } from "@/plugins/__core__/_main-world/spa-router/utils";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
+
+import BiPplx from "~icons/bi/perplexity";
+import TablerSettings from "~icons/tabler/settings";
 
 export const navigationKeywords = ["navigation", "navigate", "go", "to"];
 
@@ -48,7 +49,7 @@ const createNavigationItem = ({
 
 export const getRawItems = (): NavigationCommandItemProps[] => [
   createNavigationItem({
-    icon: SiPerplexity,
+    icon: BiPplx,
     title: t("plugin-command-menu.navigation.home"),
     value: "home",
     url: "/",
@@ -72,7 +73,7 @@ export const getRawItems = (): NavigationCommandItemProps[] => [
     url: "/discover",
   }),
   createNavigationItem({
-    icon: LuSettings,
+    icon: TablerSettings,
     title: t("plugin-command-menu.navigation.settings"),
     value: "settings",
     url: "/account/details",

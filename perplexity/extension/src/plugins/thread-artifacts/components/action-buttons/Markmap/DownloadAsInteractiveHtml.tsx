@@ -1,5 +1,3 @@
-import { LuDownload } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
@@ -9,6 +7,8 @@ import {
   formatArtifactTitle,
   getArtifactTitle,
 } from "@/plugins/thread-artifacts/utils";
+
+import TablerDownload from "~icons/tabler/download";
 
 export default function DownloadAsInteractiveHtml() {
   const { selectedCodeBlockLocation } = useArtifactsStore();
@@ -41,7 +41,7 @@ export default function DownloadAsInteractiveHtml() {
           });
         }}
       >
-        <LuDownload className="x:size-4" />
+        <TablerDownload className="x:size-4" />
       </Button>
     </Tooltip>
   );

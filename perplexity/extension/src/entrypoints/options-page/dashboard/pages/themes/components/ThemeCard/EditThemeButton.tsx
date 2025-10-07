@@ -1,9 +1,10 @@
-import { LuSettings2 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
+
+import LuSettings2 from "~icons/lucide/settings-2";
 
 type ThemeCardEditButtonProps = {
   theme: Theme;

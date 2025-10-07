@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { LuLink } from "react-icons/lu";
 
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import SpaceItemFile from "@/plugins/command-menu/pages/spaces/SpaceItemFile";
 import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
+
+import TablerLink from "~icons/tabler/link";
 
 export default function SpacePreview({ space }: { space: Space }) {
   const { data: spaceDetails } = useQuery({
@@ -73,7 +74,7 @@ export default function SpacePreview({ space }: { space: Space }) {
             <div className="x:flex x:flex-wrap x:items-center x:gap-2">
               {spaceDetails.focused_web_config.link_configs.map((link, idx) => (
                 <div key={idx} className="x:flex x:items-center x:gap-2">
-                  <LuLink className="x:size-4" />
+                  <TablerLink className="x:size-4" />
                   <div className="x:line-clamp-1 x:underline">{link.link}</div>
                 </div>
               ))}

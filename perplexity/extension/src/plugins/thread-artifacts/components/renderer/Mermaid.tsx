@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { LuLoaderCircle } from "react-icons/lu";
 
 import { Button } from "@/components/ui/button";
 import { useColorSchemeStore } from "@/plugins/__async-deps__/global-stores/color-scheme-store";
@@ -12,6 +11,8 @@ import {
   getArtifactTitle,
   isAutonomousArtifactLanguageString,
 } from "@/plugins/thread-artifacts/utils";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function MermaidRenderer() {
   const { colorScheme } = useColorSchemeStore();
@@ -112,7 +113,7 @@ export default function MermaidRenderer() {
       </div>
       {(isPending || isSuccess == null) && (
         <div className="x:absolute x:inset-1/2 x:-translate-x-1/2 x:-translate-y-1/2 x:animate-in x:fade-in">
-          <LuLoaderCircle className="x:size-10 x:animate-spin x:text-muted-foreground" />
+          <TablerLoaderCircle className="x:size-10 x:animate-spin x:text-muted-foreground" />
         </div>
       )}
     </div>

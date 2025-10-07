@@ -1,7 +1,8 @@
-import { TbError404 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 import { Result } from "@/components/Result";
+
+import TablerError404 from "~icons/tabler/error-404";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function NotFoundPage() {
   return (
     <div className="x:flex x:h-full x:min-h-screen x:items-center x:justify-center">
       <Result
-        icon={TbError404}
+        icon={TablerError404}
         title="Page not found"
         description={
           <div className="x:text-balance">

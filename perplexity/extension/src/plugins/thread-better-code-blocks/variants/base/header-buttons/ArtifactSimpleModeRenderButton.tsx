@@ -1,5 +1,3 @@
-import { LuPlay } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
 import { artifactsStore } from "@/plugins/thread-artifacts/index.public";
@@ -8,6 +6,8 @@ import {
   isArtifactLanguageString,
 } from "@/plugins/thread-artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
+
+import TablerPlay from "~icons/tabler/play";
 
 export default function ArtifactSimpleModeRenderButton() {
   const { codeBlock, sourceCodeBlockIndex, sourceMessageBlockIndex } =
@@ -38,7 +38,7 @@ export default function ArtifactSimpleModeRenderButton() {
             });
           }}
         >
-          <LuPlay className="x:size-4" />
+          <TablerPlay className="x:size-4" />
         </div>
       </Tooltip>
     </CsUiPluginsGuard>

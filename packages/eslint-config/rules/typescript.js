@@ -1,7 +1,8 @@
 // @ts-check
+import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config({
+export default defineConfig({
   files: ["**/*.{ts,tsx}"],
   languageOptions: {
     parser: tseslint.parser,
@@ -19,6 +20,13 @@ export default tseslint.config({
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-this-alias": "off",
     "@typescript-eslint/no-unsafe-declaration-merging": "error",
+    // "@typescript-eslint/no-floating-promises": [
+    //   "error",
+    //   {
+    //     ignoreVoid: true,
+    //     ignoreIIFE: true,
+    //   },
+    // ],
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {

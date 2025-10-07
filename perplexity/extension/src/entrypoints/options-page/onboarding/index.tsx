@@ -1,4 +1,3 @@
-import { LuCheck } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 
 import { APP_CONFIG } from "@/app.config";
@@ -19,6 +18,8 @@ import ExtensionIconAction from "@/entrypoints/options-page/onboarding/Extension
 import MultiLingualSupport from "@/entrypoints/options-page/onboarding/MultiLingualSupport";
 import PluginEcosystem from "@/entrypoints/options-page/onboarding/PluginEcosystem";
 import SupportChannels from "@/entrypoints/options-page/onboarding/SupportChannels";
+
+import TablerCheck from "~icons/tabler/check";
 
 const steps = (
   [
@@ -104,7 +105,7 @@ export function Onboarding() {
               <div className="x:flex x:flex-col x:items-center x:justify-center x:space-y-8 x:animate-in x:fade-in x:md:space-y-12">
                 <div className="x:rounded-full x:bg-primary/10 x:p-6 x:md:p-8">
                   <div className="x:rounded-full x:bg-foreground x:p-4 x:md:p-5">
-                    <LuCheck className="x:h-8 x:w-8 x:text-primary-foreground x:md:h-10 x:md:w-10" />
+                    <TablerCheck className="x:h-8 x:w-8 x:text-primary-foreground x:md:h-10 x:md:w-10" />
                   </div>
                 </div>
                 <H3 className="x:text-xl x:font-semibold x:md:text-2xl">

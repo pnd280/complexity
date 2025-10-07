@@ -1,11 +1,11 @@
-import { FaPalette } from "react-icons/fa6";
-
 import { Badge } from "@/components/ui/badge";
 import {
   cometColors,
   cplxColors,
 } from "@/data/dashboard/themes/built-in-colors";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
+
+import TablerPaletteFilled from "~icons/tabler/palette-filled";
 
 type ThemeCardBannerProps = {
   theme: Theme;
@@ -69,7 +69,7 @@ function ColorBanner({ colors }: { colors: string[] }) {
 function DefaultBanner() {
   return (
     <div className="x:flex x:size-full x:items-center x:justify-center x:border-b x:border-border/50 x:text-muted-foreground">
-      <FaPalette className="x:size-10" />
+      <TablerPaletteFilled className="x:size-10" />
     </div>
   );
 }

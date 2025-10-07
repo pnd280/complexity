@@ -1,7 +1,9 @@
 import type { ComponentProps } from "react";
-import { LuCheck as Check, LuCopy as Copy } from "react-icons/lu";
 
 import useToggleButtonText from "@/hooks/useToggleButtonText";
+
+import TablerCheck from "~icons/tabler/check";
+import TablerCopy from "~icons/tabler/copy";
 
 type CopyButtonProps = ComponentProps<"div"> & {
   content?: string;
@@ -21,7 +23,10 @@ export default function CopyButton({
 }: CopyButtonProps) {
   const [copyButtonText, setCopyButtonText] = useToggleButtonText({
     defaultText: (
-      <Copy {...iconProps} className={cn("x:size-4", iconProps?.className)} />
+      <TablerCopy
+        {...iconProps}
+        className={cn("x:size-4", iconProps?.className)}
+      />
     ),
   });
 
@@ -42,7 +47,7 @@ export default function CopyButton({
         }
 
         setCopyButtonText(
-          <Check
+          <TablerCheck
             {...iconProps}
             className={cn("x:size-4", iconProps?.className)}
           />,

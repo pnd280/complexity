@@ -1,5 +1,3 @@
-import { LuLoaderCircle } from "react-icons/lu";
-
 import CopyButton from "@/components/CopyButton";
 import { Separator } from "@/components/ui/separator";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";
@@ -9,6 +7,8 @@ import ArtifactSimpleModeRenderButton from "@/plugins/thread-better-code-blocks/
 import { ExpandCollapseButton } from "@/plugins/thread-better-code-blocks/variants/base/header-buttons/ExpandCollapseButton";
 import { WrapToggleButton } from "@/plugins/thread-better-code-blocks/variants/base/header-buttons/WrapToggleButton";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 const BaseCodeBlockWrapperHeader = memo(function BaseCodeBlockWrapperHeader() {
   const { codeBlock, isHorizontalOverflowing, isVerticalOverflowing } =
@@ -57,7 +57,7 @@ const BaseCodeBlockWrapperHeader = memo(function BaseCodeBlockWrapperHeader() {
                 {fineGrainedSettings?.placeholderText?.loading}
               </div>
             )}
-            <LuLoaderCircle className="x:size-4 x:animate-spin" />
+            <TablerLoaderCircle className="x:size-4 x:animate-spin" />
           </div>
         ) : (
           <>

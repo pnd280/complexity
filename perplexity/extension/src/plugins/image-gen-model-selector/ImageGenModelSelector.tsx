@@ -1,5 +1,4 @@
 import { createListCollection } from "@ark-ui/react";
-import { LuCpu as Cpu, LuImage as Image, LuCpu } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import { Portal } from "@/components/ui/portal";
@@ -18,6 +17,9 @@ import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-res
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { isReactNode } from "@/types/utils.types";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
+
+import TablerCpu from "~icons/tabler/cpu";
+import TablerPhoto from "~icons/tabler/photo";
 
 export function ImageGenModelSelector() {
   const portalContainer = usePortalContainer();
@@ -59,7 +61,7 @@ export function ImageGenModelSelector() {
         >
           <SelectTrigger variant="ghost">
             <div className="x:flex x:min-h-8 x:items-center x:justify-center x:gap-1">
-              <Image className="x:size-4" />
+              <TablerPhoto className="x:size-4" />
               <SelectValue className="x:font-medium">
                 {
                   PplxImageModelsService.allModels.find(
@@ -77,7 +79,7 @@ export function ImageGenModelSelector() {
           )}
         >
           {PplxImageModelsService.allModels.map((model) => {
-            const Icon = PplxImageModelsService.icons[model.code] ?? LuCpu;
+            const Icon = PplxImageModelsService.icons[model.code] ?? TablerCpu;
 
             return (
               <Tooltip
@@ -102,7 +104,7 @@ export function ImageGenModelSelector() {
                         <Icon className="x:size-4" />
                       </div>
                     ) : (
-                      <Cpu className="x:size-4" />
+                      <TablerCpu className="x:size-4" />
                     )}
                     <span className="x:truncate">{model.label}</span>
                   </div>

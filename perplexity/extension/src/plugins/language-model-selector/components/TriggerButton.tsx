@@ -1,11 +1,11 @@
-import { LuCpu } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { Separator } from "@/components/ui/separator";
 import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 import type { LanguageModelType } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+
+import TablerCpu from "~icons/tabler/cpu";
 
 const advancedModeLabelMap: Record<LanguageModelType, string> = {
   search: "Search",
@@ -36,7 +36,8 @@ export default function BetterLanguageModelSelectorTriggerButton() {
   );
 
   const TypeIcon = useMemo(
-    () => (type ? LanguageModelTypeIcons[type as LanguageModelType] : LuCpu),
+    () =>
+      type ? LanguageModelTypeIcons[type as LanguageModelType] : TablerCpu,
     [type],
   );
 

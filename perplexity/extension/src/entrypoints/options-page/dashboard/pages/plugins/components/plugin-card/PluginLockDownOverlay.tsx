@@ -1,4 +1,4 @@
-import { LuConstruction } from "react-icons/lu";
+import LuConstruction from "~icons/lucide/construction";
 
 export function PluginLockDownOverlay({
   text,

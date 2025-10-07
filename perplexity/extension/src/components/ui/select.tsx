@@ -3,11 +3,12 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 import { createContext, use } from "react";
-import { FaCheck } from "react-icons/fa6";
-import { LuChevronDown as ChevronDown } from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
 import { untrapWheel } from "@/utils/dom-utils/generics";
+
+import TablerCheck from "~icons/tabler/check";
+import TablerChevronDown from "~icons/tabler/chevron-down";
 
 type SelectLocalContext = {
   portal: boolean;
@@ -72,7 +73,7 @@ export function SelectTrigger({
     >
       {children}
       {variant === "default" && (
-        <ChevronDown className="x:ml-2 x:size-4 x:text-muted-foreground" />
+        <TablerChevronDown className="x:ml-2 x:size-4 x:text-muted-foreground" />
       )}
     </ArkSelect.Trigger>
   );
@@ -172,7 +173,7 @@ export function SelectItem({
             <div className="x:flex x:items-center x:gap-2">{children}</div>
             {(multiple || checkboxOnSingleItem) &&
               value.includes(props.item) && (
-                <FaCheck
+                <TablerCheck
                   className={cn("x:size-3.5 x:shrink-0", checkIconClassName)}
                 />
               )}

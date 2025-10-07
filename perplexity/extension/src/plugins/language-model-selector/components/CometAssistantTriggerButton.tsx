@@ -1,8 +1,8 @@
-import { LuCpu } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+
+import TablerCpu from "~icons/tabler/cpu";
 
 export default function CometAssistantLanguageModelSelectorTriggerButton() {
   const selectedLanguageModel = useBetterLanguageModelSelectorStore(
@@ -32,7 +32,7 @@ export default function CometAssistantLanguageModelSelectorTriggerButton() {
           },
         )}
       >
-        <LuCpu className="x:size-4 x:shrink-0" />
+        <TablerCpu className="x:size-4 x:shrink-0" />
       </div>
     </Tooltip>
   );

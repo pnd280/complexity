@@ -1,6 +1,6 @@
-import { LuList } from "react-icons/lu";
-
 import { usePanelPosition } from "@/plugins/thread-toc/usePanelPosition";
+
+import TablerMenu from "~icons/tabler/menu-2";
 
 type FloatingToggleProps = {
   isOpen: boolean;
@@ -33,7 +33,7 @@ export default function FloatingToggle({
       }
       onClick={onClick}
     >
-      <LuList className="x:size-4" />
+      <TablerMenu className="x:size-4" />
     </div>
   );
 }

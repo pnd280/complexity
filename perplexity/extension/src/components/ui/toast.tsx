@@ -1,7 +1,8 @@
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
-import { LuX as X } from "react-icons/lu";
+
+import TablerX from "~icons/tabler/x";
 
 export const ToastProvider = ToastPrimitives.Provider;
 
@@ -80,7 +81,7 @@ export function ToastClose({
       toast-close=""
       {...props}
     >
-      <X className="x:h-4 x:w-4" />
+      <TablerX className="x:h-4 x:w-4" />
     </ToastPrimitives.Close>
   );
 }

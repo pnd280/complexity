@@ -1,5 +1,3 @@
-import { LuList, LuRefreshCcw, LuX } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
@@ -18,6 +16,10 @@ import {
   isArtifactLanguageString,
 } from "@/plugins/thread-artifacts/utils";
 import { scrollToElement } from "@/utils/dom-utils/generics";
+
+import TablerList from "~icons/tabler/list";
+import TablerRefresh from "~icons/tabler/refresh";
+import TablerX from "~icons/tabler/x";
 
 export default function ArtifactHeader() {
   const selectedCodeBlockLocation = useArtifactsStore(
@@ -81,7 +83,7 @@ export default function ArtifactHeader() {
                 className="x:animate-in x:fade-in"
                 onClick={() => artifactsStore.getState().refreshPreview()}
               >
-                <LuRefreshCcw className="x:size-4" />
+                <TablerRefresh className="x:size-4" />
               </Button>
             </Tooltip>
           )}
@@ -97,7 +99,7 @@ export default function ArtifactHeader() {
                       artifactsStore.getState().openArtifactsList()
                     }
                   >
-                    <LuList className="x:size-4" />
+                    <TablerList className="x:size-4" />
                   </Button>
                 </Tooltip>
               )}
@@ -109,7 +111,7 @@ export default function ArtifactHeader() {
           size="iconSm"
           onClick={() => artifactsStore.getState().close()}
         >
-          <LuX className="x:size-4" />
+          <TablerX className="x:size-4" />
         </Button>
       </div>
     </div>

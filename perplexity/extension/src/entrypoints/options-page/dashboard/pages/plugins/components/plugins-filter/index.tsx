@@ -1,5 +1,3 @@
-import { LuInfo, LuSettings2 } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -11,6 +9,9 @@ import CategoriesFilter from "@/entrypoints/options-page/dashboard/pages/plugins
 import TagsFilter from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter/TagsFilter";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
 import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+
+import LuSettings2 from "~icons/lucide/settings-2";
+import TablerInfoCircle from "~icons/tabler/info-circle";
 
 export default function PluginsFilter() {
   const { isMobile } = useIsMobileStore();
@@ -52,7 +53,7 @@ export default function PluginsFilter() {
           className="x:flex x:w-[50vw] x:max-w-[550px] x:flex-col x:gap-2"
         >
           <div className="x:p-1 x:text-muted-foreground">
-            <LuInfo className="x:mr-1 x:inline-block x:size-3.5" />
+            <TablerInfoCircle className="x:mr-1 x:inline-block" />
             <span className="x:italic">
               Click once to include, twice to exclude, third time to clear
             </span>

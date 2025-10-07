@@ -11,6 +11,7 @@ import firefoxManifest from "./src/manifest.firefox";
 import { APP_CONFIG } from "./src/app.config";
 import unimportConfig from "./src/types/unimport.config";
 import tailwindcss from "@tailwindcss/vite";
+import Icons from "unplugin-icons/vite";
 
 import vitePluginForceRestartOnChanges from "./vite-plugins/vite-plugin-force-restart-on-changes";
 import vitePluginReloadOnDynamicallyInjectedStyleChanges from "./vite-plugins/vite-plugin-reload-on-dynamically-injected-style-changes";
@@ -46,6 +47,11 @@ export default defineConfig(() => ({
     tailwindcss(),
     vitePluginTailwindCustomPrefixes(),
     Unimport.vite(unimportConfig),
+    Icons({
+      compiler: "jsx",
+      jsx: "react",
+      autoInstall: true,
+    }),
 
     // dev
     vitePluginTouchOnChange({

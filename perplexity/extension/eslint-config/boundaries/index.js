@@ -1,10 +1,10 @@
 // @ts-check
 import boundariesPlugin from "eslint-plugin-boundaries";
-import tseslint from "typescript-eslint";
 import { elements } from "./elements.js";
 import { rules } from "./rules.js";
+import { defineConfig } from "eslint/config";
 
-export default tseslint.config(
+export default defineConfig(
   {
     plugins: {
       boundaries: boundariesPlugin,

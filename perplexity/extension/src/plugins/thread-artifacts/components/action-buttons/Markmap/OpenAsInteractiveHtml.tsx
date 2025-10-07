@@ -1,10 +1,10 @@
-import { LuExternalLink } from "react-icons/lu";
-
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { MarkmapRendererService } from "@/plugins/thread-artifacts/markmap-renderer/service/service-init";
 import { useArtifactsStore } from "@/plugins/thread-artifacts/store";
+
+import TablerExternalLink from "~icons/tabler/external-link";
 
 export default function OpenAsInteractiveHtml() {
   const { selectedCodeBlockLocation } = useArtifactsStore();
@@ -29,7 +29,7 @@ export default function OpenAsInteractiveHtml() {
           });
         }}
       >
-        <LuExternalLink className="x:size-4" />
+        <TablerExternalLink className="x:size-4" />
       </Button>
     </Tooltip>
   );

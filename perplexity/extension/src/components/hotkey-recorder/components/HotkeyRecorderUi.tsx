@@ -1,8 +1,9 @@
-import { LuCheck, LuX } from "react-icons/lu";
-
 import { formatKeys } from "@/components/hotkey-recorder/utils";
 import KeyCombo from "@/components/KeyCombo";
 import { Button } from "@/components/ui/button";
+
+import TablerCheck from "~icons/tabler/check";
+import TablerX from "~icons/tabler/x";
 
 type HotkeyRecorderUiProps = {
   isRecording: boolean;
@@ -41,14 +42,14 @@ export function HotkeyRecorderUi({
                 stop();
               }}
             >
-              <LuX />
+              <TablerX />
             </Button>
             <Button
               disabled={!isValidCombination}
               size="icon"
               onClick={handleStopRecording}
             >
-              <LuCheck />
+              <TablerCheck />
             </Button>
           </>
         )}

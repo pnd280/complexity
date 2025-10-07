@@ -1,5 +1,3 @@
-import { LuMaximize2, LuMinimize2 } from "react-icons/lu";
-
 import KeyCombo from "@/components/KeyCombo";
 import Tooltip from "@/components/Tooltip";
 import {
@@ -7,6 +5,9 @@ import {
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+
+import LuMaximize from "~icons/lucide/maximize-2";
+import LuMinimize from "~icons/lucide/minimize-2";
 
 export default function CommandFooter() {
   const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
@@ -49,7 +50,7 @@ export default function CommandFooter() {
                   commandMenuStore.getState().setSidecarOpen(!sidecarOpen);
                 }}
               >
-                {sidecarOpen ? <LuMinimize2 /> : <LuMaximize2 />}
+                {sidecarOpen ? <LuMinimize /> : <LuMaximize />}
               </div>
             </Tooltip>
           )}

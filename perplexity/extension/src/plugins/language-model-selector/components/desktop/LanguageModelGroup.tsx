@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { LuCpu } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import {
@@ -13,6 +12,8 @@ import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModel
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import { isSearchLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+
+import TablerCpu from "~icons/tabler/cpu";
 
 type LanguageModelGroupProps = {
   title: ReactNode;
@@ -64,7 +65,7 @@ export default function LanguageModelGroup({
   );
 
   function renderModelItem(model: LanguageModel) {
-    const Icon = PplxLanguageModelsService.icons[model.icon] ?? LuCpu;
+    const Icon = PplxLanguageModelsService.icons[model.icon] ?? TablerCpu;
 
     const modelLimit = modelsLimits[model.code as keyof typeof modelsLimits];
     const limit =

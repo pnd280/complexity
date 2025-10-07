@@ -1,5 +1,3 @@
-import { LuCheck, LuLoaderCircle } from "react-icons/lu";
-
 import FaFileExport from "@/components/icons/FaFileExport";
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
@@ -19,6 +17,9 @@ import { ExportFormatSelect } from "@/plugins/thread-export/ExportFormatSelect";
 import { useCopyPplxThread } from "@/plugins/thread-export/hooks/useCopyPplxThread";
 import { parseUrl } from "@/utils/misc/utils";
 
+import TablerCheck from "~icons/tabler/check";
+import TablerLoaderCircle from "~icons/tabler/loader-2";
+
 const ExportMenu = memo(() => {
   const isThreadInFlight = useThreadDomObserverStore(
     (state) => state.states.isInFlight,
@@ -34,7 +35,7 @@ const ExportMenu = memo(() => {
   const defaultIdleText = useMemo(
     () =>
       isFetching ? (
-        <LuLoaderCircle className="x:size-4 x:animate-spin" />
+        <TablerLoaderCircle className="x:size-4 x:animate-spin" />
       ) : (
         <FaFileExport className="x:size-4" />
       ),
@@ -118,7 +119,7 @@ const ExportMenu = memo(() => {
               copyThread({
                 withCitations: includeCitations,
                 onComplete: () => {
-                  setCopyConfirmText(<LuCheck className="x:size-4" />);
+                  setCopyConfirmText(<TablerCheck className="x:size-4" />);
                 },
               });
             }}

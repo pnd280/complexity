@@ -1,7 +1,8 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/react/checkbox";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ReactNode } from "react";
-import { LuCheck } from "react-icons/lu";
+
+import TablerCheck from "~icons/tabler/check";
 
 const checkboxVariants = cva(
   "x:size-4 x:shrink-0 x:rounded-sm x:border x:border-border x:ring-offset-background x:transition-all x:group-data-[disabled]:cursor-not-allowed x:group-data-[disabled]:opacity-50 x:focus-visible:ring-2 x:focus-visible:ring-ring x:focus-visible:ring-offset-2 x:focus-visible:outline-none x:data-[state=checked]:bg-primary x:data-[state=checked]:text-primary-foreground",
@@ -55,7 +56,7 @@ export function Checkbox({
     >
       <ArkCheckbox.Control className={cn(checkboxVariants({ size }))}>
         <ArkCheckbox.Indicator>
-          <LuCheck className="x:size-full x:stroke-primary-foreground" />
+          <TablerCheck className="x:size-full x:stroke-primary-foreground" />
         </ArkCheckbox.Indicator>
       </ArkCheckbox.Control>
       {label != null && label !== "" && (

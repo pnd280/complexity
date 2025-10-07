@@ -1,5 +1,3 @@
-import { LuTrash2 } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import TablerTrash from "~icons/tabler/trash";
 
 type DeleteLanguageOptionButtonProps = {
   deleteMutation: () => void;
@@ -24,7 +24,7 @@ export function DeleteLanguageOptionButton({
     <Dialog open={isOpen} onOpenChange={({ open }) => setIsOpen(open)}>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon">
-          <LuTrash2 />
+          <TablerTrash />
         </Button>
       </DialogTrigger>
       <DialogContent

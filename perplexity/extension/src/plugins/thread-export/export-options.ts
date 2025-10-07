@@ -1,7 +1,7 @@
-import { FaHtml5 } from "react-icons/fa";
-
 import FaFileTypePdf from "@/components/icons/FaFileTypePdf";
 import FaMarkdown from "@/components/icons/FaMarkdown";
+
+import TablerBrandHtml5 from "~icons/tabler/brand-html5";
 
 export const EXPORT_OPTIONS = [
   {
@@ -19,7 +19,7 @@ export const EXPORT_OPTIONS = [
   {
     label: "Formatted text (soon)",
     value: "html",
-    icon: FaHtml5,
+    icon: TablerBrandHtml5,
     isDisabled: true,
   },
 ] as const;

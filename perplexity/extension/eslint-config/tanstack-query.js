@@ -1,9 +1,10 @@
 // @ts-check
 import pluginQuery from "@tanstack/eslint-plugin-query";
-import tseslint from "typescript-eslint";
+import { defineConfig } from "eslint/config";
 
-export default tseslint.config({
+export default defineConfig({
   plugins: {
+    // @ts-expect-error - not compatible with defineConfig
     "@tanstack/query": pluginQuery,
   },
   rules: {

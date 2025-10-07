@@ -1,10 +1,11 @@
-import { LuChevronLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { PluginSettingsUis } from "@/data/registries/plugin-settings-uis";
 import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import type { PluginId } from "@/data/registries/plugins/meta.types";
+
+import TablerChevronLeft from "~icons/tabler/chevron-left";
 
 type PluginSettingsPageProps = {
   pluginId: PluginId;
@@ -25,7 +26,7 @@ export default function PluginSettingsPage({
         role="link"
         onClick={() => navigate(-1)}
       >
-        <LuChevronLeft />
+        <TablerChevronLeft />
         Back to plugins
       </Button>
       <div>

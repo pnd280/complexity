@@ -3,15 +3,13 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 import { createContext, use } from "react";
-import {
-  LuChevronDown as ChevronDown,
-  LuX as ClearIcon,
-  LuCheck,
-  LuX,
-} from "react-icons/lu";
 
 import { Portal } from "@/components/ui/portal";
 import { untrapWheel } from "@/utils/dom-utils/generics";
+
+import TablerCheck from "~icons/tabler/check";
+import TablerChevronDown from "~icons/tabler/chevron-down";
+import TablerX from "~icons/tabler/x";
 
 type ComboboxContext = {
   portal: boolean;
@@ -71,7 +69,7 @@ export function ComboboxTrigger({
       {...props}
     >
       {children}
-      <ChevronDown className="x:ml-2 x:size-4 x:text-muted-foreground" />
+      <TablerChevronDown className="x:ml-2 x:size-4 x:text-muted-foreground" />
     </ArkCombobox.Trigger>
   );
 }
@@ -121,7 +119,7 @@ export function ComboboxInputMultipleValues({
                           setValue(value.filter((v) => v !== item));
                         }}
                       >
-                        <LuX className="x:size-3" />
+                        <TablerX className="x:size-3" />
                       </button>
                     </span>
                   ))
@@ -159,7 +157,7 @@ export function ComboboxClearTrigger({
       )}
       {...props}
     >
-      {children ?? <ClearIcon className="x:size-4" />}
+      {children ?? <TablerX className="x:size-4" />}
     </ArkCombobox.ClearTrigger>
   );
 }
@@ -211,7 +209,7 @@ export function ComboboxItem({
     >
       <span className="x:absolute x:left-2 x:flex x:size-3.5 x:items-center x:justify-center">
         <ArkCombobox.ItemIndicator>
-          <LuCheck className="x:size-3.5" />
+          <TablerCheck className="x:size-3.5" />
         </ArkCombobox.ItemIndicator>
       </span>
       <ArkCombobox.ItemText className="x:ml-6">{children}</ArkCombobox.ItemText>

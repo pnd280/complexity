@@ -1,6 +1,3 @@
-import { LuMail } from "react-icons/lu";
-import { SiKofi, SiPaypal } from "react-icons/si";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,6 +7,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import Fa7BrandsPaypal from "~icons/fa7-brands/paypal";
+import SimpleIconsKofi from "~icons/simple-icons/kofi";
+import TablerMail from "~icons/tabler/mail";
 
 export default function SponsorDialogWrapper({
   children,
@@ -46,7 +47,7 @@ export default function SponsorDialogWrapper({
                 rel="noreferrer"
                 className="x:flex x:items-center x:gap-2"
               >
-                <SiPaypal className="x:size-6" />
+                <Fa7BrandsPaypal className="x:size-6" />
                 <span>PayPal</span>
               </a>
             </Button>
@@ -57,7 +58,7 @@ export default function SponsorDialogWrapper({
                 rel="noreferrer"
                 className="x:flex x:items-center x:gap-2"
               >
-                <SiKofi className="x:size-6" />
+                <SimpleIconsKofi className="x:size-6" />
                 <span>Ko-fi</span>
               </a>
             </Button>
@@ -70,7 +71,7 @@ export default function SponsorDialogWrapper({
           <Button asChild className="x:group x:w-full x:space-x-2">
             <a href="mailto:pnd280@gmail.com" target="_blank" rel="noreferrer">
               <span className="x:flex x:items-center x:gap-2 x:group-hover:hidden">
-                <LuMail className="x:size-6" />
+                <TablerMail className="x:size-6" />
                 <span>
                   {t("common.sponsorDialog.sponsorship.contactEmail")}
                 </span>

@@ -1,6 +1,3 @@
-import { FaPlus } from "react-icons/fa6";
-import { LuMoon, LuSun } from "react-icons/lu";
-
 import Incognito from "@/components/icons/Incognito";
 import { getPlatform } from "@/hooks/usePlatformDetection";
 import {
@@ -10,6 +7,10 @@ import {
 import { softNavigate } from "@/plugins/__core__/_main-world/spa-router/utils";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
 import type { whereAmI } from "@/utils/misc/utils";
+
+import LuMoon from "~icons/lucide/moon";
+import LuSun from "~icons/lucide/sun";
+import TablerPlus from "~icons/tabler/plus";
 
 type ActionItemsParams = {
   colorScheme: ColorScheme;
@@ -25,7 +26,7 @@ export const getRawItems = ({
   {
     eager: true,
     group: t("plugin-command-menu.groups.actions"),
-    icon: FaPlus,
+    icon: TablerPlus,
     keybinding: [getPlatform() === "mac" ? Key.Meta : Key.Control, "i"],
     keywords: ["actions"],
     onSelect: () => softNavigate("/"),

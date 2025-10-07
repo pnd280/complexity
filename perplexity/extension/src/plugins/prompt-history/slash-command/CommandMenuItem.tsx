@@ -1,5 +1,4 @@
 import { Highlight } from "@ark-ui/react";
-import { LuTrash } from "react-icons/lu";
 
 import CopyButton from "@/components/CopyButton";
 import {
@@ -10,6 +9,8 @@ import {
 } from "@/components/ui/command";
 import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
 import { formatRelativeTime } from "@/services/infra/i18n";
+
+import TablerTrash from "~icons/tabler/trash";
 
 type PromptHistoryCommandMenuItem = {
   id: string;
@@ -67,7 +68,7 @@ const PromptHistoryCommandMenuItem = memo(
                 onDelete(item.id);
               }}
             >
-              <LuTrash />
+              <TablerTrash />
             </div>
           </div>
         </CommandItemAlternateRightAttributes>

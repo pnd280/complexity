@@ -1,10 +1,10 @@
 // @ts-check
-import tseslint from "typescript-eslint";
 
 import * as importPlugin from "eslint-plugin-import";
 import importAliasPlugin from "@limegrass/eslint-plugin-import-alias";
+import { defineConfig } from "eslint/config";
 
-export default tseslint.config({
+export default defineConfig({
   plugins: {
     import: importPlugin,
     "@limegrass/import-alias": importAliasPlugin,

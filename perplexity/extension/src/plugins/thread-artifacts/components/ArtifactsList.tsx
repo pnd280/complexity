@@ -1,10 +1,11 @@
-import { LuLoaderCircle, LuX } from "react-icons/lu";
-
 import { Button } from "@/components/ui/button";
 import {
   artifactsStore,
   useArtifactsStore,
 } from "@/plugins/thread-artifacts/store";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
+import TablerX from "~icons/tabler/x";
 
 export default function ArtifactsList() {
   const artifactBlocks = useArtifactsStore((state) => state.artifactBlocks);
@@ -22,7 +23,7 @@ export default function ArtifactsList() {
             artifactsStore.getState().closeArtifactsList();
           }}
         >
-          <LuX className="x:size-4 x:text-muted-foreground" />
+          <TablerX className="x:size-4 x:text-muted-foreground" />
         </Button>
       </div>
       <div className="x:flex x:flex-col x:gap-4 x:overflow-y-auto x:px-4">
@@ -42,7 +43,7 @@ export default function ArtifactsList() {
                   )}
                 >
                   {isInFlight ? (
-                    <LuLoaderCircle className="x:size-4 x:animate-spin x:text-muted-foreground" />
+                    <TablerLoaderCircle className="x:size-4 x:animate-spin x:text-muted-foreground" />
                   ) : (
                     <Icon className="x:size-8" />
                   )}

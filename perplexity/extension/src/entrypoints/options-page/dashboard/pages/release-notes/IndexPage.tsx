@@ -1,13 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
-import { LuLoaderCircle } from "react-icons/lu";
 
 import ChangelogRenderer from "@/components/changelog/ChangelogRenderer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useVersionPagination } from "@/entrypoints/options-page/dashboard/pages/release-notes/hooks/useVersionPagination";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
-import { cn } from "@/utils/wrappers/cn";
+
+import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export function IndexPage() {
   const { loadedVersions, hasMore, loadNextVersions, changelogQueries } =
@@ -105,8 +104,8 @@ export function IndexPage() {
             ref={loadMoreRef}
             className="x:relative x:flex x:justify-center x:py-4"
           >
-            <div className="x:absolute x:top-4 x:left-2 x:z-10 x:flex x:size-2.5 x:items-center x:justify-center x:rounded-full x:border-2 x:border-muted-foreground/30 x:bg-background">
-              <LuLoaderCircle className="x:size-2.5 x:animate-spin x:text-muted-foreground" />
+            <div className="x:absolute x:top-4 x:left-2 x:z-10 x:flex x:items-center x:justify-center x:rounded-full x:bg-background">
+              <TablerLoaderCircle className="x:animate-spin x:text-muted-foreground" />
             </div>
             <div className="x:sr-only">Loading more versions...</div>
           </div>

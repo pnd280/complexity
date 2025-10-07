@@ -1,7 +1,4 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { FaStopCircle } from "react-icons/fa";
-import { HiOutlineSpeakerWave } from "react-icons/hi2";
-import { LuLoaderCircle } from "react-icons/lu";
 
 import Tooltip from "@/components/Tooltip";
 import {
@@ -17,6 +14,10 @@ import usePplxTtsRequest from "@/plugins/thread-message-tts/hooks/usePplxTtsRequ
 import { PplxTtsPlayerCoordinator } from "@/plugins/thread-message-tts/player/coordinator";
 import type { TtsVoice } from "@/plugins/thread-message-tts/types";
 import { TTS_VOICES } from "@/plugins/thread-message-tts/types";
+
+import FaSolidCircleStop from "~icons/fa7-solid/circle-stop";
+import TablerLoaderCircle from "~icons/tabler/loader-2";
+import TablerVolume from "~icons/tabler/volume";
 
 export function ThreadMessageTtsButton() {
   const messageBlockIndex = useThreadMessageIndexContext();
@@ -93,7 +94,7 @@ export function ThreadMessageTtsButton() {
   if (!isPlaying && isPending) {
     return (
       <div className="x:rounded-full x:p-2 x:text-muted-foreground">
-        <LuLoaderCircle className="x:size-4 x:animate-spin" />
+        <TablerLoaderCircle className="x:size-4 x:animate-spin" />
       </div>
     );
   }
@@ -135,9 +136,9 @@ export function ThreadMessageTtsButton() {
             }}
           >
             {isPlaying ? (
-              <FaStopCircle className="x:size-4 x:text-primary" />
+              <FaSolidCircleStop className="x:size-4 x:text-primary" />
             ) : (
-              <HiOutlineSpeakerWave className="x:size-4" />
+              <TablerVolume className="x:size-4" />
             )}
           </div>
         </DropdownMenuTrigger>

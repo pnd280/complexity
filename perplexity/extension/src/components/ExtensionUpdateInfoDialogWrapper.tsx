@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { LuArrowRight, LuExternalLink, LuInfo } from "react-icons/lu";
 import semver from "semver";
 
 import { APP_CONFIG } from "@/app.config";
@@ -15,6 +14,10 @@ import { toast } from "@/components/ui/use-toast";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
 import { ContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
+
+import TablerArrowRight from "~icons/tabler/arrow-right";
+import TablerExternalLink from "~icons/tabler/external-link";
+import TablerInfoCircle from "~icons/tabler/info-circle";
 
 export default function ExtensionUpdateInfoDialogWrapper({
   children,
@@ -50,7 +53,7 @@ export default function ExtensionUpdateInfoDialogWrapper({
         <div className="x:flex x:flex-col x:gap-2">
           <div className="x:mx-auto x:my-0 x:flex x:items-center x:gap-2 x:rounded-md x:border x:border-border/50 x:bg-secondary x:p-4">
             <div className="">{APP_CONFIG.VERSION}</div>
-            <LuArrowRight className="x:size-4 x:text-muted-foreground" />
+            <TablerArrowRight className="x:size-4 x:text-muted-foreground" />
             <div className="x:text-xl x:font-semibold x:text-primary">
               {latestVersion}
             </div>
@@ -68,12 +71,12 @@ export default function ExtensionUpdateInfoDialogWrapper({
             }}
           >
             <span>Release Notes</span>
-            <LuExternalLink className="x:size-4" />
+            <TablerExternalLink className="x:size-4" />
           </div>
 
           <div className="x:space-y-2">
             <div>
-              <LuInfo className="x:mr-2 x:inline-block x:size-5 x:text-primary" />
+              <TablerInfoCircle className="x:mr-2 x:inline-block x:size-5 x:text-primary" />
               <span>
                 The upgrade should be happening automatically when you restart
                 the browser, or force it to manually update in the{" "}

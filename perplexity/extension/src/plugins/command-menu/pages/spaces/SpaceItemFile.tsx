@@ -1,5 +1,3 @@
-import { FaFile } from "react-icons/fa";
-
 import Tooltip from "@/components/Tooltip";
 import type {
   Space,
@@ -7,6 +5,8 @@ import type {
 } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { queryClient } from "@/services/infra/query-client";
+
+import TablerFile from "~icons/tabler/file";
 
 export default function SpaceItemFiles({
   file,
@@ -23,7 +23,7 @@ export default function SpaceItemFiles({
   return (
     <Tooltip content={file.file_description}>
       <div className="x:flex x:items-center x:space-x-2">
-        <FaFile className="x:inline-block x:size-4" />
+        <TablerFile className="x:inline-block x:size-4" />
         <span
           className="x:line-clamp-1 x:cursor-pointer x:hover:underline"
           onClick={async () => {

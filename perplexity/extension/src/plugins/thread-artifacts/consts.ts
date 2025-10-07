@@ -1,9 +1,4 @@
 import type { ComponentType, SVGProps } from "react";
-import { BiLogoReact } from "react-icons/bi";
-import { LiaProjectDiagramSolid } from "react-icons/lia";
-import { LuCodeXml } from "react-icons/lu";
-import { PiArticleDuotone } from "react-icons/pi";
-import { RiMindMap } from "react-icons/ri";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import MarkmapArtifactsActionButtonsWrapper from "@/plugins/thread-artifacts/components/action-buttons/Markmap/Wrapper";
@@ -19,6 +14,13 @@ import type {
   ArtifactLanguage,
   ArtifactState,
 } from "@/plugins/thread-artifacts/types";
+
+import ArcticonsUmlClassEditor from "~icons/arcticons/uml-class-editor";
+import IconParkMindmap from "~icons/icon-park-outline/mindmap-map";
+import TreeOutlineRounded from "~icons/material-symbols/account-tree-outline-rounded";
+import MdiXml from "~icons/mdi/xml";
+import StashArticle from "~icons/stash/article";
+import TablerBrandReact from "~icons/tabler/brand-react";
 
 export let ARTIFACTS_LANGUAGE_PREVIEW_TOGGLE_TEXT: Record<
   ArtifactLanguage,
@@ -42,7 +44,7 @@ export const ARTIFACT_INITIAL_STATE: Record<ArtifactLanguage, ArtifactState> = {
 type ArtifactPlaceholders = Record<
   ArtifactLanguage,
   {
-    icon: ComponentType<SVGProps<SVGElement>>;
+    icon: ComponentType<SVGProps<SVGSVGElement>>;
     defaultTitle: string;
     description: string;
   }
@@ -81,42 +83,42 @@ AsyncLoaderRegistry.register({
 
     ARTIFACT_PLACEHOLDERS = {
       markdown: {
-        icon: PiArticleDuotone,
+        icon: StashArticle,
         defaultTitle: "Markdown",
         description: t("plugin-artifacts.placeholder.description", {
           name: "markdown",
         }),
       },
       mermaid: {
-        icon: LiaProjectDiagramSolid,
+        icon: TreeOutlineRounded,
         defaultTitle: "Mermaid",
         description: t("plugin-artifacts.placeholder.description", {
           name: "mermaid",
         }),
       },
       html: {
-        icon: LuCodeXml,
+        icon: MdiXml,
         defaultTitle: "HTML",
         description: t("plugin-artifacts.placeholder.description", {
           name: "html",
         }),
       },
       react: {
-        icon: BiLogoReact,
+        icon: TablerBrandReact,
         defaultTitle: "React",
         description: t("plugin-artifacts.placeholder.description", {
           name: "react",
         }),
       },
       plantuml: {
-        icon: LiaProjectDiagramSolid,
+        icon: ArcticonsUmlClassEditor,
         defaultTitle: "PlantUML",
         description: t("plugin-artifacts.placeholder.description", {
           name: "plantuml",
         }),
       },
       markmap: {
-        icon: RiMindMap,
+        icon: IconParkMindmap,
         defaultTitle: "Mindmap",
         description: t("plugin-artifacts.placeholder.description", {
           name: "markmap",

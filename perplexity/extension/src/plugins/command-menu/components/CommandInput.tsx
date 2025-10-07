@@ -1,10 +1,10 @@
-import { LuChevronLeft } from "react-icons/lu";
-
 import { CommandInput as CommandInputPrimitive } from "@/components/ui/command";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
+
+import TablerChevronLeft from "~icons/tabler/chevron-left";
 
 export default function CommandInput() {
   const { pageStack, searchValue, setSearchValue } = useCommandMenuStore();
@@ -24,7 +24,7 @@ export default function CommandInput() {
             commandMenuStore.getState().popPage();
           }}
         >
-          <LuChevronLeft className="x:size-4" />
+          <TablerChevronLeft className="x:size-4" />
         </div>
       )}
       <CommandInputPrimitive
