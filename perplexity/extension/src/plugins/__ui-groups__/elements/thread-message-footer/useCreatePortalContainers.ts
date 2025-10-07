@@ -9,24 +9,26 @@ export function useCreatePortalContainers(): (Element | null)[] {
     deepEqual,
   );
 
-  if (messageBlocks == null) return [];
+  return useMemo(
+    () =>
+      messageBlocks?.map((messageBlock) => {
+        const $existingPortalContainer = messageBlock.nodes.$footer.find(
+          DomSelectorsService.Root.cplxAttribute(OBSERVER_ID),
+        );
 
-  return messageBlocks.map((messageBlock) => {
-    const $existingPortalContainer = messageBlock.nodes.$footer.find(
-      `div${DomSelectorsService.Root.cplxAttribute(OBSERVER_ID)}`,
-    );
+        if ($existingPortalContainer[0]) return $existingPortalContainer[0];
 
-    if ($existingPortalContainer[0]) return $existingPortalContainer[0];
+        const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
 
-    const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
+        messageBlock.nodes.$footer
+          .find(
+            DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+              .MISC_BUTTON_WRAPPER,
+          )
+          .before($portalContainer);
 
-    messageBlock.nodes.$footer
-      .find(
-        DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
-          .MISC_BUTTON_WRAPPER,
-      )
-      .before($portalContainer);
-
-    return $portalContainer[0] ?? null;
-  });
+        return $portalContainer[0] ?? null;
+      }) ?? [],
+    [messageBlocks],
+  );
 }

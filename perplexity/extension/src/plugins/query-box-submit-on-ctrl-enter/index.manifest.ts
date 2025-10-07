@@ -20,7 +20,7 @@ export default definePlugin({
     description: `Insert new line on Enter, submit on ${getPlatform() === "mac" ? "Cmd" : "Ctrl"}+Enter`,
     dashboardMeta: {
       tags: [],
-      categories: ["queryBox", "comet"],
+      categories: ["queryBox"],
       uiRouteSegment: "query-box-submit-on-ctrl-enter",
     },
     dependencies: {

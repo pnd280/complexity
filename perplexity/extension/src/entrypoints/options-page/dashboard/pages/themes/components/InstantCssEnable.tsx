@@ -12,7 +12,7 @@ import { InlineCode, Ul } from "@/components/ui/typography";
 import { toast } from "@/components/ui/use-toast";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 
-export default function PreloadThemeSwitch() {
+export default function InstantCssEnable() {
   const { data: grandtedPermissions, handleGrantPermission } =
     useExtensionPermissions();
 
@@ -25,7 +25,7 @@ export default function PreloadThemeSwitch() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost">Enable Faster Theme Loading</Button>
+        <Button variant="link">Enable Faster Theme Loading</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -34,12 +34,12 @@ export default function PreloadThemeSwitch() {
         <div className="x:space-y-4">
           <div>
             <span className="x:font-semibold x:text-primary">
-              What this does?
+              What does this do?
             </span>
             <Ul>
               <li>
                 Your custom styles will be applied before the page loads, which
-                will avoid a brief flash and result in a smoother experience.
+                will avoid a brief flash and result in a smoother experience
               </li>
             </Ul>
           </div>

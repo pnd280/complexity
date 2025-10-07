@@ -5,7 +5,10 @@ import {
   localInternalSearchStatesStatesFiberPath,
   localInternalSearchStatesValidateFiberPath,
 } from "@/plugins/__core__/dom-observers/internal-search-states/remote-resources/fallback";
-import type { InternalSearchStatesObserverStoreType } from "@/plugins/__core__/dom-observers/internal-search-states/store";
+import type {
+  InternalSearchStatesObserverStoreType,
+  SearchStates,
+} from "@/plugins/__core__/dom-observers/internal-search-states/store";
 import { walkFiberNode } from "@/utils/wrappers/react-fiber";
 
 export async function setInternalSearchStates({
@@ -45,7 +48,7 @@ export async function getInternalSearchStates({
 }: {
   remoteValidationFiberPath?: string[];
   remoteStatesFiberPath?: string[];
-}): Promise<InternalSearchStatesObserverStoreType | null> {
+}): Promise<SearchStates | null> {
   const statesFiberNode = getStatesNodePath({
     remoteStatesFiberPath,
     remoteValidationFiberPath,

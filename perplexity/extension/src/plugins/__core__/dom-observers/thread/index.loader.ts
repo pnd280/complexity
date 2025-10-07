@@ -1,6 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
-import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
 import {
   observeNavbarOverflowMenuButtonWrapper,
   observeNavbar,
@@ -12,7 +11,7 @@ import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
-import { waitUntil, whereAmI } from "@/utils/misc/utils";
+import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -33,14 +32,6 @@ export default function () {
       "cache:corePlugins:enableStates": corePluginsEnableStates,
     }) => {
       if (!corePluginsEnableStates["domObservers:thread"]) return;
-
-      await waitUntil({
-        interval: 50,
-        timeout: 2000,
-        condition: async () => {
-          return await DomObserversMainWorldActions.Instance.isInitialized();
-        },
-      });
 
       spaRouteChangeCompleteSubscribe(
         (url) => {

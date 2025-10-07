@@ -1,14 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 export {};
 declare global {
-  const { Key }: typeof import("ts-key-enum");
-  const {
-    Trans,
-    TransWithPrefix,
-    extendT,
-    t,
-  }: typeof import("@complexity/i18n");
-  const { cn }: typeof import("@/utils/wrappers/cn.ts");
   const {
     createContext,
     lazy,
@@ -23,6 +15,14 @@ declare global {
     useRef,
     useState,
   }: typeof import("react");
+  const {
+    Trans,
+    TransWithPrefix,
+    extendT,
+    t,
+  }: typeof import("@complexity/i18n");
+  const { cn }: typeof import("@/utils/wrappers/cn.ts");
+  const { Key }: typeof import("@/types/keys.ts");
   const { deepEqual }: typeof import("@/utils/wrappers/deep-equal.ts");
   const { default: $ }: typeof import("jquery");
   const {

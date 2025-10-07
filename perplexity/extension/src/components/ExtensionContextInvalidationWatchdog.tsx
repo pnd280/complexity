@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { APP_CONFIG } from "@/app.config";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -51,11 +50,9 @@ export function WarningDialog() {
         </DialogHeader>
         <DialogDescription>
           <div>You have just updated or reloaded the extension.</div>
-          {APP_CONFIG.BROWSER === "firefox" ? (
-            <div>All features will not work until you reload the page.</div>
-          ) : (
-            <div>Some features may not work as intended.</div>
-          )}
+          <div>
+            A page refresh is mandatory to ensure all features work as intended.
+          </div>
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>

@@ -20,7 +20,7 @@ export default definePlugin({
     description: "Enable text-to-speech for messages in threads",
     dashboardMeta: {
       tags: ["ui", "cometAssistant"],
-      categories: ["thread", "comet"],
+      categories: ["thread"],
       uiRouteSegment: "thread-message-tts",
     },
     dependencies: {

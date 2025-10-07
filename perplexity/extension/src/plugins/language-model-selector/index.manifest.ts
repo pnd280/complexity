@@ -20,7 +20,7 @@ export default definePlugin({
     description: "Take complete control of all available language models",
     dashboardMeta: {
       tags: ["ui", "pplxPro", "cometAssistant"],
-      categories: ["queryBox", "comet"],
+      categories: ["queryBox"],
       uiRouteSegment: "query-box-language-model-selector",
     },
     dependencies: {

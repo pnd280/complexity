@@ -7,7 +7,7 @@ import { invariant } from "@/utils/misc/utils";
 
 export function contentScriptGuards() {
   ignoreInvalidPages();
-  checkForExistingExtensionInstance();
+  preventDuplication();
 }
 
 function ignoreInvalidPages() {
@@ -19,8 +19,9 @@ function ignoreInvalidPages() {
   );
 }
 
-function checkForExistingExtensionInstance() {
+function preventDuplication() {
   if ($(document.body).attr("data-cplx-injected")) {
+    // Firefox browsers always re-inject content scripts on extension update
     if (APP_CONFIG.BROWSER === "firefox") {
       if ($("#complexity-root-temp").length > 0) {
         return;

@@ -42,7 +42,7 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
     },
     {
       name: "Key",
-      from: "ts-key-enum",
+      from: "@/types/keys.ts",
     },
   ],
 };

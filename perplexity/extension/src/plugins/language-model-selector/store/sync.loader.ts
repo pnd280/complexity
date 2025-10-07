@@ -1,9 +1,4 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
-import {
-  remoteInternalSearchStatesStatesFiberPathStr,
-  remoteInternalSearchStatesValidateFiberPathStr,
-} from "@/plugins/__core__/dom-observers/internal-search-states/remote-resources/fetched-resources";
 import { internalSearchStatesObserverStore } from "@/plugins/__core__/dom-observers/internal-search-states/store";
 import { setModelCookie } from "@/plugins/__ui-groups__/elements/query-box/utils";
 import {
@@ -19,7 +14,6 @@ import type {
   LanguageModelCode,
   LanguageModelType,
 } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import { waitUntil } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -33,12 +27,6 @@ export default function (): void {
     dependencies: ["cache:pluginsEnableStates", "cache:languageModels"],
     loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["queryBox:languageModelSelector"]) return;
-
-      await waitUntil({
-        condition: () => DomObserversMainWorldActions.Instance.isInitialized(),
-        timeout: 5000,
-        interval: 100,
-      });
 
       syncToInternalSearchStates();
 
@@ -103,14 +91,8 @@ function syncToInternalSearchStates(): void {
       return;
     }
 
-    DomObserversMainWorldActions.Instance.setInternalSearchStates({
-      states: {
-        selectedModel: state.selectedLanguageModel,
-      },
-      remoteValidationFiberPath:
-        remoteInternalSearchStatesValidateFiberPathStr.split("."),
-      remoteStatesFiberPath:
-        remoteInternalSearchStatesStatesFiberPathStr.split("."),
+    internalSearchStatesObserverStore.getState().setInternalSearchStates({
+      selectedModel: state.selectedLanguageModel,
     });
 
     setModelCookie({

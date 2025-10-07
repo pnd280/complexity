@@ -21,10 +21,6 @@ export const PLUGIN_CATEGORIES = {
     description:
       "Add extra functionalities, productivity tweaks to the sidebar",
   },
-  comet: {
-    label: "Comet Utilities",
-    description: "Plugins that are supported on the Comet browser",
-  },
   misc: {
     label: "Miscellaneous",
     description: "Personal preferences",
