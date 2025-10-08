@@ -1,7 +1,7 @@
 import { createListCollection } from "@ark-ui/react";
 
 import { Select, SelectContext, SelectTrigger } from "@/components/ui/select";
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { useRegisteredGlobalCssEntry } from "@/plugins/__async-deps__/global-stores/global-css-store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import {

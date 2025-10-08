@@ -15,7 +15,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import useHookMobileTrigger from "@/plugins/better-sidebar/hooks/useHookMobileTrigger";
 import {
   betterSidebarStore,

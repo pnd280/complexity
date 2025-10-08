@@ -1,3 +1,4 @@
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { Image } from "@/components/ui/image";
 import {
   Slider,
@@ -9,7 +10,6 @@ import {
   SliderValueText,
 } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "thread:messageTts";

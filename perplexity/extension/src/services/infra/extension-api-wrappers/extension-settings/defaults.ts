@@ -1,4 +1,4 @@
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 export const DEFAULT_EXTENSION_SETTINGS: ExtensionSettings = {

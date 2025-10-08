@@ -1,4 +1,4 @@
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 
 export function useHandleTouch({
   containerRef,

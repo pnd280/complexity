@@ -1,8 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { PluginSettingsUis } from "@/data/registries/plugin-settings-uis";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
+import { PluginSettingsUis } from "@/__registries__/plugin-settings-uis";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 import { hasPermissionsSync } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";

@@ -5,13 +5,13 @@ import {
   baseTypescriptConfig,
 } from "@complexity/eslint-config";
 import globals from "globals";
-import tseslint from "typescript-eslint";
+import { defineConfig } from "eslint/config";
 
-export default tseslint.config(
+export default defineConfig([
   baseConfig,
   baseTypescriptConfig,
   {
-    ...baseImportConfig[0],
+    extends: [baseImportConfig],
     ignores: [
       "dist/**",
       "node_modules/**",
@@ -31,4 +31,4 @@ export default tseslint.config(
     },
     ignores: ["dist/**", "node_modules/**"],
   },
-);
+]);

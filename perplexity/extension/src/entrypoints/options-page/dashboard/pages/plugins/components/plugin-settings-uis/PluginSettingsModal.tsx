@@ -1,6 +1,9 @@
 import type { DialogOpenChangeDetails } from "@ark-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import { PluginSettingsUis } from "@/__registries__/plugin-settings-uis";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +12,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { PluginSettingsUis } from "@/data/registries/plugin-settings-uis";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 
 type PluginSettingsModalProps = {
   pluginId: PluginId;

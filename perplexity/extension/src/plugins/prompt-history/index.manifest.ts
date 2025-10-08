@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-import { definePlugin } from "@/data/registries/plugins/utils";
+import { definePlugin } from "@/__registries__/plugins/utils";
 import { SlashCommandMenuTabShortcutSchema } from "@/plugins/__core__/slash-command/shortcuts.types.public";
 import type { PromptHistory } from "@/plugins/prompt-history/types";
 import { PromptHistorySchema } from "@/plugins/prompt-history/types";
 
-declare module "@/data/registries/plugins/meta.types" {
+declare module "@/__registries__/plugins/meta.types" {
   interface PluginsSettingsRegistry {
     promptHistory: z.infer<typeof schema>;
   }

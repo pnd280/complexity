@@ -1,5 +1,5 @@
-import type CsUiRegistry from "@/data/registries/cs-ui";
-import type { UiGroupId } from "@/data/registries/cs-ui/types";
+import type CsUiRegistry from "@/__registries__/cs-ui";
+import type { UiGroupId } from "@/__registries__/cs-ui/types";
 
 const queryBoxToolbarGroupSuffixes = ["ll", "lr", "rl", "rr"] as const;
 

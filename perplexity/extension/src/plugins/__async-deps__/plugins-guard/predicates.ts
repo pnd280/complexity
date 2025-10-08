@@ -1,10 +1,10 @@
-import type { UiGroupId } from "@/data/registries/cs-ui/types";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
+import type { UiGroupId } from "@/__registries__/cs-ui/types";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type {
   PluginId,
   PluginMeta,
   PluginsSettingsRegistry,
-} from "@/data/registries/plugins/meta.types";
+} from "@/__registries__/plugins/meta.types";
 import { PluginsStatesService } from "@/plugins/__async-deps__/plugins-states";
 
 export function shouldEnableUiGroup({

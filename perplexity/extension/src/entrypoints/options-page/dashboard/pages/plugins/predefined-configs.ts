@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 export const ESSENTIALS_ONLY: ExtensionSettings["plugins"] = produce(

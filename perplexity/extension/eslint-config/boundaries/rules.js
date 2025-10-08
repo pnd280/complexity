@@ -2,7 +2,12 @@
 
 export const rules = [
   {
-    from: "entrypoint",
+    from: "module-registries",
+    allow: ["*"],
+  },
+
+  {
+    from: "extension-entrypoints",
     allow: ["*"],
   },
 
@@ -13,6 +18,7 @@ export const rules = [
       "plugin-public-exports",
       "plugin-runtime-deps",
       "shared",
+      "module-registries",
     ],
     disallow: [["plugin-public-exports", { pluginName: "${from.pluginName}" }]],
     message:
@@ -26,11 +32,11 @@ export const rules = [
 
   {
     from: "plugin-runtime-deps",
-    allow: ["plugin-runtime-deps", "shared"],
+    allow: ["plugin-runtime-deps", "shared", "module-registries"],
   },
 
   {
     from: "shared",
-    allow: ["shared"],
+    allow: ["shared", "module-registries"],
   },
 ];

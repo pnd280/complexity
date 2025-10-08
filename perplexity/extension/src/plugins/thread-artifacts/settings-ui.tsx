@@ -1,7 +1,7 @@
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { InlineCode } from "@/components/ui/typography";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "thread:artifacts";

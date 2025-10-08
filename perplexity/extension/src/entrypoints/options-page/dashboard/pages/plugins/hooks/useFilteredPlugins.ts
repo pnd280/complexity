@@ -1,8 +1,8 @@
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type {
   PluginTagValues,
   PluginCategory,
 } from "@/data/dashboard/plugin-tags";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
 
 type UseFilteredPluginsParams = {
   searchTerm: string;

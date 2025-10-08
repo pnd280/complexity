@@ -1,7 +1,7 @@
 import {
   commonLocalesLazyGlob,
   pluginLocalesLazyGlob,
-} from "@/data/registries/i18n";
+} from "@/__registries__/i18n";
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { initializeDayjsLocale, initializeI18n } from "@/services/infra/i18n";
 

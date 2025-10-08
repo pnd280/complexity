@@ -1,5 +1,6 @@
 import { createListCollection } from "@ark-ui/react";
 
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { useHotkeyRecorder } from "@/components/hotkey-recorder";
 import { Image } from "@/components/ui/image";
 import { Input } from "@/components/ui/input";
@@ -12,7 +13,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 import type { SlashCommandMenuTabShortcut } from "@/plugins/__core__/slash-command/shortcuts.types.public";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 

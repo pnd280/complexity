@@ -20,12 +20,12 @@ const commonIgnores = [
 export default defineConfig([
   baseConfig,
   {
-    ...baseTypescriptConfig[0],
+    extends: [baseTypescriptConfig],
     ignores: [...commonIgnores, "**/*.js"],
   },
   {
-    ...baseImportConfig[0],
     extends: [
+      baseImportConfig,
       {
         rules: {
           "import/no-unresolved": [
@@ -47,7 +47,7 @@ export default defineConfig([
     ],
   },
   {
-    ...baseReactConfig[0],
+    extends: [baseReactConfig],
     ignores: [...commonIgnores, "e2e/**"],
   },
   boundariesConfig,

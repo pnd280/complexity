@@ -1,6 +1,6 @@
 import { QueryObserver } from "@tanstack/react-query";
 
-import { isMobileStore } from "@/hooks/use-is-mobile-store";
+import { isMobileStore } from "@/hooks/is-mobile-store";
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import {
   pluginGuardsStore,

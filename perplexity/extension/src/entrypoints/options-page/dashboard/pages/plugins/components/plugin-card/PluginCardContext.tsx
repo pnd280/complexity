@@ -1,11 +1,8 @@
 import type { ReactNode } from "react";
 
+import type { PluginSettingsUIs } from "@/__registries__/plugin-settings-uis";
+import type { PluginId, PluginMeta } from "@/__registries__/plugins/meta.types";
 import type { PluginTagValues } from "@/data/dashboard/plugin-tags";
-import type { PluginSettingsUIs } from "@/data/registries/plugin-settings-uis";
-import type {
-  PluginId,
-  PluginMeta,
-} from "@/data/registries/plugins/meta.types";
 import { usePluginCard } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/usePluginCard";
 import {
   getLockdownSubText,

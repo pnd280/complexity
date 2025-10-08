@@ -1,10 +1,10 @@
 import { Dexie, type Table } from "dexie";
 
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginTables } from "@/__registries__/plugins/meta.types";
 import type { ExtensionData } from "@/data/dashboard/extension-data.types";
 import { legacyThemeMigration } from "@/data/dashboard/themes/migration";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginTables } from "@/data/registries/plugins/meta.types";
 import type { QueryCacheEntry } from "@/services/infra/query-client/utils";
 
 export class IndexedDbService extends Dexie {

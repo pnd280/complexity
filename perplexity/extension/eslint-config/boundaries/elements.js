@@ -2,10 +2,15 @@
 
 export const elements = [
   {
-    type: "entrypoint",
+    type: "module-registries",
+    mode: "full",
+    pattern: ["src/__registries__/**/*"],
+  },
+
+  {
+    type: "extension-entrypoints",
     mode: "full",
     pattern: [
-      "src/__registries__/*/**/*",
       "src/entrypoints/*/**/*",
       "src/plugins/*/**/settings-ui.tsx",
       "src/plugins/*/**/settings-ui/index.tsx",

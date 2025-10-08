@@ -1,6 +1,6 @@
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { PLUGIN_CATEGORIES } from "@/data/dashboard/plugin-tags";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 
 export function usePluginCategories({
   filteredPluginIds,

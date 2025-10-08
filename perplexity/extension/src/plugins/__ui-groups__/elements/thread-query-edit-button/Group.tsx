@@ -1,9 +1,9 @@
+import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import CsUiRegistry from "@/data/registries/cs-ui";
 import { ThreadMessageIndexContextProvider } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 import { useCreatePortalContainers } from "@/plugins/__ui-groups__/elements/thread-query-edit-button/useCreatePortalContainers";
 
-declare module "@/data/registries/cs-ui/types" {
+declare module "@/__registries__/cs-ui/types" {
   interface UiGroupsRegistry {
     "thread:messageBlocks:queryEditButton": void;
   }

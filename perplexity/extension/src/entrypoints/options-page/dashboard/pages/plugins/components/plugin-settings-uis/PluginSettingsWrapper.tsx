@@ -1,10 +1,10 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { PluginSettingsUis } from "@/__registries__/plugin-settings-uis";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import { type PluginId } from "@/__registries__/plugins/meta.types";
+import { isPluginId } from "@/__registries__/plugins/predicates";
 import { Button } from "@/components/ui/button";
-import { PluginSettingsUis } from "@/data/registries/plugin-settings-uis";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import { type PluginId } from "@/data/registries/plugins/meta.types";
-import { isPluginId } from "@/data/registries/plugins/predicates";
 import Page from "@/entrypoints/options-page/components/Page";
 import PluginSettingsModal from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/PluginSettingsModal";
 import PluginSettingsPage from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/PluginSettingsPage";

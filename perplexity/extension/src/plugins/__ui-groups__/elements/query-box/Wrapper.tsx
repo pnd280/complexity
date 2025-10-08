@@ -1,9 +1,9 @@
 import { lazily } from "react-lazily";
 
-import type { UiGroupId } from "@/data/registries/cs-ui/types";
+import type { UiGroupId } from "@/__registries__/cs-ui/types";
 import { shouldEnableUiGroup } from "@/plugins/__async-deps__/plugins-guard/predicates";
 
-declare module "@/data/registries/cs-ui/types" {
+declare module "@/__registries__/cs-ui/types" {
   interface UiGroupsRegistry {
     "queryBoxes:toolbar:main": void;
     "queryBoxes:toolbar:main:ll": void;

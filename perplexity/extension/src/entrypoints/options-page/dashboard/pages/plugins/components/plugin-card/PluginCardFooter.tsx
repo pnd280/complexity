@@ -1,9 +1,9 @@
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { CardFooter } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Ul } from "@/components/ui/typography";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import { usePluginCardContext } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/PluginCardContext";
 import RequirePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/plugins/components/RequirePermissionsDialogWrapper";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";

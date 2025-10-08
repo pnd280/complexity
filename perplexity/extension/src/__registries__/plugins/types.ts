@@ -5,7 +5,7 @@ import type {
   PluginIndexedDbConfig,
   PluginMeta,
   PluginsSettingsSchema,
-} from "@/data/registries/plugins/meta.types";
+} from "@/__registries__/plugins/meta.types";
 
 export type PluginManifest<T extends PluginId> = {
   meta: PluginMeta<T>;

@@ -1,3 +1,4 @@
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import {
   HoverCard,
   HoverCardContent,
@@ -6,7 +7,6 @@ import {
 import { Image } from "@/components/ui/image";
 import { Switch } from "@/components/ui/switch";
 import { InlineCode } from "@/components/ui/typography";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 

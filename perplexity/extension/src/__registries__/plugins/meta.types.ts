@@ -2,12 +2,12 @@ import type { Transaction } from "dexie";
 import type Dexie from "dexie";
 import type z from "zod";
 
+import type { CorePluginId } from "@/__registries__/core-plugins/types";
+import type { UiGroupId } from "@/__registries__/cs-ui/types";
 import type {
   PluginCategory,
   PluginTagValues,
 } from "@/data/dashboard/plugin-tags";
-import type { CorePluginId } from "@/data/registries/core-plugins/types";
-import type { UiGroupId } from "@/data/registries/cs-ui/types";
 
 export type PluginMeta<T extends PluginId> = {
   devOnly?: boolean;

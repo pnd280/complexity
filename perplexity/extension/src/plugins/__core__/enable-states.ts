@@ -1,10 +1,10 @@
-import CorePluginsRegistry from "@/data/registries/core-plugins";
+import CorePluginsRegistry from "@/__registries__/core-plugins";
 import type {
   CorePluginId,
   CorePluginManifest,
   CorePluginsEnableStates,
-} from "@/data/registries/core-plugins/types";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
+} from "@/__registries__/core-plugins/types";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import { PluginsStatesService } from "@/plugins/__async-deps__/plugins-states";
 import type { PluginsEnableStates } from "@/plugins/__async-deps__/plugins-states/types";
 

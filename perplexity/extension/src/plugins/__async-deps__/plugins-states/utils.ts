@@ -1,7 +1,7 @@
 import semver from "semver";
 
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import type { PluginsEnableStates } from "@/plugins/__async-deps__/plugins-states/types";
 import type { FeatureCompatibility } from "@/services/externals/cplx-api/types";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";

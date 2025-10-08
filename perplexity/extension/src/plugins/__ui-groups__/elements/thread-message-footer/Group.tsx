@@ -1,9 +1,9 @@
+import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import CsUiRegistry from "@/data/registries/cs-ui";
 import { useCreatePortalContainers } from "@/plugins/__ui-groups__/elements/thread-message-footer/useCreatePortalContainers";
 import { ThreadMessageIndexContextProvider } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 
-declare module "@/data/registries/cs-ui/types" {
+declare module "@/__registries__/cs-ui/types" {
   interface UiGroupsRegistry {
     "thread:messageBlocks:footer": void;
   }

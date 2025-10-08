@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 
-import type { CorePluginsEnableStates } from "@/data/registries/core-plugins/types";
+import type { CorePluginsEnableStates } from "@/__registries__/core-plugins/types";
 import {
   checkDeviceType,
   checkAuthStatus,

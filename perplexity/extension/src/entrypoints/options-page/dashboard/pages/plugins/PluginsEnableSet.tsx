@@ -2,6 +2,7 @@ import isEqual from "lodash/isEqual";
 import type { ComponentType, SVGProps } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { RadioGroup } from "@/components/ui/radio";
 import { toast } from "@/components/ui/use-toast";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import {
   ALL_PLUGINS,
   ESSENTIALS_ONLY,

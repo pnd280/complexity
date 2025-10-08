@@ -1,4 +1,4 @@
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { PluginsStatesService } from "@/plugins/__async-deps__/plugins-states";
 import { isAutonomousArtifactLanguageString } from "@/plugins/thread-artifacts/index.public";
 import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks/MirroredCodeBlockContext";

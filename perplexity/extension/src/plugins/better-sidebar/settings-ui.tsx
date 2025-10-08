@@ -1,6 +1,6 @@
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { APP_CONFIG } from "@/app.config";
 import { Switch } from "@/components/ui/switch";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 import RequirePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/plugins/components/RequirePermissionsDialogWrapper";
 import manifest from "@/plugins/better-sidebar/index.manifest";
 import { InstantCssService } from "@/services/features/instant-css";

@@ -8,12 +8,12 @@ import ReactDOM from "react-dom/client";
 import { lazily } from "react-lazily";
 import { RouterProvider } from "react-router-dom";
 
-import { APP_CONFIG } from "@/app.config";
-import { Toaster } from "@/components/Toaster";
 import {
   commonLocalesLazyGlob,
   dashboardLocalesLazyGlob,
-} from "@/data/registries/i18n";
+} from "@/__registries__/i18n";
+import { APP_CONFIG } from "@/app.config";
+import { Toaster } from "@/components/Toaster";
 import { setupOptionPageListeners } from "@/entrypoints/options-page/listeners";
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
 import { initializeDayjsLocale, initializeI18n } from "@/services/infra/i18n";

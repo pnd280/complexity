@@ -1,8 +1,8 @@
 import semver from "semver";
 import { z } from "zod";
 
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { APP_CONFIG } from "@/app.config";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 
 export const remoteResourceTypes = ["css", "txt", "json"] as const;
 

@@ -1,4 +1,4 @@
-import { isMobileStore } from "@/hooks/use-is-mobile-store";
+import { isMobileStore } from "@/hooks/is-mobile-store";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { domObserverService } from "@/services/features/dom-observer";

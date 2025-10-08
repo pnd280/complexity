@@ -1,8 +1,8 @@
 import { z } from "zod";
 
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginsDbDataSchema } from "@/__registries__/plugins/meta.types";
 import { ThemeSchema } from "@/data/dashboard/themes/theme.types";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginsDbDataSchema } from "@/data/registries/plugins/meta.types";
 import { ExtensionSettingsSchema } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 const coreDbSchema = {

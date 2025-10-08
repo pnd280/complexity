@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-import { definePlugin } from "@/data/registries/plugins/utils";
+import { definePlugin } from "@/__registries__/plugins/utils";
 import {
   BetterCodeBlockGlobalOptionsSchema,
   BetterCodeBlockFineGrainedOptionsSchema,
   type BetterCodeBlockFineGrainedOptions,
 } from "@/plugins/thread-better-code-blocks/types";
 
-declare module "@/data/registries/plugins/meta.types" {
+declare module "@/__registries__/plugins/meta.types" {
   interface PluginsSettingsRegistry {
     "thread:betterCodeBlocks": z.infer<typeof schema>;
   }

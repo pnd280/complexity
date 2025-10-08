@@ -1,5 +1,5 @@
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { Card } from "@/components/ui/card";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 import {
   PluginCardProvider,
   usePluginCardContext,

@@ -1,6 +1,6 @@
 import { createHashRouter } from "react-router-dom";
 
-import { hashRouterObservers } from "@/data/registries/cs-hash-router";
+import { hashRouterObservers } from "@/__registries__/cs-hash-router";
 
 export const createRouter = () =>
   createHashRouter([

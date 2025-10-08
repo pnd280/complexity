@@ -1,4 +1,4 @@
-import type { PluginId } from "@/data/registries/plugins/meta.types";
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import type { PluginsStates } from "@/plugins/__async-deps__/plugins-states/utils";
 
 export function isPluginLockedDown(

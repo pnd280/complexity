@@ -1,7 +1,7 @@
 /* cli-ignore */
 
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import { APP_CONFIG } from "@/app.config";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import { defineRemoteResource } from "@/services/externals/cplx-api/remote-resources";
 import {
   FeatureCompatibilitySchema,

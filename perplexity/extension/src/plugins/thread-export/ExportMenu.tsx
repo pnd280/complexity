@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "@/components/ui/use-toast";
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import type { ExportOption } from "@/plugins/thread-export/export-options";

@@ -1,9 +1,9 @@
-import { APP_CONFIG } from "@/app.config";
 import type {
   CorePluginId,
   CorePluginsEnableStates,
-} from "@/data/registries/core-plugins/types";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
+} from "@/__registries__/core-plugins/types";
+import type { PluginId } from "@/__registries__/plugins/meta.types";
+import { APP_CONFIG } from "@/app.config";
 import type { PluginsEnableStates } from "@/plugins/__async-deps__/plugins-states/types";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import type { whereAmI } from "@/utils/misc/utils";

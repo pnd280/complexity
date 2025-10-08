@@ -1,5 +1,5 @@
-import type { UiGroupId } from "@/data/registries/cs-ui/types";
-import { queryBoxToolbarGroupComponentsFactory } from "@/data/registries/cs-ui/utils";
+import type { UiGroupId } from "@/__registries__/cs-ui/types";
+import { queryBoxToolbarGroupComponentsFactory } from "@/__registries__/cs-ui/utils";
 
 export default class CsUiRegistry {
   static Components = Object.values(
@@ -81,6 +81,23 @@ export default class CsUiRegistry {
       "queryBoxes:toolbar:cometAssistant",
       CsUiRegistry.Components,
     );
+
+  static CommandMenuItemsGroupComponents = (() =>
+    CsUiRegistry.Components.map((module, idx) => {
+      if (module.uiGroup == null) return null;
+
+      if (
+        typeof module.uiGroup === "string" &&
+        module.uiGroup === "commandMenu"
+      )
+        return <module.default key={idx} />;
+
+      if (
+        Array.isArray(module.uiGroup) &&
+        module.uiGroup.includes("commandMenu")
+      )
+        return <module.default key={idx} />;
+    }).filter((component) => component != null))();
 
   static SlashCommandMenuPagesGroupComponents = (() =>
     CsUiRegistry.Components.map((module, idx) => {

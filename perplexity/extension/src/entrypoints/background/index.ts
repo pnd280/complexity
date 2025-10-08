@@ -1,4 +1,4 @@
-import { setupBackgroundWorkers } from "@/data/registries/bg-workers";
+import { setupBackgroundWorkers } from "@/__registries__/bg-workers";
 
 (globalThis as any).isBackgroundScript = true;
 

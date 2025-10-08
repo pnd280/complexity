@@ -1,8 +1,8 @@
 import { z } from "zod";
 
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginsSettingsSchema } from "@/__registries__/plugins/meta.types";
 import { EXTENSION_ICON_ACTIONS } from "@/data/dashboard/extension-storage";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type { PluginsSettingsSchema } from "@/data/registries/plugins/meta.types";
 
 export const ExtensionSettingsSchema = z.object({
   plugins:

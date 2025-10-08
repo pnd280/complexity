@@ -1,7 +1,7 @@
 import type {
   CorePluginId,
   CorePluginManifest,
-} from "@/data/registries/core-plugins/types";
+} from "@/__registries__/core-plugins/types";
 
 export const defineCorePlugin = <
   const T extends CorePluginManifest<CorePluginId>,

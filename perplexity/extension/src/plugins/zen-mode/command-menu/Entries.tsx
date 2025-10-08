@@ -11,10 +11,11 @@ import {
   commandMenuStore,
 } from "@/plugins/command-menu/index.public";
 import { getGroupedItems } from "@/plugins/command-menu/index.public";
-import { getRawItems } from "@/plugins/zen-mode/command-menu-entries/items";
+import { getRawItems } from "@/plugins/zen-mode/command-menu/items";
+import useZenMode from "@/plugins/zen-mode/hook/useZenMode";
 
 export function ZenModeCommandMenuEntries() {
-  const isZenMode = $("body").attr("data-cplx-zen-mode") === "true";
+  const isZenMode = useZenMode();
 
   const items = useMemo(
     () =>

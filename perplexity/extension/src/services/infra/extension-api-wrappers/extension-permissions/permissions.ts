@@ -1,8 +1,5 @@
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
-import type {
-  PluginId,
-  PluginMeta,
-} from "@/data/registries/plugins/meta.types";
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
+import type { PluginId, PluginMeta } from "@/__registries__/plugins/meta.types";
 
 export const OPTIONAL_PERMISSIONS = [
   "webNavigation",

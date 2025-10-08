@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { definePlugin } from "@/data/registries/plugins/utils";
+import { definePlugin } from "@/__registries__/plugins/utils";
 import { getPlatform } from "@/hooks/usePlatformDetection";
 
-declare module "@/data/registries/plugins/meta.types" {
+declare module "@/__registries__/plugins/meta.types" {
   interface PluginsSettingsRegistry {
     zenMode: z.infer<typeof schema>;
   }
@@ -31,6 +31,7 @@ export default definePlugin({
     dependencies: {
       corePlugins: ["spaRouter"],
       plugins: ["commandMenu"],
+      uiGroups: ["commandMenu"],
     },
   },
   settingsSchema: {

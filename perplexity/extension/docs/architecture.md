@@ -37,29 +37,14 @@ Modular architecture for independent feature implementation:
 - **Modular**: Each plugin in its own `src/plugins/` directory
 - **Discoverable**: Auto-registered via Vite's `import.meta.glob`
 - **Configurable**: Enable/disable with automatic side-effect cleanup
-- **Dependency-aware**: Dependent plugins auto-disabled when dependencies are disabled
-
-### Central Registries
-
-- [Plugin Registry](../src/data/plugin-registry/index.ts) - Core plugin definitions
-- [Plugin Loaders Registry](../src/entrypoints/content-scripts/loaders.ts) - Run arbitrary code when plugin is loaded
-- [Settings UI Loader](../src/entrypoints/options-page/dashboard/pages/plugins/components/plugin-settings-uis/loader.ts) - Configuration interfaces
-
-### Module Discovery
-
-Automatic discovery and registration via **Vite's `import.meta.glob`** for:
-
-- Plugin implementations and async dependencies
-- Background services
-- Settings UI components
-- Internationalization modules
+- **Dependency-aware**: Modules only load when necessary
 
 > **See [Build Your Own Plugin](./build-your-own-plugin.md) for detailed structure, APIs, and examples.**
 
 ## Dependency Boundaries
 
 - [Dependency boundaries](../eslint-config/boundaries/index.js).
-- [File naming convention](./file-suffixes.md).
+- [Auto-registered modules](./file-suffixes.md).
 
 ### Import Rules
 

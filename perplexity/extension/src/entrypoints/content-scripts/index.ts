@@ -1,7 +1,7 @@
 import {
   executeCsLoaders,
   executeLibCsLoaders,
-} from "@/data/registries/cs-loaders";
+} from "@/__registries__/cs-loaders";
 import { contentScriptGuards } from "@/entrypoints/content-scripts/guards";
 
 $(() => {

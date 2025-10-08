@@ -36,16 +36,23 @@ body {
 }
 
 body {
+  &:is(
+      [data-cplx-artifact-active-panel="artifact"],
+      [data-cplx-artifact-active-panel="list"]
+    )
+    [data-cplx-component="thread-wrapper"]
+    + div
+    .relative
+    > .bg-base {
+    @apply x:xl:shadow-none;
+  }
+
   &[data-cplx-artifact-active-panel="artifact"]
     [data-cplx-component="thread-wrapper"] {
     padding-bottom: 0;
 
     & + div {
       @apply x:xl:max-w-[500px];
-    }
-
-    & + div .relative > .bg-base {
-      @apply x:xl:shadow-none;
     }
 
     #cplx-artifact {

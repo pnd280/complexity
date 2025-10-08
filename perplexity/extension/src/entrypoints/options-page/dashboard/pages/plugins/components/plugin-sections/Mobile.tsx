@@ -1,3 +1,5 @@
+import { useSearchParams } from "react-router-dom";
+
 import { Tabs, TabContent, TabsList, TabTrigger } from "@/components/ui/tabs";
 import {
   PLUGIN_CATEGORIES,
@@ -25,12 +27,21 @@ export default function MobilePluginSections() {
 
   const categories = Object.keys(filteredPluginsByCat);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const activeTab = searchParams.get("plugin-tab") || categories[0];
+
   if (filteredPluginIds.length === 0) {
     return <NoPluginsFound />;
   }
 
   return (
-    <Tabs defaultValue={categories[0]} activationMode="automatic">
+    <Tabs
+      value={activeTab}
+      onValueChange={(details) => {
+        setSearchParams({ "plugin-tab": details.value }, { replace: true });
+      }}
+    >
       <TabsList className="x:mx-auto x:flex x:w-full x:max-w-fit x:flex-nowrap x:overflow-x-auto x:rounded-lg x:border x:bg-secondary">
         {categories.map((category) => (
           <TabTrigger key={category} asChild value={category}>

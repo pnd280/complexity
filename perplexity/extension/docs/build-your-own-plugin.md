@@ -27,7 +27,7 @@ src/plugins/your-plugin-name/
 ├── utils.ts               # Utility functions
 ├── types.ts               # Type definitions
 ├── settings-ui.tsx[*]     # Optional settings interface
-├── **/(*.)loader.ts[*]    # Run arbitrary code when plugin is loaded
+├── **/(*.)loader.ts[*]    # Run arbitrary code (still needs guard if the plugin is disabled)
 └── **/*.public.ts[*]      # Public exports
 ```
 
@@ -46,7 +46,7 @@ Plugins are **automatically discovered** via Vite's `import.meta.glob`:
 
 ### Where Your Code Runs
 
-- **Background**: Ideally, plugins functionality should not be running in the background. Implement a core plugin instead.
+- **Background**: Plugins functionality should not be running directly in the background. Implement a core plugin instead.
 - **Content Scripts**: DOM manipulation, UI injection/modification
 - **Main-world**: Access to page's React fiber tree or other page-specific APIs that can not be accessed from content scripts
 - **Extension UI**: Settings panels

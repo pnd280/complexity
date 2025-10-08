@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import CategoriesFilter from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter/CategoriesFilter";
 import TagsFilter from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter/TagsFilter";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 
 import LuSettings2 from "~icons/lucide/settings-2";
 import TablerInfoCircle from "~icons/tabler/info-circle";

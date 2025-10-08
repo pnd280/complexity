@@ -1,7 +1,7 @@
 import { lazily } from "react-lazily";
 
+import type { UiGroupId } from "@/__registries__/cs-ui/types";
 import { CommandItemSkeleton } from "@/components/ui/command";
-import type { UiGroupId } from "@/data/registries/cs-ui/types";
 import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
 import CommandPage from "@/plugins/__core__/slash-command/components/CommandPage";
 

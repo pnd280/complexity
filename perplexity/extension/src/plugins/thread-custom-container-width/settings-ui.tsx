@@ -1,5 +1,6 @@
 import debounce from "lodash/debounce";
 
+import type { PluginId } from "@/__registries__/plugins/meta.types";
 import {
   Slider,
   SliderContext,
@@ -10,7 +11,6 @@ import {
   SliderTrack,
 } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import type { PluginId } from "@/data/registries/plugins/meta.types";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export const pluginId: PluginId = "thread:customThreadContainerWidth";

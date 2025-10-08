@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import { APP_CONFIG } from "@/app.config";
 import CopyButton from "@/components/CopyButton";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -11,7 +12,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Ul } from "@/components/ui/typography";
-import { PluginManifestsRegistry } from "@/data/registries/plugins";
 import usePplxIncognitoMode from "@/plugins/__async-deps__/hooks/usePplxIncognitoMode";
 import { errorDialogManager } from "@/plugins/__async-deps__/plugins-guard/error-manager";
 import {

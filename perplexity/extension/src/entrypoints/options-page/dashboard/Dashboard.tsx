@@ -6,7 +6,7 @@ import Psa from "@/entrypoints/options-page/components/Psa";
 import DesktopSidebarWrapper from "@/entrypoints/options-page/components/sidebar/DesktopWrapper";
 import MobileSidebarWrapper from "@/entrypoints/options-page/components/sidebar/MobileWrapper";
 import Sidebar from "@/entrypoints/options-page/components/sidebar/Sidebar";
-import { useIsMobileStore } from "@/hooks/use-is-mobile-store";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 
 export function Dashboard() {
   const { isMobile } = useIsMobileStore();

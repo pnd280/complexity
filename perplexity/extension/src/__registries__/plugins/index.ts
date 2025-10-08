@@ -10,7 +10,6 @@
 import type { Transaction } from "dexie";
 import { z } from "zod";
 
-import { APP_CONFIG } from "@/app.config";
 import type {
   PluginId,
   PluginIndexedDbConfig,
@@ -18,8 +17,9 @@ import type {
   PluginMetaMap,
   PluginsSettingsRegistry,
   PluginsSettingsSchema,
-} from "@/data/registries/plugins/meta.types";
-import type { PluginManifest } from "@/data/registries/plugins/types";
+} from "@/__registries__/plugins/meta.types";
+import type { PluginManifest } from "@/__registries__/plugins/types";
+import { APP_CONFIG } from "@/app.config";
 import { invariant } from "@/utils/misc/utils";
 
 export class PluginManifestsRegistry {

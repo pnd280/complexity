@@ -1,6 +1,6 @@
-import { defineCorePlugin } from "@/data/registries/core-plugins/utils";
+import { defineCorePlugin } from "@/__registries__/core-plugins/utils";
 
-declare module "@/data/registries/core-plugins/types" {
+declare module "@/__registries__/core-plugins/types" {
   interface CorePluginsRegistry {
     "domObservers:thread": void;
   }

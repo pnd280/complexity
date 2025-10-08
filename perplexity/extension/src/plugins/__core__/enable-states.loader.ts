@@ -1,4 +1,4 @@
-import type { CorePluginsEnableStates } from "@/data/registries/core-plugins/types";
+import type { CorePluginsEnableStates } from "@/__registries__/core-plugins/types";
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import CorePluginsEnableStatesService from "@/plugins/__core__/enable-states";
 

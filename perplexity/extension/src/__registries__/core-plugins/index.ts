@@ -2,7 +2,7 @@ import type {
   CorePluginId,
   CorePluginManifest,
   CorePluginMetaMap,
-} from "@/data/registries/core-plugins/types";
+} from "@/__registries__/core-plugins/types";
 
 export default class CorePluginsRegistry {
   static manifest: CorePluginMetaMap = {} as CorePluginMetaMap;
