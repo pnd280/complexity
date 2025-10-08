@@ -41,7 +41,7 @@ export default function CopyButton({
       )}
       onClick={(e) => {
         if (content && !onCopy) {
-          navigator.clipboard.writeText(content);
+          void navigator.clipboard.writeText(content);
         } else {
           onCopy?.();
         }

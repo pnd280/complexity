@@ -133,7 +133,7 @@ export class MermaidRendererServiceImpl {
     } catch (error) {
       return {
         success: false,
-        error: (error as any).str,
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   }

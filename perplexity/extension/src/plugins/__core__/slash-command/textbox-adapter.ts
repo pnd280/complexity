@@ -4,15 +4,9 @@ import { scrollIntoCaretView } from "@/utils/dom-utils/generics";
 import * as lexicalUtils from "@/utils/dom-utils/lexical-utils";
 import * as textareaUtils from "@/utils/dom-utils/textarea-utils";
 
-type TextboxUtils = typeof lexicalUtils | typeof textareaUtils;
-
-function getUtils(element: HTMLElement): TextboxUtils {
-  return isLexical(element) ? lexicalUtils : textareaUtils;
-}
-
-export function createTextboxAdapter(element: HTMLElement) {
-  const utils = getUtils(element);
-
+export function createTextboxAdapter(
+  element: HTMLElement | HTMLTextAreaElement,
+) {
   const selectiveScrollIntoCaretView = () => {
     if (isLexical(element)) {
       lexicalUtils.scrollIntoCaretView(element);
@@ -39,17 +33,21 @@ export function createTextboxAdapter(element: HTMLElement) {
 
   const insertText = (text: string) => {
     if (isLexical(element)) {
-      utils.insertText(
-        element as HTMLTextAreaElement,
+      lexicalUtils.insertText(
+        element,
         text,
         slashCommandMenuStore.getState().bufferTextCaretPosition ?? undefined,
       );
     } else {
-      utils.insertText(element as HTMLTextAreaElement, text);
+      textareaUtils.insertText(element as HTMLTextAreaElement, text);
     }
 
     selectiveScrollIntoCaretView();
   };
+
+  const utils: typeof lexicalUtils = isLexical(element)
+    ? lexicalUtils
+    : (textareaUtils as typeof lexicalUtils);
 
   return {
     setSelection: (selection?: { start: number; end: number } | null) => {
@@ -57,14 +55,14 @@ export function createTextboxAdapter(element: HTMLElement) {
         start: getTextLength(),
         end: getTextLength(),
       };
-      utils.setSelection(element as any, position.start, position.end);
+      utils.setSelection(element, position.start, position.end);
     },
-    getWordAtCaret: () => utils.getWordAtCaret(element as any),
-    getSelection: () => utils.getSelection(element as any),
+    getWordAtCaret: () => utils.getWordAtCaret(element),
+    getSelection: () => utils.getSelection(element),
     insertText,
     deleteTriggerPhrase: () => {
-      const { start, end } = utils.getWordAtCaret(element as any);
-      utils.setSelection(element as any, start, end);
+      const { start, end } = utils.getWordAtCaret(element);
+      utils.setSelection(element, start, end);
       deleteSelectedText();
     },
     scrollIntoCaretView: selectiveScrollIntoCaretView,

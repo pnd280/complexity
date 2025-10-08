@@ -21,8 +21,8 @@ export default function ClearAllDataButton() {
   const handleClearData = async () => {
     await ExtensionSettingsService.reset();
     await db.clearAll();
-    invalidateQueryClientCache();
-    navigate("/plugins");
+    await invalidateQueryClientCache();
+    void navigate("/plugins");
   };
 
   return (

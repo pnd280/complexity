@@ -17,7 +17,7 @@ export default function () {
     }) => {
       if (!corePluginsEnableStates["webSocket"]) return;
 
-      InternalWebSocketManager.getInstance()
+      void InternalWebSocketManager.getInstance()
         .handShake()
         .then((socket) => {
           internalWebSocketStore.setState({

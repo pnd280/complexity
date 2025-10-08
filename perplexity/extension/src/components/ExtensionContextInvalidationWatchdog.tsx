@@ -24,7 +24,7 @@ export function ExtensionContextInvalidationWatchdog() {
 
   useEffect(() => {
     const handleFocus = () => {
-      refetch();
+      void refetch();
     };
 
     window.addEventListener("visibilitychange", handleFocus);

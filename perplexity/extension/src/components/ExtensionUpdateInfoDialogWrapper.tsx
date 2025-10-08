@@ -65,7 +65,7 @@ export default function ExtensionUpdateInfoDialogWrapper({
             onClick={() => {
               if (!latestVersion) return;
 
-              ContentScriptBgUtilsService.Instance.openDirectReleaseNotes({
+              void ContentScriptBgUtilsService.Instance.openDirectReleaseNotes({
                 version: latestVersionWithChangelog,
               });
             }}
@@ -130,9 +130,9 @@ function ExtensionManagementPageLink() {
       className="x:inline-block x:cursor-pointer x:text-primary x:underline"
       onClick={() => {
         if (APP_CONFIG.BROWSER === "chrome") {
-          navigator.clipboard.writeText("chrome://extensions");
+          void navigator.clipboard.writeText("chrome://extensions");
         } else {
-          navigator.clipboard.writeText("about:addons");
+          void navigator.clipboard.writeText("about:addons");
         }
         toast({
           title: "✅ Link copied to clipboard",

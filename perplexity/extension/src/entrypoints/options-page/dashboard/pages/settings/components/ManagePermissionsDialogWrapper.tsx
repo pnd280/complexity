@@ -75,9 +75,13 @@ export default function ManagePermissionsDialogWrapper({
                       if (
                         grantedPermissions.permissions?.includes(permission)
                       ) {
-                        handleRevokePermission({ permissions: [permission] });
+                        void handleRevokePermission({
+                          permissions: [permission],
+                        });
                       } else {
-                        handleGrantPermission({ permissions: [permission] });
+                        void handleGrantPermission({
+                          permissions: [permission],
+                        });
                       }
                     }}
                   />

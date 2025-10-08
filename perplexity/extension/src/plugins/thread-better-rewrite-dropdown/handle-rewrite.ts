@@ -49,6 +49,7 @@ export const handleRewrite = ({
         "instant-rewrite-model-change",
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newParams = produce(parsedData.params, (draft: any) => {
         draft.model_preference = selectedModel;
       });
@@ -71,7 +72,7 @@ export const handleRewrite = ({
     );
   }, 1000);
 
-  BetterRewriteDropdownsMainWorldActions.Instance.triggerRewriteOption({
+  void BetterRewriteDropdownsMainWorldActions.Instance.triggerRewriteOption({
     messageBlockIndex,
     optionIndex: 5,
     fiberConfig: {

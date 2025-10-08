@@ -18,6 +18,8 @@ function subscribeToZenMode(callback: () => void): () => void {
   });
 
   observer.observe(document.body, {
+    childList: false,
+    subtree: false,
     attributes: true,
     attributeFilter: ["data-cplx-zen-mode"],
   });

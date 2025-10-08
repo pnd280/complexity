@@ -58,6 +58,7 @@ export function setupTempInterceptor({
         interceptorId,
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newParams = produce(parsedData.params, (draft: any) => {
         if (model != null) {
           draft.model_preference = model;

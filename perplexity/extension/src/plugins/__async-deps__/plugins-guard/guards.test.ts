@@ -337,7 +337,8 @@ describe("Guard Functions", () => {
     it("should return false when currentLocation is undefined", () => {
       const conditions: GuardConditions = { location: ["thread"] };
       const params: Pick<GuardCheckParams, "currentLocation"> = {
-        currentLocation: undefined as any,
+        currentLocation:
+          undefined as unknown as GuardCheckParams["currentLocation"],
       };
       expect(checkLocation(conditions, params)).toBe(false);
     });

@@ -20,7 +20,7 @@ export default function ErrorPage({ error, resetError }: ErrorPageProps) {
     if (resetError) {
       resetError();
     }
-    navigate("/");
+    void navigate("/");
   };
 
   return (

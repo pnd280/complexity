@@ -16,17 +16,16 @@ export default defineConfig({
   },
   rules: {
     "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-this-alias": "off",
     "@typescript-eslint/no-unsafe-declaration-merging": "error",
-    // "@typescript-eslint/no-floating-promises": [
-    //   "error",
-    //   {
-    //     ignoreVoid: true,
-    //     ignoreIIFE: true,
-    //   },
-    // ],
+    "@typescript-eslint/no-floating-promises": [
+      "warn",
+      {
+        ignoreIIFE: true,
+      },
+    ],
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {

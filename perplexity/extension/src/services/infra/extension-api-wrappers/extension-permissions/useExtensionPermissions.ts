@@ -21,7 +21,7 @@ export function useExtensionPermissions() {
     }) => {
       try {
         await requestPermissions(permissions);
-        queryClient.invalidateQueries({
+        void queryClient.invalidateQueries({
           queryKey: extensionPermissionsQueries.permissions.all(),
         });
       } catch (error) {
@@ -38,7 +38,7 @@ export function useExtensionPermissions() {
     }) => {
       try {
         await revokePermissions(permissions);
-        queryClient.invalidateQueries({
+        void queryClient.invalidateQueries({
           queryKey: extensionPermissionsQueries.permissions.all(),
         });
       } catch (error) {

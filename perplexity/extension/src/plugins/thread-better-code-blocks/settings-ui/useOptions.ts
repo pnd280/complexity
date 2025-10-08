@@ -29,7 +29,7 @@ export default function useOptions({ language }: UseOptionsProps = {}) {
       });
     },
     onSettled: () => {
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: betterCodeBlocksFineGrainedOptionsQueries.get.detail(
           language ?? "",
         ).queryKey,
@@ -50,7 +50,7 @@ export default function useOptions({ language }: UseOptionsProps = {}) {
       });
     },
     onSettled: () => {
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: betterCodeBlocksFineGrainedOptionsQueries.list.all(),
         exact: true,
       });

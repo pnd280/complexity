@@ -24,7 +24,7 @@ export const imageGenModelSelectorStore =
               selectedImageGenModel,
               "fetch",
             );
-            queryClient.invalidateQueries({
+            void queryClient.invalidateQueries({
               queryKey: pplxApiQueries.userSettings.all(),
             });
           },

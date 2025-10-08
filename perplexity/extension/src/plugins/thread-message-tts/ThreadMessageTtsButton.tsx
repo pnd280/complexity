@@ -73,7 +73,7 @@ export function ThreadMessageTtsButton() {
         return;
       }
 
-      playTts({ voice: params?.voice ?? voice, backendUuid });
+      void playTts({ voice: params?.voice ?? voice, backendUuid });
     },
     [abort, backendUuid, isPlaying, playTts, voice, coordinator],
   );
@@ -106,7 +106,7 @@ export function ThreadMessageTtsButton() {
       open={menuOpen}
       onOpenChange={({ open }) => setMenuOpen(open)}
       onSelect={({ value }) => {
-        initTts({ voice: value as TtsVoice });
+        void initTts({ voice: value as TtsVoice });
         setVoice(value as TtsVoice);
       }}
     >
@@ -124,7 +124,7 @@ export function ThreadMessageTtsButton() {
               e.stopPropagation();
 
               if (menuOpen) return;
-              initTts();
+              void initTts();
             }}
             onContextMenu={(e) => {
               if (isPlaying) {

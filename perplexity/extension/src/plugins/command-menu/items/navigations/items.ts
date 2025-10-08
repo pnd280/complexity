@@ -35,9 +35,9 @@ const createNavigationItem = ({
   keywords: navigationKeywords,
   onSelect: () => {
     if (isHotkeyPressed(Key.Alt)) {
-      openInNewTab(url);
+      void openInNewTab(url);
     } else {
-      softNavigate(url);
+      void softNavigate(url);
     }
   },
   priority: 0,

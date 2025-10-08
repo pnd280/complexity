@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
 
-type Fn<ARGS extends any[], R> = (...args: ARGS) => R;
+type Fn<ARGS extends unknown[], R> = (...args: ARGS) => R;
 
 /**
  * Returns a memoized callback that always has access to the latest version
@@ -21,7 +21,7 @@ type Fn<ARGS extends any[], R> = (...args: ARGS) => R;
  *   console.log(`Clicked item ${id} in ${currentView}`);
  * });
  */
-export function useEvent<A extends any[], R>(fn: Fn<A, R>): Fn<A, R> {
+export function useEvent<A extends unknown[], R>(fn: Fn<A, R>): Fn<A, R> {
   const fnRef = useRef<Fn<A, R>>(fn);
 
   useLayoutEffect(() => {

@@ -15,7 +15,7 @@ import {
 export default function NavigationItemsFooter({
   items,
 }: {
-  items: ReturnType<typeof getGroupedItems<any, CommandItemProps>>;
+  items: ReturnType<typeof getGroupedItems<unknown, CommandItemProps>>;
 }) {
   const selectingValue = useCommandMenuStore((store) => store.selectingValue);
 
@@ -35,7 +35,7 @@ export default function NavigationItemsFooter({
         title: t("plugin-command-menu.navigation.openInNewTab"),
         keybinding: [Key.Alt, Key.Enter],
         onSelect: () => {
-          openInNewTab(url);
+          void openInNewTab(url);
           commandMenuStore.getState().setOpen(false);
         },
       },
@@ -45,7 +45,7 @@ export default function NavigationItemsFooter({
         }),
         keybinding: [Key.Enter],
         onSelect: () => {
-          softNavigate(url);
+          void softNavigate(url);
           commandMenuStore.getState().setOpen(false);
         },
       },

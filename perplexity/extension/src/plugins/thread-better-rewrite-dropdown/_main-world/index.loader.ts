@@ -16,7 +16,7 @@ export default function () {
     loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["thread:betterRewriteDropdowns"]) return;
 
-      injectMainWorldScript({
+      void injectMainWorldScript({
         url: chrome.runtime.getURL(vdomActionsListener),
         head: true,
       });

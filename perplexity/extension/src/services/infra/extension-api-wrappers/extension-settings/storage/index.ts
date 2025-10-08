@@ -21,6 +21,7 @@ export class ExtensionSettingsStorageServiceImpl {
     migrations,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static operationQueue: Promise<any> = Promise.resolve();
 
   static async getValue(): Promise<ExtensionSettings> {

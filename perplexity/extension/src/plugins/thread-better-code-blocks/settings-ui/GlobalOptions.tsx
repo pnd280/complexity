@@ -3,6 +3,7 @@ import debounce from "lodash/debounce";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import useOptions from "@/plugins/thread-better-code-blocks/settings-ui/useOptions";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
 export default function BetterCodeBlockGlobalOptions() {
   const { globalMutation: mutation, globalSettings: settings } = useOptions();
@@ -10,7 +11,8 @@ export default function BetterCodeBlockGlobalOptions() {
   const debouncedMutate = useMemo(
     () =>
       debounce(
-        (mutator: (draft: any) => void) => mutation.mutate(mutator),
+        (mutator: (draft: ExtensionSettings) => void) =>
+          mutation.mutate(mutator),
         300,
       ),
     [mutation],

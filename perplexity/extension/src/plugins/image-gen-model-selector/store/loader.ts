@@ -25,7 +25,7 @@ export default function () {
   });
 }
 
-async function initImageGenModelSelectorStore() {
+function initImageGenModelSelectorStore() {
   const unsubscribeLoginGuard = pluginGuardsStore.subscribe(
     (state) => state.isLoggedIn,
     (isLoggedIn) => {

@@ -76,7 +76,7 @@ export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
         await LocalThemesService.Instance.delete(theme.id);
       },
       onSuccess: () => {
-        navigate("..");
+        void navigate("..");
         toast({
           title: "✅ Theme deleted",
           description: "Your theme has been deleted successfully",
@@ -90,9 +90,9 @@ export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
       },
     });
 
-  const onSubmit = form.handleSubmit((data) => {
-    mutateAsync(data);
-    updateRegistry();
+  const onSubmit = form.handleSubmit(async (data) => {
+    await mutateAsync(data);
+    void updateRegistry();
   });
 
   const deleteTheme = () => deleteThemeMutation();

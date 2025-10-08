@@ -11,7 +11,7 @@ export default async function () {
   }).subscribe((data) => {
     if (data.status !== "success" || data.fetchStatus !== "idle") return;
 
-    persistQueryClient({ queryClient });
+    void persistQueryClient({ queryClient });
   });
 
   new QueryObserver(queryClient, {
@@ -23,11 +23,11 @@ export default async function () {
   }).subscribe((data) => {
     if (data.status !== "success" || data.fetchStatus !== "idle") return;
 
-    persistQueryClient({ queryClient });
+    void persistQueryClient({ queryClient });
   });
 
-  queryClient.ensureQueryData(pplxApiQueries.spaces.detail());
-  queryClient.ensureInfiniteQueryData(
+  void queryClient.ensureQueryData(pplxApiQueries.spaces.detail());
+  void queryClient.ensureInfiniteQueryData(
     pplxApiQueries.threads.infinite.detail({
       searchValue: "",
       initialPageParam: 0,

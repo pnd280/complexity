@@ -54,7 +54,7 @@ export const NetworkInterceptMiddlewareManagerService = {
   get Instance(): ComctxProxy<NetworkInterceptMiddlewareManagerType> {
     return isMainWorldContext()
       ? getNetworkInterceptMiddlewareManagerProxyService()
-      : (getNetworkInterceptMiddlewareManagerRootService() as any);
+      : (getNetworkInterceptMiddlewareManagerRootService() as unknown as ComctxProxy<NetworkInterceptMiddlewareManagerType>);
   },
 };
 

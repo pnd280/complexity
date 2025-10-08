@@ -52,7 +52,7 @@ export function SettingsDashboardLink() {
       <div
         className="x:mx-3 x:flex x:cursor-pointer x:items-center x:justify-start x:gap-1 x:rounded-lg x:px-3 x:py-2 x:text-sm x:font-medium x:text-foreground x:transition-all x:hover:bg-primary-foreground"
         onClick={() => {
-          ContentScriptBgUtilsService.Instance.openOptionsPage();
+          void ContentScriptBgUtilsService.Instance.openOptionsPage();
         }}
       >
         <div className="x:flex x:items-center x:gap-1.5">

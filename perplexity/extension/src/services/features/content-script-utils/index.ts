@@ -17,17 +17,18 @@ export class ContentScriptBgUtilsServiceImpl {
 
     if (window == null) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (window as any).sidecarTabId as number | undefined;
   }
 
   static async openOptionsPage() {
-    chrome.runtime.openOptionsPage();
+    void chrome.runtime.openOptionsPage();
   }
 
   static async openDirectReleaseNotes({ version }: { version: string }) {
     const optionsPageUrl = getOptionsPageUrl({ isDev: APP_CONFIG.IS_DEV });
 
-    chrome.tabs.create({
+    void chrome.tabs.create({
       url: `${optionsPageUrl}#/direct-release-notes?version=${version}`,
     });
   }

@@ -14,7 +14,7 @@ export default function () {
     id: "mainWorld:jqueryExtensions",
     dependencies: [],
     loader: async () => {
-      injectMainWorldScript({
+      void injectMainWorldScript({
         url: chrome.runtime.getURL(jqueryExtensions),
         head: true,
         inject: true,

@@ -34,6 +34,7 @@ export function getCodeBlockContent(
 
   if (!$el[0]) return null;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fiberNode = ($el[0] as any)[getReactFiberKey($el[0])];
 
   const [code] = extractCodeContent(fiberNode);
@@ -58,6 +59,7 @@ function buildCodeBlockSelector(
   )}[data-index="${codeBlockIndex}"] pre`;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractCodeContent(fiberNode: any): [string | null, Error | null] {
   return errorWrapper(
     () =>
@@ -66,6 +68,7 @@ function extractCodeContent(fiberNode: any): [string | null, Error | null] {
   )();
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractLanguageInfo(fiberNode: any): [string | null, Error | null] {
   return errorWrapper(() =>
     (fiberNode.alternate != null

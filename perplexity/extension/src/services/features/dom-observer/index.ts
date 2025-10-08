@@ -15,7 +15,7 @@ export class DomObserver {
   private isTabVisible = true;
   private elementData = new WeakMap<
     Element,
-    { subs: (string | number)[]; [key: string]: any }
+    { subs: (string | number)[]; [key: string]: unknown }
   >();
 
   private selectorCallbacks = new Map<string, SelectorCallbackData>();

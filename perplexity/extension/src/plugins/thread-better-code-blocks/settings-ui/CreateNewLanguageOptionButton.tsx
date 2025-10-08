@@ -69,7 +69,7 @@ export default function CreateNewLanguageOptionButton() {
       });
     },
     onSettled: () => {
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: betterCodeBlocksFineGrainedOptionsQueries.list.all(),
         exact: true,
       });

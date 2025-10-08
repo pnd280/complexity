@@ -59,7 +59,7 @@ export default function SpaceCommandItems() {
               className="x:flex-col x:items-start x:justify-center x:gap-2"
               onSelect={() => {
                 if (isHotkeyPressed(Key.Alt)) {
-                  openInNewTab(`/spaces/${space.slug}`);
+                  void openInNewTab(`/spaces/${space.slug}`);
                   commandMenuStore.getState().setOpen(false);
                 } else if (isHotkeyPressed(Key.Shift)) {
                   commandMenuStore.getState().pushPage({
@@ -75,7 +75,7 @@ export default function SpaceCommandItems() {
                     sidecarOpen: false,
                   });
                 } else {
-                  softNavigate(`/spaces/${space.slug}`);
+                  void softNavigate(`/spaces/${space.slug}`);
                   commandMenuStore.getState().setOpen(false);
                 }
               }}

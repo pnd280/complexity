@@ -18,7 +18,7 @@ function proxyWebSocketInstance(instance: WebSocket) {
   const originalMessage = instance.onmessage;
   instance.onmessage = (event: MessageEvent) => {
     if (typeof event.data === "string") {
-      NetworkInterceptMiddlewareManagerService.Proxy.noop({
+      void NetworkInterceptMiddlewareManagerService.Proxy.noop({
         data: {
           type: "networkIntercept:webSocketEvent",
           event: "message",

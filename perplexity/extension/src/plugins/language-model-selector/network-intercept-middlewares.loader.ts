@@ -57,6 +57,7 @@ export default function () {
 
               const settings = ExtensionSettingsService.cachedSync;
 
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const newParams = produce(parsedData.params, (draft: any) => {
                 draft.timezone =
                   settings.devMode &&

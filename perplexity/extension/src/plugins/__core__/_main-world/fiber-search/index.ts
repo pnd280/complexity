@@ -90,6 +90,7 @@ export default class FiberSearchService {
       | SingleResultOptions
       | MultipleResultsOptions,
   ): Fiber | Fiber[] | null {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return findFiberNodes(condition as any, options as any);
   }
 

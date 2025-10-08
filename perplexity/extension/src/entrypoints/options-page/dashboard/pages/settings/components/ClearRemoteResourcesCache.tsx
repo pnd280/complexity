@@ -15,9 +15,9 @@ export default function ClearRemoteResourcesCache() {
   return (
     <Button
       variant="outline"
-      onClick={() => {
-        storage.setItem(softCacheBusterKey, "invalidated");
-        invalidateQueryClientCache();
+      onClick={async () => {
+        await storage.setItem(softCacheBusterKey, "invalidated");
+        await invalidateQueryClientCache();
         setButtonText("Cache cleared");
       }}
     >

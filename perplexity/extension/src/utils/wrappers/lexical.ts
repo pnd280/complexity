@@ -18,6 +18,7 @@ export async function setLexicalEditorContent({
 
   if (!("__lexicalEditor" in activeElement)) return;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editor = activeElement.__lexicalEditor as any;
 
   const textState = JSON.stringify({
@@ -68,6 +69,7 @@ export async function getLexicalEditorJsonContent() {
 
   if (!("__lexicalEditor" in activeElement)) return;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editor = activeElement.__lexicalEditor as any;
 
   const editorState = editor.getEditorState();

@@ -53,6 +53,7 @@ export default function () {
 
           if (!isCollectionThread) return skip();
 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const newParams = produce(parsedData.params, (draft: any) => {
             draft.sources = [];
             draft.search_focus = "writing";

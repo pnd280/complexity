@@ -41,7 +41,7 @@ export default definePlugin({
   settingsSchema: {
     schema,
     fallback: {
-      enabled: false,
+      enabled: true,
       shouldPreventLayoutShift: true,
     },
   },

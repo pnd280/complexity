@@ -97,7 +97,7 @@ function handleStreamingResponse(response: Response, url: string) {
           controller.close();
         } catch (error) {
           controller.error(error);
-          reader.cancel();
+          void reader.cancel();
         }
       },
     }),
@@ -117,7 +117,7 @@ async function handleRegularResponse(response: Response, url: string) {
 }
 
 async function log(url: string, status: number, data: string) {
-  NetworkInterceptMiddlewareManagerService.Proxy.noop({
+  void NetworkInterceptMiddlewareManagerService.Proxy.noop({
     data: {
       type: "networkIntercept:fetchEvent",
       event: "response",

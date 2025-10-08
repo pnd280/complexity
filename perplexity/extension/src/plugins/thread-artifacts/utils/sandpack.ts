@@ -16,7 +16,7 @@ function normalizeFilesParam({ files }: CreateCodeSandboxOptions): {
 }
 
 export async function createSandbox(files: SandpackState["files"]) {
-  function getParameters(parameters: any) {
+  function getParameters(parameters: unknown) {
     return LZString.compressToBase64(JSON.stringify(parameters))
       .replace(/\+/g, "-")
       .replace(/\//g, "_")

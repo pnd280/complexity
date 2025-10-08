@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import FiberSearchService from "@/plugins/__core__/_main-world/fiber-search";
 import type { PplxWebResult } from "@/plugins/__core__/pplx-thread-export";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";

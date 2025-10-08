@@ -32,9 +32,9 @@ export default function PluginSettingsModal({
   const handleClose = ({ open }: DialogOpenChangeDetails) => {
     if (!open) {
       if (fromPluginList) {
-        navigate(-1);
+        void navigate(-1);
       } else {
-        navigate("/plugins");
+        void navigate("/plugins");
       }
     }
   };

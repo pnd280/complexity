@@ -19,7 +19,7 @@ export default function () {
     loader: () => {
       spaRouteChangeCompleteSubscribe(
         (url) => {
-          observeSettingsPage(whereAmI(url));
+          void observeSettingsPage(whereAmI(url));
         },
         {
           immediate: true,

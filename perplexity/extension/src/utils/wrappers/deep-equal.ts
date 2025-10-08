@@ -1,5 +1,6 @@
 import { createCustomEqual } from "fast-equals";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isJQuery = (obj: any) => "jquery" in obj;
 
 export const deepEqual = createCustomEqual({

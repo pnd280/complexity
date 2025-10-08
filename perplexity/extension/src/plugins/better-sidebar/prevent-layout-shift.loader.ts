@@ -58,7 +58,7 @@ export async function applyLayoutShiftPreventionInstantCss({
     ? InstantCssService.registerInstantCss
     : InstantCssService.removeInstantCss;
 
-  action({
+  await action({
     id: "plugin:betterSidebar:normalizeLayout",
     css: state === "true" ? normalizeExpandedCss : normalizeCollapsedCss,
     tabId,

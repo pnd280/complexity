@@ -1,4 +1,4 @@
-import { Dexie, type Table } from "dexie";
+import { Dexie, type Table, type Transaction } from "dexie";
 
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type { PluginTables } from "@/__registries__/plugins/meta.types";
@@ -20,7 +20,7 @@ export class IndexedDbService extends Dexie {
       number,
       {
         schemas: Record<string, string>;
-        upgrades: Array<(tx: any) => Promise<void> | void>;
+        upgrades: Array<(tx: Transaction) => Promise<void> | void>;
       }
     >();
 
@@ -35,7 +35,9 @@ export class IndexedDbService extends Dexie {
     allVersions.set(7, {
       schemas: {},
       upgrades: [
-        (tx) => tx.table("themes").toCollection().modify(legacyThemeMigration),
+        (tx) => {
+          void tx.table("themes").toCollection().modify(legacyThemeMigration);
+        },
       ],
     });
 
@@ -72,7 +74,7 @@ export class IndexedDbService extends Dexie {
   }
 
   async exportAll(): Promise<ExtensionData["db"]> {
-    const result: Record<string, any[]> = {};
+    const result: Record<string, unknown[]> = {};
 
     for (const table of this.tables) {
       if (!IndexedDbService.EXCLUDED_FROM_EXPORT.has(table.name)) {
@@ -89,7 +91,9 @@ export class IndexedDbService extends Dexie {
         Array.isArray(records) &&
         !IndexedDbService.EXCLUDED_FROM_EXPORT.has(tableName)
       ) {
-        const table = (this as any)[tableName];
+        const table = this[
+          tableName as keyof IndexedDbService
+        ] as Table<unknown>;
         if (table != null) {
           await table.bulkPut(records);
         }

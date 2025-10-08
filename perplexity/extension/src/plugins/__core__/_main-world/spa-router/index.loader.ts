@@ -22,7 +22,7 @@ export default function () {
     }) => {
       if (!corePluginsEnableStates["spaRouter"]) return;
 
-      injectMainWorldScript({
+      void injectMainWorldScript({
         url: chrome.runtime.getURL(spaRouterPlugin),
         head: true,
       });

@@ -10,7 +10,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-export default async function loader() {
+export default async function () {
   const tabId = await sendMessage("getTabId");
 
   invariant(tabId, "[CometIsolatedZoom] Invalid context");
@@ -31,7 +31,7 @@ export default async function loader() {
       });
 
       console.log("Zoom set to:", currentZoom);
-      ExtensionSettingsService.set((draft) => {
+      void ExtensionSettingsService.set((draft) => {
         draft.plugins["comet:isolatedZoom"].zoomLevel = currentZoom;
       });
     } catch (error) {
@@ -50,12 +50,12 @@ export default async function loader() {
 
       if (whereAmI() !== "comet_assistant") return;
 
-      setZoom(extensionSettings?.plugins["comet:isolatedZoom"].zoomLevel);
+      void setZoom(extensionSettings?.plugins["comet:isolatedZoom"].zoomLevel);
 
       $(document).on("keydown", (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === "0") {
           e.preventDefault();
-          setZoom(1, 0);
+          void setZoom(1, 0);
         }
       });
 
@@ -65,9 +65,9 @@ export default async function loader() {
           const wheelEvent = e.originalEvent as WheelEvent | undefined;
           if (wheelEvent) {
             if (wheelEvent.deltaY < 0) {
-              setZoom(undefined, 0.25);
+              void setZoom(undefined, 0.25);
             } else if (wheelEvent.deltaY > 0) {
-              setZoom(undefined, -0.25);
+              void setZoom(undefined, -0.25);
             }
           }
         }

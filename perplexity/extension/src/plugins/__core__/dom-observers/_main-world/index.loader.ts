@@ -16,7 +16,7 @@ export default function () {
     id: "corePlugin:domObservers:mainWorldActions",
     dependencies: ["cache:domSelectors"],
     loader: async () => {
-      injectMainWorldScript({
+      void injectMainWorldScript({
         url: chrome.runtime.getURL(DomObserverActionsListener),
         head: true,
       });

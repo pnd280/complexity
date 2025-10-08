@@ -43,7 +43,7 @@ export function CreateThemeProvider({ children }: CreateThemeProviderProps) {
       return savedThemeId;
     },
     onSuccess: () => {
-      navigate("..");
+      void navigate("..");
       toast({
         title: "✅ Theme created",
         description: "Your theme has been saved successfully",

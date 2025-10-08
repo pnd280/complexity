@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function walkFiberNode(fiberNode: any, path: string[]) {
   try {
     return path.reduce((acc, key) => acc[key], fiberNode);

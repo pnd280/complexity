@@ -126,11 +126,11 @@ async function copyMessageWithCitations({
   );
 
   if (content.webResults != null && content.webResults.length) {
-    dualClipboardPut({
+    void dualClipboardPut({
       markdown: `${cleanAnswer}\n\nCitations:\n${PplxThreadExport.formatWebResults(content.webResults)}`,
     });
   } else {
-    dualClipboardPut({
+    void dualClipboardPut({
       markdown: cleanAnswer,
     });
   }
@@ -143,7 +143,7 @@ async function copyMessageWithoutCitations({
   messageBlockIndex: number;
   fetchFn: FetchFn;
 }) {
-  copyContent({
+  void copyContent({
     messageBlockIndex,
     fetchFn,
     withCitations: false,

@@ -42,9 +42,9 @@ export default function ImportDataButtons() {
       await storage.setMeta("local:settings", {
         v: settings["settings$"].v,
       });
-      db.import(parsedData.db);
+      await db.import(parsedData.db);
 
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: extensionSettingsQueries.all(),
       });
     })();

@@ -1,3 +1,5 @@
+import type { GuardCheckParams } from "@/plugins/__async-deps__/plugins-guard/guards";
+
 /**
  * Global error manager for deduplicating error dialogs
  * Ensures only one error dialog is shown per component type
@@ -72,7 +74,7 @@ class ErrorDialogManager {
    */
   generateComponentKey(props: {
     dependentPluginIds?: string[];
-    location?: any[];
+    location?: GuardCheckParams["currentLocation"][];
     customMessage?: string;
     errorMessage?: string;
   }): string {

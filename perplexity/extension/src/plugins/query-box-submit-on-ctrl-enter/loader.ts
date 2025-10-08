@@ -68,7 +68,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-export default function loader() {
+export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:submitOnCtrlEnter",
     dependencies: ["cache:pluginsEnableStates", "cache:domSelectors"],

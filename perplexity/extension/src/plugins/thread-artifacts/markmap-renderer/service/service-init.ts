@@ -50,7 +50,7 @@ export const MarkmapRendererService = {
   },
   get Instance(): ComctxProxy<MarkmapRendererServiceType> {
     return isMainWorldContext()
-      ? (getMarkmapRendererRootService() as any)
+      ? (getMarkmapRendererRootService() as unknown as ComctxProxy<MarkmapRendererServiceType>)
       : getMarkmapRendererProxyService();
   },
 };

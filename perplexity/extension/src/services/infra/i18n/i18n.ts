@@ -26,8 +26,11 @@ export async function initializeI18n({
       invariant(locale, `${path} has no locale`);
       invariant(namespace, `${path} has no namespace`);
 
-      const languageResources = ((await importFn()) as any)
-        .default as LanguageMessages;
+      const languageResources = (
+        (await importFn()) as {
+          default: LanguageMessages;
+        }
+      ).default as LanguageMessages;
 
       return {
         locale,
@@ -47,7 +50,8 @@ export async function initializeI18n({
         acc[lowerCaseLocale] = {};
       }
 
-      (acc[lowerCaseLocale] as any)[namespace] = languageResources;
+      (acc[lowerCaseLocale] as Record<string, LanguageMessages>)[namespace] =
+        languageResources;
 
       return acc;
     },

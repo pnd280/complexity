@@ -23,11 +23,11 @@ export default function () {
         return;
 
       window.addEventListener(spaRouterRouteChangeEvent, () => {
-        handlePromptSave({ url: window.location.pathname, type: "soft" });
+        void handlePromptSave({ url: window.location.pathname, type: "soft" });
       });
 
       window.addEventListener("beforeunload", () => {
-        handlePromptSave({ url: window.location.pathname, type: "hard" });
+        void handlePromptSave({ url: window.location.pathname, type: "hard" });
       });
     },
   });

@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useEvent } from "@/hooks/useEvent";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import { queryClient } from "@/services/infra/query-client";
@@ -16,13 +17,13 @@ import TablerTrash from "~icons/tabler/trash";
 export default function ClearAllButton() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClearAll = () => {
-    PromptHistoryService.Proxy.deleteAll();
-    queryClient.invalidateQueries({
+  const handleClearAll = useEvent(async () => {
+    await PromptHistoryService.Proxy.deleteAll();
+    void queryClient.invalidateQueries({
       queryKey: promptHistoryQueries.infinite.all(),
     });
     setIsOpen(false);
-  };
+  });
 
   return (
     <Dialog

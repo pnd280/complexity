@@ -53,10 +53,10 @@ export function PromptHistoryCommandMenuContent() {
     fetchNextPage,
   });
 
-  const deleteItem = useCallback((id: string) => {
-    PromptHistoryService.Instance.delete(id);
+  const deleteItem = useCallback(async (id: string) => {
+    await PromptHistoryService.Instance.delete(id);
 
-    queryClient.invalidateQueries({
+    void queryClient.invalidateQueries({
       queryKey: promptHistoryQueries.infinite.all(),
     });
   }, []);
@@ -85,7 +85,7 @@ export function PromptHistoryCommandMenuContent() {
 
       if (prompt == null) return;
 
-      deleteItem(prompt.id);
+      void deleteItem(prompt.id);
     },
     {
       enableOnFormTags: true,
@@ -95,6 +95,7 @@ export function PromptHistoryCommandMenuContent() {
 
   const { getContentProps } = usePopoverContext();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const placement = (getContentProps() as any)["data-placement"] as
     | `bottom-${string}`
     | `top-${string}`

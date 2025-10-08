@@ -16,7 +16,7 @@ import { z } from "zod";
  * @param defaults The default values to use when data is missing or invalid.
  * @returns An object containing merged data where valid values from data override defaults.
  */
-export function safeMerge<T extends z.ZodObject<any>>(
+export function safeMerge<T extends z.ZodObject>(
   schema: T,
   data: unknown,
   defaults: z.infer<T>,
@@ -26,7 +26,7 @@ export function safeMerge<T extends z.ZodObject<any>>(
   }
 
   const dataObj = data as Record<string, unknown>;
-  const result: Record<string, any> = merge({}, defaults);
+  const result: Record<string, unknown> = merge({}, defaults);
 
   for (const [key, fieldSchema] of Object.entries(schema.shape)) {
     if (Object.prototype.hasOwnProperty.call(dataObj, key)) {
@@ -39,7 +39,11 @@ export function safeMerge<T extends z.ZodObject<any>>(
         result[key] !== null &&
         typeof result[key] === "object"
       ) {
-        result[key] = safeMerge(fieldSchema, fieldValue, result[key]);
+        result[key] = safeMerge(
+          fieldSchema,
+          fieldValue,
+          result[key] as Record<string, unknown>,
+        );
       } else {
         const fieldResult = (fieldSchema as z.ZodType).safeParse(fieldValue);
         if (fieldResult.success) {

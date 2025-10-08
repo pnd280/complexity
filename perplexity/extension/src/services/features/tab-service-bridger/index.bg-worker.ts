@@ -8,7 +8,7 @@ import { onMessage } from "@/types/chrome-runtime-message";
 
 declare module "@/types/chrome-runtime-message" {
   interface EventHandlers {
-    registerBgBridgeService: ({ namespace }: { namespace: string }) => void;
+    registerBgBridgeService: (params: { namespace: string }) => void;
   }
 }
 

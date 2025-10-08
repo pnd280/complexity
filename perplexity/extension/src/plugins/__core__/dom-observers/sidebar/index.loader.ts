@@ -19,7 +19,7 @@ export default function () {
     loader: ({ "cache:corePlugins:enableStates": corePluginsEnableStates }) => {
       if (!corePluginsEnableStates["domObservers:sidebar"]) return;
 
-      observeSidebar();
+      void observeSidebar();
     },
   });
 }

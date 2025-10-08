@@ -7,7 +7,7 @@ type ErrorWrapperResult<T> = [T, null] | [null, Error];
  * @returns A wrapped version of the callback that returns [result, error]
  */
 export function errorWrapper<TResult>(
-  callback: () => TResult extends Promise<any> ? never : TResult,
+  callback: () => TResult extends Promise<unknown> ? never : TResult,
   errorMessage?: string,
 ): () => ErrorWrapperResult<TResult>;
 export function errorWrapper<TResult>(

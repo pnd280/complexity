@@ -57,7 +57,7 @@ export function usePluginCard(pluginId: PluginId) {
   }, [pluginId, settings, pluginsStates]);
 
   const navigateToPluginDetails = useCallback(() => {
-    navigate(
+    void navigate(
       `/plugins/${uiRouteSegment}?${new URLSearchParams(searchParams)}`,
       {
         state: {

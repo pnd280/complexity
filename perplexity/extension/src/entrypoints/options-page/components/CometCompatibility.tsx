@@ -12,7 +12,7 @@ export default function CometCompatibility() {
 
   const handleClick = () => {
     setHasBeenClicked(true);
-    chrome.tabs.create({
+    void chrome.tabs.create({
       url: "https://github.com/pnd280/complexity/blob/nxt/perplexity/extension/docs/comet-enable-extensions.md",
       active: true,
     });

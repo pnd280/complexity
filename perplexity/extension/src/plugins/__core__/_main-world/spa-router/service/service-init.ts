@@ -47,7 +47,7 @@ export const SpaRouterService = {
   },
   get Instance(): ComctxProxy<SpaRouterServiceType> {
     return isMainWorldContext()
-      ? (getSpaRouterRootService() as any)
+      ? (getSpaRouterRootService() as unknown as ComctxProxy<SpaRouterServiceType>)
       : getSpaRouterProxyService();
   },
 };

@@ -42,6 +42,7 @@ export default function ExportDataButtons() {
   const handleSaveAsFile = useCallback(async () => {
     try {
       const settings = await getExportData();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const handle = await (window as any).showSaveFilePicker({
         suggestedName: `complexity-settings-${new Date().toISOString()}.json`,
         types: [

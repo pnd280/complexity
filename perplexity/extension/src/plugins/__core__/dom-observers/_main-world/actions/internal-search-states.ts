@@ -69,7 +69,7 @@ function getStatesNodePath({
 }: {
   remoteStatesFiberPath?: string[];
   remoteValidationFiberPath?: string[];
-}): any {
+}) {
   const validationPath =
     remoteValidationFiberPath ?? localInternalSearchStatesValidateFiberPath;
   const statesPath =

@@ -12,7 +12,6 @@ declare module "@/__registries__/plugins/meta.types" {
 const schema = z.object({
   enabled: z.boolean(),
   persistent: z.boolean(),
-  lastState: z.boolean(),
   alwaysHideRelatedQuestions: z.boolean(),
   hotkey: z.array(z.string()),
 });
@@ -39,7 +38,6 @@ export default definePlugin({
     fallback: {
       enabled: false,
       persistent: false,
-      lastState: false,
       alwaysHideRelatedQuestions: false,
       hotkey: [getPlatform() === "mac" ? Key.Meta : Key.Control, Key.Alt, "z"],
     },

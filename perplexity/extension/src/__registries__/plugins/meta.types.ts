@@ -29,14 +29,14 @@ export type PluginMeta<T extends PluginId> = {
   };
 
   extensionPermissions?: {
-    requiredPermissions?: ReadonlyArray<{
+    requiredPermissions?: readonly {
       permission: chrome.runtime.ManifestPermissions;
       rationale: string;
-    }>;
-    optionalPermissions?: ReadonlyArray<{
+    }[];
+    optionalPermissions?: readonly {
       permission: chrome.runtime.ManifestPermissions;
       rationale: string;
-    }>;
+    }[];
   };
 };
 
@@ -81,7 +81,7 @@ export type PluginIndexedDbVersion = {
 
 export type PluginIndexedDbConfig = {
   versions: PluginIndexedDbVersion[];
-  schema?: z.ZodType<any>;
+  schema?: z.ZodType<unknown>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

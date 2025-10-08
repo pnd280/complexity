@@ -31,7 +31,7 @@ export const internalSearchStatesObserverStore =
           selectedModel: null,
           searchMode: "search",
           setInternalSearchStates(state) {
-            DomObserversMainWorldActions.Instance.setInternalSearchStates({
+            void DomObserversMainWorldActions.Instance.setInternalSearchStates({
               states: {
                 selectedModel: state.selectedModel,
                 searchMode: state.searchMode,

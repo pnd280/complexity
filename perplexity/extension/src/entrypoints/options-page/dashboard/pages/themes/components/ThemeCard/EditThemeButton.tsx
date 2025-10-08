@@ -22,7 +22,7 @@ export default function ThemeCardEditButton({
         onClick={(e) => {
           e.stopPropagation();
 
-          navigate(`${theme.id}/edit`);
+          void navigate(`${theme.id}/edit`);
         }}
       >
         <LuSettings2 />

@@ -11,4 +11,4 @@ initXhrInterceptor();
 initWebSocketInterceptor();
 initBeaconInterceptor();
 
-NetworkInterceptMiddlewareManagerService.Proxy.setOverridesReady(true);
+void NetworkInterceptMiddlewareManagerService.Proxy.setOverridesReady(true);

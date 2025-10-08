@@ -59,7 +59,7 @@ export default function () {
 
 const invalidateSettings = debounce(() => {
   setTimeout(() => {
-    queryClient.invalidateQueries({
+    void queryClient.invalidateQueries({
       queryKey: pplxApiQueries.userSettings.all(),
     });
   }, 3000);

@@ -6,6 +6,6 @@ import { contentScriptGuards } from "@/entrypoints/content-scripts/guards";
 
 $(() => {
   contentScriptGuards();
-  executeLibCsLoaders();
-  executeCsLoaders();
+  void executeLibCsLoaders();
+  void executeCsLoaders();
 });

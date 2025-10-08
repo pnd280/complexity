@@ -75,7 +75,7 @@ export const persistQueryClient = debounce(
 
     isFreshSession = false;
 
-    persistQueryClientSave({
+    void persistQueryClientSave({
       queryClient,
       persister,
       buster: APP_CONFIG.VERSION,
@@ -96,7 +96,7 @@ const INCLUDE_KEYS = [
     initialPageParam: 0,
     searchValue: "",
   }).queryKey,
-] as unknown as any[][];
+];
 
 export function setQueriesDefaults(queryClient: QueryClient) {
   queryClient.setQueryDefaults(cplxApiQueries.all(), {
@@ -127,7 +127,9 @@ function shouldDehydrateQuery(query: Query) {
   }
 
   const shouldPersist = INCLUDE_KEYS.some(
-    (query) => Array.isArray(queryKey) && isSubArray(query, queryKey),
+    (query) =>
+      Array.isArray(queryKey) &&
+      isSubArray(query as unknown as unknown[], queryKey),
   );
 
   return shouldPersist;
@@ -138,6 +140,6 @@ export async function invalidateQueryClientCache({
 }: {
   newCacheBuster?: string;
 } = {}) {
-  storage.setItem(softCacheBusterKey, newCacheBuster ?? "invalidated");
-  QueryCacheService.Instance.delete("reactQuery");
+  void storage.setItem(softCacheBusterKey, newCacheBuster ?? "invalidated");
+  void QueryCacheService.Instance.delete("reactQuery");
 }

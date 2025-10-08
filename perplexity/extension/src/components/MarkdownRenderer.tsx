@@ -2,6 +2,7 @@ import type { HTMLAttributes, ComponentPropsWithoutRef } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import type { Pluggable } from "unified";
 
 type MarkdownComponents = ComponentPropsWithoutRef<
   typeof ReactMarkdown
@@ -10,8 +11,8 @@ type MarkdownComponents = ComponentPropsWithoutRef<
 export interface MarkdownRendererProps extends HTMLAttributes<HTMLDivElement> {
   markdown: string;
   components?: MarkdownComponents;
-  remarkPlugins?: any[];
-  rehypePlugins?: any[];
+  remarkPlugins?: Pluggable[];
+  rehypePlugins?: Pluggable[];
 }
 
 export default function MarkdownRenderer({

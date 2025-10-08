@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
-import type { PluginsSettingsSchema } from "@/__registries__/plugins/meta.types";
+import type { PluginsSettingsRegistry } from "@/__registries__/plugins/meta.types";
 import { EXTENSION_ICON_ACTIONS } from "@/data/dashboard/extension-storage";
 
 export const ExtensionSettingsSchema = z.object({
   plugins:
-    PluginManifestsRegistry.settingsZodSchema as unknown as z.ZodType<PluginsSettingsSchema>,
+    PluginManifestsRegistry.settingsZodSchema as unknown as z.ZodType<PluginsSettingsRegistry>,
   theme: z.string(),
   energySavingMode: z.boolean(),
   extensionIconAction: z.enum(EXTENSION_ICON_ACTIONS),

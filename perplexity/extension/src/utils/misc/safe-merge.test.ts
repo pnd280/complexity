@@ -175,9 +175,13 @@ describe("safeMerge function", () => {
         },
       },
     });
-    expect((result as any).extraField).toBeUndefined();
-    expect((result.preferences as any).anotherExtra).toBeUndefined();
-    expect((result.preferences.nested as any).yetAnotherExtra).toBeUndefined();
+    expect((result as Record<string, unknown>).extraField).toBeUndefined();
+    expect(
+      (result.preferences as Record<string, unknown>).anotherExtra,
+    ).toBeUndefined();
+    expect(
+      (result.preferences.nested as Record<string, unknown>).yetAnotherExtra,
+    ).toBeUndefined();
   });
 
   test("handles null and undefined", () => {

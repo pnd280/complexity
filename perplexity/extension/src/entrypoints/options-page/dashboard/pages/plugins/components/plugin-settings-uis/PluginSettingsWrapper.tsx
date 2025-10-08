@@ -70,7 +70,7 @@ function useNavigateAwayOnInvalidRoute({ pluginId }: { pluginId?: PluginId }) {
 
   useEffect(() => {
     if (!pluginId) {
-      navigate("/plugins", { replace: true });
+      void navigate("/plugins", { replace: true });
     }
   }, [pluginId, navigate]);
 }

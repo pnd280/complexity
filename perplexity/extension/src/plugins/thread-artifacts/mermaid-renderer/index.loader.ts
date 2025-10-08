@@ -16,7 +16,7 @@ export default function () {
     loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["thread:artifacts"]) return;
 
-      injectMainWorldScript({
+      void injectMainWorldScript({
         url: chrome.runtime.getURL(mermaidRendererPlugin),
         head: true,
       });

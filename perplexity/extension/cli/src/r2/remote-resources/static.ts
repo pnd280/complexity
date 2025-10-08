@@ -49,8 +49,10 @@ async function processSingleResourceFile(params: {
         resource,
       });
     }
-  } catch (error: any) {
-    logger.error(`Error processing file ${filePath}: ${error.message}`);
+  } catch (error) {
+    logger.error(
+      `Error processing file ${filePath}: ${error instanceof Error ? error.message : String(error)}`,
+    );
     return;
   }
 }
@@ -73,9 +75,9 @@ async function registerResource(params: {
     fs.writeFileSync(resourceFilePath, content);
 
     logger.success(`${resource.resourcePath} registered`);
-  } catch (error: any) {
+  } catch (error) {
     logger.error(
-      `Failed to register resource ${resource.resourcePath}: ${error.message}`,
+      `Failed to register resource ${resource.resourcePath}: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
 }

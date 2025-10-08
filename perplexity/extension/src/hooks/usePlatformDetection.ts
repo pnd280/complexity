@@ -7,7 +7,9 @@ export default function usePlatformDetection(): Platform {
 export const getPlatform = () => {
   if (typeof navigator === "undefined") return "windows";
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((navigator as any).userAgentData?.platform != null) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const platform = (navigator as any).userAgentData.platform;
     if (/macOS/.test(platform)) return "mac";
     if (/Linux/.test(platform)) return "linux";

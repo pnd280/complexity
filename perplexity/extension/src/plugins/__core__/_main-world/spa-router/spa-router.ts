@@ -18,19 +18,22 @@ export function proxySpaRouter() {
 
   history.pushState = function (...args) {
     const result = originalPushState.apply(this, args);
-    dispatchRouteChange({ trigger: "push", newUrl: window.location.href });
+    void dispatchRouteChange({ trigger: "push", newUrl: window.location.href });
     return result;
   };
 
   history.replaceState = function (...args) {
     const result = originalReplaceState.apply(this, args);
-    dispatchRouteChange({ trigger: "replace", newUrl: window.location.href });
+    void dispatchRouteChange({
+      trigger: "replace",
+      newUrl: window.location.href,
+    });
 
     return result;
   };
 
   window.addEventListener("popstate", () => {
-    dispatchRouteChange({ trigger: "pop", newUrl: window.location.href });
+    void dispatchRouteChange({ trigger: "pop", newUrl: window.location.href });
   });
 
   applyRouteIdAttribute(whereAmI());

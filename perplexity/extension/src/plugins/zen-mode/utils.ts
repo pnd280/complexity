@@ -14,9 +14,7 @@ export function toggleZenMode(forceState?: boolean): boolean {
   $("body").attr("data-cplx-zen-mode", newZenMode);
 
   if (ExtensionSettingsService.cachedSync?.plugins["zenMode"].persistent) {
-    ExtensionSettingsService.set((draft) => {
-      draft.plugins["zenMode"].lastState = newZenMode === "true";
-    });
+    localStorage.setItem("cplx.zen-mode.last-state", newZenMode);
   }
 
   setTimeout(() => {

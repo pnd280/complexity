@@ -50,7 +50,7 @@ export const MermaidRendererService = {
   },
   get Instance(): ComctxProxy<MermaidRendererServiceType> {
     return isMainWorldContext()
-      ? (getMermaidRendererRootService() as any)
+      ? (getMermaidRendererRootService() as unknown as ComctxProxy<MermaidRendererServiceType>)
       : getMermaidRendererProxyService();
   },
 };

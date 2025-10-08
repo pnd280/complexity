@@ -9,7 +9,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-export default function loader() {
+export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:thread:customThreadContainerWidth",
     dependencies: ["cache:pluginsEnableStates"],

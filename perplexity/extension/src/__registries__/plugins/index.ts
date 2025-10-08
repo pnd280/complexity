@@ -16,7 +16,6 @@ import type {
   PluginMeta,
   PluginMetaMap,
   PluginsSettingsRegistry,
-  PluginsSettingsSchema,
 } from "@/__registries__/plugins/meta.types";
 import type { PluginManifest } from "@/__registries__/plugins/types";
 import { APP_CONFIG } from "@/app.config";
@@ -25,7 +24,7 @@ import { invariant } from "@/utils/misc/utils";
 export class PluginManifestsRegistry {
   static meta: PluginMetaMap = {} as PluginMetaMap;
   static settingsZodSchema = z.object({});
-  static settingsFallbackValues = {} as PluginsSettingsSchema;
+  static settingsFallbackValues = {} as PluginsSettingsRegistry;
   private static LATEST_INDEXED_DB_VERSION = 8;
   static indexedDbVersions: Record<
     number,
@@ -34,7 +33,8 @@ export class PluginManifestsRegistry {
       upgrades: Array<(tx: Transaction) => Promise<void> | void>;
     }
   > = {};
-  static indexedDbTableValidationSchemas: Record<string, z.ZodType<any>> = {};
+  static indexedDbTableValidationSchemas: Record<string, z.ZodType<unknown>> =
+    {};
 
   static pluginDependenciesCache = new Map<PluginId, Set<PluginId>>();
 
@@ -70,7 +70,7 @@ export class PluginManifestsRegistry {
     id: T;
     manifest: PluginMeta<T>;
     settingsSchema: z.ZodType;
-    settingsFallback: PluginsSettingsSchema[T];
+    settingsFallback: PluginsSettingsRegistry[T] | z.input<z.ZodType>;
     indexedDb?: PluginIndexedDbConfig;
   }): void {
     (this.meta as Record<T, PluginMeta<T>>)[params.id] = params.manifest;
@@ -79,9 +79,9 @@ export class PluginManifestsRegistry {
       [params.id]: params.settingsSchema,
     });
 
-    (this.settingsFallbackValues as Record<T, PluginsSettingsSchema[T]>)[
+    (this.settingsFallbackValues as Record<T, PluginsSettingsRegistry[T]>)[
       params.id
-    ] = params.settingsFallback;
+    ] = params.settingsFallback as PluginsSettingsRegistry[T];
 
     // Accumulate IndexedDB schemas by version, preventing conflicts
     if (params.indexedDb) {

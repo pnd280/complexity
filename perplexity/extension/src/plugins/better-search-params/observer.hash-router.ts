@@ -40,7 +40,7 @@ const betterSearchParamsRouterRoute: RouteObject = {
 
           url.searchParams.set("q", query);
 
-          softNavigate(url.toString());
+          void softNavigate(url.toString());
 
           return true;
         },

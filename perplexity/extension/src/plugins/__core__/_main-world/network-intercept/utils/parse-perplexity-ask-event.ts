@@ -5,6 +5,7 @@ import {
 import { jsonUtils } from "@/utils/misc/utils";
 
 type PplxAskEvent = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any;
   query_str: string;
   webSocketMessageId?: number;
@@ -81,7 +82,7 @@ export function encodePerplexityAskEvent({
   return encodeWebSocketData({ newPayload });
 }
 
-function encodeSSEPayload({ newPayload }: { newPayload: any }): string {
+function encodeSSEPayload({ newPayload }: { newPayload: unknown }): string {
   return JSON.stringify(newPayload);
 }
 

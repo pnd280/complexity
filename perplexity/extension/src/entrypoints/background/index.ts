@@ -1,5 +1,6 @@
 import { setupBackgroundWorkers } from "@/__registries__/bg-workers";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (globalThis as any).isBackgroundScript = true;
 
 setupBackgroundWorkers();

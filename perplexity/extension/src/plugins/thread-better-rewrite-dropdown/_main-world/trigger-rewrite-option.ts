@@ -32,7 +32,7 @@ export async function triggerRewriteOption(params: {
       maxDepth: 100,
       cache: false,
     },
-  ) as any;
+  );
 
   if (fiberNode == null) return false;
 

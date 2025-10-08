@@ -13,17 +13,17 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 
 let cleanup: () => void | null;
 
-export default function loader() {
+export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:thread:rawHeadings",
     dependencies: ["cache:pluginsEnableStates"],
     loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["thread:rawHeadings"]) return;
 
-      rawHeadings(whereAmI());
+      void rawHeadings(whereAmI());
 
       spaRouteChangeCompleteSubscribe((url) => {
-        rawHeadings(whereAmI(url));
+        void rawHeadings(whereAmI(url));
       });
     },
   });

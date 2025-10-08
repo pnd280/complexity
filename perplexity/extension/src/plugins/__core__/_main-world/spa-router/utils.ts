@@ -46,11 +46,11 @@ export async function waitForRouteChangeComplete(
 }
 
 export async function softNavigate(url: string) {
-  SpaRouterService.Instance.push(url);
+  void SpaRouterService.Instance.push(url);
 }
 
 export async function openInNewTab(url: string) {
-  SpaRouterService.Instance.openInNewTab(url);
+  void SpaRouterService.Instance.openInNewTab(url);
 }
 
 export const spaRouterStoreSubscribe = spaRouterStore.subscribe;

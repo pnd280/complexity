@@ -15,7 +15,7 @@ export function useExtensionSettingsMutation() {
     mutationKey: ["updateExtensionSettings"],
     mutationFn: ExtensionSettingsService.set,
     onSettled: () => {
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: extensionSettingsQueries.all(),
         exact: true,
       });

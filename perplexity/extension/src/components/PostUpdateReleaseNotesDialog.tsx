@@ -29,7 +29,7 @@ export function PostUpdateReleaseNotesDialog() {
   );
 
   useEffect(() => {
-    ExtensionSettingsService.set((draft) => {
+    void ExtensionSettingsService.set((draft) => {
       draft.isPostUpdateReleaseNotesPopupDismissed = true;
     });
   }, []);
@@ -51,7 +51,7 @@ export function PostUpdateReleaseNotesDialog() {
         <DialogFooter>
           <DontShowAgainForFutureUpdatesConfirmDialog
             onConfirm={() => {
-              ExtensionSettingsService.set((draft) => {
+              void ExtensionSettingsService.set((draft) => {
                 draft.showPostUpdateReleaseNotesPopup = false;
                 draft.isPostUpdateReleaseNotesPopupDismissed = true;
               });

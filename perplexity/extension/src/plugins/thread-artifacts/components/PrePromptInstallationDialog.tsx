@@ -70,7 +70,7 @@ export function ArtifactsPrePromptInstallationDialog() {
         }),
       )();
 
-      softNavigate(`/spaces/${data.slug}`);
+      void softNavigate(`/spaces/${data.slug}`);
     },
     onError: () => {
       toast({
@@ -78,7 +78,7 @@ export function ArtifactsPrePromptInstallationDialog() {
       });
     },
     onSettled: () => {
-      navigate("/");
+      void navigate("/");
     },
   });
 
@@ -88,7 +88,7 @@ export function ArtifactsPrePromptInstallationDialog() {
       closeOnInteractOutside={false}
       closeOnEscape={false}
       onExitComplete={() => {
-        navigate("/");
+        void navigate("/");
       }}
     >
       <DialogContent className="x:max-w-max">

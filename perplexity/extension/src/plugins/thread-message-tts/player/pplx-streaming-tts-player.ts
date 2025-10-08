@@ -231,7 +231,7 @@ export class PplxStreamingTtsPlayer {
             }, latencyMs);
           } else {
             // If no latency info, call immediately
-            this.onAudioStart();
+            void this.onAudioStart();
           }
         }
 
@@ -258,7 +258,7 @@ export class PplxStreamingTtsPlayer {
       autoPlay &&
       (this.audioChunks.length >= this.minChunkBuffer || this.isPlayingChunks)
     ) {
-      this.processChunkQueue();
+      void this.processChunkQueue();
     }
   }
 
@@ -278,7 +278,7 @@ export class PplxStreamingTtsPlayer {
       if (this.verbose) {
         console.log("Starting playback of remaining chunks");
       }
-      this.processChunkQueue();
+      void this.processChunkQueue();
     }
   }
 
@@ -291,7 +291,7 @@ export class PplxStreamingTtsPlayer {
     }
 
     if (this.audioContext && this.audioContext.state !== "closed") {
-      this.audioContext.close();
+      void this.audioContext.close();
       this.audioContext = null;
     }
 

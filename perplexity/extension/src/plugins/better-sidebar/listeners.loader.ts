@@ -20,7 +20,7 @@ export default function () {
           if (!pluginsEnableStates["betterSidebar"]) return;
 
           setCookie("isSidebarPinned", open.toString(), 365);
-          applyLayoutShiftPreventionInstantCss({
+          void applyLayoutShiftPreventionInstantCss({
             enabled: true,
           });
         },

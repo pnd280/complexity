@@ -62,7 +62,7 @@ export default function () {
             prompt: promptString,
           });
 
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: promptHistoryQueries.list.all(),
             exact: true,
           });

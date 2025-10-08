@@ -24,7 +24,7 @@ export async function getRemoteResource<T>(
 
   if (error) return resourceConfig.fallback;
 
-  persistQueryClient({ queryClient });
+  void persistQueryClient({ queryClient });
 
   return resource;
 }

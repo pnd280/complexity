@@ -9,7 +9,7 @@ export default function NotFoundPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/plugins");
+      void navigate("/plugins");
     }, 5000);
 
     return () => clearTimeout(timer);

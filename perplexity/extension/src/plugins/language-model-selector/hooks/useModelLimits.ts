@@ -11,7 +11,7 @@ export function useModelLimits() {
     (model: LanguageModel): number | null => {
       const limitKey = model.limitKey;
       if (!limitKey) return null;
-      return (data as any)?.[limitKey];
+      return Number(data?.[limitKey as keyof typeof data]);
     },
     [data],
   );

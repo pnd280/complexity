@@ -41,7 +41,7 @@ export const QueryCacheService = {
   },
   get Instance(): QueryCacheServiceType {
     return isBackgroundScript()
-      ? (getQueryCacheRootService() as any)
+      ? getQueryCacheRootService()
       : getQueryCacheProxyService();
   },
 };

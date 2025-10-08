@@ -107,8 +107,8 @@ export class MarkmapRendererServiceImpl {
             root,
           );
         } else {
-          this.currentMarkmapInstance?.setData(root);
-          this.currentMarkmapInstance?.fit();
+          await this.currentMarkmapInstance?.setData(root);
+          await this.currentMarkmapInstance?.fit();
         }
 
         return {
@@ -117,7 +117,7 @@ export class MarkmapRendererServiceImpl {
       } catch (error) {
         return {
           success: false,
-          error: (error as any).str,
+          error: error instanceof Error ? error.message : String(error),
         };
       }
     },

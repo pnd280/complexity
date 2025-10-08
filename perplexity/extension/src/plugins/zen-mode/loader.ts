@@ -34,7 +34,7 @@ export default async function () {
       if (settings?.plugins["zenMode"].persistent) {
         $(document.body).attr(
           "data-cplx-zen-mode",
-          settings?.plugins["zenMode"].lastState.toString() ?? "false",
+          localStorage.getItem("cplx.zen-mode.last-state") ?? "false",
         );
       }
 

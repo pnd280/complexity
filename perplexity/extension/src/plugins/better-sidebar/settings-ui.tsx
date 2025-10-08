@@ -15,7 +15,7 @@ export default function BetterSidebarPluginSettingsUi() {
   const [instantCssServiceActive, setInstantCssServiceActive] = useState(false);
 
   useEffect(() => {
-    InstantCssService.hasPermissions().then(setInstantCssServiceActive);
+    void InstantCssService.hasPermissions().then(setInstantCssServiceActive);
   }, []);
 
   return (

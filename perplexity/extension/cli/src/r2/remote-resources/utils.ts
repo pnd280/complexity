@@ -53,8 +53,10 @@ export function readResourceListing(params?: {
   try {
     const content = fs.readFileSync(filePath, "utf8");
     return JSON.parse(content) as ResourceListing;
-  } catch (error: any) {
-    throw new Error(`Failed to read or parse ${filePath}: ${error.message}`);
+  } catch (error) {
+    throw new Error(
+      `Failed to read or parse ${filePath}: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
@@ -69,9 +71,9 @@ export function writeResourceListing(params: {
     const content = JSON.stringify(listing, null, 2);
     fs.writeFileSync(filePath, content);
     logger.verbose("Updated resource listing");
-  } catch (error: any) {
+  } catch (error) {
     throw new Error(
-      `Failed to write updated listing to ${filePath}: ${error.message}`,
+      `Failed to write updated listing to ${filePath}: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
 }
@@ -120,8 +122,8 @@ export function updateListingData(params: {
 
 export async function getResourceContent(params: {
   resource:
-    | VersionedRemoteResourceReturnType<any>
-    | RemoteResourceReturnType<any>;
+    | VersionedRemoteResourceReturnType<unknown>
+    | RemoteResourceReturnType<unknown>;
 }): Promise<string> {
   const { resource } = params;
 
@@ -153,15 +155,15 @@ export async function getResourceContent(params: {
         );
         return resource.fallback as string;
     }
-  } catch (error: any) {
+  } catch (error) {
     if (isVersionedRemoteResource(resource)) {
       logger.error(
-        `Failed to get content for resource ${resource.name} (type: ${resource.type}): ${error.message}`,
+        `Failed to get content for resource ${resource.name} (type: ${resource.type}): ${error instanceof Error ? error.message : String(error)}`,
       );
       throw new Error(`Content generation failed for ${resource.name}`); // Re-throw to signal failure
     } else if (isRemoteResource(resource)) {
       logger.error(
-        `Failed to get content for resource ${resource.resourcePath} (type: ${resource.type}): ${error.message}`,
+        `Failed to get content for resource ${resource.resourcePath} (type: ${resource.type}): ${error instanceof Error ? error.message : String(error)}`,
       );
       throw new Error(`Content generation failed for ${resource.resourcePath}`); // Re-throw to signal failure
     } else {
@@ -172,7 +174,7 @@ export async function getResourceContent(params: {
 
 export function isVersionedRemoteResource(
   resourceConfig: unknown,
-): resourceConfig is VersionedRemoteResourceReturnType<any> {
+): resourceConfig is VersionedRemoteResourceReturnType<unknown> {
   return (
     typeof resourceConfig === "object" &&
     resourceConfig != null &&
@@ -183,6 +185,6 @@ export function isVersionedRemoteResource(
 
 export function isRemoteResource(
   resourceConfig: unknown,
-): resourceConfig is RemoteResourceReturnType<any> {
+): resourceConfig is RemoteResourceReturnType<unknown> {
   return !isVersionedRemoteResource(resourceConfig);
 }

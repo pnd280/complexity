@@ -45,14 +45,14 @@ export class InstantCssCoordinator {
 
     if (params.css == null || !params.css.length) return;
 
-    chrome.scripting.insertCSS({
+    void chrome.scripting.insertCSS({
       target: { tabId },
       css,
     });
 
     if (removeAfter != null && removeAfter > 0) {
       setTimeout(() => {
-        this.removeCss({
+        void this.removeCss({
           tabId,
           css,
         });
@@ -65,7 +65,7 @@ export class InstantCssCoordinator {
 
     if (params.css == null || !params.css.length) return;
 
-    chrome.scripting.removeCSS({
+    void chrome.scripting.removeCSS({
       target: { tabId },
       css: params.css,
     });

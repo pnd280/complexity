@@ -143,7 +143,7 @@ export const whereAmI = (() => {
   };
 })();
 
-export function isDomNode(element: any): element is HTMLElement | Element {
+export function isDomNode(element: unknown): element is HTMLElement | Element {
   return element instanceof HTMLElement || element instanceof Element;
 }
 
@@ -164,6 +164,7 @@ export function isInContentScript() {
 }
 
 export function isBackgroundScript(): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (globalThis as any).isBackgroundScript;
 }
 
@@ -179,7 +180,11 @@ export function requestIdleCallbacks(...tasks: (() => void)[]) {
   );
 }
 
-export function invariant(condition: any, message?: string): asserts condition {
+export function invariant(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  condition: any,
+  message?: string,
+): asserts condition {
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!condition) {
     throw new Error(message);
@@ -251,7 +256,7 @@ export function waitUntil(params: {
 
     const intervalId = setInterval(checkCondition, interval);
 
-    checkCondition();
+    void checkCondition();
 
     setTimeout(() => {
       clearInterval(intervalId);

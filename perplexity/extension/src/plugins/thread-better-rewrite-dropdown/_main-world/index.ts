@@ -52,7 +52,9 @@ export const BetterRewriteDropdownsMainWorldActions = {
     return getProxyService();
   },
   get Instance(): ComctxProxy<typeof Implementation> {
-    return isMainWorldContext() ? (getRootService() as any) : getProxyService();
+    return isMainWorldContext()
+      ? (getRootService() as unknown as ComctxProxy<typeof Implementation>)
+      : getProxyService();
   },
 };
 

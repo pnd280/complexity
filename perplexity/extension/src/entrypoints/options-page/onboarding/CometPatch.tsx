@@ -32,7 +32,7 @@ export default function CometPatch() {
           <Button
             variant="ghost"
             onClick={() => {
-              chrome.tabs.create({
+              void chrome.tabs.create({
                 url: "https://github.com/pnd280/complexity/blob/nxt/perplexity/extension/docs/articles/comet-enable-extensions-article.md",
                 active: false,
               });

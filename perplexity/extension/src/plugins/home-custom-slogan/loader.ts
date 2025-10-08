@@ -54,7 +54,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-export default function loader() {
+export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:home:customSlogan",
     dependencies: ["cache:pluginsEnableStates"],
@@ -65,7 +65,7 @@ export default function loader() {
         (store) => store.slogan,
         (slogan) => {
           if (!slogan || !document.body.contains(slogan)) return;
-          setupCustomSlogan({ location: whereAmI(), slogan });
+          void setupCustomSlogan({ location: whereAmI(), slogan });
         },
       );
     },

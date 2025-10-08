@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type ComctxProxy<T> = {
   [K in keyof T as T[K] extends (...args: any[]) => any
     ? K

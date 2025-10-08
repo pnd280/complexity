@@ -59,9 +59,9 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
         className="x:flex-col x:items-start x:justify-center x:gap-2"
         onSelect={() => {
           if (isHotkeyPressed(Key.Alt)) {
-            openInNewTab(`/search/${thread.slug}`);
+            void openInNewTab(`/search/${thread.slug}`);
           } else {
-            softNavigate(`/search/${thread.slug}`);
+            void softNavigate(`/search/${thread.slug}`);
           }
 
           commandMenuStore.getState().setOpen(false);

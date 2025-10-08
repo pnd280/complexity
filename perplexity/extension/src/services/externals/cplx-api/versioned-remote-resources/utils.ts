@@ -29,7 +29,7 @@ export async function getVersionedRemoteResource<T>(
     }),
   )();
 
-  persistQueryClient({ queryClient });
+  void persistQueryClient({ queryClient });
 
   if (error) return resourceConfig.fallback;
 

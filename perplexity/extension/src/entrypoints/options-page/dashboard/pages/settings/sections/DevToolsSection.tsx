@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import SettingsItem from "@/entrypoints/options-page/dashboard/pages/settings/SettingsItem";
 import SettingsSection from "@/entrypoints/options-page/dashboard/pages/settings/SettingsSection";
+import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export default function DevToolsSection() {
@@ -38,12 +39,14 @@ export default function DevToolsSection() {
             sameWidth: true,
           }}
           onValueChange={({ value }) =>
-            mutation.mutate((store) => {
-              if (store.devTools == null) {
-                store.devTools = {};
+            mutation.mutate((state) => {
+              if (state.devTools == null) {
+                state.devTools = {};
               }
 
-              store.devTools.overrideSubscriptionTier = value[0] as any;
+              state.devTools.overrideSubscriptionTier = value[0] as NonNullable<
+                ExtensionSettings["devTools"]
+              >["overrideSubscriptionTier"];
             })
           }
         >

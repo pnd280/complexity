@@ -24,7 +24,7 @@ export function IndexPage() {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0]?.isIntersecting) {
-            loadNextVersions();
+            void loadNextVersions();
           }
         },
         { threshold: 0.1 },

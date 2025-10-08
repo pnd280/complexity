@@ -5,15 +5,15 @@ import {
 import { InstantCssService } from "@/services/features/instant-css";
 
 export default function () {
-  handler();
+  void handler();
   chrome.permissions.onAdded.addListener(handler);
   chrome.permissions.onRemoved.addListener(handler);
 }
 
 async function handler() {
   if (await InstantCssService.hasPermissions()) {
-    initInstantCssBackgroundWatchdog();
+    void initInstantCssBackgroundWatchdog();
   } else {
-    removeInstantCssBackgroundWatchdog();
+    void removeInstantCssBackgroundWatchdog();
   }
 }

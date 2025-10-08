@@ -29,7 +29,7 @@ export class InstantCssInjectorServiceImpl {
       const entries = await getProcessedCssEntries();
 
       for (const { id, css, removeAfter, enabled } of entries) {
-        InstantCssInjectorServiceImpl.injectCss({
+        void InstantCssInjectorServiceImpl.injectCss({
           id: id as keyof InstantCssSettings,
           tabId,
           css,
@@ -83,7 +83,7 @@ export class InstantCssInjectorServiceImpl {
       "This method is not allowed in content script",
     );
 
-    InstantCssInjectorServiceImpl.removeListeners();
+    void InstantCssInjectorServiceImpl.removeListeners();
 
     if (!(await InstantCssInjectorServiceImpl.hasPermissions())) return;
 

@@ -1,10 +1,12 @@
 import debounce from "lodash/debounce";
+import type { DeepPartial } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { DeleteLanguageOptionButton } from "@/plugins/thread-better-code-blocks/settings-ui/DeleteLanguageOptionButton";
 import useOptions from "@/plugins/thread-better-code-blocks/settings-ui/useOptions";
+import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
 
 export default function BetterCodeBlockFineGrainedOptions({
   language,
@@ -20,7 +22,7 @@ export default function BetterCodeBlockFineGrainedOptions({
   const debouncedMutate = useMemo(
     () =>
       debounce(
-        (newDraft: any) =>
+        (newDraft: DeepPartial<BetterCodeBlockFineGrainedOptions>) =>
           mutation.mutate({
             language,
             newDraft,

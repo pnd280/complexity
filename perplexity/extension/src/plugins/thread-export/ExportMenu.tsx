@@ -112,11 +112,11 @@ const ExportMenu = memo(() => {
           <ExportActions
             onDownload={() => {
               setOpen(false);
-              handleDownload(includeCitations);
+              void handleDownload(includeCitations);
             }}
             onCopy={() => {
               setOpen(false);
-              copyThread({
+              void copyThread({
                 withCitations: includeCitations,
                 onComplete: () => {
                   setCopyConfirmText(<TablerCheck className="x:size-4" />);

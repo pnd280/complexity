@@ -34,7 +34,7 @@ export function initBeaconInterceptor() {
 
           const result = originalSendBeacon.call(navigator, url, data);
 
-          NetworkInterceptMiddlewareManagerService.Proxy.noop({
+          void NetworkInterceptMiddlewareManagerService.Proxy.noop({
             data: {
               type: "networkIntercept:beaconEvent",
               event: "response",
@@ -48,7 +48,7 @@ export function initBeaconInterceptor() {
         .catch(() => {
           const result = originalSendBeacon.call(navigator, url, data);
 
-          NetworkInterceptMiddlewareManagerService.Proxy.noop({
+          void NetworkInterceptMiddlewareManagerService.Proxy.noop({
             data: {
               type: "networkIntercept:beaconEvent",
               event: "response",

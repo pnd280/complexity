@@ -2,14 +2,14 @@
 export interface EventHandlers {}
 
 type EventHandlerParams<T extends keyof EventHandlers> =
-  EventHandlers[T] extends () => any
+  EventHandlers[T] extends () => unknown
     ? undefined
-    : EventHandlers[T] extends (params: infer P) => any
+    : EventHandlers[T] extends (params: infer P) => unknown
       ? P
       : never;
 
 type EventHandlerReturn<T extends keyof EventHandlers> =
-  EventHandlers[T] extends (...args: any[]) => infer R ? R : never;
+  EventHandlers[T] extends (...args: unknown[]) => infer R ? R : void;
 
 export type TypedMessage<T extends keyof EventHandlers = keyof EventHandlers> =
   EventHandlerParams<T> extends undefined
@@ -36,7 +36,7 @@ export function onMessage(handlers: {
     const handler = handlers[message.type as keyof typeof handlers];
     if (handler != null) {
       try {
-        sendResponse(handler(message as any, sender));
+        sendResponse(handler(message, sender));
       } catch (error) {
         console.error("Error handling message:", error);
         sendResponse(undefined);

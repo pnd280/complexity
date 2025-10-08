@@ -56,7 +56,7 @@ const CopyButton = memo(function CopyButton({
       unmountOnExit
       positioning={{ placement: "bottom-end" }}
       onSelect={({ value }) => {
-        handleCopy((value as CopyOptions) === "with-citations");
+        void handleCopy((value as CopyOptions) === "with-citations");
       }}
     >
       <Tooltip content={t("plugin-better-copy-buttons.tooltip")}>

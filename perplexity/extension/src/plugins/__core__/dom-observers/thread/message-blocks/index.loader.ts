@@ -134,5 +134,5 @@ function hasContentChanged($threadMessagesContainer: JQuery<HTMLElement>) {
 }
 
 const scheduleObserverForceTrigger = debounce(() => {
-  onMutation();
+  void onMutation();
 }, 100);

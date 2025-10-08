@@ -1,3 +1,4 @@
+import type { Root } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
@@ -12,7 +13,7 @@ import {
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
-const astCache = new Map<string, any>();
+const astCache = new Map<string, Root>();
 const mdAstProcessor = unified().use(remarkParse).use(remarkGfm);
 
 export async function findCodeBlocks(

@@ -97,7 +97,7 @@ export default function RequirePermissionsDialogWrapper({
                 requiredPermissions.map(({ permission }) => permission),
               );
 
-              queryClient.invalidateQueries({
+              void queryClient.invalidateQueries({
                 queryKey: extensionPermissionsQueries.permissions.all(),
               });
 

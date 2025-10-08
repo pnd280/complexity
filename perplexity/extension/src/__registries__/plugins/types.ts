@@ -7,10 +7,10 @@ import type {
   PluginsSettingsSchema,
 } from "@/__registries__/plugins/meta.types";
 
-export type PluginManifest<T extends PluginId> = {
+export type PluginManifest<T extends PluginId = PluginId> = {
   meta: PluginMeta<T>;
   settingsSchema: {
-    schema: ZodType;
+    schema: ZodType<PluginsSettingsSchema[T]>;
     fallback: PluginsSettingsSchema[T];
   };
   indexedDb?: PluginIndexedDbConfig;

@@ -21,7 +21,7 @@ export default function useCdnRemoteResourcesInvalidator({
   useEffect(() => {
     if (!remoteResourcesCacheBuster) return;
 
-    (async () => {
+    void (async () => {
       const softCacheBuster = await storage.getItem<string>(softCacheBusterKey);
 
       if (
@@ -33,9 +33,10 @@ export default function useCdnRemoteResourcesInvalidator({
           return;
         }
 
-        invalidateQueryClientCache({
+        await invalidateQueryClientCache({
           newCacheBuster: remoteResourcesCacheBuster,
         });
+
         console.log("[CPLX] Cache invalidated");
 
         callback?.();

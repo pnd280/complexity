@@ -5,7 +5,7 @@ export default function () {
     const action = (await ExtensionSettingsService.get()).extensionIconAction;
 
     if (action === "perplexity")
-      chrome.tabs.create({ url: "https://perplexity.ai/" });
-    else chrome.runtime.openOptionsPage();
+      void chrome.tabs.create({ url: "https://perplexity.ai/" });
+    else void chrome.runtime.openOptionsPage();
   });
 }

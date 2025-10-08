@@ -5,6 +5,7 @@ onlyMainWorldGuard();
 export function initXhrInterceptor() {
   const originalXHR = window.XMLHttpRequest;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).XMLHttpRequest = function () {
     const xhr = new originalXHR();
     let xhrUrl: string;
@@ -12,7 +13,7 @@ export function initXhrInterceptor() {
     const open = xhr.open;
     xhr.open = function (_, url: string) {
       xhrUrl = url;
-      // eslint-disable-next-line prefer-rest-params
+      // eslint-disable-next-line prefer-rest-params, @typescript-eslint/no-explicit-any
       return open.apply(this, arguments as any);
     };
 
@@ -39,11 +40,12 @@ export function initXhrInterceptor() {
         }
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return send.apply(this, [data] as any);
     };
 
     xhr.addEventListener("load", function () {
-      NetworkInterceptMiddlewareManagerService.Proxy.noop({
+      void NetworkInterceptMiddlewareManagerService.Proxy.noop({
         data: {
           type: "networkIntercept:xhrEvent",
           event: "response",

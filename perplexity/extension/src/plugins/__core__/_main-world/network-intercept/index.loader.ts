@@ -18,7 +18,7 @@ export default function () {
     }) => {
       if (!corePluginsEnableStates["networkIntercept"]) return;
 
-      injectMainWorldScript({
+      void injectMainWorldScript({
         url: chrome.runtime.getURL(networkInterceptPlugin),
         head: true,
       });
