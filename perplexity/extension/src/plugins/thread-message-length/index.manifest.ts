@@ -21,7 +21,7 @@ export default definePlugin({
       "Show the length of each message in words, characters, and tokens",
     dashboardMeta: {
       tags: ["ui", "cometAssistant"],
-      categories: ["thread"],
+      categories: ["thread", "comet"],
       uiRouteSegment: "thread-show-message-length",
     },
     dependencies: {

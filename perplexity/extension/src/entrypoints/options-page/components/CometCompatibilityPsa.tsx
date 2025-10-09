@@ -2,10 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import CometPatchInstructions from "@/entrypoints/options-page/components/CometPatchInstructions";
-import {
-  isCometBrowserSync,
-  isCsInjectable,
-} from "@/entrypoints/options-page/utils/is-comet";
+import { isCometBrowserSync, isCsInjectable } from "@/utils/wrappers/comet";
 
 export default function CometCompatibility() {
   const { data: isInjectable, refetch } = useQuery({

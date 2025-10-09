@@ -5,9 +5,9 @@ import type z from "zod";
 import type { CorePluginId } from "@/__registries__/core-plugins/types";
 import type { UiGroupId } from "@/__registries__/cs-ui/types";
 import type {
-  PluginCategory,
-  PluginTagValues,
-} from "@/data/dashboard/plugin-tags";
+  PluginCategoryKey,
+  PluginTagKeys,
+} from "@/data/dashboard/plugin-meta/types";
 
 export type PluginMeta<T extends PluginId> = {
   devOnly?: boolean;
@@ -17,8 +17,8 @@ export type PluginMeta<T extends PluginId> = {
   description: string;
 
   dashboardMeta: {
-    tags: readonly PluginTagValues[];
-    categories: readonly PluginCategory[];
+    tags: readonly PluginTagKeys[];
+    categories: readonly PluginCategoryKey[];
     uiRouteSegment: string;
   };
 

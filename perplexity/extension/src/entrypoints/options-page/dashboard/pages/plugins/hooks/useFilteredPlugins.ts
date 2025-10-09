@@ -1,14 +1,14 @@
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type {
-  PluginTagValues,
-  PluginCategory,
-} from "@/data/dashboard/plugin-tags";
+  PluginTagKeys,
+  PluginCategoryKey,
+} from "@/data/dashboard/plugin-meta/types";
 
 type UseFilteredPluginsParams = {
   searchTerm: string;
-  selectedTags: PluginTagValues[];
-  excludeTags: PluginTagValues[];
-  categories: PluginCategory[];
+  selectedTags: PluginTagKeys[];
+  excludeTags: PluginTagKeys[];
+  categories: PluginCategoryKey[];
 };
 
 export function useFilteredPlugins({

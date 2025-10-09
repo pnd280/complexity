@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 
 import Fa7BrandsPaypal from "~icons/fa7-brands/paypal";
 import SimpleIconsKofi from "~icons/simple-icons/kofi";
@@ -20,7 +21,7 @@ export default function SponsorDialogWrapper({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent portal={false}>
+      <DialogContent portal={!useIsMobileStore().isMobile}>
         <div className="x:absolute x:inset-0 x:-z-10 x:bg-gradient-to-b x:from-primary/20 x:to-transparent" />
 
         <DialogHeader>

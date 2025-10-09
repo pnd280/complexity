@@ -1,11 +1,16 @@
-export type PluginTagValues = keyof typeof PLUGIN_TAGS;
-
-export type PluginCategory = keyof typeof PLUGIN_CATEGORIES;
+import type {
+  PluginCategory,
+  PluginTag,
+} from "@/data/dashboard/plugin-meta/types";
 
 export const PLUGIN_CATEGORIES = {
   featured: {
     label: "Featured",
     description: "Newly added/updated plugins",
+  },
+  comet: {
+    label: "Comet Assistant",
+    description: "Supported on the Comet Assistant sidecar",
   },
   thread: {
     label: "Thread Utilities",
@@ -25,7 +30,7 @@ export const PLUGIN_CATEGORIES = {
     label: "Miscellaneous",
     description: "Personal preferences",
   },
-} as const satisfies Record<string, { label: string; description: string }>;
+} as const satisfies PluginCategory;
 
 export const PLUGIN_TAGS = {
   experimental: {
@@ -82,4 +87,4 @@ export const PLUGIN_TAGS = {
     description:
       "Will not receive any updates and subject to removal without prior notice",
   },
-} as const satisfies Record<string, { label: string; description: string }>;
+} as const satisfies PluginTag;

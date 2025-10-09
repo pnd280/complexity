@@ -17,10 +17,7 @@ import ExtensionIconAction from "@/entrypoints/options-page/onboarding/Extension
 import MultiLingualSupport from "@/entrypoints/options-page/onboarding/MultiLingualSupport";
 import PluginEcosystem from "@/entrypoints/options-page/onboarding/PluginEcosystem";
 import SupportChannels from "@/entrypoints/options-page/onboarding/SupportChannels";
-import {
-  isCometBrowserSync,
-  isCsInjectableSync,
-} from "@/entrypoints/options-page/utils/is-comet";
+import { isCometBrowserSync, isCsInjectableSync } from "@/utils/wrappers/comet";
 
 import TablerCheck from "~icons/tabler/check";
 

@@ -54,9 +54,9 @@ const presets = [
     value: "all",
     label: (
       <PresetLabel
-        label="YOLO"
+        label="Editor's Picks"
         LabelIcon={TablerRocket}
-        description="Enabling all plugins without understanding their functionality is not recommended. It's suggested to explore them individually first."
+        description="Enabling multiple plugins without understanding their functionality is not recommended. It's suggested to explore them individually."
       />
     ),
     config: ALL_PLUGINS,

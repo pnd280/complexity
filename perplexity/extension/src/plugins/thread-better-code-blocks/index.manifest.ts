@@ -34,7 +34,7 @@ export default definePlugin({
     description: "Enhance code blocks (in threads)",
     dashboardMeta: {
       tags: ["ui", "highPerfImpact", "cometAssistant"],
-      categories: ["thread"],
+      categories: ["thread", "comet"],
       uiRouteSegment: "thread-better-code-blocks",
     },
     dependencies: {

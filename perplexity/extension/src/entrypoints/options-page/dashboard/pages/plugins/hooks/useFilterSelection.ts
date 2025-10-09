@@ -1,7 +1,7 @@
 import type {
-  PluginCategory,
-  PluginTagValues,
-} from "@/data/dashboard/plugin-tags";
+  PluginCategoryKey,
+  PluginTagKeys,
+} from "@/data/dashboard/plugin-meta/types";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
 
 type FilterSelectionOptions<T extends string> = {
@@ -36,7 +36,7 @@ export function useFilterSelection<T extends string>(
 export function usePluginFilterSelection() {
   const { filters, setFilters } = usePluginFilters();
 
-  const handleTagSelect = (tag: PluginTagValues) => {
+  const handleTagSelect = (tag: PluginTagKeys) => {
     const { tags, excludeTags } = filters;
 
     if (!tags.includes(tag) && !excludeTags.includes(tag)) {
@@ -58,7 +58,7 @@ export function usePluginFilterSelection() {
     }
   };
 
-  const handleCategorySelect = (category: PluginCategory) => {
+  const handleCategorySelect = (category: PluginCategoryKey) => {
     const { categories, excludeCategories } = filters;
 
     if (

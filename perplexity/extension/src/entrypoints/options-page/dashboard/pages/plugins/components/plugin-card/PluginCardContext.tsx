@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import type { PluginSettingsUIs } from "@/__registries__/plugin-settings-uis";
 import type { PluginId, PluginMeta } from "@/__registries__/plugins/meta.types";
-import type { PluginTagValues } from "@/data/dashboard/plugin-tags";
+import type { PluginTagKeys } from "@/data/dashboard/plugin-meta/types";
 import { usePluginCard } from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/usePluginCard";
 import {
   getLockdownSubText,
@@ -17,7 +17,7 @@ type PluginCardContextType = {
   pluginInfo: {
     title: string;
     description: ReactNode;
-    tags: readonly PluginTagValues[];
+    tags: readonly PluginTagKeys[];
     requiredPermissions: NonNullable<
       PluginMeta<PluginId>["extensionPermissions"]
     >["requiredPermissions"];

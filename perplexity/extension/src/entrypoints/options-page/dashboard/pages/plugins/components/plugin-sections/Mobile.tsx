@@ -1,10 +1,8 @@
 import { useSearchParams } from "react-router-dom";
 
 import { Tabs, TabContent, TabsList, TabTrigger } from "@/components/ui/tabs";
-import {
-  PLUGIN_CATEGORIES,
-  type PluginCategory,
-} from "@/data/dashboard/plugin-tags";
+import PluginMeta from "@/data/dashboard/plugin-meta";
+import { type PluginCategoryKey } from "@/data/dashboard/plugin-meta/types";
 import NoPluginsFound from "@/entrypoints/options-page/dashboard/pages/plugins/components/NoPluginsFound";
 import { PluginsGrid } from "@/entrypoints/options-page/dashboard/pages/plugins/components/PluginsGrid";
 import { useFilteredPlugins } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilteredPlugins";
@@ -43,13 +41,22 @@ export default function MobilePluginSections() {
       }}
     >
       <TabsList className="x:mx-auto x:flex x:w-full x:max-w-fit x:flex-nowrap x:overflow-x-auto x:rounded-lg x:border x:bg-secondary">
-        {categories.map((category) => (
-          <TabTrigger key={category} asChild value={category}>
-            <h2 className="x:whitespace-nowrap">
-              {PLUGIN_CATEGORIES[category as PluginCategory]?.label || category}
-            </h2>
-          </TabTrigger>
-        ))}
+        {categories.map((category) => {
+          const categoryMeta =
+            PluginMeta.categories[category as PluginCategoryKey];
+
+          if (categoryMeta == null) {
+            return null;
+          }
+
+          return (
+            <TabTrigger key={category} asChild value={category}>
+              <h2 className="x:whitespace-nowrap">
+                {categoryMeta.label || category}
+              </h2>
+            </TabTrigger>
+          );
+        })}
       </TabsList>
       {Object.entries(filteredPluginsByCat).map(([category, pluginIds]) => (
         <TabContent key={category} value={category} className="x:mt-4">

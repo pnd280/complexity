@@ -1,6 +1,6 @@
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type { PluginId } from "@/__registries__/plugins/meta.types";
-import { PLUGIN_CATEGORIES } from "@/data/dashboard/plugin-tags";
+import PluginMeta from "@/data/dashboard/plugin-meta";
 
 export function usePluginCategories({
   filteredPluginIds,
@@ -8,7 +8,7 @@ export function usePluginCategories({
   filteredPluginIds: PluginId[];
 }) {
   return useMemo(() => {
-    const pluginsByCat = Object.keys(PLUGIN_CATEGORIES).reduce<
+    const pluginsByCat = Object.keys(PluginMeta.categories).reduce<
       Record<string, PluginId[]>
     >((acc, category) => {
       acc[category] = [];
