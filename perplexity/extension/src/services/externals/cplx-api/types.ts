@@ -74,5 +74,9 @@ export interface ICplxApiService {
 
   fetchPsa(): Promise<string>;
 
-  fetchCometPatchTutorial(): Promise<string>;
+  fetchCometPatchTutorial({
+    platform,
+  }: {
+    platform?: "mac" | "win";
+  }): Promise<string>;
 }

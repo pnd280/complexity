@@ -20,7 +20,7 @@ export default function SponsorDialogWrapper({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent portal={false}>
         <div className="x:absolute x:inset-0 x:-z-10 x:bg-gradient-to-b x:from-primary/20 x:to-transparent" />
 
         <DialogHeader>

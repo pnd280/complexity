@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 
-import { APP_CONFIG } from "@/app.config";
 import Cplx from "@/components/icons/Cplx";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +17,10 @@ import ExtensionIconAction from "@/entrypoints/options-page/onboarding/Extension
 import MultiLingualSupport from "@/entrypoints/options-page/onboarding/MultiLingualSupport";
 import PluginEcosystem from "@/entrypoints/options-page/onboarding/PluginEcosystem";
 import SupportChannels from "@/entrypoints/options-page/onboarding/SupportChannels";
+import {
+  isCometBrowserSync,
+  isCsInjectableSync,
+} from "@/entrypoints/options-page/utils/is-comet";
 
 import TablerCheck from "~icons/tabler/check";
 
@@ -28,53 +31,74 @@ const steps = (
       description: "Welcome",
       component: <FirstStep />,
       skipable: true,
+      customNextStepText: undefined,
     },
     {
-      title: "Choose your browser",
-      description: "Choose your browser",
+      title: "Comet Patch",
+      description: "Comet Patch",
       component: <CometPatch />,
-      skipable: false,
+      skipable: true,
+      customPrevStepText: undefined,
+      customNextStepText: "I've completed the instructions",
     },
     {
       title: "Permissions",
       description: "Required permissions",
       component: <BasePermissions />,
       skipable: true,
+      customPrevStepText: undefined,
+      customNextStepText: undefined,
     },
     {
       title: "Extension Icon Action",
       description: "Choose what a left-click on the icon does",
       component: <ExtensionIconAction />,
       skipable: true,
+      customPrevStepText: undefined,
+      customNextStepText: undefined,
     },
     {
       title: "Plugin Ecosystem",
       description: "Plugin ecosystem",
       component: <PluginEcosystem />,
       skipable: true,
+      customPrevStepText: undefined,
+      customNextStepText: undefined,
     },
     {
       title: "Multilingual Support",
       description: "Language and translations",
       component: <MultiLingualSupport />,
       skipable: true,
+      customPrevStepText: undefined,
+      customNextStepText: undefined,
     },
     {
       title: "Need Help?",
       description: "Need help?",
       component: <SupportChannels />,
       skipable: true,
+      customPrevStepText: undefined,
+      customNextStepText: undefined,
     },
-  ] satisfies Array<{
+  ] as const satisfies Array<{
     title: string;
     description: string;
     component: React.ReactNode;
     skipable: boolean;
+    customPrevStepText?: string;
+    customNextStepText?: string;
   }>
 ).filter((step) => {
-  if (APP_CONFIG.BROWSER === "firefox") {
+  console.log({
+    isCometBrowserSync: isCometBrowserSync(),
+    isCsInjectableSync: isCsInjectableSync(),
+  });
+
+  if (!isCometBrowserSync() || isCsInjectableSync()) {
     return step.title !== "Comet Patch";
   }
+
   return true;
 });
 
@@ -125,7 +149,9 @@ export function Onboarding() {
                       <StepsPrevTrigger>Previous</StepsPrevTrigger>
                     )}
                     {hasNextStep && steps[currentStep]!.skipable && (
-                      <StepsNextTrigger>Next</StepsNextTrigger>
+                      <StepsNextTrigger>
+                        {steps[currentStep]!.customNextStepText ?? "Next"}
+                      </StepsNextTrigger>
                     )}
                     {!hasNextStep && (
                       <Button

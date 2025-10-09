@@ -1,6 +1,5 @@
 import Tooltip from "@/components/Tooltip";
 import { Command, CommandList, CommandItem } from "@/components/ui/command";
-import { cn } from "@/utils/wrappers/cn";
 
 type FilterState = "include" | "exclude" | "none";
 

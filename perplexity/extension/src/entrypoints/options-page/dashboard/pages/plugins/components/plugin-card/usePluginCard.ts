@@ -3,7 +3,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { PluginSettingsUis } from "@/__registries__/plugin-settings-uis";
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type { PluginId } from "@/__registries__/plugins/meta.types";
+import type { PluginTagValues } from "@/data/dashboard/plugin-tags";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
+import { isCometBrowserSync } from "@/entrypoints/options-page/utils/is-comet";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 import { hasPermissionsSync } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
@@ -22,6 +24,19 @@ export function usePluginCard(pluginId: PluginId) {
     dashboardMeta: { tags, uiRouteSegment },
     extensionPermissions,
   } = PluginManifestsRegistry.meta[pluginId];
+
+  const filteredTags = useMemo(
+    () =>
+      tags.filter((tag) => {
+        if (!isCometBrowserSync())
+          return !(
+            ["cometAssistant", "cometAssistantOnly"] as PluginTagValues[]
+          ).includes(tag);
+
+        return true;
+      }),
+    [tags],
+  );
 
   const hasAllRequiredPermissions = useMemo(() => {
     const grantedPermissions = permissions?.permissions ?? [];
@@ -80,7 +95,7 @@ export function usePluginCard(pluginId: PluginId) {
     pluginInfo: {
       title,
       description,
-      tags,
+      tags: filteredTags,
       requiredPermissions: extensionPermissions?.requiredPermissions,
     },
     state: {

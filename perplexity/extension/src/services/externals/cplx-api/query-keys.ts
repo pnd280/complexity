@@ -73,10 +73,10 @@ export const cplxApiQueries = {
 
   cometPatchTutorial: {
     all: () => [...cplxApiQueries.all(), "cometPatchTutorial"] as const,
-    detail: () =>
+    detail: (params: { platform?: "mac" | "win" } = {}) =>
       queryOptions({
-        queryKey: [...cplxApiQueries.cometPatchTutorial.all()] as const,
-        queryFn: () => CplxApiService.fetchCometPatchTutorial(),
+        queryKey: [...cplxApiQueries.cometPatchTutorial.all(), params] as const,
+        queryFn: () => CplxApiService.fetchCometPatchTutorial(params),
       }),
   },
 };

@@ -1,3 +1,12 @@
+(async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).isOptionsPage = true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).isCometBrowser = await isCometBrowser();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).isCsInjectable = await isCsInjectable();
+})();
+
 import "@/assets/index.css";
 import "@/assets/extension.css";
 
@@ -15,6 +24,10 @@ import {
 import { APP_CONFIG } from "@/app.config";
 import { Toaster } from "@/components/Toaster";
 import { setupOptionPageListeners } from "@/entrypoints/options-page/listeners";
+import {
+  isCometBrowser,
+  isCsInjectable,
+} from "@/entrypoints/options-page/utils/is-comet";
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
 import { initializeDayjsLocale, initializeI18n } from "@/services/infra/i18n";
 import { queryClient } from "@/services/infra/query-client";

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 import LoadingOverlay from "@/components/LoadingOverlay";
+import CometCompatibilityPsa from "@/entrypoints/options-page/components/CometCompatibilityPsa";
 import Psa from "@/entrypoints/options-page/components/Psa";
 import DesktopSidebarWrapper from "@/entrypoints/options-page/components/sidebar/DesktopWrapper";
 import MobileSidebarWrapper from "@/entrypoints/options-page/components/sidebar/MobileWrapper";
@@ -21,6 +22,7 @@ export function Dashboard() {
       </SidebarWrapper>
 
       <main className="x:mx-auto x:mt-11 x:min-h-[100dvh] x:w-full x:max-w-[1800px] x:md:mt-0">
+        <CometCompatibilityPsa />
         <Psa />
         <div className="x:p-4">
           <Suspense fallback={<LoadingOverlay />}>

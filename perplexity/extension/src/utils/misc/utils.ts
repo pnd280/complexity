@@ -80,13 +80,8 @@ export function parseUrl(url: string = window.location.href): ParsedUrl {
   return parsedUrl;
 }
 
+// TODO: the name should be whereAmIPplx
 export const whereAmI = (() => {
-  const hostname =
-    typeof window === "undefined"
-      ? "www.perplexity.ai"
-      : window.location.hostname;
-
-  const pplxHostnamePattern = /(www\.)?perplexity\.ai/;
   const hostnameGlob = `https://*.perplexity.ai`;
 
   const patternMap = {
@@ -100,10 +95,10 @@ export const whereAmI = (() => {
       new MatchPattern(`${hostnameGlob}/collections`),
       new MatchPattern(`${hostnameGlob}/spaces/`),
     ],
-    collection: [
-      new MatchPattern(`${hostnameGlob}/spaces/*`),
-      new MatchPattern(`${hostnameGlob}/spaces/*`),
+    collection_templates: [
+      new MatchPattern(`${hostnameGlob}/spaces/templates*`),
     ],
+    collection: [new MatchPattern(`${hostnameGlob}/spaces/*`)],
     library: [new MatchPattern(`${hostnameGlob}/library*`)],
     thread: [new MatchPattern(`${hostnameGlob}/search/*`)],
     page: [new MatchPattern(`${hostnameGlob}/page/*`)],
@@ -117,22 +112,15 @@ export const whereAmI = (() => {
   type Location = keyof typeof patternMap;
 
   return function (providedUrl?: string): Location | "unknown" {
-    if (!providedUrl && typeof window === "undefined") {
-      return "unknown";
-    }
+    const currentUrl =
+      providedUrl || (typeof window == "undefined" ? "" : window.location.href);
 
-    if (!pplxHostnamePattern.test(hostname)) {
-      return "unknown";
-    }
-
-    const baseUrl = `https://${hostname}`;
+    const baseUrl = `https://www.perplexity.ai`;
 
     for (const [key, patterns] of Object.entries(patternMap)) {
       if (
         patterns.some((pattern) =>
-          pattern.includes(
-            new URL(providedUrl || window.location.href, baseUrl).toString(),
-          ),
+          pattern.includes(new URL(currentUrl, baseUrl).toString()),
         )
       ) {
         return key as Location;
