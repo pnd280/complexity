@@ -25,7 +25,6 @@ export default definePlugin({
     },
     dependencies: {
       corePlugins: [
-        "spaRouter",
         "domObservers:thread:codeBlocks",
         "domObservers:thread:messageBlocks",
       ],

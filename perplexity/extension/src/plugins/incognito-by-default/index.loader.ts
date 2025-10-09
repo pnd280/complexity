@@ -1,5 +1,7 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { pplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
+import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -14,21 +16,32 @@ export default function () {
     loader({ "cache:pluginsEnableStates": pluginsEnableStates }) {
       if (!pluginsEnableStates.incognitoByDefault) return;
 
-      if (
-        pplxCookiesStore
-          .getState()
-          .cookies.find((cookie) => cookie.name === "pplx.is-incognito")
-          ?.value === "true"
-      ) {
-        return;
-      }
+      spaRouteChangeCompleteSubscribe(
+        async (url) => {
+          const location = whereAmI(url);
 
-      document.dispatchEvent(
-        new KeyboardEvent("keydown", {
-          key: ";",
-          ctrlKey: true,
-          bubbles: true,
-        }),
+          if (location !== "home") return;
+
+          if (
+            pplxCookiesStore
+              .getState()
+              .cookies.find((cookie) => cookie.name === "pplx.is-incognito")
+              ?.value === "true"
+          ) {
+            return;
+          }
+
+          document.dispatchEvent(
+            new KeyboardEvent("keydown", {
+              key: ";",
+              ctrlKey: true,
+              bubbles: true,
+            }),
+          );
+        },
+        {
+          immediate: true,
+        },
       );
     },
   });

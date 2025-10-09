@@ -8,4 +8,5 @@ declare module "@/__registries__/core-plugins/types" {
 
 export default defineCorePlugin({
   id: "domObservers:settingsPage",
+  dependencies: ["spaRouter"],
 });

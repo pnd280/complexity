@@ -14,50 +14,38 @@ export default class CorePluginsEnableStatesService {
   static getEnableStates({
     pluginsEnableStates,
   }: {
-    pluginsEnableStates?: PluginsEnableStates;
+    pluginsEnableStates: PluginsEnableStates;
   }): CorePluginsEnableStates {
     if (CorePluginsEnableStatesService.enableStates != null)
       return CorePluginsEnableStatesService.enableStates;
 
     const enabledStates = Object.fromEntries(
       Object.entries(CorePluginsRegistry.manifest).map(([id]) => {
-        return [id, false];
+        return [
+          id,
+          Object.values(PluginManifestsRegistry.meta).some((plugin) => {
+            if (
+              !(pluginsEnableStates ??
+                PluginsStatesService.getEnableStatesCachedSync())[plugin.id]
+            )
+              return false;
+            return plugin.dependencies?.corePlugins?.includes(
+              id as CorePluginId,
+            );
+          }),
+        ];
       }),
     ) as CorePluginsEnableStates;
 
-    for (const [id, _manifest] of Object.entries(
-      CorePluginsRegistry.manifest,
-    ) as [CorePluginId, CorePluginManifest<CorePluginId>][]) {
-      const isUsedByPlugins = Object.values(PluginManifestsRegistry.meta).some(
-        (plugin) => {
-          if (
-            !(pluginsEnableStates ??
-              PluginsStatesService.getEnableStatesCachedSync())[plugin.id]
-          )
-            return false;
-          return plugin.dependencies?.corePlugins?.includes(id);
-        },
-      );
-
-      if (isUsedByPlugins) {
-        enabledStates[id] = true;
-        continue;
-      }
-
-      const isUsedByCorePlugins = Object.values(
-        CorePluginsRegistry.manifest,
-      ).some((corePlugin) => {
-        if (!enabledStates[corePlugin.id]) return false;
-        const allCoreDeps = CorePluginsRegistry.getAllCorePluginDependencies(
-          corePlugin.id,
-        );
-        return allCoreDeps.has(id);
-      });
-
-      if (isUsedByCorePlugins) {
-        enabledStates[id] = true;
-        continue;
-      }
+    for (const [id] of Object.entries(CorePluginsRegistry.manifest) as [
+      CorePluginId,
+      CorePluginManifest<CorePluginId>,
+    ][]) {
+      enabledStates[id] =
+        enabledStates[id] ||
+        CorePluginsRegistry.corePluginDependenciesCache
+          .entries()
+          .some((deps) => enabledStates[deps[0]] && deps[1].has(id));
     }
 
     CorePluginsEnableStatesService.enableStates = enabledStates;

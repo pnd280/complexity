@@ -24,7 +24,7 @@ export default definePlugin({
       uiRouteSegment: "thread-better-message-copy-buttons",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:thread:messageBlocks"],
+      corePlugins: ["domObservers:thread:messageBlocks"],
       uiGroups: ["thread:messageBlocks:footer"],
     },
   },

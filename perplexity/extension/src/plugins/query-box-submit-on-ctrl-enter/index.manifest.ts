@@ -24,7 +24,7 @@ export default definePlugin({
       uiRouteSegment: "query-box-submit-on-ctrl-enter",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:queryBoxes"],
+      corePlugins: ["domObservers:queryBoxes"],
     },
   },
   settingsSchema: {

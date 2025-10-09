@@ -38,7 +38,7 @@ export default definePlugin({
       uiRouteSegment: "thread-better-code-blocks",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:thread:codeBlocks"],
+      corePlugins: ["domObservers:thread:codeBlocks"],
     },
   },
   settingsSchema: {

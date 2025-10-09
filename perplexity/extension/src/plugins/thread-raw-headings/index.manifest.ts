@@ -23,7 +23,7 @@ export default definePlugin({
       uiRouteSegment: "thread-raw-headings",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:thread:messageBlocks"],
+      corePlugins: ["spaRouter"],
     },
   },
   settingsSchema: {

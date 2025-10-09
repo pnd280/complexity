@@ -23,7 +23,7 @@ export default definePlugin({
       uiRouteSegment: "image-gen-model-selector",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "webSocket", "domObservers:thread"],
+      corePlugins: ["webSocket", "domObservers:thread"],
     },
   },
   settingsSchema: {

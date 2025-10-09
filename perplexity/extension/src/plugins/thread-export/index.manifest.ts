@@ -24,7 +24,7 @@ export default definePlugin({
       uiRouteSegment: "thread-export-thread",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:thread:messageBlocks"],
+      corePlugins: ["domObservers:thread:messageBlocks"],
     },
   },
   settingsSchema: {

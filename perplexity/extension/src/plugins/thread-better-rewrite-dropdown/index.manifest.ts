@@ -23,7 +23,7 @@ export default definePlugin({
       uiRouteSegment: "thread-better-rewrite-dropdowns",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:thread:messageBlocks"],
+      corePlugins: ["domObservers:thread:messageBlocks"],
       plugins: ["queryBox:languageModelSelector"],
       uiGroups: ["thread:messageBlocks:footer"],
     },

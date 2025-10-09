@@ -42,6 +42,7 @@ export const ALL_PLUGINS: ExtensionSettings["plugins"] = produce(
         "incognitoByDefault",
         "cloudflareTimeoutAutoReload",
         "betterSidebar",
+        "noFocusByDefault",
       ];
 
       if (excludedPlugins.includes(pluginIdKey)) return;

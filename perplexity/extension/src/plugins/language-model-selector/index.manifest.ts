@@ -26,7 +26,6 @@ export default definePlugin({
     dependencies: {
       corePlugins: [
         "networkIntercept",
-        "spaRouter",
         "domObservers:queryBoxes",
         "domObservers:internalSearchStates",
       ],
