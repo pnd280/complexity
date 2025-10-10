@@ -22,8 +22,8 @@ export function LanguageModelSelector() {
   const { isMobile } = useIsMobileStore();
   const { selectedLanguageModel, setSelectedLanguageModel } =
     useBetterLanguageModelSelectorStore((store) => ({
-      selectedLanguageModel: store.selectedLanguageModel,
-      setSelectedLanguageModel: store.setSelectedLanguageModel,
+      selectedLanguageModel: store.model,
+      setSelectedLanguageModel: store.setModel,
     }));
   const [highlightedItem, setHighlightedItem] = useState<LanguageModelCode>(
     selectedLanguageModel,

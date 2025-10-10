@@ -45,7 +45,7 @@ function initImageGenModelSelectorStore() {
           }, 0);
 
           imageGenModelSelectorStore.setState((state) => {
-            state.selectedImageGenModel = isImageModelCode(
+            state.model = isImageModelCode(
               data.data.default_image_generation_model,
             )
               ? data.data.default_image_generation_model

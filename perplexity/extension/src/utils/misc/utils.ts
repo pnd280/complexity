@@ -112,8 +112,11 @@ export const whereAmI = (() => {
   type Location = keyof typeof patternMap;
 
   return function (providedUrl?: string): Location | "unknown" {
-    const currentUrl =
-      providedUrl || (typeof window == "undefined" ? "" : window.location.href);
+    if (typeof window == "undefined" && providedUrl == null) {
+      return "unknown";
+    }
+
+    const currentUrl = providedUrl || window.location.href;
 
     const baseUrl = `https://www.perplexity.ai`;
 

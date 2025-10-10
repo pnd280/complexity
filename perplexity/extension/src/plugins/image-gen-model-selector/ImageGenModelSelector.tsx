@@ -30,7 +30,10 @@ export function ImageGenModelSelector() {
 
   const { selectedImageGenModel: value, setSelectedImageGenModel: setValue } =
     useImageGenModelSelectorStore(
-      ({ selectedImageGenModel, setSelectedImageGenModel }) => ({
+      ({
+        model: selectedImageGenModel,
+        setModel: setSelectedImageGenModel,
+      }) => ({
         selectedImageGenModel,
         setSelectedImageGenModel,
       }),
