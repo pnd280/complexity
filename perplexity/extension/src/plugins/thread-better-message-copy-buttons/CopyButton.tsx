@@ -39,7 +39,8 @@ const CopyButton = memo(function CopyButton({
       await copyMessage({
         messageBlockIndex,
         withCitations,
-        onComplete: () => setTriggerIcon(<TablerCheck />),
+        onComplete: () =>
+          setTriggerIcon(<TablerCheck className="x:size-3.5" />),
       });
     },
     [copyMessage, isFetching, messageBlockIndex, setTriggerIcon],

@@ -17,9 +17,9 @@ export function createTextboxAdapter(
 
   const deleteSelectedText = () => {
     if (isLexical(element)) {
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         lexicalUtils.deleteSelectedText(element);
-      });
+      }, 0);
     } else {
       textareaUtils.deleteSelectedText(element as HTMLTextAreaElement);
     }
