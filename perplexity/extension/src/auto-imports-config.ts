@@ -9,25 +9,16 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       imports: ["lazy", "use", "createContext", "useDeferredValue", "memo"],
     },
     {
-      from: "@/utils/wrappers/js-context-guards.ts",
-      imports: ["onlyMainWorldGuard", "onlyExtensionGuard"],
+      from: "@complexity/i18n",
+      imports: ["t", "extendT", "Trans", "TransWithPrefix"],
     },
     {
       from: "@/utils/misc/utils.ts",
-      imports: [
-        "sleep",
-        "isMainWorldContext",
-        "isExtensionContext",
-        "invariant",
-      ],
+      imports: ["sleep", "isMainWorldContext", "invariant"],
     },
     {
       from: "@/utils/wrappers/deep-equal.ts",
       imports: ["deepEqual"],
-    },
-    {
-      from: "@complexity/i18n",
-      imports: ["t", "extendT", "Trans", "TransWithPrefix"],
     },
   ],
   imports: [

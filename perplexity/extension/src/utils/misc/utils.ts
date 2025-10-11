@@ -146,10 +146,6 @@ export function isMainWorldContext() {
   );
 }
 
-export function isExtensionContext() {
-  return !isMainWorldContext();
-}
-
 export function isInContentScript() {
   return whereAmI() !== "unknown";
 }

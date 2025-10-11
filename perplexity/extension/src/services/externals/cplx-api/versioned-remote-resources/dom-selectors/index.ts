@@ -26,7 +26,7 @@ export class DomSelectorsServiceImpl {
 
   static get cachedSync() {
     invariant(
-      isExtensionContext(),
+      !isMainWorldContext(),
       "This method is only available in content script, use getCache instead.",
     );
 

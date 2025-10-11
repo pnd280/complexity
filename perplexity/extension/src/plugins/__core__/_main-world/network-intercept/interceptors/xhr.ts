@@ -1,7 +1,5 @@
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 
-onlyMainWorldGuard();
-
 export function initXhrInterceptor() {
   const originalXHR = window.XMLHttpRequest;
 

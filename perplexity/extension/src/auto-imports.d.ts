@@ -21,18 +21,10 @@ declare global {
     extendT,
     t,
   }: typeof import("@complexity/i18n");
-  const { cn }: typeof import("@/utils/wrappers/cn.ts");
-  const { Key }: typeof import("@/types/keys.ts");
+  const invariant: typeof import("@/utils/misc/utils.ts").invariant;
+  const { isMainWorldContext, sleep }: typeof import("@/utils/misc/utils.ts");
   const { deepEqual }: typeof import("@/utils/wrappers/deep-equal.ts");
   const { default: $ }: typeof import("jquery");
-  const {
-    isExtensionContext,
-    isMainWorldContext,
-    sleep,
-  }: typeof import("@/utils/misc/utils.ts");
-  const invariant: typeof import("@/utils/misc/utils.ts").invariant;
-  const {
-    onlyExtensionGuard,
-    onlyMainWorldGuard,
-  }: typeof import("@/utils/wrappers/js-context-guards.ts");
+  const { cn }: typeof import("@/utils/wrappers/cn.ts");
+  const { Key }: typeof import("@/types/keys.ts");
 }

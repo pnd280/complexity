@@ -4,8 +4,6 @@ import { initBeaconInterceptor } from "@/plugins/__core__/_main-world/network-in
 import { initWebSocketInterceptor } from "@/plugins/__core__/_main-world/network-intercept/interceptors/web-socket";
 import { initXhrInterceptor } from "@/plugins/__core__/_main-world/network-intercept/interceptors/xhr";
 
-onlyMainWorldGuard();
-
 initFetchInterceptor();
 initXhrInterceptor();
 initWebSocketInterceptor();

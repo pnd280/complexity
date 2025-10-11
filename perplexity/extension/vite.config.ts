@@ -9,7 +9,7 @@ import Unimport from "unimport/unplugin";
 import chromeManifest from "./src/manifest.chrome";
 import firefoxManifest from "./src/manifest.firefox";
 import { APP_CONFIG } from "./src/app.config";
-import unimportConfig from "./src/types/unimport.config";
+import unimportConfig from "./src/auto-imports-config";
 import tailwindcss from "@tailwindcss/vite";
 import Icons from "unplugin-icons/vite";
 

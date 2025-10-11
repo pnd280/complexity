@@ -10,8 +10,6 @@ import {
 import { waitForSpaIdle } from "@/utils/dom-utils/generics";
 import { whereAmI } from "@/utils/misc/utils";
 
-onlyMainWorldGuard();
-
 export function proxySpaRouter() {
   const originalPushState = history.pushState;
   const originalReplaceState = history.replaceState;
