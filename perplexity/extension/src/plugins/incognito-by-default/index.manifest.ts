@@ -16,7 +16,7 @@ export default definePlugin({
   meta: {
     id: "incognitoByDefault",
     title: "Incognito By Default",
-    description: "Automatically turns on incognito mode on new tabs",
+    description: "Automatically turns on incognito mode on new chats",
     dashboardMeta: {
       tags: ["new"],
       categories: ["misc"],

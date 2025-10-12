@@ -87,10 +87,12 @@ export class CplxApiOnlineService implements ICplxApiService {
     );
   }
 
-  async fetchCometPatchTutorial() {
+  async fetchCometPatchTutorial({ platform }: { platform?: "mac" | "win" }) {
     return fetchTextResource(
       getUrl({
-        path: "/assets/comet-patch-tutorial.md",
+        path: platform
+          ? `/assets/comet-patch-tutorial-${platform}.md`
+          : "/assets/comet-patch-tutorial.md",
       }).toString(),
     );
   }

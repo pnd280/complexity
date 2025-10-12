@@ -1,6 +1,7 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { applyLayoutShiftPreventionInstantCss } from "@/plugins/better-sidebar/prevent-layout-shift.loader";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
+import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { setCookie } from "@/utils/dom-utils/generics";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
@@ -20,8 +21,11 @@ export default function () {
           if (!pluginsEnableStates["betterSidebar"]) return;
 
           setCookie("isSidebarPinned", open.toString(), 365);
+
           void applyLayoutShiftPreventionInstantCss({
-            enabled: true,
+            enabled:
+              ExtensionSettingsService.cachedSync.plugins["betterSidebar"]
+                .shouldPreventLayoutShift,
           });
         },
         { equalityFn: deepEqual },

@@ -8,8 +8,8 @@ import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { queryClient } from "@/services/infra/query-client";
 
 type ImageGenModelSelectorStore = {
-  selectedImageGenModel: ImageModel["code"];
-  setSelectedImageGenModel: (selectedImageGenModel: ImageModel["code"]) => void;
+  model: ImageModel["code"];
+  setModel: (selectedImageGenModel: ImageModel["code"]) => void;
 };
 
 export const imageGenModelSelectorStore =
@@ -17,9 +17,9 @@ export const imageGenModelSelectorStore =
     subscribeWithSelector(
       immer(
         (set): ImageGenModelSelectorStore => ({
-          selectedImageGenModel: "default",
-          setSelectedImageGenModel: async (selectedImageGenModel) => {
-            set({ selectedImageGenModel });
+          model: "default",
+          setModel: async (selectedImageGenModel) => {
+            set({ model: selectedImageGenModel });
             await PplxApiService.setDefaultImageGenModel(
               selectedImageGenModel,
               "fetch",

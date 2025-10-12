@@ -11,7 +11,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "cache:corePlugins:enableStates",
-    dependencies: ["cache:pluginsEnableStates", "cache:pluginsEnableStates"],
+    dependencies: ["cache:pluginsEnableStates"],
     loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       return CorePluginsEnableStatesService.getEnableStates({
         pluginsEnableStates,

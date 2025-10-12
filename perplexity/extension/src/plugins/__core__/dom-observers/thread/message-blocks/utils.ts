@@ -59,13 +59,13 @@ function parseMessageBlock({
     )
     .attr("data-index", index);
 
-  const { $query, $queryEditButtonGroup, $sources, $answer, $footer } =
-    getComponentNodes({ $wrapper, index });
+  const { $query, $queryEditButtonGroup, $answer, $footer } = getComponentNodes(
+    { $wrapper, index },
+  );
 
   const nodes: MessageBlock["nodes"] = {
     $wrapper,
     $query,
-    $sources,
     $answer,
     $queryEditButtonGroup,
     $footer,
@@ -140,10 +140,6 @@ function refreshStaleNodes(
     nodes.$query = $wrapper.find(SELECTORS.QUERY_WRAPPER);
   }
 
-  if (isNodeStale(nodes.$sources)) {
-    nodes.$sources = $wrapper.find(SELECTORS.SOURCES);
-  }
-
   if (isNodeStale(nodes.$answer)) {
     nodes.$answer = $wrapper.find(SELECTORS.ANSWER);
   }
@@ -166,16 +162,10 @@ function findFreshNodes(
   SELECTORS: DomSelectorsServiceType["cachedSync"]["THREAD"]["MESSAGE"],
 ): MessageBlock["nodes"] {
   const $elements = $wrapper.find(
-    [
-      SELECTORS.QUERY_WRAPPER,
-      SELECTORS.SOURCES,
-      SELECTORS.ANSWER,
-      SELECTORS.FOOTER,
-    ].join(", "),
+    [SELECTORS.QUERY_WRAPPER, SELECTORS.ANSWER, SELECTORS.FOOTER].join(", "),
   );
 
   const $query = $elements.filter(SELECTORS.QUERY_WRAPPER);
-  const $sources = $elements.filter(SELECTORS.SOURCES);
   const $answer = $elements.filter(SELECTORS.ANSWER);
   const $footer = $elements.filter(SELECTORS.FOOTER);
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
@@ -183,7 +173,6 @@ function findFreshNodes(
   return {
     $wrapper: $wrapper as JQuery<HTMLElement>,
     $query,
-    $sources,
     $answer,
     $footer,
     $queryEditButtonGroup,

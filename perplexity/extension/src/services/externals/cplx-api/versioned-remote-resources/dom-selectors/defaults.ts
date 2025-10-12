@@ -31,7 +31,7 @@ export const DOM_SELECTORS: DomSelectors = {
       },
     },
     MESSAGE: {
-      QUERY_WRAPPER: ".isolate.mx-auto > .max-w-threadContentWidth:first-child",
+      QUERY_WRAPPER: ".isolate.mx-auto > .bg-base",
       QUERY: ".group\\/query",
       QUERY_EDIT_BUTTON_GROUP:
         ".absolute.bottom-0.right-0:not(.pointer-events-none)",

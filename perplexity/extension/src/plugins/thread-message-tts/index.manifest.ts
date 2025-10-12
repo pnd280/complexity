@@ -20,11 +20,11 @@ export default definePlugin({
     description: "Enable text-to-speech for messages in threads",
     dashboardMeta: {
       tags: ["ui", "cometAssistant"],
-      categories: ["thread"],
+      categories: ["thread", "comet"],
       uiRouteSegment: "thread-message-tts",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:thread:messageBlocks"],
+      corePlugins: ["domObservers:thread:messageBlocks"],
       uiGroups: ["thread:messageBlocks:footer"],
     },
   },

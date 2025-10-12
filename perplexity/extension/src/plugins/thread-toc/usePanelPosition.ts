@@ -25,7 +25,7 @@ export function usePanelPosition(): PanelPosition | null {
   );
 
   const threadContentWrapper = useThreadMessageBlocksDomObserverStore(
-    (store) => store.messageBlocks?.[0]?.nodes.$query[0],
+    (store) => store.messageBlocks?.[0]?.nodes.$answer[0],
     deepEqual,
   );
 

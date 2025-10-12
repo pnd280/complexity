@@ -26,7 +26,7 @@ export default definePlugin({
       uiRouteSegment: "better-sidebar",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:sidebar"],
+      corePlugins: ["domObservers:sidebar"],
     },
     extensionPermissions: {
       optionalPermissions: [
@@ -41,8 +41,8 @@ export default definePlugin({
   settingsSchema: {
     schema,
     fallback: {
-      enabled: true,
-      shouldPreventLayoutShift: true,
+      enabled: false,
+      shouldPreventLayoutShift: false,
     },
   },
 });

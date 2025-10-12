@@ -116,8 +116,14 @@ export function ThemeForm() {
                   Enhance Typography (in Threads)
                 </FormLabel>
                 <FormDescription>
-                  Emphasizes headings, bold text, make inline code more
-                  readable, and remove font ligatures.
+                  <span className="x:block">
+                    Emphasizes headings, bold text, make inline code more
+                    readable, and remove font ligatures.
+                  </span>
+                  <span className="x:block x:font-bold">
+                    Require at least one plugin in the "Thread" category to be
+                    active.
+                  </span>
                 </FormDescription>
               </div>
               <FormControl>

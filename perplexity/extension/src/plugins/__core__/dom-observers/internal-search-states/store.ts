@@ -14,7 +14,7 @@ import type {
 
 export type SearchStates = {
   sources: string[];
-  selectedModel: LanguageModelCode | null;
+  model: LanguageModelCode | null;
   searchMode: LanguageModelType;
 };
 
@@ -28,12 +28,12 @@ export const internalSearchStatesObserverStore =
       immer(
         (): InternalSearchStatesObserverStoreType => ({
           sources: [],
-          selectedModel: null,
+          model: null,
           searchMode: "search",
           setInternalSearchStates(state) {
             void DomObserversMainWorldActions.Instance.setInternalSearchStates({
               states: {
-                selectedModel: state.selectedModel,
+                model: state.model,
                 searchMode: state.searchMode,
                 sources: state.sources,
               },

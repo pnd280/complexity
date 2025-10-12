@@ -10,7 +10,7 @@ export default function SettingsItem({
   children,
 }: SettingsItemProps) {
   return (
-    <div className="x:flex x:flex-wrap x:items-center x:justify-between x:gap-4 x:py-4">
+    <div className="x:flex x:flex-wrap x:items-center x:justify-between x:gap-8 x:py-4">
       <div>
         <div className="x:font-medium">{title}</div>
         {description != null && (

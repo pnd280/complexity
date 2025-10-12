@@ -64,40 +64,38 @@ function initializeFromCookie(): void {
 
   useBetterLanguageModelSelectorStore
     .getState()
-    .setSelectedLanguageModel(lastSelectedLanguageModel);
+    .setModel(lastSelectedLanguageModel);
 }
 
 function syncFromInternalSearchStates(): void {
-  internalSearchStatesObserverStore.subscribe((state) => {
-    if (
-      state.selectedModel == null ||
-      !isLanguageModelCode(state.selectedModel)
-    ) {
-      return;
-    }
+  internalSearchStatesObserverStore.subscribe(
+    (state) => state.model,
+    (model) => {
+      if (model == null || !isLanguageModelCode(model)) {
+        return;
+      }
 
-    useBetterLanguageModelSelectorStore
-      .getState()
-      .setSelectedLanguageModel(state.selectedModel);
-  });
+      useBetterLanguageModelSelectorStore.getState().setModel(model);
+    },
+  );
 }
 
 function syncToInternalSearchStates(): void {
-  betterLanguageModelSelectorStore.subscribe((state) => {
-    if (
-      state.selectedLanguageModel == null ||
-      !isLanguageModelCode(state.selectedLanguageModel)
-    ) {
-      return;
-    }
+  betterLanguageModelSelectorStore.subscribe(
+    (state) => state.model,
+    (model) => {
+      if (model == null || !isLanguageModelCode(model)) {
+        return;
+      }
 
-    internalSearchStatesObserverStore.getState().setInternalSearchStates({
-      selectedModel: state.selectedLanguageModel,
-    });
+      internalSearchStatesObserverStore.getState().setInternalSearchStates({
+        model: model,
+      });
 
-    setModelCookie({
-      type: getModelType(state.selectedLanguageModel),
-      modelCode: state.selectedLanguageModel,
-    });
-  });
+      setModelCookie({
+        type: getModelType(model),
+        modelCode: model,
+      });
+    },
+  );
 }

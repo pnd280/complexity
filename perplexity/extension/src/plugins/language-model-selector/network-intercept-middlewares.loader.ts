@@ -67,7 +67,7 @@ export default function () {
                     : parsedData.params.timezone;
 
                 if (!isRetry) {
-                  const { selectedLanguageModel } =
+                  const { model: selectedLanguageModel } =
                     betterLanguageModelSelectorStore.getState();
                   draft.model_preference = selectedLanguageModel;
                 }

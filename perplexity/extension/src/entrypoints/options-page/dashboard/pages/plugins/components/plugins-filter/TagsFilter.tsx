@@ -1,4 +1,4 @@
-import { PLUGIN_TAGS } from "@/data/dashboard/plugin-tags";
+import PluginMeta from "@/data/dashboard/plugin-meta";
 import FilterBase from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter/FilterBase";
 import { usePluginFilterSelection } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilterSelection";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
@@ -10,7 +10,7 @@ export default function TagsFilter() {
   return (
     <FilterBase
       title="Tags"
-      items={PLUGIN_TAGS}
+      items={PluginMeta.tags}
       selectedItems={filters.tags}
       excludedItems={filters.excludeTags}
       onSelect={handleTagSelect}

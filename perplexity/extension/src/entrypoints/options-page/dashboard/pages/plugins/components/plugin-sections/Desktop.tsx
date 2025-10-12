@@ -1,8 +1,6 @@
 import { H2 } from "@/components/ui/typography";
-import {
-  PLUGIN_CATEGORIES,
-  type PluginCategory,
-} from "@/data/dashboard/plugin-tags";
+import PluginMeta from "@/data/dashboard/plugin-meta";
+import { type PluginCategoryKey } from "@/data/dashboard/plugin-meta/types";
 import NoPluginsFound from "@/entrypoints/options-page/dashboard/pages/plugins/components/NoPluginsFound";
 import { PluginsGrid } from "@/entrypoints/options-page/dashboard/pages/plugins/components/PluginsGrid";
 import { useFilteredPlugins } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilteredPlugins";
@@ -29,19 +27,28 @@ export default function DesktopPluginSections() {
 
   return (
     <div className="x:flex x:flex-col x:gap-8">
-      {Object.entries(filteredPluginsByCat).map(([category, pluginIds]) => (
-        <section key={category}>
-          <H2 className="x:!text-lg x:font-semibold">
-            {PLUGIN_CATEGORIES[category as PluginCategory]?.label || category}
-          </H2>
-          {!!PLUGIN_CATEGORIES[category as PluginCategory]?.description && (
-            <div className="x:mb-4 x:text-sm x:text-muted-foreground">
-              {PLUGIN_CATEGORIES[category as PluginCategory].description}
-            </div>
-          )}
-          <PluginsGrid pluginIds={pluginIds} />
-        </section>
-      ))}
+      {Object.entries(filteredPluginsByCat).map(([category, pluginIds]) => {
+        const categoryMeta =
+          PluginMeta.categories[category as PluginCategoryKey];
+
+        if (categoryMeta == null) {
+          return null;
+        }
+
+        return (
+          <section key={category}>
+            <H2 className="x:!text-lg x:font-semibold">
+              {categoryMeta.label || category}
+            </H2>
+            {!!categoryMeta.description && (
+              <div className="x:mb-4 x:text-sm x:text-muted-foreground">
+                {categoryMeta.description}
+              </div>
+            )}
+            <PluginsGrid pluginIds={pluginIds} />
+          </section>
+        );
+      })}
     </div>
   );
 }

@@ -20,13 +20,12 @@ export default definePlugin({
     description: "Take complete control of all available language models",
     dashboardMeta: {
       tags: ["ui", "pplxPro", "cometAssistant"],
-      categories: ["queryBox"],
+      categories: ["queryBox", "comet"],
       uiRouteSegment: "query-box-language-model-selector",
     },
     dependencies: {
       corePlugins: [
         "networkIntercept",
-        "spaRouter",
         "domObservers:queryBoxes",
         "domObservers:internalSearchStates",
       ],

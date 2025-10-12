@@ -5,10 +5,8 @@ import { createWithEqualityFn } from "zustand/traditional";
 import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type BetterLanguageModelSelectorStore = {
-  selectedLanguageModel: LanguageModel["code"];
-  setSelectedLanguageModel: (
-    selectedLanguageModel: LanguageModel["code"],
-  ) => void;
+  model: LanguageModel["code"];
+  setModel: (selectedLanguageModel: LanguageModel["code"]) => void;
 };
 
 export const betterLanguageModelSelectorStore =
@@ -16,9 +14,9 @@ export const betterLanguageModelSelectorStore =
     subscribeWithSelector(
       immer(
         (set): BetterLanguageModelSelectorStore => ({
-          selectedLanguageModel: "pplx_pro",
-          setSelectedLanguageModel: (selectedLanguageModel) => {
-            set({ selectedLanguageModel });
+          model: "pplx_pro",
+          setModel: (selectedLanguageModel) => {
+            set({ model: selectedLanguageModel });
           },
         }),
       ),

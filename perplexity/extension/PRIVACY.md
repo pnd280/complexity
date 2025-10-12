@@ -1,10 +1,6 @@
 # Privacy Policy for **Perplexity AI Enhancer by Complexity**
 
-_Last updated: April, 2025_
-
-## Our Commitment to Privacy
-
-**Perplexity AI Enhancer by Complexity** is committed to protecting your privacy. This Privacy Policy explains our data practices, specifically our commitment to collecting no user data and operating entirely through local storage.
+_Last updated: October, 2025_
 
 ## Data Collection and Storage
 

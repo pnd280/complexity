@@ -29,8 +29,8 @@ export async function setInternalSearchStates({
     throw new Error("[InternalSearchStates] States fiber node not found");
   }
 
-  if (states.selectedModel != null) {
-    statesFiberNode.setConfiguredModel(states.selectedModel);
+  if (states.model != null) {
+    statesFiberNode.setConfiguredModel(states.model);
   }
 
   if (states.searchMode != null) {
@@ -58,7 +58,7 @@ export async function getInternalSearchStates({
 
   return {
     sources: deepClone(statesFiberNode.sources) ?? [],
-    selectedModel: statesFiberNode.configuredModel ?? null,
+    model: statesFiberNode.configuredModel ?? null,
     searchMode: statesFiberNode.configuredSearchMode ?? "search",
   };
 }

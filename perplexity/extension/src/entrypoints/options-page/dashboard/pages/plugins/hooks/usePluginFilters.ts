@@ -1,15 +1,15 @@
 import { useSearchParams } from "react-router-dom";
 
 import type {
-  PluginTagValues,
-  PluginCategory,
-} from "@/data/dashboard/plugin-tags";
+  PluginTagKeys,
+  PluginCategoryKey,
+} from "@/data/dashboard/plugin-meta/types";
 
 export type PluginFilters = {
-  tags: PluginTagValues[];
-  excludeTags: PluginTagValues[];
-  categories: PluginCategory[];
-  excludeCategories: PluginCategory[];
+  tags: PluginTagKeys[];
+  excludeTags: PluginTagKeys[];
+  categories: PluginCategoryKey[];
+  excludeCategories: PluginCategoryKey[];
   searchTerm: string;
 };
 
@@ -18,19 +18,19 @@ export function usePluginFilters() {
 
   const searchTerm = searchParams.get("searchTerm") || "";
   const tags = (searchParams.get("tags")?.split(",").filter(Boolean) ||
-    []) as PluginTagValues[];
+    []) as PluginTagKeys[];
   const excludeTags = (searchParams
     .get("excludeTags")
     ?.split(",")
-    .filter(Boolean) || []) as PluginTagValues[];
+    .filter(Boolean) || []) as PluginTagKeys[];
   const categories = (searchParams
     .get("categories")
     ?.split(",")
-    .filter(Boolean) || []) as PluginCategory[];
+    .filter(Boolean) || []) as PluginCategoryKey[];
   const excludeCategories = (searchParams
     .get("excludeCategories")
     ?.split(",")
-    .filter(Boolean) || []) as PluginCategory[];
+    .filter(Boolean) || []) as PluginCategoryKey[];
 
   const filters: PluginFilters = {
     searchTerm,

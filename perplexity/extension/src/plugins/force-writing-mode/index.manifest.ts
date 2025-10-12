@@ -25,7 +25,7 @@ export default definePlugin({
     },
 
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:queryBoxes"],
+      corePlugins: ["domObservers:queryBoxes"],
       uiGroups: ["queryBoxes:toolbar:space:rl"],
     },
   },

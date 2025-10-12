@@ -24,7 +24,7 @@ export default definePlugin({
       uiRouteSegment: "home-custom-slogan",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:home"],
+      corePlugins: ["domObservers:home"],
     },
   },
   settingsSchema: {

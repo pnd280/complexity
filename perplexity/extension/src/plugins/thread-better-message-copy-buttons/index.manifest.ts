@@ -20,11 +20,11 @@ export default definePlugin({
       "Copy message content without citations. More formatting options coming soon",
     dashboardMeta: {
       tags: ["ui", "cometAssistant"],
-      categories: ["thread"],
+      categories: ["thread", "comet"],
       uiRouteSegment: "thread-better-message-copy-buttons",
     },
     dependencies: {
-      corePlugins: ["spaRouter", "domObservers:thread:messageBlocks"],
+      corePlugins: ["domObservers:thread:messageBlocks"],
       uiGroups: ["thread:messageBlocks:footer"],
     },
   },
