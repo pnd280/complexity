@@ -57,9 +57,6 @@ async function main(): Promise<void> {
     logger.success(
       "The add-on has been uploaded successfully to the Mozilla Add-ons Store",
     );
-    logger.detail(
-      `Please visit https://addons.mozilla.org/en-US/developers/addon/complexity/versions/${extVersion} to add Android as a supported platform`,
-    );
   } catch (err) {
     logger.error(`Error: ${(err as Error).message}`);
     cleanup();

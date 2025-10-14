@@ -14,21 +14,21 @@
     "r2:versioned-rr:gen": "dotenvx run -f ./src/r2/.env --quiet -- bun ./src/r2/remote-resources/versioned.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.908.0",
+    "@aws-sdk/client-s3": "^3.910.0",
     "@dotenvx/dotenvx": "^1.51.0",
-    "chrome-webstore-upload": "^3.2.0",
-    "commander": "^13.1.0",
+    "chrome-webstore-upload": "^4.0.3",
+    "commander": "^14.0.1",
     "glob": "^11.0.3",
-    "inquirer": "^12.9.6",
+    "inquirer": "^12.10.0",
     "mime-types": "^3.0.1",
     "semver": "^7.7.3",
-    "web-ext": "^8.10.0"
+    "web-ext": "^9.0.0"
   },
   "devDependencies": {
     "@complexity/cli-logger": "workspace:*",
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
-    "@types/mime-types": "^2.1.4",
+    "@types/mime-types": "^3.0.1",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
     "prettier": "catalog:lint",

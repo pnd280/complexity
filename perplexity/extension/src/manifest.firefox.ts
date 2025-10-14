@@ -7,6 +7,9 @@ export type MozManifest = ManifestV3Options & {
       id: string;
       strict_min_version: string;
     };
+    gecko_android: {
+      strict_min_version: string;
+    };
   };
 };
 
@@ -15,6 +18,9 @@ const mozManifest = produce(baseManifest as MozManifest, (draft) => {
     gecko: {
       id: "complexity@ngocdg",
       strict_min_version: "109.0",
+    },
+    gecko_android: {
+      strict_min_version: "120.0",
     },
   };
   draft.background = {

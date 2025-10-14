@@ -26,8 +26,7 @@
     "**/build/**/*": true,
     "**/dist/**/*": true,
     "**/node_modules/*/**": true,
-    "**/*.tsbuildinfo": true,
-    "packages/webext-bridge/**/*": true
+    "**/*.tsbuildinfo": true
   },
   "npm.exclude": ["**/build", "**/dist"],
   "npm.scriptExplorerExclude": ["preinstall"],
@@ -39,8 +38,7 @@
     "**/dist/**/*": true,
     "**/node_modules": true,
     "**/public/locales/**/*": true,
-    "**/*.tsbuildinfo": true,
-    "packages/webext-bridge/**/*": true
+    "**/*.tsbuildinfo": true
   },
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "typescript.tsserver.maxTsServerMemory": 8192,
