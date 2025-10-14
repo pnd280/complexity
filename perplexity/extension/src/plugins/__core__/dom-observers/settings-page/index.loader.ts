@@ -1,9 +1,9 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { domObserverService } from "@/plugins/__core__/dom-observers";
 import { observeSidebar } from "@/plugins/__core__/dom-observers/settings-page/observers";
 import { settingsPageDomObserverStore } from "@/plugins/__core__/dom-observers/settings-page/store";
-import { domObserverService } from "@/services/features/dom-observer";
-import { createDomObserverId } from "@/services/features/dom-observer/types";
+import { createDomObserverId } from "@/plugins/__core__/dom-observers/types";
 import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {

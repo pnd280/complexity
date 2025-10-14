@@ -21,11 +21,18 @@ export default function () {
         head: true,
       });
 
+      const startTime = performance.now();
+
       await waitUntil({
-        condition: () => DomObserversMainWorldActions.Instance.isInitialized(),
+        condition: DomObserversMainWorldActions.Instance.isInitialized,
         timeout: 5000,
-        interval: 100,
+        interval: 50,
       });
+
+      const endTime = performance.now();
+      console.log(
+        `[CPLX] DomObserversMainWorldActions initialized in ${endTime - startTime}ms`,
+      );
     },
   });
 }

@@ -2,6 +2,7 @@ import { useSyncExternalStore } from "react";
 
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
+import { getTaskScheduler } from "@/utils/misc/utils";
 
 export type TocItem = {
   id: number;
@@ -120,7 +121,7 @@ const createTocStore = () => {
       lastMessageBlocks = messageBlocks;
       pendingUpdate = true;
 
-      requestAnimationFrame(() => {
+      getTaskScheduler()(() => {
         updateItems(messageBlocks);
         pendingUpdate = false;
       });

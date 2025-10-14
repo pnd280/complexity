@@ -6,7 +6,6 @@ import { walkFiberNode } from "@/utils/wrappers/react-fiber";
 
 export async function triggerRewriteOption(params: {
   messageBlockIndex: number;
-  optionIndex?: number;
   fiberConfig: {
     name: string;
     dataNodePath: string[];
@@ -14,7 +13,7 @@ export async function triggerRewriteOption(params: {
 }): Promise<boolean> {
   const domSelectors = await DomSelectorsService.Proxy.getCache();
 
-  const { messageBlockIndex, optionIndex } = params;
+  const { messageBlockIndex } = params;
 
   const selector = `${DomSelectorsServiceImpl.cplxAttribute(
     DomSelectorsServiceImpl.internalAttributes.THREAD.MESSAGE.BLOCK,
@@ -37,8 +36,7 @@ export async function triggerRewriteOption(params: {
   if (fiberNode == null) return false;
 
   const [triggerRewriteOptionHandler] = errorWrapper<() => void>(() => {
-    const node = walkFiberNode(fiberNode, params.fiberConfig.dataNodePath);
-    return node[optionIndex ?? node.length - 1].onClick;
+    return walkFiberNode(fiberNode, params.fiberConfig.dataNodePath);
   })();
 
   if (triggerRewriteOptionHandler == null) return false;

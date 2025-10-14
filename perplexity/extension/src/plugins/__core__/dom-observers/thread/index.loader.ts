@@ -1,5 +1,6 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { domObserverService } from "@/plugins/__core__/dom-observers";
 import {
   observeNavbarOverflowMenuButtonWrapper,
   observeNavbar,
@@ -8,9 +9,8 @@ import {
   observeMessageBlocksWrapper,
 } from "@/plugins/__core__/dom-observers/thread/observers";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import { createDomObserverId } from "@/plugins/__core__/dom-observers/types";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
-import { domObserverService } from "@/services/features/dom-observer";
-import { createDomObserverId } from "@/services/features/dom-observer/types";
 import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {

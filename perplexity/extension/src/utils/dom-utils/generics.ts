@@ -371,9 +371,3 @@ export function onScrollDirectionChange({
 export function untrapWheel(e: React.WheelEvent<HTMLDivElement>) {
   e.stopPropagation();
 }
-
-export function setCssProperty(property: string, value: string) {
-  requestAnimationFrame(() => {
-    $(document.body).css({ [property]: value });
-  });
-}

@@ -103,6 +103,14 @@ export const pplxLocalLanguageModels = {
     {
       label: "Grok-4",
       shortLabel: "Grok-4",
+      code: "grok4nonthinking",
+      isReasoning: false,
+      limitKey: "gpt4_limit",
+      icon: "xai",
+    },
+    {
+      label: "Grok-4 Thinking",
+      shortLabel: "Grok-4 Thinking",
       code: "grok4",
       isReasoning: true,
       limitKey: "gpt4_limit",

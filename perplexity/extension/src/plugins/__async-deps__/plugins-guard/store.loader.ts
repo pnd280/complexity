@@ -74,7 +74,7 @@ function setupMobileStateSubscription() {
   );
 }
 
-export function initAuthStatus({
+function initAuthStatus({
   data,
   extensionSettings,
 }: {
@@ -107,6 +107,14 @@ export function initAuthStatus({
 }
 
 function setupAuthenticationTracking(extensionSettings: ExtensionSettings) {
+  const authData = queryClient.getQueryData(
+    pplxApiQueries.auth.detail().queryKey,
+  );
+
+  if (authData != null) {
+    initAuthStatus({ data: authData, extensionSettings });
+  }
+
   pplxAuthQueryObserver.subscribe((data) => {
     if (
       data.status !== "success" ||
@@ -117,6 +125,16 @@ function setupAuthenticationTracking(extensionSettings: ExtensionSettings) {
 
     initAuthStatus({ data: data.data, extensionSettings });
   });
+
+  const orgStatusData = queryClient.getQueryData(
+    pplxApiQueries.auth.orgStatus.detail().queryKey,
+  );
+
+  if (orgStatusData != null) {
+    pluginGuardsStore.setState((state) => {
+      state.isOrgMember = orgStatusData.is_in_organization;
+    });
+  }
 
   pplxAuthOrgStatusQueryObserver.subscribe((data) => {
     if (

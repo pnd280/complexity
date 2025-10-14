@@ -1,30 +1,19 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import { queryBoxesDomObserverStore } from "@/plugins/__core__/dom-observers/query-boxes/store";
 import { ScopedQueryBoxContextProvider } from "@/plugins/__ui-groups__/elements/query-box/_context/context";
-import { createToolbarPortalContainers } from "@/plugins/__ui-groups__/elements/query-box/utils";
+import useLeftToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/space/hooks/useLeftToolbarPortalContainer copy";
+import useRightToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/space/hooks/useRightToolbarPortalContainer";
 
 export default function SpaceQueryBoxWrapper() {
-  const spaceQueryBoxWrapper = queryBoxesDomObserverStore(
-    (store) => store.wrapper.space,
-    deepEqual,
-  );
-
-  if (!spaceQueryBoxWrapper) return null;
-
-  const { leftToolbar, rightToolbar } = createToolbarPortalContainers({
-    queryBoxWrapper: spaceQueryBoxWrapper,
-  });
+  const { ll: llPortalContainer } = useLeftToolbarPortalContainer();
+  const { rl: rlPortalContainer } = useRightToolbarPortalContainer();
 
   return (
     <ScopedQueryBoxContextProvider storeValue={{ type: "space" }}>
-      <Portal container={leftToolbar.leftContainer}>
+      <Portal container={llPortalContainer}>
         {CsUiRegistry.QueryBoxToolbarSpaceGroupComponents.ll}
       </Portal>
-      <Portal container={leftToolbar.rightContainer}>
-        <div className="x:flex x:size-full x:flex-wrap x:items-center x:gap-2"></div>
-      </Portal>
-      <Portal container={rightToolbar.leftContainer}>
+      <Portal container={rlPortalContainer}>
         {CsUiRegistry.QueryBoxToolbarSpaceGroupComponents.rl}
       </Portal>
     </ScopedQueryBoxContextProvider>

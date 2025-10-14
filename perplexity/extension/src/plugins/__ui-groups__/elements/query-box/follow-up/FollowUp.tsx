@@ -1,27 +1,18 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import { queryBoxesDomObserverStore } from "@/plugins/__core__/dom-observers/query-boxes/store";
 import { ScopedQueryBoxContextProvider } from "@/plugins/__ui-groups__/elements/query-box/_context/context";
-import { createToolbarPortalContainers } from "@/plugins/__ui-groups__/elements/query-box/utils";
+import useLeftToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/follow-up/hooks/useLeftToolbarPortalContainer";
+import useRightToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/follow-up/hooks/useRightToolbarPortalContainer";
 
 export default function FollowUpQueryBoxWrapper() {
-  const followUpQueryBoxWrapper = queryBoxesDomObserverStore(
-    (store) => store.wrapper.followUp,
-    deepEqual,
-  );
-
-  if (!followUpQueryBoxWrapper) return null;
-
-  const { leftToolbar } = createToolbarPortalContainers({
-    queryBoxWrapper: followUpQueryBoxWrapper,
-  });
+  const { ll: llPortalContainer } = useLeftToolbarPortalContainer();
+  const { rl: rlPortalContainer } = useRightToolbarPortalContainer();
 
   return (
     <ScopedQueryBoxContextProvider storeValue={{ type: "follow-up" }}>
-      <Portal container={leftToolbar.leftContainer}>
+      <Portal container={llPortalContainer}>
         {CsUiRegistry.QueryBoxToolbarFollowUpGroupComponents.ll}
       </Portal>
-      <Portal container={leftToolbar.rightContainer}>{null}</Portal>
     </ScopedQueryBoxContextProvider>
   );
 }

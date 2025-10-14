@@ -5,6 +5,7 @@ import {
   isAllowedKey,
 } from "@/plugins/__core__/slash-command/store/slices/pages/utils";
 import { getAnchor } from "@/plugins/__core__/slash-command/utils";
+import { getTaskScheduler } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -28,7 +29,7 @@ export default function () {
 
         if (!anchor) return;
 
-        requestAnimationFrame(() => {
+        getTaskScheduler()(() => {
           const wordAtCaret = anchor.contentActions?.getWordAtCaret();
 
           if (
@@ -73,7 +74,7 @@ export default function () {
         (open) => {
           if (open) return;
 
-          requestAnimationFrame(() => {
+          getTaskScheduler()(() => {
             slashCommandMenuStore.getState().anchor.inputField?.focus();
             slashCommandMenuStore.getState().restoreText();
           });

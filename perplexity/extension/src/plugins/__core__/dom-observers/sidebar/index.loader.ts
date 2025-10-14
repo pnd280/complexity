@@ -1,10 +1,10 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { domObserverService } from "@/plugins/__core__/dom-observers";
 import {
   observeMobileTrigger,
   observeSidebarWrapper,
 } from "@/plugins/__core__/dom-observers/sidebar/observers";
-import { domObserverService } from "@/services/features/dom-observer";
-import { createDomObserverId } from "@/services/features/dom-observer/types";
+import { createDomObserverId } from "@/plugins/__core__/dom-observers/types";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {

@@ -1,7 +1,9 @@
 import { lazily } from "react-lazily";
 
 import type { UiGroupId } from "@/__registries__/cs-ui/types";
+import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
 import { shouldEnableUiGroup } from "@/plugins/__async-deps__/plugins-guard/predicates";
+import type { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/__registries__/cs-ui/types" {
   interface UiGroupsRegistry {
@@ -41,6 +43,7 @@ const QueryBoxWrappers = [
     Component: lazily(
       () => import("@/plugins/__ui-groups__/elements/query-box/main/Main"),
     ).default,
+    location: ["home", "comet_ntp"],
   },
   {
     key: "space",
@@ -54,6 +57,7 @@ const QueryBoxWrappers = [
     Component: lazily(
       () => import("@/plugins/__ui-groups__/elements/query-box/space/Space"),
     ).default,
+    location: ["collection"],
   },
   {
     key: "followUp",
@@ -68,6 +72,7 @@ const QueryBoxWrappers = [
       () =>
         import("@/plugins/__ui-groups__/elements/query-box/follow-up/FollowUp"),
     ).default,
+    location: ["thread"],
   },
   {
     key: "cometAssistant",
@@ -81,10 +86,12 @@ const QueryBoxWrappers = [
           "@/plugins/__ui-groups__/elements/query-box/comet-assistant/CometAssistant"
         ),
     ).default,
+    location: ["comet_assistant"],
   },
 ] satisfies {
   key: string;
   groups: UiGroupId[];
+  location: ReturnType<typeof whereAmI>[];
   Component: React.ComponentType;
 }[];
 
@@ -99,8 +106,12 @@ export default function QueryBoxComponents() {
 
   return (
     <>
-      {QueryBoxWrappers.map(({ key, Component }, idx) =>
-        enabledStates[idx] ? <Component key={key} /> : null,
+      {QueryBoxWrappers.map(({ key, Component, location }, idx) =>
+        enabledStates[idx] ? (
+          <CsUiPluginsGuard key={key} location={location}>
+            <Component />
+          </CsUiPluginsGuard>
+        ) : null,
       )}
     </>
   );

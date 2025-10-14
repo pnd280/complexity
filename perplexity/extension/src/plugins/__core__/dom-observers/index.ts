@@ -3,16 +3,12 @@ import type {
   Subscription,
   SelectorCallbackData,
   ProcessingType,
-} from "@/services/features/dom-observer/types";
+} from "@/plugins/__core__/dom-observers/types";
 
 export class DomObserver {
   private static readonly MAX_PROCESSING_TIME_MS = 4;
-  private static readonly FALLBACK_TIMEOUT_MS = 0;
-  private static readonly INACTIVE_TAB_THROTTLE_MS = 100; // Throttle to 10fps when inactive
-  private static readonly INACTIVE_TAB_MAX_PROCESSING_TIME_MS = 2;
 
   private observer: MutationObserver;
-  private isTabVisible = true;
   private elementData = new WeakMap<
     Element,
     { subs: (string | number)[]; [key: string]: unknown }
@@ -36,33 +32,13 @@ export class DomObserver {
       childList: true,
       subtree: true,
     });
-
-    this.setupVisibilityTracking();
-  }
-
-  private setupVisibilityTracking(): void {
-    if (typeof document.visibilityState !== "undefined") {
-      this.isTabVisible = document.visibilityState === "visible";
-
-      const handleVisibilityChange = () => {
-        this.isTabVisible = document.visibilityState === "visible";
-      };
-
-      document.addEventListener("visibilitychange", handleVisibilityChange);
-    }
   }
 
   private scheduleProcessing(): void {
-    if (
-      this.isTabVisible &&
-      typeof window.requestAnimationFrame === "function"
-    ) {
+    if (document.visibilityState === "visible") {
       requestAnimationFrame(this.processNodes.bind(this));
     } else {
-      const delay = this.isTabVisible
-        ? DomObserver.FALLBACK_TIMEOUT_MS
-        : DomObserver.INACTIVE_TAB_THROTTLE_MS;
-      setTimeout(this.processNodes.bind(this), delay);
+      setTimeout(this.processNodes.bind(this), 0);
     }
   }
 
@@ -257,14 +233,11 @@ export class DomObserver {
     }
 
     const startTime = performance.now();
-    const maxProcessTime = this.isTabVisible
-      ? DomObserver.MAX_PROCESSING_TIME_MS
-      : DomObserver.INACTIVE_TAB_MAX_PROCESSING_TIME_MS;
 
     // Process removals FIRST to maintain logical order (removals happen before additions)
     while (
       this.pendingRemovedNodes.length > 0 &&
-      performance.now() - startTime < maxProcessTime
+      performance.now() - startTime < DomObserver.MAX_PROCESSING_TIME_MS
     ) {
       const node = this.pendingRemovedNodes.pop()!;
       this.processNodeAndDescendants(node, "remove");
@@ -273,7 +246,7 @@ export class DomObserver {
     // Then process additions if time allows in this time frame
     while (
       this.pendingAddedNodes.length > 0 &&
-      performance.now() - startTime < maxProcessTime
+      performance.now() - startTime < DomObserver.MAX_PROCESSING_TIME_MS
     ) {
       const node = this.pendingAddedNodes.pop()!;
       this.processNodeAndDescendants(node, "add");

@@ -36,7 +36,7 @@ export const DOM_SELECTORS: DomSelectors = {
       QUERY_EDIT_BUTTON_GROUP:
         ".absolute.bottom-0.right-0:not(.pointer-events-none)",
       QUERY_EDIT_BUTTON_GROUP_CHILD: {
-        EDIT_QUERY_BUTTON: "button:has(svg[data-icon='pen-to-square'])",
+        EDIT_QUERY_BUTTON: 'button[data-testid="edit-query-button"]',
       },
       STICKY_HEADER: ".h-headerHeight.absolute",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
@@ -102,10 +102,12 @@ export const DOM_SELECTORS: DomSelectors = {
       EDIT_QUERY: "div[contenteditable='true'][role='textbox']:not([id])",
       ARBITRARY: "#ask-input,div[contenteditable='true'][role='textbox']",
     },
-    ATTACH_BUTTON: 'button:has([data-icon="paperclip"]):last',
+    ATTACH_BUTTON:
+      'button:has(svg>path[d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5"])',
     SUBMIT_BUTTON:
       'button[data-testid="submit-button"], button:has(>div>div>svg>path[d="M0 12.6663C0 13.4018 0.59792 13.9997 1.33333 13.9997C2.06875 13.9997 2.66667 13.4018 2.66667 12.6663V11.333C2.66667 10.5975 2.06875 9.99967 1.33333 9.99967C0.59792 9.99967 0 10.5975 0 11.333V12.6663ZM6.66667 5.33301C7.40213 5.33301 8 5.93087 8 6.66634V17.333C8 18.0685 7.40213 18.6663 6.66667 18.6663C5.9312 18.6663 5.33333 18.0685 5.33333 17.333V6.66634C5.33333 5.93087 5.9312 5.33301 6.66667 5.33301ZM10.6667 21.333C10.6667 22.0685 11.2645 22.6663 12 22.6663C12.7355 22.6663 13.3333 22.0685 13.3333 21.333V2.66634C13.3333 1.93093 12.7355 1.33301 12 1.33301C11.2645 1.33301 10.6667 1.93093 10.6667 2.66634V21.333ZM17.3333 5.33301C18.0688 5.33301 18.6667 5.93087 18.6667 6.66634V17.333C18.6667 18.0685 18.0688 18.6663 17.3333 18.6663C16.5979 18.6663 16 18.0685 16 17.333V6.66634C16 5.93087 16.5979 5.33301 17.3333 5.33301ZM24 11.333C24 10.5975 23.4021 9.99967 22.6667 9.99967C21.9312 9.99967 21.3333 10.5975 21.3333 11.333V12.6663C21.3333 13.4018 21.9312 13.9997 22.6667 13.9997C23.4021 13.9997 24 13.4018 24 12.6663V11.333Z"]), button:has(>div>div>svg>path[d="M17 4h-10a3 3 0 0 0 -3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3 -3v-10a3 3 0 0 0 -3 -3z"])',
-    FORK_BUTTON: 'button svg[data-icon="code-fork"]',
+    FORK_BUTTON:
+      'button:has(svg>path[d="M12 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M7 8v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2 -2v-2 M12 12l0 4"])',
     PRO_SEARCH_TOGGLE: "button#copilot-toggle",
     INCOGNITO_TOGGLE: ".mr-xs.flex.shrink-0.items-center",
     TYPEAHEAD_MENU: "#typeahead-menu",
@@ -170,6 +172,12 @@ export const INTERNAL_ATTRIBUTES = {
       FOOTER: "message-block-footer",
     },
     ATTACHMENT_DROP_ZONE: "drag-n-drop-file-to-upload",
+  },
+  QUERY_BOX: {
+    MAIN_QUERY_BOX: "cplx-main-query-box",
+    SPACE_QUERY_BOX: "cplx-space-query-box",
+    FOLLOW_UP_QUERY_BOX: "cplx-follow-up-query-box",
+    COMET_ASSISTANT_QUERY_BOX: "cplx-comet-assistant-query-box",
   },
   QUERY_BOX_CHILD: {
     COMPONENTS_WRAPPER: "query-box-components-wrapper",

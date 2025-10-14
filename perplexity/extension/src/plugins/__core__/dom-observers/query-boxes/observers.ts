@@ -1,14 +1,7 @@
+import { domObserverService } from "@/plugins/__core__/dom-observers";
 import { queryBoxesDomObserverStore } from "@/plugins/__core__/dom-observers/query-boxes/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
-import { domObserverService } from "@/services/features/dom-observer";
 import { whereAmI } from "@/utils/misc/utils";
-
-const OBSERVER_ID = {
-  MAIN_QUERY_BOX: "cplx-main-query-box",
-  SPACE_QUERY_BOX: "cplx-space-query-box",
-  FOLLOW_UP_QUERY_BOX: "cplx-follow-up-query-box",
-  COMET_ASSISTANT_QUERY_BOX: "cplx-comet-assistant-query-box",
-};
 
 export function observeMainQueryBox({ observerId }: { observerId: string }) {
   function cleanup() {
@@ -39,7 +32,16 @@ export function observeMainQueryBox({ observerId }: { observerId: string }) {
 
       if (!$wrapper.length) return;
 
-      $wrapper.internalComponentAttr(OBSERVER_ID.MAIN_QUERY_BOX);
+      $wrapper.internalComponentAttr(
+        DomSelectorsService.Root.internalAttributes.QUERY_BOX.MAIN_QUERY_BOX,
+      );
+
+      $wrapper
+        .find(DomSelectorsService.Root.cachedSync.QUERY_BOX.ATTR_WRAPPER)
+        .internalComponentAttr(
+          DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
+            .COMPONENTS_WRAPPER,
+        );
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
         main: $wrapper[0],
@@ -82,7 +84,16 @@ export function observeSpaceQueryBox({ observerId }: { observerId: string }) {
 
       if (!$wrapper.length) return;
 
-      $wrapper.internalComponentAttr(OBSERVER_ID.SPACE_QUERY_BOX);
+      $wrapper.internalComponentAttr(
+        DomSelectorsService.Root.internalAttributes.QUERY_BOX.SPACE_QUERY_BOX,
+      );
+
+      $wrapper
+        .find(DomSelectorsService.Root.cachedSync.QUERY_BOX.ATTR_WRAPPER)
+        .internalComponentAttr(
+          DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
+            .COMPONENTS_WRAPPER,
+        );
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
         space: $wrapper[0],
@@ -102,6 +113,8 @@ export function observeFollowUpQueryBox({
   observerId: string;
 }) {
   function cleanup() {
+    if (whereAmI() === "thread") return;
+
     queryBoxesDomObserverStore.getState().setWrapperNodes({
       followUp: null,
     });
@@ -129,7 +142,17 @@ export function observeFollowUpQueryBox({
 
       if (!$wrapper.length) return;
 
-      $wrapper.internalComponentAttr(OBSERVER_ID.FOLLOW_UP_QUERY_BOX);
+      $wrapper.internalComponentAttr(
+        DomSelectorsService.Root.internalAttributes.QUERY_BOX
+          .FOLLOW_UP_QUERY_BOX,
+      );
+
+      $wrapper
+        .find(DomSelectorsService.Root.cachedSync.QUERY_BOX.ATTR_WRAPPER)
+        .internalComponentAttr(
+          DomSelectorsService.Root.internalAttributes.QUERY_BOX_CHILD
+            .COMPONENTS_WRAPPER,
+        );
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
         followUp: $wrapper[0],
@@ -149,6 +172,8 @@ export function observeCometAssistantQueryBox({
   observerId: string;
 }) {
   function cleanup() {
+    if (whereAmI() === "comet_assistant") return;
+
     queryBoxesDomObserverStore.getState().setWrapperNodes({
       cometAssistant: null,
     });
@@ -177,7 +202,10 @@ export function observeCometAssistantQueryBox({
 
       if (!$wrapper.length) return;
 
-      $wrapper.internalComponentAttr(OBSERVER_ID.COMET_ASSISTANT_QUERY_BOX);
+      $wrapper.internalComponentAttr(
+        DomSelectorsService.Root.internalAttributes.QUERY_BOX
+          .COMET_ASSISTANT_QUERY_BOX,
+      );
 
       queryBoxesDomObserverStore.getState().setWrapperNodes({
         cometAssistant: $wrapper[0],

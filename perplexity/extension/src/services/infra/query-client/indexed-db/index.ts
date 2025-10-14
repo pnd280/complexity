@@ -4,6 +4,8 @@ import type { QueryCacheEntry } from "@/services/infra/query-client/utils";
 export const backgroundProxyServiceName = "queryCacheService";
 
 export class QueryCacheServiceImpl {
+  static isInitialized = () => true;
+
   static async add(query: QueryCacheEntry): Promise<string> {
     return await db.queryCache.add(query);
   }

@@ -1,6 +1,6 @@
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
-export function useCreatePortalContainer(wrapper: HTMLElement | null) {
+export function usePortalContainer(wrapper: HTMLElement | null) {
   if (!wrapper) return null;
 
   const $existingPortalContainer = $(

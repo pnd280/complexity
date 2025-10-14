@@ -11,7 +11,7 @@ import { APP_CONFIG } from "@/app.config";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { QueryCacheService } from "@/services/infra/query-client/indexed-db/service-init.bg-worker";
-import { isSubArray } from "@/utils/misc/utils";
+import { isSubArray, waitUntil } from "@/utils/misc/utils";
 
 export type QueryCacheEntry = {
   key: string;
@@ -25,6 +25,18 @@ export const persister = await createDexiePersister();
 
 async function createDexiePersister(idbValidKey = "reactQuery") {
   const Db = QueryCacheService.Instance;
+
+  const startTime = performance.now();
+
+  await waitUntil({
+    condition: Db.isInitialized,
+    timeout: 30000,
+    interval: 50,
+  });
+
+  const endTime = performance.now();
+
+  console.log(`[CPLX] DexiePersister initialized in ${endTime - startTime}ms`);
 
   return {
     persistClient: async (client: PersistedClient) => {
@@ -96,6 +108,7 @@ const INCLUDE_KEYS = [
     initialPageParam: 0,
     searchValue: "",
   }).queryKey,
+  pplxApiQueries.auth.all(),
 ];
 
 export function setQueriesDefaults(queryClient: QueryClient) {
@@ -116,6 +129,10 @@ export function setQueriesDefaults(queryClient: QueryClient) {
 
   queryClient.setQueryDefaults(pplxApiQueries.spaces.all(), {
     staleTime: 10000,
+  });
+
+  queryClient.setQueryDefaults(pplxApiQueries.auth.all(), {
+    staleTime: 5000,
   });
 }
 

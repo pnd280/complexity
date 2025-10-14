@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import type { DialogProps } from "@/components/ui/dialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
-import { isInContentScript } from "@/utils/misc/utils";
+import { getTaskScheduler, isInContentScript } from "@/utils/misc/utils";
 
 import TablerSearch from "~icons/tabler/search";
 
@@ -315,7 +315,7 @@ export function useCommandListManualScroll({
   useEffect(() => {
     if (!enabled || !commandListRef.current) return;
 
-    requestAnimationFrame(() => {
+    getTaskScheduler()(() => {
       const selectedItem = commandListRef.current?.querySelector(
         '[cmdk-item][aria-selected="true"]',
       );

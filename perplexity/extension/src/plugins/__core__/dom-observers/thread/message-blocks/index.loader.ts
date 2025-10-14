@@ -1,12 +1,12 @@
 import debounce from "lodash/debounce";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { domObserverService } from "@/plugins/__core__/dom-observers";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { findMessageBlocks } from "@/plugins/__core__/dom-observers/thread/message-blocks/utils";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import { createDomObserverId } from "@/plugins/__core__/dom-observers/types";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
-import { domObserverService } from "@/services/features/dom-observer";
-import { createDomObserverId } from "@/services/features/dom-observer/types";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -59,8 +59,8 @@ function observeThreadMessageBlocks() {
             DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.QUERY,
           )} ~ ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER_TEXT_ALTERNATE} *`,
         ],
-        onAdd: onMutation,
-        onRemove: onMutation,
+        onAdd: () => onMutation(),
+        onRemove: () => onMutation(),
         existingCheck: true,
       });
     },
@@ -70,7 +70,7 @@ function observeThreadMessageBlocks() {
   );
 }
 
-const onMutation = debounce(async () => {
+const onMutation = debounce(async (forceBypassCache: boolean = false) => {
   const $threadMessagesContainer =
     threadDomObserverStore.getState().$messageBlocksWrapper;
 
@@ -79,6 +79,7 @@ const onMutation = debounce(async () => {
   }
 
   if (
+    forceBypassCache === false &&
     !hasContentChanged($threadMessagesContainer) &&
     threadMessageBlocksDomObserverStore.getState().messageBlocks != null
   ) {
@@ -134,5 +135,5 @@ function hasContentChanged($threadMessagesContainer: JQuery<HTMLElement>) {
 }
 
 const scheduleObserverForceTrigger = debounce(() => {
-  void onMutation();
+  void onMutation(true);
 }, 100);

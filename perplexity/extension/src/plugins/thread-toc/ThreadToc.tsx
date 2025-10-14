@@ -105,8 +105,7 @@ export function ThreadToc() {
                       .BLOCK,
                   )}[data-index="${item.id}"]`,
                 );
-                if ($element.length)
-                  scrollToElement($element, 0, tocItems.length < 10 ? 300 : 0);
+                if ($element.length) scrollToElement($element, 0, 300);
               }}
               onContextMenu={() => {
                 const $element = $(
@@ -119,7 +118,7 @@ export function ThreadToc() {
                   scrollToElement(
                     $element,
                     $element.height()! - window.innerHeight / 2,
-                    tocItems.length < 10 ? 300 : 0,
+                    300,
                   );
               }}
             />

@@ -17,7 +17,7 @@ export const threadBetterRewriteDropdownFiberConfigResourceConfig =
     type: "json",
     fallback: {
       name: "DropDownMenu",
-      dataNodePath: ["memoizedProps", "items"],
+      dataNodePath: ["memoizedProps", "footer", "props", "onClickRewrite"],
     },
     zodSchema: z.object({
       name: z.string(),

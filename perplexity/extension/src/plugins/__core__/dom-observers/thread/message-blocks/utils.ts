@@ -84,11 +84,10 @@ function parseMessageBlock({
     authorUuid: messageBlockFiber?.authorUuid ?? "",
   };
 
-  const isVirtualized = $answer.length === 0;
+  const isVirtualized = $query.length === 0;
   const states = getMessageBlockStates({
     messageBlockNodes: nodes,
     messageBlockFiber,
-    isVirtualized,
   });
 
   return {
@@ -194,17 +193,13 @@ function setInternalAttributes(nodes: MessageBlock["nodes"]) {
 function getMessageBlockStates({
   messageBlockNodes,
   messageBlockFiber,
-  isVirtualized,
 }: {
   messageBlockNodes: MessageBlock["nodes"];
   messageBlockFiber: MessageBlockFiberData | undefined;
-  isVirtualized: boolean;
 }): Omit<MessageBlock["states"], "isVirtualized"> {
   const { $wrapper, $query, $footer } = messageBlockNodes;
 
-  const isInFlight = isVirtualized
-    ? false
-    : (messageBlockFiber?.isInFlight ?? $footer[0] == null);
+  const isInFlight = messageBlockFiber?.isInFlight ?? $footer[0] == null;
 
   $wrapper.attr("data-inflight", isInFlight ? "true" : "false");
 

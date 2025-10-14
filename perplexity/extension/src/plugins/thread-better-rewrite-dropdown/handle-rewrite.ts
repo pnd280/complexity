@@ -74,7 +74,6 @@ export const handleRewrite = ({
 
   void BetterRewriteDropdownsMainWorldActions.Instance.triggerRewriteOption({
     messageBlockIndex,
-    optionIndex: 5,
     fiberConfig: {
       name: remoteFiberConfig.name,
       dataNodePath: remoteFiberConfig.dataNodePath,

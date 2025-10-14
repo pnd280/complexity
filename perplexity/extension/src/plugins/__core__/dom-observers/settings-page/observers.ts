@@ -1,6 +1,6 @@
+import { domObserverService } from "@/plugins/__core__/dom-observers";
 import { settingsPageDomObserverStore } from "@/plugins/__core__/dom-observers/settings-page/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
-import { domObserverService } from "@/services/features/dom-observer";
 
 export function observeSidebar({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({

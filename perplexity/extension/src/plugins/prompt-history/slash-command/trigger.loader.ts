@@ -3,7 +3,7 @@ const pageId = "promptHistory" as const;
 import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
 import { getAnchor } from "@/plugins/__core__/slash-command/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { keysToString } from "@/utils/misc/utils";
+import { getTaskScheduler, keysToString } from "@/utils/misc/utils";
 import hotkeysJs from "@/utils/wrappers/hotkeys-js";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
@@ -32,7 +32,7 @@ export default function () {
 
           if (!anchor) return;
 
-          requestAnimationFrame(() => {
+          getTaskScheduler()(() => {
             const selection = anchor.contentActions?.getSelection();
 
             if (!selection) return;

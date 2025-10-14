@@ -6,15 +6,23 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
     "react",
     {
       from: "react",
-      imports: ["lazy", "use", "createContext", "useDeferredValue", "memo"],
+      imports: ["createContext", "lazy", "memo", "use", "useDeferredValue"],
     },
     {
       from: "@complexity/i18n",
-      imports: ["t", "extendT", "Trans", "TransWithPrefix"],
+      imports: ["Trans", "TransWithPrefix", "extendT", "t"],
+    },
+    {
+      from: "@/types/keys.ts",
+      imports: ["Key"],
     },
     {
       from: "@/utils/misc/utils.ts",
-      imports: ["sleep", "isMainWorldContext", "invariant"],
+      imports: ["invariant", "isMainWorldContext", "sleep"],
+    },
+    {
+      from: "@/utils/wrappers/cn.ts",
+      imports: ["cn", "tw"],
     },
     {
       from: "@/utils/wrappers/deep-equal.ts",
@@ -26,14 +34,6 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       name: "default",
       as: "$",
       from: "jquery",
-    },
-    {
-      name: "cn",
-      from: "@/utils/wrappers/cn.ts",
-    },
-    {
-      name: "Key",
-      from: "@/types/keys.ts",
     },
   ],
 };
