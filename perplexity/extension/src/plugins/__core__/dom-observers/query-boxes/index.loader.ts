@@ -57,27 +57,29 @@ function cleanup() {
 function observeQueryBoxes(location: ReturnType<typeof whereAmI>) {
   cleanup();
 
-  const observerMap: Partial<
-    Record<
-      ReturnType<typeof whereAmI>,
-      ({ observerId }: { observerId: string }) => () => void
-    >
-  > = {
-    home: observeMainQueryBox,
-    comet_ntp: observeMainQueryBox,
-    collection: observeSpaceQueryBox,
-    thread: observeFollowUpQueryBox,
-    comet_assistant: observeCometAssistantQueryBox,
-  };
-
-  const handler = observerMap[location];
-
-  if (handler == null) {
-    queryBoxesDomObserverStore.getState().resetStore();
-    return;
+  switch (location) {
+    case "home":
+    case "comet_ntp":
+      observeMainQueryBox({
+        observerId: createDomObserverId("queryBoxes", location),
+      });
+      break;
+    case "collection":
+      observeSpaceQueryBox({
+        observerId: createDomObserverId("queryBoxes", location),
+      });
+      break;
+    case "thread":
+      observeFollowUpQueryBox({
+        observerId: createDomObserverId("queryBoxes", location),
+      });
+      break;
+    case "comet_assistant":
+      observeCometAssistantQueryBox({
+        observerId: createDomObserverId("queryBoxes", location),
+      });
+      break;
+    default:
+      queryBoxesDomObserverStore.getState().resetStore();
   }
-
-  handler({
-    observerId: createDomObserverId("queryBoxes", location),
-  });
 }

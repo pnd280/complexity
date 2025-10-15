@@ -41,4 +41,16 @@ function observeThreadCodeBlocks() {
       equalityFn: deepEqual,
     },
   );
+
+  document.addEventListener("visibilitychange", async () => {
+    if (document.visibilityState === "visible") {
+      const messageBlocks =
+        threadMessageBlocksDomObserverStore.getState().messageBlocks;
+      if (messageBlocks != null) {
+        threadCodeBlocksDomObserverStore.setState({
+          codeBlocksChunks: await findCodeBlocks(messageBlocks),
+        });
+      }
+    }
+  });
 }

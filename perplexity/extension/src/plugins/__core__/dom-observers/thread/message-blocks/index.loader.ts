@@ -25,19 +25,23 @@ export default function () {
   });
 }
 
+function cleanup() {
+  domObserverService.unsubscribe(
+    createDomObserverId("thread", "messageBlocks"),
+  );
+  threadMessageBlocksDomObserverStore.getState().resetStore();
+}
+
 function observeThreadMessageBlocks() {
   threadDomObserverStore.subscribe(
     (store) => store.$messageBlocksWrapper,
     ($threadMessageBlocksWrapper) => {
-      domObserverService.unsubscribe(
-        createDomObserverId("thread", "messageBlocks"),
-      );
+      cleanup();
 
       if (
         $threadMessageBlocksWrapper == null ||
         !$threadMessageBlocksWrapper[0]
       ) {
-        threadMessageBlocksDomObserverStore.getState().resetStore();
         return;
       }
 
@@ -48,19 +52,10 @@ function observeThreadMessageBlocks() {
             DomSelectorsService.Root.internalAttributes.THREAD
               .MESSAGE_BLOCKS_WRAPPER,
           )} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.QUERY_WRAPPER} *`,
-          `${DomSelectorsService.Root.cplxAttribute(
-            DomSelectorsService.Root.internalAttributes.THREAD
-              .MESSAGE_BLOCKS_WRAPPER,
-          )} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER_TEXT_CONTENT} *`,
-          `${DomSelectorsService.Root.cplxAttribute(
-            DomSelectorsService.Root.internalAttributes.THREAD
-              .MESSAGE_BLOCKS_WRAPPER,
-          )} ${DomSelectorsService.Root.cplxAttribute(
-            DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE.QUERY,
-          )} ~ ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER_TEXT_ALTERNATE} *`,
+          `${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER} *`,
         ],
-        onAdd: () => onMutation(),
-        onRemove: () => onMutation(),
+        onAdd: onMutation,
+        onRemove: onMutation,
         existingCheck: true,
       });
     },
@@ -70,70 +65,43 @@ function observeThreadMessageBlocks() {
   );
 }
 
-const onMutation = debounce(async (forceBypassCache: boolean = false) => {
-  const $threadMessagesContainer =
-    threadDomObserverStore.getState().$messageBlocksWrapper;
+const onMutation = debounce(
+  async () => {
+    const $threadMessagesContainer =
+      threadDomObserverStore.getState().$messageBlocksWrapper;
 
-  if ($threadMessagesContainer == null) {
-    return;
-  }
-
-  if (
-    forceBypassCache === false &&
-    !hasContentChanged($threadMessagesContainer) &&
-    threadMessageBlocksDomObserverStore.getState().messageBlocks != null
-  ) {
-    return;
-  }
-
-  const messageBlocks = await findMessageBlocks($threadMessagesContainer);
-
-  if (messageBlocks == null) return;
-
-  let isAnyMessageBlockInFlight = false;
-  let isAnyMessageBlockVirtualized = false;
-
-  for (const block of messageBlocks) {
-    if (block.states.isInFlight) {
-      isAnyMessageBlockInFlight = true;
-    }
-    if (block.states.isVirtualized) {
-      isAnyMessageBlockVirtualized = true;
+    if ($threadMessagesContainer == null) {
+      return;
     }
 
-    if (isAnyMessageBlockInFlight && isAnyMessageBlockVirtualized) {
-      break;
+    const messageBlocks = await findMessageBlocks($threadMessagesContainer);
+
+    if (messageBlocks == null) return;
+
+    let isAnyMessageBlockInFlight = false;
+
+    for (const block of messageBlocks) {
+      if (block.states.isInFlight) {
+        isAnyMessageBlockInFlight = true;
+        break;
+      }
     }
-  }
 
-  // in case the in-flight message is virtualized, no further DOM mutations will occur so we need to force trigger the observer
-  if (isAnyMessageBlockInFlight && isAnyMessageBlockVirtualized) {
-    scheduleObserverForceTrigger();
-  }
+    // prevent stale nodes when dom observer can no longer catch mutations
+    if (isAnyMessageBlockInFlight) {
+      setTimeout(() => {
+        void onMutation();
+      }, 100);
+    }
 
-  threadDomObserverStore.setState((store) => {
-    store.states.isInFlight = isAnyMessageBlockInFlight;
-  });
+    threadDomObserverStore.setState((store) => {
+      store.states.isInFlight = isAnyMessageBlockInFlight;
+    });
 
-  threadMessageBlocksDomObserverStore.setState({
-    messageBlocks,
-  });
-}, 100);
-
-function hasContentChanged($threadMessagesContainer: JQuery<HTMLElement>) {
-  const prevTextContent =
-    $threadMessagesContainer.data("prevTextContent") ?? "";
-  const currentTextContent = $threadMessagesContainer[0]?.textContent ?? "";
-
-  const result = prevTextContent !== currentTextContent;
-
-  if (result) {
-    $threadMessagesContainer.data("prevTextContent", currentTextContent);
-  }
-
-  return result;
-}
-
-const scheduleObserverForceTrigger = debounce(() => {
-  void onMutation(true);
-}, 100);
+    threadMessageBlocksDomObserverStore.setState({
+      messageBlocks,
+    });
+  },
+  100,
+  { leading: true, trailing: true },
+);
