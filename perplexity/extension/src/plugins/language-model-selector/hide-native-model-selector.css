@@ -25,3 +25,8 @@
     display: none;
   }
 }
+
+.cplx-model-mismatch-warning {
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+}

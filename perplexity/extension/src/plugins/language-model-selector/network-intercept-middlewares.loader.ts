@@ -12,13 +12,13 @@ import { ExtensionSettingsService } from "@/services/infra/extension-api-wrapper
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
-    "networkIntercept:languageModelSelector": void;
+    "plugin:queryBox:languageModelSelector:networkInterceptMiddlewares": void;
   }
 }
 
 export default function () {
   AsyncLoaderRegistry.register({
-    id: "networkIntercept:languageModelSelector",
+    id: "plugin:queryBox:languageModelSelector:networkInterceptMiddlewares",
     dependencies: ["cache:pluginsEnableStates"],
     loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["queryBox:languageModelSelector"]) return;
@@ -62,7 +62,7 @@ export default function () {
                 draft.timezone =
                   settings.devMode &&
                   settings.plugins["queryBox:languageModelSelector"]
-                    .changeTimezone
+                    .spoofTimezone
                     ? "America/Los_Angeles"
                     : parsedData.params.timezone;
 

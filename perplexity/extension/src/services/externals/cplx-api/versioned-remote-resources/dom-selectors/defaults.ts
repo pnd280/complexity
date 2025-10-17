@@ -46,6 +46,8 @@ export const DOM_SELECTORS: DomSelectors = {
       FOOTER:
         ".gap-y-sm.md\\:gap-y-md.flex.flex-col > .flex.items-center.justify-between",
       FOOTER_CHILD: {
+        DISPLAY_MODEL_BUTTON:
+          'button:has(svg>path[d="M5 5m0 1a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1z M9 9h6v6h-6z M3 10h2 M3 14h2 M10 3v2 M14 3v2 M21 10h-2 M21 14h-2 M14 21v-2 M10 21v-2"])',
         REWRITE_BUTTON:
           'button:has(svg>path[d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3 M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"])',
         REWRITE_BUTTON_WRAPPER:

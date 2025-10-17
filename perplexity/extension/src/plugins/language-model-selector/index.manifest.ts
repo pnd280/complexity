@@ -10,7 +10,8 @@ declare module "@/__registries__/plugins/meta.types" {
 
 const schema = z.object({
   enabled: z.boolean(),
-  changeTimezone: z.boolean(),
+  showModelSelectionMismatchWarning: z.boolean(),
+  spoofTimezone: z.boolean(),
 });
 
 export default definePlugin({
@@ -28,6 +29,7 @@ export default definePlugin({
         "networkIntercept",
         "domObservers:queryBoxes",
         "domObservers:internalSearchStates",
+        "domObservers:thread:messageBlocks",
       ],
       uiGroups: [
         "queryBoxes:toolbar:main:ll",
@@ -41,7 +43,8 @@ export default definePlugin({
     schema,
     fallback: {
       enabled: false,
-      changeTimezone: false,
+      showModelSelectionMismatchWarning: true,
+      spoofTimezone: false,
     },
   },
 });

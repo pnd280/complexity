@@ -58,9 +58,13 @@ function parseMessageBlock({
     )
     .attr("data-index", index);
 
-  const { $query, $queryEditButtonGroup, $answer, $footer } = getComponentNodes(
-    { $wrapper, index },
-  );
+  const {
+    $query,
+    $queryEditButtonGroup,
+    $answer,
+    $footer,
+    $displayModelButton,
+  } = getComponentNodes({ $wrapper, index });
 
   const nodes: MessageBlock["nodes"] = {
     $wrapper,
@@ -68,6 +72,7 @@ function parseMessageBlock({
     $answer,
     $queryEditButtonGroup,
     $footer,
+    $displayModelButton,
   };
 
   const content: MessageBlock["content"] = {
@@ -80,6 +85,7 @@ function parseMessageBlock({
     webResults: messageBlockFiberData?.webResults ?? [],
     displayModel: messageBlockFiberData?.displayModel ?? "",
     backendUuid: messageBlockFiberData?.backendUuid ?? "",
+    userSelectedModel: messageBlockFiberData?.userSelectedModel ?? null,
     authorUuid: messageBlockFiberData?.authorUuid ?? "",
   };
 
@@ -148,6 +154,12 @@ function refreshStaleNodes(
     );
   }
 
+  if (isNodeStale(nodes.$displayModelButton)) {
+    nodes.$displayModelButton = nodes.$footer.find(
+      SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
+    );
+  }
+
   return nodes;
 }
 
@@ -162,6 +174,9 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   const $answer = $elements.filter(SELECTORS.ANSWER);
   const $footer = $elements.filter(SELECTORS.FOOTER);
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
+  const $displayModelButton = $footer.find(
+    SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
+  );
 
   return {
     $wrapper,
@@ -169,6 +184,7 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
     $answer,
     $footer,
     $queryEditButtonGroup,
+    $displayModelButton,
   };
 }
 

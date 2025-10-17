@@ -8,6 +8,7 @@ export type MessageBlock = {
     $queryEditButtonGroup: JQuery<HTMLElement>;
     $answer: JQuery<HTMLElement>;
     $footer: JQuery<HTMLElement>;
+    $displayModelButton: JQuery<HTMLElement>;
   };
   content: {
     backendUuid: string;
@@ -15,6 +16,7 @@ export type MessageBlock = {
     answer: string;
     webResults: PplxWebResult[];
     displayModel: LanguageModelCode;
+    userSelectedModel: LanguageModelCode | null;
     authorUuid: string | null;
   };
   states: {
