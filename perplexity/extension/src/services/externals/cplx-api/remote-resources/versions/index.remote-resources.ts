@@ -1,6 +1,6 @@
 /* cli-ignore */
 
-import type { ZodSchema } from "zod";
+import type z from "zod";
 
 import { APP_CONFIG } from "@/app.config";
 import { defineRemoteResource } from "@/services/externals/cplx-api/remote-resources";
@@ -15,5 +15,5 @@ export const versionsRemoteResourceConfig = defineRemoteResource({
   fallback: {
     latest: APP_CONFIG.VERSION,
   },
-  zodSchema: CplxVersionsSchema as ZodSchema<CplxVersions>,
+  zodSchema: CplxVersionsSchema as z.ZodType<CplxVersions>,
 });

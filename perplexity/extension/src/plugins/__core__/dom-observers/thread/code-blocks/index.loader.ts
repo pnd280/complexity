@@ -1,7 +1,13 @@
+import debounce from "lodash/debounce";
+
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { domObserverService } from "@/plugins/__core__/dom-observers";
 import { findCodeBlocks } from "@/plugins/__core__/dom-observers/thread/code-blocks/parser";
 import { threadCodeBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/code-blocks/store";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import { createDomObserverId } from "@/plugins/__core__/dom-observers/types";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -42,15 +48,44 @@ function observeThreadCodeBlocks() {
     },
   );
 
-  document.addEventListener("visibilitychange", async () => {
-    if (document.visibilityState === "visible") {
-      const messageBlocks =
-        threadMessageBlocksDomObserverStore.getState().messageBlocks;
-      if (messageBlocks != null) {
-        threadCodeBlocksDomObserverStore.setState({
-          codeBlocksChunks: await findCodeBlocks(messageBlocks),
-        });
+  threadDomObserverStore.subscribe(
+    (store) => store.$messageBlocksWrapper,
+    ($threadMessageBlocksWrapper) => {
+      domObserverService.unsubscribe(
+        createDomObserverId("thread", "codeBlocks"),
+      );
+      threadCodeBlocksDomObserverStore.getState().resetStore();
+
+      if (
+        $threadMessageBlocksWrapper == null ||
+        !$threadMessageBlocksWrapper[0]
+      ) {
+        return;
       }
-    }
-  });
+
+      domObserverService.subscribe({
+        id: createDomObserverId("thread", "codeBlocks"),
+        selector: [
+          `${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER} *`,
+        ],
+        onAdd: onMutation,
+        existingCheck: true,
+      });
+    },
+    {
+      equalityFn: deepEqual,
+    },
+  );
 }
+
+const onMutation = debounce(
+  async () => {
+    threadCodeBlocksDomObserverStore.setState({
+      codeBlocksChunks: await findCodeBlocks(
+        threadMessageBlocksDomObserverStore.getState().messageBlocks ?? [],
+      ),
+    });
+  },
+  1000,
+  { leading: false, trailing: true },
+);

@@ -7,7 +7,10 @@ import {
   type PluginGuardsStoreType,
 } from "@/plugins/__async-deps__/plugins-guard/store";
 import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
-import type { PplxAuthSessionApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
+import type {
+  PplxAuthSessionApiResponse,
+  PplxOrgSettingsApiResponse,
+} from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { getPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
@@ -33,13 +36,19 @@ export const pplxAuthOrgStatusQueryObserver = new QueryObserver(
 export default function () {
   AsyncLoaderRegistry.register({
     id: "store:pluginGuards",
-    dependencies: ["cache:extensionSettings"],
-    loader: async ({ "cache:extensionSettings": extensionSettings }) => {
+    dependencies: [
+      "cache:extensionSettings",
+      "store:pluginGuards:authApiPrefetch",
+    ],
+    loader: async ({
+      "cache:extensionSettings": extensionSettings,
+      "store:pluginGuards:authApiPrefetch": authData,
+    }) => {
       // pluginGuardsStore.subscribe((state) => console.log(state));
 
       setupLocationTracking();
       setupMobileStateSubscription();
-      setupAuthenticationTracking(extensionSettings);
+      setupAuthenticationTracking(extensionSettings, authData);
 
       await setupPermissionsTracking();
 
@@ -106,13 +115,15 @@ function initAuthStatus({
   });
 }
 
-function setupAuthenticationTracking(extensionSettings: ExtensionSettings) {
-  const authData = queryClient.getQueryData(
-    pplxApiQueries.auth.detail().queryKey,
-  );
-
-  if (authData != null) {
-    initAuthStatus({ data: authData, extensionSettings });
+function setupAuthenticationTracking(
+  extensionSettings: ExtensionSettings,
+  authData: {
+    authDetail: PplxAuthSessionApiResponse;
+    orgDetail: PplxOrgSettingsApiResponse;
+  },
+) {
+  if (authData.authDetail != null) {
+    initAuthStatus({ data: authData.authDetail, extensionSettings });
   }
 
   pplxAuthQueryObserver.subscribe((data) => {
@@ -126,13 +137,9 @@ function setupAuthenticationTracking(extensionSettings: ExtensionSettings) {
     initAuthStatus({ data: data.data, extensionSettings });
   });
 
-  const orgStatusData = queryClient.getQueryData(
-    pplxApiQueries.auth.orgStatus.detail().queryKey,
-  );
-
-  if (orgStatusData != null) {
+  if (authData.orgDetail != null) {
     pluginGuardsStore.setState((state) => {
-      state.isOrgMember = orgStatusData.is_in_organization;
+      state.isOrgMember = authData.orgDetail.is_in_organization;
     });
   }
 

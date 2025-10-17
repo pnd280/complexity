@@ -12,6 +12,7 @@ export type MessageBlockFiberData = {
   answer: string;
   webResults: PplxWebResult[];
   displayModel: LanguageModelCode;
+  userSelectedModel: string;
   isInFlight: boolean;
   authorUuid: string | null;
 };
@@ -62,6 +63,7 @@ export async function getThreadMessages({
         .flat(),
 
       displayModel: entry.display_model,
+      userSelectedModel: entry.user_selected_model,
       isInFlight: entry.status !== "COMPLETED",
       authorUuid: entry.author_id ?? null,
     };

@@ -1,42 +1,42 @@
-import type { ZodSchema } from "zod";
+import type z from "zod";
 
-import type {
-  ChangelogListing,
-  ICplxApiService,
-} from "@/services/externals/cplx-api/types";
+import type { CplxApiOnlineService } from "@/services/externals/cplx-api/online-service";
+import type { ChangelogListing } from "@/services/externals/cplx-api/types";
 
-export class CplxApiOfflineService implements ICplxApiService {
-  fetchChangelog({ version: _ }: { version?: string } = {}): Promise<string> {
+export const CplxApiOfflineService: typeof CplxApiOnlineService = {
+  fetchChangelog: ({
+    version: _,
+  }: { version?: string } = {}): Promise<string> => {
     return Promise.resolve("");
-  }
+  },
 
-  fetchChangelogListing(): Promise<ChangelogListing> {
+  fetchChangelogListing: (): Promise<ChangelogListing> => {
     return Promise.resolve({});
-  }
+  },
 
-  async fetchRemoteResource<T>(_params: {
+  fetchRemoteResource: <T>(_params: {
     resourcePath: string;
-    zodSchema: ZodSchema<T>;
-  }): Promise<T> {
+    zodSchema: z.ZodType<T>;
+  }): Promise<T> => {
     throw new Error("Not available in offline mode");
-  }
+  },
 
-  async fetchVersionedRemoteResource<T>(_params: {
+  fetchVersionedRemoteResource: <T>(_params: {
     resourcePath: string;
-    zodSchema: ZodSchema<T>;
-  }): Promise<T> {
+    zodSchema: z.ZodType<T>;
+  }): Promise<T> => {
     throw new Error("Not available in offline mode");
-  }
+  },
 
-  async fetchSoftCacheBuster(): Promise<string> {
+  fetchSoftCacheBuster: (): Promise<string> => {
     throw new Error("Not available in offline mode");
-  }
+  },
 
-  async fetchPsa(): Promise<string> {
+  fetchPsa: (): Promise<string> => {
     throw new Error("Not available in offline mode");
-  }
+  },
 
-  async fetchCometPatchTutorial(): Promise<string> {
+  fetchCometPatchTutorial: (): Promise<string> => {
     throw new Error("Not available in offline mode");
-  }
-}
+  },
+};

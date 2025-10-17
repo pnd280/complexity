@@ -15,6 +15,7 @@ import type {
   ThreadsSearchPayload,
   PplxAiProfileApiResponse,
   PplxAuthSessionApiResponse,
+  PplxOrgSettingsApiResponse,
 } from "@/services/externals/pplx-api/pplx-api.types";
 import {
   PplxAiProfileApiResponseSchema,
@@ -65,7 +66,7 @@ export class PplxApiService {
     return parsedJson;
   }
 
-  static async fetchOrgSettings() {
+  static async fetchOrgSettings(): Promise<PplxOrgSettingsApiResponse> {
     const resp = await fetchTextResource(ENDPOINTS.USER_SETTINGS.ORG_SETTINGS);
 
     const data = PplxOrgSettingsApiResponseSchema.parse(

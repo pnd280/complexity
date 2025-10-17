@@ -1,4 +1,3 @@
-import type { ZodSchema } from "zod";
 import { z } from "zod";
 
 import { type RemoteResourceType } from "@/services/externals/cplx-api/types";
@@ -7,7 +6,7 @@ export type VersionedRemoteResource<T> = {
   name: string;
   type: RemoteResourceType;
   fallback: T;
-  zodSchema: ZodSchema<T>;
+  zodSchema: z.ZodType<T>;
 };
 
 export type VersionedRemoteResourceReturnType<T> =

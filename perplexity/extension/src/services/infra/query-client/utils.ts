@@ -26,17 +26,11 @@ export const persister = await createDexiePersister();
 async function createDexiePersister(idbValidKey = "reactQuery") {
   const Db = QueryCacheService.Instance;
 
-  const startTime = performance.now();
-
   await waitUntil({
     condition: Db.isInitialized,
     timeout: 30000,
     interval: 50,
   });
-
-  const endTime = performance.now();
-
-  console.log(`[CPLX] DexiePersister initialized in ${endTime - startTime}ms`);
 
   return {
     persistClient: async (client: PersistedClient) => {

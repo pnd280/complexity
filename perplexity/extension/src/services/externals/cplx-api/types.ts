@@ -54,29 +54,3 @@ export type FeatureCompatibility = z.infer<typeof FeatureCompatibilitySchema>;
 export const ChangelogListingSchema = z.record(SemverSchema, z.string());
 
 export type ChangelogListing = z.infer<typeof ChangelogListingSchema>;
-
-export interface ICplxApiService {
-  fetchChangelog(options?: { version?: string }): Promise<string>;
-
-  fetchChangelogListing(): Promise<ChangelogListing>;
-
-  fetchRemoteResource<T>(params: {
-    resourcePath: string;
-    zodSchema: z.ZodType<T>;
-  }): Promise<T>;
-
-  fetchVersionedRemoteResource<T>(params: {
-    resourcePath: string;
-    zodSchema: z.ZodType<T>;
-  }): Promise<T>;
-
-  fetchSoftCacheBuster(): Promise<string>;
-
-  fetchPsa(): Promise<string>;
-
-  fetchCometPatchTutorial({
-    platform,
-  }: {
-    platform?: "mac" | "win";
-  }): Promise<string>;
-}

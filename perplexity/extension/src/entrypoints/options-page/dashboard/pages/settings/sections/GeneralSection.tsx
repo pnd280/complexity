@@ -6,6 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Image } from "@/components/ui/image";
 import { Switch } from "@/components/ui/switch";
 import ExtensionIconActionSelect from "@/entrypoints/options-page/dashboard/pages/settings/components/ExtensionIconActionSelect";
 import ManagePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/settings/components/ManagePermissionsDialogWrapper";
@@ -33,13 +34,11 @@ export default function GeneralSection() {
               <TablerQuestionCircle className="x:text-muted-foreground x:transition-all x:hover:text-foreground" />
             </HoverCardTrigger>
             <HoverCardContent>
-              <div className="x:max-w-[400px] x:rounded-xl x:border x:border-border/50">
-                <img
-                  src="https://i.imgur.com/UF288wx.png"
-                  alt="Dashboard Shortcut"
-                  className="x:relative x:w-full x:rounded-xl x:shadow-lg"
-                />
-              </div>
+              <Image
+                src="https://i.imgur.com/UF288wx.png"
+                alt="Dashboard Shortcut"
+                className="x:w-full"
+              />
             </HoverCardContent>
           </HoverCard>
           <ExtensionIconActionSelect />

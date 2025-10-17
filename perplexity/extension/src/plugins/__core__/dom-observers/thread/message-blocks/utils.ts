@@ -4,7 +4,6 @@ import { threadMessageBlocksFiberConfigResourceConfig } from "@/plugins/__core__
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
-import { type DomSelectorsService as DomSelectorsServiceType } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 const remoteFiberConfig = await getVersionedRemoteResource(
@@ -34,7 +33,7 @@ export async function findMessageBlocks(
   for (let index = 0; index < nodes.length; index += 1) {
     result.push(
       parseMessageBlock({
-        messageBlockFiber: messageBlocksFiberData?.[index],
+        messageBlockFiberData: messageBlocksFiberData?.[index],
         $wrapper: $(nodes[index] as HTMLElement),
         index,
       }),
@@ -45,11 +44,11 @@ export async function findMessageBlocks(
 }
 
 function parseMessageBlock({
-  messageBlockFiber,
+  messageBlockFiberData,
   $wrapper,
   index,
 }: {
-  messageBlockFiber: MessageBlockFiberData | undefined;
+  messageBlockFiberData: MessageBlockFiberData | undefined;
   $wrapper: JQuery<HTMLElement>;
   index: number;
 }): MessageBlock {
@@ -73,21 +72,21 @@ function parseMessageBlock({
 
   const content: MessageBlock["content"] = {
     title:
-      messageBlockFiber?.title ??
+      messageBlockFiberData?.title ??
       $query
         .find(DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.QUERY)
         .text(),
-    answer: messageBlockFiber?.answer ?? "",
-    webResults: messageBlockFiber?.webResults ?? [],
-    displayModel: messageBlockFiber?.displayModel ?? "",
-    backendUuid: messageBlockFiber?.backendUuid ?? "",
-    authorUuid: messageBlockFiber?.authorUuid ?? "",
+    answer: messageBlockFiberData?.answer ?? "",
+    webResults: messageBlockFiberData?.webResults ?? [],
+    displayModel: messageBlockFiberData?.displayModel ?? "",
+    backendUuid: messageBlockFiberData?.backendUuid ?? "",
+    authorUuid: messageBlockFiberData?.authorUuid ?? "",
   };
 
   const isVirtualized = $query.length === 0;
   const states = getMessageBlockStates({
     messageBlockNodes: nodes,
-    messageBlockFiber,
+    messageBlockFiberData,
   });
 
   return {
@@ -107,21 +106,17 @@ function getComponentNodes({
   $wrapper: JQuery<Element>;
   index: number;
 }) {
-  const SELECTORS = DomSelectorsService.Root.cachedSync.THREAD.MESSAGE;
-  const existingNodes = getExistingNodes(index);
+  const existingNodes =
+    threadMessageBlocksDomObserverStore.getState().messageBlocks?.[index]
+      ?.nodes;
 
   const nodes = existingNodes
-    ? refreshStaleNodes(existingNodes, $wrapper, SELECTORS)
-    : findFreshNodes($wrapper, SELECTORS);
+    ? refreshStaleNodes(existingNodes, $wrapper)
+    : findFreshNodes($wrapper as JQuery<HTMLElement>);
 
   setInternalAttributes(nodes);
 
   return nodes;
-}
-
-function getExistingNodes(index: number) {
-  return threadMessageBlocksDomObserverStore.getState().messageBlocks?.[index]
-    ?.nodes;
 }
 
 function isNodeStale($node: JQuery<Element>): boolean {
@@ -131,8 +126,8 @@ function isNodeStale($node: JQuery<Element>): boolean {
 function refreshStaleNodes(
   existingNodes: MessageBlock["nodes"],
   $wrapper: JQuery<Element>,
-  SELECTORS: DomSelectorsServiceType["cachedSync"]["THREAD"]["MESSAGE"],
 ) {
+  const SELECTORS = DomSelectorsService.Root.cachedSync.THREAD.MESSAGE;
   const nodes = { ...existingNodes };
 
   if (isNodeStale(nodes.$query)) {
@@ -156,10 +151,9 @@ function refreshStaleNodes(
   return nodes;
 }
 
-function findFreshNodes(
-  $wrapper: JQuery<Element>,
-  SELECTORS: DomSelectorsServiceType["cachedSync"]["THREAD"]["MESSAGE"],
-): MessageBlock["nodes"] {
+function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
+  const SELECTORS = DomSelectorsService.Root.cachedSync.THREAD.MESSAGE;
+
   const $elements = $wrapper.find(
     [SELECTORS.QUERY_WRAPPER, SELECTORS.ANSWER, SELECTORS.FOOTER].join(", "),
   );
@@ -170,7 +164,7 @@ function findFreshNodes(
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
 
   return {
-    $wrapper: $wrapper as JQuery<HTMLElement>,
+    $wrapper,
     $query,
     $answer,
     $footer,
@@ -192,14 +186,14 @@ function setInternalAttributes(nodes: MessageBlock["nodes"]) {
 
 function getMessageBlockStates({
   messageBlockNodes,
-  messageBlockFiber,
+  messageBlockFiberData,
 }: {
   messageBlockNodes: MessageBlock["nodes"];
-  messageBlockFiber: MessageBlockFiberData | undefined;
+  messageBlockFiberData: MessageBlockFiberData | undefined;
 }): Omit<MessageBlock["states"], "isVirtualized"> {
   const { $wrapper, $query, $footer } = messageBlockNodes;
 
-  const isInFlight = messageBlockFiber?.isInFlight ?? $footer[0] == null;
+  const isInFlight = messageBlockFiberData?.isInFlight ?? $footer[0] == null;
 
   $wrapper.attr("data-inflight", isInFlight ? "true" : "false");
 

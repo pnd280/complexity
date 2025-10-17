@@ -3,6 +3,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Image } from "@/components/ui/image";
 import { H1 } from "@/components/ui/typography";
 import { EXTENSION_ICON_ACTIONS_LABEL as OPTIONS_LABEL } from "@/data/dashboard/extension-storage";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
@@ -20,13 +21,11 @@ export default function ExtensionIconAction() {
           </div>
         </HoverCardTrigger>
         <HoverCardContent>
-          <div className="x:max-w-[400px] x:rounded-xl x:border x:border-border/50">
-            <img
-              src="https://i.imgur.com/UF288wx.png"
-              alt="Dashboard Shortcut"
-              className="x:relative x:w-full x:rounded-xl x:shadow-lg"
-            />
-          </div>
+          <Image
+            src="https://i.imgur.com/UF288wx.png"
+            alt="Dashboard Shortcut"
+            className="x:w-full"
+          />
         </HoverCardContent>
       </HoverCard>
 
@@ -118,13 +117,11 @@ function ExtensionIconActionSelect() {
               </p>
             </HoverCardTrigger>
             <HoverCardContent>
-              <div className="x:max-w-[400px] x:rounded-xl x:border x:border-border/50">
-                <img
-                  src="https://i.imgur.com/zgT1Wlz.png"
-                  alt="Dashboard Shortcut"
-                  className="x:relative x:w-full x:rounded-xl x:shadow-lg"
-                />
-              </div>
+              <Image
+                src="https://i.imgur.com/zgT1Wlz.png"
+                alt="How do I access the Settings Dashboard?"
+                className="x:max-w-[300px]"
+              />
             </HoverCardContent>
           </HoverCard>
         )}

@@ -1,4 +1,4 @@
-import type { ZodSchema } from "zod";
+import type z from "zod";
 
 import { APP_CONFIG } from "@/app.config";
 import { fetchTextResource } from "@/utils/misc/utils";
@@ -20,7 +20,7 @@ export async function fetchResourceWithSchema<T>({
   pathPrefix,
 }: {
   resourcePath: string;
-  zodSchema: ZodSchema<T>;
+  zodSchema: z.ZodType<T>;
   pathPrefix: string;
 }): Promise<T> {
   const url = getUrl({
