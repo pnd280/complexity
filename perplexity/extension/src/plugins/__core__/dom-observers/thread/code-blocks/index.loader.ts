@@ -66,9 +66,25 @@ function observeThreadCodeBlocks() {
       domObserverService.subscribe({
         id: createDomObserverId("thread", "codeBlocks"),
         selector: [
+          `${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER}`,
           `${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.ANSWER} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK.WRAPPER} *`,
         ],
-        onAdd: onMutation,
+        onAdd: debounce(
+          async () => {
+            console.log("here");
+
+            if (document.visibilityState === "visible") return;
+
+            threadCodeBlocksDomObserverStore.setState({
+              codeBlocksChunks: await findCodeBlocks(
+                threadMessageBlocksDomObserverStore.getState().messageBlocks ??
+                  [],
+              ),
+            });
+          },
+          1000,
+          { leading: false, trailing: true },
+        ),
         existingCheck: true,
       });
     },
@@ -77,15 +93,3 @@ function observeThreadCodeBlocks() {
     },
   );
 }
-
-const onMutation = debounce(
-  async () => {
-    threadCodeBlocksDomObserverStore.setState({
-      codeBlocksChunks: await findCodeBlocks(
-        threadMessageBlocksDomObserverStore.getState().messageBlocks ?? [],
-      ),
-    });
-  },
-  1000,
-  { leading: false, trailing: true },
-);

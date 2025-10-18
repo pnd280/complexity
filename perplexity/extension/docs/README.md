@@ -1,28 +1,29 @@
 # Documentation
 
-Welcome to the Complexity Perplexity Extension documentation. Here's the recommended reading order:
+This documentation is a work in progress. Some information may be outdated or incomplete. Check the last modified date of this docs folder to determine if the content is up to date.
 
 ## Getting Started
 
 1. **[DX](./dx.md)** - Development environment setup, workflows, and commands
-   - *Start here if you want to contribute or develop locally*
+
+   _Start here if you want to contribute or develop locally_
 
 2. **[Tech Stack](./tech-stack.md)** - Technologies and tools you'll encounter
-   - *Understanding what's under the hood*
+
+   _Understanding what's under the hood_
 
 ## Understanding the System
 
 3. **[Architecture](./architecture.md)** - How the extension is structured and organized
-   - *Core concepts, contexts, and dependency boundaries*
+
+   _Core concepts, contexts, and dependency boundaries_
 
 4. **[Build Your Own Plugin](./build-your-own-plugin.md)** - Guide to extending functionality
-   - *Adding new features through the plugin system*
+
+   _Adding new features through the plugin system_
 
 ## Troubleshooting
 
 5. **[HMR](./hmr.md)** - Hot Module Replacement caveats and troubleshooting
-   - *Referenced from DX and Tech Stack for development issues*
 
-## Additional Resources
-
-- **[Articles](./articles/)** - In-depth articles on specific topics and refactoring guides
+   _Referenced from DX and Tech Stack for development issues_

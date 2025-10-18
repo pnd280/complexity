@@ -7,7 +7,7 @@
     ".": "./index.js"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
+    "@eslint/js": "^9.38.0",
     "@limegrass/eslint-plugin-import-alias": "^1.5.2",
     "eslint": "catalog:lint",
     "eslint-config-prettier": "^10.1.8",

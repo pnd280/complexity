@@ -52,7 +52,7 @@ function initializeFromCookie(): void {
 
   if (
     !lastSelectedLanguageModel ||
-    !isSearchLanguageModelCode(lastSelectedLanguageModel)
+    !isLanguageModelCode(lastSelectedLanguageModel)
   ) {
     return;
   }
