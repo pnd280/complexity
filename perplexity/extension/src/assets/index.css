@@ -49,6 +49,50 @@ code::after {
   content: "" !important;
 }
 
+.shimmer-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-container::before {
+  content: "";
+  position: absolute;
+  transform: rotate(-45deg);
+  top: -100%;
+  left: -125px;
+  width: calc(100% + 250px);
+  height: 300%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.05) 60%,
+    rgba(255, 255, 255, 0.02) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 250px 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+  animation: shimmer 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0;
+    background-position: left center;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    background-position: right center;
+  }
+}
+
 @keyframes blob {
   0%,
   100% {

@@ -9,8 +9,6 @@ export default function Psa() {
 
   if (isSuccess && data.length === 0) return null;
 
-  if (data == null) return null;
-
   return (
     <div
       id="psa"

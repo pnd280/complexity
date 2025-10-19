@@ -2,15 +2,21 @@ import type { Translations } from "@/_locales/index";
 
 export default {
   sidebar: {
-    supporterMessage:
-      "Kérjük, fontold meg, hogy <0>Támogató</0> leszel, hogy a projekt életben maradjon!",
+    supporterMessage: "Adj adományt, hogy életben maradjon a projekt!",
   },
   sponsorDialog: {
     title: "Segíts megőrizni a Complexity nagyszerűségét!",
     description:
-      "Számtalan órát fektettünk abba, hogy a Complexity egy erős és kifinomult eszköz legyen számodra. A támogatásod közvetlenül segíti a folyamatos fejlesztést, az új funkciókat és mindent gördülékenyen tart.",
+      "Számtalan óra került befektetésre, hogy a Complexity egy erős és kifinomult eszköz legyen számodra. A támogatásod közvetlenül segíti a folyamatos fejlesztést, az új funkciókat és mindent gördülékenyen tart.",
     descriptionLine2:
       "Ha a Complexity értéket ad a munkafolyamatodhoz, kérjük, fontold meg a jövőjének támogatását!",
+    cometAffiliate: {
+      title: "🎁 Szerezd meg az ingyenes <0>PERPLEXITY PRO</0>-t!",
+      description:
+        "Ha regisztrálsz ezen az affiliate linken keresztül, kapsz egy ingyenes <0>PERPLEXITY PRO</0> előfizetést az első hónapra, és közben közvetlenül hozzájárulsz a Complexity fejlesztéséhez.",
+      claimButton: "Igényelj most",
+      dismissButton: "Elutasítás",
+    },
     donation: {
       title: "💖 Támogasd a jövőbeli fejlesztést",
     },

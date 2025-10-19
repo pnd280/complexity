@@ -2,15 +2,21 @@ import type { Translations } from "@/_locales/index";
 
 export default {
   sidebar: {
-    supporterMessage:
-      "Overweeg alstublieft om een <0>Supporter</0> te worden om het project in leven te houden!",
+    supporterMessage: "Doe een donatie om het project in leven te houden!",
   },
   sponsorDialog: {
     title: "Complexity Heeft Jouw Hulp Nodig!",
     description:
-      "Deze verfijnde en functierijke extensie is het resultaat van talloze uren ontwikkeling en toegewijde verbetering. Als je de aandacht voor detail en voortdurende verbeteringen waardeert, overweeg dan om de ontwikkeling te ondersteunen",
+      "Talloze uren zijn besteed aan het maken van Complexity tot een krachtig en verfijnd hulpmiddel voor jou. Jouw steun voedt direct de voortdurende ontwikkeling, nieuwe functies en houdt alles soepel draaiende.",
     descriptionLine2:
       "Als Complexity waarde toevoegt aan je workflow, overweeg dan om bij te dragen aan de toekomst ervan!",
+    cometAffiliate: {
+      title: "🎁 Krijg je gratis <0>PERPLEXITY PRO</0>!",
+      description:
+        "Door je aan te melden via deze affiliate link, krijg je de eerste maand een gratis <0>PERPLEXITY PRO</0> abonnement en draag je ondertussen direct bij aan de ontwikkeling van Complexity.",
+      claimButton: "Claim het nu",
+      dismissButton: "Sluiten",
+    },
     donation: {
       title: "💖 Doe een donatie",
     },

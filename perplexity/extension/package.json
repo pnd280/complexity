@@ -1,6 +1,6 @@
 {
   "name": "pplx-ext",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "author": "pnd280",
   "type": "module",
   "scripts": {
@@ -68,6 +68,7 @@
     "js-base64": "^3.7.8",
     "lodash": "^4.17.21",
     "lz-string": "^1.5.0",
+    "motion": "^12.23.24",
     "nanoid": "^5.1.6",
     "pako": "^2.1.0",
     "react": "^19.2.0",

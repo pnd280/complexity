@@ -11,6 +11,7 @@ import { useIsMobileStore } from "@/hooks/is-mobile-store";
 
 import Fa7BrandsPaypal from "~icons/fa7-brands/paypal";
 import SimpleIconsKofi from "~icons/simple-icons/kofi";
+import TablerLink from "~icons/tabler/link";
 import TablerMail from "~icons/tabler/mail";
 
 export default function SponsorDialogWrapper({
@@ -35,6 +36,26 @@ export default function SponsorDialogWrapper({
             </div>
           </DialogDescription>
         </DialogHeader>
+
+        <div className="x:mt-4 x:w-full x:space-y-2">
+          <div className="x:text-muted-foreground">
+            <Trans
+              tKey="common.sponsorDialog.cometAffiliate.title"
+              components={[<span className="x:font-medium x:text-primary" />]}
+            />
+          </div>
+          <Button asChild className="x:group x:w-full x:space-x-2">
+            <a
+              href="https://pplx.ai/pnd280"
+              target="_blank"
+              rel="noreferrer"
+              className="x:flex x:items-center"
+            >
+              <TablerLink className="x:size-6" />
+              <span>pplx.ai/pnd280</span>
+            </a>
+          </Button>
+        </div>
 
         <div className="x:w-full x:space-y-2">
           <div className="x:text-muted-foreground">
@@ -65,6 +86,7 @@ export default function SponsorDialogWrapper({
             </Button>
           </div>
         </div>
+
         <div className="x:mt-4 x:w-full x:space-y-2">
           <div className="x:text-muted-foreground">
             {t("common.sponsorDialog.sponsorship.title")}

@@ -10,7 +10,7 @@ export const baseManifest: ManifestV3Options = {
   manifest_version: 3,
   name: "Complexity | Perplexity AI Supercharged",
   description:
-    "Enhance Perplexity AI with fast model switching, custom themes, and advanced features for seamless AI conversations",
+    "Power-user toolkit: Quick model switching, custom themes, enhanced code blocks, export tools, and 20+ productivity features.",
   version: packageData.version,
   homepage_url: "https://cplx.app",
 

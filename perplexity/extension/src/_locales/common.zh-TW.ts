@@ -2,14 +2,21 @@ import type { Translations } from "@/_locales/index";
 
 export default {
   sidebar: {
-    supporterMessage: "請考慮成為<0>支持者</0>，以維持專案運作！",
+    supporterMessage: "捐款以維持專案運作！",
   },
   sponsorDialog: {
     title: "協助讓 Complexity 持續優秀！",
     description:
-      "我們投入了無數小時，讓 Complexity 成為一個強大且精緻的工具。您的支持直接推動持續開發、新功能，並讓一切順利運作。",
+      "無數小時已被投入，使 Complexity 成為一個強大且精緻的工具。您的支持直接推動持續開發、新功能，並讓一切順利運作。",
     descriptionLine2:
       "如果 Complexity 為您的工作流程帶來價值，請考慮為它的未來貢獻一份心力！",
+    cometAffiliate: {
+      title: "🎁 領取您的免費 <0>PERPLEXITY PRO</0>！",
+      description:
+        "透過此推薦連結註冊，您將獲得第一個月的免費 <0>PERPLEXITY PRO</0> 訂閱，同時直接為 Complexity 的開發做出貢獻。",
+      claimButton: "立即領取",
+      dismissButton: "關閉",
+    },
     donation: {
       title: "💖 支持未來開發",
     },

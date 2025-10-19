@@ -38,11 +38,19 @@ A powerful browser extension that enhances your Perplexity AI experience with ad
 </div>
 </div>
 
+---
+
+> [!TIP]
+> 🎁 **FREE PERPLEXITY PRO!** Sign up, ask your first question on the new Comet browser, and unlock premium features instantly for the first 30 days ➡️ [https://pplx.ai/pnd280](https://pplx.ai/pnd280)
+
+---
+
 ## Capabilities
 
 - Provides a comprehensive set of added features and UI/UX improvements with excellent modularity and customization
 - Supports 22 languages
-- Runs flawlessly on Firefox Android
+- [**Supports the new Comet browser**](./docs/comet-enable-extensions.md)
+- Supports Firefox Android
 
 ## Documentation
 

@@ -10,6 +10,13 @@
 
 </div>
 
+---
+
+> [!TIP]
+> 🎁 **FREE PERPLEXITY PRO!** Sign up, ask your first question on the new Comet browser, and unlock premium features instantly for the first 30 days ➡️ [https://pplx.ai/pnd280](https://pplx.ai/pnd280)
+
+---
+
 > [!NOTE]
 > Originally a [Perplexity AI](https://perplexity.ai/) extension, this repository has now been restructured into a suite of enhancements for multiple platforms and services.
 
@@ -32,7 +39,8 @@
 
 - Provides a comprehensive set of added features and UI/UX improvements with excellent modularity and customization
 - Supports 22 languages
-- Runs flawlessly on Firefox Android
+- [**Supports the new Comet browser**](./perplexity/extension/docs/comet-enable-extensions.md)
+- Supports Firefox Android
 - Navigate to [`./perplexity/extension/`](./perplexity/extension/) for more information
 
 ## Donate/Sponsor

@@ -2,15 +2,21 @@ import type { Translations } from "@/_locales/index";
 
 export default {
   sidebar: {
-    supporterMessage:
-      "कृपया परियोजना को जीवित रखने के लिए <0>समर्थक</0> बनने पर विचार करें!",
+    supporterMessage: "परियोजना को जीवित रखने के लिए दान करें!",
   },
   sponsorDialog: {
     title: "Complexity को शानदार बनाए रखने में मदद करें!",
     description:
-      "हमने Complexity को आपके लिए एक शक्तिशाली और परिष्कृत उपकरण बनाने में अनगिनत घंटे लगाए हैं। आपका समर्थन सीधे ongoing विकास, नई सुविधाओं और सब कुछ सुचारू रूप से चलाने में मदद करता है।",
+      "आपके लिए Complexity को एक शक्तिशाली और परिष्कृत उपकरण बनाने में अनगिनत घंटे लगाए गए हैं। आपका समर्थन सीधे ongoing विकास, नई सुविधाओं और सब कुछ सुचारू रूप से चलाने में मदद करता है।",
     descriptionLine2:
       "यदि Complexity आपके workflow में मूल्य जोड़ता है, तो कृपया इसके भविष्य में योगदान देने पर विचार करें!",
+    cometAffiliate: {
+      title: "🎁 अपना मुफ्त <0>PERPLEXITY PRO</0> प्राप्त करें!",
+      description:
+        "इस affiliate लिंक के माध्यम से साइन अप करके, आपको पहले महीने के लिए मुफ्त <0>PERPLEXITY PRO</0> सदस्यता मिलेगी और इस बीच Complexity के विकास में सीधे योगदान करेंगे।",
+      claimButton: "अभी दावा करें",
+      dismissButton: "खारिज करें",
+    },
     donation: {
       title: "💖 भविष्य के विकास का समर्थन करें",
     },

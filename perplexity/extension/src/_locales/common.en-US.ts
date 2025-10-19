@@ -2,15 +2,21 @@ import type { LanguageMessages } from "@complexity/i18n";
 
 export default {
   sidebar: {
-    supporterMessage:
-      "Please consider becoming a <0>Supporter</0> to keep the project alive!",
+    supporterMessage: "Make a donation to keep the project alive!",
   },
   sponsorDialog: {
     title: "Help keep Complexity awesome!",
     description:
-      "We've poured countless hours into making Complexity a powerful and polished tool for you. Your support directly fuels ongoing development, new features, and keeping everything running smoothly.",
+      "Countless hours have been poured into making Complexity a powerful and polished tool for you. Your support directly fuels ongoing development, new features, and keeping everything running smoothly.",
     descriptionLine2:
       "If Complexity adds value to your workflow, please consider contributing to its future!",
+    cometAffiliate: {
+      title: "🎁 Get your free <0>PERPLEXITY PRO</0>!",
+      description:
+        "By signing up with this affiliate link, you'll get a free <0>PERPLEXITY PRO</0> subscription for the first month and meanwhile directly contribute to the development of Complexity.",
+      claimButton: "Claim it now",
+      dismissButton: "Dismiss",
+    },
     donation: {
       title: "💖 Support future development",
     },
