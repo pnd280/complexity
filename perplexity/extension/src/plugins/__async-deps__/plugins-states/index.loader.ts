@@ -1,4 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { PluginsStatesService } from "@/plugins/__async-deps__/plugins-states";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
 
@@ -16,7 +17,9 @@ export default function () {
     dependencies: ["cache:extensionSettings"],
     loader: async () => {
       return PluginsStatesService.getEnableStatesCachedSync({
-        cplxVersions: await CplxVersionsService.inlineQueryFn(),
+        cplxVersions: await CplxVersionsService.inlineQueryFn(
+          persistentQueryClient,
+        ),
         featureCompat: await PluginsStatesService.featureCompatInlineQueryFn(),
       });
     },

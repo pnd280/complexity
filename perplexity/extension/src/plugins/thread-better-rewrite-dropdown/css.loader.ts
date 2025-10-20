@@ -1,4 +1,5 @@
 import { globalCssStore } from "@/plugins/__async-deps__/global-stores/global-css-store";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { threadBetterRewriteDropdownHideNativeDropdownsCssResourceConfig } from "@/plugins/thread-better-rewrite-dropdown/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
@@ -13,6 +14,7 @@ export default async function () {
     id: "thread-message-footer-hide-native-rewrite-dropdowns",
     css: await getVersionedRemoteResource(
       threadBetterRewriteDropdownHideNativeDropdownsCssResourceConfig,
+      persistentQueryClient,
     ),
   });
 }

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useEvent } from "@/hooks/useEvent";
 import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
@@ -6,9 +6,10 @@ import {
   requestPermissions,
   revokePermissions,
 } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
-import { queryClient } from "@/services/infra/query-client";
 
 export function useExtensionPermissions() {
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery(
     extensionPermissionsQueries.permissions.detail(),
   );

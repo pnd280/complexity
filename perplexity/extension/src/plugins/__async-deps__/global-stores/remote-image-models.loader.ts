@@ -1,4 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-image-models";
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 
@@ -18,7 +19,9 @@ export default function () {
 
       if (!pluginsEnableStates["imageGenModelSelector"]) return localModels;
 
-      const data = await PplxImageModelsService.inlineQueryFn();
+      const data = await PplxImageModelsService.inlineQueryFn(
+        persistentQueryClient,
+      );
 
       PplxImageModelsService.allModels = data;
 

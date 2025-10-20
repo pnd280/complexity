@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { storage } from "@wxt-dev/storage";
 
 import { Button } from "@/components/ui/button";
@@ -8,10 +9,11 @@ import { transfromFlatSchema } from "@/services/infra/extension-api-wrappers/ext
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import { db } from "@/services/infra/indexed-db";
-import { queryClient } from "@/services/infra/query-client";
 import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export default function ImportDataButtons() {
+  const queryClient = useQueryClient();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImportData = async (data: string) => {

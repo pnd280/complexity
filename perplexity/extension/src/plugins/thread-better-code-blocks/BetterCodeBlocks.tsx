@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Portal } from "@/components/ui/portal";
 import { useInsertCss } from "@/hooks/useInsertCss";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useThreadCodeBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/code-blocks/store";
 import {
@@ -17,14 +18,19 @@ import {
 } from "@/plugins/thread-better-code-blocks/utils";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { queryClient } from "@/services/infra/query-client";
 
 const [hideNativeCodeBlocksCss, stickyHeaderCss] = await Promise.all([
-  getVersionedRemoteResource(hideNativeCodeBlocksCssResourceConfig),
-  getVersionedRemoteResource(stickyHeaderCssResourceConfig),
+  getVersionedRemoteResource(
+    hideNativeCodeBlocksCssResourceConfig,
+    persistentQueryClient,
+  ),
+  getVersionedRemoteResource(
+    stickyHeaderCssResourceConfig,
+    persistentQueryClient,
+  ),
 ]);
 
-await queryClient.prefetchQuery({
+await persistentQueryClient.queryClient.prefetchQuery({
   ...betterCodeBlocksFineGrainedOptionsQueries.list.detail(),
   gcTime: Infinity,
 });

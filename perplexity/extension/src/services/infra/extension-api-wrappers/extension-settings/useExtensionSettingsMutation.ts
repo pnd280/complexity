@@ -1,11 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
-import { queryClient } from "@/services/infra/query-client";
 import { isInContentScript } from "@/utils/misc/utils";
 
 export function useExtensionSettingsMutation() {
+  const queryClient = useQueryClient();
+
   if (isInContentScript())
     throw new Error(
       "Extension settings can not be reactive in content scripts! Use static methods from `ExtensionSettingsService` instead.",

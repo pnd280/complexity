@@ -4,6 +4,7 @@ import { imageModelIcons } from "@/services/externals/cplx-api/remote-resources/
 import { pplxImageModelsResourceConfig } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/index.remote-resources";
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { getRemoteResource } from "@/services/externals/cplx-api/remote-resources/utils";
+import type PersistentQueryClient from "@/services/infra/query-client";
 
 export class PplxImageModelsService {
   static get query() {
@@ -13,8 +14,11 @@ export class PplxImageModelsService {
     });
   }
 
-  static inlineQueryFn() {
-    return getRemoteResource(pplxImageModelsResourceConfig);
+  static inlineQueryFn(persistentQueryClient: PersistentQueryClient) {
+    return getRemoteResource(
+      pplxImageModelsResourceConfig,
+      persistentQueryClient,
+    );
   }
 
   static localModels = pplxLocalImageModels;

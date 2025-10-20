@@ -1,4 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { commandMenuStore } from "@/plugins/command-menu/index.public";
 import {
   alwaysHideRelatedQuestionsCssResourceConfig,
@@ -25,7 +26,10 @@ export default async function () {
       if (!pluginsEnableStates["zenMode"]) return;
 
       insertCss({
-        css: await getVersionedRemoteResource(zenModeCssResourceConfig),
+        css: await getVersionedRemoteResource(
+          zenModeCssResourceConfig,
+          persistentQueryClient,
+        ),
         id: "zen-mode",
       });
 
@@ -42,6 +46,7 @@ export default async function () {
         insertCss({
           css: await getVersionedRemoteResource(
             alwaysHideRelatedQuestionsCssResourceConfig,
+            persistentQueryClient,
           ),
           id: "always-hide-related-questions",
         });

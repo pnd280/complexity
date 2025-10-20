@@ -1,3 +1,4 @@
+import { storage } from "@wxt-dev/storage";
 import { useNavigate } from "react-router-dom";
 
 import AsyncButton from "@/components/AsyncButton";
@@ -11,9 +12,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Ul } from "@/components/ui/typography";
+import { persistentQueryClient } from "@/entrypoints/options-page/persistent-query-client";
+import { persistentQueryClient as csPersistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { db } from "@/services/infra/indexed-db";
-import { invalidateQueryClientCache } from "@/services/infra/query-client/utils";
 
 export default function ClearAllDataButton() {
   const navigate = useNavigate();
@@ -21,7 +23,10 @@ export default function ClearAllDataButton() {
   const handleClearData = async () => {
     await ExtensionSettingsService.reset();
     await db.clearAll();
-    await invalidateQueryClientCache();
+    await storage.removeItem(persistentQueryClient.softCacheBusterKey);
+    await storage.removeItem(csPersistentQueryClient.softCacheBusterKey);
+    await persistentQueryClient.wipeQueryCache();
+    await csPersistentQueryClient.wipeQueryCache();
     void navigate("/plugins");
   };
 

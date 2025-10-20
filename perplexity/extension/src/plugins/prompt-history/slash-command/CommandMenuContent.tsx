@@ -1,4 +1,5 @@
 import { usePopoverContext } from "@ark-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -18,10 +19,11 @@ import { usePromptHistory } from "@/plugins/prompt-history/hooks/usePromptHistor
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import PromptHistoryCommandMenuItem from "@/plugins/prompt-history/slash-command/CommandMenuItem";
-import { queryClient } from "@/services/infra/query-client";
 import { keysToString } from "@/utils/misc/utils";
 
 export function PromptHistoryCommandMenuContent() {
+  const queryClient = useQueryClient();
+
   const [searchValue, setSearchValue] = useState("");
   const [selectingValue, setSelectingValue] = useState("");
   const debouncedSearchValue = useDebounce(searchValue, 200);
@@ -53,13 +55,16 @@ export function PromptHistoryCommandMenuContent() {
     fetchNextPage,
   });
 
-  const deleteItem = useCallback(async (id: string) => {
-    await PromptHistoryService.Instance.delete(id);
+  const deleteItem = useCallback(
+    async (id: string) => {
+      await PromptHistoryService.Instance.delete(id);
 
-    void queryClient.invalidateQueries({
-      queryKey: promptHistoryQueries.infinite.all(),
-    });
-  }, []);
+      void queryClient.invalidateQueries({
+        queryKey: promptHistoryQueries.infinite.all(),
+      });
+    },
+    [queryClient],
+  );
 
   useHotkeys(
     keysToString([getPlatform() === "mac" ? Key.Meta : Key.Control, "c"]),

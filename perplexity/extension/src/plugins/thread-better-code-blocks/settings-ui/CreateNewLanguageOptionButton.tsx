@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,12 @@ import { toast } from "@/components/ui/use-toast";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import { BetterCodeBlocksFineGrainedService } from "@/plugins/thread-better-code-blocks/indexed-db/service-init.bg-worker";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
-import { queryClient } from "@/services/infra/query-client";
 
 import TablerPlus from "~icons/tabler/plus";
 
 export default function CreateNewLanguageOptionButton() {
+  const queryClient = useQueryClient();
+
   const [open, setOpen] = useState(false);
   const [language, setLanguage] = useState("");
 

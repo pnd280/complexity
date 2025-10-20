@@ -1,4 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { homeDomObserverStore } from "@/plugins/__core__/dom-observers/home/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
@@ -24,7 +25,10 @@ async function setupCustomSlogan({
   if (location !== "home" || slogan == null) return removeCss?.();
 
   removeCss = insertCss({
-    css: await getVersionedRemoteResource(homeCustomSloganCssResourceConfig),
+    css: await getVersionedRemoteResource(
+      homeCustomSloganCssResourceConfig,
+      persistentQueryClient,
+    ),
     id: "custom-slogan",
   });
 

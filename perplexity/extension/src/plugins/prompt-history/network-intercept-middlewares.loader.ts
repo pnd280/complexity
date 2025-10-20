@@ -1,9 +1,9 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 import { parsePerplexityAskEvent } from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
-import { queryClient } from "@/services/infra/query-client";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -62,7 +62,7 @@ export default function () {
             prompt: promptString,
           });
 
-          void queryClient.invalidateQueries({
+          void persistentQueryClient.queryClient.invalidateQueries({
             queryKey: promptHistoryQueries.list.all(),
             exact: true,
           });

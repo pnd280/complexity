@@ -1,3 +1,5 @@
+import { useQueryClient } from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,11 +12,12 @@ import {
 import { useEvent } from "@/hooks/useEvent";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
-import { queryClient } from "@/services/infra/query-client";
 
 import TablerTrash from "~icons/tabler/trash";
 
 export default function ClearAllButton() {
+  const queryClient = useQueryClient();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClearAll = useEvent(async () => {

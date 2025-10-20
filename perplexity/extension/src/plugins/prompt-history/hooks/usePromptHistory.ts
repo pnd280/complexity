@@ -1,11 +1,10 @@
 import type { InfiniteData } from "@tanstack/react-query";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { usePrevious } from "@uidotdev/usehooks";
 import { useMemo } from "react";
 
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import type { PromptHistory } from "@/plugins/prompt-history/types";
-import { queryClient } from "@/services/infra/query-client";
 
 export function usePromptHistory({
   searchValue,
@@ -14,6 +13,8 @@ export function usePromptHistory({
   searchValue: string;
   enabled: boolean;
 }) {
+  const queryClient = useQueryClient();
+
   const previousSearchValue = usePrevious(searchValue);
 
   const query = useInfiniteQuery({

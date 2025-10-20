@@ -2,6 +2,7 @@ import { QueryObserver } from "@tanstack/react-query";
 
 import { isMobileStore } from "@/hooks/is-mobile-store";
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import {
   pluginGuardsStore,
   type PluginGuardsStoreType,
@@ -14,7 +15,6 @@ import type {
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { getPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
-import { queryClient } from "@/services/infra/query-client";
 import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
@@ -23,15 +23,17 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-export const pplxAuthQueryObserver = new QueryObserver(
-  queryClient,
-  pplxApiQueries.auth.detail(),
-);
+export const getPplxAuthQueryObserver = () =>
+  new QueryObserver(
+    persistentQueryClient.queryClient,
+    pplxApiQueries.auth.detail(),
+  );
 
-export const pplxAuthOrgStatusQueryObserver = new QueryObserver(
-  queryClient,
-  pplxApiQueries.auth.orgStatus.detail(),
-);
+export const getPplxAuthOrgStatusQueryObserver = () =>
+  new QueryObserver(
+    persistentQueryClient.queryClient,
+    pplxApiQueries.auth.orgStatus.detail(),
+  );
 
 export default function () {
   AsyncLoaderRegistry.register({
@@ -126,7 +128,7 @@ function setupAuthenticationTracking(
     initAuthStatus({ data: authData.authDetail, extensionSettings });
   }
 
-  pplxAuthQueryObserver.subscribe((data) => {
+  getPplxAuthQueryObserver().subscribe((data) => {
     if (
       data.status !== "success" ||
       data.fetchStatus !== "idle" ||
@@ -143,7 +145,7 @@ function setupAuthenticationTracking(
     });
   }
 
-  pplxAuthOrgStatusQueryObserver.subscribe((data) => {
+  getPplxAuthOrgStatusQueryObserver().subscribe((data) => {
     if (
       data.status !== "success" ||
       data.fetchStatus !== "idle" ||

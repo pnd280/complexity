@@ -1,16 +1,17 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { toast } from "@/components/ui/use-toast";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import { BetterCodeBlocksFineGrainedService } from "@/plugins/thread-better-code-blocks/indexed-db/service-init.bg-worker";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
-import { queryClient } from "@/services/infra/query-client";
 
 type UseOptionsProps = {
   language?: string;
 };
 
 export default function useOptions({ language }: UseOptionsProps = {}) {
+  const queryClient = useQueryClient();
+
   const { settings: globalSettings, mutation: globalMutation } =
     useExtensionSettings();
 

@@ -1,5 +1,6 @@
 import { Portal } from "@/components/ui/portal";
 import { useInsertCss } from "@/hooks/useInsertCss";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import ArtifactContent from "@/plugins/thread-artifacts/components/ArtifactContent";
@@ -14,6 +15,7 @@ import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versio
 
 const normalizeCss = await getVersionedRemoteResource(
   normalizeCssResourceConfig,
+  persistentQueryClient,
 );
 
 export function Artifacts() {

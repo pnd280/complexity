@@ -1,11 +1,11 @@
 import { QueryObserver } from "@tanstack/react-query";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { pluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
 import { imageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
 import { isImageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-import { queryClient } from "@/services/infra/query-client";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -36,7 +36,7 @@ function initImageGenModelSelectorStore() {
       }, 0);
 
       const unsubscribeQuery = new QueryObserver(
-        queryClient,
+        persistentQueryClient.queryClient,
         pplxApiQueries.userSettings.detail(true),
       ).subscribe((data) => {
         if (data.data) {

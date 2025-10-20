@@ -23,38 +23,46 @@ import {
 } from "@/__registries__/i18n";
 import { APP_CONFIG } from "@/app.config";
 import { Toaster } from "@/components/Toaster";
-import { setupOptionPageListeners } from "@/entrypoints/options-page/listeners";
+import { persistentQueryClient } from "@/entrypoints/options-page/persistent-query-client";
 import { extensionSettingsQueries } from "@/services/infra/extension-api-wrappers/extension-settings/query-keys";
 import { initializeDayjsLocale, initializeI18n } from "@/services/infra/i18n";
-import { queryClient } from "@/services/infra/query-client";
 import { isCometBrowser, isCsInjectable } from "@/utils/wrappers/comet";
 
-const { CdnRemoteResourcesInvalidator } = lazily(
-  () => import("@/components/CdnRemoteResourcesInvalidator"),
+const { PersistentQueryCacheInvalidator } = lazily(
+  () =>
+    import(
+      "@/entrypoints/options-page/components/PersistentQueryCacheInvalidator"
+    ),
 );
 
 (async () => {
+  const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+
+  $("html").attr("data-color-scheme", theme);
+
   await Promise.all([
     initializeI18n({
       lazyGlobs: [commonLocalesLazyGlob, dashboardLocalesLazyGlob],
     }),
     initializeDayjsLocale(),
-    queryClient.prefetchQuery(extensionSettingsQueries.detail()),
+    persistentQueryClient.queryClient.prefetchQuery(
+      extensionSettingsQueries.detail(),
+    ),
   ]);
-
-  setupOptionPageListeners();
 
   const [{ router }] = await Promise.all([
     import("@/entrypoints/options-page/router"),
   ]);
 
   ReactDOM.createRoot(document.getElementById("app") as HTMLElement).render(
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={persistentQueryClient.queryClient}>
       <RouterProvider router={router} />
       <Toaster />
       {APP_CONFIG.CPLX_CDN_URL != null && (
         <Suspense>
-          <CdnRemoteResourcesInvalidator />
+          <PersistentQueryCacheInvalidator />
         </Suspense>
       )}
       <ReactQueryDevtools />

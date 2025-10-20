@@ -7,6 +7,7 @@ import {
   type LanguageModelsList,
 } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { getRemoteResource } from "@/services/externals/cplx-api/remote-resources/utils";
+import type PersistentQueryClient from "@/services/infra/query-client";
 
 export class PplxLanguageModelsService {
   static get query() {
@@ -16,8 +17,11 @@ export class PplxLanguageModelsService {
     });
   }
 
-  static inlineQueryFn() {
-    return getRemoteResource(pplxLanguageModelsResourceConfig);
+  static inlineQueryFn(persistentQueryClient: PersistentQueryClient) {
+    return getRemoteResource(
+      pplxLanguageModelsResourceConfig,
+      persistentQueryClient,
+    );
   }
 
   static localModels: LanguageModelsList =

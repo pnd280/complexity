@@ -1,4 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import {
   betterSidebarNormalizeCollapsedCssResourceConfig,
   betterSidebarNormalizeExpandedCssResourceConfig,
@@ -44,8 +45,12 @@ export async function applyLayoutShiftPreventionInstantCss({
   const [normalizeCollapsedCss, normalizeExpandedCss] = await Promise.all([
     getVersionedRemoteResource(
       betterSidebarNormalizeCollapsedCssResourceConfig,
+      persistentQueryClient,
     ),
-    getVersionedRemoteResource(betterSidebarNormalizeExpandedCssResourceConfig),
+    getVersionedRemoteResource(
+      betterSidebarNormalizeExpandedCssResourceConfig,
+      persistentQueryClient,
+    ),
   ]);
 
   const tabId = await sendMessage("getTabId");

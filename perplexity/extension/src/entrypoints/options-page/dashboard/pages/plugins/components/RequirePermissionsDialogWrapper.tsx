@@ -1,3 +1,5 @@
+import { useQueryClient } from "@tanstack/react-query";
+
 import type { PluginId, PluginMeta } from "@/__registries__/plugins/meta.types";
 import AsyncButton from "@/components/AsyncButton";
 import { Button } from "@/components/ui/button";
@@ -15,7 +17,6 @@ import { InlineCode } from "@/components/ui/typography";
 import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 import { requestPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
-import { queryClient } from "@/services/infra/query-client";
 
 export default function RequirePermissionsDialogWrapper({
   children,
@@ -30,6 +31,8 @@ export default function RequirePermissionsDialogWrapper({
   onGranted?: () => void;
   asChild?: boolean;
 }) {
+  const queryClient = useQueryClient();
+
   const [open, setOpen] = useState(false);
 
   const { data: grantedPermissions, isLoading: isPermissionsLoading } =

@@ -1,15 +1,14 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import {
-  pplxAuthOrgStatusQueryObserver,
-  pplxAuthQueryObserver,
+  getPplxAuthOrgStatusQueryObserver,
+  getPplxAuthQueryObserver,
 } from "@/plugins/__async-deps__/plugins-guard/store.loader";
 import type {
   PplxAuthSessionApiResponse,
   PplxOrgSettingsApiResponse,
 } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-import { queryClient } from "@/services/infra/query-client";
-import { persistQueryClient } from "@/services/infra/query-client/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -25,23 +24,23 @@ export default async function () {
     id: "store:pluginGuards:authApiPrefetch",
     dependencies: [],
     loader: async () => {
-      pplxAuthQueryObserver.subscribe((data) => {
+      getPplxAuthQueryObserver().subscribe((data) => {
         if (data.status !== "success" || data.fetchStatus !== "idle") return;
 
-        void persistQueryClient({ queryClient });
+        void persistentQueryClient.persistQueryClient();
       });
 
-      pplxAuthOrgStatusQueryObserver.subscribe((data) => {
+      getPplxAuthOrgStatusQueryObserver().subscribe((data) => {
         if (data.status !== "success" || data.fetchStatus !== "idle") return;
 
-        void persistQueryClient({ queryClient });
+        void persistentQueryClient.persistQueryClient();
       });
 
       return {
-        authDetail: await queryClient.ensureQueryData(
+        authDetail: await persistentQueryClient.queryClient.ensureQueryData(
           pplxApiQueries.auth.detail(),
         ),
-        orgDetail: await queryClient.ensureQueryData(
+        orgDetail: await persistentQueryClient.queryClient.ensureQueryData(
           pplxApiQueries.auth.orgStatus.detail(),
         ),
       };

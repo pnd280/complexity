@@ -1,4 +1,5 @@
 import { APP_CONFIG } from "@/app.config";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { featureCompatResourceConfig } from "@/plugins/__async-deps__/plugins-states/index.remote-resources";
 import type { PluginsEnableStates } from "@/plugins/__async-deps__/plugins-states/types";
 import {
@@ -15,7 +16,6 @@ import {
   type FeatureCompatibility,
 } from "@/services/externals/cplx-api/types";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { queryClient } from "@/services/infra/query-client";
 import { invariant, isInContentScript } from "@/utils/misc/utils";
 
 export class PluginsStatesService {
@@ -27,7 +27,10 @@ export class PluginsStatesService {
   }
 
   static async featureCompatInlineQueryFn() {
-    return getRemoteResource(featureCompatResourceConfig);
+    return getRemoteResource(
+      featureCompatResourceConfig,
+      persistentQueryClient,
+    );
   }
 
   static cachedEnableStates: PluginsEnableStates | null = null;
@@ -42,6 +45,8 @@ export class PluginsStatesService {
     );
 
     if (this.cachedEnableStates) return this.cachedEnableStates;
+
+    const queryClient = persistentQueryClient.queryClient;
 
     const featureCompat =
       params?.featureCompat ??

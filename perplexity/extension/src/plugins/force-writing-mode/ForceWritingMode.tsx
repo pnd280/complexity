@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useInsertCss } from "@/hooks/useInsertCss";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { getActiveQueryBox } from "@/plugins/__ui-groups__/elements/query-box/utils";
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
 import { useForceWritingModeStore } from "@/plugins/force-writing-mode/store";
@@ -22,6 +23,7 @@ import TablerPencil from "~icons/tabler/pencil";
 
 const normalizeCss = await getVersionedRemoteResource(
   normalizeCssResourceConfig,
+  persistentQueryClient,
 );
 
 export function ForceWritingModeToggle() {

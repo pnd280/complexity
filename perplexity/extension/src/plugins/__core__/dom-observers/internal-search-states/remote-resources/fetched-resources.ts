@@ -1,3 +1,4 @@
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import {
   internalSearchStatesStatesFiberPathResourceConfig,
   internalSearchStatesValidateFiberPathResourceConfig,
@@ -10,6 +11,10 @@ export const [
 ] = await Promise.all([
   getVersionedRemoteResource(
     internalSearchStatesValidateFiberPathResourceConfig,
+    persistentQueryClient,
   ),
-  getVersionedRemoteResource(internalSearchStatesStatesFiberPathResourceConfig),
+  getVersionedRemoteResource(
+    internalSearchStatesStatesFiberPathResourceConfig,
+    persistentQueryClient,
+  ),
 ]);

@@ -1,4 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import type { LanguageModelsList } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
@@ -16,7 +17,9 @@ export default function () {
       if (!pluginsEnableStates["queryBox:languageModelSelector"])
         return PplxLanguageModelsService.localModels;
 
-      const data = await PplxLanguageModelsService.inlineQueryFn();
+      const data = await PplxLanguageModelsService.inlineQueryFn(
+        persistentQueryClient,
+      );
 
       PplxLanguageModelsService.allModels = data;
 

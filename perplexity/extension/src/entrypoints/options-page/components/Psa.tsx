@@ -1,28 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 
 import MarkdownRenderer from "@/components/MarkdownRenderer";
-import { Skeleton } from "@/components/ui/skeleton";
+import { persistentQueryClient } from "@/entrypoints/options-page/persistent-query-client";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 
 export default function Psa() {
-  const { data, isSuccess } = useQuery(cplxApiQueries.psa.detail());
+  const { data } = useQuery(cplxApiQueries.psa.detail());
 
-  if (isSuccess && data.length === 0) return null;
+  useEffect(() => {
+    void persistentQueryClient.persistQueryClient();
+  }, [data]);
+
+  if (data == null || data.length === 0) return null;
 
   return (
     <div
       id="psa"
       className="x:hidden x:max-h-[250px] x:overflow-y-auto x:border-b x:bg-primary/10 x:p-4 x:md:block"
     >
-      {data ? (
-        <MarkdownRenderer markdown={data} className="x:text-foreground" />
-      ) : (
-        <div className="x:flex x:flex-col x:gap-4">
-          <Skeleton className="x:h-8 x:w-1/3 x:bg-primary-foreground" />
-          <Skeleton className="x:h-5 x:w-3/4 x:bg-primary-foreground" />
-          <Skeleton className="x:h-5 x:w-1/2 x:bg-primary-foreground" />
-        </div>
-      )}
+      <MarkdownRenderer markdown={data} className="x:text-foreground" />
     </div>
   );
 }

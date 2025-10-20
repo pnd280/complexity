@@ -1,4 +1,5 @@
 import { globalCssStore } from "@/plugins/__async-deps__/global-stores/global-css-store";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import {
   queryBoxFollowUpQueryBoxNormalizeCssResourceConfig,
   queryBoxMainQueryBoxNormalizeCssResourceConfig,
@@ -13,9 +14,13 @@ declare module "@/plugins/__async-deps__/global-stores/global-css-store" {
 }
 
 const [mainQueryBoxCss, followUpQueryBoxCss] = await Promise.all([
-  getVersionedRemoteResource(queryBoxMainQueryBoxNormalizeCssResourceConfig),
+  getVersionedRemoteResource(
+    queryBoxMainQueryBoxNormalizeCssResourceConfig,
+    persistentQueryClient,
+  ),
   getVersionedRemoteResource(
     queryBoxFollowUpQueryBoxNormalizeCssResourceConfig,
+    persistentQueryClient,
   ),
 ]);
 

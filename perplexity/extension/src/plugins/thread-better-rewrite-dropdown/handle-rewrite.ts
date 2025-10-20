@@ -1,5 +1,6 @@
 import { produce } from "immer";
 
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
@@ -12,6 +13,7 @@ import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versio
 
 const remoteFiberConfig = await getVersionedRemoteResource(
   threadBetterRewriteDropdownFiberConfigResourceConfig,
+  persistentQueryClient,
 );
 
 export const handleRewrite = ({

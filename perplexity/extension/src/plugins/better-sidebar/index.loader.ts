@@ -1,4 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { betterSidebarNormalizeCssResourceConfig } from "@/plugins/better-sidebar/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { insertCss } from "@/utils/dom-utils/generics";
@@ -11,6 +12,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 
 const normalizeCss = await getVersionedRemoteResource(
   betterSidebarNormalizeCssResourceConfig,
+  persistentQueryClient,
 );
 
 export default function () {

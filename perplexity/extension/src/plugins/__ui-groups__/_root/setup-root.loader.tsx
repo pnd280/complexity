@@ -6,12 +6,12 @@ import { RouterProvider } from "react-router-dom";
 
 import { APP_CONFIG } from "@/app.config";
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import { createRouter } from "@/plugins/__core__/hash-router/router";
 import CsUiRoot from "@/plugins/__ui-groups__/_root/CsUiRoot";
-import { queryClient } from "@/services/infra/query-client";
 
-const { RemoteResourcesInvalidator } = lazily(
-  () => import("@/plugins/__ui-groups__/_root/RemoteResourcesInvalidator"),
+const { PersistentQueryCacheInvalidator } = lazily(
+  () => import("@/plugins/__ui-groups__/_root/PersistentQueryCacheInvalidator"),
 );
 
 declare module "@/plugins/__async-deps__/async-loaders" {
@@ -47,17 +47,15 @@ export default function csUiRootLoader() {
       const hashRouter = createRouter();
 
       root.render(
-        <>
-          <QueryClientProvider client={queryClient}>
-            <CsUiRoot />
-            <RouterProvider router={hashRouter} />
-          </QueryClientProvider>
+        <QueryClientProvider client={persistentQueryClient.queryClient}>
+          <CsUiRoot />
+          <RouterProvider router={hashRouter} />
           {APP_CONFIG.CPLX_CDN_URL != null && (
             <Suspense>
-              <RemoteResourcesInvalidator />
+              <PersistentQueryCacheInvalidator />
             </Suspense>
           )}
-        </>,
+        </QueryClientProvider>,
       );
     },
   });

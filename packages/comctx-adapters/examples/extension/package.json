@@ -26,6 +26,6 @@
     "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
-    "vite": "^7.1.10"
+    "vite": "^7.1.11"
   }
 }

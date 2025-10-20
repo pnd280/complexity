@@ -1,8 +1,8 @@
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
 import type { CodeBlock } from "@/plugins/__core__/dom-observers/thread/code-blocks/types";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";
 import type { BetterCodeBlockFineGrainedOptions } from "@/plugins/thread-better-code-blocks/types";
-import { queryClient } from "@/services/infra/query-client";
 
 export function createMirroredPortalContainer(
   codeBlock: CodeBlock,
@@ -40,7 +40,7 @@ export function getBetterCodeBlockOptions(
   language: string | null,
 ): BetterCodeBlockFineGrainedOptions | undefined | null {
   const fineGrainedSettings = language
-    ? queryClient
+    ? persistentQueryClient.queryClient
         .getQueryData<
           BetterCodeBlockFineGrainedOptions[]
         >(betterCodeBlocksFineGrainedOptionsQueries.list.all())
