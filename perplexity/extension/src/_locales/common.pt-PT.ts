@@ -11,9 +11,9 @@ export default {
     descriptionLine2:
       "Se o Complexity acrescenta valor ao seu fluxo de trabalho, por favor considere contribuir para o seu futuro!",
     cometAffiliate: {
-      title: "🎁 Obtenha o seu <0>PERPLEXITY PRO</0> grátis!",
+      title: "Grátis <0/>!",
       description:
-        "Ao inscrever-se através deste link de afiliado, receberá uma subscrição <0>PERPLEXITY PRO</0> gratuita no primeiro mês e, entretanto, contribuirá diretamente para o desenvolvimento do Complexity.",
+        "Experimente Comet - um novo navegador da Perplexity - e obtenha uma subscrição <0/> gratuita e, enquanto isso, contribua diretamente para o desenvolvimento do Complexity.",
       claimButton: "Reivindique agora",
       dismissButton: "Dispensar",
     },

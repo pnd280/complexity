@@ -38,6 +38,10 @@ function submitOnCtrlEnter(
             if (isModifierEnterPressed(e) || isTypeaheadMenuPresent())
               return true;
 
+            if (e.shiftKey) {
+              return true;
+            }
+
             e.stopPropagation();
             return false;
           }
@@ -54,6 +58,10 @@ function submitOnCtrlEnter(
             isTypeaheadMenuPresent()
           )
             return;
+
+          if ((e as unknown as KeyboardEvent).shiftKey) {
+            return;
+          }
 
           e.stopPropagation();
         }

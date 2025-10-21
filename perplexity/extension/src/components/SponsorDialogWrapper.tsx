@@ -1,3 +1,4 @@
+import PplxPro from "@/components/icons/PplxPro";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -41,7 +42,9 @@ export default function SponsorDialogWrapper({
           <div className="x:text-muted-foreground">
             <Trans
               tKey="common.sponsorDialog.cometAffiliate.title"
-              components={[<span className="x:font-medium x:text-primary" />]}
+              components={[
+                <PplxPro className="x:mx-1 x:inline-block x:text-xl x:text-primary" />,
+              ]}
             />
           </div>
           <Button asChild className="x:group x:w-full x:space-x-2">

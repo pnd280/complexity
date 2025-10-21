@@ -1,5 +1,7 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 
+import CometAffiliateCard from "@/components/CometAffiliateCard";
+import PplxPro from "@/components/icons/PplxPro";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,7 +20,7 @@ export default function CometAffiliateDialog() {
     false,
   );
 
-  if (dismissed || (isLoggedIn && subTier != null)) {
+  if (dismissed || isLoggedIn == null || (isLoggedIn && subTier != null)) {
     return null;
   }
 
@@ -30,39 +32,39 @@ export default function CometAffiliateDialog() {
       onExitComplete={() => setDismissed(true)}
     >
       <DialogContent closeButton={false}>
-        <DialogHeader className="x:block">
+        <DialogHeader className="x:block x:text-center x:text-xl x:md:text-left x:md:text-2xl">
           <Trans
             tKey="common.sponsorDialog.cometAffiliate.title"
             components={[
-              <span className="x:inline-block x:font-medium x:text-primary" />,
+              <PplxPro className="x:mx-1 x:inline-block x:text-xl x:text-primary" />,
             ]}
           />
         </DialogHeader>
 
-        <div>
+        <div className="x:text-base x:text-pretty">
           <Trans
             tKey="common.sponsorDialog.cometAffiliate.description"
             components={[
-              <span
-                key="affiliateMessageDescription"
-                className="x:inline-block x:font-medium x:text-primary"
-              />,
+              <PplxPro className="x:mx-1 x:inline-block x:text-xl x:text-primary" />,
             ]}
           />
+        </div>
+
+        <div onClick={() => setDismissed(true)}>
+          <CometAffiliateCard />
         </div>
 
         <DialogFooter>
           <Button
             className="x:group x:w-full x:space-x-2"
-            variant="outline"
+            variant="ghostNoOutline"
             onClick={() => setDismissed(true)}
           >
             {t("common.sponsorDialog.cometAffiliate.dismissButton")}
           </Button>
           <Button
             asChild
-            className="x:group x:w-full x:space-x-2"
-            variant="primary"
+            className="x:group shimmer-container x:w-full x:space-x-2"
             onClick={() => setDismissed(true)}
           >
             <a

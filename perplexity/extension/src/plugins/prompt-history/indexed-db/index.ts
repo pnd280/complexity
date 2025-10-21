@@ -6,10 +6,19 @@ import { db } from "@/services/infra/indexed-db";
 export const backgroundProxyServiceName = "promptHistoryService";
 
 export class PromptHistoryServiceImpl {
+  private static sanitize(prompt: string): string {
+    // remove irregular whitespace characters
+    const cleanText = prompt.replace(
+      /[\u00A0\u1680\u2000-\u200B\u2028\u2029\u202F\u205F\u3000\uFEFF]/g,
+      " ",
+    );
+    return cleanText;
+  }
+
   static async add({ prompt }: { prompt: string }): Promise<string> {
     return await db.promptHistory.add({
       id: new Date().getTime().toString() + "-" + nanoid(),
-      prompt,
+      prompt: this.sanitize(prompt),
       createdAt: new Date().getTime(),
     });
   }

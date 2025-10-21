@@ -189,7 +189,7 @@ function FirstStep() {
             Let&apos;s get started with a quick setup
           </H2>
           <Link
-            to="/"
+            to="/plugins?from=onboarding"
             className="x:cursor-pointer x:text-center x:text-xs x:leading-relaxed x:text-muted-foreground x:underline x:md:text-base"
           >
             or skip and take me to the dashboard

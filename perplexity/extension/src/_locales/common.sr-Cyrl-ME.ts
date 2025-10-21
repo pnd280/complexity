@@ -12,10 +12,10 @@ export default {
     descriptionLine2:
       "Ako Complexity dodaje vrednost vašem toku rada, razmislite o doprinosu njegovoj budućnosti!",
     cometAffiliate: {
-      title: "🎁 Nabavite besplatni <0>PERPLEXITY PRO</0>!",
+      title: "Бесплатно <0/>!",
       description:
-        "Registracijom preko ovog affiliate linka, dobićete besplatnu <0>PERPLEXITY PRO</0> pretplatu za prvi mesec i istovremeno direktno doprinesite razvoju Complexity-a.",
-      claimButton: "Preuzmite sada",
+        "Испробајте Comet - нов веб-прегледач од Перплексити - и добијте бесплатну <0/> претплату и истовремено директно допринесите развоју Complexity-а.",
+      claimButton: "Преузмите сада",
       dismissButton: "Odbaci",
     },
     donation: {

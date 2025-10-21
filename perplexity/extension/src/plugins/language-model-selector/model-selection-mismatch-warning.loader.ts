@@ -29,8 +29,9 @@ export default function () {
 
           for (const messageBlock of messageBlocks) {
             if (
+              messageBlock.content.displayModel !== "turbo" &&
               messageBlock.content.userSelectedModel !==
-              messageBlock.content.displayModel
+                messageBlock.content.displayModel
             ) {
               const $displayModelButton =
                 messageBlock.nodes.$displayModelButton;

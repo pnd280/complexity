@@ -3,7 +3,7 @@ import PplxPro from "@/components/icons/PplxPro";
 
 import TablerLink from "~icons/tabler/link";
 
-export default function CometAffiliate() {
+export default function CometAffiliateCard() {
   return (
     <div className="x:w-full">
       <CometCard rotateDepth={5} translateDepth={5}>

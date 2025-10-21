@@ -17,7 +17,8 @@ export default definePlugin({
   meta: {
     id: "thread:messageTts",
     title: "Text-to-Speech",
-    description: "Enable text-to-speech for messages in threads",
+    description:
+      "Enable text-to-speech for messages in threads. Requires a logged in account.",
     dashboardMeta: {
       tags: ["ui", "cometAssistant"],
       categories: ["thread", "comet"],

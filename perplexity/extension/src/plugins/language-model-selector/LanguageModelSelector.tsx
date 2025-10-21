@@ -32,6 +32,16 @@ export function LanguageModelSelector() {
 
   const selectItems = useMemo(getSelectItems, []);
 
+  const listCollection = useMemo(
+    () =>
+      createListCollection({
+        items: selectItems,
+        itemToString: (item) => item.label,
+        itemToValue: (item) => item.id,
+      }),
+    [selectItems],
+  );
+
   useRegisterGlobalCss();
 
   const isCometAssistant =
@@ -42,11 +52,7 @@ export function LanguageModelSelector() {
       lazyMount
       unmountOnExit
       portal={false}
-      collection={createListCollection({
-        items: selectItems,
-        itemToString: (item) => item.label,
-        itemToValue: (item) => item.id,
-      })}
+      collection={listCollection}
       data-testid={
         DomSelectorsService.Root.testIds.QUERY_BOX.LANGUAGE_MODEL_SELECTOR
       }

@@ -95,7 +95,12 @@ function initAuthStatus({
   const userData = data.user;
 
   pluginGuardsStore.setState((state) => {
-    state.isLoggedIn = Object.keys(data).length > 0;
+    const isLoggedIn = Object.keys(data).length > 0;
+
+    state.isLoggedIn = isLoggedIn;
+
+    if (!isLoggedIn) return;
+
     const hasActiveSub =
       userData.subscription_status != null &&
       userData.subscription_status !== "none";

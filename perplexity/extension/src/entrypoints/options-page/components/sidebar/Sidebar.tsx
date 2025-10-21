@@ -1,8 +1,8 @@
 import type { ComponentProps } from "react";
 import { NavLink, useMatch } from "react-router-dom";
 
+import CometAffiliateCard from "@/components/CometAffiliateCard";
 import SponsorDialogWrapper from "@/components/SponsorDialogWrapper";
-import CometAffiliate from "@/entrypoints/options-page/components/CometAffiliate";
 import { type NavItem } from "@/entrypoints/options-page/components/sidebar/nav-items";
 import { useOptionsPageSidebarStore } from "@/entrypoints/options-page/components/sidebar/store";
 import Version from "@/entrypoints/options-page/components/sidebar/Version";
@@ -98,7 +98,7 @@ export default function Sidebar() {
       </div>
 
       <div className="x:sticky x:bottom-0 x:z-10 x:flex x:shrink-0 x:flex-col x:gap-4 x:bg-background x:p-4">
-        <CometAffiliate />
+        <CometAffiliateCard />
 
         <SidebarUpdateAnnouncer />
 

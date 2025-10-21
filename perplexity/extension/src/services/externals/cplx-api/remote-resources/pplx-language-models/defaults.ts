@@ -117,14 +117,6 @@ export const pplxLocalLanguageModels = {
       icon: "xai",
     },
     {
-      label: "Grok-3 Beta",
-      shortLabel: "Grok-3",
-      code: "grok",
-      isReasoning: false,
-      limitKey: "gpt4_limit",
-      icon: "xai",
-    },
-    {
       label: "Sonar",
       shortLabel: "Sonar",
       code: "experimental",
