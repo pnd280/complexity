@@ -1,7 +1,9 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 
 import { APP_CONFIG } from "@/app.config";
 import { getPlatform } from "@/hooks/usePlatformDetection";
+import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 
@@ -19,11 +21,10 @@ export type ExportDialogState = {
 };
 
 export function useExportDebugData() {
-  const {
-    data: permissions,
-    handleGrantPermission,
-    handleRevokePermission,
-  } = useExtensionPermissions();
+  const queryClient = useQueryClient();
+
+  const { data: permissions, handleRevokePermission } =
+    useExtensionPermissions();
 
   const [dialogState, setDialogState] = useState<ExportDialogState>({
     isOpen: false,
@@ -132,9 +133,16 @@ export function useExportDebugData() {
     if (hasPermission) {
       await handleRevokePermission({ permissions: ["management"] });
     } else {
-      await handleGrantPermission({ permissions: ["management"] });
+      try {
+        await chrome.permissions.request({ permissions: ["management"] });
+        void queryClient.invalidateQueries({
+          queryKey: extensionPermissionsQueries.permissions.all(),
+        });
+      } catch (error) {
+        alert(`Error granting permissions: ${error}`);
+      }
     }
-  }, [permissions?.permissions, handleGrantPermission, handleRevokePermission]);
+  }, [permissions?.permissions, handleRevokePermission, queryClient]);
 
   return {
     dialogState,

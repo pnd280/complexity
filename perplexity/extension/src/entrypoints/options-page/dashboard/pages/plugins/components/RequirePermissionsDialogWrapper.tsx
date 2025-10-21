@@ -16,7 +16,6 @@ import {
 import { InlineCode } from "@/components/ui/typography";
 import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
-import { requestPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/utils";
 
 export default function RequirePermissionsDialogWrapper({
   children,
@@ -96,9 +95,11 @@ export default function RequirePermissionsDialogWrapper({
             onClick={async () => {
               if (requiredPermissions == null) return;
 
-              const result = await requestPermissions(
-                requiredPermissions.map(({ permission }) => permission),
-              );
+              const result = await chrome.permissions.request({
+                permissions: requiredPermissions.map(
+                  ({ permission }) => permission,
+                ),
+              });
 
               void queryClient.invalidateQueries({
                 queryKey: extensionPermissionsQueries.permissions.all(),

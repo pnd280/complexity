@@ -1,8 +1,10 @@
+import { useQueryClient } from "@tanstack/react-query";
 import type { ComponentType, SVGProps } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { H1, H3, P, Ul } from "@/components/ui/typography";
+import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 
 import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
@@ -38,8 +40,9 @@ const basePermissionsDetails: Record<
 };
 
 export default function BasePermissions() {
-  const { data: permissions, handleGrantPermission } =
-    useExtensionPermissions();
+  const queryClient = useQueryClient();
+
+  const { data: permissions } = useExtensionPermissions();
 
   const grantedPermissions = useMemo(
     () =>
@@ -69,14 +72,14 @@ export default function BasePermissions() {
                 key={key}
                 data-granted={isGranted ? true : undefined}
                 className={cn(
-                  "x:group x:border-border/50 x:transition-all x:duration-500 x:ease-in-out x:data-[granted]:bg-primary/10 x:data-[granted]:shadow-lg",
+                  "x:group x:border-border/50 x:transition-all x:duration-500 x:ease-in-out x:data-granted:bg-primary/10 x:data-granted:shadow-lg",
                 )}
               >
                 <CardContent className="x:flex x:items-start x:gap-3 x:p-3 x:md:items-center x:md:gap-4 x:md:p-4">
                   <div className="x:flex x:h-8 x:w-8 x:shrink-0 x:items-center x:justify-center x:self-start x:rounded-md x:bg-primary-foreground x:text-primary x:md:h-9 x:md:w-9">
                     <Icon className="x:size-4 x:md:size-5" />
                   </div>
-                  <div className="x:flex-grow x:space-y-1.5 x:md:space-y-2">
+                  <div className="x:grow x:space-y-1.5 x:md:space-y-2">
                     <H3 className="x:text-sm x:font-medium x:text-primary x:md:text-base">
                       {title}
                     </H3>
@@ -88,12 +91,20 @@ export default function BasePermissions() {
                         size="sm"
                         variant={isGranted ? "outline" : "default"}
                         disabled={isGranted}
-                        className="x:text-xs x:group-data-[granted]:text-success x:group-data-[granted]:!opacity-100 x:md:text-sm"
-                        onClick={() =>
-                          handleGrantPermission({
-                            permissions: permissions ?? [],
-                          })
-                        }
+                        className="x:text-xs x:group-data-granted:text-success x:group-data-granted:opacity-100! x:md:text-sm"
+                        onClick={async () => {
+                          try {
+                            await chrome.permissions.request({
+                              permissions,
+                            });
+                            void queryClient.invalidateQueries({
+                              queryKey:
+                                extensionPermissionsQueries.permissions.all(),
+                            });
+                          } catch (error) {
+                            alert(`Error granting permissions: ${error}`);
+                          }
+                        }}
                       >
                         {isGranted ? (
                           <span className="x:flex x:items-center x:gap-1.5 x:md:gap-2">

@@ -4,12 +4,6 @@ export async function getPermissions(): Promise<chrome.permissions.Permissions> 
   return ExtensionPermissionsService.Instance.getAll();
 }
 
-export async function requestPermissions(
-  permissions: chrome.runtime.ManifestPermissions[],
-): Promise<boolean> {
-  return ExtensionPermissionsService.Instance.request(permissions);
-}
-
 export async function revokePermissions(
   permissions: chrome.runtime.ManifestPermissions[],
 ): Promise<boolean> {

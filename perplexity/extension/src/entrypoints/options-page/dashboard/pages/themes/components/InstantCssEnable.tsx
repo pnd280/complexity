@@ -1,3 +1,5 @@
+import { useQueryClient } from "@tanstack/react-query";
+
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,11 +12,13 @@ import {
 } from "@/components/ui/dialog";
 import { InlineCode, Ul } from "@/components/ui/typography";
 import { toast } from "@/components/ui/use-toast";
+import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 
 export default function InstantCssEnable() {
-  const { data: grandtedPermissions, handleGrantPermission } =
-    useExtensionPermissions();
+  const queryClient = useQueryClient();
+
+  const { data: grandtedPermissions } = useExtensionPermissions();
 
   const hasPermissions =
     grandtedPermissions?.permissions?.includes("scripting") &&
@@ -89,14 +93,22 @@ export default function InstantCssEnable() {
         <DialogFooter>
           <Button
             onClick={async () => {
-              await handleGrantPermission({
-                permissions: ["webNavigation"],
-              });
-
-              toast({
-                title: "✅ Permissions granted",
-                description: "Custom styles will now be applied faster.",
-              });
+              try {
+                const granted = await chrome.permissions.request({
+                  permissions: ["webNavigation"],
+                });
+                void queryClient.invalidateQueries({
+                  queryKey: extensionPermissionsQueries.permissions.all(),
+                });
+                if (granted) {
+                  toast({
+                    title: "✅ Permissions granted",
+                    description: "Custom styles will now be applied faster.",
+                  });
+                }
+              } catch (error) {
+                alert(`Error granting permissions: ${error}`);
+              }
             }}
           >
             Grant Permissions
