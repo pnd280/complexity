@@ -3,6 +3,7 @@ import type { PluginId, PluginMeta } from "@/__registries__/plugins/meta.types";
 
 export const OPTIONAL_PERMISSIONS = [
   "webNavigation",
+  "management",
 ] as const satisfies chrome.runtime.ManifestPermissions[];
 
 type OptionalPermission = (typeof OPTIONAL_PERMISSIONS)[number];
@@ -40,5 +41,9 @@ export const OPTIONAL_PERMISSIONS_DETAILS: Partial<
   webNavigation: {
     title: "Web Navigation",
     dependantPlugins: permissionToPluginsMap["webNavigation"],
+  },
+  management: {
+    title: "Management",
+    dependantPlugins: permissionToPluginsMap["management"],
   },
 };

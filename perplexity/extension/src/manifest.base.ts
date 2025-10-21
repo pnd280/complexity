@@ -35,7 +35,7 @@ export const baseManifest: ManifestV3Options = {
     "declarativeNetRequestWithHostAccess",
     "scripting",
   ],
-  optional_permissions: ["webNavigation"],
+  optional_permissions: ["webNavigation", "management"],
 
   host_permissions: [
     ...APP_CONFIG["perplexity-ai"].globalMatches,
