@@ -69,7 +69,7 @@ export function HotkeyRecorderUi({
         showError &&
         recordedKeys != null &&
         recordedKeys.size > 0 && (
-          <div className="x:flex x:items-center x:gap-2 x:text-sm x:font-medium x:text-destructive">
+          <div className="x:flex x:items-center x:gap-2 x:text-sm x:font-medium x:text-caution">
             Invalid combination - use at least one modifier key combined with
             one regular key.
           </div>

@@ -1,7 +1,6 @@
 import { lazily } from "react-lazily";
 
 import type { UiGroupId } from "@/__registries__/cs-ui/types";
-import { CommandItemSkeleton } from "@/components/ui/command";
 import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
 import CommandPage from "@/plugins/__core__/slash-command/components/CommandPage";
 
@@ -25,7 +24,6 @@ export const PromptHistoryPage = withPluginsGuard(
   }),
   {
     dependentPluginIds: ["promptHistory"],
-    suspenseFallback: <CommandItemSkeleton count={5} className="x:h-7" />,
   },
 );
 

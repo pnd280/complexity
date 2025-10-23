@@ -44,7 +44,7 @@ export default function ArtifactCodeView() {
     <div
       id="artifact-code-view"
       className={cn(
-        "x:h-full x:w-max x:min-w-full x:text-xs x:[&_span.linenumber]:!text-muted-foreground x:[&>pre]:m-0 x:[&>pre]:size-full x:[&>pre]:rounded-t-none",
+        "x:h-full x:w-max x:min-w-full x:text-xs x:[&_span.linenumber]:text-muted-foreground! x:[&>pre]:m-0 x:[&>pre]:size-full x:[&>pre]:rounded-t-none",
         {
           "x:[&_span]:duration-300 x:[&_span]:animate-in x:[&_span]:fade-in":
             isInFlight,

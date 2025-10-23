@@ -4,7 +4,6 @@ import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/
 export const DEFAULT_EXTENSION_SETTINGS: ExtensionSettings = {
   plugins: PluginManifestsRegistry.settingsFallbackValues,
   theme: "complexity",
-  energySavingMode: false,
   extensionIconAction: "perplexity",
   devMode: false,
   showPostUpdateReleaseNotesPopup: false,

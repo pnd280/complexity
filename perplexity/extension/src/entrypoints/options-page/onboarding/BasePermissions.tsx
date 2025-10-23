@@ -76,7 +76,7 @@ export default function BasePermissions() {
                 )}
               >
                 <CardContent className="x:flex x:items-start x:gap-3 x:p-3 x:md:items-center x:md:gap-4 x:md:p-4">
-                  <div className="x:flex x:h-8 x:w-8 x:shrink-0 x:items-center x:justify-center x:self-start x:rounded-md x:bg-primary-foreground x:text-primary x:md:h-9 x:md:w-9">
+                  <div className="x:flex x:h-8 x:w-8 x:shrink-0 x:items-center x:justify-center x:self-start x:rounded-md x:bg-foreground-subtle x:text-primary x:md:h-9 x:md:w-9">
                     <Icon className="x:size-4 x:md:size-5" />
                   </div>
                   <div className="x:grow x:space-y-1.5 x:md:space-y-2">

@@ -39,14 +39,8 @@ export function DeleteButton({ isDeleting, onDelete }: DeleteButtonProps) {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            variant="destructive"
-            disabled={isDeleting}
-            onClick={onDelete}
-          >
+          <Button onClick={() => setIsOpen(false)}>Cancel</Button>
+          <Button variant="caution" disabled={isDeleting} onClick={onDelete}>
             Delete
           </Button>
         </DialogFooter>

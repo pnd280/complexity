@@ -25,7 +25,7 @@ export default function CometAssistantLanguageModelSelectorTriggerButton() {
     >
       <div
         className={cn(
-          "x:flex x:h-8 x:items-center x:justify-center x:gap-2 x:rounded-lg x:px-2.5 x:text-sm x:font-medium x:text-muted-foreground x:transition-all x:hover:bg-primary-foreground",
+          "x:flex x:h-8 x:items-center x:justify-center x:gap-2 x:rounded-lg x:px-2.5 x:text-sm x:font-medium x:text-muted-foreground x:transition-all x:hover:bg-foreground-subtle",
           {
             "x:text-primary": !isAuto,
             "x:hover:text-foreground": isAuto,

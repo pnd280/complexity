@@ -41,11 +41,9 @@ export function DeleteLanguageOptionButton({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => setIsOpen(false)}>Cancel</Button>
           <Button
-            variant="destructive"
+            variant="caution"
             onClick={() => {
               deleteMutation();
               setIsOpen(false);

@@ -460,11 +460,11 @@ export function SidebarMenuItem({
 }
 
 const sidebarMenuButtonVariants = cva(
-  "x:peer/menu-button x:flex x:w-full x:items-center x:gap-2 x:overflow-hidden x:rounded-lg x:text-left x:text-sm x:font-medium x:text-foreground x:ring-primary x:transition-all x:outline-none x:group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 x:group-data-[collapsible=icon]:!size-8 x:group-data-[collapsible=icon]:!p-2 x:hover:bg-secondary x:focus-visible:ring-2 x:active:bg-secondary x:active:text-foreground x:disabled:pointer-events-none x:disabled:opacity-50 x:aria-disabled:pointer-events-none x:aria-disabled:opacity-50 x:data-[state=open]:hover:bg-secondary x:data-[state=open]:hover:text-foreground x:[&>span:last-child]:truncate x:[&>svg]:size-4 x:[&>svg]:shrink-0",
+  "x:peer/menu-button x:flex x:w-full x:items-center x:gap-2 x:overflow-hidden x:rounded-lg x:text-left x:text-sm x:font-medium x:text-foreground x:ring-primary x:transition-all x:outline-none x:group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 x:group-data-[collapsible=icon]:size-8! x:group-data-[collapsible=icon]:p-2! x:hover:bg-secondary x:focus-visible:ring-2 x:active:bg-secondary x:active:text-foreground x:disabled:pointer-events-none x:disabled:opacity-50 x:aria-disabled:pointer-events-none x:aria-disabled:opacity-50 x:data-[state=open]:hover:bg-secondary x:data-[state=open]:hover:text-foreground x:[&>span:last-child]:truncate x:[&>svg]:size-4 x:[&>svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "x:hover:bg-primary-foreground",
+        default: "x:hover:bg-foreground-subtle",
       },
       size: {
         default: "x:p-2 x:text-sm",
@@ -518,7 +518,7 @@ export function SidebarMenuAction({
     <Comp
       data-sidebar="menu-action"
       className={cn(
-        "x:absolute x:top-1.5 x:right-2 x:flex x:aspect-square x:w-5 x:items-center x:justify-center x:rounded-lg x:p-0 x:text-muted-foreground x:ring-primary x:transition-all x:outline-none x:peer-hover/menu-button:text-foreground x:hover:bg-primary-foreground x:hover:text-foreground x:focus-visible:ring-2 x:[&>svg]:size-4 x:[&>svg]:shrink-0",
+        "x:absolute x:top-1.5 x:right-2 x:flex x:aspect-square x:w-5 x:items-center x:justify-center x:rounded-lg x:p-0 x:text-muted-foreground x:ring-primary x:transition-all x:outline-none x:peer-hover/menu-button:text-foreground x:hover:bg-foreground-subtle x:hover:text-foreground x:focus-visible:ring-2 x:[&>svg]:size-4 x:[&>svg]:shrink-0",
         // Increases the hit area of the button on mobile.
         "x:after:absolute x:after:-inset-2 x:after:md:hidden",
         "x:peer-data-[size=default]/menu-button:top-2",

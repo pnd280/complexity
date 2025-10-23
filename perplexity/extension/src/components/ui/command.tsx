@@ -177,7 +177,7 @@ export function CommandItem({
   return (
     <CommandPrimitive.Item
       className={cn(
-        "x:group x:relative x:flex x:cursor-pointer x:items-center x:rounded-lg x:px-2 x:py-2 x:text-sm x:text-foreground x:outline-none x:select-none x:aria-selected:bg-primary-foreground x:aria-selected:text-foreground x:data-[disabled=true]:pointer-events-none x:data-[disabled=true]:opacity-50",
+        "x:group x:relative x:flex x:cursor-pointer x:items-center x:rounded-lg x:px-2 x:py-2 x:text-sm x:text-foreground x:outline-none x:select-none x:aria-selected:bg-foreground-subtle x:aria-selected:text-foreground x:data-[disabled=true]:pointer-events-none x:data-[disabled=true]:opacity-50",
         className,
       )}
       {...props}
@@ -289,7 +289,7 @@ export function CommandItemSkeleton({
         <div
           key={index}
           className={cn(
-            "x:h-8 x:w-full x:animate-pulse x:rounded-lg x:bg-muted",
+            "x:h-8 x:w-full x:animate-pulse x:rounded-lg x:bg-muted-foreground",
             className,
           )}
           {...props}

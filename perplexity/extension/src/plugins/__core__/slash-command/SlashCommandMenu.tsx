@@ -37,10 +37,8 @@ export function SlashCommandMenu() {
           }
         }}
       >
-        <div>
-          <IndexPage />
-          {CsUiRegistry.SlashCommandMenuPagesGroupComponents}
-        </div>
+        <IndexPage />
+        {CsUiRegistry.SlashCommandMenuPagesGroupComponents}
       </PopoverContent>
     </PopoverRootProvider>
   );

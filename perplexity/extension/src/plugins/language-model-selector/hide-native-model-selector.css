@@ -27,6 +27,6 @@
 }
 
 .cplx-model-mismatch-warning {
-  background-color: var(--destructive);
-  color: var(--destructive-foreground);
+  background-color: var(--caution);
+  color: var(--caution-foreground);
 }

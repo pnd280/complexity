@@ -15,7 +15,7 @@ const radioGroupVariants = cva("x:flex x:gap-2", {
 });
 
 const radioItemVariants = cva(
-  "x:group x:flex x:cursor-pointer x:items-start x:gap-2 x:data-[disabled]:cursor-not-allowed x:data-[disabled]:opacity-50",
+  "x:group x:flex x:cursor-pointer x:items-start x:gap-2 x:data-disabled:cursor-not-allowed x:data-disabled:opacity-50",
   {
     variants: {
       size: {

@@ -163,7 +163,7 @@ export default function PluginsEnableSet() {
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" onClick={() => navigate("/")}>
+            <Button onClick={() => navigate("/")}>
               I&apos;ll look around by myself
             </Button>
           </DialogClose>

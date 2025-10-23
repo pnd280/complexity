@@ -134,7 +134,7 @@ export function ArtifactsPrePromptInstallationDialog() {
         </div>
         <DialogFooter>
           <DialogClose asChild tabIndex={-1}>
-            <Button variant="outline">Cancel</Button>
+            <Button>Cancel</Button>
           </DialogClose>
           <AsyncButton
             disabled={isFetching || !artfiactsInstruction}

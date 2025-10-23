@@ -85,7 +85,7 @@ export function FormLabel({
 
   return (
     <Label
-      className={cn("x:block", error && "x:text-destructive", className)}
+      className={cn("x:block", error && "x:text-caution", className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -136,7 +136,7 @@ export function FormMessage({
   return (
     <p
       id={formMessageId}
-      className={cn("x:text-sm x:font-medium x:text-destructive", className)}
+      className={cn("x:text-sm x:font-medium x:text-caution", className)}
       {...props}
     >
       {errorMessage}

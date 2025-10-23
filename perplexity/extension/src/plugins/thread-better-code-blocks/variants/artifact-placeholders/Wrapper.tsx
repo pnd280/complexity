@@ -70,7 +70,7 @@ const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
           <placeholderElements.icon className="x:size-8" />
         )}
       </div>
-      <div className="x:flex x:max-w-[300px] x:flex-col x:bg-background x:px-4 x:py-2">
+      <div className="x:flex x:max-w-[300px] x:flex-col x:border-l x:px-4 x:py-2">
         <div
           className={cn(
             "x:line-clamp-1 x:text-base x:text-foreground x:transition-all x:group-hover:text-primary",

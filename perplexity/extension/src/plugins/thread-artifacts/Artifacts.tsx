@@ -67,7 +67,7 @@ export function Artifacts() {
         data-open={isArtifactOpen}
         className={cn(
           "x:fixed x:right-8 x:z-10 x:my-8 x:overflow-hidden x:border x:border-border/50 x:bg-secondary x:text-sm x:transition-all x:animate-in x:fade-in x:slide-in-from-right",
-          "x:top-(--header-height) x:xl:sticky x:xl:right-0 x:xl:m-0 x:xl:my-0",
+          "x:top-(--header-height,54px) x:xl:sticky x:xl:right-0 x:xl:m-0 x:xl:my-0",
         )}
       >
         {isArtifactsListOpen && <ArtifactsList />}

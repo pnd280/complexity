@@ -87,7 +87,7 @@ export const CometCard = ({
         }}
         initial={{ scale: 1, z: 0 }}
         whileHover={{
-          scale: 1.01,
+          scale: 1,
           z: 50,
           transition: { duration: 0.2 },
         }}

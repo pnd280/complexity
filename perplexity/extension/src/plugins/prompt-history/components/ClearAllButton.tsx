@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -44,12 +45,14 @@ export default function ClearAllButton() {
             {t("plugin-prompt-history.clearAllButton.dialog.title")}
           </DialogTitle>
         </DialogHeader>
-        <div>{t("plugin-prompt-history.clearAllButton.dialog.message")}</div>
+        <DialogDescription asChild>
+          <div>{t("plugin-prompt-history.clearAllButton.dialog.message")}</div>
+        </DialogDescription>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <Button onClick={() => setIsOpen(false)}>
             {t("plugin-prompt-history.clearAllButton.dialog.actions.cancel")}
           </Button>
-          <Button variant="destructive" onClick={handleClearAll}>
+          <Button variant="caution" onClick={handleClearAll}>
             {t("plugin-prompt-history.clearAllButton.dialog.actions.confirm")}
           </Button>
         </DialogFooter>

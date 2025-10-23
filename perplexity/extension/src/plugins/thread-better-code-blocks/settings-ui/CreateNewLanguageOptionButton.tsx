@@ -117,7 +117,7 @@ export default function CreateNewLanguageOptionButton() {
         />
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button>Cancel</Button>
           </DialogClose>
           <Button disabled={!language} onClick={handleSubmit}>
             Create

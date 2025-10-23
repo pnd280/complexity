@@ -24,7 +24,7 @@ export default function SponsorDialogWrapper({
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent portal={!useIsMobileStore().isMobile}>
-        <div className="x:absolute x:inset-0 x:-z-10 x:bg-gradient-to-b x:from-primary/20 x:to-transparent" />
+        <div className="x:absolute x:inset-0 x:-z-10 x:bg-linear-to-b x:from-primary/20 x:to-transparent" />
 
         <DialogHeader>
           <DialogTitle className="x:text-2xl">

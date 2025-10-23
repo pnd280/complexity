@@ -45,7 +45,7 @@ export default function FilterBase<T extends string>({
                     "x:m-1 x:w-max x:cursor-pointer x:rounded-md x:border x:border-transparent x:px-2 x:py-0.5 x:text-sm x:transition-colors x:hover:bg-primary/10 x:aria-selected:bg-secondary x:aria-selected:text-foreground": true,
                     "x:border x:border-success/50 x:bg-success/20! x:text-success!":
                       itemState === "include",
-                    "x:border x:border-dashed x:border-destructive x:bg-destructive/20! x:text-muted-foreground!":
+                    "x:border x:border-dashed x:border-caution x:bg-caution/20! x:text-muted-foreground!":
                       itemState === "exclude",
                     "x:bg-secondary": itemState === "none",
                   })}

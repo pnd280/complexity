@@ -80,7 +80,7 @@ export default function MermaidRenderer() {
         !isSuccess &&
         result?.error && (
           <div className="x:flex x:flex-col x:gap-4 x:p-4 x:font-mono">
-            <div className="x:text-lg x:font-bold x:text-destructive">
+            <div className="x:text-lg x:font-bold x:text-caution">
               An error occurred while rendering:
             </div>
             <div className="x:whitespace-pre x:animate-in x:fade-in">
@@ -88,7 +88,7 @@ export default function MermaidRenderer() {
             </div>
             <Button
               className="x:w-max"
-              variant="destructive"
+              variant="caution"
               onClick={() => {
                 const $queryBoxTextbox = getActiveQueryBoxTextbox();
                 if (!$queryBoxTextbox.length) return;

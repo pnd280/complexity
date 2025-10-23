@@ -65,8 +65,8 @@ export function SheetContent({
             "x:p-6",
             "x:border-border/50",
             {
-              "x:h-[100dvh]": side === "left" || side === "right",
-              "x:h-auto x:max-h-[75vh] x:!w-screen":
+              "x:h-dvh": side === "left" || side === "right",
+              "x:h-auto x:max-h-[75vh] x:w-screen!":
                 side === "top" || side === "bottom",
               "x:data-[state=closed]:animate-out x:data-[state=open]:animate-in": true,
               "x:data-[state=closed]:slide-out-to-left x:data-[state=open]:slide-in-from-left":

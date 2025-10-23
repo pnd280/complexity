@@ -43,7 +43,7 @@ export default function CometPatchInstructions() {
     <>
       {error != null && (
         <div className="x:my-40 x:text-center x:text-balance">
-          <div className="x:text-xl x:text-destructive">
+          <div className="x:text-xl x:text-caution">
             Error fetching content, try this{" "}
             <a
               href="https://github.com/pnd280/complexity/blob/nxt/perplexity/extension/docs/comet-enable-extensions.md"

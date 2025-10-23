@@ -5,11 +5,7 @@ import {
   DomSelectorsServiceImpl,
   type DomSelectorsService as DomSelectorsServiceType,
 } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import {
-  isMainWorldContext,
-  invariant,
-  isInContentScript,
-} from "@/utils/misc/utils";
+import { isMainWorldContext, invariant } from "@/utils/misc/utils";
 import { getDocumentAdapter } from "@/utils/wrappers/comctx/get-document-adapter";
 import type { ComctxProxy } from "@/utils/wrappers/comctx/types";
 
@@ -22,10 +18,7 @@ const [registerService, getProxy] = defineProxy(getDomSelectorsRootService, {
 });
 
 function getDomSelectorsRootService(): DomSelectorsServiceType {
-  invariant(
-    isInContentScript() && !isMainWorldContext(),
-    "[DomSelectorsService] Invalid context",
-  );
+  invariant(!isMainWorldContext(), "[DomSelectorsService] Invalid context");
 
   rootServiceInstance ??= DomSelectorsServiceImpl;
 
@@ -50,7 +43,7 @@ export const DomSelectorsService = {
     return getDomSelectorsProxyService();
   },
   get Instance() {
-    return isInContentScript()
+    return isMainWorldContext()
       ? getDomSelectorsProxyService()
       : getDomSelectorsRootService();
   },

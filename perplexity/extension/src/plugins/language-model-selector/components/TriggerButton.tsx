@@ -49,7 +49,7 @@ export default function BetterLanguageModelSelectorTriggerButton() {
     >
       <div
         className={cn(
-          "x:flex x:h-8 x:items-center x:justify-center x:gap-2 x:rounded-lg x:border x:border-border/50 x:bg-primary-foreground x:px-2.5 x:text-sm x:font-medium x:text-foreground x:transition-all",
+          "x:flex x:h-8 x:items-center x:justify-center x:gap-2 x:rounded-lg x:border x:border-border/50 x:bg-foreground-subtle x:px-2.5 x:text-sm x:font-medium x:text-foreground x:transition-all",
         )}
       >
         <TypeIcon className="x:size-4 x:shrink-0" />

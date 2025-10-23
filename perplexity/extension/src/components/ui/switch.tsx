@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { ReactNode } from "react";
 
 const switchVariants = cva(
-  "x:inline-flex x:shrink-0 x:cursor-pointer x:items-center x:rounded-full x:bg-muted-foreground/35 x:transition-all x:focus-visible:ring-1 x:focus-visible:ring-ring x:focus-visible:ring-offset-2 x:focus-visible:ring-offset-background x:focus-visible:outline-none x:data-[disabled]:cursor-not-allowed x:data-[disabled]:opacity-50 x:data-[state=checked]:bg-primary/85 x:[&>span]:transition-all x:[&>span]:duration-150",
+  "x:inline-flex x:shrink-0 x:cursor-pointer x:items-center x:rounded-full x:bg-muted-foreground/35 x:transition-all x:focus-visible:ring-1 x:focus-visible:ring-ring x:focus-visible:ring-offset-2 x:focus-visible:ring-offset-background x:focus-visible:outline-none x:data-disabled:cursor-not-allowed x:data-disabled:opacity-50 x:data-[state=checked]:bg-primary/85 x:[&>span]:transition-all x:[&>span]:duration-150",
   {
     variants: {
       size: {
@@ -37,7 +37,7 @@ const thumbVariants = cva(
 );
 
 const labelVariants = cva(
-  "x:cursor-pointer x:transition-colors x:duration-15 x:data-[disabled]:cursor-not-allowed x:data-[disabled]:opacity-50 x:data-[state=unchecked]:text-muted-foreground x:hover:data-[state=unchecked]:text-foreground",
+  "x:cursor-pointer x:transition-colors x:duration-15 x:data-disabled:cursor-not-allowed x:data-disabled:opacity-50 x:data-[state=unchecked]:text-muted-foreground x:hover:data-[state=unchecked]:text-foreground",
   {
     variants: {
       size: {

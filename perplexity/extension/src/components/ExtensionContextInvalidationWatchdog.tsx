@@ -43,7 +43,7 @@ export function ExtensionContextInvalidationWatchdog() {
 
 export function WarningDialog() {
   return (
-    <Dialog defaultOpen closeOnInteractOutside={false} closeOnEscape={false}>
+    <Dialog open closeOnInteractOutside={false} closeOnEscape={false}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Page reload required</DialogTitle>
@@ -56,10 +56,11 @@ export function WarningDialog() {
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">I'll do it later</Button>
+            <Button>I'll do it later</Button>
           </DialogClose>
           <Button
             autoFocus
+            variant={"primary"}
             onClick={() => {
               window.location.reload();
             }}

@@ -37,7 +37,7 @@ export default function DesktopPluginSections() {
 
         return (
           <section key={category}>
-            <H2 className="x:!text-lg x:font-semibold">
+            <H2 className="x:text-lg! x:font-semibold">
               {categoryMeta.label || category}
             </H2>
             {!!categoryMeta.description && (

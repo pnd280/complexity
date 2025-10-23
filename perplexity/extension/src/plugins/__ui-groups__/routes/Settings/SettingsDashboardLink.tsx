@@ -50,7 +50,7 @@ export function SettingsDashboardLink() {
   return (
     <Portal container={portalContainer}>
       <div
-        className="x:mx-3 x:flex x:cursor-pointer x:items-center x:justify-start x:gap-1 x:rounded-lg x:px-3 x:py-2 x:text-sm x:font-medium x:text-foreground x:transition-all x:hover:bg-primary-foreground"
+        className="x:mx-3 x:flex x:cursor-pointer x:items-center x:justify-start x:gap-1 x:rounded-lg x:px-3 x:py-2 x:text-sm x:font-medium x:text-foreground x:transition-all x:hover:bg-foreground-subtle"
         onClick={() => {
           void ContentScriptBgUtilsService.Instance.openOptionsPage();
         }}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -36,7 +37,7 @@ export default function ClearAllDataButton() {
         <DialogHeader>
           <DialogTitle>Clear All Data</DialogTitle>
         </DialogHeader>
-        <div>
+        <DialogDescription>
           Are you sure you want to clear all extension data? This action cannot
           be undone and will wipe the following data:
           <Ul>
@@ -44,12 +45,12 @@ export default function ClearAllDataButton() {
             <li>All custom themes, code blocks rules, etc.</li>
             <li>And any other data stored by the extension</li>
           </Ul>
-        </div>
+        </DialogDescription>
         <DialogFooter>
           <DialogTrigger asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button>Cancel</Button>
           </DialogTrigger>
-          <AsyncButton variant="destructive" onClick={handleClearData}>
+          <AsyncButton variant="caution" onClick={handleClearData}>
             Yes, Clear All Data
           </AsyncButton>
         </DialogFooter>

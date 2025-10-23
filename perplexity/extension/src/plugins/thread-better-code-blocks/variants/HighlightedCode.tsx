@@ -54,13 +54,13 @@ const HighlightedCodeWrapper = memo(() => {
     >
       <div
         className={cn(
-          "x:[&>pre]:m-0 x:[&>pre]:rounded-t-none x:[&>pre]:!p-2 x:[&>pre]:!px-4",
+          "x:[&>pre]:m-0 x:[&>pre]:rounded-t-none x:[&>pre]:p-2! x:[&>pre]:px-4!",
           {
-            "x:text-pretty x:[&_code]:!whitespace-pre-wrap": isWrapped,
+            "x:text-pretty x:[&_code]:whitespace-pre-wrap!": isWrapped,
             "x:[&_span]:duration-300 x:[&_span]:animate-in x:[&_span]:fade-in":
               isInFlight,
           },
-          showLineNumbers && "x:[&_span.linenumber]:!text-muted-foreground",
+          showLineNumbers && "x:[&_span.linenumber]:text-muted-foreground!",
         )}
       >
         <CodeHighlighter

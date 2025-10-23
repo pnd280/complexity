@@ -10,8 +10,7 @@ type PluginTagProps = {
 };
 
 const variantOptions = {
-  experimental:
-    "x:bg-destructive x:text-destructive-foreground x:hover:bg-destructive/80",
+  experimental: "x:bg-caution x:text-caution-foreground x:hover:bg-caution/80",
   new: "x:bg-primary x:text-primary-foreground x:hover:bg-primary/80",
   deprecated:
     "x:bg-orange-500 x:text-orange-500-foreground x:hover:bg-orange-500/80",

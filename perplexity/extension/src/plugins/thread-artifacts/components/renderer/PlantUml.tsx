@@ -35,7 +35,7 @@ const SVGContent = memo(function SVGContent({ svg }: { svg: string }) {
   return (
     <div
       id="artifact-plantuml-container"
-      className="x:flex x:size-full x:items-center x:justify-center x:animate-in x:fade-in x:[&>svg]:!size-full"
+      className="x:flex x:size-full x:items-center x:justify-center x:animate-in x:fade-in x:[&>svg]:size-full!"
       dangerouslySetInnerHTML={{
         __html: svg,
       }}
@@ -124,7 +124,7 @@ export default function PlantUmlRenderer() {
           </div>
           <Button
             className="x:w-max"
-            variant="destructive"
+            variant="caution"
             onClick={() => {
               if (!error.message) return;
 

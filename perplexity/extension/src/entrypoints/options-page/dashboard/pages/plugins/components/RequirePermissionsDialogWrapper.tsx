@@ -88,7 +88,7 @@ export default function RequirePermissionsDialogWrapper({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button>Cancel</Button>
           </DialogClose>
           <AsyncButton
             loadingText="Requesting..."

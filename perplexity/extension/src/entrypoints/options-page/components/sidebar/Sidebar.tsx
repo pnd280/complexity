@@ -39,7 +39,7 @@ const NavItemComponent = ({
             cn(
               "x:mb-1 x:flex x:flex-1 x:items-center x:rounded-xl x:p-2 x:px-4 x:text-sm x:font-medium x:transition-all x:active:scale-95",
               {
-                "x:bg-primary-foreground x:text-primary":
+                "x:bg-foreground-subtle x:text-primary":
                   isActive && isActiveEnd,
                 "x:text-muted-foreground x:hover:text-foreground": !isActive,
               },
@@ -103,7 +103,11 @@ export default function Sidebar() {
         <SidebarUpdateAnnouncer />
 
         <SponsorDialogWrapper>
-          <div className="x:group x:relative x:w-full x:cursor-pointer x:rounded-xl x:border x:border-border/50 x:bg-secondary x:p-4 x:text-sm x:text-foreground x:shadow-lg x:transition-all x:hover:scale-101 x:hover:text-foreground x:md:text-balance">
+          <div
+            role="button"
+            tabIndex={0}
+            className="x:group x:relative x:w-full x:cursor-pointer x:rounded-xl x:border x:border-border/50 x:bg-secondary x:p-4 x:text-sm x:text-muted-foreground x:shadow-lg x:transition-all x:hover:scale-101 x:hover:text-foreground x:md:text-balance"
+          >
             <Trans
               tKey="common.sidebar.supporterMessage"
               components={[

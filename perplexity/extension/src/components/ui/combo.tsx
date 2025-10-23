@@ -44,9 +44,9 @@ const comboboxTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          "x:bg-primary-foreground x:hover:text-muted-foreground x:focus:outline-none x:active:scale-95",
+          "x:bg-foreground-subtle x:hover:text-muted-foreground x:focus:outline-none x:active:scale-95",
         ghost:
-          "text-center x:text-muted-foreground x:hover:bg-primary-foreground x:hover:text-foreground x:active:scale-95",
+          "text-center x:text-muted-foreground x:hover:bg-foreground-subtle x:hover:text-foreground x:active:scale-95",
       },
     },
     defaultVariants: {
@@ -179,7 +179,7 @@ export function ComboboxContent({
       <ArkCombobox.Positioner>
         <ArkCombobox.Content
           className={cn(
-            "custom-scrollbar x:z-50 x:max-h-[300px] x:min-w-[8rem] x:overflow-auto x:rounded-md x:border x:border-border/50 x:bg-popover x:p-1 x:text-popover-foreground x:shadow-md",
+            "custom-scrollbar x:z-50 x:max-h-[300px] x:min-w-32 x:overflow-auto x:rounded-md x:border x:border-border/50 x:bg-popover x:p-1 x:text-popover-foreground x:shadow-md",
             "x:data-[state=closed]:animate-out x:data-[state=open]:animate-in",
             "x:data-[state=closed]:fade-out-0 x:data-[state=open]:fade-in-0",
             className,
@@ -201,8 +201,8 @@ export function ComboboxItem({
     <ArkCombobox.Item
       className={cn(
         "x:relative x:flex x:w-full x:cursor-pointer x:items-center x:rounded-sm x:px-2 x:py-1.5 x:text-sm x:outline-none x:select-none",
-        "x:data-[disabled]:pointer-events-none x:data-[disabled]:opacity-50",
-        "x:data-[highlighted]:bg-primary-foreground x:data-[highlighted]:text-primary",
+        "x:data-disabled:pointer-events-none x:data-disabled:opacity-50",
+        "x:data-highlighted:bg-foreground-subtle x:data-highlighted:text-primary",
         className,
       )}
       {...props}

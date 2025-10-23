@@ -18,7 +18,7 @@ body {
       display: flex;
       justify-content: center;
       isolation: isolate;
-      height: max-content;
+      min-height: 100vh;
     }
   }
 
@@ -56,8 +56,8 @@ body {
     }
 
     #cplx-artifact {
-      height: calc(100dvh - var(--header-height) - 12rem);
-      @apply x:xl:h-[calc(100dvh-var(--header-height))];
+      height: calc(100dvh - var(--header-height, 54px) - 12rem);
+      @apply x:xl:h-[calc(100dvh-var(--header-height,54px))];
       @apply x:rounded-lg x:xl:rounded-none x:xl:rounded-tl-lg;
       @apply x:xl:border-r-0 x:xl:border-b-0;
 
@@ -69,7 +69,7 @@ body {
 
   &[data-cplx-artifact-active-panel="list"] {
     #cplx-artifact {
-      height: calc(100dvh - var(--header-height) - 12rem);
+      height: calc(100dvh - var(--header-height, 54px) - 12rem);
       @apply x:rounded-lg;
 
       &[data-open] {
@@ -82,5 +82,5 @@ body {
 :root[data-erp="tab"]
   body[data-cplx-artifact-active-panel="artifact"]
   #cplx-artifact {
-  @apply x:xl:h-[calc(100dvh-var(--header-height))];
+  @apply x:xl:h-[calc(100dvh-var(--header-height,54px))];
 }

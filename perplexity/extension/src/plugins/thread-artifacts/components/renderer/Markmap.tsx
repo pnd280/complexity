@@ -75,7 +75,7 @@ export default function MarkmapRenderer() {
         !isSuccess &&
         result?.error && (
           <div className="x:flex x:flex-col x:gap-4 x:p-4 x:font-mono">
-            <div className="x:text-lg x:font-bold x:text-destructive">
+            <div className="x:text-lg x:font-bold x:text-caution">
               An error occurred while rendering:
             </div>
             <div className="x:whitespace-pre x:animate-in x:fade-in">
@@ -83,7 +83,7 @@ export default function MarkmapRenderer() {
             </div>
             <Button
               className="x:w-max"
-              variant="destructive"
+              variant="caution"
               onClick={() => {
                 const $queryBoxTextbox = getActiveQueryBoxTextbox();
                 if (!$queryBoxTextbox.length) return;
@@ -101,7 +101,7 @@ export default function MarkmapRenderer() {
       <svg
         id={`artifact-markmap-container-${selectedCodeBlockLocation?.messageBlockIndex}-${selectedCodeBlockLocation?.codeBlockIndex}`}
         className={cn(
-          "x:size-full x:!font-sans x:!text-foreground x:transition-opacity",
+          "x:size-full x:font-sans! x:text-foreground! x:transition-opacity",
           {
             "x:opacity-0": !markmapRendererResponded || !isSuccess,
           },

@@ -58,9 +58,7 @@ export function PostUpdateReleaseNotesDialog() {
               setOpen(false);
             }}
           >
-            <Button variant="outline">
-              {t("common.releaseNotes.dontShowAgain")}
-            </Button>
+            <Button>{t("common.releaseNotes.dontShowAgain")}</Button>
           </DontShowAgainForFutureUpdatesConfirmDialog>
           <DialogClose asChild>
             <Button>{t("common.releaseNotes.dismiss")}</Button>

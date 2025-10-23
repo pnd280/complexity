@@ -1,14 +1,16 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 
-import CometAffiliateCard from "@/components/CometAffiliateCard";
+import { CometCard } from "@/components/CometCard";
 import PplxPro from "@/components/icons/PplxPro";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
+import { Image } from "@/components/ui/image";
 import { usePluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
 
 export default function CometAffiliateDialog() {
@@ -31,7 +33,7 @@ export default function CometAffiliateDialog() {
       closeOnEscape={false}
       onExitComplete={() => setDismissed(true)}
     >
-      <DialogContent closeButton={false}>
+      <DialogContent closeButton={false} className="x:md:max-w-fit">
         <DialogHeader className="x:block x:text-center x:text-xl x:md:text-left x:md:text-2xl">
           <Trans
             tKey="common.sponsorDialog.cometAffiliate.title"
@@ -41,18 +43,31 @@ export default function CometAffiliateDialog() {
           />
         </DialogHeader>
 
-        <div className="x:text-base x:text-pretty">
-          <Trans
-            tKey="common.sponsorDialog.cometAffiliate.description"
-            components={[
-              <PplxPro className="x:mx-1 x:inline-block x:text-xl x:text-primary" />,
-            ]}
-          />
-        </div>
-
-        <div onClick={() => setDismissed(true)}>
-          <CometAffiliateCard />
-        </div>
+        <DialogDescription className="x:space-y-4">
+          <div className="x:text-base x:text-pretty">
+            <Trans
+              tKey="common.sponsorDialog.cometAffiliate.description"
+              components={[
+                <PplxPro className="x:mx-1 x:inline-block x:text-xl x:text-primary" />,
+              ]}
+            />
+          </div>
+          <a
+            href="https://pplx.ai/pnd280"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="x:block x:px-4"
+            onClick={() => setDismissed(true)}
+          >
+            <CometCard rotateDepth={5} translateDepth={5}>
+              <Image
+                src="https://pbs.twimg.com/card_img/1978322318423162880/kT2NMCxf?format=png&name=900x900"
+                alt="Comet Invitation"
+                className="x:rounded-xl"
+              />
+            </CometCard>
+          </a>
+        </DialogDescription>
 
         <DialogFooter>
           <Button
@@ -73,7 +88,7 @@ export default function CometAffiliateDialog() {
               }}
               href="https://pplx.ai/pnd280"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               {t("common.sponsorDialog.cometAffiliate.claimButton")}
             </a>

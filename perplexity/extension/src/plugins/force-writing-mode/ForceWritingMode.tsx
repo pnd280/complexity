@@ -70,7 +70,7 @@ export function ForceWritingModeToggle() {
         <DialogTrigger asChild>
           <button
             className={cn(
-              "x:-order-2 x:flex x:size-8 x:cursor-pointer x:items-center x:justify-center x:gap-1 x:rounded-lg x:text-center x:text-sm x:font-medium x:text-muted-foreground x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:hover:bg-primary-foreground x:focus-visible:bg-primary-foreground x:focus-visible:outline-none x:active:scale-95 x:disabled:cursor-not-allowed x:disabled:opacity-50",
+              "x:-order-2 x:flex x:size-8 x:cursor-pointer x:items-center x:justify-center x:gap-1 x:rounded-lg x:text-center x:text-sm x:font-medium x:text-muted-foreground x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:hover:bg-foreground-subtle x:focus-visible:bg-foreground-subtle x:focus-visible:outline-none x:active:scale-95 x:disabled:cursor-not-allowed x:disabled:opacity-50",
               {
                 "x:text-primary": forceWritingMode,
                 "x:hover:text-foreground": !forceWritingMode,
@@ -92,7 +92,7 @@ export function ForceWritingModeToggle() {
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" onClick={() => setWarningShown(false)}>
+            <Button onClick={() => setWarningShown(false)}>
               I understand, don't show again
             </Button>
           </DialogClose>
