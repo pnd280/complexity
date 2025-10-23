@@ -53,15 +53,6 @@ export const cplxApiQueries = {
       }),
   },
 
-  cacheBuster: {
-    all: () => [...cplxApiQueries.all(), "cacheBuster"] as const,
-    detail: () =>
-      queryOptions({
-        queryKey: [...cplxApiQueries.cacheBuster.all()] as const,
-        queryFn: () => CplxApiService.fetchSoftCacheBuster(),
-      }),
-  },
-
   psa: {
     all: () => [...cplxApiQueries.all(), "psa"] as const,
     detail: () =>

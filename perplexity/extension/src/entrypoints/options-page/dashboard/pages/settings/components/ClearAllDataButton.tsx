@@ -1,4 +1,3 @@
-import { storage } from "@wxt-dev/storage";
 import { useNavigate } from "react-router-dom";
 
 import AsyncButton from "@/components/AsyncButton";
@@ -23,8 +22,6 @@ export default function ClearAllDataButton() {
   const handleClearData = async () => {
     await ExtensionSettingsService.reset();
     await db.clearAll();
-    await storage.removeItem(persistentQueryClient.softCacheBusterKey);
-    await storage.removeItem(csPersistentQueryClient.softCacheBusterKey);
     await persistentQueryClient.wipeQueryCache();
     await csPersistentQueryClient.wipeQueryCache();
     void navigate("/plugins");

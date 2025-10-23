@@ -1,19 +1,16 @@
-import type {
-  PersistedClient,
-  Persister,
+import type { Query, QueryClient } from "@tanstack/react-query";
+import {
+  persistQueryClientSave,
+  type PersistedClient,
+  type Persister,
 } from "@tanstack/react-query-persist-client";
+import debounce from "lodash/debounce";
 
 import { QueryCacheService } from "@/services/infra/query-client/indexed-db/service-init.bg-worker";
-import { waitUntil } from "@/utils/misc/utils";
+import { isSubArray } from "@/utils/misc/utils";
 
-export async function createDexiePersister(idbKey: string): Promise<Persister> {
+export function createDexiePersister(idbKey: string): Persister {
   const Db = QueryCacheService.Instance;
-
-  await waitUntil({
-    condition: Db.isInitialized,
-    timeout: 30000,
-    interval: 50,
-  });
 
   return {
     persistClient: async (client: PersistedClient) => {
@@ -59,3 +56,53 @@ export async function createDexiePersister(idbKey: string): Promise<Persister> {
     },
   };
 }
+
+function shouldDehydrateQuery(
+  query: Query,
+  {
+    excludeKeys,
+    includeKeys,
+  }: {
+    excludeKeys: unknown[][];
+    includeKeys: unknown[][];
+  },
+): boolean {
+  const queryKey = query.queryKey;
+
+  if (excludeKeys.some((exclude) => queryKey.includes(exclude))) {
+    return false;
+  }
+
+  const shouldPersist = includeKeys.some(
+    (query) => Array.isArray(queryKey) && isSubArray(query, queryKey),
+  );
+
+  return shouldPersist;
+}
+
+export const debouncedPersistQueryClient = debounce(
+  async ({
+    queryClient,
+    persister,
+    buster,
+    excludeKeys,
+    includeKeys,
+  }: {
+    queryClient: QueryClient;
+    persister: Persister;
+    buster: string;
+    excludeKeys: unknown[][];
+    includeKeys: unknown[][];
+  }) => {
+    void persistQueryClientSave({
+      queryClient,
+      persister,
+      buster,
+      dehydrateOptions: {
+        shouldDehydrateQuery: (query) =>
+          shouldDehydrateQuery(query, { excludeKeys, includeKeys }),
+      },
+    });
+  },
+  300,
+);

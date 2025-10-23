@@ -1,100 +1,146 @@
-import type { Query } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import {
-  persistQueryClientSave,
+  persistQueryClientRestore,
   type Persister,
 } from "@tanstack/react-query-persist-client";
 import { storage } from "@wxt-dev/storage";
 import debounce from "lodash/debounce";
 
 import { APP_CONFIG } from "@/app.config";
-import { isSubArray } from "@/utils/misc/utils";
+import { QueryCacheService } from "@/services/infra/query-client/indexed-db/service-init.bg-worker";
+import {
+  createDexiePersister,
+  debouncedPersistQueryClient,
+} from "@/services/infra/query-client/utils";
+import { waitUntil } from "@/utils/misc/utils";
+import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export default class PersistentQueryClient {
+  id: string;
   queryClient: QueryClient;
   persister: Persister;
-  idbKey: string;
-  softCacheBusterKey: `local:${string}`;
-  includeKeys: string[];
-  excludeKeys: string[];
+  includeKeys: unknown[][];
+  excludeKeys: unknown[][];
+  buster: string;
+  sessionInvalidated: boolean = false;
+  busterFetchFn: () => Promise<string>;
 
-  currentSeshSoftCacheBuster: string | null | undefined = undefined;
-
-  constructor({
-    idbKey,
-    persister,
-    softCacheBusterKey,
-    includeKeys,
-    excludeKeys,
-  }: {
-    idbKey: string;
-    persister: Persister;
-    softCacheBusterKey: `local:${string}`;
-    includeKeys: string[];
-    excludeKeys: string[];
-  }) {
+  private constructor(
+    config: Pick<
+      typeof PersistentQueryClient.prototype,
+      "id" | "includeKeys" | "excludeKeys" | "busterFetchFn" | "buster"
+    >,
+  ) {
+    this.id = config.id;
     this.queryClient = new QueryClient();
-    this.persister = persister;
-    this.idbKey = idbKey;
-    this.softCacheBusterKey = softCacheBusterKey;
-    this.includeKeys = includeKeys;
-    this.excludeKeys = excludeKeys;
+    this.persister = createDexiePersister(config.id);
+    this.includeKeys = config.includeKeys;
+    this.excludeKeys = config.excludeKeys;
+    this.buster = config.buster;
+    this.busterFetchFn = config.busterFetchFn;
+
+    this.initInvalidator();
   }
 
-  private setCurrentSeshSoftCacheBuster = (softCacheBuster: string): void => {
-    this.currentSeshSoftCacheBuster = softCacheBuster;
-  };
+  static async create(
+    config: Pick<
+      typeof PersistentQueryClient.prototype,
+      "id" | "includeKeys" | "excludeKeys" | "busterFetchFn"
+    >,
+  ) {
+    await waitUntil({
+      condition: QueryCacheService.Instance.isInitialized,
+      timeout: 30000,
+      interval: 50,
+    });
 
-  private shouldDehydrateQuery = (query: Query): boolean => {
-    const queryKey = query.queryKey;
+    const buster =
+      (await storage.getItem<string>(`local:queryCacheBuster:${config.id}`)) ??
+      APP_CONFIG.VERSION;
 
-    if (this.excludeKeys.some((exclude) => queryKey.includes(exclude))) {
-      return false;
-    }
+    return new PersistentQueryClient({
+      ...config,
+      buster,
+    });
+  }
 
-    const shouldPersist = this.includeKeys.some(
-      (query) =>
-        Array.isArray(queryKey) &&
-        isSubArray(query as unknown as unknown[], queryKey as unknown[]),
-    );
-
-    return shouldPersist;
-  };
-
-  private debouncedPersistQueryClient = debounce(async () => {
-    const softCacheBuster = await storage.getItem<string>(
-      this.softCacheBusterKey,
-    );
-
-    if (
-      this.currentSeshSoftCacheBuster !== undefined &&
-      this.currentSeshSoftCacheBuster !== softCacheBuster
-    ) {
+  persistQueryClient = async (): Promise<void> => {
+    if (this.sessionInvalidated) {
       console.log(
-        `[CPLX:PersistentQueryClient:${this.idbKey}] Cache was invalidated in this session. Won't persist.`,
+        `[CPLX:PersistentQueryClient:${this.id}] Session invalidated, skipping persist`,
       );
       return;
     }
 
-    if (this.currentSeshSoftCacheBuster === undefined) {
-      this.currentSeshSoftCacheBuster = softCacheBuster;
+    try {
+      await debouncedPersistQueryClient({
+        queryClient: this.queryClient,
+        persister: this.persister,
+        buster: this.buster,
+        excludeKeys: this.excludeKeys,
+        includeKeys: this.includeKeys,
+      });
+    } catch (error) {
+      console.error(
+        `[CPLX:PersistentQueryClient:${this.id}] Error persisting Query Client:`,
+        error,
+      );
     }
+  };
 
-    void persistQueryClientSave({
-      queryClient: this.queryClient,
-      persister: this.persister,
-      buster: APP_CONFIG.VERSION,
-      dehydrateOptions: {
-        shouldDehydrateQuery: this.shouldDehydrateQuery,
-      },
-    });
-  }, 300);
-
-  persistQueryClient = async (): Promise<void> => {
-    void this.debouncedPersistQueryClient();
+  restoreQueryClient = async () => {
+    try {
+      await persistQueryClientRestore({
+        queryClient: this.queryClient,
+        persister: this.persister,
+        buster: this.buster,
+        maxAge: 1000 * 60 * 60 * 24,
+      });
+    } catch (error) {
+      console.error(
+        `[CPLX:PersistentQueryClient:${this.id}] Error restoring Query Client:`,
+        error,
+      );
+    }
   };
 
   wipeQueryCache = async (): Promise<void> => {
+    void storage.removeItem(`local:queryCacheBuster:${this.id}`);
     void this.persister.removeClient();
   };
+
+  private initInvalidator() {
+    const handler = debounce(
+      async () => {
+        if (this.sessionInvalidated) return;
+
+        if (document.visibilityState === "visible") {
+          const [remoteBuster] = await errorWrapper(this.busterFetchFn)();
+
+          if (remoteBuster != null && remoteBuster !== this.buster) {
+            console.log(
+              `[CPLX:PersistentQueryClient:${this.id}] Invalidate query cache`,
+            );
+
+            this.sessionInvalidated = true;
+            this.buster = remoteBuster;
+            void this.wipeQueryCache();
+            void storage.setItem(
+              `local:queryCacheBuster:${this.id}`,
+              remoteBuster,
+            );
+          }
+        }
+      },
+      5000,
+      {
+        leading: true,
+        trailing: true,
+        maxWait: 5000,
+      },
+    );
+
+    document.addEventListener("visibilitychange", handler);
+    void handler();
+  }
 }

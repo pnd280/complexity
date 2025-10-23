@@ -28,7 +28,7 @@ export const CplxApiOfflineService: typeof CplxApiOnlineService = {
     throw new Error("Not available in offline mode");
   },
 
-  fetchSoftCacheBuster: (): Promise<string> => {
+  fetchQueryCacheBuster: (): Promise<string> => {
     throw new Error("Not available in offline mode");
   },
 

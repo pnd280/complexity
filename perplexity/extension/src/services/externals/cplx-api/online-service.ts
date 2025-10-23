@@ -72,7 +72,7 @@ export const CplxApiOnlineService = {
     });
   },
 
-  fetchSoftCacheBuster: async (): Promise<string> => {
+  fetchQueryCacheBuster: async (): Promise<string> => {
     return fetchTextResource(
       getUrl({
         path: "/cache-buster",
