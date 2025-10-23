@@ -16,7 +16,7 @@
   "devDependencies": {
     "@manypkg/cli": "^0.25.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.5",
+    "lint-staged": "^16.2.6",
     "prettier": "catalog:lint",
     "turbo": "^2.5.8",
     "typescript": "catalog:types"
