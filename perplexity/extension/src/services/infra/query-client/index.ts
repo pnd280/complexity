@@ -54,9 +54,15 @@ export default class PersistentQueryClient {
       interval: 50,
     });
 
-    const buster =
-      (await storage.getItem<string>(`local:queryCacheBuster:${config.id}`)) ??
-      APP_CONFIG.VERSION;
+    let buster = await storage.getItem<string>(
+      `local:queryCacheBuster:${config.id}`,
+    );
+
+    if (buster == null) {
+      const [remoteBuster] = await errorWrapper(() => config.busterFetchFn())();
+      buster = remoteBuster ?? APP_CONFIG.VERSION;
+      void storage.setItem(`local:queryCacheBuster:${config.id}`, buster);
+    }
 
     return new PersistentQueryClient({
       ...config,
@@ -110,7 +116,7 @@ export default class PersistentQueryClient {
   };
 
   private initInvalidator() {
-    const handler = debounce(
+    const remoteInvalidatorHandler = debounce(
       async () => {
         if (this.sessionInvalidated) return;
 
@@ -119,7 +125,7 @@ export default class PersistentQueryClient {
 
           if (remoteBuster != null && remoteBuster !== this.buster) {
             console.log(
-              `[CPLX:PersistentQueryClient:${this.id}] Invalidate query cache`,
+              `[CPLX:PersistentQueryClient:${this.id}] Invalidate query cache. Reason: remote buster changed.`,
             );
 
             this.sessionInvalidated = true;
@@ -140,7 +146,17 @@ export default class PersistentQueryClient {
       },
     );
 
-    document.addEventListener("visibilitychange", handler);
-    void handler();
+    document.addEventListener("visibilitychange", remoteInvalidatorHandler);
+    void remoteInvalidatorHandler();
+
+    storage.watch(`local:queryCacheBuster:${this.id}`, (value) => {
+      if (this.sessionInvalidated || value != null) return;
+
+      console.log(
+        `[CPLX:PersistentQueryClient:${this.id}] Invalidate query cache. Reason: cache wiped.`,
+      );
+
+      this.sessionInvalidated = true;
+    });
   }
 }

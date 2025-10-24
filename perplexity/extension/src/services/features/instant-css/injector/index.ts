@@ -1,3 +1,5 @@
+import { MatchPattern } from "@webext-core/match-patterns";
+
 import { APP_CONFIG } from "@/app.config";
 import { instantCssCoordinator } from "@/services/features/instant-css/coordinator";
 import type {
@@ -48,6 +50,13 @@ export class InstantCssInjectorServiceImpl {
     if (details.frameId !== 0) return;
 
     if (!details.url) return;
+
+    if (
+      APP_CONFIG["perplexity-ai"].globalExcludeMatches.some((match) =>
+        new MatchPattern(match).includes(details.url),
+      )
+    )
+      return;
 
     await InstantCssInjectorServiceImpl.injectCssToTab(details.tabId);
   };

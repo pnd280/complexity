@@ -38,17 +38,17 @@ export async function fetchResourceWithSchema<T>({
 
 export function getUrl({
   path,
-  passiveCacheBusterInterval,
+  passiveCacheBusterIntervalMinute,
 }: {
   path: string;
-  passiveCacheBusterInterval?: number;
+  passiveCacheBusterIntervalMinute?: number;
 }): URL {
   const url = new URL(APP_CONFIG.CPLX_CDN_URL!);
   url.pathname = path;
   url.searchParams.set(
     "t",
     getTParam({
-      interval: passiveCacheBusterInterval ?? 0,
+      interval: passiveCacheBusterIntervalMinute ?? 0,
     }).toString(),
   );
   return url;

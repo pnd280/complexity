@@ -17,9 +17,5 @@ export const persistentQueryClient = await (async () => {
 
   await persistentQueryClient.restoreQueryClient();
 
-  void persistentQueryClient.queryClient.ensureQueryData(
-    cplxApiQueries.psa.detail(),
-  );
-
   return persistentQueryClient;
 })();

@@ -19,7 +19,6 @@ export const CplxApiOnlineService = {
     const resp = await fetch(
       getUrl({
         path: `/changelogs/${targetVersion}.md`,
-        passiveCacheBusterInterval: 1000 * 60 * 30,
       }).toString(),
     );
 
@@ -76,6 +75,7 @@ export const CplxApiOnlineService = {
     return fetchTextResource(
       getUrl({
         path: "/cache-buster",
+        passiveCacheBusterIntervalMinute: APP_CONFIG.IS_DEV ? undefined : 1,
       }).toString(),
     );
   },
