@@ -17,7 +17,9 @@ export function useFilteredPlugins({
   excludeTags,
   categories,
 }: UseFilteredPluginsParams) {
-  const filteredPlugins = useMemo(() => {
+  "use memo";
+
+  const filteredPlugins = (() => {
     return Object.values(PluginManifestsRegistry.meta)
       .filter((plugin) => {
         const matchesSearch = (plugin.title + plugin.description)
@@ -50,7 +52,7 @@ export function useFilteredPlugins({
         );
       })
       .map((plugin) => plugin.id);
-  }, [excludeTags, searchTerm, selectedTags, categories]);
+  })();
 
   return filteredPlugins;
 }

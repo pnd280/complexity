@@ -11,7 +11,7 @@ type IsMobileStore = {
 const useIsMobileStore = createWithEqualityFn<IsMobileStore>()(
   subscribeWithSelector(
     immer(
-      (set): IsMobileStore => ({
+      (): IsMobileStore => ({
         isMobile:
           typeof window !== "undefined"
             ? window.innerWidth < MOBILE_BREAKPOINT

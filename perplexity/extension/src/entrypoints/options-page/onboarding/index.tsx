@@ -26,8 +26,10 @@ type StepComponentProps = {
   hasCompletedOnboarding: boolean;
 };
 
-const getSteps = ({ hasCompletedOnboarding }: StepComponentProps) =>
-  (
+const getSteps = ({ hasCompletedOnboarding }: StepComponentProps) => {
+  "use memo";
+
+  return (
     [
       {
         title: "Introduction",
@@ -101,6 +103,7 @@ const getSteps = ({ hasCompletedOnboarding }: StepComponentProps) =>
 
     return true;
   });
+};
 
 export function Onboarding() {
   const navigate = useNavigate();
@@ -111,10 +114,7 @@ export function Onboarding() {
     false,
   );
 
-  const steps = useMemo(
-    () => getSteps({ hasCompletedOnboarding }),
-    [hasCompletedOnboarding],
-  );
+  const steps = getSteps({ hasCompletedOnboarding });
 
   const handleComplete = () => {
     void setHasCompletedOnboarding(true);

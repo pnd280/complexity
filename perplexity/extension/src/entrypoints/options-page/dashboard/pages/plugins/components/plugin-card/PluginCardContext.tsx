@@ -47,6 +47,8 @@ export function PluginCardProvider({
   children: ReactNode;
   pluginId: PluginId;
 }) {
+  "use memo";
+
   const { pluginInfo, state, actions } = usePluginCard(pluginId);
 
   const { pluginsStates } = usePluginsStates();
@@ -58,31 +60,19 @@ export function PluginCardProvider({
   const isEnabled =
     useExtensionSettings().settings?.plugins[pluginId].enabled ?? false;
 
-  const value = useMemo(
-    () =>
-      ({
-        pluginId,
-        pluginInfo,
-        state: {
-          ...state,
-          isEnabled,
-          isLockedDown,
-          lockdownText,
-          lockdownSubText,
-        },
-        actions,
-      }) satisfies PluginCardContextType,
-    [
+  const value = (() =>
+    ({
       pluginId,
       pluginInfo,
-      state,
-      isEnabled,
-      isLockedDown,
-      lockdownText,
-      lockdownSubText,
+      state: {
+        ...state,
+        isEnabled,
+        isLockedDown,
+        lockdownText,
+        lockdownSubText,
+      },
       actions,
-    ],
-  );
+    }) satisfies PluginCardContextType)();
 
   return <PluginCardContext value={value}>{children}</PluginCardContext>;
 }

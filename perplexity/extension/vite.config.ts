@@ -43,7 +43,18 @@ export default defineConfig(() => ({
         APP_CONFIG.BROWSER === "chrome" ? chromeManifest : firefoxManifest,
       browser: APP_CONFIG.BROWSER,
     }),
-    react(),
+    react({
+      babel: {
+        plugins: [
+          [
+            "babel-plugin-react-compiler",
+            {
+              compilationMode: "annotation",
+            },
+          ],
+        ],
+      },
+    }),
     tailwindcss(),
     vitePluginTailwindCustomPrefixes(),
     Unimport.vite(unimportConfig),

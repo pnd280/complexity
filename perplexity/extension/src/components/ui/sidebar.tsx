@@ -119,7 +119,7 @@ export function SidebarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          "x:group/sidebar-wrapper x:hidden x:min-h-svh x:w-full x:has-[[data-variant=inset]]:bg-secondary x:md:flex",
+          "x:group/sidebar-wrapper x:hidden x:min-h-svh x:w-full x:has-data-[variant=inset]:bg-secondary x:md:flex",
           className,
         )}
         {...props}
@@ -199,7 +199,7 @@ export function Sidebar({
           "x:group-data-[collapsible=offcanvas]:w-0",
           "x:group-data-[side=right]:rotate-180",
           variant === "floating" || variant === "inset"
-            ? "x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
+            ? "x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
             : "x:group-data-[collapsible=icon]:w-(--sidebar-width-icon)",
         )}
       />
@@ -211,7 +211,7 @@ export function Sidebar({
             : "x:right-0 x:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
           // Adjust the padding for floating and inset variants.
           variant === "floating" || variant === "inset"
-            ? "x:p-2 x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
+            ? "x:p-2 x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
             : "x:group-data-[collapsible=icon]:w-(--sidebar-width-icon) x:group-data-[side=left]:border-r x:group-data-[side=right]:border-l",
           className,
         )}
@@ -262,7 +262,7 @@ export function SidebarRail({
       title="Toggle Sidebar"
       className={cn(
         "sm:flex x:absolute x:inset-y-0 x:z-20 x:hidden x:w-4 x:-translate-x-1/2 x:transition-all x:ease-linear x:group-data-[side=left]:-right-4 x:group-data-[side=right]:left-0 x:after:absolute x:after:inset-y-0 x:after:left-1/2 x:after:w-[2px] x:hover:after:bg-muted",
-        "x:[[data-side=left]_&]:cursor-w-resize x:[[data-side=right]_&]:cursor-e-resize",
+        "x:in-data-[side=left]:cursor-w-resize x:in-data-[side=right]:cursor-e-resize",
         "x:[[data-side=left][data-state=collapsed]_&]:cursor-e-resize x:[[data-side=right][data-state=collapsed]_&]:cursor-w-resize",
         "x:group-data-[collapsible=offcanvas]:translate-x-0 x:group-data-[collapsible=offcanvas]:after:left-full x:group-data-[collapsible=offcanvas]:hover:bg-secondary",
         "x:[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
@@ -460,7 +460,7 @@ export function SidebarMenuItem({
 }
 
 const sidebarMenuButtonVariants = cva(
-  "x:peer/menu-button x:flex x:w-full x:items-center x:gap-2 x:overflow-hidden x:rounded-lg x:text-left x:text-sm x:font-medium x:text-foreground x:ring-primary x:transition-all x:outline-none x:group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 x:group-data-[collapsible=icon]:size-8! x:group-data-[collapsible=icon]:p-2! x:hover:bg-secondary x:focus-visible:ring-2 x:active:bg-secondary x:active:text-foreground x:disabled:pointer-events-none x:disabled:opacity-50 x:aria-disabled:pointer-events-none x:aria-disabled:opacity-50 x:data-[state=open]:hover:bg-secondary x:data-[state=open]:hover:text-foreground x:[&>span:last-child]:truncate x:[&>svg]:size-4 x:[&>svg]:shrink-0",
+  "x:peer/menu-button x:flex x:w-full x:items-center x:gap-2 x:overflow-hidden x:rounded-lg x:text-left x:text-sm x:font-medium x:text-foreground x:ring-primary x:transition-all x:outline-none x:group-has-data-[sidebar=menu-action]/menu-item:pr-8 x:group-data-[collapsible=icon]:size-8! x:group-data-[collapsible=icon]:p-2! x:hover:bg-secondary x:focus-visible:ring-2 x:active:bg-secondary x:active:text-foreground x:disabled:pointer-events-none x:disabled:opacity-50 x:aria-disabled:pointer-events-none x:aria-disabled:opacity-50 x:data-[state=open]:hover:bg-secondary x:data-[state=open]:hover:text-foreground x:[&>span:last-child]:truncate x:[&>svg]:size-4 x:[&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -564,6 +564,7 @@ export function SidebarMenuSkeleton({
 }) {
   // Random width between 50 to 90%.
   const width = useMemo(() => {
+    // eslint-disable-next-line react-hooks/purity
     return `${Math.floor(Math.random() * 40) + 50}%`;
   }, []);
 

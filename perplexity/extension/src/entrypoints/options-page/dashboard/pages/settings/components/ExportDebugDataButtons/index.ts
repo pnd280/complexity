@@ -1,5 +1,5 @@
-export { default } from "./ExportDebugDataButtons";
+export { default } from "@/entrypoints/options-page/dashboard/pages/settings/components/ExportDebugDataButtons/ExportDebugDataButtons";
 export type {
   ExportDialogState,
   ExportMetadata,
-} from "./hooks/useExportDebugData";
+} from "@/entrypoints/options-page/dashboard/pages/settings/components/ExportDebugDataButtons/hooks/useExportDebugData";

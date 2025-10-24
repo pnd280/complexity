@@ -141,7 +141,7 @@ export function ThemeForm() {
           control={form.control}
           disabled={isPending}
           name="customCss"
-          render={({ field, fieldState }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel className="x:text-lg">Advanced: CSS</FormLabel>
               <FormControl>

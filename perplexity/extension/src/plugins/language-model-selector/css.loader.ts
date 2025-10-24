@@ -1,5 +1,5 @@
 import { globalCssStore } from "@/plugins/__async-deps__/global-stores/global-css-store";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import { hideNativeModelSelectorCssResourceConfig } from "@/plugins/language-model-selector/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 

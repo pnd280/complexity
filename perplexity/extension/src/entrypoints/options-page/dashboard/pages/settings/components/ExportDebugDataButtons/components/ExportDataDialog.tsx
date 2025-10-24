@@ -9,10 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import type { ExportDialogState } from "@/entrypoints/options-page/dashboard/pages/settings/components/ExportDebugDataButtons/hooks/useExportDebugData";
 
 import TablerLoaderCircle from "~icons/tabler/loader-2";
-
-import type { ExportDialogState } from "../hooks/useExportDebugData";
 
 type ExportDataDialogProps = {
   dialogState: ExportDialogState;

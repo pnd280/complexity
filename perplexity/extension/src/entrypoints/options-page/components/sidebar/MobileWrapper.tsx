@@ -12,15 +12,19 @@ export default function MobileSidebar({
   children: React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
   const navItems = useOptionsPageSidebarStore((store) => store.navItems);
 
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
+  const location = useLocation();
+  const [openAtPath, setOpenAtPath] = useState<string | null>(null);
 
   return (
-    <Sheet open={isOpen} onOpenChange={({ open }) => setIsOpen(open)}>
+    <Sheet
+      open={isOpen && openAtPath === location.pathname}
+      onOpenChange={({ open }) => {
+        if (open) setOpenAtPath(location.pathname);
+        setIsOpen(open);
+      }}
+    >
       <div className="x:fixed x:top-0 x:left-0 x:z-10 x:flex x:size-max x:w-full x:cursor-pointer x:items-start x:gap-4 x:bg-background x:p-4">
         <SheetTrigger asChild>
           <LuPanelLeftOpen className="x:my-auto x:size-5.5 x:text-muted-foreground" />

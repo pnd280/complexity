@@ -6,7 +6,7 @@ import useRightToolbarPortalContainer from "@/plugins/__ui-groups__/elements/que
 
 export default function FollowUpQueryBoxWrapper() {
   const { ll: llPortalContainer } = useLeftToolbarPortalContainer();
-  const { rl: rlPortalContainer } = useRightToolbarPortalContainer();
+  const { rl: _rlPortalContainer } = useRightToolbarPortalContainer();
 
   return (
     <ScopedQueryBoxContextProvider storeValue={{ type: "follow-up" }}>

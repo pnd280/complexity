@@ -1,7 +1,7 @@
 import { QueryObserver } from "@tanstack/react-query";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import { pluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
 import { imageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
 import { isImageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";

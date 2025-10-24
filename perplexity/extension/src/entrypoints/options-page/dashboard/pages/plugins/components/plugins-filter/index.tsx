@@ -14,12 +14,14 @@ import LuSettings2 from "~icons/lucide/settings-2";
 import TablerInfoCircle from "~icons/tabler/info-circle";
 
 export default function PluginsFilter() {
+  "use memo";
+
   const { isMobile } = useIsMobileStore();
 
   const [open, setOpen] = useState(false);
   const { filters } = usePluginFilters();
 
-  const activeFiltersCount = useMemo(() => {
+  const activeFiltersCount = (() => {
     const { tags, excludeTags, categories, excludeCategories } = filters;
     return (
       tags.length +
@@ -27,7 +29,7 @@ export default function PluginsFilter() {
       categories.length +
       excludeCategories.length
     );
-  }, [filters]);
+  })();
 
   const WrapperComp = isMobile ? Sheet : Popover;
   const TriggerComp = isMobile ? SheetTrigger : PopoverTrigger;

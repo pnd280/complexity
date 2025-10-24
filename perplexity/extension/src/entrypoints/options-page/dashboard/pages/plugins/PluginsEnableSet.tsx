@@ -84,22 +84,21 @@ function PresetLabel({
 }
 
 export default function PluginsEnableSet() {
+  "use memo";
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { settings, mutation } = useExtensionSettings();
-  const isDefaultSettings = useMemo(
-    () =>
-      isEqual(
-        settings?.plugins,
-        PluginManifestsRegistry.settingsFallbackValues,
-      ),
-    [settings],
-  );
+  const isDefaultSettings = (() =>
+    isEqual(
+      settings?.plugins,
+      PluginManifestsRegistry.settingsFallbackValues,
+    ))();
   const [open, setOpen] = useState(
     searchParams.get("from") === "onboarding" && isDefaultSettings,
   );
   const [selectedPreset, setSelectedPreset] = useState<string>("essentials");
-  const applyPreset = useCallback(() => {
+  const applyPreset = () => {
     const preset = presets.find((p) => p.value === selectedPreset);
     if (!preset) return;
 
@@ -112,7 +111,7 @@ export default function PluginsEnableSet() {
     });
 
     setOpen(false);
-  }, [mutation, selectedPreset]);
+  };
 
   return (
     <Dialog

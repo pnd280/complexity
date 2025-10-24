@@ -1,5 +1,4 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { getCookie, setCookie } from "@/utils/dom-utils/generics";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {

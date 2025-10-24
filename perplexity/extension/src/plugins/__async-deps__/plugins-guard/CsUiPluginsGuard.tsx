@@ -60,7 +60,7 @@ function CsUiPluginsGuardError({
     [dependentPluginIds, location, customMessage, errorMessage],
   );
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean | null>(null);
 
   const handleClose = useCallback(() => {
     setOpen(false);
@@ -71,16 +71,14 @@ function CsUiPluginsGuardError({
   );
 
   useEffect(() => {
-    if (shouldShowDialog) {
-      setOpen(true);
-    }
     return () => {
       errorDialogManager.unregisterCallback(componentKey, handleClose);
     };
-  }, [componentKey, shouldShowDialog, handleClose]);
+  }, [componentKey, handleClose]);
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
+      setOpen(false);
       errorDialogManager.clearError(componentKey);
     } else {
       setOpen(true);
@@ -102,7 +100,7 @@ function CsUiPluginsGuardError({
   return (
     <Dialog
       closeOnInteractOutside={false}
-      open={open}
+      open={open ?? shouldShowDialog}
       onOpenChange={({ open: newOpen }: { open: boolean }) =>
         handleOpenChange(newOpen)
       }
@@ -175,20 +173,12 @@ function useGuardConditions(props: CsUiPluginsGuardProps) {
   };
 }
 
-export default function CsUiPluginsGuard(
+function CsUiPluginsGuardInner(
   props: CsUiPluginsGuardProps,
 ): React.ReactNode | null {
   const [retryCount, setRetryCount] = useState(0);
   const [error, setError] = useState<Error | null>(null);
-  const [key, setKey] = useState(0);
   const errorRef = useRef<Error | null>(null);
-
-  useEffect(() => {
-    setRetryCount(0);
-    setError(null);
-    setKey(0);
-    errorRef.current = null;
-  }, [props.children]);
 
   useEffect(() => {
     if (errorRef.current && retryCount < 3) {
@@ -206,8 +196,6 @@ export default function CsUiPluginsGuard(
       console.error(
         `[CPLX] Plugin error, retry attempt ${retryCount + 1}/3: ${currentError.message}`,
       );
-
-      setKey((prevKey) => prevKey + 1);
 
       errorRef.current = null;
     }
@@ -262,7 +250,7 @@ export default function CsUiPluginsGuard(
 
   return (
     <ErrorBoundary
-      key={key}
+      key={retryCount}
       fallback={({ error: boundaryError }: { error: Error }) => {
         if (!errorRef.current) {
           errorRef.current = boundaryError;
@@ -290,6 +278,12 @@ export default function CsUiPluginsGuard(
       <Suspense fallback={props.suspenseFallback}>{props.children}</Suspense>
     </ErrorBoundary>
   );
+}
+
+export default function CsUiPluginsGuard(
+  props: CsUiPluginsGuardProps,
+): React.ReactNode | null {
+  return <CsUiPluginsGuardInner {...props} />;
 }
 
 function RenderError({

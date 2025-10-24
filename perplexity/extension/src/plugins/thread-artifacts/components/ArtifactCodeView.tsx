@@ -32,14 +32,6 @@ export default function ArtifactCodeView() {
     };
   }, []);
 
-  const preTag = useMemo(() => {
-    const PreComponent = ({ children }: { children: ReactNode }) => (
-      <pre className="x:px-4 x:py-2">{children}</pre>
-    );
-    PreComponent.displayName = "PreTag";
-    return PreComponent;
-  }, []);
-
   return (
     <div
       id="artifact-code-view"
@@ -56,10 +48,14 @@ export default function ArtifactCodeView() {
         colorScheme={colorScheme === "light" ? "light" : "dark"}
         language={language}
         lineNumberStyle={lineNumberStyle}
-        PreTag={preTag}
+        PreTag={PreTag}
       >
         {codeString}
       </CodeHighlighter>
     </div>
   );
+}
+
+function PreTag({ children }: { children: ReactNode }) {
+  return <pre className="x:px-4 x:py-2">{children}</pre>;
 }

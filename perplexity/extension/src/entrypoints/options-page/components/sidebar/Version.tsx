@@ -3,11 +3,13 @@ import { toast } from "@/components/ui/use-toast";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export default function Version() {
+  "use memo";
+
   const { mutation, settings } = useExtensionSettings();
   const [clicks, setClicks] = useState(0);
   const clickResetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleClick = useCallback(() => {
+  const handleClick = () => {
     if (clickResetTimeoutRef.current) {
       clearTimeout(clickResetTimeoutRef.current);
     }
@@ -37,7 +39,7 @@ export default function Version() {
     clickResetTimeoutRef.current = setTimeout(() => {
       setClicks(0);
     }, 1000);
-  }, [clicks, settings?.devMode, mutation]);
+  };
 
   return (
     <div

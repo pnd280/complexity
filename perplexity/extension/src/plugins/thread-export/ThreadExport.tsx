@@ -1,6 +1,6 @@
 import { Portal } from "@/components/ui/portal";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import ExportMenu from "@/plugins/thread-export/ExportMenu";
 import { hideOpenInAppBtnCssResourceConfig } from "@/plugins/thread-export/index.remote-resources";
 import useCreatePortalContainer from "@/plugins/thread-export/useCreatePortalContainer";

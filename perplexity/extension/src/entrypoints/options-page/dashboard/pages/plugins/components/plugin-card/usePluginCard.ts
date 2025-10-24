@@ -9,6 +9,8 @@ import { hasPermissionsSync } from "@/services/infra/extension-api-wrappers/exte
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export function usePluginCard(pluginId: PluginId) {
+  "use memo";
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { settings, mutation } = useExtensionSettings();
@@ -23,7 +25,7 @@ export function usePluginCard(pluginId: PluginId) {
     extensionPermissions,
   } = PluginManifestsRegistry.meta[pluginId];
 
-  const hasAllRequiredPermissions = useMemo(() => {
+  const hasAllRequiredPermissions = (() => {
     const grantedPermissions = permissions?.permissions ?? [];
 
     const requiredPermissions = extensionPermissions?.requiredPermissions;
@@ -36,13 +38,13 @@ export function usePluginCard(pluginId: PluginId) {
         requiredPermissions: [permission],
       }),
     );
-  }, [permissions, extensionPermissions]);
+  })();
 
-  const dialogContent = useMemo(() => PluginSettingsUis[pluginId], [pluginId]);
+  const dialogContent = PluginSettingsUis[pluginId];
 
   const { pluginsStates, isLoading } = usePluginsStates();
 
-  const areAllDependentPluginsEnabled = useMemo(() => {
+  const areAllDependentPluginsEnabled = (() => {
     const allDependencies =
       PluginManifestsRegistry.getAllPluginDependencies(pluginId);
 
@@ -54,9 +56,9 @@ export function usePluginCard(pluginId: PluginId) {
         !pluginsStates[dependentPluginId].isOnMaintenance &&
         !pluginsStates[dependentPluginId].isOutdated,
     );
-  }, [pluginId, settings, pluginsStates]);
+  })();
 
-  const navigateToPluginDetails = useCallback(() => {
+  const navigateToPluginDetails = () => {
     void navigate(
       `/plugins/${uiRouteSegment}?${new URLSearchParams(searchParams)}`,
       {
@@ -65,16 +67,13 @@ export function usePluginCard(pluginId: PluginId) {
         },
       },
     );
-  }, [navigate, searchParams, uiRouteSegment]);
+  };
 
-  const togglePlugin = useCallback(
-    ({ checked }: { checked: boolean }) => {
-      mutation.mutate((draft) => {
-        draft.plugins[pluginId].enabled = checked;
-      });
-    },
-    [mutation, pluginId],
-  );
+  const togglePlugin = ({ checked }: { checked: boolean }) => {
+    mutation.mutate((draft) => {
+      draft.plugins[pluginId].enabled = checked;
+    });
+  };
 
   return {
     pluginInfo: {

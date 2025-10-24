@@ -52,8 +52,6 @@ export const createPagesStackSlice: BoundStateCreator<PagesStackSlice> = (
 
     const lastPage = currentStack[currentStack.length - 1];
 
-    const secondLastPage = currentStack[currentStack.length - 2];
-
     set({
       pageStack: currentStack.slice(0, -1),
     });

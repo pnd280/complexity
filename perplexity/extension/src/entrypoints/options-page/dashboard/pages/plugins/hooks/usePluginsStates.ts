@@ -9,9 +9,10 @@ import {
   updatePluginStatesWithFeatureCompat,
 } from "@/plugins/__async-deps__/plugins-states/utils";
 import { isInContentScript } from "@/utils/misc/utils";
-import { invariant } from "@/utils/misc/utils";
 
 export default function usePluginsStates() {
+  "use memo";
+
   invariant(
     !isInContentScript(),
     "usePluginsStates can not be used in content script",
@@ -26,18 +27,15 @@ export default function usePluginsStates() {
   const { latestVersion, isLoading: isLoadingLatestVersion } =
     useExtensionUpdate();
 
-  const pluginsStates = useMemo(
-    () =>
-      updatePluginStatesWithFeatureCompat({
-        pluginsStates: initializePluginStates(),
-        featureCompat: APP_CONFIG.IS_DEV
-          ? featureCompatResourceConfig.fallback
-          : featureCompat,
-        currentVersion: APP_CONFIG.VERSION,
-        latestAvailableVersion: latestVersion,
-      }),
-    [featureCompat, latestVersion],
-  );
+  const pluginsStates = (() =>
+    updatePluginStatesWithFeatureCompat({
+      pluginsStates: initializePluginStates(),
+      featureCompat: APP_CONFIG.IS_DEV
+        ? featureCompatResourceConfig.fallback
+        : featureCompat,
+      currentVersion: APP_CONFIG.VERSION,
+      latestAvailableVersion: latestVersion,
+    }))();
 
   const isLoading = isFetchingFeatureCompat || isLoadingLatestVersion;
 

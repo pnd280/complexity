@@ -19,6 +19,8 @@ import { getSelectItems } from "@/plugins/language-model-selector/utils";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function LanguageModelSelector() {
+  "use memo";
+
   const { isMobile } = useIsMobileStore();
   const { selectedLanguageModel, setSelectedLanguageModel } =
     useBetterLanguageModelSelectorStore((store) => ({
@@ -30,18 +32,6 @@ export function LanguageModelSelector() {
   );
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectItems = useMemo(getSelectItems, []);
-
-  const listCollection = useMemo(
-    () =>
-      createListCollection({
-        items: selectItems,
-        itemToString: (item) => item.label,
-        itemToValue: (item) => item.id,
-      }),
-    [selectItems],
-  );
-
   useRegisterGlobalCss();
 
   const isCometAssistant =
@@ -52,7 +42,11 @@ export function LanguageModelSelector() {
       lazyMount
       unmountOnExit
       portal={false}
-      collection={listCollection}
+      collection={createListCollection({
+        items: getSelectItems(),
+        itemToString: (item) => item.label,
+        itemToValue: (item) => item.id,
+      })}
       data-testid={
         DomSelectorsService.Root.testIds.QUERY_BOX.LANGUAGE_MODEL_SELECTOR
       }

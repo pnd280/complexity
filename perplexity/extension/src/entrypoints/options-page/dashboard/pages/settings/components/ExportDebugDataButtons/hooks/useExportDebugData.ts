@@ -1,5 +1,4 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
 
 import { APP_CONFIG } from "@/app.config";
 import { getPlatform } from "@/hooks/usePlatformDetection";
@@ -21,6 +20,8 @@ export type ExportDialogState = {
 };
 
 export function useExportDebugData() {
+  "use memo";
+
   const queryClient = useQueryClient();
 
   const { data: permissions, handleRevokePermission } =
@@ -32,16 +33,16 @@ export function useExportDebugData() {
     metadata: null,
   });
 
-  const getExportMetadata = useCallback((): ExportMetadata => {
+  const getExportMetadata = (): ExportMetadata => {
     return {
       cplxVersion: APP_CONFIG.VERSION,
       platform: getPlatform(),
       browser: APP_CONFIG.BROWSER,
       ua: navigator.userAgent,
     };
-  }, []);
+  };
 
-  const buildExportData = useCallback(async (): Promise<string> => {
+  const buildExportData = async (): Promise<string> => {
     await sleep(300);
     return JSON.stringify(
       {
@@ -67,34 +68,31 @@ export function useExportDebugData() {
       null,
       2,
     );
-  }, [permissions?.permissions]);
+  };
 
-  const openDialog = useCallback(
-    (action: "copy" | "save") => {
-      setDialogState({
-        isOpen: true,
-        action,
-        metadata: getExportMetadata(),
-      });
-    },
-    [getExportMetadata],
-  );
+  const openDialog = (action: "copy" | "save") => {
+    setDialogState({
+      isOpen: true,
+      action,
+      metadata: getExportMetadata(),
+    });
+  };
 
-  const closeDialog = useCallback(() => {
+  const closeDialog = () => {
     setDialogState({
       isOpen: false,
       action: null,
       metadata: null,
     });
-  }, []);
+  };
 
-  const copyToClipboard = useCallback(async () => {
+  const copyToClipboard = async () => {
     const data = await buildExportData();
     await navigator.clipboard.writeText(data);
     closeDialog();
-  }, [buildExportData, closeDialog]);
+  };
 
-  const saveAsFile = useCallback(async () => {
+  const saveAsFile = async () => {
     try {
       const data = await buildExportData();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -117,17 +115,17 @@ export function useExportDebugData() {
         console.error("Failed to save file:", error);
       }
     }
-  }, [buildExportData, closeDialog]);
+  };
 
-  const handleConfirm = useCallback(async () => {
+  const handleConfirm = async () => {
     if (dialogState.action === "copy") {
       await copyToClipboard();
     } else if (dialogState.action === "save") {
       await saveAsFile();
     }
-  }, [dialogState.action, copyToClipboard, saveAsFile]);
+  };
 
-  const toggleManagementPermission = useCallback(async () => {
+  const toggleManagementPermission = async () => {
     const hasPermission = permissions?.permissions?.includes("management");
 
     if (hasPermission) {
@@ -142,7 +140,7 @@ export function useExportDebugData() {
         alert(`Error granting permissions: ${error}`);
       }
     }
-  }, [permissions?.permissions, handleRevokePermission, queryClient]);
+  };
 
   return {
     dialogState,

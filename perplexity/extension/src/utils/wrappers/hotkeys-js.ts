@@ -2,7 +2,7 @@ import hotkeys from "hotkeys-js";
 
 const hotkeysJs = hotkeys.noConflict();
 
-hotkeysJs.filter = (event: KeyboardEvent) => {
+hotkeysJs.filter = (_event: KeyboardEvent) => {
   return true;
 };
 

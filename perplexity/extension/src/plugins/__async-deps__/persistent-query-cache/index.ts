@@ -6,7 +6,13 @@ import PersistentQueryClient from "@/services/infra/query-client";
 export const persistentQueryClient = await (async () => {
   const persistentQueryClient = await PersistentQueryClient.create({
     id: "contentScript",
-    includeKeys: [cplxApiQueries.all()] as unknown as unknown[][],
+    includeKeys: [
+      cplxApiQueries.all(),
+      pplxApiQueries.spaces.all(),
+      pplxApiQueries.threads.infinite.all(),
+      pplxApiQueries.auth.all(),
+      pplxApiQueries.auth.orgStatus.all(),
+    ] as unknown as unknown[][],
     excludeKeys: [],
     busterFetchFn: CplxApiService.fetchQueryCacheBuster,
   });
@@ -41,6 +47,13 @@ export const persistentQueryClient = await (async () => {
 
   persistentQueryClient.queryClient.setQueryDefaults(
     pplxApiQueries.auth.all(),
+    {
+      staleTime: 5000,
+    },
+  );
+
+  persistentQueryClient.queryClient.setQueryDefaults(
+    pplxApiQueries.auth.orgStatus.all(),
     {
       staleTime: 5000,
     },

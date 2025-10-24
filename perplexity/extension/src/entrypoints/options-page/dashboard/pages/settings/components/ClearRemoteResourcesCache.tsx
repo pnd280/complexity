@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { persistentQueryClient } from "@/entrypoints/options-page/persistent-query-client";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
-import { persistentQueryClient as csPersistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient as csPersistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 
 export default function ClearRemoteResourcesCache() {
   const [buttonText, setButtonText] = useToggleButtonText({

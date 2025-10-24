@@ -9,11 +9,13 @@ import TablerCheck from "~icons/tabler/check";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function ExportDataButtons() {
+  "use memo";
+
   const [copyButtonText, toggleCopyButtonText] = useToggleButtonText({
     defaultText: "Copy",
   });
 
-  const getExportData = useCallback(async (): Promise<string> => {
+  const getExportData = async (): Promise<string> => {
     await sleep(300);
     return JSON.stringify(
       {
@@ -26,9 +28,9 @@ export default function ExportDataButtons() {
       null,
       2,
     );
-  }, []);
+  };
 
-  const handleCopy = useCallback(async () => {
+  const handleCopy = async () => {
     const settings = await getExportData();
     await navigator.clipboard.writeText(settings);
     toggleCopyButtonText(
@@ -37,9 +39,9 @@ export default function ExportDataButtons() {
         <span className="x:text-sm">Copied</span>
       </div>,
     );
-  }, [getExportData, toggleCopyButtonText]);
+  };
 
-  const handleSaveAsFile = useCallback(async () => {
+  const handleSaveAsFile = async () => {
     try {
       const settings = await getExportData();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,7 +63,7 @@ export default function ExportDataButtons() {
         console.error("Failed to save file:", error);
       }
     }
-  }, [getExportData]);
+  };
 
   return (
     <div className="x:flex x:gap-4">

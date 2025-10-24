@@ -14,7 +14,7 @@ export const createQueryBoxScopedStore = (
   createWithEqualityFn<ScopedQueryBoxStoreType>()(
     subscribeWithSelector(
       immer(
-        (set): ScopedQueryBoxStoreType => ({
+        (): ScopedQueryBoxStoreType => ({
           ...initialState,
         }),
       ),

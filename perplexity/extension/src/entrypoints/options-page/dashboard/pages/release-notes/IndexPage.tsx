@@ -16,26 +16,24 @@ export function IndexPage() {
     cplxApiQueries.changelog.listing.detail(),
   );
 
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (hasMore && loadMoreRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0]?.isIntersecting) {
-            void loadNextVersions();
-          }
-        },
-        { threshold: 0.1 },
-      );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          void loadNextVersions();
+        }
+      },
+      { threshold: 0.1 },
+    );
 
-      observerRef.current = observer;
+    if (loadMoreRef.current) {
       observer.observe(loadMoreRef.current);
-
-      return () => observer.disconnect();
     }
-  }, [hasMore, loadNextVersions]);
+
+    return () => observer.disconnect();
+  }, [hasMore, loadNextVersions, loadedVersions]);
 
   return (
     <div className="x:flex x:flex-col x:gap-8">
@@ -47,10 +45,7 @@ export function IndexPage() {
       </div>
 
       <div
-        className={cn(
-          "x:relative x:max-w-screen-xl x:pb-8",
-          PPLX_SCROLLBAR_CLASSES,
-        )}
+        className={cn("x:relative x:max-w-7xl x:pb-8", PPLX_SCROLLBAR_CLASSES)}
       >
         {loadedVersions.map((version, index) => {
           const changelogQuery = changelogQueries[index];
@@ -102,7 +97,7 @@ export function IndexPage() {
         {hasMore && (
           <div
             ref={loadMoreRef}
-            className="x:relative x:flex x:justify-center x:py-4"
+            className="x:relative x:mx-auto x:flex x:w-fit x:justify-center x:py-4"
           >
             <div className="x:absolute x:top-4 x:left-2 x:z-10 x:flex x:items-center x:justify-center x:rounded-full x:bg-background">
               <TablerLoaderCircle className="x:animate-spin x:text-muted-foreground" />

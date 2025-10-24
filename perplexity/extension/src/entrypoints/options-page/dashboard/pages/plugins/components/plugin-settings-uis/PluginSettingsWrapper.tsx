@@ -14,6 +14,8 @@ import useClearLocationState from "@/hooks/useClearLocationState";
 // import useClearSearchParams from "@/hooks/useClearSearchParams";
 
 export default function PluginSettingsWrapper() {
+  "use memo";
+
   useClearLocationState();
 
   const navigate = useNavigate();
@@ -21,13 +23,10 @@ export default function PluginSettingsWrapper() {
   const { pluginId: pluginRouteSegment } = useParams();
   const { pluginsStates } = usePluginsStates();
 
-  const plugin = useMemo(
-    () =>
-      Object.values(PluginManifestsRegistry.meta).find(
-        (p) => p.dashboardMeta.uiRouteSegment === pluginRouteSegment,
-      ),
-    [pluginRouteSegment],
-  );
+  const plugin = (() =>
+    Object.values(PluginManifestsRegistry.meta).find(
+      (p) => p.dashboardMeta.uiRouteSegment === pluginRouteSegment,
+    ))();
 
   useNavigateAwayOnInvalidRoute({ pluginId: plugin?.id });
 
@@ -76,6 +75,8 @@ function useNavigateAwayOnInvalidRoute({ pluginId }: { pluginId?: PluginId }) {
 }
 
 function PluginUnavailable({ onBackClick }: { onBackClick: () => void }) {
+  "use memo";
+
   return (
     <div className="x:flex x:h-full x:min-h-[500px] x:flex-col x:items-center x:justify-center x:gap-4 x:text-center x:md:text-left">
       This plugin is not available at the moment. Please check back later.

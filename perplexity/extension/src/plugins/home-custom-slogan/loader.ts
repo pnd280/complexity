@@ -1,5 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import { homeDomObserverStore } from "@/plugins/__core__/dom-observers/home/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";

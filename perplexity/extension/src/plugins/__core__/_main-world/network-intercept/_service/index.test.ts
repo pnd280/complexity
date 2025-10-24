@@ -129,14 +129,14 @@ describe("middlewareManager", () => {
       const order: number[] = [];
       const middleware1: Middleware = {
         id: "1",
-        middlewareFn: async ({ data }) => {
+        middlewareFn: async ({ data: _data }) => {
           order.push(1);
           return "test-data";
         },
       };
       const middleware2: Middleware = {
         id: "2",
-        middlewareFn: async ({ data }) => {
+        middlewareFn: async ({ data: _data }) => {
           order.push(2);
           return "test-data";
         },
@@ -164,7 +164,7 @@ describe("middlewareManager", () => {
       const order: number[] = [];
       const middleware1: Middleware = {
         id: "1",
-        middlewareFn: async ({ data, stopPropagation }) => {
+        middlewareFn: async ({ data: _data, stopPropagation }) => {
           order.push(1);
           stopPropagation();
           return "test-data";
@@ -172,7 +172,7 @@ describe("middlewareManager", () => {
       };
       const middleware2: Middleware = {
         id: "2",
-        middlewareFn: async ({ data }) => {
+        middlewareFn: async ({ data: _data }) => {
           order.push(2);
           return "test-data";
         },
@@ -226,7 +226,7 @@ describe("middlewareManager", () => {
     it("should allow middleware to remove itself", async () => {
       const middleware: Middleware = {
         id: "test",
-        middlewareFn: async ({ removeMiddleware, data }) => {
+        middlewareFn: async ({ removeMiddleware, data: _data }) => {
           removeMiddleware();
           return "test-data";
         },

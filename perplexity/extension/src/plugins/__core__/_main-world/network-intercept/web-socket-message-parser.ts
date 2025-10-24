@@ -31,7 +31,7 @@ export function parseWebSocketData<T = unknown>(
     return messageId != null
       ? { messageId, payload: payload as T }
       : { payload: payload as T };
-  } catch (error) {
+  } catch {
     return { payload: data as T };
   }
 }

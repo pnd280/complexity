@@ -1,5 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import {
   betterSidebarNormalizeCollapsedCssResourceConfig,
   betterSidebarNormalizeExpandedCssResourceConfig,

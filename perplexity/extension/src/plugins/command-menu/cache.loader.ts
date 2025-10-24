@@ -1,7 +1,7 @@
 import { QueryObserver } from "@tanstack/react-query";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
@@ -37,16 +37,6 @@ export default async function () {
 
         void persistentQueryClient.persistQueryClient();
       });
-
-      void persistentQueryClient.queryClient.ensureQueryData(
-        pplxApiQueries.spaces.detail(),
-      );
-      void persistentQueryClient.queryClient.ensureInfiniteQueryData(
-        pplxApiQueries.threads.infinite.detail({
-          searchValue: "",
-          initialPageParam: 0,
-        }),
-      );
     },
   });
 }

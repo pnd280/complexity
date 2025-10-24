@@ -11,7 +11,7 @@ export const internalWebSocketStore =
   createWithEqualityFn<InternalWebSocketStore>()(
     subscribeWithSelector(
       immer(
-        (set, get): InternalWebSocketStore => ({
+        (): InternalWebSocketStore => ({
           common: null,
         }),
       ),

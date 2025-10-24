@@ -7,7 +7,9 @@ export function usePluginCategories({
 }: {
   filteredPluginIds: PluginId[];
 }) {
-  return useMemo(() => {
+  "use memo";
+
+  return (() => {
     const pluginsByCat = Object.keys(PluginMeta.categories).reduce<
       Record<string, PluginId[]>
     >((acc, category) => {
@@ -46,5 +48,5 @@ export function usePluginCategories({
       pluginsByCat,
       filteredPluginsByCat,
     };
-  }, [filteredPluginIds]);
+  })();
 }

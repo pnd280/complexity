@@ -30,6 +30,8 @@ export default function RequirePermissionsDialogWrapper({
   onGranted?: () => void;
   asChild?: boolean;
 }) {
+  "use memo";
+
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -37,13 +39,13 @@ export default function RequirePermissionsDialogWrapper({
   const { data: grantedPermissions, isLoading: isPermissionsLoading } =
     useExtensionPermissions();
 
-  const hasAllRequiredPermissions = useMemo(() => {
+  const hasAllRequiredPermissions = (() => {
     if (requiredPermissions == null || grantedPermissions == null) return true;
 
     return requiredPermissions.every(({ permission }) =>
       grantedPermissions.permissions?.includes(permission),
     );
-  }, [requiredPermissions, grantedPermissions]);
+  })();
 
   if (hasAllRequiredPermissions || isPermissionsLoading) {
     return children;

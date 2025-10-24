@@ -8,6 +8,8 @@ import TablerCheck from "~icons/tabler/check";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function ExportDebugDataButtons() {
+  "use memo";
+
   const {
     dialogState,
     openDialog,
@@ -21,15 +23,15 @@ export default function ExportDebugDataButtons() {
     defaultText: "Copy",
   });
 
-  const handleCopyClick = useCallback(async () => {
+  const handleCopyClick = async () => {
     openDialog("copy");
-  }, [openDialog]);
+  };
 
-  const handleSaveAsFileClick = useCallback(async () => {
+  const handleSaveAsFileClick = async () => {
     openDialog("save");
-  }, [openDialog]);
+  };
 
-  const handleDialogConfirm = useCallback(async () => {
+  const handleDialogConfirm = async () => {
     await handleConfirm();
     if (dialogState.action === "copy") {
       toggleCopyButtonText(
@@ -39,7 +41,7 @@ export default function ExportDebugDataButtons() {
         </div>,
       );
     }
-  }, [handleConfirm, dialogState.action, toggleCopyButtonText]);
+  };
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache/index.lib-loader";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
 import type { MessageBlockFiberData } from "@/plugins/__core__/dom-observers/_main-world/actions/thread-messages";
 import { threadMessageBlocksFiberConfigResourceConfig } from "@/plugins/__core__/dom-observers/thread/message-blocks/remote-resources/index.remote-resources";
