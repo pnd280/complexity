@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/hover-card";
 import { Image } from "@/components/ui/image";
 import { Switch } from "@/components/ui/switch";
-import { InlineCode } from "@/components/ui/typography";
+import { InlineCode, Ul } from "@/components/ui/typography";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
@@ -54,39 +54,65 @@ export default function SpacesThreadsForceWritingModePluginSettingsUi() {
           <InlineCode>
             https://www.perplexity.ai/<mark>#</mark>?q=%s&model=
             <mark>&#123;model&#125;</mark>
-            &focus=<mark>&#123;focus&#125;</mark>&<mark>incognito</mark>
+            &focus=<mark>&#123;focus&#125;</mark>&space=
+            <mark>&#123;spaceId&#125;</mark>&<mark>incognito</mark>
           </InlineCode>
         </div>
-        <div>
-          <div>
+
+        <Ul className="x:my-0">
+          <li>
+            <div>
+              <span>Available values for </span>
+              <InlineCode>&#123;focus&#125;</InlineCode>{" "}
+              <span>(separated by commas)</span>:
+            </div>
+            <InlineCode className="x:ml-1">writing</InlineCode>
+            <InlineCode className="x:ml-1">web</InlineCode>
+            <InlineCode className="x:ml-1">social</InlineCode>
+            <InlineCode className="x:ml-1">scholar</InlineCode>
+            <div className="x:inline-block x:space-x-1">
+              <InlineCode className="x:ml-1">edgar</InlineCode>
+              <span>(Finance)</span>
+            </div>
+          </li>
+
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <li className="x:w-fit x:cursor-pointer x:underline x:decoration-dashed x:underline-offset-4">
+                How to find <InlineCode>&#123;spaceId&#125;</InlineCode>?
+              </li>
+            </HoverCardTrigger>
+            <HoverCardContent className="x:flex x:flex-col x:gap-2">
+              <div>
+                Use the <InlineCode>Command Menu</InlineCode> plugin to find the
+                space ID.
+              </div>
+              <div className="x:mx-auto x:w-full x:max-w-[700px]">
+                <Image
+                  src="https://images2.imgbox.com/6d/44/1P5GHUdG_o.png"
+                  alt="How to find spaceId?"
+                  className="x:w-full"
+                />
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+
+          <li>
             <span>Available values for </span>
-            <InlineCode>&#123;focus&#125;</InlineCode>{" "}
-            <span>(separated by commas)</span>:
-          </div>
-          <InlineCode className="x:ml-1">writing</InlineCode>
-          <InlineCode className="x:ml-1">web</InlineCode>
-          <InlineCode className="x:ml-1">social</InlineCode>
-          <InlineCode className="x:ml-1">scholar</InlineCode>
-          <div className="x:inline-block x:space-x-1">
-            <InlineCode className="x:ml-1">edgar</InlineCode>
-            <span>(Finance)</span>
-          </div>
-        </div>
-        <div>
-          <span>Available values for </span>
-          <InlineCode>&#123;model&#125;</InlineCode>:
-          <div className="x:mt-1 x:ml-8 x:flex x:flex-col x:gap-2">
-            {Object.values(PplxLanguageModelsService.allModels)
-              .flat()
-              .filter((model) => !model.isMax && model.label !== "Auto")
-              .map((model) => (
-                <div key={model.code}>
-                  <span>{model.label}</span>
-                  <InlineCode className="x:ml-1">{model.code}</InlineCode>
-                </div>
-              ))}
-          </div>
-        </div>
+            <InlineCode>&#123;model&#125;</InlineCode>:
+            <div className="x:mt-1 x:ml-8 x:flex x:flex-col x:gap-2">
+              {Object.values(PplxLanguageModelsService.allModels)
+                .flat()
+                .filter((model) => !model.isMax && model.label !== "Auto")
+                .map((model) => (
+                  <div key={model.code}>
+                    <span>{model.label}</span>
+                    <InlineCode className="x:ml-1">{model.code}</InlineCode>
+                  </div>
+                ))}
+            </div>
+          </li>
+        </Ul>
       </div>
     </div>
   );

@@ -27,8 +27,6 @@ type StepComponentProps = {
 };
 
 const getSteps = ({ hasCompletedOnboarding }: StepComponentProps) => {
-  "use memo";
-
   return (
     [
       {

@@ -8,14 +8,9 @@ import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/
 export default function BetterCodeBlockGlobalOptions() {
   const { globalMutation: mutation, globalSettings: settings } = useOptions();
 
-  const debouncedMutate = useMemo(
-    () =>
-      debounce(
-        (mutator: (draft: ExtensionSettings) => void) =>
-          mutation.mutate(mutator),
-        300,
-      ),
-    [mutation],
+  const debouncedMutate = debounce(
+    (mutator: (draft: ExtensionSettings) => void) => mutation.mutate(mutator),
+    300,
   );
 
   return (

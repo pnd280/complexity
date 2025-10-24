@@ -32,50 +32,43 @@ const ExportMenu = memo(() => {
   const [includeCitations, setIncludeCitations] = useState(true);
   const [_format, setFormat] = useState<ExportOption["value"]>("markdown");
 
-  const defaultIdleText = useMemo(
-    () =>
-      isFetching ? (
-        <TablerLoaderCircle className="x:size-4 x:animate-spin" />
-      ) : (
-        <FaFileExport className="x:size-4" />
-      ),
-    [isFetching],
+  const defaultIdleText = isFetching ? (
+    <TablerLoaderCircle className="x:size-4 x:animate-spin" />
+  ) : (
+    <FaFileExport className="x:size-4" />
   );
 
   const [copyConfirmText, setCopyConfirmText] = useToggleButtonText({
     defaultText: null,
   });
 
-  const handleDownload = useCallback(
-    async (withCitations: boolean) => {
-      try {
-        const slug =
-          (parseUrl().pathname.split("/").pop() ||
-            `thread-${new Date().getTime()}`) +
-          (withCitations ? "" : " (no-citations)");
-        const content = await getContent({ withCitations });
-        const blob = new Blob([content], { type: "text/markdown" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${document.title.substring(0, 100) ?? slug}.md`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error("Failed to download:", error);
-        toast({
-          title: t("plugin-thread-export.errors.downloadFailed.title"),
-          description:
-            error instanceof Error
-              ? error.message
-              : t("plugin-thread-export.errors.downloadFailed.unknownError"),
-        });
-      }
-    },
-    [getContent],
-  );
+  const handleDownload = async (withCitations: boolean) => {
+    try {
+      const slug =
+        (parseUrl().pathname.split("/").pop() ||
+          `thread-${new Date().getTime()}`) +
+        (withCitations ? "" : " (no-citations)");
+      const content = await getContent({ withCitations });
+      const blob = new Blob([content], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${document.title.substring(0, 100) ?? slug}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to download:", error);
+      toast({
+        title: t("plugin-thread-export.errors.downloadFailed.title"),
+        description:
+          error instanceof Error
+            ? error.message
+            : t("plugin-thread-export.errors.downloadFailed.unknownError"),
+      });
+    }
+  };
 
   return (
     <Popover

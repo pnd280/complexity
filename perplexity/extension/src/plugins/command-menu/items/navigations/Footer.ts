@@ -19,7 +19,7 @@ export default function NavigationItemsFooter({
 }) {
   const selectingValue = useCommandMenuStore((store) => store.selectingValue);
 
-  const itemsMap = useMemo(() => createItemsMap(items), [items]);
+  const itemsMap = createItemsMap(items);
 
   useEffect(() => {
     if (!selectingValue) return;

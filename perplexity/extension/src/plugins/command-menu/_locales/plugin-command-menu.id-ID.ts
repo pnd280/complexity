@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Salin ID",
+      copyIdSuccess: "✅ ID disalin ke clipboard",
       openInNewTab: "Buka di tab baru",
       searchInSpace: "Cari di Ruang",
       goToSpace: "Pergi ke Ruang",

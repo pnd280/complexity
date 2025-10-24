@@ -5,11 +5,11 @@ export default function useCloudflareTimeout() {
 
   const isSessionTimeout = failureReason?.message === "Cloudflare timeout";
 
-  const handleReload = useCallback(() => {
+  const handleReload = () => {
     console.log("Session timeout (most likely cloudflare), refreshing page");
 
     window.location.reload();
-  }, []);
+  };
 
   return { isSessionTimeout, handleReload };
 }

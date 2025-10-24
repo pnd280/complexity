@@ -84,8 +84,6 @@ function PresetLabel({
 }
 
 export default function PluginsEnableSet() {
-  "use memo";
-
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { settings, mutation } = useExtensionSettings();

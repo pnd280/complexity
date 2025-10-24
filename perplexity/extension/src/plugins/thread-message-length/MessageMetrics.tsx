@@ -19,15 +19,17 @@ export function MessageMetrics() {
 
   const settings = ExtensionSettingsService.cachedSync;
 
-  const metrics = useMemo(() => {
-    if (!answer) return null;
-    const wordCount = answer.split(" ").length;
-    const characterCount = answer.length;
-    const tokenCount = settings.plugins["thread:showMessageLength"].showTokens
-      ? Math.ceil(characterCount / 4)
-      : null;
-    return { wordCount, characterCount, tokenCount };
-  }, [settings, answer]);
+  const metrics = answer
+    ? (() => {
+        const wordCount = answer.split(" ").length;
+        const characterCount = answer.length;
+        const tokenCount = settings.plugins["thread:showMessageLength"]
+          .showTokens
+          ? Math.ceil(characterCount / 4)
+          : null;
+        return { wordCount, characterCount, tokenCount };
+      })()
+    : null;
 
   return (
     <HoverCard

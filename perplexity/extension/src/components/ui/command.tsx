@@ -289,7 +289,7 @@ export function CommandItemSkeleton({
         <div
           key={index}
           className={cn(
-            "x:h-8 x:w-full x:animate-pulse x:rounded-lg x:bg-muted-foreground",
+            "x:h-8 x:w-full x:animate-pulse x:rounded-lg x:bg-muted",
             className,
           )}
           {...props}

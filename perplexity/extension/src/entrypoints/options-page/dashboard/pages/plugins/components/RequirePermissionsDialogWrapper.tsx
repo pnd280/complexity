@@ -30,8 +30,6 @@ export default function RequirePermissionsDialogWrapper({
   onGranted?: () => void;
   asChild?: boolean;
 }) {
-  "use memo";
-
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);

@@ -14,8 +14,6 @@ import LuSettings2 from "~icons/lucide/settings-2";
 import TablerInfoCircle from "~icons/tabler/info-circle";
 
 export default function PluginsFilter() {
-  "use memo";
-
   const { isMobile } = useIsMobileStore();
 
   const [open, setOpen] = useState(false);

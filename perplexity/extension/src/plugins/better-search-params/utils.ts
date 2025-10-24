@@ -12,6 +12,7 @@ type ParsedQuery = {
   model: LanguageModelCode | null;
   focusModes: string[] | null;
   isIncognito: boolean | null;
+  spaceId: string | null;
 };
 
 export function parseQuery(searchParams: URLSearchParams): ParsedQuery | null {
@@ -19,14 +20,16 @@ export function parseQuery(searchParams: URLSearchParams): ParsedQuery | null {
   const model = searchParams.get("model");
   const focusModes = searchParams.get("focus")?.split(",") ?? [];
   const isIncognito = searchParams.get("incognito") != null;
+  const spaceId = searchParams.get("space") ?? null;
 
-  return { query, model, focusModes, isIncognito };
+  return { query, model, focusModes, isIncognito, spaceId };
 }
 
 export function setupTempInterceptor({
   model,
   focusModes,
   isIncognito,
+  spaceId,
 }: Omit<ParsedQuery, "query">): (() => void) | undefined {
   const interceptorId = "better-search-params";
 
@@ -64,10 +67,6 @@ export function setupTempInterceptor({
           draft.model_preference = model;
         }
 
-        if (isIncognito) {
-          draft.is_incognito = true;
-        }
-
         if (focusModes != null && focusModes.length > 0) {
           if (focusModes.includes("writing")) {
             draft.sources = [];
@@ -75,6 +74,14 @@ export function setupTempInterceptor({
           } else {
             draft.sources = focusModes;
           }
+        }
+
+        if (spaceId != null) {
+          draft.target_collection_uuid = spaceId;
+        }
+
+        if (isIncognito) {
+          draft.is_incognito = true;
         }
       });
 

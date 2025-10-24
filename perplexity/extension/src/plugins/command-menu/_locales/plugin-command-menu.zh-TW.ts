@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "複製 ID",
+      copyIdSuccess: "✅ ID 已複製到剪貼板",
       openInNewTab: "在新分頁中開啟",
       searchInSpace: "在空間中搜尋",
       goToSpace: "前往空間",

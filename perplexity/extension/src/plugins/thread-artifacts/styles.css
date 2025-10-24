@@ -19,6 +19,7 @@ body {
       justify-content: center;
       isolation: isolate;
       min-height: 100vh;
+      height: max-content;
     }
   }
 

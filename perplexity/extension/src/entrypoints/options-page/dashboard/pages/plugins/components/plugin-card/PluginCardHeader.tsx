@@ -12,7 +12,9 @@ export function PluginCardHeader() {
         <CardTitle>
           <span className="x:text-lg">{title}</span>
         </CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className="x:whitespace-pre-wrap">
+          {description}
+        </CardDescription>
       </div>
     </CardHeader>
   );

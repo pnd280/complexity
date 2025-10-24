@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "ID kopiëren",
+      copyIdSuccess: "✅ ID gekopieerd naar klembord",
       openInNewTab: "Openen in nieuw tabblad",
       searchInSpace: "Zoeken in ruimte",
       goToSpace: "Ga naar ruimte",

@@ -9,8 +9,6 @@ import { hasPermissionsSync } from "@/services/infra/extension-api-wrappers/exte
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export function usePluginCard(pluginId: PluginId) {
-  "use memo";
-
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { settings, mutation } = useExtensionSettings();

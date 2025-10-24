@@ -40,8 +40,6 @@ const basePermissionsDetails: Record<
 };
 
 export default function BasePermissions() {
-  "use memo";
-
   const queryClient = useQueryClient();
 
   const { data: permissions } = useExtensionPermissions();

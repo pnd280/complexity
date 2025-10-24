@@ -8,8 +8,6 @@ import { getPlatform } from "@/hooks/usePlatformDetection";
 import { keysToString } from "@/utils/misc/utils";
 
 export default function SearchInput() {
-  "use memo";
-
   const { isMobile } = useIsMobileStore();
   const { filters, setFilters } = usePluginFilters();
   const [, startTransition] = useTransition();

@@ -9,26 +9,35 @@ export function useCreatePortalContainers(): (Element | null)[] {
     deepEqual,
   );
 
-  return useMemo(
-    () =>
-      messageBlocks?.map((messageBlock) => {
-        const $existingPortalContainer = messageBlock.nodes.$footer.find(
-          DomSelectorsService.Root.cplxAttribute(OBSERVER_ID),
+  return (
+    messageBlocks?.map((messageBlock) => {
+      const $existingPortalContainer = messageBlock.nodes.$footer.find(
+        DomSelectorsService.Root.cplxAttribute(OBSERVER_ID),
+      );
+
+      if ($existingPortalContainer[0]) return $existingPortalContainer[0];
+
+      const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
+
+      const miscButtonWrapper = messageBlock.nodes.$footer.find(
+        DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+          .MISC_BUTTON_WRAPPER,
+      );
+
+      if (miscButtonWrapper.length) {
+        miscButtonWrapper.before($portalContainer);
+      } else {
+        const copyButtonWrapper = messageBlock.nodes.$footer.find(
+          DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+            .COPY_BUTTON,
         );
 
-        if ($existingPortalContainer[0]) return $existingPortalContainer[0];
+        if (copyButtonWrapper.length) {
+          copyButtonWrapper.after($portalContainer);
+        }
+      }
 
-        const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
-
-        messageBlock.nodes.$footer
-          .find(
-            DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
-              .MISC_BUTTON_WRAPPER,
-          )
-          .before($portalContainer);
-
-        return $portalContainer[0] ?? null;
-      }) ?? [],
-    [messageBlocks],
+      return $portalContainer[0] ?? null;
+    }) ?? []
   );
 }

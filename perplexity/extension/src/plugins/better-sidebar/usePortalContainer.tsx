@@ -6,7 +6,7 @@ export default function usePortalContainer() {
     deepEqual,
   );
 
-  return useMemo(() => {
+  return (() => {
     if (!nativeSidebarWrapper) return null;
 
     const $existingContainer = $("#better-sidebar-container");
@@ -22,5 +22,5 @@ export default function usePortalContainer() {
     $(nativeSidebarWrapper).before($container);
 
     return $container[0];
-  }, [nativeSidebarWrapper]);
+  })();
 }

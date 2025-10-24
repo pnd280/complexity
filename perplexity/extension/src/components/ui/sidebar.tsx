@@ -61,22 +61,19 @@ export function SidebarProvider({
 
   const [_open, _setOpen] = useState(defaultOpen);
   const open = openProp ?? _open;
-  const setOpen = useCallback(
-    (value: boolean | ((value: boolean) => boolean)) => {
-      const openState = typeof value === "function" ? value(open) : value;
-      if (setOpenProp) {
-        setOpenProp(openState);
-      } else {
-        _setOpen(openState);
-      }
-    },
-    [setOpenProp, open],
-  );
+  const setOpen = (value: boolean | ((value: boolean) => boolean)) => {
+    const openState = typeof value === "function" ? value(open) : value;
+    if (setOpenProp) {
+      setOpenProp(openState);
+    } else {
+      _setOpen(openState);
+    }
+  };
 
   // Helper to toggle the sidebar.
-  const toggleSidebar = useCallback(() => {
+  const toggleSidebar = () => {
     setOpen((open) => !open);
-  }, [setOpen]);
+  };
 
   useHotkeys(
     keysToString([
@@ -97,16 +94,13 @@ export function SidebarProvider({
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
 
-  const contextValue = useMemo<SidebarContextProps>(
-    () => ({
-      state,
-      open,
-      setOpen,
-      isMobile,
-      toggleSidebar,
-    }),
-    [state, open, setOpen, isMobile, toggleSidebar],
-  );
+  const contextValue: SidebarContextProps = {
+    state,
+    open,
+    setOpen,
+    isMobile,
+    toggleSidebar,
+  };
 
   return (
     <SidebarContext value={contextValue}>
@@ -563,10 +557,8 @@ export function SidebarMenuSkeleton({
   showIcon?: boolean;
 }) {
   // Random width between 50 to 90%.
-  const width = useMemo(() => {
-    // eslint-disable-next-line react-hooks/purity
-    return `${Math.floor(Math.random() * 40) + 50}%`;
-  }, []);
+  // eslint-disable-next-line react-hooks/purity
+  const width = `${Math.floor(Math.random() * 40) + 50}%`;
 
   return (
     <div

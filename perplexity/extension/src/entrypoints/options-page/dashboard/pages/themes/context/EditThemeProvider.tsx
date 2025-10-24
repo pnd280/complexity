@@ -47,6 +47,7 @@ export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
       await LocalThemesService.Instance.update({
         ...theme,
         ...themeData,
+        title: data.title,
         config: data,
       });
       return theme;

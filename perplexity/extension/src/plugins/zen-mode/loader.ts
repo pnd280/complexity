@@ -22,7 +22,10 @@ export default async function () {
   AsyncLoaderRegistry.register({
     id: "plugin:zenMode",
     dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
-    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+    loader: async ({
+      "cache:pluginsEnableStates": pluginsEnableStates,
+      "cache:extensionSettings": extensionSettings,
+    }) => {
       if (!pluginsEnableStates["zenMode"]) return;
 
       insertCss({
@@ -33,16 +36,14 @@ export default async function () {
         id: "zen-mode",
       });
 
-      const settings = ExtensionSettingsService.cachedSync;
-
-      if (settings?.plugins["zenMode"].persistent) {
+      if (extensionSettings.plugins["zenMode"].persistent) {
         $(document.body).attr(
           "data-cplx-zen-mode",
           localStorage.getItem("cplx.zen-mode.last-state") ?? "false",
         );
       }
 
-      if (settings?.plugins["zenMode"].alwaysHideRelatedQuestions) {
+      if (extensionSettings.plugins["zenMode"].alwaysHideRelatedQuestions) {
         insertCss({
           css: await getVersionedRemoteResource(
             alwaysHideRelatedQuestionsCssResourceConfig,

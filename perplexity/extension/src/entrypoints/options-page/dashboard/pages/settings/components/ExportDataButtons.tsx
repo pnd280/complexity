@@ -9,8 +9,6 @@ import TablerCheck from "~icons/tabler/check";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function ExportDataButtons() {
-  "use memo";
-
   const [copyButtonText, toggleCopyButtonText] = useToggleButtonText({
     defaultText: "Copy",
   });

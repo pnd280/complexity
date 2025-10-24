@@ -9,11 +9,10 @@ import TablerChevronLeft from "~icons/tabler/chevron-left";
 export default function CommandInput() {
   const { pageStack, searchValue, setSearchValue } = useCommandMenuStore();
 
-  const placeholder = useMemo(() => {
-    if (pageStack.length < 1)
-      return t("plugin-command-menu.input.searchPlaceholder");
-    return pageStack[pageStack.length - 1]!.searchPlaceholder;
-  }, [pageStack]);
+  const placeholder =
+    pageStack.length < 1
+      ? t("plugin-command-menu.input.searchPlaceholder")
+      : pageStack[pageStack.length - 1]!.searchPlaceholder;
 
   return (
     <div className="x:flex x:w-full x:items-center x:border-b x:border-border/50">

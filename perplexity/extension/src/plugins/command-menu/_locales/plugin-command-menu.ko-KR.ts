@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "ID 복사",
+      copyIdSuccess: "✅ ID가 클립보드에 복사되었습니다",
       openInNewTab: "새 탭에서 열기",
       searchInSpace: "공간에서 검색",
       goToSpace: "공간으로 이동",

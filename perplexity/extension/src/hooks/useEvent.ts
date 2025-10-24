@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 type Fn<ARGS extends unknown[], R> = (...args: ARGS) => R;
 
@@ -28,11 +28,7 @@ export function useEvent<A extends unknown[], R>(fn: Fn<A, R>): Fn<A, R> {
     fnRef.current = fn;
   });
 
-  return useMemo(
-    () =>
-      (...args: A): R => {
-        return fnRef.current(...args);
-      },
-    [],
-  );
+  return (...args: A): R => {
+    return fnRef.current(...args);
+  };
 }

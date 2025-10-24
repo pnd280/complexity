@@ -17,8 +17,6 @@ export function useFilteredPlugins({
   excludeTags,
   categories,
 }: UseFilteredPluginsParams) {
-  "use memo";
-
   const filteredPlugins = (() => {
     return Object.values(PluginManifestsRegistry.meta)
       .filter((plugin) => {

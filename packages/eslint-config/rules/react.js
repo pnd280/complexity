@@ -6,8 +6,8 @@ import reactRefreshPlugin from "eslint-plugin-react-refresh";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  reactHooksPlugin.configs.flat["recommended-latest"],
   {
+    extends: [reactHooksPlugin.configs.flat["recommended-latest"]],
     plugins: {
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,

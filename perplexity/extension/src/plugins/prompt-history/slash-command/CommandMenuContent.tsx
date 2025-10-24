@@ -55,16 +55,13 @@ export function PromptHistoryCommandMenuContent() {
     fetchNextPage,
   });
 
-  const deleteItem = useCallback(
-    async (id: string) => {
-      await PromptHistoryService.Instance.delete(id);
+  const deleteItem = async (id: string) => {
+    await PromptHistoryService.Instance.delete(id);
 
-      void queryClient.invalidateQueries({
-        queryKey: promptHistoryQueries.infinite.all(),
-      });
-    },
-    [queryClient],
-  );
+    void queryClient.invalidateQueries({
+      queryKey: promptHistoryQueries.infinite.all(),
+    });
+  };
 
   useHotkeys(
     keysToString([getPlatform() === "mac" ? Key.Meta : Key.Control, "c"]),

@@ -11,15 +11,11 @@ export const pluginId: PluginId = "home:customSlogan";
 export default function CustomHomeSloganPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
 
-  const debouncedMutate = useMemo(
-    () =>
-      debounce((newValue: string) => {
-        mutation.mutate((draft) => {
-          draft.plugins["home:customSlogan"].slogan = newValue;
-        });
-      }, 300),
-    [mutation],
-  );
+  const debouncedMutate = debounce((newValue: string) => {
+    mutation.mutate((draft) => {
+      draft.plugins["home:customSlogan"].slogan = newValue;
+    });
+  }, 300);
 
   if (!settings) return null;
 

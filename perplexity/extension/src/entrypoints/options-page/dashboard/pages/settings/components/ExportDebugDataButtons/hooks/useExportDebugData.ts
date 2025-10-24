@@ -20,8 +20,6 @@ export type ExportDialogState = {
 };
 
 export function useExportDebugData() {
-  "use memo";
-
   const queryClient = useQueryClient();
 
   const { data: permissions, handleRevokePermission } =

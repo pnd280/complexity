@@ -22,7 +22,7 @@
     "inquirer": "^12.10.0",
     "mime-types": "^3.0.1",
     "semver": "^7.7.3",
-    "web-ext": "^9.0.0"
+    "web-ext": "^9.1.0"
   },
   "devDependencies": {
     "@complexity/cli-logger": "workspace:*",

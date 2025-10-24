@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "ID कॉपी करें",
+      copyIdSuccess: "✅ ID क्लिपबोर्ड पर कॉपी किया गया",
       openInNewTab: "नए टैब में खोलें",
       searchInSpace: "स्थान में खोजें",
       goToSpace: "स्थान पर जाएं",

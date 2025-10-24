@@ -11,11 +11,8 @@ import PluginSettingsPage from "@/entrypoints/options-page/dashboard/pages/plugi
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
 import { default as PluginsListing } from "@/entrypoints/options-page/dashboard/pages/plugins/IndexPage";
 import useClearLocationState from "@/hooks/useClearLocationState";
-// import useClearSearchParams from "@/hooks/useClearSearchParams";
 
 export default function PluginSettingsWrapper() {
-  "use memo";
-
   useClearLocationState();
 
   const navigate = useNavigate();
@@ -33,9 +30,6 @@ export default function PluginSettingsWrapper() {
   const isFromPluginList = location.state?.fromPluginList === true;
   const isOpenInFullScreen =
     plugin != null && PluginSettingsUis[plugin.id]!.openInFullScreen;
-
-  // const searchParamsToCllear = useMemo(() => ["searchTerm"], []);
-  // useClearSearchParams({ enabled: !isFromPluginList, params: searchParamsToCllear });
 
   if (!plugin || !isPluginId(plugin.id)) {
     return null;
@@ -75,8 +69,6 @@ function useNavigateAwayOnInvalidRoute({ pluginId }: { pluginId?: PluginId }) {
 }
 
 function PluginUnavailable({ onBackClick }: { onBackClick: () => void }) {
-  "use memo";
-
   return (
     <div className="x:flex x:h-full x:min-h-[500px] x:flex-col x:items-center x:justify-center x:gap-4 x:text-center x:md:text-left">
       This plugin is not available at the moment. Please check back later.

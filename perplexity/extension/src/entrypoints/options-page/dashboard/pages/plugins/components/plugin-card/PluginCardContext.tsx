@@ -47,8 +47,6 @@ export function PluginCardProvider({
   children: ReactNode;
   pluginId: PluginId;
 }) {
-  "use memo";
-
   const { pluginInfo, state, actions } = usePluginCard(pluginId);
 
   const { pluginsStates } = usePluginsStates();

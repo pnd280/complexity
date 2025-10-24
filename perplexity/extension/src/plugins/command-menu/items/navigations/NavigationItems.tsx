@@ -27,14 +27,10 @@ export default function NavigationItems() {
   const url = useSpaRouter((state) => state.url);
   const location = whereAmI(url);
 
-  const items = useMemo(
-    () =>
-      getGroupedItems({
-        getter: getRawItems,
-        params: {},
-      }),
-    [],
-  );
+  const items = getGroupedItems({
+    getter: getRawItems,
+    params: {},
+  });
 
   return (
     <>

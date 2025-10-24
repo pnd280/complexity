@@ -46,6 +46,10 @@ export const PLUGIN_TAGS = {
     label: "New",
     description: "Recently added plugins",
   },
+  updated: {
+    label: "Updated",
+    description: "Recently updated plugins",
+  },
   chromiumOnly: {
     label: "Chromium Only",
     description: "Can only be used on Chromium-based browsers",

@@ -37,7 +37,7 @@ export default function CommandFooter() {
                   </span>
                   <KeyCombo
                     className="x:ml-2"
-                    keyClassName="x:text-foreground"
+                    keyClassName="x:bg-background"
                     keys={settings.keybindings.toggleSidecar}
                   />
                 </div>

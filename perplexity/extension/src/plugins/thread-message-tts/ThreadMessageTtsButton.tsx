@@ -24,7 +24,7 @@ export function ThreadMessageTtsButton() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const coordinator = useMemo(() => PplxTtsPlayerCoordinator.getInstance(), []);
+  const coordinator = PplxTtsPlayerCoordinator.getInstance();
 
   const backendUuid =
     threadMessageBlocksDomObserverStore.getState().messageBlocks?.[
@@ -45,38 +45,35 @@ export function ThreadMessageTtsButton() {
     },
   });
 
-  const initTts = useCallback(
-    async (params?: { voice: TtsVoice }) => {
-      coordinator.stopAllPlayers();
+  const initTts = async (params?: { voice: TtsVoice }) => {
+    coordinator.stopAllPlayers();
 
-      if (isPlaying) {
-        return;
-      }
+    if (isPlaying) {
+      return;
+    }
 
-      abort();
+    abort();
 
-      await coordinator.startSession({
-        onAudioStart: () => setIsPlaying(true),
-        onAudioComplete: () => {
-          abort();
-          setIsPlaying(false);
-        },
-        onPlayerStop: () => {
-          abort();
-          setIsPlaying(false);
-        },
-      });
-
-      if (!backendUuid) {
-        console.error("No backendUuid found");
+    await coordinator.startSession({
+      onAudioStart: () => setIsPlaying(true),
+      onAudioComplete: () => {
+        abort();
         setIsPlaying(false);
-        return;
-      }
+      },
+      onPlayerStop: () => {
+        abort();
+        setIsPlaying(false);
+      },
+    });
 
-      void playTts({ voice: params?.voice ?? voice, backendUuid });
-    },
-    [abort, backendUuid, isPlaying, playTts, voice, coordinator],
-  );
+    if (!backendUuid) {
+      console.error("No backendUuid found");
+      setIsPlaying(false);
+      return;
+    }
+
+    void playTts({ voice: params?.voice ?? voice, backendUuid });
+  };
 
   const cleanup = useEvent(() => {
     if (!isPlaying) return;

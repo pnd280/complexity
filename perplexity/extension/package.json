@@ -100,7 +100,7 @@
     "@complexity/cli-logger": "workspace:*",
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
-    "@crxjs/vite-plugin": "^2.2.0",
+    "@crxjs/vite-plugin": "^2.2.1",
     "@iconify/json": "^2.2.399",
     "@playwright/test": "^1.56.1",
     "@svgr/core": "^8.1.0",
@@ -121,8 +121,8 @@
     "@types/react-dom": "^19.2.2",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/semver": "^7.7.1",
-    "@vitejs/plugin-react": "^5.0.4",
-    "@vitest/ui": "^4.0.2",
+    "@vitejs/plugin-react": "^5.1.0",
+    "@vitest/ui": "^4.0.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "browserslist": "^4.27.0",
     "caniuse-lite": "^1.0.30001751",
@@ -148,7 +148,7 @@
     "unimport": "^5.5.0",
     "unplugin-icons": "^22.5.0",
     "vite": "^7.1.12",
-    "vitest": "^4.0.2"
+    "vitest": "^4.0.3"
   },
   "engines": {
     "node": "^22.12.0"

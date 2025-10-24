@@ -7,7 +7,7 @@ export default function useObserver() {
     deepEqual,
   );
 
-  return useMemo(() => {
+  return (() => {
     if ($overflowMenuButtonWrapper == null || !$overflowMenuButtonWrapper[0]) {
       $(
         DomSelectorsService.Root.cplxAttribute(
@@ -38,5 +38,5 @@ export default function useObserver() {
     $wrapper.append($portalContainer);
 
     return $portalContainer[0];
-  }, [$overflowMenuButtonWrapper]);
+  })();
 }

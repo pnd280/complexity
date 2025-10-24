@@ -9,11 +9,8 @@ const TocItem = memo(function TocItem({
   onClick: () => void;
   onContextMenu: () => void;
 }) {
-  const title = useMemo(() => {
-    return (
-      item.title.trim().slice(0, 300) + (item.title.length > 300 ? "..." : "")
-    );
-  }, [item.title]);
+  const title =
+    item.title.trim().slice(0, 300) + (item.title.length > 300 ? "..." : "");
 
   return (
     <div

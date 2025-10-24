@@ -8,10 +8,7 @@ export default function HomepageUpdateAnnouncer() {
 
   const slogan = useHomeDomObserverStore((store) => store.slogan, deepEqual);
 
-  const anchor = useMemo(() => {
-    if (!slogan) return null;
-    return $(slogan).find(">*").first()[0];
-  }, [slogan]);
+  const anchor = slogan ? $(slogan).find(">*").first()[0] : null;
 
   if (!anchor || document.body.contains(anchor) || !isUpdateAvailable)
     return null;

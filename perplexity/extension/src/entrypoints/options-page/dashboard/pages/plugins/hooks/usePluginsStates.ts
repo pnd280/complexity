@@ -11,8 +11,6 @@ import {
 import { isInContentScript } from "@/utils/misc/utils";
 
 export default function usePluginsStates() {
-  "use memo";
-
   invariant(
     !isInContentScript(),
     "usePluginsStates can not be used in content script",

@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Копировать ID",
+      copyIdSuccess: "✅ ID скопирован в буфер обмена",
       openInNewTab: "Открыть в новой вкладке",
       searchInSpace: "Поиск в пространстве",
       goToSpace: "Перейти в пространство",

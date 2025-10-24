@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Αντιγραφή ID",
+      copyIdSuccess: "✅ ID αντιγράφηκε στο πρόχειρο",
       openInNewTab: "Άνοιγμα σε νέα καρτέλα",
       searchInSpace: "Αναζήτηση στον Χώρο",
       goToSpace: "Μετάβαση στον Χώρο",

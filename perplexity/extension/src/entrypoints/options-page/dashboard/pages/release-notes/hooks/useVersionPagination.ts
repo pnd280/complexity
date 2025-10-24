@@ -6,8 +6,6 @@ import { persistentQueryClient } from "@/entrypoints/options-page/persistent-que
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 
 export function useVersionPagination() {
-  "use memo";
-
   const { data: changelogListing } = useQuery(
     cplxApiQueries.changelog.listing.detail(),
   );

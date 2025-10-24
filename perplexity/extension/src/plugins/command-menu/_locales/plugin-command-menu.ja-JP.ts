@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "IDをコピー",
+      copyIdSuccess: "✅ IDをクリップボードにコピーしました",
       openInNewTab: "新しいタブで開く",
       searchInSpace: "スペース内を検索",
       goToSpace: "スペースに移動",

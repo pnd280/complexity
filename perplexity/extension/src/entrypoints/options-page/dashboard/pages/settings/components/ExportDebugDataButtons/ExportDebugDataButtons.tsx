@@ -8,8 +8,6 @@ import TablerCheck from "~icons/tabler/check";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export default function ExportDebugDataButtons() {
-  "use memo";
-
   const {
     dialogState,
     openDialog,

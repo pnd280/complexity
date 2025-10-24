@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Copiază ID",
+      copyIdSuccess: "✅ ID copiat în clipboard",
       openInNewTab: "Deschide în tab nou",
       searchInSpace: "Caută în spațiu",
       goToSpace: "Du-te la spațiu",

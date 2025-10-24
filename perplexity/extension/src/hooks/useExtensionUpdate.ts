@@ -7,18 +7,18 @@ import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resour
 export default function useExtensionUpdate() {
   const { data: versions, isLoading } = useQuery(CplxVersionsService.query);
 
-  const isUpdateAvailable = useMemo(() => {
-    if (!versions) return false;
+  const isUpdateAvailable = versions
+    ? (() => {
+        const currentVersion = APP_CONFIG.VERSION;
+        const latestVersion = versions.latest;
 
-    const currentVersion = APP_CONFIG.VERSION;
-    const latestVersion = versions.latest;
+        if (!semver.valid(currentVersion) || !semver.valid(latestVersion)) {
+          return false;
+        }
 
-    if (!semver.valid(currentVersion) || !semver.valid(latestVersion)) {
-      return false;
-    }
-
-    return semver.gt(latestVersion, currentVersion);
-  }, [versions]);
+        return semver.gt(latestVersion, currentVersion);
+      })()
+    : false;
 
   return {
     isUpdateAvailable,

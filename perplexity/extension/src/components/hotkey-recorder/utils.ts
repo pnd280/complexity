@@ -46,5 +46,6 @@ export function formatKeys(keys: string[]): string[] {
 export function normalizeKeyName(keyName: string): string {
   if (keyName === " ") return "Space";
   if (keyName === "Control") return "Ctrl";
+  if (keyName === "Unidentified") return "";
   return keyName;
 }

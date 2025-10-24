@@ -49,16 +49,12 @@ function CsUiPluginsGuardError({
   errorMessage,
   customMessage,
 }: Omit<CsUiPluginsGuardProps, "children"> & { errorMessage?: string }) {
-  const componentKey = useMemo(
-    () =>
-      errorDialogManager.generateComponentKey({
-        dependentPluginIds,
-        location,
-        customMessage,
-        errorMessage,
-      }),
-    [dependentPluginIds, location, customMessage, errorMessage],
-  );
+  const componentKey = errorDialogManager.generateComponentKey({
+    dependentPluginIds,
+    location,
+    customMessage,
+    errorMessage,
+  });
 
   const [open, setOpen] = useState<boolean | null>(null);
 

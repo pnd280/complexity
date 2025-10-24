@@ -19,17 +19,13 @@ export default function BetterCodeBlockFineGrainedOptions({
     delete: deleteMutation,
   } = useOptions({ language });
 
-  const debouncedMutate = useMemo(
-    () =>
-      debounce(
-        (newDraft: DeepPartial<BetterCodeBlockFineGrainedOptions>) =>
-          mutation.mutate({
-            language,
-            newDraft,
-          }),
-        300,
-      ),
-    [language, mutation],
+  const debouncedMutate = debounce(
+    (newDraft: DeepPartial<BetterCodeBlockFineGrainedOptions>) =>
+      mutation.mutate({
+        language,
+        newDraft,
+      }),
+    300,
   );
 
   if (!settings) return null;

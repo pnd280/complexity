@@ -15,13 +15,17 @@ export default function MobileSidebar({
   const navItems = useOptionsPageSidebarStore((store) => store.navItems);
 
   const location = useLocation();
-  const [openAtPath, setOpenAtPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      setIsOpen(false);
+    };
+  }, [location.key]);
 
   return (
     <Sheet
-      open={isOpen && openAtPath === location.pathname}
+      open={isOpen}
       onOpenChange={({ open }) => {
-        if (open) setOpenAtPath(location.pathname);
         setIsOpen(open);
       }}
     >

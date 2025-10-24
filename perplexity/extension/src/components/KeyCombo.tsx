@@ -1,5 +1,4 @@
 import type { HTMLProps } from "react";
-import { useMemo } from "react";
 
 import usePlatformDetection from "@/hooks/usePlatformDetection";
 
@@ -14,25 +13,23 @@ export default function KeyCombo({
 }) {
   const isMac = usePlatformDetection() === "mac";
 
-  const processedKeys = useMemo(() => {
-    return keys.map((key) => {
-      switch (key.toLowerCase()) {
-        case "ctrl":
-        case "control":
-          return "Ctrl";
-        case "meta":
-          return "⌘";
-        case "alt":
-          return isMac ? "⌥" : "Alt";
-        case "shift":
-          return "⇧";
-        case "enter":
-          return "⏎";
-        default:
-          return key;
-      }
-    });
-  }, [keys, isMac]);
+  const processedKeys = keys.map((key) => {
+    switch (key.toLowerCase()) {
+      case "ctrl":
+      case "control":
+        return "Ctrl";
+      case "meta":
+        return "⌘";
+      case "alt":
+        return isMac ? "⌥" : "Alt";
+      case "shift":
+        return "⇧";
+      case "enter":
+        return "⏎";
+      default:
+        return key;
+    }
+  });
 
   if (keys.length === 0) return null;
 

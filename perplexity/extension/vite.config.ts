@@ -45,14 +45,7 @@ export default defineConfig(() => ({
     }),
     react({
       babel: {
-        plugins: [
-          [
-            "babel-plugin-react-compiler",
-            {
-              compilationMode: "annotation",
-            },
-          ],
-        ],
+        plugins: ["babel-plugin-react-compiler"],
       },
     }),
     tailwindcss(),

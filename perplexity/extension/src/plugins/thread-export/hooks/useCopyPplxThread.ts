@@ -32,7 +32,7 @@ export function useCopyPplxThread() {
     enabled: false,
   });
 
-  const fetchFn = useCallback(async () => (await refetch()).data, [refetch]);
+  const fetchFn = async () => (await refetch()).data;
 
   return {
     isFetching,

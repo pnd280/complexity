@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import {
   openInNewTab,
   softNavigate,
@@ -20,7 +21,20 @@ export default function SpacesSearchItemsFooter() {
 
     if (!space) return;
 
+    // TODO: bind keys to actions, prevent duplication in the Item itself
     commandMenuStore.getState().setFooterItems([
+      {
+        title: t("plugin-command-menu.spaces.footer.copyId"),
+        keybinding: [Key.Control, "c"],
+        onSelect: async () => {
+          await navigator.clipboard.writeText(space.uuid);
+
+          toast({
+            title: t("plugin-command-menu.spaces.footer.copyIdSuccess"),
+            description: space.uuid,
+          });
+        },
+      },
       {
         title: t("plugin-command-menu.spaces.footer.openInNewTab"),
         keybinding: [Key.Alt, Key.Enter],

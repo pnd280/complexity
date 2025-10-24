@@ -31,18 +31,16 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
 
   const isSpaceThreadsPage = currentPage?.pageId === "spaceThreads";
 
-  const firstAnswer: string = useMemo(() => {
+  const firstAnswer: string = (() => {
     const content = jsonUtils.safeParse(thread.first_answer)?.answer as
       | string
       | null;
     return content?.slice(0, 1000) ?? "";
-  }, [thread.first_answer]);
+  })();
 
-  const keywords = useMemo(() => {
-    if (isSpaceThreadsPage) return thread.title.split(" ");
-
-    return [...thread.title.split(" "), firstAnswer];
-  }, [thread.title, firstAnswer, isSpaceThreadsPage]);
+  const keywords = isSpaceThreadsPage
+    ? thread.title.split(" ")
+    : [...thread.title.split(" "), firstAnswer];
 
   return (
     <a

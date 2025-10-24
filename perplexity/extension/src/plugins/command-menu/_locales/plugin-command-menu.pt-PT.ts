@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Copiar ID",
+      copyIdSuccess: "✅ ID copiado para a área de transferência",
       openInNewTab: "Abrir em novo separador",
       searchInSpace: "Pesquisar no espaço",
       goToSpace: "Ir para o espaço",

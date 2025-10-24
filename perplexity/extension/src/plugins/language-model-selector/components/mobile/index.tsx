@@ -11,11 +11,11 @@ import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-res
 export default function MobileContent({ ...props }: DialogProps) {
   const subTier = usePluginGuardsStore((store) => store.subTier);
 
-  const searchModels = useMemo(() => getModelsByType("search"), []);
-  const researchModels = useMemo(() => getModelsByType("research"), []);
-  const labsModels = useMemo(() => getModelsByType("studio"), []);
-  const studyModels = useMemo(() => getModelsByType("study"), []);
-  const advancedModels = useMemo(() => getAdvancedStandaloneModels(), []);
+  const searchModels = getModelsByType("search");
+  const researchModels = getModelsByType("research");
+  const labsModels = getModelsByType("studio");
+  const studyModels = getModelsByType("study");
+  const advancedModels = getAdvancedStandaloneModels();
 
   return (
     <Sheet lazyMount unmountOnExit {...props}>

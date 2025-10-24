@@ -19,18 +19,14 @@ export default function ActionItems() {
   const isIncognito = usePplxIncognitoMode();
   const colorScheme = useColorSchemeStore((state) => state.colorScheme);
 
-  const items = useMemo(
-    () =>
-      getGroupedItems({
-        getter: getRawItems,
-        params: {
-          isIncognito,
-          colorScheme,
-          location,
-        },
-      }),
-    [isIncognito, colorScheme, location],
-  );
+  const items = getGroupedItems({
+    getter: getRawItems,
+    params: {
+      isIncognito,
+      colorScheme,
+      location,
+    },
+  });
 
   return (
     <>

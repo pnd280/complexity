@@ -14,7 +14,7 @@ export function SettingsDashboardLink() {
     isMobile ? undefined : deepEqual,
   );
 
-  const portalContainer = useMemo(() => {
+  const portalContainer = (() => {
     if (!sidebarWrapper) return null;
 
     const $sidebarWrapper = $(sidebarWrapper);
@@ -43,7 +43,7 @@ export function SettingsDashboardLink() {
       );
 
     return $portalContainer[0];
-  }, [sidebarWrapper]);
+  })();
 
   if (portalContainer == null) return null;
 

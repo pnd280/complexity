@@ -14,6 +14,7 @@ const variantOptions = {
   new: "x:bg-primary x:text-primary-foreground x:hover:bg-primary/80",
   deprecated:
     "x:bg-orange-500 x:text-orange-500-foreground x:hover:bg-orange-500/80",
+  updated: "x:bg-success/70 x:text-primary-foreground x:hover:bg-success/50",
 } as const satisfies Partial<Record<PluginTagKeys, string>>;
 
 type VariantType = keyof typeof variantOptions;

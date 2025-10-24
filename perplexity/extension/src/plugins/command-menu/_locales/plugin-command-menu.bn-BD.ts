@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "ID অনুলিপি করুন",
+      copyIdSuccess: "✅ ID ক্লিপবোর্ডে অনুলিপি করা হয়েছে",
       openInNewTab: "নতুন ট্যাবে খুলুন",
       searchInSpace: "স্থানে অনুসন্ধান করুন",
       goToSpace: "স্থানে যান",

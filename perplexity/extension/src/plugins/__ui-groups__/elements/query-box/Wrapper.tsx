@@ -96,12 +96,8 @@ const QueryBoxWrappers = [
 }[];
 
 export default function QueryBoxComponents() {
-  const enabledStates = useMemo(
-    () =>
-      QueryBoxWrappers.map(({ groups }) =>
-        groups.some((group) => shouldEnableUiGroup({ uiGroup: group })),
-      ),
-    [],
+  const enabledStates = QueryBoxWrappers.map(({ groups }) =>
+    groups.some((group) => shouldEnableUiGroup({ uiGroup: group })),
   );
 
   return (

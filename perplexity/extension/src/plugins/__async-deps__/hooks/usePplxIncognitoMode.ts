@@ -3,12 +3,9 @@ import { usePplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx
 export default function usePplxIncognitoMode(): boolean {
   const { cookies } = usePplxCookiesStore();
 
-  const isIncognito = useMemo(
-    () =>
-      cookies.find((cookie) => cookie.name === "pplx.is-incognito")?.value ===
-      "true",
-    [cookies],
-  );
+  const isIncognito =
+    cookies.find((cookie) => cookie.name === "pplx.is-incognito")?.value ===
+    "true";
 
   return isIncognito;
 }

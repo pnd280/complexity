@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Kopírovať ID",
+      copyIdSuccess: "✅ ID skopírované do schránky",
       openInNewTab: "Otvoriť v novej karte",
       searchInSpace: "Hľadať v priestore",
       goToSpace: "Prejsť do priestoru",

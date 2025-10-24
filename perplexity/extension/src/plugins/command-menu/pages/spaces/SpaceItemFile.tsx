@@ -18,10 +18,9 @@ export default function SpaceItemFiles({
 }) {
   const queryClient = useQueryClient();
 
-  const displayTitle = useMemo(() => {
-    if (file.file_title) return `${file.file_title} (${file.filename})`;
-    if (!file.file_title) return file.filename;
-  }, [file.file_title, file.filename]);
+  const displayTitle = file.file_title
+    ? `${file.file_title} (${file.filename})`
+    : file.filename;
 
   return (
     <Tooltip content={file.file_description}>

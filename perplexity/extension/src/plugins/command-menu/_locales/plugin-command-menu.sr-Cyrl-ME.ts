@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Копирај ID",
+      copyIdSuccess: "✅ ID копиран у привремену меморију",
       openInNewTab: "Отвори у новом табу",
       searchInSpace: "Претражи у простору",
       goToSpace: "Иди у простор",

@@ -10,13 +10,14 @@ export function QueryMetrics() {
     deepEqual,
   );
 
-  const metrics = useMemo(() => {
-    if (!title) return null;
-    const wordCount = title.split(" ").length;
-    const characterCount = title.length;
-    const tokenCount = Math.ceil(characterCount / 4);
-    return { wordCount, characterCount, tokenCount };
-  }, [title]);
+  const metrics = title
+    ? (() => {
+        const wordCount = title.split(" ").length;
+        const characterCount = title.length;
+        const tokenCount = Math.ceil(characterCount / 4);
+        return { wordCount, characterCount, tokenCount };
+      })()
+    : null;
 
   const settings = ExtensionSettingsService.cachedSync;
 

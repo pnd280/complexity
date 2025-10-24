@@ -21,11 +21,17 @@ const betterSearchParamsRouterRoute: RouteObject = {
 
     if (parsedQuery == null) return null;
 
-    const { query, model, focusModes, isIncognito } = parsedQuery;
+    const { query, model, focusModes, spaceId, isIncognito } = parsedQuery;
 
     if (query == null) return null;
 
-    const cleanup = setupTempInterceptor({ model, focusModes, isIncognito });
+    const cleanup = setupTempInterceptor({
+      model,
+      focusModes,
+      isIncognito,
+      spaceId,
+    });
+
     await Promise.all([
       waitUntil({
         condition: async () => {

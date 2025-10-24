@@ -3,8 +3,6 @@ import { toast } from "@/components/ui/use-toast";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
 export default function Version() {
-  "use memo";
-
   const { mutation, settings } = useExtensionSettings();
   const [clicks, setClicks] = useState(0);
   const clickResetTimeoutRef = useRef<NodeJS.Timeout | null>(null);

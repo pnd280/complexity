@@ -17,10 +17,10 @@ export default definePlugin({
     id: "betterSearchParams",
     title: "Better Omnibox Search Params",
     description:
-      'Default omnibox searches always use "Sonar/Auto" model.\nUse this plugin to search with different models, focus modes, and incognito mode, etc.',
+      "Create and use custom omnibox search params with different models, focus modes, and incognito mode, etc.\n\nNow supports Spaces!",
     dashboardMeta: {
-      tags: ["new"],
-      categories: ["misc"],
+      tags: ["updated"],
+      categories: ["misc", "featured"],
       uiRouteSegment: "better-search-params",
     },
     dependencies: {

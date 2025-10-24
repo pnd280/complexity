@@ -19,8 +19,6 @@ import { getSelectItems } from "@/plugins/language-model-selector/utils";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function LanguageModelSelector() {
-  "use memo";
-
   const { isMobile } = useIsMobileStore();
   const { selectedLanguageModel, setSelectedLanguageModel } =
     useBetterLanguageModelSelectorStore((store) => ({

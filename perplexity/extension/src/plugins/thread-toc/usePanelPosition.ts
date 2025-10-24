@@ -36,7 +36,7 @@ export function usePanelPosition(): PanelPosition | null {
     deepEqual,
   );
 
-  const calculatePosition = useCallback(() => {
+  const calculatePosition = () => {
     if (threadWrapper == null || threadContentWrapper == null) return null;
 
     const $threadWrapper = $(threadWrapper);
@@ -83,17 +83,13 @@ export function usePanelPosition(): PanelPosition | null {
       },
       isOverflowing: panelRightEdge > window.innerWidth,
     };
-  }, [threadContentWrapper, threadWrapper]);
+  };
 
-  const debouncedUpdate = useMemo(
-    () =>
-      debounce(() => {
-        const newPanelPosition = calculatePosition();
-        if (newPanelPosition == null) return;
-        setPanelPosition(newPanelPosition);
-      }, 100),
-    [calculatePosition],
-  );
+  const debouncedUpdate = debounce(() => {
+    const newPanelPosition = calculatePosition();
+    if (newPanelPosition == null) return;
+    setPanelPosition(newPanelPosition);
+  }, 100);
 
   useEffect(() => {
     debouncedUpdate();

@@ -41,7 +41,7 @@ export function ThreadToc() {
 
   const shouldShowToc = tocItems.length > 1 && !!position;
 
-  const isFloating = useMemo(() => {
+  const isFloating = (() => {
     if (isOverflowing) return true;
 
     const activeTopMostId = tocItems.findIndex((item) => item.isActiveTopMost);
@@ -49,7 +49,7 @@ export function ThreadToc() {
       activeTopMostId.toString(),
     );
     return tabState != null && !["d", "r", "t"].includes(tabState);
-  }, [isOverflowing, tocItems]);
+  })();
 
   if (!shouldShowToc || threadWrapper == null) return null;
 

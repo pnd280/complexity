@@ -26,11 +26,9 @@ export default function ArtifactCodeView() {
     selectedCodeBlock?.content.language ?? "",
   );
 
-  const lineNumberStyle = useMemo((): CSSProperties => {
-    return {
-      color: "oklch(var(--muted-foreground))",
-    };
-  }, []);
+  const lineNumberStyle: CSSProperties = {
+    color: "oklch(var(--muted-foreground))",
+  };
 
   return (
     <div

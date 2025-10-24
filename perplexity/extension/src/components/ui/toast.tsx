@@ -22,7 +22,7 @@ export function ToastViewport({
 }
 
 const toastVariants = cva(
-  "x:group x:pointer-events-auto x:relative x:flex x:w-full! x:items-center x:justify-between x:space-x-4 x:overflow-hidden x:rounded-md x:border x:p-6 x:pr-8 x:shadow-lg x:transition-all x:data-[state=closed]:animate-out x:data-[state=closed]:fade-out-80 x:data-[state=closed]:slide-out-to-right-full x:data-[state=open]:animate-in x:data-[state=open]:slide-in-from-top-full x:data-[swipe=cancel]:translate-x-0 x:data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] x:data-[swipe=end]:animate-out x:data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] x:data-[swipe=move]:transition-none x:data-[state=open]:sm:slide-in-from-top-full",
+  "x:group x:pointer-events-auto x:relative x:flex x:w-full! x:items-center x:justify-between x:overflow-hidden x:rounded-xl x:border x:p-6 x:pr-8 x:shadow-lg x:transition-all x:data-[state=closed]:animate-out x:data-[state=closed]:fade-out-80 x:data-[state=closed]:slide-out-to-right-full x:data-[state=open]:animate-in x:data-[state=open]:slide-in-from-top-full x:data-[swipe=cancel]:translate-x-0 x:data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] x:data-[swipe=end]:animate-out x:data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] x:data-[swipe=move]:transition-none x:data-[state=open]:sm:slide-in-from-top-full",
   {
     variants: {
       variant: {
@@ -60,7 +60,7 @@ export function ToastAction({
   return (
     <ToastPrimitives.Action
       className={cn(
-        "x:inline-flex x:h-8 x:shrink-0 x:items-center x:justify-center x:rounded-md x:border x:border-border/50 x:bg-transparent x:px-3 x:text-sm x:font-medium x:ring-offset-background x:transition-colors x:group-[.caution]:border-muted/40 x:hover:bg-secondary x:group-[.caution]:hover:border-caution/30 x:group-[.caution]:hover:bg-caution x:group-[.caution]:hover:text-caution-foreground x:focus:ring-2 x:focus:ring-ring x:focus:ring-offset-2 x:focus:outline-none x:group-[.caution]:focus:ring-caution x:disabled:pointer-events-none x:disabled:opacity-50",
+        "x:inline-flex x:h-8 x:shrink-0 x:items-center x:justify-center x:rounded-xl x:border x:border-border/50 x:bg-transparent x:px-3 x:text-sm x:font-medium x:ring-offset-background x:transition-colors x:group-[.caution]:border-muted/40 x:hover:bg-secondary x:group-[.caution]:hover:border-caution/30 x:group-[.caution]:hover:bg-caution x:group-[.caution]:hover:text-caution-foreground x:focus:ring-2 x:focus:ring-ring x:focus:ring-offset-2 x:focus:outline-none x:group-[.caution]:focus:ring-caution x:disabled:pointer-events-none x:disabled:opacity-50",
         className,
       )}
       {...props}
@@ -75,7 +75,7 @@ export function ToastClose({
   return (
     <ToastPrimitives.Close
       className={cn(
-        "x:absolute x:top-2 x:right-2 x:rounded-md x:p-1 x:text-foreground/50 x:opacity-0 x:transition-opacity x:group-hover:opacity-100 x:group-[.caution]:text-red-300 x:hover:text-foreground x:group-[.caution]:hover:text-red-50 x:focus:opacity-100 x:focus:ring-2 x:focus:outline-none x:group-[.caution]:focus:ring-red-400 x:group-[.caution]:focus:ring-offset-red-600",
+        "x:absolute x:top-2 x:right-2 x:rounded-xl x:p-1 x:text-foreground/50 x:opacity-0 x:transition-opacity x:group-hover:opacity-100 x:group-[.caution]:text-red-300 x:hover:text-foreground x:group-[.caution]:hover:text-red-50 x:focus:opacity-100 x:focus:ring-2 x:focus:outline-none x:group-[.caution]:focus:ring-red-400 x:group-[.caution]:focus:ring-offset-red-600",
         className,
       )}
       toast-close=""

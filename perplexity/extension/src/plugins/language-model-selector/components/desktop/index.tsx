@@ -25,19 +25,15 @@ export default function DesktopContent() {
   const isCometAssistant =
     use(ScopedQueryBoxContext)?.store.type === "comet-assistant";
 
-  const searchModels = useMemo(() => getModelsByType("search"), []);
-  const searchFastModel = useMemo(
-    () => searchModels.filter((model) => !model.isReasoning),
-    [searchModels],
+  const searchModels = getModelsByType("search");
+  const searchFastModel = searchModels.filter((model) => !model.isReasoning);
+  const searchReasoningModel = searchModels.filter(
+    (model) => model.isReasoning,
   );
-  const searchReasoningModel = useMemo(
-    () => searchModels.filter((model) => model.isReasoning),
-    [searchModels],
-  );
-  const researchModels = useMemo(() => getModelsByType("research"), []);
-  const labsModels = useMemo(() => getModelsByType("studio"), []);
-  const studyModels = useMemo(() => getModelsByType("study"), []);
-  const advancedModels = useMemo(() => getAdvancedStandaloneModels(), []);
+  const researchModels = getModelsByType("research");
+  const labsModels = getModelsByType("studio");
+  const studyModels = getModelsByType("study");
+  const advancedModels = getAdvancedStandaloneModels();
 
   return (
     <Comp

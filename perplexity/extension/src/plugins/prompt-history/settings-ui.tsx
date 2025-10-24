@@ -99,17 +99,11 @@ function SlashCommandMenuActivationShortcutsSettings() {
 
   const shortcutType = settings?.plugins["promptHistory"]?.shortcut?.type;
   const shortcutValue = settings?.plugins["promptHistory"]?.shortcut?.value;
-  const shortcutTypeItems = useMemo(
-    () => [
-      { id: "keybinding", title: "Keyboard Shortcut" },
-      { id: "command", title: "Text Command" },
-    ],
-    [],
-  );
-  const defaultKeys = useMemo(
-    () => (Array.isArray(shortcutValue) ? shortcutValue : []),
-    [shortcutValue],
-  );
+  const shortcutTypeItems = [
+    { id: "keybinding", title: "Keyboard Shortcut" },
+    { id: "command", title: "Text Command" },
+  ];
+  const defaultKeys = Array.isArray(shortcutValue) ? shortcutValue : [];
   const { HotkeyRecorderUi } = useHotkeyRecorder({
     defaultKeys,
     onSave: (keys) => {

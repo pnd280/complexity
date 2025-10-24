@@ -19,27 +19,18 @@ export default function BetterLanguageModelSelectorTriggerButton() {
     (state) => state.model,
   );
 
-  const modelInfo = useMemo(
-    () =>
-      Object.values(PplxLanguageModelsService.allModels)
-        .flat()
-        .find((m) => m.code === selectedLanguageModel),
-    [selectedLanguageModel],
-  );
+  const modelInfo = (() =>
+    Object.values(PplxLanguageModelsService.allModels)
+      .flat()
+      .find((m) => m.code === selectedLanguageModel))();
 
-  const type = useMemo(
-    () =>
-      Object.entries(PplxLanguageModelsService.allModels).find(([_, models]) =>
-        models.some((m) => m.code === selectedLanguageModel),
-      )?.[0],
-    [selectedLanguageModel],
-  );
+  const type = Object.entries(PplxLanguageModelsService.allModels).find(
+    ([_, models]) => models.some((m) => m.code === selectedLanguageModel),
+  )?.[0];
 
-  const TypeIcon = useMemo(
-    () =>
-      type ? LanguageModelTypeIcons[type as LanguageModelType] : TablerCpu,
-    [type],
-  );
+  const TypeIcon = type
+    ? LanguageModelTypeIcons[type as LanguageModelType]
+    : TablerCpu;
 
   const isAuto = modelInfo?.label.toLowerCase().includes("auto");
 

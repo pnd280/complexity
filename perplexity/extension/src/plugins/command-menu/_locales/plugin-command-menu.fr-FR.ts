@@ -39,6 +39,8 @@ export default {
   },
   spaces: {
     footer: {
+      copyId: "Copier l'ID",
+      copyIdSuccess: "✅ ID copié dans le presse-papiers",
       openInNewTab: "Ouvrir dans un nouvel onglet",
       searchInSpace: "Rechercher dans l'espace",
       goToSpace: "Aller à l'espace",

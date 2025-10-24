@@ -18,15 +18,11 @@ export const pluginId: PluginId = "thread:customThreadContainerWidth";
 export default function CustomThreadContainerWidthPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
 
-  const debouncedMutation = useMemo(
-    () =>
-      debounce((newValue: number) => {
-        mutation.mutate((draft) => {
-          draft.plugins["thread:customThreadContainerWidth"].value = newValue;
-        });
-      }, 300),
-    [mutation],
-  );
+  const debouncedMutation = debounce((newValue: number) => {
+    mutation.mutate((draft) => {
+      draft.plugins["thread:customThreadContainerWidth"].value = newValue;
+    });
+  }, 300);
 
   if (!settings) return null;
 

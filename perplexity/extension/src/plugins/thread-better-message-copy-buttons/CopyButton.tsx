@@ -32,19 +32,15 @@ const CopyButton = memo(function CopyButton({
 
   const { copyMessage, isFetching } = useCopyPplxThread();
 
-  const handleCopy = useCallback(
-    async (withCitations: boolean) => {
-      if (isFetching) return;
+  const handleCopy = async (withCitations: boolean) => {
+    if (isFetching) return;
 
-      await copyMessage({
-        messageBlockIndex,
-        withCitations,
-        onComplete: () =>
-          setTriggerIcon(<TablerCheck className="x:size-3.5" />),
-      });
-    },
-    [copyMessage, isFetching, messageBlockIndex, setTriggerIcon],
-  );
+    await copyMessage({
+      messageBlockIndex,
+      withCitations,
+      onComplete: () => setTriggerIcon(<TablerCheck className="x:size-3.5" />),
+    });
+  };
 
   useRegisteredGlobalCssEntry({
     entryIds: ["thread-message-footer-hide-native-copy-buttons"],
