@@ -32,7 +32,6 @@
     "prettier": "catalog:lint",
     "tsup": "^8.5.0",
     "typescript": "catalog:types",
-    "typescript-eslint": "catalog:lint",
-    "vitest": "^3.2.4"
+    "typescript-eslint": "catalog:lint"
   }
 }
