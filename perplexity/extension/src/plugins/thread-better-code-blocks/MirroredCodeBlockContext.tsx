@@ -78,7 +78,8 @@ export const MirroredCodeBlockContextProvider = memo(
     storeValue: InitialState;
     children: React.ReactNode;
   }) {
-    const [store] = useState(() => createStore(storeValue));
+    // eslint-disable-next-line react-hooks/refs
+    const store = useRef(createStore(storeValue)).current;
 
     return (
       <MirroredCodeBlockContext value={store}>
@@ -89,20 +90,20 @@ export const MirroredCodeBlockContextProvider = memo(
 );
 
 export function useMirroredCodeBlockContext() {
-  const context = use(MirroredCodeBlockContext);
-  if (!context) {
-    throw new Error(
-      "useMirroredCodeBlockContext must be used within a MirroredCodeBlockContext",
-    );
-  }
+  const store = use(MirroredCodeBlockContext)?.();
 
-  const contextValues = context();
+  invariant(
+    store != null,
+    "useMirroredCodeBlockContext must be used within a MirroredCodeBlockContext",
+  );
+
+  const codeBlock = useThreadCodeBlock({
+    messageBlockIndex: store.sourceMessageBlockIndex,
+    codeBlockIndex: store.sourceCodeBlockIndex,
+  });
 
   return {
-    codeBlock: useThreadCodeBlock({
-      messageBlockIndex: contextValues.sourceMessageBlockIndex,
-      codeBlockIndex: contextValues.sourceCodeBlockIndex,
-    }),
-    ...contextValues,
+    codeBlock,
+    ...store,
   };
 }
