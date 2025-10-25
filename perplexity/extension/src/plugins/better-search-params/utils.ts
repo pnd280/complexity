@@ -16,11 +16,19 @@ type ParsedQuery = {
 };
 
 export function parseQuery(searchParams: URLSearchParams): ParsedQuery | null {
-  const query = searchParams.get("q");
+  let query = searchParams.get("q");
   const model = searchParams.get("model");
   const focusModes = searchParams.get("focus")?.split(",") ?? [];
   const isIncognito = searchParams.get("incognito") != null;
   const spaceId = searchParams.get("space") ?? null;
+
+  if (query != null && query.length === 0) {
+    const cometCacheQuery = window.location.href.match(/ca(.*?)che_id/);
+
+    if (cometCacheQuery != null && cometCacheQuery[1] != null) {
+      query = cometCacheQuery[1];
+    }
+  }
 
   return { query, model, focusModes, isIncognito, spaceId };
 }

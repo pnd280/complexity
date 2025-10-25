@@ -12,22 +12,22 @@ export const DOM_SELECTORS: DomSelectors = {
     CHILD: {
       MENU: ".group\\/sidebar-menu",
     },
-    MOBILE_TRIGGER: `.h-headerHeight.absolute button:has(svg>path[d="M4 6l16 0 M4 12l16 0 M4 18l16 0"])`,
+    MOBILE_TRIGGER: `.h-headerHeight.backdrop-blur-md button:has(svg>path[d="M4 6l16 0 M4 12l16 0 M4 18l16 0"])`,
   },
   THREAD: {
     /** The outermost container that wraps the thread container and the query box */
-    NAVBAR: ".h-headerHeight.absolute",
+    NAVBAR: ".h-headerHeight.backdrop-blur-md",
     PAGE_WRAPPER: ".h-\\[100dvh\\] > .max-h-screen",
-    WRAPPER: ".h-headerHeight.absolute + div",
+    WRAPPER: ".h-headerHeight.backdrop-blur-md + div",
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
-        BRANCHED: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
+        NORMAL: `.h-headerHeight.backdrop-blur-md + div > div:first-child > div:last-child`,
+        BRANCHED: `.h-headerHeight.backdrop-blur-md + div > div:first-child > div:last-child`,
       },
       MOBILE: {
-        NORMAL: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
-        BRANCHED: `.h-headerHeight.absolute + div > div:first-child > div:last-child`,
+        NORMAL: `.h-headerHeight.backdrop-blur-md + div > div:first-child > div:last-child`,
+        BRANCHED: `.h-headerHeight.backdrop-blur-md + div > div:first-child > div:last-child`,
       },
     },
     MESSAGE: {
@@ -38,7 +38,7 @@ export const DOM_SELECTORS: DomSelectors = {
       QUERY_EDIT_BUTTON_GROUP_CHILD: {
         EDIT_QUERY_BUTTON: 'button[data-testid="edit-query-button"]',
       },
-      STICKY_HEADER: ".h-headerHeight.absolute",
+      STICKY_HEADER: ".h-headerHeight.backdrop-blur-md",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
@@ -126,7 +126,7 @@ export const DOM_SELECTORS: DomSelectors = {
       BACK_BUTTON: ".mb-3.ml-2.flex.md\\:px-2",
     },
   },
-  STICKY_NAVBAR: ".h-headerHeight.absolute",
+  STICKY_NAVBAR: ".h-headerHeight.backdrop-blur-md",
   SICKY_NAVBAR_CHILD: {
     THREAD_TITLE_WRAPPER:
       ".hidden.max-w-md.grow.items-center.justify-center.gap-x-xs.text-center.md\\:flex",
