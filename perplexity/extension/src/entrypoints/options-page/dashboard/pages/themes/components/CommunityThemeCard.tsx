@@ -1,12 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
+import {
+  generateThemeData,
+  initialValues,
+} from "@/data/dashboard/themes/utils";
+import type {
+  Theme,
+  ThemeFormValues,
+} from "@/data/dashboard/themes/theme.types";
 import type { CommunityTheme } from "@/hooks/useCommunityThemes";
 import { LocalThemesService } from "@/plugins/__core__/custom-theme/indexed-db/service-init.bg-worker";
-import { useThemeStore } from "@/plugins/__core__/custom-theme/stores/useThemeStore";
+import { useLocalThemes } from "@/plugins/__core__/custom-theme/indexed-db/useLocalThemes";
 
 import TablerDownload from "~icons/tabler/download";
 import TablerEye from "~icons/tabler/eye";
@@ -19,45 +35,72 @@ type CommunityThemeCardProps = {
 export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
   const [isInstalling, setIsInstalling] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
-  const { setActiveTheme } = useThemeStore();
+  const { data: localThemes, refetch: refetchLocalThemes } = useLocalThemes();
+  const { mutation: settingsMutation } = useExtensionSettings();
+
+  useEffect(() => {
+    if (localThemes?.some((localTheme) => localTheme.id === theme.id)) {
+      setIsInstalled(true);
+    }
+  }, [localThemes, theme.id]);
 
   const handleInstall = async () => {
+    setIsInstalling(true);
     try {
-      setIsInstalling(true);
-      
-      // Create a local copy of the theme without community metadata
-      const localTheme = {
+      if (!theme.config) {
+        throw new Error("Theme configuration is missing.");
+      }
+
+      const fullConfig: ThemeFormValues = {
+        ...initialValues,
+        ...theme.config,
+        fonts: {
+          ...initialValues.fonts,
+          ...theme.config.fonts,
+        },
+      };
+
+      const { css, displayBannerColors } = generateThemeData(
+        fullConfig,
+        initialValues,
+      );
+
+      const processedTheme: Theme = {
         id: theme.id,
         title: theme.title,
         description: theme.description,
-        displayBannerColors: theme.displayBannerColors,
-        css: theme.css,
-        config: theme.config,
+        css,
+        displayBannerColors,
+        config: fullConfig,
       };
-      
-      // Save to local storage
-      await LocalThemesService.Instance.create(localTheme);
-      
-      // Set as active theme
-      setActiveTheme(theme.id);
-      
+
+      await LocalThemesService.Instance.update(processedTheme);
+
+      settingsMutation.mutate((draft) => {
+        draft.theme = processedTheme.id;
+      });
+
+      await refetchLocalThemes();
       setIsInstalled(true);
-      toast.success(`"${theme.title}" has been installed and activated!`);
+      toast.success(`Theme "${theme.title}" has been installed and activated!`);
     } catch (error) {
-      console.error('Error installing theme:', error);
-      toast.error('Failed to install theme. Please try again.');
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+      console.error("Error installing theme:", error);
+      toast.error(`Failed to install theme: ${errorMessage}`);
     } finally {
       setIsInstalling(false);
     }
   };
 
   const handlePreview = () => {
-    // For now, just show the theme details
-    toast.info(`Theme: ${theme.title}\nDescription: ${theme.description || 'No description'}`);
+    toast.info(
+      `Theme: ${theme.title}\nDescription: ${theme.description || "No description"}`,
+    );
   };
 
   return (
-    <Card className="x:h-full x:flex x:flex-col">
+    <Card className="x:flex x:h-full x:flex-col">
       <CardHeader className="x:pb-3">
         <div className="x:flex x:items-start x:justify-between x:gap-2">
           <CardTitle className="x:line-clamp-1 x:text-base">
@@ -73,9 +116,9 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
           </CardDescription>
         )}
       </CardHeader>
-      
+
       <CardContent className="x:flex-1">
-        <div className="x:flex x:gap-1 x:mb-3">
+        <div className="x:mb-3 x:flex x:gap-1">
           {theme.displayBannerColors.slice(0, 4).map((color, index) => (
             <div
               key={index}
@@ -84,13 +127,13 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
             />
           ))}
         </div>
-        
+
         <div className="x:text-xs x:text-muted-foreground">
           Source: {theme.fileName}
         </div>
       </CardContent>
-      
-      <CardFooter className="x:pt-3 x:gap-2">
+
+      <CardFooter className="x:gap-2 x:pt-3">
         <Button
           variant="outline"
           size="sm"
@@ -100,7 +143,7 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
           <TablerEye className="x:mr-2 x:size-4" />
           Preview
         </Button>
-        
+
         <Button
           size="sm"
           onClick={handleInstall}
@@ -115,7 +158,7 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
           ) : (
             <>
               <TablerDownload className="x:mr-2 x:size-4" />
-              {isInstalling ? 'Installing...' : 'Install'}
+              {isInstalling ? "Installing..." : "Install"}
             </>
           )}
         </Button>

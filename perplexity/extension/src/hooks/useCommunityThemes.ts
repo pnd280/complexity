@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { fetchCommunityThemes, validateTheme } from "@/data/dashboard/themes/utils";
+import {
+  fetchCommunityThemes,
+  validateTheme,
+} from "@/data/dashboard/themes/utils";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
 
 export interface CommunityTheme extends Theme {
@@ -28,23 +31,24 @@ export function useCommunityThemes(): UseCommunityThemesReturn {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const communityThemes = await fetchCommunityThemes();
-      
+
       // Validate themes and filter out invalid ones
       const validThemes = communityThemes.filter((theme) => {
-        if (!validateTheme(theme)) {
-          console.warn(`Invalid theme detected: ${theme.id || 'unknown'}`);
-          return false;
+        if (validateTheme(theme)) {
+          return true;
         }
-        return true;
+        console.warn("Invalid theme detected:", theme);
+        return false;
       }) as CommunityTheme[];
-      
+
       setThemes(validThemes);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch community themes';
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch community themes";
       setError(errorMessage);
-      console.error('Error in useCommunityThemes:', err);
+      console.error("Error in useCommunityThemes:", err);
     } finally {
       setIsLoading(false);
     }

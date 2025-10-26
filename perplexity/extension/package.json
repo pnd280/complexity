@@ -95,6 +95,7 @@
     "use-sync-external-store": "^1.6.0",
     "weasound": "workspace:*",
     "zod": "^4.1.12",
+    "sonner": "^1.4.41",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
