@@ -17,7 +17,7 @@ export function ExtensionContextInvalidationWatchdog() {
     queryFn: () => {
       return chrome.runtime.id != null;
     },
-    refetchInterval: 10000,
+    refetchInterval: ms("10s"),
     refetchOnReconnect: "always",
     refetchOnWindowFocus: false,
   });

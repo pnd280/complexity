@@ -11,7 +11,7 @@ export default function usePplxInfiniteThreads(
       initialPageParam: 0,
       ...params,
     }),
-    staleTime: 5000,
+    staleTime: ms("5s"),
     placeholderData: keepPreviousData,
   });
 

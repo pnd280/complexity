@@ -35,6 +35,11 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       as: "$",
       from: "jquery",
     },
+    {
+      name: "default",
+      as: "ms",
+      from: "ms",
+    },
   ],
 };
 

@@ -19,14 +19,14 @@ export const persistentQueryClient = await (async () => {
 
   persistentQueryClient.queryClient.setQueryDefaults(cplxApiQueries.all(), {
     gcTime: Infinity,
-    staleTime: 1000,
+    staleTime: ms("1s"),
   });
 
   persistentQueryClient.queryClient.setQueryDefaults(
     cplxApiQueries.remoteResource.all(),
     {
       gcTime: Infinity,
-      staleTime: 1000 * 60 * 60 * 12,
+      staleTime: ms("12h"),
     },
   );
 
@@ -34,28 +34,28 @@ export const persistentQueryClient = await (async () => {
     cplxApiQueries.versionedRemoteResource.all(),
     {
       gcTime: Infinity,
-      staleTime: 1000 * 60 * 60 * 12,
+      staleTime: ms("12h"),
     },
   );
 
   persistentQueryClient.queryClient.setQueryDefaults(
     pplxApiQueries.spaces.all(),
     {
-      staleTime: 10000,
+      staleTime: ms("10s"),
     },
   );
 
   persistentQueryClient.queryClient.setQueryDefaults(
     pplxApiQueries.auth.all(),
     {
-      staleTime: 5000,
+      staleTime: ms("5s"),
     },
   );
 
   persistentQueryClient.queryClient.setQueryDefaults(
     pplxApiQueries.auth.orgStatus.all(),
     {
-      staleTime: 5000,
+      staleTime: ms("5s"),
     },
   );
 

@@ -1,11 +1,11 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import { queryBoxesDomObserverStore } from "@/plugins/__core__/dom-observers/query-boxes/store";
+import { useQueryBoxesDomObserverStore } from "@/plugins/__core__/dom-observers/query-boxes/store";
 import { ScopedQueryBoxContextProvider } from "@/plugins/__ui-groups__/elements/query-box/_context/context";
 import { usePortalContainer } from "@/plugins/__ui-groups__/elements/query-box/comet-assistant/usePortalContainer";
 
 export default function CometAssistantQueryBoxWrapper() {
-  const wrapper = queryBoxesDomObserverStore(
+  const wrapper = useQueryBoxesDomObserverStore(
     (store) => store.wrapper.cometAssistant,
     deepEqual,
   );

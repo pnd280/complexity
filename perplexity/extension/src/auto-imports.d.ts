@@ -27,4 +27,5 @@ declare global {
   const invariant: typeof import("@/utils/misc/utils.ts").invariant;
   const { isMainWorldContext, sleep }: typeof import("@/utils/misc/utils.ts");
   const { default: $ }: typeof import("jquery");
+  const ms: typeof import("ms");
 }

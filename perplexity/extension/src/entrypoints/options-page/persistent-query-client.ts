@@ -12,7 +12,7 @@ export const persistentQueryClient = await (async () => {
 
   persistentQueryClient.queryClient.setQueryDefaults(cplxApiQueries.all(), {
     gcTime: Infinity,
-    staleTime: 5000,
+    staleTime: ms("5s"),
   });
 
   await persistentQueryClient.restoreQueryClient();

@@ -38,7 +38,7 @@ export function useVersionPagination() {
   const changelogQueries = useQueries({
     queries: loadedVersions.map((version) => ({
       ...cplxApiQueries.changelog.detail({ version }),
-      staleTime: 1000 * 60 * 60,
+      staleTime: ms("1h"),
     })),
   });
 

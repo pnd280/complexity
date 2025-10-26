@@ -13,7 +13,7 @@ export default function SpacePreview({ space }: { space: Space }) {
     ...pplxApiQueries.space.detail(space?.uuid ?? ""),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    staleTime: 10000,
+    staleTime: ms("10s"),
   });
 
   const { data: files } = useQuery({
@@ -21,7 +21,7 @@ export default function SpacePreview({ space }: { space: Space }) {
     enabled: spaceDetails?.file_count != null && spaceDetails.file_count > 0,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    staleTime: 30000,
+    staleTime: ms("30s"),
   });
 
   return (

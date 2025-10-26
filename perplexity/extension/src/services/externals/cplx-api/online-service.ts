@@ -75,7 +75,7 @@ export const CplxApiOnlineService = {
     return fetchTextResource(
       getUrl({
         path: "/cache-buster",
-        passiveCacheBusterIntervalMinute: APP_CONFIG.IS_DEV ? undefined : 1,
+        passiveCacheBusterInterval: APP_CONFIG.IS_DEV ? undefined : ms("1m"),
       }).toString(),
     );
   },

@@ -4,14 +4,11 @@ import { APP_CONFIG } from "@/app.config";
 import { fetchTextResource } from "@/utils/misc/utils";
 
 export function getTParam({ interval = 0 }: { interval?: number } = {}) {
-  if (interval <= 0) return Date.now();
-
   const nowInMilliseconds = Date.now();
-  const cacheResetIntervalMs = 1000 * 60 * interval;
 
-  return (
-    Math.floor(nowInMilliseconds / cacheResetIntervalMs) * cacheResetIntervalMs
-  );
+  if (interval <= 0) return nowInMilliseconds;
+
+  return Math.floor(nowInMilliseconds / interval) * interval;
 }
 
 export async function fetchResourceWithSchema<T>({
@@ -38,17 +35,17 @@ export async function fetchResourceWithSchema<T>({
 
 export function getUrl({
   path,
-  passiveCacheBusterIntervalMinute,
+  passiveCacheBusterInterval,
 }: {
   path: string;
-  passiveCacheBusterIntervalMinute?: number;
+  passiveCacheBusterInterval?: number;
 }): URL {
   const url = new URL(APP_CONFIG.CPLX_CDN_URL!);
   url.pathname = path;
   url.searchParams.set(
     "t",
     getTParam({
-      interval: passiveCacheBusterIntervalMinute ?? 0,
+      interval: passiveCacheBusterInterval ?? 0,
     }).toString(),
   );
   return url;

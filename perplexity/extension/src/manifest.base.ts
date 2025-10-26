@@ -48,7 +48,7 @@ export const baseManifest: ManifestV3Options = {
       matches: APP_CONFIG["perplexity-ai"].globalMatches,
       exclude_matches: APP_CONFIG["perplexity-ai"].globalExcludeMatches,
       js: ["src/entrypoints/content-scripts/index.ts"],
-      run_at: "document_end",
+      run_at: "document_start",
     },
     {
       matches: APP_CONFIG["perplexity-ai"].globalMatches,

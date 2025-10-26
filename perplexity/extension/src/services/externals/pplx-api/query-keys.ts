@@ -15,7 +15,7 @@ export const pplxApiQueries = {
       queryOptions({
         queryKey: [...pplxApiQueries.userSettings.all()] as const,
         queryFn: () => PplxApiService.fetchUserSettings(),
-        staleTime: 5000,
+        staleTime: ms("5s"),
         enabled: isLoggedIn,
         gcTime: Infinity,
       }),

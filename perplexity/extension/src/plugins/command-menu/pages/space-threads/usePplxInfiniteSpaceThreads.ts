@@ -13,7 +13,7 @@ export default function usePplxInfiniteSpaceThreads({
       initialPageParam: 0,
       spaceSlug,
     }),
-    staleTime: 5000,
+    staleTime: ms("5s"),
     placeholderData: keepPreviousData,
   });
 
