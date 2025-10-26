@@ -15,6 +15,7 @@ const logger = new Logger({
   printPrefix: false,
 });
 
+export const CHANGELOG_DIR = path.resolve(getRootPath(), "changelogs");
 export const ARTIFACTS_DIR = path.resolve(getRootPath(), "release");
 
 type ExtensionVersionParams = {

@@ -8,15 +8,15 @@ import chalk from "chalk";
 import { Command } from "commander";
 import inquirer from "inquirer";
 
-import { execAsync, getRootPath } from "@/utils";
+import { execAsync } from "@/utils";
 import {
   getExtensionVersion,
   getHash,
   getArtifactPath,
+  CHANGELOG_DIR,
 } from "@/web-stores/utils";
 
 const LOGGER_NAME = packageJson.name;
-const CHANGELOG_DIR = path.resolve(getRootPath(), "changelogs");
 
 const FOOTER_TEMPLATE_PATH = path.resolve(
   __dirname,
@@ -31,8 +31,8 @@ const logger = new Logger({
 const program = new Command();
 
 program
-  .name("create-release-note")
-  .description("Create a release note for the Perplexity browser extension")
+  .name("create-github-release")
+  .description("Create a new GitHub release for the extension")
   .version(packageJson.version)
   .action(main);
 

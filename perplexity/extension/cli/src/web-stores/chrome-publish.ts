@@ -5,6 +5,7 @@ import packageJson from "#/package.json" assert { type: "json" };
 import { Logger } from "@complexity/cli-logger";
 import chalk from "chalk";
 import chromeWebstoreUpload from "chrome-webstore-upload";
+import inquirer from "inquirer";
 
 import {
   getExtensionVersion,
@@ -41,9 +42,26 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  logger.success(
-    "The extension has been uploaded successfully to the Chrome Web Store",
-  );
+  if (
+    (
+      await inquirer.prompt({
+        type: "confirm",
+        name: "publish",
+        message: "Do you want to submit the extension for review?",
+        default: false,
+      })
+    ).publish === true
+  ) {
+    logger.detail("Publishing...");
+    await store.publish();
+    logger.success(
+      "The extension has been submitted for review on the Chrome Web Store",
+    );
+  } else {
+    logger.success(
+      "The extension has been uploaded successfully to the Chrome Web Store",
+    );
+  }
 
   const placeholderPath = getArtifactPath("chrome", extVersion);
   fs.writeFileSync(placeholderPath, "");

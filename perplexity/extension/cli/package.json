@@ -2,8 +2,8 @@
   "name": "pplx-ext-release-cli",
   "type": "module",
   "scripts": {
-    "chrome:upload": "dotenvx run -f .env.chrome --quiet -- bun ./src/web-stores/chrome-upload.ts",
-    "create-release-note": "bun ./src/web-stores/create-release-note.ts",
+    "chrome:publish": "dotenvx run -f .env.chrome --quiet -- bun ./src/web-stores/chrome-publish.ts",
+    "create-github-release": "bun ./src/web-stores/create-github-release.ts",
     "firefox:publish": "dotenvx run -f .env.firefox --quiet -- bun ./src/web-stores/firefox-publish.ts",
     "r2:cache-buster:bump": "dotenvx run -f ./src/r2/.env --quiet -- bun ./src/r2/cache-buster-bump.ts",
     "r2:changelog:push": "dotenvx run -f ./src/r2/.env --quiet -- bun ./src/r2/changelogs-push.ts",

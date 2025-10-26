@@ -3,6 +3,7 @@ import path from "path";
 import process from "process";
 
 import packageJson from "#/package.json" assert { type: "json" };
+import { errorWrapper } from "#/src/utils/wrappers/error-wrapper";
 import { Logger } from "@complexity/cli-logger";
 
 import { execAsync } from "@/utils";
@@ -11,6 +12,7 @@ import {
   validateZipFile,
   getArtifactPath,
   ARTIFACTS_DIR,
+  CHANGELOG_DIR,
 } from "@/web-stores/utils";
 
 const logger = new Logger({
@@ -22,6 +24,11 @@ const extVersion = getExtensionVersion({ defaultVersion: packageJson });
 const zipPath = validateZipFile(extVersion, "firefox");
 const extractDir = path.join(ARTIFACTS_DIR, `${extVersion}-firefox`);
 
+const AMO_VERSION_RELEASE_NOTES_PATH = path.resolve(
+  __dirname,
+  "./amo-version-release-notes.json",
+);
+
 async function main(): Promise<void> {
   verifyEnvVariables();
 
@@ -32,12 +39,30 @@ async function main(): Promise<void> {
   fs.mkdirSync(extractDir, { recursive: true });
 
   try {
+    const [releaseNotes] = errorWrapper(() =>
+      fs.readFileSync(path.join(CHANGELOG_DIR, `${extVersion}.md`), "utf8"),
+    )();
+
+    const metdataData = {
+      version: {
+        release_notes: {
+          "en-US": releaseNotes ?? "",
+        },
+      },
+    };
+
+    fs.writeFileSync(
+      AMO_VERSION_RELEASE_NOTES_PATH,
+      JSON.stringify(metdataData),
+    );
+
     logger.verbose(`Extracting ${zipPath} to ${extractDir}...`);
     await execAsync(`unzip -o "${zipPath}" -d "${extractDir}"`);
 
     logger.info("Signing extension...");
+
     const { stdout } = await execAsync(
-      `web-ext sign --channel listed --source-dir "${extractDir}" --artifacts-dir ${ARTIFACTS_DIR}`,
+      `web-ext sign --channel listed --source-dir "${extractDir}" --artifacts-dir "${ARTIFACTS_DIR}" --amo-metadata "${AMO_VERSION_RELEASE_NOTES_PATH}"`,
     );
     console.log(stdout);
 
