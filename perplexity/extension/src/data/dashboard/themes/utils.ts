@@ -79,6 +79,76 @@ export function generateThemeData(
   };
 }
 
+/**
+ * Fetch community themes from the complexity-themes repository
+ */
+export async function fetchCommunityThemes(): Promise<Theme[]> {
+  try {
+    const response = await fetch(
+      'https://api.github.com/repos/Dreadfxl/complexity-themes/contents/themes'
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch community themes: ${response.statusText}`);
+    }
+    
+    const files = await response.json();
+    
+    // Filter only JSON files
+    const jsonFiles = files.filter((file: any) => 
+      file.name.endsWith('.json') && file.type === 'file'
+    );
+    
+    const themePromises = jsonFiles.map(async (file: any) => {
+      try {
+        const themeResponse = await fetch(file.download_url);
+        if (!themeResponse.ok) {
+          console.warn(`Failed to fetch theme: ${file.name}`);
+          return null;
+        }
+        const themeData = await themeResponse.json();
+        
+        // Add community metadata
+        return {
+          ...themeData,
+          isFromCommunity: true,
+          source: 'community',
+          fileName: file.name,
+        } as Theme & { isFromCommunity: boolean; source: string; fileName: string };
+      } catch (error) {
+        console.warn(`Error parsing theme ${file.name}:`, error);
+        return null;
+      }
+    });
+    
+    const themes = await Promise.all(themePromises);
+    return themes.filter((theme): theme is Theme => theme !== null);
+  } catch (error) {
+    console.error('Error fetching community themes:', error);
+    return [];
+  }
+}
+
+/**
+ * Validate a theme object against the expected schema
+ */
+export function validateTheme(theme: any): theme is Theme {
+  return (
+    typeof theme === 'object' &&
+    theme !== null &&
+    typeof theme.id === 'string' &&
+    /^[a-zA-Z0-9-]+$/.test(theme.id) &&
+    typeof theme.title === 'string' &&
+    theme.title.length > 0 &&
+    Array.isArray(theme.displayBannerColors) &&
+    theme.displayBannerColors.length > 0 &&
+    theme.displayBannerColors.every((color: any) => 
+      typeof color === 'string' && /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/.test(color)
+    ) &&
+    typeof theme.css === 'string'
+  );
+}
+
 type ColorPalette = {
   light: {
     super100: string;
