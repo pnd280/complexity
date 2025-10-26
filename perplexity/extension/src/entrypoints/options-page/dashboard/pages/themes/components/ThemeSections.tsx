@@ -1,7 +1,16 @@
 import { Tabs, TabContent, TabsList, TabTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { Theme } from "@/data/dashboard/themes/theme.types";
 import ThemeCard from "@/entrypoints/options-page/dashboard/pages/themes/components/ThemeCard/ThemeCard";
+import { CommunityThemeCard } from "@/entrypoints/options-page/dashboard/pages/themes/components/CommunityThemeCard";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useCommunityThemes } from "@/hooks/useCommunityThemes";
+
+import TablerRefresh from "~icons/tabler/refresh";
+import TablerAlertTriangle from "~icons/tabler/alert-triangle";
+import TablerExternalLink from "~icons/tabler/external-link";
 
 type ThemeSectionsProps = {
   builtInThemes: Theme[];
@@ -47,6 +56,91 @@ function ThemesGrid({
   );
 }
 
+function CommunityThemesGrid() {
+  const { themes, isLoading, error, refetch } = useCommunityThemes();
+
+  if (isLoading) {
+    return (
+      <div className="x:grid x:grid-cols-1 x:gap-4 x:md:grid-cols-2 x:lg:grid-cols-3 x:xl:grid-cols-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="x:space-y-3">
+            <Skeleton className="x:h-32 x:w-full" />
+            <Skeleton className="x:h-4 x:w-3/4" />
+            <Skeleton className="x:h-3 x:w-1/2" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert>
+        <TablerAlertTriangle className="x:h-4 x:w-4" />
+        <AlertDescription className="x:flex x:items-center x:justify-between">
+          <span>Failed to load community themes: {error}</span>
+          <Button variant="outline" size="sm" onClick={refetch}>
+            <TablerRefresh className="x:mr-2 x:h-4 x:w-4" />
+            Retry
+          </Button>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (themes.length === 0) {
+    return (
+      <div className="x:text-center x:py-12">
+        <div className="x:text-muted-foreground x:mb-4">
+          No community themes available yet.
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            window.open('https://github.com/Dreadfxl/complexity-themes', '_blank');
+          }}
+        >
+          <TablerExternalLink className="x:mr-2 x:h-4 x:w-4" />
+          Contribute a Theme
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="x:space-y-4">
+      <div className="x:flex x:items-center x:justify-between">
+        <div className="x:text-sm x:text-muted-foreground">
+          {themes.length} theme{themes.length === 1 ? '' : 's'} available
+        </div>
+        <div className="x:flex x:gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              window.open('https://github.com/Dreadfxl/complexity-themes', '_blank');
+            }}
+          >
+            <TablerExternalLink className="x:mr-2 x:h-4 x:w-4" />
+            Browse Repository
+          </Button>
+          <Button variant="outline" size="sm" onClick={refetch}>
+            <TablerRefresh className="x:mr-2 x:h-4 x:w-4" />
+            Refresh
+          </Button>
+        </div>
+      </div>
+      
+      <div className="x:grid x:grid-cols-1 x:gap-4 x:md:grid-cols-2 x:lg:grid-cols-3 x:xl:grid-cols-4">
+        {themes.map((theme) => (
+          <CommunityThemeCard key={theme.id} theme={theme} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MobileThemeSections({
   builtInThemes,
   localThemes,
@@ -78,9 +172,7 @@ function MobileThemeSections({
       )}
 
       <TabContent value="community" className="x:mt-4">
-        <div className="x:text-center x:text-muted-foreground x:md:text-left">
-          Coming soon
-        </div>
+        <CommunityThemesGrid />
       </TabContent>
     </Tabs>
   );
@@ -108,7 +200,7 @@ function DesktopThemeSections({
 
       <section>
         <h2 className="x:mb-4 x:text-lg x:font-semibold">Community Themes</h2>
-        <div className="x:text-muted-foreground">Coming soon</div>
+        <CommunityThemesGrid />
       </section>
     </div>
   );
