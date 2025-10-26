@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
 import type { ThemeFormValues } from "@/data/dashboard/themes/theme.types";
@@ -11,9 +11,12 @@ type ColorInputProps = {
 };
 
 export function ColorInput({ value, onChange, disabled }: ColorInputProps) {
-  const { watch } = useFormContext<ThemeFormValues>();
+  const { control } = useFormContext<ThemeFormValues>();
 
-  const accentColorSelection = watch("accentColorSelection");
+  const accentColorSelection = useWatch({
+    name: "accentColorSelection",
+    control,
+  });
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value;

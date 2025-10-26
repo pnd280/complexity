@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 import Tooltip from "@/components/Tooltip";
 import {
@@ -86,10 +86,19 @@ function ActionOption({ value, icon, tooltip, isSelected }: ActionOptionProps) {
 }
 
 export default function BuiltInColorPicker() {
-  const { watch, setValue, resetField } = useFormContext<ThemeFormValues>();
+  const { control, setValue, resetField } = useFormContext<ThemeFormValues>();
 
-  const accentColorSelection = watch("accentColorSelection");
-  const selectedColor = watch("builtInAccentColor") ?? "cplx-blue";
+  const accentColorSelection = useWatch({
+    name: "accentColorSelection",
+    control,
+  });
+
+  const selectedColor =
+    useWatch({
+      name: "builtInAccentColor",
+      control,
+    }) ?? "cplx-blue";
+
   const allColors = [...cplxColors, ...cometColors] as ColorPalette[];
 
   const handleColorSelect = (color: BuiltInColorValue) => {

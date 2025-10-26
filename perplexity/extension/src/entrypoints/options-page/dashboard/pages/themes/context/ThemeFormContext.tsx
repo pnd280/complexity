@@ -18,10 +18,11 @@ export const ThemeFormContext = createContext<ThemeFormContextType | null>(
 
 export function useThemeFormContext() {
   const context = use(ThemeFormContext);
-  if (!context) {
-    throw new Error(
-      "useThemeFormContext must be used within a ThemeFormProvider",
-    );
-  }
+
+  invariant(
+    context != null,
+    "useThemeFormContext must be used within a ThemeFormProvider",
+  );
+
   return context;
 }
