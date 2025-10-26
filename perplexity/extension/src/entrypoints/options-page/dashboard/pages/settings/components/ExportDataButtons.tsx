@@ -4,6 +4,7 @@ import type { ExtensionData } from "@/data/dashboard/extension-data.types";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
 import { db as indexedDb } from "@/services/infra/indexed-db";
+import downloadFile from "@/utils/misc/download-file";
 
 import TablerCheck from "~icons/tabler/check";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
@@ -40,27 +41,11 @@ export default function ExportDataButtons() {
   };
 
   const handleSaveAsFile = async () => {
-    try {
-      const settings = await getExportData();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const handle = await (window as any).showSaveFilePicker({
-        suggestedName: `complexity-settings-${new Date().toISOString()}.json`,
-        types: [
-          {
-            description: "JSON File",
-            accept: { "application/json": [".json"] },
-          },
-        ],
-      });
-
-      const writable = await handle.createWritable();
-      await writable.write(settings);
-      await writable.close();
-    } catch (error: unknown) {
-      if (error instanceof Error && error.name !== "AbortError") {
-        console.error("Failed to save file:", error);
-      }
-    }
+    const settings = await getExportData();
+    await downloadFile({
+      data: settings,
+      filename: `complexity-settings-${new Date().toISOString()}.json`,
+    });
   };
 
   return (

@@ -5,6 +5,7 @@ import { getPlatform } from "@/hooks/usePlatformDetection";
 import { extensionPermissionsQueries } from "@/services/infra/extension-api-wrappers/extension-permissions/query-keys";
 import { useExtensionPermissions } from "@/services/infra/extension-api-wrappers/extension-permissions/useExtensionPermissions";
 import { ExtensionSettingsStorageService } from "@/services/infra/extension-api-wrappers/extension-settings/storage/service-init.bg-worker";
+import downloadFile from "@/utils/misc/download-file";
 
 export type ExportMetadata = {
   cplxVersion: string;
@@ -93,20 +94,10 @@ export function useExportDebugData() {
   const saveAsFile = async () => {
     try {
       const data = await buildExportData();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const handle = await (window as any).showSaveFilePicker({
-        suggestedName: `complexity-debug-data-${new Date().toISOString()}.json`,
-        types: [
-          {
-            description: "JSON File",
-            accept: { "application/json": [".json"] },
-          },
-        ],
+      await downloadFile({
+        data,
+        filename: `complexity-debug-data-${new Date().toISOString()}.json`,
       });
-
-      const writable = await handle.createWritable();
-      await writable.write(data);
-      await writable.close();
       closeDialog();
     } catch (error: unknown) {
       if (error instanceof Error && error.name !== "AbortError") {

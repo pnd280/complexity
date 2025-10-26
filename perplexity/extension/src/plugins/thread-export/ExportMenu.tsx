@@ -15,6 +15,7 @@ import type { ExportOption } from "@/plugins/thread-export/export-options";
 import { ExportActions } from "@/plugins/thread-export/ExportActions";
 import { ExportFormatSelect } from "@/plugins/thread-export/ExportFormatSelect";
 import { useCopyPplxThread } from "@/plugins/thread-export/hooks/useCopyPplxThread";
+import downloadFile from "@/utils/misc/download-file";
 import { parseUrl } from "@/utils/misc/utils";
 
 import TablerCheck from "~icons/tabler/check";
@@ -49,15 +50,11 @@ const ExportMenu = memo(() => {
           `thread-${new Date().getTime()}`) +
         (withCitations ? "" : " (no-citations)");
       const content = await getContent({ withCitations });
-      const blob = new Blob([content], { type: "text/markdown" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${document.title.substring(0, 100) ?? slug}.md`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      const filename = `${document.title.substring(0, 100) ?? slug}.md`;
+      await downloadFile({
+        data: content,
+        filename,
+      });
     } catch (error) {
       console.error("Failed to download:", error);
       toast({
