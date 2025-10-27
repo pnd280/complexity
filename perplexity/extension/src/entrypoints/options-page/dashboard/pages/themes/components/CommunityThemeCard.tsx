@@ -25,7 +25,6 @@ import { LocalThemesService } from "@/plugins/__core__/custom-theme/indexed-db/s
 import { useLocalThemes } from "@/plugins/__core__/custom-theme/indexed-db/useLocalThemes";
 
 import TablerDownload from "~icons/tabler/download";
-import TablerEye from "~icons/tabler/eye";
 import TablerCheck from "~icons/tabler/check";
 
 type CommunityThemeCardProps = {
@@ -93,12 +92,6 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
     }
   };
 
-  const handlePreview = () => {
-    toast.info(
-      `Theme: ${theme.title}\nDescription: ${theme.description || "No description"}`,
-    );
-  };
-
   return (
     <Card className="x:flex x:h-full x:flex-col">
       <CardHeader className="x:pb-3">
@@ -127,28 +120,17 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
             />
           ))}
         </div>
-
         <div className="x:text-xs x:text-muted-foreground">
           Source: {theme.fileName}
         </div>
       </CardContent>
 
-      <CardFooter className="x:gap-2 x:pt-3">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handlePreview}
-          className="x:flex-1"
-        >
-          <TablerEye className="x:mr-2 x:size-4" />
-          Preview
-        </Button>
-
+      <CardFooter className="x:pt-3">
         <Button
           size="sm"
           onClick={handleInstall}
           disabled={isInstalling || isInstalled}
-          className="x:flex-1"
+          className="x:w-full"
         >
           {isInstalled ? (
             <>
