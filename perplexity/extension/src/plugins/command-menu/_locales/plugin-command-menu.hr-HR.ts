@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Nema rezultata",
     current: "Trenutno",
+    expires: "Ističe {date}",
   },
 } as const satisfies Translations;

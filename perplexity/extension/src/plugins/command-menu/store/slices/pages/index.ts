@@ -44,7 +44,10 @@ export const createPagesStackSlice: BoundStateCreator<PagesStackSlice> = (
     set({
       pageStack: newStack,
       shouldLocalFilter: page.shouldLocalFilter,
-      searchValue: "",
+      searchValue:
+        page.args != null && "searchValue" in page.args
+          ? page.args.searchValue
+          : "",
       selectingValue: "",
       sidecarOpen: page.sidecarOpen,
     });

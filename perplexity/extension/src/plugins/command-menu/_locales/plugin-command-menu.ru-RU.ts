@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Результаты не найдены",
     current: "Текущий",
+    expires: "Истекает {date}",
   },
 } as const satisfies Translations;

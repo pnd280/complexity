@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Nenalezeny žádné výsledky",
     current: "Aktuální",
+    expires: "Vyprší {date}",
   },
 } as const satisfies Translations;

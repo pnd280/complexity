@@ -1,6 +1,7 @@
 import { Highlight } from "@ark-ui/react/highlight";
 import { isHotkeyPressed } from "react-hotkeys-hook";
 
+import ClockTemporary from "@/components/icons/ClockTemporary";
 import { Badge } from "@/components/ui/badge";
 import {
   CommandItem,
@@ -16,7 +17,7 @@ import { useCurrentPage } from "@/plugins/command-menu/hooks/useCurrentPage";
 import SpaceBadge from "@/plugins/command-menu/pages/threads/SpaceBadge";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import type { ThreadSearchResponseApi } from "@/services/externals/pplx-api/pplx-api.types";
-import { formatRelativeTime } from "@/services/infra/i18n";
+import { formatExactDate, formatRelativeTime } from "@/services/infra/i18n";
 import { jsonUtils } from "@/utils/misc/utils";
 
 type ThreadItemProps = {
@@ -65,7 +66,7 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
           commandMenuStore.getState().setOpen(false);
         }}
       >
-        <CommandItemTitle className="x:flex x:w-full x:items-center x:justify-center">
+        <CommandItemTitle className="x:flex x:w-full x:items-start x:justify-center">
           <div className="x:flex x:min-w-0 x:flex-1 x:items-center x:gap-4">
             <div className="x:truncate x:text-sm">
               <Highlight
@@ -80,12 +81,9 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
                 {t("plugin-command-menu.common.current")}
               </Badge>
             )}
-            {!isSpaceThreadsPage && thread.collection && (
-              <SpaceBadge space={thread.collection} />
-            )}
           </div>
-          <CommandItemRightAttributes className="x:ml-2 x:shrink-0 x:text-xs x:text-nowrap x:text-muted-foreground">
-            {formatRelativeTime(thread.last_query_datetime)}
+          <CommandItemRightAttributes className="x:ml-2 x:flex x:shrink-0 x:flex-col x:items-end x:justify-center x:gap-2 x:text-xs x:text-nowrap x:text-muted-foreground">
+            <div>{formatRelativeTime(thread.last_query_datetime)}</div>
           </CommandItemRightAttributes>
         </CommandItemTitle>
         {firstAnswer != null && (
@@ -98,6 +96,26 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
             />
           </div>
         )}
+        <div className="x:flex x:w-full x:items-center x:gap-2">
+          {thread.expiry_time && (
+            <div className="x:mt-2 x:flex x:items-center x:gap-4">
+              <div className="x:flex x:items-center x:gap-1 x:rounded-xl x:border x:border-dashed x:border-border/50 x:px-2 x:py-1 x:text-xs x:text-muted-foreground">
+                <ClockTemporary />
+                <span>Temporary Thread</span>
+              </div>
+              <div className="x:text-xs x:text-muted-foreground">
+                {t("plugin-command-menu.common.expires", {
+                  date: formatExactDate(thread.expiry_time),
+                })}
+              </div>
+            </div>
+          )}
+          {!isSpaceThreadsPage && thread.collection && (
+            <div className="x:ml-auto">
+              <SpaceBadge space={thread.collection} />
+            </div>
+          )}
+        </div>
       </CommandItem>
     </a>
   );

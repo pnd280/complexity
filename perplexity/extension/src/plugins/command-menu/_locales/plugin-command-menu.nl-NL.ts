@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Geen resultaten gevonden",
     current: "Huidige",
+    expires: "Verloopt {date}",
   },
 } as const satisfies Translations;

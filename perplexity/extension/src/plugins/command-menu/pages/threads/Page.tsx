@@ -3,6 +3,7 @@ import { ThreadsSearchFiltersProvider } from "@/plugins/command-menu/pages/threa
 import ThreadsSearchFilters from "@/plugins/command-menu/pages/threads/filters/Index";
 import ThreadCommandItems from "@/plugins/command-menu/pages/threads/ThreadCommandItems";
 import type { ThreadsSearchPayload } from "@/services/externals/pplx-api/pplx-api.types";
+import { useCommandMenuStore } from "../../store";
 
 declare module "@/plugins/command-menu/store/slices/pages/types" {
   interface CommandMenuPagesArgsRegistry {

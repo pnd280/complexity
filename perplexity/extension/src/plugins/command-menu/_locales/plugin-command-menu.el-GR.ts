@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Δεν βρέθηκαν αποτελέσματα",
     current: "Τρέχον",
+    expires: "Λήγει {date}",
   },
 } as const satisfies Translations;

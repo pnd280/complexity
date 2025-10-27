@@ -116,6 +116,7 @@ export const ThreadSearchResponseApiSchema = z.object({
   context_uuid: z.string(),
   uuid: z.string(),
   slug: z.string(),
+  expiry_time: z.string().nullable(),
   title: z.string(),
   first_answer: z.string(),
   thread_access: z.number(),

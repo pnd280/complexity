@@ -46,7 +46,7 @@ async function main(): Promise<void> {
     const metdataData = {
       version: {
         release_notes: {
-          "en-US": releaseNotes ?? "",
+          "en-US": releaseNotes ?? "No changelog for this version",
         },
       },
     };

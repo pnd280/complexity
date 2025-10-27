@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "কোন ফলাফল পাওয়া যায়নি",
     current: "বর্তমান",
+    expires: "{date} এ মেয়াদ শেষ হয়",
   },
 } as const satisfies Translations;

@@ -1,3 +1,5 @@
+import type { OmitKeyof } from "@tanstack/react-query";
+
 import type { ThreadsSearchPayload } from "@/services/externals/pplx-api/pplx-api.types";
 
 export type SourceValue = ThreadsSearchPayload["querySourceFilter"];
@@ -6,7 +8,10 @@ export type WithTemporaryThreadValue =
   ThreadsSearchPayload["withTemporaryThreads"];
 export type SortValue = ThreadsSearchPayload["ascending"];
 
-export type ThreadsSearchFiltersState = ThreadsSearchPayload;
+export type ThreadsSearchFiltersState = OmitKeyof<
+  ThreadsSearchPayload,
+  "limit" | "offset" | "searchValue"
+>;
 
 export type ThreadsSearchFiltersActions = {
   setSource: (value: SourceValue) => void;
@@ -21,19 +26,20 @@ export type ThreadsSearchFiltersContextValue = {
   actions: ThreadsSearchFiltersActions;
 };
 
-export const defaultFiltersState: ThreadsSearchFiltersState = {};
+export const defaultFiltersState: ThreadsSearchFiltersState = {
+  withTemporaryThreads: true,
+};
 
 export const ThreadsSearchFiltersContext =
   createContext<ThreadsSearchFiltersContextValue | null>(null);
 
 export function useThreadsSearchFilters() {
-  const context = useContext(ThreadsSearchFiltersContext);
+  const context = use(ThreadsSearchFiltersContext);
 
-  if (!context) {
-    throw new Error(
-      "useThreadsSearchFilters must be used within a ThreadsSearchFiltersProvider",
-    );
-  }
+  invariant(
+    context != null,
+    "useThreadsSearchFilters must be used within a ThreadsSearchFiltersProvider",
+  );
 
   return context;
 }

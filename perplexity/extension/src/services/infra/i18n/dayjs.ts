@@ -36,6 +36,10 @@ export function formatRelativeTime(date: string) {
   return input.format("ll");
 }
 
+export function formatExactDate(date: string) {
+  return dayjs.utc(date).local().format("ll");
+}
+
 export async function initializeDayjsLocale() {
   const language = await getLanguage();
 

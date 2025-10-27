@@ -177,7 +177,7 @@ export class PplxApiService {
         ascending,
         thread_type_filter: threadTypeFilter,
         query_source_filter: querySourceFilter,
-        with_temporary_threads: withTemporaryThreads,
+        with_temporary_threads: withTemporaryThreads ? undefined : false,
       }),
       headers: {
         "Content-Type": "application/json",

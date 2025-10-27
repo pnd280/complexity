@@ -10,15 +10,21 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:languageModelSelector:modelSelectionMismatchWarning",
-    dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
+    dependencies: [
+      "cache:pluginsEnableStates",
+      "cache:extensionSettings",
+      "store:pluginGuards",
+    ],
     loader: ({
       "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:extensionSettings": extensionSettings,
+      "store:pluginGuards": pluginGuards,
     }) => {
       if (
         !pluginsEnableStates["queryBox:languageModelSelector"] ||
         !extensionSettings.plugins["queryBox:languageModelSelector"]
-          .showModelSelectionMismatchWarning
+          .showModelSelectionMismatchWarning ||
+        pluginGuards.subTier == null
       )
         return;
 
@@ -28,18 +34,14 @@ export default function () {
           if (messageBlocks == null) return;
 
           for (const messageBlock of messageBlocks) {
-            if (
-              messageBlock.content.displayModel !== "turbo" &&
-              messageBlock.content.userSelectedModel !==
-                messageBlock.content.displayModel
-            ) {
-              const $displayModelButton =
-                messageBlock.nodes.$displayModelButton;
-
-              if (!$displayModelButton[0]) continue;
-
-              $displayModelButton.addClass("cplx-model-mismatch-warning");
-            }
+            messageBlock.nodes.$displayModelButton.toggleClass(
+              "cplx-model-mismatch-warning",
+              messageBlock.content.displayModel != null &&
+                messageBlock.content.userSelectedModel != null &&
+                messageBlock.content.displayModel !== "turbo" &&
+                messageBlock.content.userSelectedModel !==
+                  messageBlock.content.displayModel,
+            );
           }
         },
         {

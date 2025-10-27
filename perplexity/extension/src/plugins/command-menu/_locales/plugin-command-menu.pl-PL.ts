@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Nie znaleziono wyników",
     current: "Bieżący",
+    expires: "Wygasa {date}",
   },
 } as const satisfies Translations;

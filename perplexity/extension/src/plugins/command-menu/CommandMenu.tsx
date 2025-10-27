@@ -1,11 +1,6 @@
 import { useHotkeys } from "react-hotkeys-hook";
 
-import {
-  Command,
-  CommandDialog,
-  CommandList,
-  useCommandListManualScroll,
-} from "@/components/ui/command";
+import { Command, CommandDialog, CommandList } from "@/components/ui/command";
 import CommandFooter from "@/plugins/command-menu/components/CommandFooter";
 import CommandInput from "@/plugins/command-menu/components/CommandInput";
 import CommandSidecar from "@/plugins/command-menu/components/CommandSidecar";
@@ -29,15 +24,7 @@ export function CommandMenu() {
     setSidecarOpen,
   } = useCommandMenuStore();
 
-  const commandListRef = useRef<HTMLDivElement>(null);
-
   const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
-
-  useCommandListManualScroll({
-    enabled: open,
-    commandListRef,
-    willUpdateValue: selectingValue,
-  });
 
   useHotkeys(
     keysToString(settings.keybindings.toggle),
@@ -93,9 +80,7 @@ export function CommandMenu() {
             )}
           >
             <CommandList
-              ref={commandListRef}
-              data-command-menu-list
-              className={cn("x:min-h-[400px]", {
+              className={cn("x:min-h-[400px] x:scroll-pt-32 x:scroll-pb-22", {
                 "x:h-[500px] x:max-h-[500px]": sidecarOpen,
               })}
             >

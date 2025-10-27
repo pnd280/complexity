@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "找不到結果",
     current: "目前",
+    expires: "於 {date} 過期",
   },
 } as const satisfies Translations;

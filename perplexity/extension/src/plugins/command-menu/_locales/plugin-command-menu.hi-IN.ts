@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "कोई परिणाम नहीं मिला",
     current: "वर्तमान",
+    expires: "{date} को समाप्त होता है",
   },
 } as const satisfies Translations;

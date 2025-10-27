@@ -40,7 +40,7 @@ const PromptHistoryCommandMenuItem = memo(
           slashCommandMenuStore.getState().setOpen(false);
         }}
       >
-        <CommandItemTitle className="x:line-clamp-3 x:break-words x:whitespace-pre-wrap">
+        <CommandItemTitle className="x:line-clamp-3 x:wrap-break-word x:whitespace-pre-wrap">
           <Highlight
             ignoreCase
             matchAll

@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Tidak ada hasil ditemukan",
     current: "Saat Ini",
+    expires: "Berakhir {date}",
   },
 } as const satisfies Translations;

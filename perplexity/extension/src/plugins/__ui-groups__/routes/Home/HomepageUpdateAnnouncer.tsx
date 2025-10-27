@@ -8,15 +8,16 @@ export default function HomepageUpdateAnnouncer() {
 
   const slogan = useHomeDomObserverStore((store) => store.slogan, deepEqual);
 
-  const anchor = slogan ? $(slogan).find(">*").first()[0] : null;
+  if (!isUpdateAvailable || !slogan) return null;
 
-  if (!anchor || document.body.contains(anchor) || !isUpdateAvailable)
-    return null;
+  const $container = $(slogan).parent().parent();
+
+  if (!$container.length) return null;
 
   return (
-    <Portal container={anchor}>
+    <Portal container={$container[0]}>
       <ExtensionUpdateInfoDialogWrapper>
-        <div className="x:w-64 x:text-xs x:text-muted-foreground">
+        <div className="x:absolute x:bottom-0 x:left-1/2 x:mb-4 x:-translate-x-1/2 x:text-xs x:text-muted-foreground">
           A new version of Complexity is available!
         </div>
       </ExtensionUpdateInfoDialogWrapper>

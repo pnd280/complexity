@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "결과를 찾을 수 없음",
     current: "현재",
+    expires: "{date}에 만료됨",
   },
 } as const satisfies Translations;

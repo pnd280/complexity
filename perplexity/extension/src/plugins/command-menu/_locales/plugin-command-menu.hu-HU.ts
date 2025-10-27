@@ -90,5 +90,6 @@ export default {
   common: {
     noResults: "Nincs találat",
     current: "Jelenlegi",
+    expires: "Lejár: {date}",
   },
 } as const satisfies Translations;
