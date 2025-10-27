@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +36,7 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
   const [isInstalled, setIsInstalled] = useState(false);
   const { data: localThemes, refetch: refetchLocalThemes } = useLocalThemes();
   const { mutation: settingsMutation } = useExtensionSettings();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (localThemes?.some((localTheme) => localTheme.id === theme.id)) {
@@ -81,12 +82,19 @@ export function CommunityThemeCard({ theme }: CommunityThemeCardProps) {
 
       await refetchLocalThemes();
       setIsInstalled(true);
-      toast.success(`Theme "${theme.title}" has been installed and activated!`);
+      toast({
+        title: "Theme Installed",
+        description: `"${theme.title}" has been installed and activated.`,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
       console.error("Error installing theme:", error);
-      toast.error(`Failed to install theme: ${errorMessage}`);
+      toast({
+        variant: "caution",
+        title: "Installation Failed",
+        description: errorMessage,
+      });
     } finally {
       setIsInstalling(false);
     }
