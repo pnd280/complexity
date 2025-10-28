@@ -1,9 +1,3 @@
----
-description:
-globs:
-alwaysApply: false
----
-
 ## Task
 
 1. UPDATE or CREATE the locale files for the specified language (ALWAYS use English as reference).

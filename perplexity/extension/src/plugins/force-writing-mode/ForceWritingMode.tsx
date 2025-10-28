@@ -28,8 +28,8 @@ const normalizeCss = await getVersionedRemoteResource(
 
 export function ForceWritingModeToggle() {
   const [isOpen, setIsOpen] = useState(false);
-  const [warningShown, setWarningShown] = useLocalStorage(
-    "cplx.spacesThreadsForceWritingMode.warningShown",
+  const [showWarning, setShowWarning] = useLocalStorage(
+    "cplx.plugin:queryBox:spacesThreadsForceWritingMode:showWarning",
     true,
   );
 
@@ -59,7 +59,7 @@ export function ForceWritingModeToggle() {
 
   return (
     <Dialog
-      open={warningShown ? isOpen : false}
+      open={showWarning ? isOpen : false}
       onOpenChange={({ open }) => {
         if (!forceWritingMode) return;
 
@@ -92,7 +92,7 @@ export function ForceWritingModeToggle() {
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
-            <Button onClick={() => setWarningShown(false)}>
+            <Button onClick={() => setShowWarning(false)}>
               I understand, don't show again
             </Button>
           </DialogClose>

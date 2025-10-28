@@ -1,8 +1,11 @@
-import type { ScopedQueryBoxStoreType } from "@/plugins/__ui-groups__/elements/query-box/_context/scoped-store";
-import { createQueryBoxScopedStore } from "@/plugins/__ui-groups__/elements/query-box/_context/scoped-store";
+import type { QueryBoxType } from "@/plugins/__ui-groups__/elements/query-box/types";
+
+type ScopedQueryBoxStore = {
+  type: QueryBoxType;
+};
 
 type ScopedQueryBoxContext = {
-  store: ScopedQueryBoxStoreType;
+  store: ScopedQueryBoxStore;
 };
 
 export const ScopedQueryBoxContext =
@@ -13,14 +16,8 @@ export const ScopedQueryBoxContextProvider = ({
   storeValue,
 }: {
   children: React.ReactNode;
-  storeValue: ScopedQueryBoxStoreType;
+  storeValue: ScopedQueryBoxStore;
 }) => {
-  const [store] = useState(() => createQueryBoxScopedStore(storeValue));
-
-  useEffect(() => {
-    store.setState(storeValue);
-  }, [store, storeValue]);
-
   return (
     <ScopedQueryBoxContext
       value={{

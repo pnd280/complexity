@@ -3,12 +3,12 @@ import { Portal } from "@/components/ui/portal";
 import useExtensionUpdate from "@/hooks/useExtensionUpdate";
 import { useHomeDomObserverStore } from "@/plugins/__core__/dom-observers/home/store";
 
-export default function HomepageUpdateAnnouncer() {
+export default function UpdateAnnouncer() {
   const { isUpdateAvailable } = useExtensionUpdate();
 
   const slogan = useHomeDomObserverStore((store) => store.slogan, deepEqual);
 
-  if (!isUpdateAvailable || !slogan) return null;
+  if (!slogan || !isUpdateAvailable) return null;
 
   const $container = $(slogan).parent().parent();
 

@@ -7,7 +7,7 @@ import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-in
 import {
   ScopedQueryBoxContext,
   useScopedQueryBoxContext,
-} from "@/plugins/__ui-groups__/elements/query-box/_context/context";
+} from "@/plugins/__ui-groups__/elements/query-box/context";
 import { getActiveQueryBoxTextbox } from "@/plugins/__ui-groups__/elements/query-box/utils";
 import CometAssistantLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/CometAssistantTriggerButton";
 import DesktopContent from "@/plugins/language-model-selector/components/desktop";

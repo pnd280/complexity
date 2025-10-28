@@ -40,7 +40,7 @@ body:
     id: suggested-translation
     attributes:
       label: Suggested Translation
-      description: If you have a suggestion for the correct translation, please provide it here.
+      description: If you have a suggestion for the correct translation, please provide it here
       placeholder: Your suggested translation...
     validations:
       required: false
@@ -48,7 +48,7 @@ body:
     id: context
     attributes:
       label: Context
-      description: Where did you find this translation? Please provide as much context as possible.
+      description: Where did you find this translation? Please provide as much context as possible
       placeholder: |
         - Location in the settings dashboard/perplexity.ai
         - Screenshot (if possible)

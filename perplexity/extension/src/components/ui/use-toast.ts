@@ -177,18 +177,19 @@ export function toast({ ...props }: Toast) {
 export function useToast() {
   const [state, setState] = useState<State>(memoryState);
 
-  useEffect(
-    function () {
-      listeners.push(setState);
-      return function () {
-        const index = listeners.indexOf(setState);
-        if (index > -1) {
-          listeners.splice(index, 1);
-        }
-      };
-    },
-    [state],
-  );
+  const registerListener = useEffectEvent(() => {
+    listeners.push(setState);
+    return function () {
+      const index = listeners.indexOf(setState);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    };
+  });
+
+  useEffect(() => {
+    return registerListener();
+  }, []);
 
   return {
     ...state,

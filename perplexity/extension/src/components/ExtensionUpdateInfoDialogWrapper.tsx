@@ -7,17 +7,16 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Image } from "@/components/ui/image";
-import { toast } from "@/components/ui/use-toast";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
 import { ContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
 
 import TablerArrowRight from "~icons/tabler/arrow-right";
-import TablerExternalLink from "~icons/tabler/external-link";
-import TablerInfoCircle from "~icons/tabler/info-circle";
+import TablerArrowUpRight from "~icons/tabler/arrow-up-right";
 
 export default function ExtensionUpdateInfoDialogWrapper({
   children,
@@ -44,50 +43,44 @@ export default function ExtensionUpdateInfoDialogWrapper({
     <Dialog>
       <DialogTrigger className="x:w-full">{children}</DialogTrigger>
       <DialogContent className="x:max-h-[80vh] x:overflow-y-auto">
-        <DialogHeader className="x:text-lg x:font-semibold">
-          A new version of the extension is available!
+        <DialogHeader>
+          <DialogTitle>
+            A new version of the extension is available!
+          </DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Please update to receive enhancements and bug fixes.
-        </DialogDescription>
-        <div className="x:flex x:flex-col x:gap-2">
-          <div className="x:mx-auto x:my-0 x:flex x:items-center x:gap-2 x:rounded-md x:border x:border-border/50 x:bg-secondary x:p-4">
-            <div className="">{APP_CONFIG.VERSION}</div>
-            <TablerArrowRight className="x:size-4 x:text-muted-foreground" />
-            <div className="x:text-xl x:font-semibold x:text-primary">
-              {latestVersion}
+          <div>Please update to receive enhancements and bug fixes.</div>
+          <div className="x:mt-4 x:flex x:flex-col x:gap-2">
+            <div className="x:mx-auto x:my-4 x:flex x:items-center x:gap-2">
+              <div className="">{APP_CONFIG.VERSION}</div>
+              <TablerArrowRight className="x:size-4 x:text-muted-foreground" />
+              <div
+                className="x:flex x:cursor-pointer x:items-center x:gap-1 x:text-3xl x:font-semibold x:text-primary x:underline x:decoration-dashed x:underline-offset-4"
+                onClick={() => {
+                  void ContentScriptBgUtilsService.Instance.openFullScreenReleaseNotes(
+                    {
+                      version: latestVersionWithChangelog,
+                    },
+                  );
+                }}
+              >
+                <div>{latestVersion}</div>
+                <TablerArrowUpRight className="x:size-5" />
+              </div>
             </div>
-          </div>
 
-          <div
-            className="x:mx-auto x:flex x:cursor-pointer x:items-center x:gap-2 x:text-muted-foreground x:underline x:hover:text-foreground"
-            role="link"
-            onClick={() => {
-              if (!latestVersion) return;
-
-              void ContentScriptBgUtilsService.Instance.openDirectReleaseNotes({
-                version: latestVersionWithChangelog,
-              });
-            }}
-          >
-            <span>Release Notes</span>
-            <TablerExternalLink className="x:size-4" />
-          </div>
-
-          <div className="x:space-y-2">
-            <div>
-              <TablerInfoCircle className="x:mr-2 x:inline-block x:size-5 x:text-primary" />
-              <span>
+            <div className="x:space-y-2">
+              <div className="x:wrap-break-word x:hyphens-auto">
                 The upgrade should be happening automatically when you restart
-                the browser, or force it to manually update in the{" "}
+                the browser, or force it to manually update in{" "}
                 <ExtensionManagementPageLink />
                 {APP_CONFIG.BROWSER === "firefox" ? (
-                  <span> =&gt; Complexity</span>
+                  <span> =&gt; Complexity.</span>
                 ) : (
-                  "."
+                  ` (remember to turn on Developer mode).`
                 )}
-              </span>
-              <div className="x:w-full">
+              </div>
+              <div className="x:w-full x:overflow-hidden x:rounded-xl x:border x:border-border/50 x:shadow-lg">
                 <Image
                   src={
                     APP_CONFIG.BROWSER === "chrome"
@@ -95,29 +88,12 @@ export default function ExtensionUpdateInfoDialogWrapper({
                       : "https://i.imgur.com/f2x3Mtl.png"
                   }
                   alt="extension-management-page"
-                  className="x:my-4 x:object-cover"
+                  className="x:size-full x:object-cover"
                 />
               </div>
             </div>
-            <div className="x:text-muted-foreground">
-              Or click{" "}
-              <a
-                className="x:underline"
-                href={
-                  APP_CONFIG.BROWSER === "chrome"
-                    ? "https://chromewebstore.google.com/detail/complexity-perplexity-ai/ffppmilmeaekegkpckebkeahjgmhggpj"
-                    : "https://addons.mozilla.org/en-US/firefox/addon/complexity/"
-                }
-                target="_blank"
-                rel="noreferrer"
-              >
-                HERE
-              </a>{" "}
-              to revisit the store and manually reinstall the extension if none
-              of the above works (remember to export your settings!).
-            </div>
           </div>
-        </div>
+        </DialogDescription>
       </DialogContent>
     </Dialog>
   );
@@ -129,15 +105,7 @@ function ExtensionManagementPageLink() {
       role="link"
       className="x:inline-block x:cursor-pointer x:text-primary x:underline"
       onClick={() => {
-        if (APP_CONFIG.BROWSER === "chrome") {
-          void navigator.clipboard.writeText("chrome://extensions");
-        } else {
-          void navigator.clipboard.writeText("about:addons");
-        }
-        toast({
-          title: "✅ Link copied to clipboard",
-          description: "Please manually open the copied link.",
-        });
+        void ContentScriptBgUtilsService.Instance.openExtensionsManagementPage();
       }}
     >
       {APP_CONFIG.BROWSER === "chrome" ? "chrome://extensions" : "about:addons"}

@@ -69,7 +69,7 @@ export default function MobileLanguageModelGroup({
             className="x:gap-2 x:p-4 x:text-base"
             onClick={() => {
               localStorage.setItem(
-                "cplx.last-selected-language-model",
+                "cplx:lastSelectedLanguageModel",
                 model.code,
               );
             }}

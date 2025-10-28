@@ -25,10 +25,10 @@ const { IndexPage: ReleaseNotesPage } = lazily(
     ),
 );
 
-const { DirectReleaseNotesPage } = lazily(
+const { FullScreenReleaseNotesPage } = lazily(
   () =>
     import(
-      "@/entrypoints/options-page/dashboard/pages/release-notes/DirectReleaseNotesPage"
+      "@/entrypoints/options-page/dashboard/pages/release-notes/FullScreenReleaseNotesPage"
     ),
 );
 
@@ -74,8 +74,13 @@ export const router: ReturnType<typeof createHashRouter> = createHashRouter([
         ],
       },
       {
-        path: "direct-release-notes",
-        element: <Page title="Release Notes" page={DirectReleaseNotesPage} />,
+        path: "fs-release-notes",
+        element: (
+          <Page
+            title="Complexity - Release Notes"
+            page={FullScreenReleaseNotesPage}
+          />
+        ),
         loader: ({ request }) => {
           const url = new URL(request.url);
           const version = url.searchParams.get("version");

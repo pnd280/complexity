@@ -1,9 +1,3 @@
----
-description:
-globs:
-alwaysApply: false
----
-
 ## Task
 
 1. Extract strings into the specified `{namespace}.{locale}.ts` locale file.
@@ -15,15 +9,11 @@ alwaysApply: false
 
 ## IMPORTANT RESTRICTIONS:
 
-- NEVER import any dependencies (`t` or `Trans`), they are globally available.
+- NEVER import any dependencies (`t` or `Trans`), they are auto-imported and globally available.
 - ALWAYS use the `t(...)` function directly.
-- NEVER import `t` because it is available globally (auto-imported).
-- ONLY use `Trans` component for complex translations.
-- DO NOT ask for confirmation - just do it.
+- ONLY use `Trans` for translations with component placeholders.
 
 ## TRANSLATION SYNTAXES
-
-### Normal string
 
 ## Examples
 
@@ -31,20 +21,18 @@ alwaysApply: false
 import type { LanguageMessages } from "@complexity/i18n";
 
 export default {
-  pluginsPage: {
-    noPluginsFound: {
-      title: "No plugins found",
-      description:
-        "Try adjusting your search term/filters or <0>request a new one</0> 😉",
-    },
+  noPluginsFound: {
+    title: "No plugins found",
+    description:
+      "Try adjusting your search term/filters or <0>request a new one</0> 😉",
   },
 } as const satisfies LanguageMessages;
 ```
 
 ```tsx
-<div>{t("dashboard-plugins-page.pluginsPage.noPluginsFound.title")}</div>
+<div>{t("noPluginsFound.title")}</div>
 <Trans
-  tKey="dashboard-plugins-page.pluginsPage.noPluginsFound.description"
+  tKey="noPluginsFound.description"
   components={[
     <a
       href="#"

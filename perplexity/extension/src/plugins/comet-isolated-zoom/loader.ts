@@ -59,19 +59,20 @@ export default async function () {
         }
       });
 
-      $(document).on("wheel", (e) => {
-        if (e.ctrlKey || e.metaKey) {
-          e.preventDefault();
-          const wheelEvent = e.originalEvent as WheelEvent | undefined;
-          if (wheelEvent) {
-            if (wheelEvent.deltaY < 0) {
+      document.addEventListener(
+        "wheel",
+        (e) => {
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
               void setZoom(undefined, 0.25);
-            } else if (wheelEvent.deltaY > 0) {
+            } else if (e.deltaY > 0) {
               void setZoom(undefined, -0.25);
             }
           }
-        }
-      });
+        },
+        { passive: false },
+      );
     },
   });
 }

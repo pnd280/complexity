@@ -1,10 +1,22 @@
 import { CometCard } from "@/components/CometCard";
 import PplxComet from "@/components/icons/PplxComet";
 import PplxPro from "@/components/icons/PplxPro";
+import { persistentQueryClient } from "@/entrypoints/options-page/persistent-query-client";
+import { cometAffiliateRemoteResourceConfig } from "@/services/externals/cplx-api/remote-resources/comet-affiliate/index.remote-resources";
+import { getRemoteResource } from "@/services/externals/cplx-api/remote-resources/utils";
 
 import TablerLink from "~icons/tabler/link";
 
+const cometAffiliateConfigPromise = getRemoteResource(
+  cometAffiliateRemoteResourceConfig,
+  persistentQueryClient,
+);
+
 export default function CometAffiliateCard() {
+  const cometAffiliateConfig = use(cometAffiliateConfigPromise);
+
+  if (!cometAffiliateConfig.enabled) return null;
+
   return (
     <div className="x:w-full">
       <CometCard rotateDepth={5} translateDepth={5}>
@@ -16,7 +28,7 @@ export default function CometAffiliateCard() {
             transform: "none",
             opacity: 1,
           }}
-          href="https://pplx.ai/pnd280"
+          href={`https://${cometAffiliateConfig.link}`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -35,7 +47,9 @@ export default function CometAffiliateCard() {
             </div>
             <div className="x:flex x:items-center x:text-muted-foreground">
               <TablerLink className="x:inline-block x:text-xs" />
-              <span className="x:text-xs">&nbsp;pplx.ai/pnd280</span>
+              <span className="x:text-xs">
+                &nbsp;{cometAffiliateConfig.link}
+              </span>
             </div>
           </div>
         </a>

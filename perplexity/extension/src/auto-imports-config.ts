@@ -6,7 +6,14 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
     "react",
     {
       from: "react",
-      imports: ["createContext", "lazy", "memo", "use", "useDeferredValue"],
+      imports: [
+        "createContext",
+        "lazy",
+        "memo",
+        "use",
+        "useDeferredValue",
+        "useEffectEvent",
+      ],
     },
     {
       from: "@complexity/i18n",

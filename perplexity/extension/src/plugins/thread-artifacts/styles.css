@@ -42,10 +42,13 @@ body {
       [data-cplx-artifact-active-panel="list"]
     )
     [data-cplx-component="thread-wrapper"]
-    + div
-    .relative
-    > .bg-base {
-    @apply x:xl:shadow-none;
+    + div {
+    .w-full,
+    .relative {
+      & > .bg-base {
+        @apply x:xl:shadow-none;
+      }
+    }
   }
 
   &[data-cplx-artifact-active-panel="artifact"]

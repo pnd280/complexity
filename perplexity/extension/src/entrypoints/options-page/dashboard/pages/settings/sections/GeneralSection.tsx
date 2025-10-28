@@ -7,18 +7,16 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Image } from "@/components/ui/image";
-import { Switch } from "@/components/ui/switch";
 import ExtensionIconActionSelect from "@/entrypoints/options-page/dashboard/pages/settings/components/ExtensionIconActionSelect";
 import ManagePermissionsDialogWrapper from "@/entrypoints/options-page/dashboard/pages/settings/components/ManagePermissionsDialogWrapper";
 import SettingsItem from "@/entrypoints/options-page/dashboard/pages/settings/SettingsItem";
 import SettingsSection from "@/entrypoints/options-page/dashboard/pages/settings/SettingsSection";
-import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
+import TablerExternalLink from "~icons/tabler/external-link";
 import TablerQuestionCircle from "~icons/tabler/question-circle";
 
 export default function GeneralSection() {
   const navigate = useNavigate();
-  const { settings, mutation } = useExtensionSettings();
 
   return (
     <SettingsSection title="General">
@@ -44,21 +42,13 @@ export default function GeneralSection() {
           <ExtensionIconActionSelect />
         </div>
       </SettingsItem>
-      <SettingsItem title="Show release notes after update">
-        <Switch
-          checked={settings?.showPostUpdateReleaseNotesPopup}
-          onCheckedChange={({ checked }) =>
-            mutation.mutate((store) => {
-              store.showPostUpdateReleaseNotesPopup = checked;
-            })
-          }
-        />
-      </SettingsItem>
       <SettingsItem
         title="Onboarding"
         description="Go through the onboarding experience again"
       >
-        <Button onClick={() => navigate("/onboarding")}>🚀 Onboarding</Button>
+        <Button variant="ghost" onClick={() => navigate("/onboarding")}>
+          <TablerExternalLink />
+        </Button>
       </SettingsItem>
     </SettingsSection>
   );

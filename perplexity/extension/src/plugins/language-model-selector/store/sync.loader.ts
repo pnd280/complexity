@@ -47,7 +47,7 @@ function getModelType(modelCode: LanguageModelCode): LanguageModelType {
 
 function initializeFromCookie(): void {
   const lastSelectedLanguageModel = localStorage.getItem(
-    "cplx.last-selected-language-model",
+    "cplx:lastSelectedLanguageModel",
   );
 
   if (

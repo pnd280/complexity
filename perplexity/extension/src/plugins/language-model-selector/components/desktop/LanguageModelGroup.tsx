@@ -93,10 +93,7 @@ export default function LanguageModelGroup({
           value={model.code}
           className="x:flex x:cursor-pointer x:items-center x:justify-start x:gap-2 x:text-foreground"
           onClick={() => {
-            localStorage.setItem(
-              "cplx.last-selected-language-model",
-              model.code,
-            );
+            localStorage.setItem("cplx:lastSelectedLanguageModel", model.code);
           }}
         >
           <Icon className="x:size-4" />

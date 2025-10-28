@@ -11,9 +11,19 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import { Image } from "@/components/ui/image";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
 import { usePluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
+import { cometAffiliateRemoteResourceConfig } from "@/services/externals/cplx-api/remote-resources/comet-affiliate/index.remote-resources";
+import { getRemoteResource } from "@/services/externals/cplx-api/remote-resources/utils";
+
+const cometAffiliateConfigPromise = getRemoteResource(
+  cometAffiliateRemoteResourceConfig,
+  persistentQueryClient,
+);
 
 export default function CometAffiliateDialog() {
+  const cometAffiliateConfig = use(cometAffiliateConfigPromise);
+
   const isLoggedIn = usePluginGuardsStore((state) => state.isLoggedIn);
   const subTier = usePluginGuardsStore((state) => state.subTier);
 
@@ -22,7 +32,12 @@ export default function CometAffiliateDialog() {
     false,
   );
 
-  if (dismissed || isLoggedIn == null || (isLoggedIn && subTier != null)) {
+  if (
+    !cometAffiliateConfig.enabled ||
+    dismissed ||
+    isLoggedIn == null ||
+    (isLoggedIn && subTier != null)
+  ) {
     return null;
   }
 
@@ -53,7 +68,7 @@ export default function CometAffiliateDialog() {
             />
           </div>
           <a
-            href="https://pplx.ai/pnd280"
+            href={`https://${cometAffiliateConfig.link}`}
             target="_blank"
             rel="noopener noreferrer"
             className="x:block x:px-4"
@@ -86,7 +101,7 @@ export default function CometAffiliateDialog() {
               ref={(el) => {
                 el?.focus();
               }}
-              href="https://pplx.ai/pnd280"
+              href={`https://${cometAffiliateConfig.link}`}
               target="_blank"
               rel="noopener noreferrer"
             >

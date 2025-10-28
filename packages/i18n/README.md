@@ -1,6 +1,6 @@
-# Internationalization (i18n) Guide
+# Internationalization
 
-This guide explains the key formatting options and component usage for translations in this project.
+Custom implementation of internationalization (courtesy of [WebDevSimplified](https://www.youtube.com/watch?v=VbZVx13b2oY)).
 
 ## Formatting Types
 

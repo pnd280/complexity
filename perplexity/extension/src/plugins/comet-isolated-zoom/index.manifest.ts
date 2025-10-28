@@ -18,7 +18,7 @@ export default definePlugin({
     id: "comet:isolatedZoom",
     title: "Comet: Isolated Zoom",
     description:
-      "Enable interface zoom on Comet Assistant without affecting the main page. Use Ctrl/Cmd + Mouse Wheel or Ctrl/Cmd + 0 to reset zoom.",
+      "Enable interface zoom on Comet Assistant without affecting the main page",
     dashboardMeta: {
       tags: ["ui", "cometAssistant", "cometAssistantOnly"],
       categories: ["comet"],

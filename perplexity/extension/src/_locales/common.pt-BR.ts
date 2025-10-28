@@ -11,7 +11,7 @@ export default {
     descriptionLine2:
       "Se o Complexity agrega valor ao seu fluxo de trabalho, por favor, considere contribuir para o seu futuro!",
     cometAffiliate: {
-      title: "Grátis <0/>!",
+      title: "Experimente Comet - Ganhe uma assinatura <0/> gratuita!",
       description:
         "Experimente Comet - um novo navegador da Perplexity - e ganhe uma assinatura <0/> gratuita e, enquanto isso, contribua diretamente para o desenvolvimento do Complexity.",
       claimButton: "Reivindique agora",

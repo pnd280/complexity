@@ -2,7 +2,6 @@ import { Slot } from "@radix-ui/react-slot";
 import { Command as CommandPrimitive } from "cmdk";
 import type { ComponentProps } from "react";
 import * as React from "react";
-import { useEffect } from "react";
 
 import type { DialogProps } from "@/components/ui/dialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";

@@ -1,12 +1,20 @@
+import { Suspense } from "react";
+
 import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
 import CometAffiliateDialog from "@/plugins/__ui-groups__/routes/Home/CometAffiliateDialog";
-import HomepageUpdateAnnouncer from "@/plugins/__ui-groups__/routes/Home/HomepageUpdateAnnouncer";
+import { PostUpdateBadge } from "@/plugins/__ui-groups__/routes/Home/update-announcer/PostUpdateBadge";
+import UpdateAnnouncer from "@/plugins/__ui-groups__/routes/Home/update-announcer/UpdateAnnouncer";
 
 export default function HomepageComponents() {
   return (
     <CsUiPluginsGuard location={["home"]}>
-      <HomepageUpdateAnnouncer />
-      <CometAffiliateDialog />
+      <CsUiPluginsGuard desktopOnly>
+        <PostUpdateBadge />
+        <UpdateAnnouncer />
+      </CsUiPluginsGuard>
+      <Suspense>
+        <CometAffiliateDialog />
+      </Suspense>
     </CsUiPluginsGuard>
   );
 }

@@ -69,6 +69,9 @@ function shouldDehydrateQuery(
 ): boolean {
   const queryKey = query.queryKey;
 
+  // Only persist queries that are truly cacheable
+  if (query.state.status !== "success") return false;
+
   if (excludeKeys.some((exclude) => queryKey.includes(exclude))) {
     return false;
   }

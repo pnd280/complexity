@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { type DeepRequired } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +23,8 @@ type EditThemeProviderProps = {
 };
 
 export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
 
   const initialValues: DeepRequired<ThemeFormValues> = {
@@ -66,6 +68,12 @@ export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
       toast({
         title: "❌ Failed to save theme",
         description: error.message,
+      });
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["localThemes"],
+        exact: true,
       });
     },
   });

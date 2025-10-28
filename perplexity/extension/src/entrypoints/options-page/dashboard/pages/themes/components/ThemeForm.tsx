@@ -1,3 +1,5 @@
+import { useFormState } from "react-hook-form";
+
 import { Button } from "@/components/ui/button";
 import {
   FormProvider,
@@ -19,6 +21,8 @@ import TablerLoaderCircle from "~icons/tabler/loader-2";
 export function ThemeForm() {
   const { form, onSubmit, isPending, submitText, footer } =
     useThemeFormContext();
+
+  const formState = useFormState({ control: form.control });
 
   return (
     <FormProvider {...form}>
@@ -164,9 +168,7 @@ export function ThemeForm() {
           {footer}
           <Button
             type="submit"
-            disabled={
-              isPending || Object.keys(form.formState.errors).length > 0
-            }
+            disabled={isPending || Object.keys(formState.errors).length > 0}
           >
             {isPending ? (
               <TablerLoaderCircle className="x:size-4 x:animate-spin" />

@@ -6,6 +6,7 @@ export type MessageBlock = {
     $wrapper: JQuery<HTMLElement>;
     $query: JQuery<HTMLElement>;
     $queryEditButtonGroup: JQuery<HTMLElement>;
+    $contentWrapper: JQuery<HTMLElement>;
     $answer: JQuery<HTMLElement>;
     $footer: JQuery<HTMLElement>;
     $displayModelButton: JQuery<HTMLElement>;

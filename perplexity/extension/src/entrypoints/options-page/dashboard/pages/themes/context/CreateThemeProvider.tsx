@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { DeepRequired } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,8 @@ type CreateThemeProviderProps = {
 };
 
 export function CreateThemeProvider({ children }: CreateThemeProviderProps) {
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
 
   const initialValues: DeepRequired<ThemeFormValues> = {
@@ -53,6 +55,12 @@ export function CreateThemeProvider({ children }: CreateThemeProviderProps) {
       toast({
         title: "❌ Failed to create theme",
         description: error.message,
+      });
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["localThemes"],
+        exact: true,
       });
     },
   });

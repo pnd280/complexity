@@ -12,7 +12,7 @@ export default {
     descriptionLine2:
       "Ako Complexity dodaje vrijednost vašem tijeku rada, razmislite o doprinosu njegovoj budućnosti!",
     cometAffiliate: {
-      title: "Besplatno <0/>!",
+      title: "Isprobajte Comet - Dobijte besplatnu <0/> pretplatu!",
       description:
         "Isprobajte Comet - novi preglednik od Perplexityja - i dobijte besplatnu <0/> pretplatu i istovremeno izravno doprinijeti razvoju Complexityja.",
       claimButton: "Zatražite sada",

@@ -1,10 +1,10 @@
 import { useDebounce, useWindowSize } from "@uidotdev/usehooks";
-import debounce from "lodash/debounce";
 
 import { usePplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
 import { useSpaRouter } from "@/plugins/__core__/_main-world/spa-router/utils";
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import type { TocItem } from "@/plugins/thread-toc/useThreadTocItems";
 
 export const PANEL_WIDTH = 230;
 
@@ -13,19 +13,23 @@ type PanelPosition = {
   isOverflowing: boolean;
 };
 
-export function usePanelPosition(): PanelPosition | null {
-  const { url } = useSpaRouter();
-  const windowSize = useDebounce(useWindowSize(), 200);
-  const [panelPosition, setPanelPosition] = useState<PanelPosition | null>(
-    null,
-  );
+export function usePanelPosition({
+  tocItems,
+}: {
+  tocItems: TocItem[];
+}): PanelPosition | null {
   const threadWrapper = useThreadDomObserverStore(
     (store) => store.$wrapper?.[0],
     deepEqual,
   );
 
+  const activeMessageBlockId = tocItems.findIndex(
+    (item) => item.isActiveTopMost,
+  );
+
   const threadContentWrapper = useThreadMessageBlocksDomObserverStore(
-    (store) => store.messageBlocks?.[0]?.nodes.$answer[0],
+    (store) =>
+      store.messageBlocks?.[activeMessageBlockId]?.nodes.$contentWrapper[0],
     deepEqual,
   );
 
@@ -36,21 +40,35 @@ export function usePanelPosition(): PanelPosition | null {
     deepEqual,
   );
 
-  const calculatePosition = () => {
-    if (threadWrapper == null || threadContentWrapper == null) return null;
+  const windowSize = useDebounce(
+    useWindowSize(),
+    tocItems.length > 5 ? 200 : 0,
+  );
+
+  const url = useSpaRouter((store) => store.url);
+
+  const calculatePosition = useCallback(() => {
+    void (isSidebarPinned && windowSize != null && url != null);
+
+    if (threadWrapper == null) {
+      return null;
+    }
 
     const $threadWrapper = $(threadWrapper);
     const $children = $threadWrapper.children();
 
     const $firstChild = $children.first();
     const threadWrapperOffset = $firstChild.offset();
-    if (!threadWrapperOffset) return null;
+    if (!threadWrapperOffset) {
+      console.log("threadWrapperOffset is null");
+      return null;
+    }
 
     const navbarHeightStr =
       document.body.style.getPropertyValue("--header-height");
     const navbarHeight = navbarHeightStr ? parseInt(navbarHeightStr) : 53;
 
-    let threadContentWrapperWidth = threadContentWrapper.offsetWidth ?? 0;
+    let threadContentWrapperWidth = threadContentWrapper?.offsetWidth ?? 0;
 
     const validChildren = $children.filter((index, child) => {
       return index > 0 && !child.classList.contains("fixed");
@@ -63,15 +81,11 @@ export function usePanelPosition(): PanelPosition | null {
       if (width != null) threadContentWrapperWidth += width;
     });
 
-    if (threadContentWrapperWidth === 0) return null;
-
-    const threadContentWrapperOffset =
-      threadContentWrapper.getBoundingClientRect();
-
-    if (threadContentWrapperOffset == null) return null;
+    const threadContentWrapperOffsetLeft =
+      threadContentWrapper?.getBoundingClientRect().left ?? 0;
 
     const panelRightEdge =
-      threadContentWrapperOffset.left +
+      threadContentWrapperOffsetLeft +
       threadContentWrapperWidth +
       PANEL_WIDTH +
       32;
@@ -79,25 +93,13 @@ export function usePanelPosition(): PanelPosition | null {
     return {
       position: {
         top: navbarHeight + 20,
-        left: threadContentWrapperWidth + threadContentWrapperOffset.left + 28,
+        left: threadContentWrapperWidth + threadContentWrapperOffsetLeft + 28,
       },
-      isOverflowing: panelRightEdge > window.innerWidth,
+      isOverflowing:
+        panelRightEdge > window.innerWidth ||
+        threadContentWrapperOffsetLeft === 0,
     };
-  };
+  }, [isSidebarPinned, threadContentWrapper, threadWrapper, url, windowSize]);
 
-  const debouncedUpdate = debounce(() => {
-    const newPanelPosition = calculatePosition();
-    if (newPanelPosition == null) return;
-    setPanelPosition(newPanelPosition);
-  }, 100);
-
-  useEffect(() => {
-    debouncedUpdate();
-
-    return () => {
-      debouncedUpdate.cancel();
-    };
-  }, [windowSize, url, isSidebarPinned, debouncedUpdate]);
-
-  return panelPosition;
+  return calculatePosition();
 }

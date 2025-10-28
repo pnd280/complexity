@@ -1,6 +1,6 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import { ScopedQueryBoxContextProvider } from "@/plugins/__ui-groups__/elements/query-box/_context/context";
+import { ScopedQueryBoxContextProvider } from "@/plugins/__ui-groups__/elements/query-box/context";
 import useLeftToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/follow-up/hooks/useLeftToolbarPortalContainer";
 import useRightToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/follow-up/hooks/useRightToolbarPortalContainer";
 

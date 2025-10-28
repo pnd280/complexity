@@ -7,23 +7,10 @@ import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPlugins
 const { ExtensionContextInvalidationWatchdog } = lazily(
   () => import("@/components/ExtensionContextInvalidationWatchdog"),
 );
-const { PostUpdateReleaseNotesDialog } = lazily(
-  () => import("@/components/PostUpdateReleaseNotesDialog"),
-);
 
 export default function Misc() {
   return (
     <>
-      <CsUiPluginsGuard
-        desktopOnly
-        additionalCheck={({ settings }) =>
-          settings.showPostUpdateReleaseNotesPopup &&
-          !settings.isPostUpdateReleaseNotesPopupDismissed
-        }
-      >
-        <PostUpdateReleaseNotesDialog />
-      </CsUiPluginsGuard>
-
       <CsUiPluginsGuard browser={["chrome"]}>
         <ExtensionContextInvalidationWatchdog />
       </CsUiPluginsGuard>

@@ -25,7 +25,7 @@ This covers the technologies you'll encounter as a contributor. For deep archite
 
 ### Internationalization
 
-- **I18Next**: Type-safe localization
+- **[Custom typesafe implementation](../../../packages/i18n/README.md)**
 
 ## Development Tools
 

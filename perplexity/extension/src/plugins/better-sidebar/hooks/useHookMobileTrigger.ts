@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { useSidebarDomObserverStore } from "@/plugins/__core__/dom-observers/sidebar/store";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
 

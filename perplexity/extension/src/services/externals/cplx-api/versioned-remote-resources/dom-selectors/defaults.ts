@@ -40,6 +40,8 @@ export const DOM_SELECTORS: DomSelectors = {
       },
       STICKY_HEADER: ".h-headerHeight.backdrop-blur-md",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
+      CONTENT_WRAPPER:
+        ".isolate.mx-auto > .bg-base ~ .max-w-threadContentWidth",
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */

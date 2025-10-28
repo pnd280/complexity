@@ -9,7 +9,6 @@ export const ExtensionSettingsSchema = z.object({
     PluginManifestsRegistry.settingsZodSchema as unknown as z.ZodType<PluginsSettingsRegistry>,
   theme: z.string(),
   extensionIconAction: z.enum(EXTENSION_ICON_ACTIONS),
-  showPostUpdateReleaseNotesPopup: z.boolean(),
   isPostUpdateReleaseNotesPopupDismissed: z.boolean(),
   devMode: z.boolean(),
   devTools: z

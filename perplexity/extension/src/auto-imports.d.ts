@@ -10,6 +10,7 @@ declare global {
     useContext,
     useDeferredValue,
     useEffect,
+    useEffectEvent,
     useMemo,
     useReducer,
     useRef,

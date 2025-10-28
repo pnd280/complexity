@@ -63,6 +63,7 @@ function parseMessageBlock({
   const {
     $query,
     $queryEditButtonGroup,
+    $contentWrapper,
     $answer,
     $footer,
     $displayModelButton,
@@ -71,6 +72,7 @@ function parseMessageBlock({
   const nodes: MessageBlock["nodes"] = {
     $wrapper,
     $query,
+    $contentWrapper,
     $answer,
     $queryEditButtonGroup,
     $footer,
@@ -142,6 +144,10 @@ function refreshStaleNodes(
     nodes.$query = $wrapper.find(SELECTORS.QUERY_WRAPPER);
   }
 
+  if (isNodeStale(nodes.$contentWrapper)) {
+    nodes.$contentWrapper = $wrapper.find(SELECTORS.CONTENT_WRAPPER);
+  }
+
   if (isNodeStale(nodes.$answer)) {
     nodes.$answer = $wrapper.find(SELECTORS.ANSWER);
   }
@@ -169,12 +175,19 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   const SELECTORS = DomSelectorsService.Root.cachedSync.THREAD.MESSAGE;
 
   const $elements = $wrapper.find(
-    [SELECTORS.QUERY_WRAPPER, SELECTORS.ANSWER, SELECTORS.FOOTER].join(", "),
+    [
+      SELECTORS.QUERY_WRAPPER,
+      SELECTORS.CONTENT_WRAPPER,
+      SELECTORS.ANSWER,
+      SELECTORS.FOOTER,
+    ].join(", "),
   );
 
   const $query = $elements.filter(SELECTORS.QUERY_WRAPPER);
   const $answer = $elements.filter(SELECTORS.ANSWER);
   const $footer = $elements.filter(SELECTORS.FOOTER);
+  const $contentWrapper = $elements.filter(SELECTORS.CONTENT_WRAPPER);
+
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
   const $displayModelButton = $footer.find(
     SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
@@ -183,6 +196,7 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   return {
     $wrapper,
     $query,
+    $contentWrapper,
     $answer,
     $footer,
     $queryEditButtonGroup,

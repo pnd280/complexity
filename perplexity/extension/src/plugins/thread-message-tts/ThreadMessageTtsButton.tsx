@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEvent } from "@/hooks/useEvent";
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { useThreadMessageIndexContext } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 import usePplxTtsRequest from "@/plugins/thread-message-tts/hooks/usePplxTtsRequest";
@@ -32,7 +31,7 @@ export function ThreadMessageTtsButton() {
     ]?.content.backendUuid;
 
   const [voice, setVoice] = useLocalStorage<TtsVoice>(
-    "cplx.plugins.thread:messageTts.voice",
+    "cplx.plugin:thread:messageTts.voice",
     "Mike",
   );
 
@@ -75,7 +74,7 @@ export function ThreadMessageTtsButton() {
     void playTts({ voice: params?.voice ?? voice, backendUuid });
   };
 
-  const cleanup = useEvent(() => {
+  const cleanup = useEffectEvent(() => {
     if (!isPlaying) return;
 
     coordinator.getPlayer().clearBuffer();
@@ -86,7 +85,7 @@ export function ThreadMessageTtsButton() {
     return () => {
       cleanup();
     };
-  }, [cleanup]);
+  }, []);
 
   if (!isPlaying && isPending) {
     return (

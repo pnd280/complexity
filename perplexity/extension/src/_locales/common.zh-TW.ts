@@ -11,7 +11,7 @@ export default {
     descriptionLine2:
       "如果 Complexity 為您的工作流程帶來價值，請考慮為它的未來貢獻一份心力！",
     cometAffiliate: {
-      title: "免費 <0/>!",
+      title: "試試 Comet - 取得免費 <0/> 訂閱!",
       description:
         "試試 Comet - Perplexity 推出的全新瀏覽器 - 取得免費 <0/> 訂閱，同時直接為 Complexity 的開發做出貢獻。",
       claimButton: "立即領取",
