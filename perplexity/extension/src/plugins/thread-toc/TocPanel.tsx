@@ -41,9 +41,8 @@ export function TocPanel({
         style={
           {
             ["--panel-width"]: `${PANEL_WIDTH}px`,
-            ["--panel-top"]: top != null ? `${top}px` : undefined,
-            ["--panel-left"]:
-              !isFloating && left != null ? `${left}px` : undefined,
+            ["--panel-top"]: `${top}px`,
+            ["--panel-left"]: !isFloating && `${left}px`,
           } as React.CSSProperties
         }
       >

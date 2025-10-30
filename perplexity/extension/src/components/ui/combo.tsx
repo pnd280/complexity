@@ -19,8 +19,6 @@ const ComboboxContext = createContext<ComboboxContext>({
   portal: true,
 });
 
-const ComboboxContextProvider = ComboboxContext.Provider;
-
 export function Combobox({
   portal,
   ...props
@@ -28,13 +26,13 @@ export function Combobox({
   portal?: boolean;
 }) {
   return (
-    <ComboboxContextProvider
+    <ComboboxContext
       value={{
         portal: portal ?? true,
       }}
     >
       <ArkCombobox.Root unmountOnExit={false} lazyMount={true} {...props} />
-    </ComboboxContextProvider>
+    </ComboboxContext>
   );
 }
 

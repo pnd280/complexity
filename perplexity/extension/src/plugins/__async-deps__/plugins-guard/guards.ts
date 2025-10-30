@@ -47,7 +47,7 @@ export function checkRequiredPermissions(
   { requiredPermissions }: GuardConditions,
   { grantedPermissions }: Pick<GuardCheckParams, "grantedPermissions">,
 ): boolean {
-  if (!requiredPermissions || !requiredPermissions?.length) return true;
+  if (!requiredPermissions || !requiredPermissions.length) return true;
   return requiredPermissions.every((permission) =>
     grantedPermissions.includes(permission),
   );
@@ -97,7 +97,7 @@ export function checkPluginDependencies(
   { dependentPluginIds }: GuardConditions,
   { pluginsEnableStates }: Pick<GuardCheckParams, "pluginsEnableStates">,
 ): boolean {
-  if (!dependentPluginIds || !dependentPluginIds?.length) return true;
+  if (!dependentPluginIds || !dependentPluginIds.length) return true;
 
   return dependentPluginIds.every((pluginId) => pluginsEnableStates[pluginId]);
 }
@@ -108,7 +108,7 @@ export function checkCorePluginDependencies(
     corePluginsEnableStates,
   }: Pick<GuardCheckParams, "corePluginsEnableStates">,
 ): boolean {
-  if (!dependentCorePluginIds || !dependentCorePluginIds?.length) return true;
+  if (!dependentCorePluginIds || !dependentCorePluginIds.length) return true;
 
   return dependentCorePluginIds.every(
     (corePluginId) => corePluginsEnableStates[corePluginId],
@@ -131,7 +131,7 @@ export function checkLocation(
     "location and excludeLocation cannot be used together",
   );
 
-  if (currentLocation === undefined) return false;
+  if (currentLocation === "unknown") return false;
 
   if (Array.isArray(location) && location.length > 0) {
     return location.includes(currentLocation);
@@ -153,7 +153,7 @@ export function checkIncognito(
 }
 
 export function checkBrowser({ browser }: GuardConditions): boolean {
-  if (!browser || !browser?.length) return true;
+  if (!browser || !browser.length) return true;
   return browser.includes(APP_CONFIG.BROWSER);
 }
 

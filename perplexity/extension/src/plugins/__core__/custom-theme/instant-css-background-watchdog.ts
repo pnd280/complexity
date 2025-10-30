@@ -6,7 +6,7 @@ import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/
 
 const instantCssServiceKey = "customTheme";
 
-let unwatch: () => void;
+let unwatch: (() => void) | null = null;
 
 export async function initInstantCssBackgroundWatchdog() {
   await updateRegistry(
@@ -24,7 +24,7 @@ export async function updateRegistry(settings?: ExtensionSettings) {
   const currentThemeId = (settings ?? (await ExtensionSettingsService.get()))
     .theme;
 
-  if (currentThemeId == null || currentThemeId.length === 0) {
+  if (currentThemeId.length === 0) {
     await InstantCssStorageService.Instance.unregister(instantCssServiceKey);
     return;
   }

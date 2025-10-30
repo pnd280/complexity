@@ -12,7 +12,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-let cleanup: () => void | null;
+let cleanup: (() => void) | null;
 
 export default function () {
   AsyncLoaderRegistry.register({

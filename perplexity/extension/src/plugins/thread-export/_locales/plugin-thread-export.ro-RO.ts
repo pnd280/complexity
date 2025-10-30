@@ -9,6 +9,10 @@ export default {
   includeCitations: "Include citările",
   actions: {
     download: "Descarcă",
+    largeFileDownloadPrompt: {
+      title: "Descărcarea dvs. este gata",
+      description: "Faceți clic aici pentru a începe descărcarea",
+    },
     copy: "Copiază",
   },
   errors: {

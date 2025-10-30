@@ -12,7 +12,7 @@ export function IndexPage() {
       <GeneralSection />
       <DataSection />
       <TroubleshootingSection />
-      {settings?.devMode && <DevToolsSection />}
+      {settings.devMode && <DevToolsSection />}
     </div>
   );
 }

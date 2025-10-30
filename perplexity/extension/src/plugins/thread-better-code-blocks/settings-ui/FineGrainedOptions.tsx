@@ -34,7 +34,7 @@ export default function BetterCodeBlockFineGrainedOptions({
     <div className="x:flex x:flex-col x:gap-4">
       <Switch
         textLabel="Sticky header"
-        checked={settings?.stickyHeader}
+        checked={settings.stickyHeader}
         onCheckedChange={({ checked }) => {
           mutation.mutate({
             language,
@@ -46,7 +46,7 @@ export default function BetterCodeBlockFineGrainedOptions({
       />
       <Switch
         textLabel="Show line numbers"
-        checked={settings?.showLineNumbers}
+        checked={settings.showLineNumbers}
         onCheckedChange={({ checked }) => {
           mutation.mutate({
             language,
@@ -60,7 +60,7 @@ export default function BetterCodeBlockFineGrainedOptions({
       <div className="x:flex x:flex-col x:gap-2">
         <Switch
           textLabel="Unwrap lines by default"
-          checked={settings?.unwrap.enabled}
+          checked={settings.unwrap.enabled}
           onCheckedChange={({ checked }) => {
             mutation.mutate({
               language,
@@ -75,7 +75,7 @@ export default function BetterCodeBlockFineGrainedOptions({
         <Switch
           textLabel="Show toggle button"
           className="x:ml-8"
-          checked={settings?.unwrap.showToggleButton}
+          checked={settings.unwrap.showToggleButton}
           onCheckedChange={({ checked }) => {
             mutation.mutate({
               language,
@@ -92,7 +92,7 @@ export default function BetterCodeBlockFineGrainedOptions({
         <div className="x:flex x:gap-2">
           <Switch
             textLabel="Max height"
-            checked={settings?.maxHeight.enabled}
+            checked={settings.maxHeight.enabled}
             onCheckedChange={({ checked }) => {
               mutation.mutate({
                 language,
@@ -108,9 +108,9 @@ export default function BetterCodeBlockFineGrainedOptions({
             <Input
               type="number"
               min={0}
-              defaultValue={settings?.maxHeight.value}
+              defaultValue={settings.maxHeight.value}
               className="x:w-[100px]"
-              disabled={!settings?.maxHeight.enabled}
+              disabled={!settings.maxHeight.enabled}
               onChange={(e) => {
                 if (Number(e.target.value) < 0) {
                   return;
@@ -127,12 +127,12 @@ export default function BetterCodeBlockFineGrainedOptions({
             </div>
           </div>
         </div>
-        {settings?.maxHeight.enabled && (
+        {settings.maxHeight.enabled && (
           <>
             <Switch
               textLabel="Collapse by default"
               className="x:ml-8"
-              checked={settings?.maxHeight.collapseByDefault}
+              checked={settings.maxHeight.collapseByDefault}
               onCheckedChange={({ checked }) => {
                 mutation.mutate({
                   language,
@@ -147,7 +147,7 @@ export default function BetterCodeBlockFineGrainedOptions({
             <Switch
               textLabel="Show toggle button"
               className="x:ml-8"
-              checked={settings?.maxHeight.showToggleButton}
+              checked={settings.maxHeight.showToggleButton}
               onCheckedChange={({ checked }) => {
                 mutation.mutate({
                   language,
@@ -165,7 +165,7 @@ export default function BetterCodeBlockFineGrainedOptions({
       <div className="x:flex x:gap-2">
         <Switch
           textLabel="Max width"
-          checked={settings?.maxWidth.enabled}
+          checked={settings.maxWidth.enabled}
           onCheckedChange={({ checked }) => {
             mutation.mutate({
               language,
@@ -183,9 +183,9 @@ export default function BetterCodeBlockFineGrainedOptions({
             min={50}
             max={100}
             step={25}
-            defaultValue={settings?.maxWidth.value}
+            defaultValue={settings.maxWidth.value}
             className="x:w-[100px]"
-            disabled={!settings?.maxWidth.enabled}
+            disabled={!settings.maxWidth.enabled}
             onChange={(e) => {
               const value = Number(e.target.value);
               if (value < 50 || value > 100) {
@@ -204,7 +204,7 @@ export default function BetterCodeBlockFineGrainedOptions({
       <div className="x:flex x:flex-col x:gap-2">
         <Switch
           textLabel="Custom placeholder text"
-          checked={settings?.placeholderText.enabled}
+          checked={settings.placeholderText.enabled}
           onCheckedChange={({ checked }) => {
             mutation.mutate({
               language,
@@ -216,14 +216,14 @@ export default function BetterCodeBlockFineGrainedOptions({
             });
           }}
         />
-        {settings?.placeholderText.enabled && (
+        {settings.placeholderText.enabled && (
           <div className="x:ml-8 x:flex x:flex-col x:gap-2">
             <div>
               <Label className="x:text-muted-foreground">Title</Label>
               <Input
                 type="text"
                 maxLength={30}
-                defaultValue={settings?.placeholderText.title}
+                defaultValue={settings.placeholderText.title}
                 className="x:w-[300px]"
                 onChange={(e) => {
                   debouncedMutate({
@@ -237,7 +237,7 @@ export default function BetterCodeBlockFineGrainedOptions({
               <Input
                 type="text"
                 maxLength={30}
-                defaultValue={settings?.placeholderText.loading}
+                defaultValue={settings.placeholderText.loading}
                 className="x:w-[300px]"
                 onChange={(e) => {
                   debouncedMutate({
@@ -251,7 +251,7 @@ export default function BetterCodeBlockFineGrainedOptions({
               <Input
                 type="text"
                 maxLength={30}
-                defaultValue={settings?.placeholderText.idle}
+                defaultValue={settings.placeholderText.idle}
                 className="x:w-[300px]"
                 onChange={(e) => {
                   debouncedMutate({

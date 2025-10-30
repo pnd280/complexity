@@ -9,6 +9,10 @@ export default {
   includeCitations: "Συμπερίληψη παραπομπών",
   actions: {
     download: "Λήψη",
+    largeFileDownloadPrompt: {
+      title: "Η λήψη σας είναι έτοιμη",
+      description: "Κάντε κλικ εδώ για να ξεκινήσετε τη λήψη",
+    },
     copy: "Αντιγραφή",
   },
   errors: {

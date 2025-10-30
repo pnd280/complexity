@@ -42,7 +42,7 @@ export default function SortFilter() {
         [state.ascending ? "oldest" : "newest"] satisfies SortItem["value"][]
       }
       onValueChange={({ value: values }) => {
-        const value = values[0] as SortItem["value"];
+        const value = values[0] as SortItem["value"] | undefined;
         if (value) {
           actions.setSort(value === "oldest");
         }

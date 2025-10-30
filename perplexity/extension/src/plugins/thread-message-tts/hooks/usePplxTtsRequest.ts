@@ -22,20 +22,21 @@ export default function usePplxTtsRequest({
     mutationFn: async (params?: { voice: TtsVoice; backendUuid: string }) => {
       invariant(params?.backendUuid, "[ThreadMessageTts] Invalid context");
 
-      socketRef.current =
-        await InternalWebSocketManager.getInstance().handShake({
+      const [socket] = await tryCatch(() =>
+        InternalWebSocketManager.getInstance().handShake({
           upgrade: APP_CONFIG.BROWSER === "chrome",
-        });
+        }),
+      );
 
-      const socket = socketRef.current;
+      socketRef.current = socket;
 
       invariant(socket != null, "[ThreadMessageTts] Invalid context");
 
       const handleAudio = (packet: {
-        data: ArrayLike<number>;
+        data: ArrayLike<number> | null;
         uuid: string;
       }) => {
-        if (packet.uuid === params?.backendUuid && packet.data != null) {
+        if (packet.uuid === params.backendUuid && packet.data != null) {
           onBufferUpdate?.(new Int16Array(packet.data));
         }
       };
@@ -63,8 +64,8 @@ export default function usePplxTtsRequest({
         is_page: false,
         version: "2.13",
         completed: true,
-        uuid: params?.backendUuid,
-        preset: params?.voice ?? "Mike",
+        uuid: params.backendUuid,
+        preset: params.voice,
       });
 
       onStreamComplete();

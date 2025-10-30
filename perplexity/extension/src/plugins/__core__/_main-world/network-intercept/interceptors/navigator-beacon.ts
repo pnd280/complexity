@@ -1,5 +1,4 @@
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
-import type { BeaconEventDataCatalog } from "@/plugins/__core__/_main-world/network-intercept/listeners.types";
 
 export function initBeaconInterceptor() {
   const originalSendBeacon = navigator.sendBeacon;
@@ -20,8 +19,7 @@ export function initBeaconInterceptor() {
         },
       })
         .then((resp) => {
-          const payload =
-            resp.payload as BeaconEventDataCatalog["request"]["payload"];
+          const payload = resp?.payload;
 
           if (payload?.data === "") return;
 

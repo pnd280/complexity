@@ -1,4 +1,3 @@
-import type { ArtifactLanguage } from "@/plugins/thread-artifacts/index.public";
 import { ARTIFACT_PLACEHOLDERS } from "@/plugins/thread-artifacts/index.public";
 import {
   artifactsStore,
@@ -23,7 +22,7 @@ const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
 
   const isSelected =
     selectedCodeBlockLocation?.messageBlockIndex === sourceMessageBlockIndex &&
-    selectedCodeBlockLocation?.codeBlockIndex === sourceCodeBlockIndex;
+    selectedCodeBlockLocation.codeBlockIndex === sourceCodeBlockIndex;
 
   const title = formatArtifactTitle(
     getArtifactTitle(codeBlock?.content.language),
@@ -32,10 +31,9 @@ const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
     codeBlock?.content.language ?? "",
   );
 
-  const placeholderElements =
-    ARTIFACT_PLACEHOLDERS[interpretedLanguage as ArtifactLanguage];
+  if (interpretedLanguage == null) return null;
 
-  if (placeholderElements == null) return null;
+  const placeholderElements = ARTIFACT_PLACEHOLDERS[interpretedLanguage];
 
   return (
     <div

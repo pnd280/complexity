@@ -19,9 +19,9 @@ type ThemeCardProps = {
 export default function ThemeCard({ theme, type }: ThemeCardProps) {
   const { settings, mutation } = useExtensionSettings();
 
-  const isChosenTheme = settings?.theme === theme?.id;
-
   if (!theme) return null;
+
+  const isChosenTheme = settings.theme === theme.id;
 
   return (
     <Card
@@ -35,7 +35,7 @@ export default function ThemeCard({ theme, type }: ThemeCardProps) {
         });
       }}
     >
-      <div className="x:relative x:aspect-[16/9] x:overflow-hidden">
+      <div className="x:relative x:aspect-video x:overflow-hidden">
         <ThemeCardBanner theme={theme} />
       </div>
 

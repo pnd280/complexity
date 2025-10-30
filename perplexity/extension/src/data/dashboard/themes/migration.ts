@@ -9,6 +9,7 @@ export function legacyThemeMigration(theme: Theme) {
 
   console.log("Migrating theme", theme.id);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (theme.config.accentColorSelection == null) {
     theme.config.accentColorSelection = "default";
   }

@@ -5,7 +5,6 @@ import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import { VersionedRemoteResourceListingSchema } from "@/services/externals/cplx-api/versioned-remote-resources/types";
 import type { VersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/types";
 import type PersistentQueryClient from "@/services/infra/query-client";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export async function getVersionedRemoteResource<T>(
   resourceConfig: VersionedRemoteResource<T>,
@@ -18,7 +17,7 @@ export async function getVersionedRemoteResource<T>(
 
   if (entry == null) return resourceConfig.fallback;
 
-  const [resource, error] = await errorWrapper(() =>
+  const [resource, error] = await tryCatch(() =>
     persistentQueryClient.queryClient.fetchQuery({
       ...cplxApiQueries.versionedRemoteResource.detail({
         resourcePath: `${resourceConfig.name}/${entry}`,
@@ -26,7 +25,7 @@ export async function getVersionedRemoteResource<T>(
       }),
       retry: false,
     }),
-  )();
+  );
 
   void persistentQueryClient.persistQueryClient();
 
@@ -39,7 +38,7 @@ async function getResourceEntry<T>(
   resourceConfig: VersionedRemoteResource<T>,
   persistentQueryClient: PersistentQueryClient,
 ): Promise<string | null> {
-  const [listing, error] = await errorWrapper(
+  const [listing, error] = await tryCatch(
     async () =>
       await persistentQueryClient.queryClient.fetchQuery(
         cplxApiQueries.versionedRemoteResource.detail({
@@ -47,7 +46,7 @@ async function getResourceEntry<T>(
           zodSchema: VersionedRemoteResourceListingSchema,
         }),
       ),
-  )();
+  );
 
   if (error) return null;
 

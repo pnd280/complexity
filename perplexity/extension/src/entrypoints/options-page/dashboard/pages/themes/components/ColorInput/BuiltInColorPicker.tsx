@@ -93,11 +93,10 @@ export default function BuiltInColorPicker() {
     control,
   });
 
-  const selectedColor =
-    useWatch({
-      name: "builtInAccentColor",
-      control,
-    }) ?? "cplx-blue";
+  const selectedColor = useWatch({
+    name: "builtInAccentColor",
+    control,
+  });
 
   const allColors = [...cplxColors, ...cometColors] as ColorPalette[];
 

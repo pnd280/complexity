@@ -220,7 +220,7 @@ describe("middlewareManager", () => {
           data: testData,
         },
       );
-      expect(result.payload.data).toBe("test");
+      expect(result?.payload.data).toBe("test");
     });
 
     it("should allow middleware to remove itself", async () => {

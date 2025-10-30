@@ -43,7 +43,7 @@ export class InstantCssCoordinator {
 
     if (enabled === false) return;
 
-    if (params.css == null || !params.css.length) return;
+    if (!params.css.length) return;
 
     void chrome.scripting.insertCSS({
       target: { tabId },
@@ -63,7 +63,7 @@ export class InstantCssCoordinator {
   async removeCss(params: InstantCss & { tabId: number }) {
     const { tabId } = params;
 
-    if (params.css == null || !params.css.length) return;
+    if (!params.css.length) return;
 
     void chrome.scripting.removeCSS({
       target: { tabId },

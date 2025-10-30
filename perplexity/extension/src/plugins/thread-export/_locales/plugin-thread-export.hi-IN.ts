@@ -9,6 +9,10 @@ export default {
   includeCitations: "उद्धरण शामिल करें",
   actions: {
     download: "डाउनलोड करें",
+    largeFileDownloadPrompt: {
+      title: "आपका डाउनलोड तैयार है",
+      description: "डाउनलोड शुरू करने के लिए यहाँ क्लिक करें",
+    },
     copy: "कॉपी करें",
   },
   errors: {

@@ -160,9 +160,9 @@ export function Onboarding() {
                     {hasPrevStep && (
                       <StepsPrevTrigger>Previous</StepsPrevTrigger>
                     )}
-                    {hasNextStep && steps[currentStep]!.skipable && (
+                    {hasNextStep && steps[currentStep]?.skipable && (
                       <StepsNextTrigger>
-                        {steps[currentStep]!.customNextStepText ?? "Next"}
+                        {steps[currentStep].customNextStepText ?? "Next"}
                       </StepsNextTrigger>
                     )}
                     {!hasNextStep && (

@@ -9,6 +9,10 @@ export default {
   includeCitations: "Sertakan kutipan",
   actions: {
     download: "Unduh",
+    largeFileDownloadPrompt: {
+      title: "Unduhan Anda siap",
+      description: "Klik di sini untuk memulai unduhan",
+    },
     copy: "Salin",
   },
   errors: {

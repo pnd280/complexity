@@ -106,9 +106,10 @@ export function setSelection(
 
     if (textNodes.length > 0) {
       const lastNode = textNodes[textNodes.length - 1];
+
       return {
         node: lastNode?.node ?? element,
-        offset: lastNode?.node?.textContent?.length ?? 0,
+        offset: lastNode?.node.textContent?.length ?? 0,
       };
     }
 
@@ -121,8 +122,8 @@ export function setSelection(
 
   try {
     const range = document.createRange();
-    range.setStart(startPos?.node ?? element, startPos?.offset ?? 0);
-    range.setEnd(endPos?.node ?? element, endPos?.offset ?? 0);
+    range.setStart(startPos.node ?? element, startPos.offset);
+    range.setEnd(endPos.node ?? element, endPos.offset);
 
     sel.removeAllRanges();
     sel.addRange(range);
@@ -174,7 +175,7 @@ export function getSelection(element: HTMLElement): TextboxSelection {
     for (let i = 0; i < textNodes.length; i++) {
       const textNode = textNodes[i];
       if (textNode?.node === targetNode) {
-        return textNode?.start + targetOffset;
+        return textNode.start + targetOffset;
       }
     }
     return 0;

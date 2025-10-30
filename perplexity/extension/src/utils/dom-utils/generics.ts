@@ -42,7 +42,7 @@ export function getWordOnCaret(element: HTMLTextAreaElement) {
   const text = element.value;
   const caret = element.selectionStart;
 
-  if (!text || caret === undefined) {
+  if (!text) {
     return {
       word: "",
       start: 0,

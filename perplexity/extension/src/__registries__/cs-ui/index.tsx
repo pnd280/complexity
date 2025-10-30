@@ -120,6 +120,7 @@ export default class CsUiRegistry {
 (function () {
   CsUiRegistry.Components.forEach((module) => {
     invariant(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       module.default != null,
       "Plugin Component must have a default export",
     );

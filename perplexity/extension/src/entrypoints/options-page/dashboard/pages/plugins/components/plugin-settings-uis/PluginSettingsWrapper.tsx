@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { PluginSettingsUis } from "@/__registries__/plugin-settings-uis";
@@ -43,7 +44,7 @@ export default function PluginSettingsWrapper() {
   }
 
   return (
-    <>
+    <Suspense>
       {isFromPluginList && !isOpenInFullScreen ? (
         <>
           <PluginsListing />
@@ -54,7 +55,7 @@ export default function PluginSettingsWrapper() {
           <PluginSettingsPage pluginId={plugin.id} />
         </Page>
       )}
-    </>
+    </Suspense>
   );
 }
 

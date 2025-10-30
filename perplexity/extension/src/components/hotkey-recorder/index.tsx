@@ -23,7 +23,7 @@ export function useHotkeyRecorder({
   const activeKeysRef = useRef<Set<string>>(new Set());
 
   const displayKeys = isRecording
-    ? recordedKeys?.size
+    ? recordedKeys.size
       ? orderKeys(Array.from(recordedKeys))
       : []
     : orderKeys(savedKeys);
@@ -129,7 +129,7 @@ export function useHotkeyRecorder({
   const handleStopRecording = () => {
     if (!isValidKeyCombination(recordedKeys)) {
       resetKeys();
-    } else if (onSave && recordedKeys != null) {
+    } else if (onSave) {
       const orderedKeys = orderKeys(Array.from(recordedKeys));
       setSavedKeys(orderedKeys);
       onSave(orderedKeys);
@@ -137,8 +137,7 @@ export function useHotkeyRecorder({
     stop();
   };
 
-  const isValidCombination =
-    recordedKeys != null ? isValidKeyCombination(recordedKeys) : true;
+  const isValidCombination = isValidKeyCombination(recordedKeys);
 
   const HotkeyRecorderComponent = () => (
     <HotkeyRecorderUi
@@ -158,7 +157,7 @@ export function useHotkeyRecorder({
   return {
     HotkeyRecorderUi: HotkeyRecorderComponent,
     isRecording,
-    keys: recordedKeys != null ? orderKeys(Array.from(recordedKeys)) : [],
+    keys: orderKeys(Array.from(recordedKeys)),
     startRecording: handleStartRecording,
     stopRecording: handleStopRecording,
     isValidCombination,

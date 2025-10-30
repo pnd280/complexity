@@ -84,7 +84,7 @@ function syncToInternalSearchStates(): void {
   betterLanguageModelSelectorStore.subscribe(
     (state) => state.model,
     (model) => {
-      if (model == null || !isLanguageModelCode(model)) {
+      if (!isLanguageModelCode(model)) {
         return;
       }
 

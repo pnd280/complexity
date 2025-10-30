@@ -4,10 +4,8 @@ import useExtensionSettings from "@/services/infra/extension-api-wrappers/extens
 export default function ToggleCommandDialogKeybinding() {
   const { settings, mutation } = useExtensionSettings();
 
-  const defaultKeys = settings?.plugins["commandMenu"].keybindings.toggle ?? [];
-
   const { HotkeyRecorderUi } = useHotkeyRecorder({
-    defaultKeys,
+    defaultKeys: settings.plugins["commandMenu"].keybindings.toggle,
     onSave: (keys) => {
       mutation.mutate((draft) => {
         draft.plugins["commandMenu"].keybindings.toggle = keys;

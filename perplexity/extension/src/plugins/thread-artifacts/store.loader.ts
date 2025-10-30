@@ -85,7 +85,6 @@ const initializeAutonomousMode = () => {
           codeBlocksChunks.forEach((chunks, chunkIndex) => {
             chunks.forEach((codeBlock, codeBlockIndex) => {
               if (
-                codeBlock == null ||
                 !codeBlock.content.language ||
                 !isAutonomousArtifactLanguageString(codeBlock.content.language)
               )
@@ -96,7 +95,11 @@ const initializeAutonomousMode = () => {
                 codeBlock.content.language,
               );
 
-              if (!(interpretedLanguage in ARTIFACT_PLACEHOLDERS)) return;
+              if (
+                interpretedLanguage == null ||
+                !(interpretedLanguage in ARTIFACT_PLACEHOLDERS)
+              )
+                return;
 
               updateArtifactBlocks({
                 key,

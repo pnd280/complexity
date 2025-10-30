@@ -13,7 +13,6 @@ import {
   debouncedPersistQueryClient,
 } from "@/services/infra/query-client/utils";
 import { waitUntil } from "@/utils/misc/utils";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export default class PersistentQueryClient {
   id: string;
@@ -59,7 +58,7 @@ export default class PersistentQueryClient {
     );
 
     if (buster == null) {
-      const [remoteBuster] = await errorWrapper(() => config.busterFetchFn())();
+      const [remoteBuster] = await tryCatch(() => config.busterFetchFn());
       buster = remoteBuster ?? APP_CONFIG.VERSION;
       void storage.setItem(`local:queryCacheBuster:${config.id}`, buster);
     }
@@ -121,7 +120,7 @@ export default class PersistentQueryClient {
         if (this.sessionInvalidated) return;
 
         if (document.visibilityState === "visible") {
-          const [remoteBuster] = await errorWrapper(this.busterFetchFn)();
+          const [remoteBuster] = await tryCatch(this.busterFetchFn);
 
           if (remoteBuster != null && remoteBuster !== this.buster) {
             console.log(

@@ -4,7 +4,7 @@ const capturedInstances: Set<WebSocket> = new Set();
 const webSocketOriginalSend = WebSocket.prototype.send;
 
 function isValidWebSocketInstance(instance: WebSocket): boolean {
-  return instance?.readyState === WebSocket.OPEN;
+  return instance.readyState === WebSocket.OPEN;
 }
 
 function setWebSocketInstance(instance: WebSocket) {

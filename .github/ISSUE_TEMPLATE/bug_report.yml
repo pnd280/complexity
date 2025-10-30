@@ -60,5 +60,6 @@ body:
     attributes:
       label: Debug Logs
       description: Include debug logs from the Settings Dashboard > Settings > Debug > Copy
+      render: json
     validations:
       required: false

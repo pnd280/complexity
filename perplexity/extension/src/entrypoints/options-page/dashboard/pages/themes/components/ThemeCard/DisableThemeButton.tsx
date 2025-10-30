@@ -10,7 +10,7 @@ type DisableThemeButtonProps = {
 export default function DisableThemeButton({ theme }: DisableThemeButtonProps) {
   const { settings, mutation } = useExtensionSettings();
 
-  const isChosenTheme = settings?.theme === theme?.id;
+  const isChosenTheme = settings.theme === theme.id;
 
   return (
     <Tooltip content="Disable" disabled={!isChosenTheme}>

@@ -8,8 +8,6 @@ export const pluginId: PluginId = "imageGenModelSelector";
 export default function ImageGenModelSelectorPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
 
-  if (!settings) return null;
-
   return (
     <div className="x:flex x:flex-col x:gap-4">
       <P>
@@ -18,7 +16,7 @@ export default function ImageGenModelSelectorPluginSettingsUi() {
       </P>
       <Switch
         textLabel="Enable"
-        checked={settings?.plugins["imageGenModelSelector"].enabled ?? false}
+        checked={settings.plugins["imageGenModelSelector"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["imageGenModelSelector"].enabled = checked;

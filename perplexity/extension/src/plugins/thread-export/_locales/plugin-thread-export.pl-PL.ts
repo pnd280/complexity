@@ -9,6 +9,10 @@ export default {
   includeCitations: "Dołącz cytaty",
   actions: {
     download: "Pobierz",
+    largeFileDownloadPrompt: {
+      title: "Twoje pobieranie jest gotowe",
+      description: "Kliknij tutaj, aby rozpocząć pobieranie",
+    },
     copy: "Kopiuj",
   },
   errors: {

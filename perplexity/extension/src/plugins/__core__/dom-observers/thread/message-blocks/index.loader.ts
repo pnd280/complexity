@@ -68,6 +68,12 @@ function observeThreadMessageBlocks() {
       equalityFn: deepEqual,
     },
   );
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") return;
+
+    void onMutation();
+  });
 }
 
 const onMutation = debounce(

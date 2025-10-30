@@ -16,9 +16,7 @@ import useExtensionSettings from "@/services/infra/extension-api-wrappers/extens
 export default function ExtensionIconActionSelect() {
   const { settings, mutation } = useExtensionSettings();
 
-  if (!settings) return null;
-
-  const selectedValue = settings?.extensionIconAction;
+  const selectedValue = settings.extensionIconAction;
 
   return (
     <Select

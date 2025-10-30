@@ -39,7 +39,7 @@ export default function SpacesSearchItemsFooter() {
         title: t("plugin-command-menu.spaces.footer.openInNewTab"),
         keybinding: [Key.Alt, Key.Enter],
         onSelect: () => {
-          void openInNewTab(`/spaces/${space?.slug}`);
+          void openInNewTab(`/spaces/${space.slug}`);
           commandMenuStore.getState().setOpen(false);
         },
       },
@@ -65,7 +65,7 @@ export default function SpacesSearchItemsFooter() {
         title: t("plugin-command-menu.spaces.footer.goToSpace"),
         keybinding: [Key.Enter],
         onSelect: () => {
-          void softNavigate(`/spaces/${space?.slug}`);
+          void softNavigate(`/spaces/${space.slug}`);
           commandMenuStore.getState().setOpen(false);
         },
       },

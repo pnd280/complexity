@@ -21,7 +21,7 @@ export default async function () {
         queryKey: pplxApiQueries.spaces.detail().queryKey,
         enabled: false,
       }).subscribe((data) => {
-        if (data.status !== "success" || data.fetchStatus !== "idle") return;
+        if (data.status !== "success") return;
 
         void persistentQueryClient.persistQueryClient();
       });
@@ -33,7 +33,7 @@ export default async function () {
         }).queryKey,
         enabled: false,
       }).subscribe((data) => {
-        if (data.status !== "success" || data.fetchStatus !== "idle") return;
+        if (data.status !== "success") return;
 
         void persistentQueryClient.persistQueryClient();
       });

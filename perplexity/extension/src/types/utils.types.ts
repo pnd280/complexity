@@ -32,7 +32,7 @@ export function isReactNode(node: unknown): node is React.ReactNode {
 export function isZodError(error: unknown): error is ZodError {
   return (
     error instanceof ZodError ||
-    (error as ZodError)?.name === "ZodError" ||
-    Array.isArray((error as ZodError)?.issues)
+    (error as ZodError).name === "ZodError" ||
+    Array.isArray((error as ZodError).issues)
   );
 }

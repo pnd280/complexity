@@ -34,7 +34,6 @@ const itemCollection = createListCollection<BehaviorType>({
 
 export default function OnCloudflareTimeoutAutoReloadPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins[key];
 
   const handleEnableChange = (checked: boolean) => {
     mutation.mutate((draft) => {
@@ -47,8 +46,6 @@ export default function OnCloudflareTimeoutAutoReloadPluginSettingsUi() {
       draft.plugins[key].behavior = value[0] as BehaviorType;
     });
   };
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
@@ -65,7 +62,7 @@ export default function OnCloudflareTimeoutAutoReloadPluginSettingsUi() {
       </P>
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins[key].enabled}
         onCheckedChange={({ checked }) => handleEnableChange(checked)}
       />
 
@@ -75,7 +72,7 @@ export default function OnCloudflareTimeoutAutoReloadPluginSettingsUi() {
           <Select
             portal={false}
             collection={itemCollection}
-            value={[pluginSettings?.behavior ?? "reload"]}
+            value={[settings.plugins[key].behavior]}
             positioning={{ sameWidth: true }}
             onValueChange={({ value }) => handleBehaviorChange(value)}
           >

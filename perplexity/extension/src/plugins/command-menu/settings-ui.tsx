@@ -12,20 +12,18 @@ export const pluginId: PluginId = "commandMenu";
 export default function CommandMenuPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
 
-  if (!settings) return null;
-
   return (
     <div className="x:flex x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={settings?.plugins["commandMenu"].enabled ?? false}
+        checked={settings.plugins["commandMenu"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["commandMenu"].enabled = checked;
           });
         }}
       />
-      {settings?.plugins["commandMenu"].enabled && (
+      {settings.plugins["commandMenu"].enabled && (
         <div className="x:grid x:grid-cols-[auto_1fr] x:gap-4">
           <ToggleCommandDialogKeybinding />
           <ThreadsSearchPageKeybinding />

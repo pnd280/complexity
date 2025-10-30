@@ -27,7 +27,7 @@ export function createTextboxAdapter(
 
   const getTextLength = () => {
     return isLexical(element)
-      ? (element.innerText?.replace(/^\n\s/, "").length ?? 0)
+      ? element.innerText.replace(/^\n\s/, "").length
       : (element as HTMLTextAreaElement).value.length;
   };
 

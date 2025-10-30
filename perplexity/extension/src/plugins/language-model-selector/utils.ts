@@ -11,7 +11,7 @@ function filterAndMapSelectItems(
   const subTier = pluginGuardsStore.getState().subTier;
 
   return models
-    .filter((model) => !model.isMax || (model.isMax && subTier === "max"))
+    .filter((model) => !model.isMax || subTier === "max")
     .map((model) => ({
       id: model.code as LanguageModelCode,
       label: model.label,
@@ -44,9 +44,7 @@ export function filterAndMapModels(
 ) {
   const { subTier } = pluginGuardsStore.getState();
 
-  return models.filter(
-    (model) => !model.isMax || (model.isMax && subTier === "max"),
-  );
+  return models.filter((model) => !model.isMax || subTier === "max");
 }
 
 export function getModelsByType(type: LanguageModelType) {

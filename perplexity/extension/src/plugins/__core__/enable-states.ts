@@ -14,7 +14,7 @@ export default class CorePluginsEnableStatesService {
   static getEnableStates({
     pluginsEnableStates,
   }: {
-    pluginsEnableStates: PluginsEnableStates;
+    pluginsEnableStates?: PluginsEnableStates;
   }): CorePluginsEnableStates {
     if (CorePluginsEnableStatesService.enableStates != null)
       return CorePluginsEnableStatesService.enableStates;

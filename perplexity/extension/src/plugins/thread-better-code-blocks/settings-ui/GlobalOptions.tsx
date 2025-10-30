@@ -17,7 +17,7 @@ export default function BetterCodeBlockGlobalOptions() {
     <div className="x:flex x:flex-col x:gap-4">
       <Switch
         textLabel="Sticky header"
-        checked={settings?.plugins["thread:betterCodeBlocks"].stickyHeader}
+        checked={settings.plugins["thread:betterCodeBlocks"].stickyHeader}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["thread:betterCodeBlocks"].stickyHeader = checked;
@@ -26,7 +26,7 @@ export default function BetterCodeBlockGlobalOptions() {
       />
       <Switch
         textLabel="Show line numbers"
-        checked={settings?.plugins["thread:betterCodeBlocks"].showLineNumbers}
+        checked={settings.plugins["thread:betterCodeBlocks"].showLineNumbers}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["thread:betterCodeBlocks"].showLineNumbers = checked;
@@ -36,7 +36,7 @@ export default function BetterCodeBlockGlobalOptions() {
       <div className="x:flex x:flex-col x:gap-2">
         <Switch
           textLabel="Unwrap lines by default"
-          checked={settings?.plugins["thread:betterCodeBlocks"].unwrap.enabled}
+          checked={settings.plugins["thread:betterCodeBlocks"].unwrap.enabled}
           onCheckedChange={({ checked }) => {
             mutation.mutate((draft) => {
               draft.plugins["thread:betterCodeBlocks"].unwrap.enabled = checked;
@@ -47,7 +47,7 @@ export default function BetterCodeBlockGlobalOptions() {
           textLabel="Show toggle button"
           className="x:ml-8"
           checked={
-            settings?.plugins["thread:betterCodeBlocks"].unwrap.showToggleButton
+            settings.plugins["thread:betterCodeBlocks"].unwrap.showToggleButton
           }
           onCheckedChange={({ checked }) => {
             mutation.mutate((draft) => {
@@ -62,7 +62,7 @@ export default function BetterCodeBlockGlobalOptions() {
           <Switch
             textLabel="Max height"
             checked={
-              settings?.plugins["thread:betterCodeBlocks"].maxHeight?.enabled
+              settings.plugins["thread:betterCodeBlocks"].maxHeight.enabled
             }
             onCheckedChange={({ checked }) => {
               mutation.mutate((draft) => {
@@ -76,11 +76,11 @@ export default function BetterCodeBlockGlobalOptions() {
               type="number"
               min={300}
               defaultValue={
-                settings?.plugins["thread:betterCodeBlocks"].maxHeight?.value
+                settings.plugins["thread:betterCodeBlocks"].maxHeight.value
               }
               className="x:w-[100px]"
               disabled={
-                !settings?.plugins["thread:betterCodeBlocks"].maxHeight?.enabled
+                !settings.plugins["thread:betterCodeBlocks"].maxHeight.enabled
               }
               onChange={(e) => {
                 if (Number(e.target.value) < 300) {
@@ -99,8 +99,8 @@ export default function BetterCodeBlockGlobalOptions() {
           textLabel="Collapse by default"
           className="x:ml-8"
           checked={
-            settings?.plugins["thread:betterCodeBlocks"].maxHeight
-              ?.collapseByDefault
+            settings.plugins["thread:betterCodeBlocks"].maxHeight
+              .collapseByDefault
           }
           onCheckedChange={({ checked }) => {
             mutation.mutate((draft) => {
@@ -114,8 +114,8 @@ export default function BetterCodeBlockGlobalOptions() {
           textLabel="Show toggle button"
           className="x:ml-8"
           checked={
-            settings?.plugins["thread:betterCodeBlocks"].maxHeight
-              ?.showToggleButton
+            settings.plugins["thread:betterCodeBlocks"].maxHeight
+              .showToggleButton
           }
           onCheckedChange={({ checked }) => {
             mutation.mutate((draft) => {
@@ -129,9 +129,7 @@ export default function BetterCodeBlockGlobalOptions() {
       <div className="x:flex x:gap-2">
         <Switch
           textLabel="Max width"
-          checked={
-            settings?.plugins["thread:betterCodeBlocks"].maxWidth?.enabled
-          }
+          checked={settings.plugins["thread:betterCodeBlocks"].maxWidth.enabled}
           onCheckedChange={({ checked }) => {
             mutation.mutate((draft) => {
               draft.plugins["thread:betterCodeBlocks"].maxWidth.enabled =
@@ -146,11 +144,11 @@ export default function BetterCodeBlockGlobalOptions() {
             max={100}
             step={25}
             defaultValue={
-              settings?.plugins["thread:betterCodeBlocks"].maxWidth?.value
+              settings.plugins["thread:betterCodeBlocks"].maxWidth.value
             }
             className="x:w-[100px]"
             disabled={
-              !settings?.plugins["thread:betterCodeBlocks"].maxWidth?.enabled
+              !settings.plugins["thread:betterCodeBlocks"].maxWidth.enabled
             }
             onChange={(e) => {
               const value = Number(e.target.value);

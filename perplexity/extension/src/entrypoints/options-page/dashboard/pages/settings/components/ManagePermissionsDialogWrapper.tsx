@@ -45,16 +45,16 @@ export default function ManagePermissionsDialogWrapper({
             Grant or revoke extension permissions. Please note that some
             features may be disabled without the necessary permissions.
           </DialogDescription>
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {OPTIONAL_PERMISSIONS.length > 0 ? (
             OPTIONAL_PERMISSIONS.map((permission) => {
               const activePlugins = OPTIONAL_PERMISSIONS_DETAILS[
                 permission
               ]?.dependantPlugins.filter(
                 (plugin) =>
-                  (!pluginsStates[plugin.id]?.isOnMaintenance &&
-                    !pluginsStates[plugin.id]?.isOutdated &&
-                    settings?.plugins[plugin.id]?.enabled) ??
-                  false,
+                  !pluginsStates[plugin.id].isOnMaintenance &&
+                  !pluginsStates[plugin.id].isOutdated &&
+                  settings.plugins[plugin.id].enabled,
               );
 
               return (

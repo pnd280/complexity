@@ -234,25 +234,20 @@ export class PplxApiService {
   }
 
   static async fetchSpaceFileDownloadUrl({
-    fileUuid,
-    spaceUuid,
+    fileS3Url,
   }: {
-    fileUuid: string;
-    spaceUuid: string;
+    fileS3Url: string;
   }): Promise<SpaceFileDownloadUrlApiResponse> {
     // POST https://www.perplexity.ai/rest/file-repository/download-file?version=2.13&source=default
     // payload: {"file_uuid":"a1baad94-9a0a-4c84-925e-b8d41960f428","file_repository_info":{"file_repository_type":"COLLECTION","owner_id":"cf11f61d-4f74-4582-9f2c-365f5419989b"}}
 
     const resp = await fetch(
-      "https://www.perplexity.ai/rest/file-repository/download-file?version=2.13&source=default",
+      "https://www.perplexity.ai/rest/file-repository/download?version=2.18&source=default",
       {
         method: "POST",
         body: JSON.stringify({
-          file_uuid: fileUuid,
-          file_repository_info: {
-            file_repository_type: "COLLECTION",
-            owner_id: spaceUuid,
-          },
+          file_url: fileS3Url,
+          view_mode: false,
         }),
         headers: {
           "Content-Type": "application/json",

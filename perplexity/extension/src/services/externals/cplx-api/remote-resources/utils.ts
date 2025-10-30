@@ -2,7 +2,6 @@ import { APP_CONFIG } from "@/app.config";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
 import type { RemoteResource } from "@/services/externals/cplx-api/remote-resources/types";
 import type PersistentQueryClient from "@/services/infra/query-client";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export async function getRemoteResource<T>(
   resourceConfig: RemoteResource<T>,
@@ -11,7 +10,7 @@ export async function getRemoteResource<T>(
   if (APP_CONFIG.IS_DEV || APP_CONFIG.CPLX_CDN_URL == null)
     return resourceConfig.fallback;
 
-  const [resource, error] = await errorWrapper(() =>
+  const [resource, error] = await tryCatch(() =>
     persistentQueryClient.queryClient.fetchQuery({
       ...cplxApiQueries.remoteResource.detail({
         resourcePath: resourceConfig.resourcePath,
@@ -19,7 +18,7 @@ export async function getRemoteResource<T>(
       }),
       retry: false,
     }),
-  )();
+  );
 
   if (error) return resourceConfig.fallback;
 

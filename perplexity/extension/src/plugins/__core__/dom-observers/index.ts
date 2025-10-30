@@ -153,11 +153,12 @@ export class DomObserver {
    * @param id - The ID of the subscription to remove.
    */
   unsubscribe(id: string | number): void {
-    if (!this.subscriptions.has(id)) {
+    const subscription = this.subscriptions.get(id);
+
+    if (subscription == null) {
       return;
     }
 
-    const subscription = this.subscriptions.get(id)!;
     const selector = subscription.selector;
 
     this.subscriptions.delete(id);
@@ -239,7 +240,8 @@ export class DomObserver {
       this.pendingRemovedNodes.length > 0 &&
       performance.now() - startTime < DomObserver.MAX_PROCESSING_TIME_MS
     ) {
-      const node = this.pendingRemovedNodes.pop()!;
+      const node = this.pendingRemovedNodes.pop();
+      if (node == null) continue;
       this.processNodeAndDescendants(node, "remove");
     }
 
@@ -248,7 +250,8 @@ export class DomObserver {
       this.pendingAddedNodes.length > 0 &&
       performance.now() - startTime < DomObserver.MAX_PROCESSING_TIME_MS
     ) {
-      const node = this.pendingAddedNodes.pop()!;
+      const node = this.pendingAddedNodes.pop();
+      if (node == null) continue;
       this.processNodeAndDescendants(node, "add");
     }
 
@@ -275,10 +278,6 @@ export class DomObserver {
 
     if (type === "add") {
       const checkAndProcessElement = (element: Element): void => {
-        if (element == null) {
-          return;
-        }
-
         for (const selector of this.selectorCallbacks.keys()) {
           try {
             if (element.matches(selector)) {
@@ -390,7 +389,7 @@ export class DomObserver {
       }
     }
 
-    if (node.children?.length) {
+    if (node.children.length) {
       for (let i = 0; i < node.children.length; i++) {
         const child = node.children[i];
         if (child) {
@@ -439,7 +438,7 @@ export class DomObserver {
       }
     } else {
       const data = this.elementData.get(element);
-      const wasTracked = Boolean(data?.subs?.includes(subscriptionId));
+      const wasTracked = Boolean(data?.subs.includes(subscriptionId));
 
       if (wasTracked && typeof subscription.onRemove === "function") {
         subscription.onRemove(element);

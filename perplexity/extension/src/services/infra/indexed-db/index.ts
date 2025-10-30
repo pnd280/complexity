@@ -91,9 +91,10 @@ export class IndexedDbService extends Dexie {
         Array.isArray(records) &&
         !IndexedDbService.EXCLUDED_FROM_EXPORT.has(tableName)
       ) {
-        const table = this[
-          tableName as keyof IndexedDbService
-        ] as Table<unknown>;
+        const table = this[tableName as keyof IndexedDbService] as
+          | Table<unknown>
+          | undefined;
+
         if (table != null) {
           await table.bulkPut(records);
         }

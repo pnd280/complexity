@@ -37,9 +37,7 @@ export default function ExtensionIconAction() {
 function ExtensionIconActionSelect() {
   const { settings, mutation } = useExtensionSettings();
 
-  if (!settings) return null;
-
-  const selectedValue = settings?.extensionIconAction;
+  const selectedValue = settings.extensionIconAction;
 
   const handleOptionClick = (
     option: ExtensionSettings["extensionIconAction"],
@@ -70,7 +68,7 @@ function ExtensionIconActionSelect() {
             <img
               src="https://images2.imgbox.com/06/5a/2uZrfS5v_o.png"
               alt="Settings Dashboard"
-              className="x:h-full x:w-full x:object-cover x:object-left-top x:shadow-lg"
+              className="x:h-full x:w-full x:object-cover x:object-top-left x:shadow-lg"
             />
           </div>
         </button>
@@ -98,7 +96,7 @@ function ExtensionIconActionSelect() {
             <img
               src="https://images2.imgbox.com/c3/04/ITzyjssA_o.png"
               alt="Perplexity.ai"
-              className="x:h-full x:w-full x:object-cover x:object-left-top x:shadow-lg"
+              className="x:h-full x:w-full x:object-cover x:object-top-left x:shadow-lg"
             />
           </div>
         </button>

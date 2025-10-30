@@ -9,6 +9,10 @@ export default {
   includeCitations: "উদ্ধৃতি অন্তর্ভুক্ত করুন",
   actions: {
     download: "ডাউনলোড",
+    largeFileDownloadPrompt: {
+      title: "আপনার ডাউনলোড প্রস্তুত",
+      description: "ডাউনলোড শুরু করতে এখানে ক্লিক করুন",
+    },
     copy: "কপি",
   },
   errors: {

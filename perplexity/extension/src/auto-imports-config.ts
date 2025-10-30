@@ -47,6 +47,10 @@ const unimportConfig: Partial<UnimportPluginOptions> = {
       as: "ms",
       from: "ms",
     },
+    {
+      name: "tryCatch",
+      from: "@/utils/wrappers/try-catch.ts",
+    },
   ],
 };
 

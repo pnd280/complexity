@@ -96,25 +96,18 @@ export const pplxApiQueries = {
           queryKey: [...pplxApiQueries.space.files.all(spaceUuid)] as const,
           queryFn: () => PplxApiService.fetchSpaceFiles(spaceUuid),
         }),
-      downloadUrl: {
-        all: (spaceUuid: Space["uuid"], fileUuid: string) =>
-          [
-            ...pplxApiQueries.space.files.all(spaceUuid),
-            "downloadUrl",
-            { fileUuid },
+    },
+    downloadFile: {
+      all: (fileS3Url: string) =>
+        [...pplxApiQueries.space.all(), "downloadFile", { fileS3Url }] as const,
+      detail: (fileS3Url: string) =>
+        queryOptions({
+          queryKey: [
+            ...pplxApiQueries.space.downloadFile.all(fileS3Url),
           ] as const,
-        detail: (spaceUuid: Space["uuid"], fileUuid: string) =>
-          queryOptions({
-            queryKey: [
-              ...pplxApiQueries.space.files.downloadUrl.all(
-                spaceUuid,
-                fileUuid,
-              ),
-            ] as const,
-            queryFn: () =>
-              PplxApiService.fetchSpaceFileDownloadUrl({ spaceUuid, fileUuid }),
-          }),
-      },
+          queryFn: () =>
+            PplxApiService.fetchSpaceFileDownloadUrl({ fileS3Url }),
+        }),
     },
     threads: {
       all: (spaceSlug: Space["slug"]) =>

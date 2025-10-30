@@ -10,7 +10,7 @@ export const cometAffiliateRemoteResourceConfig = defineRemoteResource({
   type: "json",
   fallback: {
     enabled: APP_CONFIG.IS_DEV,
-    link: "pplx.ai/pnd280",
+    link: "pplx.ai/paradroid",
   },
   zodSchema: z.object({
     enabled: z.boolean(),

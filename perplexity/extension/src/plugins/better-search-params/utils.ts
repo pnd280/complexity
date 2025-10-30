@@ -6,7 +6,6 @@ import {
   parsePerplexityAskEvent,
 } from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 type ParsedQuery = {
   query: string | null;
@@ -27,9 +26,9 @@ export function parseQuery(searchParams: URLSearchParams): ParsedQuery | null {
     const cometCacheQuery = window.location.href.match(/ca(.*?)che_id/);
 
     if (cometCacheQuery != null && cometCacheQuery[1] != null) {
-      const [decoded] = errorWrapper(() => {
+      const [decoded] = tryCatch(() => {
         return new URLSearchParams(`=${cometCacheQuery[1]}`).get("");
-      })();
+      });
 
       if (decoded != null) {
         query = decoded;

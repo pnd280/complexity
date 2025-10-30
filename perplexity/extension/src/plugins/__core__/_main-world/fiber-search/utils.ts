@@ -169,7 +169,9 @@ function createComponentNameGetter() {
   const typeToNameCache =
     typeof WeakMap === "function" ? new WeakMap<object, string>() : null;
 
-  return function getComponentNameFromFiber(fiber: Fiber): string | null {
+  return function getComponentNameFromFiber(
+    fiber: Fiber | null,
+  ): string | null {
     if (fiber == null) return null;
     const type = fiber.type;
     if (type == null) return null;
@@ -199,10 +201,12 @@ function createComponentNameGetter() {
       } else if (typeWithName.render?.name) {
         name = typeWithName.render.name;
       } else if (fiber.elementType != null) {
-        const elemType = fiber.elementType as {
-          displayName?: string;
-          name?: string;
-        };
+        const elemType = fiber.elementType as
+          | {
+              displayName?: string;
+              name?: string;
+            }
+          | undefined;
         name = elemType?.displayName || elemType?.name || null;
       }
     }
@@ -461,13 +465,6 @@ export function findFiberNodes(
 
   let shouldReturnCached = false;
   let cachedPaths: FiberPath[] | null = null;
-
-  if (condition == null) {
-    console.warn(
-      "You must provide at least a name or a function as condition.",
-    );
-    return findAll ? [] : null;
-  }
 
   const hasName = "name" in condition && typeof condition.name === "string";
   const hasFn = "fn" in condition && typeof condition.fn === "function";

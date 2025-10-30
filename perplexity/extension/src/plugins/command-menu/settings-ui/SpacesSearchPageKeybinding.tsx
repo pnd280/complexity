@@ -4,11 +4,8 @@ import useExtensionSettings from "@/services/infra/extension-api-wrappers/extens
 export default function SpacesSearchPageKeybinding() {
   const { settings, mutation } = useExtensionSettings();
 
-  const defaultKeys =
-    settings?.plugins["commandMenu"].keybindings.spacesSearch ?? [];
-
   const { HotkeyRecorderUi } = useHotkeyRecorder({
-    defaultKeys,
+    defaultKeys: settings.plugins["commandMenu"].keybindings.spacesSearch,
     onSave: (keys) => {
       mutation.mutate((draft) => {
         draft.plugins["commandMenu"].keybindings.spacesSearch = keys;

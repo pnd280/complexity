@@ -5,8 +5,6 @@ export default function () {
   chrome.runtime.onInstalled.addListener(async (details) => {
     if (APP_CONFIG.IS_DEV) return;
 
-    if (details == null) return;
-
     if (details.reason !== chrome.runtime.OnInstalledReason.UPDATE) return;
 
     void ExtensionSettingsService.set((draft) => {

@@ -7,15 +7,12 @@ export const pluginId: PluginId = "thread:exportThread";
 
 export default function ExportThreadPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["thread:exportThread"];
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["thread:exportThread"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["thread:exportThread"].enabled = checked;

@@ -18,7 +18,7 @@ export default function Version() {
     if (newClickCount >= 7) {
       setClicks(0);
 
-      if (settings?.devMode) {
+      if (settings.devMode) {
         toast({
           title: "Dev mode already enabled",
         });

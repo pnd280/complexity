@@ -30,8 +30,8 @@ export function EditThemeProvider({ children, theme }: EditThemeProviderProps) {
   const initialValues: DeepRequired<ThemeFormValues> = {
     title: theme.title,
     fonts: {
-      ui: theme.config?.fonts?.ui ?? "",
-      mono: theme.config?.fonts?.mono ?? "",
+      ui: theme.config?.fonts.ui ?? "",
+      mono: theme.config?.fonts.mono ?? "",
     },
     accentColor: theme.config?.accentColor ?? "",
     builtInAccentColor: theme.config?.builtInAccentColor ?? "cplx-blue",

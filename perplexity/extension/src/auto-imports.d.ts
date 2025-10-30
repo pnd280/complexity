@@ -29,4 +29,5 @@ declare global {
   const { isMainWorldContext, sleep }: typeof import("@/utils/misc/utils.ts");
   const { default: $ }: typeof import("jquery");
   const ms: typeof import("ms");
+  const tryCatch: typeof import("@/utils/wrappers/try-catch.ts").tryCatch;
 }

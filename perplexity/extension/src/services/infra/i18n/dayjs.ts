@@ -70,6 +70,6 @@ export async function initializeDayjsLocale() {
     "ru-RU": () => import("dayjs/locale/ru"),
   };
 
-  await importsMap[language as SupportedLangs]?.();
+  await importsMap[language as SupportedLangs]();
   dayjs.locale(dayjsLocaleImportNamesMap[language as SupportedLangs]);
 }

@@ -34,7 +34,7 @@ export default function DevToolsSection() {
             itemToString: (item) => item.label,
             itemToValue: (item) => item.value,
           })}
-          defaultValue={[settings?.devTools?.overrideSubscriptionTier ?? "pro"]}
+          defaultValue={[settings.devTools?.overrideSubscriptionTier ?? "pro"]}
           positioning={{
             sameWidth: true,
           }}

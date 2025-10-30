@@ -1,5 +1,4 @@
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 import { getReactFiberKey } from "@/utils/wrappers/react-fiber";
 
 export type CodeBlockContentParams = {
@@ -61,19 +60,19 @@ function buildCodeBlockSelector(
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractCodeContent(fiberNode: any): [string | null, Error | null] {
-  return errorWrapper(
+  return tryCatch(
     () =>
       (fiberNode.alternate != null ? fiberNode.alternate : fiberNode)
         .memoizedProps.children.props.children,
-  )();
+  );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractLanguageInfo(fiberNode: any): [string | null, Error | null] {
-  return errorWrapper(() =>
+  return tryCatch(() =>
     (fiberNode.alternate != null
       ? fiberNode.alternate
       : fiberNode
     ).memoizedProps.children.props.className.replace(/^language-/, ""),
-  )();
+  );
 }

@@ -89,7 +89,7 @@ export default function PluginsEnableSet() {
   const { settings, mutation } = useExtensionSettings();
   const isDefaultSettings = (() =>
     isEqual(
-      settings?.plugins,
+      settings.plugins,
       PluginManifestsRegistry.settingsFallbackValues,
     ))();
   const [open, setOpen] = useState(

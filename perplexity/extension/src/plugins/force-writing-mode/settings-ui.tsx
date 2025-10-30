@@ -7,14 +7,14 @@ export const pluginId: PluginId = "queryBox:spacesThreadsForceWritingMode";
 
 export default function SpacesThreadsForceWritingModePluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings =
-    settings?.plugins["queryBox:spacesThreadsForceWritingMode"];
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={
+          settings.plugins["queryBox:spacesThreadsForceWritingMode"].enabled
+        }
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["queryBox:spacesThreadsForceWritingMode"].enabled =

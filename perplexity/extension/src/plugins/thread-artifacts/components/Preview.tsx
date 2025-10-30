@@ -8,8 +8,6 @@ export default function ArtifactPreview({
 }) {
   const Component = ARTIFACT_RENDERERS[language];
 
-  if (Component == null) return null;
-
   return (
     <div className="x:size-full">
       <Component />

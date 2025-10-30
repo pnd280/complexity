@@ -9,6 +9,10 @@ export default {
   includeCitations: "Include citations",
   actions: {
     download: "Download",
+    largeFileDownloadPrompt: {
+      title: "Your download is ready",
+      description: "Click here to start the download",
+    },
     copy: "Copy",
   },
   errors: {

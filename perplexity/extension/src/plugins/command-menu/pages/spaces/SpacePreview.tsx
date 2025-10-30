@@ -10,15 +10,14 @@ import TablerLink from "~icons/tabler/link";
 
 export default function SpacePreview({ space }: { space: Space }) {
   const { data: spaceDetails } = useQuery({
-    ...pplxApiQueries.space.detail(space?.uuid ?? ""),
+    ...pplxApiQueries.space.detail(space.uuid),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     staleTime: ms("10s"),
   });
 
   const { data: files } = useQuery({
-    ...pplxApiQueries.space.files.detail(space?.uuid ?? ""),
-    enabled: spaceDetails?.file_count != null && spaceDetails.file_count > 0,
+    ...pplxApiQueries.space.files.detail(space.uuid),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     staleTime: ms("30s"),
@@ -51,7 +50,7 @@ export default function SpacePreview({ space }: { space: Space }) {
           </div>
         </div>
       )}
-      {files && files?.num_total_files > 0 && (
+      {files && files.num_total_files > 0 && (
         <div className="x:flex x:flex-col x:justify-between x:gap-2">
           <div className="x:text-sm x:font-medium x:text-muted-foreground">
             {t("plugin-command-menu.spaces.preview.files", {
@@ -59,7 +58,7 @@ export default function SpacePreview({ space }: { space: Space }) {
             })}
           </div>
           {files.files.map((file, index) => (
-            <SpaceItemFile key={index} file={file} spaceUuid={space.uuid} />
+            <SpaceItemFile key={index} file={file} />
           ))}
         </div>
       )}

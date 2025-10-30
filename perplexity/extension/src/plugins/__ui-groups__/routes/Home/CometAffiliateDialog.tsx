@@ -35,7 +35,6 @@ export default function CometAffiliateDialog() {
   if (
     !cometAffiliateConfig.enabled ||
     dismissed ||
-    isLoggedIn == null ||
     (isLoggedIn && subTier != null)
   ) {
     return null;

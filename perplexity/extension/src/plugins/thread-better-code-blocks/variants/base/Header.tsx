@@ -52,9 +52,9 @@ const BaseCodeBlockWrapperHeader = memo(function BaseCodeBlockWrapperHeader() {
       <div className="x:flex x:items-center x:gap-4">
         {isInFlight ? (
           <div className="x:flex x:items-center x:gap-2">
-            {fineGrainedSettings?.placeholderText?.loading && (
+            {fineGrainedSettings?.placeholderText.loading && (
               <div className="x:animate-pulse">
-                {fineGrainedSettings?.placeholderText?.loading}
+                {fineGrainedSettings.placeholderText.loading}
               </div>
             )}
             <TablerLoaderCircle className="x:size-4 x:animate-spin" />

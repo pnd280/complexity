@@ -114,8 +114,7 @@ export class PplxStreamingTtsPlayer {
     latencyMs: number,
     durationSamples: number,
   ) {
-    if (this.audioContext == null || this.audioContext.sampleRate == null)
-      return;
+    if (this.audioContext == null) return;
 
     const durationMs = (durationSamples / this.audioContext.sampleRate) * 1000;
     const totalMs = Math.max(0, latencyMs + durationMs);
@@ -146,10 +145,6 @@ export class PplxStreamingTtsPlayer {
       await this.audioContext.resume();
     }
 
-    if (!this.isSessionActive) {
-      return;
-    }
-
     let playbackOptions: AudioAPI.AudioPlaybackOptions = {};
 
     if (APP_CONFIG.BROWSER === "firefox") {
@@ -163,30 +158,18 @@ export class PplxStreamingTtsPlayer {
       };
     }
 
-    if (!this.isSessionActive || this.audioContext == null) {
-      return;
-    }
-
     this.weasoundPlayback = await AudioAPI.createAudioPlayback(
       this.audioContext,
       playbackOptions,
     );
-
-    if (!this.isSessionActive || this.weasoundPlayback == null) {
-      return;
-    }
 
     this.weasoundPlayback.setPlaybackRate(this.playbackRate);
 
     const audioNode =
       this.weasoundPlayback.unsharedNode() ||
       this.weasoundPlayback.sharedNode();
-    if (
-      audioNode != null &&
-      this.audioContext != null &&
-      this.audioContext.destination != null &&
-      this.isSessionActive
-    ) {
+
+    if (audioNode != null) {
       audioNode.connect(this.audioContext.destination);
     }
 
@@ -201,7 +184,7 @@ export class PplxStreamingTtsPlayer {
     this.isPlayingChunks = true;
 
     try {
-      while (this.audioChunks.length > 0 && this.isSessionActive) {
+      while (this.audioChunks.length > 0) {
         const chunk = this.audioChunks.shift();
         if (!chunk || !this.weasoundPlayback) {
           continue;
@@ -221,7 +204,7 @@ export class PplxStreamingTtsPlayer {
           );
         }
 
-        const latencyMs = this.weasoundPlayback.play([float32Array]) ?? 0;
+        const latencyMs = this.weasoundPlayback.play([float32Array]);
 
         if (this.onAudioStart && !this.hasStartedPlayback) {
           this.hasStartedPlayback = true;

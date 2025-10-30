@@ -34,7 +34,7 @@ export function Toaster({
             className={cn("x:w-max x:font-sans", className)}
             {...props}
           >
-            <div className="x:grid x:gap-1">
+            <div className="x:flex x:flex-col x:items-start x:justify-center x:gap-2">
               {isReactNode(title) && <ToastTitle>{title}</ToastTitle>}
               {isReactNode(description) && (
                 <ToastDescription>{description}</ToastDescription>

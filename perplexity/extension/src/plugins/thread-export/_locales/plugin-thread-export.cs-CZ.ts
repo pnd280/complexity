@@ -9,6 +9,10 @@ export default {
   includeCitations: "Zahrnout citace",
   actions: {
     download: "Stáhnout",
+    largeFileDownloadPrompt: {
+      title: "Vaše stažení je připraveno",
+      description: "Klikněte zde pro zahájení stažení",
+    },
     copy: "Kopírovat",
   },
   errors: {

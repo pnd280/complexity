@@ -58,7 +58,7 @@ export default function useHandleAutonomousArtifactsState() {
 
           const isCurrentlySelected =
             chunkIndex === selectedCodeBlockLocation?.messageBlockIndex &&
-            codeIndex === selectedCodeBlockLocation?.codeBlockIndex;
+            codeIndex === selectedCodeBlockLocation.codeBlockIndex;
 
           if (!codeBlock.states.isInFlight || isCurrentlySelected) continue;
 
@@ -112,7 +112,6 @@ export default function useHandleAutonomousArtifactsState() {
         !hasAutoPreviewTriggered &&
         selectedCodeBlock &&
         !selectedCodeBlock.states.isInFlight &&
-        selectedCodeBlockLocation != null &&
         selectedCodeBlock ===
           codeBlocksChunks[selectedCodeBlockLocation.messageBlockIndex]?.[
             selectedCodeBlockLocation.codeBlockIndex

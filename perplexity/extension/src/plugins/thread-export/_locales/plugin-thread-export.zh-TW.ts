@@ -9,6 +9,10 @@ export default {
   includeCitations: "包含引用",
   actions: {
     download: "下載",
+    largeFileDownloadPrompt: {
+      title: "您的下載已準備就緒",
+      description: "點擊此處開始下載",
+    },
     copy: "複製",
   },
   errors: {

@@ -6,8 +6,6 @@ import { LocalThemesService } from "@/plugins/__core__/custom-theme/indexed-db/s
 
 export default function () {
   chrome.runtime.onInstalled.addListener(async (details) => {
-    if (details == null) return;
-
     if (details.reason !== chrome.runtime.OnInstalledReason.UPDATE) return;
 
     console.log("Rebuilding custom themes");

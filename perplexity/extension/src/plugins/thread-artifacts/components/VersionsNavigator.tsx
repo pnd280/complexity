@@ -29,11 +29,10 @@ export default function AutonomousArtifactVersionsNavigator() {
     (location) =>
       location.messageBlockIndex ===
         selectedCodeBlockLocation?.messageBlockIndex &&
-      location.codeBlockIndex === selectedCodeBlockLocation?.codeBlockIndex,
+      location.codeBlockIndex === selectedCodeBlockLocation.codeBlockIndex,
   );
   const hasNextVersion =
-    versions?.location &&
-    currentLocationIndex !== versions?.location.length - 1;
+    versions?.location && currentLocationIndex !== versions.location.length - 1;
   const hasPreviousVersion = versions?.location && currentLocationIndex !== 0;
 
   if (!versions || currentLocationIndex == null) return null;
@@ -50,8 +49,7 @@ export default function AutonomousArtifactVersionsNavigator() {
         disabled={!hasPreviousVersion}
         onClick={() => {
           artifactsStore.setState((draft) => {
-            if (currentLocationIndex == null) return;
-            const newLocation = versions?.location[currentLocationIndex - 1];
+            const newLocation = versions.location[currentLocationIndex - 1];
             if (!newLocation) return;
             draft.selectedCodeBlockLocation = newLocation;
           });
@@ -86,8 +84,7 @@ export default function AutonomousArtifactVersionsNavigator() {
         disabled={!hasNextVersion}
         onClick={() => {
           artifactsStore.setState((draft) => {
-            if (currentLocationIndex == null) return;
-            const newLocation = versions?.location[currentLocationIndex + 1];
+            const newLocation = versions.location[currentLocationIndex + 1];
             if (!newLocation) return;
             draft.selectedCodeBlockLocation = newLocation;
           });

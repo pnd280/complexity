@@ -9,6 +9,10 @@ export default {
   includeCitations: "Включить цитаты",
   actions: {
     download: "Скачать",
+    largeFileDownloadPrompt: {
+      title: "Ваша загрузка готова",
+      description: "Нажмите здесь, чтобы начать загрузку",
+    },
     copy: "Копировать",
   },
   errors: {

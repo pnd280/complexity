@@ -15,15 +15,12 @@ export const pluginId: PluginId = "comet:isolatedZoom";
 
 export default function ThreadMessageTtsPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["comet:isolatedZoom"];
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["comet:isolatedZoom"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["comet:isolatedZoom"].enabled = checked;
@@ -44,7 +41,7 @@ export default function ThreadMessageTtsPluginSettingsUi() {
             max={5}
             step={0.25}
             className="x:flex x:w-full x:flex-col x:gap-4"
-            value={[pluginSettings?.zoomLevel ?? 1]}
+            value={[settings.plugins["comet:isolatedZoom"].zoomLevel]}
             onValueChange={({ value }) => {
               mutation.mutate((draft) => {
                 draft.plugins["comet:isolatedZoom"].zoomLevel = value[0] ?? 1;

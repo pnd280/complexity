@@ -4,11 +4,8 @@ import useExtensionSettings from "@/services/infra/extension-api-wrappers/extens
 export default function ThreadsSearchPageKeybinding() {
   const { settings, mutation } = useExtensionSettings();
 
-  const defaultKeys =
-    settings?.plugins["commandMenu"].keybindings.threadsSearch ?? [];
-
   const { HotkeyRecorderUi } = useHotkeyRecorder({
-    defaultKeys,
+    defaultKeys: settings.plugins["commandMenu"].keybindings.threadsSearch,
     onSave: (keys) => {
       mutation.mutate((draft) => {
         draft.plugins["commandMenu"].keybindings.threadsSearch = keys;

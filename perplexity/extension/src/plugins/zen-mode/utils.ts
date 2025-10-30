@@ -13,7 +13,7 @@ export function toggleZenMode(forceState?: boolean): boolean {
 
   $("body").attr("data-cplx-zen-mode", newZenMode);
 
-  if (ExtensionSettingsService.cachedSync?.plugins["zenMode"].persistent) {
+  if (ExtensionSettingsService.cachedSync.plugins["zenMode"].persistent) {
     localStorage.setItem("cplx.zen-mode.last-state", newZenMode);
   }
 

@@ -62,7 +62,7 @@ export default function MarkmapRenderer() {
       {!isPending &&
         markmapRendererResponded &&
         !isSuccess &&
-        !result?.error && (
+        !result.error && (
           <div className="x:absolute x:inset-1/2 x:w-max x:-translate-x-1/2 x:-translate-y-1/2">
             <span className="x:animate-in x:fade-in">
               Failed to render provided markmap code. Try to reload the
@@ -70,34 +70,31 @@ export default function MarkmapRenderer() {
             </span>
           </div>
         )}
-      {!isPending &&
-        markmapRendererResponded &&
-        !isSuccess &&
-        result?.error && (
-          <div className="x:flex x:flex-col x:gap-4 x:p-4 x:font-mono">
-            <div className="x:text-lg x:font-bold x:text-caution">
-              An error occurred while rendering:
-            </div>
-            <div className="x:whitespace-pre x:animate-in x:fade-in">
-              {result.error}
-            </div>
-            <Button
-              className="x:w-max"
-              variant="caution"
-              onClick={() => {
-                const $queryBoxTextbox = getActiveQueryBoxTextbox();
-                if (!$queryBoxTextbox.length) return;
-
-                const errorText = `${isAutonomousArtifact && title ? `An error occurred while rendering "${title}": ` : ""}\n\n${result.error}`;
-
-                $queryBoxTextbox.trigger("focus");
-                document.execCommand("insertText", false, errorText);
-              }}
-            >
-              Fix Error
-            </Button>
+      {!isPending && markmapRendererResponded && !isSuccess && result.error && (
+        <div className="x:flex x:flex-col x:gap-4 x:p-4 x:font-mono">
+          <div className="x:text-lg x:font-bold x:text-caution">
+            An error occurred while rendering:
           </div>
-        )}
+          <div className="x:whitespace-pre x:animate-in x:fade-in">
+            {result.error}
+          </div>
+          <Button
+            className="x:w-max"
+            variant="caution"
+            onClick={() => {
+              const $queryBoxTextbox = getActiveQueryBoxTextbox();
+              if (!$queryBoxTextbox.length) return;
+
+              const errorText = `${isAutonomousArtifact && title ? `An error occurred while rendering "${title}": ` : ""}\n\n${result.error}`;
+
+              $queryBoxTextbox.trigger("focus");
+              document.execCommand("insertText", false, errorText);
+            }}
+          >
+            Fix Error
+          </Button>
+        </div>
+      )}
       <svg
         id={`artifact-markmap-container-${selectedCodeBlockLocation?.messageBlockIndex}-${selectedCodeBlockLocation?.codeBlockIndex}`}
         className={cn(

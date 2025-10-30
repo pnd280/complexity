@@ -18,8 +18,6 @@ const SelectLocalContext = createContext<SelectLocalContext>({
   portal: true,
 });
 
-const SelectLocalContextProvider = SelectLocalContext.Provider;
-
 export const SelectContext = ArkSelect.Context;
 
 export function Select<T>({
@@ -29,13 +27,13 @@ export function Select<T>({
   portal?: boolean;
 }) {
   return (
-    <SelectLocalContextProvider
+    <SelectLocalContext
       value={{
         portal: portal ?? true,
       }}
     >
       <ArkSelect.Root<T> unmountOnExit={false} lazyMount={true} {...props} />
-    </SelectLocalContextProvider>
+    </SelectLocalContext>
   );
 }
 

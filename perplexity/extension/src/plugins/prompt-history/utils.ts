@@ -27,7 +27,7 @@ export const handlePromptSave = async (params?: {
     }
   }
 
-  if (prompt == null || prompt?.length === 0 || prompt.trim() === "") return;
+  if (prompt == null || prompt.length === 0 || prompt.trim() === "") return;
 
   await PromptHistoryService.Instance.deduplicateAdd({
     prompt,

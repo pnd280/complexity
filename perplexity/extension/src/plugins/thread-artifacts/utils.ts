@@ -43,17 +43,12 @@ export const isAutonomousArtifactLanguageString = (
 
 export const getInterpretedArtifactLanguage = (
   languageString: string,
-): ArtifactLanguage | string => {
+): ArtifactLanguage | undefined => {
   if (isArtifactLanguageString(languageString))
-    return (
-      ARTIFACT_LANGUAGES[languageString] ??
-      ARTIFACT_INTERPRETED_LANGUAGES[languageString]
-    );
+    return ARTIFACT_INTERPRETED_LANGUAGES[languageString];
 
   if (isAutonomousArtifactLanguageString(languageString))
-    return languageString.split(":")[1] ?? languageString;
-
-  return languageString;
+    return languageString.split(":")[1] as ArtifactLanguage;
 };
 
 export function getArtifactTitle(languageString: string | undefined | null) {

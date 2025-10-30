@@ -34,7 +34,6 @@ export function useHandleArtifactsState() {
 
       const isValidArtifactCode =
         codeBlock?.content.code != null &&
-        codeBlock?.content.language != null &&
         (isArtifactLanguageString(codeBlock.content.language) ||
           isAutonomousArtifactLanguageString(codeBlock.content.language));
 

@@ -3,18 +3,14 @@ import type { Socket } from "socket.io-client";
 import io from "socket.io-client";
 
 export class InternalWebSocketManager {
-  private static instance: InternalWebSocketManager;
+  private static instance: InternalWebSocketManager =
+    new InternalWebSocketManager();
 
-  private sockets: Map<string, Socket>;
+  private sockets: Map<string, Socket> = new Map();
 
-  private constructor() {
-    this.sockets = new Map();
-  }
+  private constructor() {}
 
   static getInstance(): InternalWebSocketManager {
-    if (InternalWebSocketManager.instance == null) {
-      InternalWebSocketManager.instance = new InternalWebSocketManager();
-    }
     return InternalWebSocketManager.instance;
   }
 

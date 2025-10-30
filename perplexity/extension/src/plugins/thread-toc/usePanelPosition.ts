@@ -6,7 +6,7 @@ import { useThreadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-o
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import type { TocItem } from "@/plugins/thread-toc/useThreadTocItems";
 
-export const PANEL_WIDTH = 230;
+export const PANEL_WIDTH = 300;
 
 type PanelPosition = {
   position: { top: number; left: number };
@@ -27,11 +27,17 @@ export function usePanelPosition({
     (item) => item.isActiveTopMost,
   );
 
-  const threadContentWrapper = useThreadMessageBlocksDomObserverStore(
-    (store) =>
-      store.messageBlocks?.[activeMessageBlockId]?.nodes.$contentWrapper[0],
-    deepEqual,
-  );
+  const activeMessageBlockContentWrapper =
+    useThreadMessageBlocksDomObserverStore((store) => {
+      const messageBlock = store.messageBlocks?.[activeMessageBlockId];
+
+      if (messageBlock == null) return null;
+
+      if (messageBlock.states.isVirtualized)
+        return store.messageBlocks?.[0]?.nodes.$contentWrapper[0];
+
+      return messageBlock.nodes.$contentWrapper[0];
+    }, deepEqual);
 
   const isSidebarPinned = usePplxCookiesStore(
     (store) =>
@@ -48,6 +54,7 @@ export function usePanelPosition({
   const url = useSpaRouter((store) => store.url);
 
   const calculatePosition = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     void (isSidebarPinned && windowSize != null && url != null);
 
     if (threadWrapper == null) {
@@ -68,7 +75,8 @@ export function usePanelPosition({
       document.body.style.getPropertyValue("--header-height");
     const navbarHeight = navbarHeightStr ? parseInt(navbarHeightStr) : 53;
 
-    let threadContentWrapperWidth = threadContentWrapper?.offsetWidth ?? 0;
+    let threadContentWrapperWidth =
+      activeMessageBlockContentWrapper?.offsetWidth ?? 0;
 
     const validChildren = $children.filter((index, child) => {
       return index > 0 && !child.classList.contains("fixed");
@@ -82,7 +90,7 @@ export function usePanelPosition({
     });
 
     const threadContentWrapperOffsetLeft =
-      threadContentWrapper?.getBoundingClientRect().left ?? 0;
+      activeMessageBlockContentWrapper?.getBoundingClientRect().left ?? 0;
 
     const panelRightEdge =
       threadContentWrapperOffsetLeft +
@@ -99,7 +107,13 @@ export function usePanelPosition({
         panelRightEdge > window.innerWidth ||
         threadContentWrapperOffsetLeft === 0,
     };
-  }, [isSidebarPinned, threadContentWrapper, threadWrapper, url, windowSize]);
+  }, [
+    isSidebarPinned,
+    activeMessageBlockContentWrapper,
+    threadWrapper,
+    url,
+    windowSize,
+  ]);
 
   return calculatePosition();
 }

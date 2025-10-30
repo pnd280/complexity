@@ -90,19 +90,15 @@ export default function ArtifactHeader() {
           {isAutonomousArtifactLanguage && (
             <>
               <PreviewToggle language={language} />
-              {isAutonomousArtifactLanguage && (
-                <Tooltip content={t("plugin-artifacts.tooltip.openList")}>
-                  <Button
-                    variant="ghost"
-                    size="iconSm"
-                    onClick={() =>
-                      artifactsStore.getState().openArtifactsList()
-                    }
-                  >
-                    <TablerList className="x:size-4" />
-                  </Button>
-                </Tooltip>
-              )}
+              <Tooltip content={t("plugin-artifacts.tooltip.openList")}>
+                <Button
+                  variant="ghost"
+                  size="iconSm"
+                  onClick={() => artifactsStore.getState().openArtifactsList()}
+                >
+                  <TablerList className="x:size-4" />
+                </Button>
+              </Tooltip>
             </>
           )}
         </div>

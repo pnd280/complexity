@@ -16,16 +16,13 @@ export const pluginId: PluginId = "thread:messageTts";
 
 export default function ThreadMessageTtsPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["thread:messageTts"];
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <div>Right-click to open voice menu. Only supports English content.</div>
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["thread:messageTts"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["thread:messageTts"].enabled = checked;
@@ -39,7 +36,7 @@ export default function ThreadMessageTtsPluginSettingsUi() {
           max={2}
           step={0.05}
           className="x:flex x:w-full x:flex-col x:gap-4"
-          value={[pluginSettings?.playbackRate ?? 1]}
+          value={[settings.plugins["thread:messageTts"].playbackRate]}
           onValueChange={({ value }) => {
             mutation.mutate((draft) => {
               draft.plugins["thread:messageTts"].playbackRate = value[0] ?? 1;

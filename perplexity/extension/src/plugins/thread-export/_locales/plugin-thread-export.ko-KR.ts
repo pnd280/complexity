@@ -9,6 +9,10 @@ export default {
   includeCitations: "인용 포함",
   actions: {
     download: "다운로드",
+    largeFileDownloadPrompt: {
+      title: "다운로드가 준비되었습니다",
+      description: "여기를 클릭하여 다운로드를 시작하세요",
+    },
     copy: "복사",
   },
   errors: {

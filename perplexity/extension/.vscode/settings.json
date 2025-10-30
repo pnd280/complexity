@@ -13,7 +13,8 @@
     "**/*.tsbuildinfo": true,
     "**/CVS": true,
     "**/node_modules": true,
-    "**/Thumbs.db": true
+    "**/Thumbs.db": true,
+    "**/.eslintcache": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,

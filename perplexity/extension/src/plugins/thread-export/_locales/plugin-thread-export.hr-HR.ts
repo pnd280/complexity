@@ -9,6 +9,10 @@ export default {
   includeCitations: "Uključi citate",
   actions: {
     download: "Preuzmi",
+    largeFileDownloadPrompt: {
+      title: "Vaše preuzimanje je spremno",
+      description: "Kliknite ovdje za početak preuzimanja",
+    },
     copy: "Kopiraj",
   },
   errors: {

@@ -1,20 +1,16 @@
 import { useQueryClient } from "@tanstack/react-query";
 
 import Tooltip from "@/components/Tooltip";
-import type {
-  Space,
-  SpaceFilesApiResponse,
-} from "@/services/externals/pplx-api/pplx-api.types";
+import { toast } from "@/components/ui/use-toast";
+import type { SpaceFilesApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 import TablerFile from "~icons/tabler/file";
 
 export default function SpaceItemFiles({
   file,
-  spaceUuid,
 }: {
   file: SpaceFilesApiResponse["files"][number];
-  spaceUuid: Space["uuid"];
 }) {
   const queryClient = useQueryClient();
 
@@ -29,12 +25,20 @@ export default function SpaceItemFiles({
         <span
           className="x:line-clamp-1 x:cursor-pointer x:hover:underline"
           onClick={async () => {
-            const fileDownloadUrl = await queryClient.fetchQuery(
-              pplxApiQueries.space.files.downloadUrl.detail(
-                spaceUuid,
-                file.file_uuid,
+            const s3Url = file.file_s3_url;
+            if (!s3Url) {
+              toast({
+                description: "Can't get the download URL for this file",
+              });
+              return;
+            }
+
+            const [fileDownloadUrl] = await tryCatch(() =>
+              queryClient.fetchQuery(
+                pplxApiQueries.space.downloadFile.detail(s3Url),
               ),
             );
+
             if (fileDownloadUrl?.file_url) {
               window.open(fileDownloadUrl.file_url, "_blank");
             }

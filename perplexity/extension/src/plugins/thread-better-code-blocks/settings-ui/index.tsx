@@ -27,7 +27,7 @@ export default function BetterCodeBlocksPluginSettingsUi() {
     <div className="x:flex x:flex-col x:gap-4">
       <Header />
 
-      {settings?.plugins["thread:betterCodeBlocks"].enabled && (
+      {settings.plugins["thread:betterCodeBlocks"].enabled && (
         <Tabs
           value={activeTab}
           onValueChange={({ value }) => {
@@ -81,7 +81,7 @@ function Header() {
       </div>
       <Switch
         textLabel="Enable"
-        checked={settings?.plugins["thread:betterCodeBlocks"].enabled}
+        checked={settings.plugins["thread:betterCodeBlocks"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["thread:betterCodeBlocks"].enabled = checked;

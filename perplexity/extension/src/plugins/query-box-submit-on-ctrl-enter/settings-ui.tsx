@@ -6,15 +6,12 @@ export const pluginId: PluginId = "queryBox:submitOnCtrlEnter";
 
 export default function SubmitOnCtrlEnterPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["queryBox:submitOnCtrlEnter"];
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["queryBox:submitOnCtrlEnter"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["queryBox:submitOnCtrlEnter"].enabled = checked;

@@ -23,9 +23,7 @@ export function useFilteredPlugins({
         const matchesSearch = (plugin.title + plugin.description)
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
-        const hasTags =
-          plugin.dashboardMeta.tags !== undefined &&
-          plugin.dashboardMeta.tags.length > 0;
+        const hasTags = plugin.dashboardMeta.tags.length > 0;
 
         const matchesTags =
           selectedTags.length === 0 ||
@@ -40,10 +38,9 @@ export function useFilteredPlugins({
 
         const matchesCategories =
           categories.length === 0 ||
-          (plugin.dashboardMeta.categories !== undefined &&
-            plugin.dashboardMeta.categories.some((category) =>
-              categories.includes(category),
-            ));
+          plugin.dashboardMeta.categories.some((category) =>
+            categories.includes(category),
+          );
 
         return (
           matchesSearch && matchesTags && !hasExcludedTags && matchesCategories

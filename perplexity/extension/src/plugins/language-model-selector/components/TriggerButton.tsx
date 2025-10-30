@@ -26,7 +26,7 @@ export default function BetterLanguageModelSelectorTriggerButton() {
 
   const type = Object.entries(PplxLanguageModelsService.allModels).find(
     ([_, models]) => models.some((m) => m.code === selectedLanguageModel),
-  )?.[0];
+  )?.[0] as LanguageModelType | undefined;
 
   const TypeIcon = type
     ? LanguageModelTypeIcons[type as LanguageModelType]
@@ -48,8 +48,7 @@ export default function BetterLanguageModelSelectorTriggerButton() {
         <span className="x:truncate">
           {isAuto
             ? type
-              ? (advancedModeLabelMap[type as LanguageModelType] ??
-                `${type.charAt(0).toUpperCase()}${type.slice(1)}`)
+              ? advancedModeLabelMap[type]
               : modelInfo?.shortLabel
             : modelInfo?.shortLabel}
         </span>

@@ -5,18 +5,17 @@ import { APP_CONFIG } from "@/app.config";
 import { DEFAULT_EXTENSION_SETTINGS } from "@/services/infra/extension-api-wrappers/extension-settings/defaults";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 import type { MaybePromise } from "@/types/utils.types";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export const migrations = {
   2: async (): Promise<ExtensionSettings> => {
-    const [result, error] = await errorWrapper(async () => {
+    const [result, error] = await tryCatch(async () => {
       const oldFlatSchema = await chrome.storage.local.get();
 
       const newSchema = transfromFlatSchema(oldFlatSchema);
       await chrome.storage.local.clear();
 
       return newSchema;
-    })();
+    });
 
     if (error) {
       if (APP_CONFIG.IS_DEV) {
@@ -31,14 +30,14 @@ export const migrations = {
     return result;
   },
   3: (oldSettings): ExtensionSettings => {
-    const [result, error] = errorWrapper(() => {
+    const [result, error] = tryCatch(() => {
       return produce(oldSettings, (draft) => {
         draft.plugins.commandMenu.keybindings.toggle = [
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (oldSettings.plugins.commandMenu as any).hotkey,
         ];
       });
-    })();
+    });
 
     if (error) {
       if (APP_CONFIG.IS_DEV) {

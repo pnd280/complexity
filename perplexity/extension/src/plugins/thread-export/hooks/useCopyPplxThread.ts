@@ -9,7 +9,6 @@ import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/ppl
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { parseUrl } from "@/utils/misc/utils";
 import { dualClipboardPut } from "@/utils/wrappers/clipboard-utils";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 type FetchFn = () => Promise<ThreadMessageApiResponse[] | undefined>;
 
@@ -63,10 +62,18 @@ export function useCopyPplxThread() {
       withCitations: CopyMessageParams["withCitations"];
       onComplete?: CopyMessageParams["onComplete"];
     }) {
-      if (withCitations) {
-        await copyThreadWithCitations({ fetchFn });
-      } else {
-        await copyThreadWithoutCitations({ fetchFn });
+      try {
+        if (withCitations) {
+          await copyThreadWithCitations({ fetchFn });
+        } else {
+          await copyThreadWithoutCitations({ fetchFn });
+        }
+      } catch (error) {
+        toast({
+          title: "❌ Failed to copy thread",
+          description:
+            error instanceof Error ? error.message : "Unknown error occurred",
+        });
       }
       onComplete?.();
     },
@@ -125,7 +132,7 @@ async function copyMessageWithCitations({
     "$1",
   );
 
-  if (content.webResults != null && content.webResults.length) {
+  if (content.webResults.length) {
     void dualClipboardPut({
       markdown: `${cleanAnswer}\n\nCitations:\n${PplxThreadExport.formatWebResults(content.webResults)}`,
     });
@@ -167,10 +174,6 @@ async function copyContent({
   messageBlockIndex?: number;
   fetchFn: FetchFn;
 }) {
-  if (fetchFn == null) {
-    throw new Error("Fetch function not provided");
-  }
-
   const threadJson = await fetchFn();
   if (threadJson == null) {
     throw new Error("Failed to fetch thread info");
@@ -184,12 +187,5 @@ async function copyContent({
     messageIndex: messageBlockIndex,
   });
 
-  const [, error] = await errorWrapper(() =>
-    dualClipboardPut({ markdown: message }),
-  )();
-
-  if (error) {
-    console.error(error);
-    throw new Error("Please click/focus on the page while copying!");
-  }
+  await dualClipboardPut({ markdown: message });
 }

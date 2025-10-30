@@ -40,8 +40,7 @@ export default function TemporaryThreadsFilter() {
         [state.withTemporaryThreads ? "show" : "hide"] satisfies Item["value"][]
       }
       onValueChange={({ value: values }) => {
-        const value = values[0] as Item["value"];
-
+        const value = values[0] as Item["value"] | undefined;
         if (value) {
           actions.setWithTemporaryThreads(value === "show" ? true : false);
         }

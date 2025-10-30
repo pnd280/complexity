@@ -31,7 +31,7 @@ export function orderKeys(keys: string[]): string[] {
 }
 
 export function isValidKeyCombination(keys: Set<string>): boolean {
-  if (!keys?.size) return false;
+  if (!keys.size) return false;
 
   const keyArray = Array.from(keys).map((k) => k.toLowerCase());
   const hasModifier = keyArray.some((k) => MODIFIER_KEYS.has(k));

@@ -32,11 +32,13 @@ export const PluginSettingsUis: PluginSettingsUIs = (() => {
 
   for (const [_, module] of Object.entries(entries)) {
     invariant(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       module.default != null,
       `Plugin settings UI for "${module.pluginId}" is declared but missing default export`,
     );
 
     invariant(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       module.pluginId != null,
       `Plugin settings UI for "${module.pluginId}" is declared but missing \`pluginId\` export`,
     );

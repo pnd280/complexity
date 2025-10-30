@@ -25,7 +25,7 @@ export default class CorePluginsRegistry {
       visited.add(id);
 
       const plugin = this.manifest[id];
-      const deps = plugin?.dependencies;
+      const deps = plugin.dependencies;
 
       if (deps) {
         for (const depId of deps) {
@@ -89,7 +89,7 @@ export default class CorePluginsRegistry {
       const allDeps = new Set<CorePluginId>();
       const plugin = CorePluginsRegistry.manifest[pluginId];
 
-      if (plugin?.dependencies) {
+      if (plugin.dependencies) {
         for (const dep of plugin.dependencies) {
           allDeps.add(dep);
           const transitiveDeps = visit(dep, path);

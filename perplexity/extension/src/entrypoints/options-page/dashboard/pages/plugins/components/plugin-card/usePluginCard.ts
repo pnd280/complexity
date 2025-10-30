@@ -50,7 +50,7 @@ export function usePluginCard(pluginId: PluginId) {
 
     return Array.from(allDependencies).every(
       (dependentPluginId) =>
-        settings?.plugins[dependentPluginId].enabled &&
+        settings.plugins[dependentPluginId].enabled &&
         !pluginsStates[dependentPluginId].isOnMaintenance &&
         !pluginsStates[dependentPluginId].isOutdated,
     );

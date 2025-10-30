@@ -15,8 +15,6 @@ export const pluginId: PluginId = "queryBox:languageModelSelector";
 export default function LanguageModelSelectorPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
 
-  if (!settings) return null;
-
   return (
     <div className="x:flex x:flex-col x:gap-4 x:overflow-y-auto">
       <div>
@@ -35,9 +33,7 @@ export default function LanguageModelSelectorPluginSettingsUi() {
       </div>
       <Switch
         textLabel="Enable"
-        checked={
-          settings.plugins["queryBox:languageModelSelector"].enabled ?? false
-        }
+        checked={settings.plugins["queryBox:languageModelSelector"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["queryBox:languageModelSelector"].enabled = checked;
@@ -63,7 +59,7 @@ export default function LanguageModelSelectorPluginSettingsUi() {
             }
             checked={
               settings.plugins["queryBox:languageModelSelector"]
-                .showModelSelectionMismatchWarning ?? false
+                .showModelSelectionMismatchWarning
             }
             onCheckedChange={({ checked }) => {
               mutation.mutate((draft) => {
@@ -77,8 +73,7 @@ export default function LanguageModelSelectorPluginSettingsUi() {
             <Switch
               textLabel="Spoof timezone"
               checked={
-                settings.plugins["queryBox:languageModelSelector"]
-                  .spoofTimezone ?? false
+                settings.plugins["queryBox:languageModelSelector"].spoofTimezone
               }
               onCheckedChange={({ checked }) => {
                 mutation.mutate((draft) => {

@@ -7,10 +7,9 @@ export const pluginId: PluginId = "zenMode";
 
 export default function ZenModePluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const defaultKeys = settings?.plugins["zenMode"].hotkey ?? [];
 
   const { HotkeyRecorderUi } = useHotkeyRecorder({
-    defaultKeys,
+    defaultKeys: settings.plugins["zenMode"].hotkey,
     onSave: (keys) => {
       mutation.mutate((draft) => {
         draft.plugins["zenMode"].hotkey = keys;
@@ -22,14 +21,14 @@ export default function ZenModePluginSettingsUi() {
     <div className="x:flex x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={settings?.plugins["zenMode"].enabled ?? false}
+        checked={settings.plugins["zenMode"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["zenMode"].enabled = checked;
           });
         }}
       />
-      {settings?.plugins["zenMode"].enabled && (
+      {settings.plugins["zenMode"].enabled && (
         <>
           <div className="x:hidden x:flex-col x:gap-2 x:md:flex">
             <div>Activation hotkey:</div>
@@ -37,7 +36,7 @@ export default function ZenModePluginSettingsUi() {
           </div>
           <Switch
             textLabel="Persistent across reloads (remember the last state)"
-            checked={settings?.plugins["zenMode"].persistent ?? false}
+            checked={settings.plugins["zenMode"].persistent}
             onCheckedChange={({ checked }) => {
               mutation.mutate((draft) => {
                 draft.plugins["zenMode"].persistent = checked;
@@ -46,9 +45,7 @@ export default function ZenModePluginSettingsUi() {
           />
           <Switch
             textLabel='Always hide "Related" questions section'
-            checked={
-              settings?.plugins["zenMode"].alwaysHideRelatedQuestions ?? false
-            }
+            checked={settings.plugins["zenMode"].alwaysHideRelatedQuestions}
             onCheckedChange={({ checked }) => {
               mutation.mutate((draft) => {
                 draft.plugins["zenMode"].alwaysHideRelatedQuestions = checked;

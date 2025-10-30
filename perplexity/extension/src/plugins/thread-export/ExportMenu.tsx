@@ -1,4 +1,3 @@
-import FaFileExport from "@/components/icons/FaFileExport";
 import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,31 +11,32 @@ import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import type { ExportOption } from "@/plugins/thread-export/export-options";
-import { ExportActions } from "@/plugins/thread-export/ExportActions";
 import { ExportFormatSelect } from "@/plugins/thread-export/ExportFormatSelect";
 import { useCopyPplxThread } from "@/plugins/thread-export/hooks/useCopyPplxThread";
 import downloadFile from "@/utils/misc/download-file";
-import { parseUrl } from "@/utils/misc/utils";
 
 import TablerCheck from "~icons/tabler/check";
+import TablerCopy from "~icons/tabler/copy";
+import TablerFileDownload from "~icons/tabler/file-download";
+import TablerFileExport from "~icons/tabler/file-export";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
-const ExportMenu = memo(() => {
-  const isThreadInFlight = useThreadDomObserverStore(
-    (state) => state.states.isInFlight,
-    deepEqual,
-  );
-
+export default function ExportMenu() {
   const { isMobile } = useIsMobileStore();
   const { copyThread, isFetching, getContent } = useCopyPplxThread();
   const [open, setOpen] = useState(false);
   const [includeCitations, setIncludeCitations] = useState(true);
   const [_format, setFormat] = useState<ExportOption["value"]>("markdown");
 
+  const isThreadInFlight = useThreadDomObserverStore(
+    (state) => state.states.isInFlight,
+    deepEqual,
+  );
+
   const defaultIdleText = isFetching ? (
     <TablerLoaderCircle className="x:size-4 x:animate-spin" />
   ) : (
-    <FaFileExport className="x:size-4" />
+    <TablerFileExport className="x:size-4" />
   );
 
   const [copyConfirmText, setCopyConfirmText] = useToggleButtonText({
@@ -44,13 +44,40 @@ const ExportMenu = memo(() => {
   });
 
   const handleDownload = async (withCitations: boolean) => {
+    const filename = `${document.title.substring(0, 100)} ${withCitations ? "" : " (no-citations)"}.md`;
+
     try {
-      const slug =
-        (parseUrl().pathname.split("/").pop() ||
-          `thread-${new Date().getTime()}`) +
-        (withCitations ? "" : " (no-citations)");
+      const start = performance.now();
       const content = await getContent({ withCitations });
-      const filename = `${document.title.substring(0, 100) ?? slug}.md`;
+      const elapsed = performance.now() - start;
+
+      // if the time between calling .showSaveFilePicker and the last user gesture is too long, the browser will raise a security error.
+      if (elapsed > 500) {
+        toast({
+          title: (
+            <div className="x:flex x:items-center x:gap-1">
+              <TablerFileDownload className="x:size-4 x:text-primary" />
+              <span>
+                {t(
+                  "plugin-thread-export.actions.largeFileDownloadPrompt.title",
+                )}
+              </span>
+            </div>
+          ),
+          description: t(
+            "plugin-thread-export.actions.largeFileDownloadPrompt.description",
+          ),
+          className: "x:cursor-pointer",
+          onClick: () => {
+            void downloadFile({
+              data: content,
+              filename,
+            });
+          },
+        });
+        return;
+      }
+
       await downloadFile({
         data: content,
         filename,
@@ -76,7 +103,7 @@ const ExportMenu = memo(() => {
       <Tooltip content={t("plugin-thread-export.action")}>
         <PopoverTrigger asChild>
           <Button
-            disabled={isThreadInFlight}
+            disabled={isThreadInFlight || isFetching}
             variant="ghost"
             size="sm"
             className="x:box-content x:h-8 x:px-2.5"
@@ -99,25 +126,35 @@ const ExportMenu = memo(() => {
               setIncludeCitations(checked as boolean);
             }}
           />
-          <ExportActions
-            onDownload={() => {
-              setOpen(false);
-              void handleDownload(includeCitations);
-            }}
-            onCopy={() => {
-              setOpen(false);
-              void copyThread({
-                withCitations: includeCitations,
-                onComplete: () => {
-                  setCopyConfirmText(<TablerCheck className="x:size-4" />);
-                },
-              });
-            }}
-          />
+          <div className="x:flex x:gap-2">
+            <Button
+              className="x:flex x:items-center x:gap-2"
+              onClick={() => {
+                void handleDownload(includeCitations);
+                setOpen(false);
+              }}
+            >
+              <TablerFileDownload />
+              <span>{t("plugin-thread-export.actions.download")}</span>
+            </Button>
+            <Button
+              className="x:flex x:items-center x:gap-2"
+              onClick={() => {
+                void copyThread({
+                  withCitations: includeCitations,
+                  onComplete: () => {
+                    setCopyConfirmText(<TablerCheck className="x:size-4" />);
+                  },
+                });
+                setOpen(false);
+              }}
+            >
+              <TablerCopy />
+              <span>{t("plugin-thread-export.actions.copy")}</span>
+            </Button>
+          </div>
         </div>
       </PopoverContent>
     </Popover>
   );
-});
-
-export default ExportMenu;
+}

@@ -24,13 +24,11 @@ export default function CustomThreadContainerWidthPluginSettingsUi() {
     });
   }, 300);
 
-  if (!settings) return null;
-
   return (
     <div className="x:flex x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={settings?.plugins["thread:customThreadContainerWidth"].enabled}
+        checked={settings.plugins["thread:customThreadContainerWidth"].enabled}
         onCheckedChange={({ checked }) =>
           mutation.mutate((draft) => {
             draft.plugins["thread:customThreadContainerWidth"].enabled =
@@ -38,7 +36,7 @@ export default function CustomThreadContainerWidthPluginSettingsUi() {
           })
         }
       />
-      {settings?.plugins["thread:customThreadContainerWidth"].enabled && (
+      {settings.plugins["thread:customThreadContainerWidth"].enabled && (
         <div className="x:flex x:flex-col x:gap-2">
           <Slider
             defaultValue={[

@@ -86,16 +86,14 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
             <div>{formatRelativeTime(thread.last_query_datetime)}</div>
           </CommandItemRightAttributes>
         </CommandItemTitle>
-        {firstAnswer != null && (
-          <div className="x:line-clamp-2 x:text-xs x:text-muted-foreground">
-            <Highlight
-              ignoreCase
-              matchAll
-              query={searchValue.split(" ")}
-              text={firstAnswer}
-            />
-          </div>
-        )}
+        <div className="x:line-clamp-2 x:text-xs x:text-muted-foreground">
+          <Highlight
+            ignoreCase
+            matchAll
+            query={searchValue.split(" ")}
+            text={firstAnswer}
+          />
+        </div>
         <div className="x:flex x:w-full x:items-center x:gap-2">
           {thread.expiry_time && (
             <div className="x:mt-2 x:flex x:items-center x:gap-4">

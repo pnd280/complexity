@@ -10,17 +10,17 @@ export default function ArtifactsPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
 
   return (
-    <div className="x:flex x:max-w-screen-lg x:flex-col x:gap-4">
+    <div className="x:flex x:max-w-5xl x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={settings?.plugins["thread:artifacts"].enabled}
+        checked={settings.plugins["thread:artifacts"].enabled}
         onCheckedChange={({ checked }) =>
           mutation.mutate((draft) => {
             draft.plugins["thread:artifacts"].enabled = checked;
           })
         }
       />
-      {settings?.plugins["thread:artifacts"].enabled && (
+      {settings.plugins["thread:artifacts"].enabled && (
         <div className="x:flex x:flex-col x:gap-2">
           <p className="x:text-muted-foreground">
             For the AI to acknowledge the ability to use Artifacts, you need to

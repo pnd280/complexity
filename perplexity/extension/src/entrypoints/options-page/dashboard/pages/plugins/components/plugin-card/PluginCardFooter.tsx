@@ -48,27 +48,26 @@ export function PluginCardFooter() {
         )}
       </div>
 
-      {settings?.plugins[pluginId].enabled &&
-        !areAllDependentPluginsEnabled && (
-          <Tooltip
-            content={
-              <div className="x:m-2">
-                <div>Enable the following plugins:</div>
-                <Ul>
-                  {Array.from(
-                    PluginManifestsRegistry.getAllPluginDependencies(pluginId),
-                  ).map((dependentPluginId) => (
-                    <li key={dependentPluginId}>
-                      {PluginManifestsRegistry.meta[dependentPluginId].title}
-                    </li>
-                  ))}
-                </Ul>
-              </div>
-            }
-          >
-            <TablerAlertTriangle className="x:size-4 x:text-yellow-300 x:dark:text-yellow-500" />
-          </Tooltip>
-        )}
+      {settings.plugins[pluginId].enabled && !areAllDependentPluginsEnabled && (
+        <Tooltip
+          content={
+            <div className="x:m-2">
+              <div>Enable the following plugins:</div>
+              <Ul>
+                {Array.from(
+                  PluginManifestsRegistry.getAllPluginDependencies(pluginId),
+                ).map((dependentPluginId) => (
+                  <li key={dependentPluginId}>
+                    {PluginManifestsRegistry.meta[dependentPluginId].title}
+                  </li>
+                ))}
+              </Ul>
+            </div>
+          }
+        >
+          <TablerAlertTriangle className="x:size-4 x:text-yellow-300 x:dark:text-yellow-500" />
+        </Tooltip>
+      )}
 
       {!isLockedDown && (
         <RequirePermissionsDialogWrapper
@@ -80,7 +79,7 @@ export function PluginCardFooter() {
           <Switch
             checked={
               hasAllRequiredPermissions
-                ? settings?.plugins[pluginId].enabled
+                ? settings.plugins[pluginId].enabled
                 : false
             }
             onCheckedChange={({ checked }) => {

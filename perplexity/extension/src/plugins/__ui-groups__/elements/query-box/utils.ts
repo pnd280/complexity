@@ -70,10 +70,13 @@ export function setModelCookie({
     return;
   }
 
-  const parsedCookie = JSON.parse(decodeURIComponent(cookie.value)) as Record<
-    LanguageModelType,
-    LanguageModelCode
-  >;
+  const [parsedCookie] = tryCatch(
+    () =>
+      JSON.parse(decodeURIComponent(cookie.value)) as Record<
+        LanguageModelType,
+        LanguageModelCode
+      >,
+  );
 
   if (parsedCookie == null) {
     setCookie(
@@ -88,11 +91,7 @@ export function setModelCookie({
   }
 
   const newValue = produce(parsedCookie, (draft) => {
-    if (draft[type] == null) {
-      draft[type] = modelCode;
-    } else {
-      draft[type] = modelCode;
-    }
+    draft[type] = modelCode;
   });
 
   pplxCookiesStore.setState({
@@ -114,12 +113,15 @@ export function getModelCookie({ type }: { type: LanguageModelType }) {
     return null;
   }
 
-  const parsedCookie = JSON.parse(decodeURIComponent(cookie.value)) as Record<
-    LanguageModelType,
-    LanguageModelCode
-  >;
+  const [parsedCookie] = tryCatch(
+    () =>
+      JSON.parse(decodeURIComponent(cookie.value)) as Record<
+        LanguageModelType,
+        LanguageModelCode
+      >,
+  );
 
-  return (parsedCookie[type] as keyof typeof parsedCookie) ?? null;
+  return parsedCookie?.[type] ?? null;
 }
 
 function getDefaultModelCookie(): Record<LanguageModelType, LanguageModelCode> {

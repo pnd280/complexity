@@ -3,7 +3,7 @@ import path from "path";
 import process from "process";
 
 import packageJson from "#/package.json" assert { type: "json" };
-import { errorWrapper } from "#/src/utils/wrappers/error-wrapper";
+import { tryCatch } from "#/src/utils/wrappers/try-catch";
 import { Logger } from "@complexity/cli-logger";
 
 import { execAsync } from "@/utils";
@@ -39,9 +39,9 @@ async function main(): Promise<void> {
   fs.mkdirSync(extractDir, { recursive: true });
 
   try {
-    const [releaseNotes] = errorWrapper(() =>
+    const [releaseNotes] = tryCatch(() =>
       fs.readFileSync(path.join(CHANGELOG_DIR, `${extVersion}.md`), "utf8"),
-    )();
+    );
 
     const metdataData = {
       version: {

@@ -18,8 +18,9 @@ export default defineConfig({
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/no-this-alias": "error",
     "@typescript-eslint/no-unsafe-declaration-merging": "error",
+    "@typescript-eslint/no-unnecessary-condition": "error",
     "@typescript-eslint/no-floating-promises": [
       "warn",
       {

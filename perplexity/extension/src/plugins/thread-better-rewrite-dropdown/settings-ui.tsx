@@ -7,9 +7,6 @@ export const pluginId: PluginId = "thread:betterRewriteDropdowns";
 
 export default function BetterThreadRewriteDropdownsPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["thread:betterRewriteDropdowns"];
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
@@ -19,7 +16,7 @@ export default function BetterThreadRewriteDropdownsPluginSettingsUi() {
       </div>
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["thread:betterRewriteDropdowns"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["thread:betterRewriteDropdowns"].enabled = checked;

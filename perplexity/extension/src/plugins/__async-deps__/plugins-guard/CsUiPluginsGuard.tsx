@@ -106,7 +106,7 @@ function CsUiPluginsGuardError({
           <DialogTitle>Complexity encountered an error</DialogTitle>
           <DialogDescription>
             {dependentPluginIds?.length != null &&
-              dependentPluginIds?.length > 0 &&
+              dependentPluginIds.length > 0 &&
               pluginsError}
             {traces}
           </DialogDescription>
@@ -183,8 +183,7 @@ function CsUiPluginsGuardInner(
       if (
         currentError.message.includes(
           "Failed to fetch dynamically imported module",
-        ) &&
-        chrome.runtime.id == null
+        )
       ) {
         return;
       }
@@ -255,8 +254,7 @@ function CsUiPluginsGuardInner(
         if (
           boundaryError.message.includes(
             "Failed to fetch dynamically imported module",
-          ) &&
-          chrome.runtime.id == null
+          )
         ) {
           return null;
         }
@@ -361,7 +359,7 @@ function usePluginsError(
       <Ul>
         {dependentPluginIds.map((pluginId) => (
           <li key={pluginId} className="x:text-foreground">
-            {PluginManifestsRegistry.meta[pluginId]?.title || pluginId}
+            {PluginManifestsRegistry.meta[pluginId].title || pluginId}
           </li>
         ))}
       </Ul>

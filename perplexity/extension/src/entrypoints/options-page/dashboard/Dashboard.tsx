@@ -21,7 +21,7 @@ export function Dashboard() {
         <Sidebar />
       </SidebarWrapper>
 
-      <main className="x:mx-auto x:mt-11 x:min-h-[100dvh] x:w-full x:max-w-[1800px] x:md:mt-0">
+      <main className="x:mx-auto x:mt-11 x:min-h-dvh x:w-full x:max-w-[1800px] x:md:mt-0">
         <CometCompatibilityPsa />
         <Psa />
         <div className="x:p-4">

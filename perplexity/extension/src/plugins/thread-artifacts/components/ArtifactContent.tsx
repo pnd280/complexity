@@ -4,7 +4,6 @@ import ArtifactCodeView from "@/plugins/thread-artifacts/components/ArtifactCode
 import ArtifactPreview from "@/plugins/thread-artifacts/components/Preview";
 import { ARTIFACT_INITIAL_STATE } from "@/plugins/thread-artifacts/consts";
 import { useArtifactsStore } from "@/plugins/thread-artifacts/store";
-import type { ArtifactLanguage } from "@/plugins/thread-artifacts/types";
 import { getInterpretedArtifactLanguage } from "@/plugins/thread-artifacts/utils";
 import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
@@ -16,18 +15,17 @@ export default function ArtifactContent() {
     messageBlockIndex: selectedCodeBlockLocation?.messageBlockIndex,
     codeBlockIndex: selectedCodeBlockLocation?.codeBlockIndex,
   });
-
   const isInFlight = selectedCodeBlock?.states.isInFlight;
   const artifactViewMode = useArtifactsStore((state) => state.state);
   const language = getInterpretedArtifactLanguage(
     selectedCodeBlock?.content.language ?? "text",
-  ) as ArtifactLanguage;
+  );
   const previewKey = useArtifactsStore((state) => state.refreshPreviewKey);
   const isValidArtifactCode = useArtifactsStore(
     (state) => state.isValidArtifactCode,
   );
 
-  if (!isValidArtifactCode) return null;
+  if (!isValidArtifactCode || !language) return null;
 
   return (
     <Tabs

@@ -50,7 +50,7 @@ export default async function () {
         }
       }
 
-      void setZoom(extensionSettings?.plugins["comet:isolatedZoom"].zoomLevel);
+      void setZoom(extensionSettings.plugins["comet:isolatedZoom"].zoomLevel);
 
       $(document).on("keydown", (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === "0") {

@@ -55,8 +55,7 @@ export function PluginCardProvider({
   const lockdownText = getLockdownText(pluginId, pluginsStates);
   const lockdownSubText = getLockdownSubText(pluginId, pluginsStates);
 
-  const isEnabled =
-    useExtensionSettings().settings?.plugins[pluginId].enabled ?? false;
+  const isEnabled = useExtensionSettings().settings.plugins[pluginId].enabled;
 
   const value = (() =>
     ({
@@ -77,10 +76,11 @@ export function PluginCardProvider({
 
 export function usePluginCardContext() {
   const context = use(PluginCardContext);
-  if (context === null) {
-    throw new Error(
-      "usePluginCardContext must be used within a PluginCardProvider",
-    );
-  }
+
+  invariant(
+    context != null,
+    "usePluginCardContext must be used within a PluginCardProvider",
+  );
+
   return context;
 }

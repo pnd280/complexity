@@ -13,10 +13,10 @@ export function getMatchedPageCommand({
   if (!command) return null;
 
   const promptHistoryShortcut =
-    ExtensionSettingsService.cachedSync.plugins["promptHistory"]?.shortcut;
+    ExtensionSettingsService.cachedSync.plugins["promptHistory"].shortcut;
 
   if (
-    promptHistoryShortcut?.type === "command" &&
+    promptHistoryShortcut.type === "command" &&
     promptHistoryShortcut.value === command
   ) {
     return "promptHistory";

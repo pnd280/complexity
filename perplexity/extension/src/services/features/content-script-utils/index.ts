@@ -11,11 +11,7 @@ export class ContentScriptBgUtilsServiceImpl {
   }) {
     const windowId = (await chrome.tabs.get(currentTabId)).windowId;
 
-    if (windowId == null) return;
-
     const window = await chrome.windows.get(windowId);
-
-    if (window == null) return;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (window as any).sidecarTabId as number | undefined;

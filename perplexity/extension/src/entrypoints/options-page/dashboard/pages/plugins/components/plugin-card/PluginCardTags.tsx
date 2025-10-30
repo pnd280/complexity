@@ -7,7 +7,7 @@ export function PluginCardTags() {
     pluginInfo: { tags },
   } = usePluginCardContext();
 
-  if (tags == null || tags.length === 0) return null;
+  if (tags.length === 0) return null;
 
   return (
     <CardContent>

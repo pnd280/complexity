@@ -18,7 +18,7 @@ export function CloudflareTimeoutActionDialog() {
   const countdownInterval = useRef<NodeJS.Timeout>(undefined);
 
   const isAutoReload =
-    settings?.plugins.cloudflareTimeoutAutoReload.behavior === "reload";
+    settings.plugins.cloudflareTimeoutAutoReload.behavior === "reload";
 
   useEffect(() => {
     if (!isSessionTimeout || !isAutoReload) return;

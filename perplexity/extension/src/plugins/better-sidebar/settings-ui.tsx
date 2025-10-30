@@ -10,7 +10,6 @@ export const pluginId: PluginId = "betterSidebar";
 
 export default function BetterSidebarPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["betterSidebar"];
 
   const [instantCssServiceActive, setInstantCssServiceActive] = useState(false);
 
@@ -22,7 +21,7 @@ export default function BetterSidebarPluginSettingsUi() {
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["betterSidebar"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["betterSidebar"].enabled = checked;
@@ -30,36 +29,37 @@ export default function BetterSidebarPluginSettingsUi() {
         }}
       />
 
-      {pluginSettings?.enabled && APP_CONFIG.BROWSER === "chrome" && (
-        <RequirePermissionsDialogWrapper
-          requiredPermissions={[
-            manifest.meta.extensionPermissions.optionalPermissions[0],
-          ]}
-          onGranted={() => {
-            mutation.mutate((draft) => {
-              draft.plugins["betterSidebar"].shouldPreventLayoutShift = true;
-            });
-            setInstantCssServiceActive(true);
-          }}
-        >
-          <Switch
-            textLabel="Prevent layout shift (highly recommended)"
-            checked={
-              instantCssServiceActive
-                ? pluginSettings.shouldPreventLayoutShift
-                : false
-            }
-            onCheckedChange={async ({ checked }) => {
-              if (!instantCssServiceActive) return;
-
+      {settings.plugins["betterSidebar"].enabled &&
+        APP_CONFIG.BROWSER === "chrome" && (
+          <RequirePermissionsDialogWrapper
+            requiredPermissions={[
+              manifest.meta.extensionPermissions.optionalPermissions[0],
+            ]}
+            onGranted={() => {
               mutation.mutate((draft) => {
-                draft.plugins["betterSidebar"].shouldPreventLayoutShift =
-                  checked;
+                draft.plugins["betterSidebar"].shouldPreventLayoutShift = true;
               });
+              setInstantCssServiceActive(true);
             }}
-          />
-        </RequirePermissionsDialogWrapper>
-      )}
+          >
+            <Switch
+              textLabel="Prevent layout shift (highly recommended)"
+              checked={
+                instantCssServiceActive
+                  ? settings.plugins["betterSidebar"].shouldPreventLayoutShift
+                  : false
+              }
+              onCheckedChange={async ({ checked }) => {
+                if (!instantCssServiceActive) return;
+
+                mutation.mutate((draft) => {
+                  draft.plugins["betterSidebar"].shouldPreventLayoutShift =
+                    checked;
+                });
+              }}
+            />
+          </RequirePermissionsDialogWrapper>
+        )}
     </div>
   );
 }

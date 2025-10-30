@@ -7,15 +7,12 @@ export const pluginId: PluginId = "thread:betterMessageCopyButtons";
 
 export default function BetterThreadMessageCopyButtonsPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["thread:betterMessageCopyButtons"];
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["thread:betterMessageCopyButtons"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["thread:betterMessageCopyButtons"].enabled = checked;

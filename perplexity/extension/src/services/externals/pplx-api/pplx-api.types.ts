@@ -20,7 +20,7 @@ export type PplxAuthSessionApiResponse = {
     image: string;
     id: string;
     username: string;
-    subscription_status: string;
+    subscription_status?: string;
     subscription_source: string;
     payment_tier: string;
     subscription_tier: string;

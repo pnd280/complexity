@@ -46,7 +46,7 @@ export default function () {
               store.model = states.model;
             }
 
-            if (states.searchMode != null && isSearchMode(states.searchMode)) {
+            if (isSearchMode(states.searchMode)) {
               store.searchMode = states.searchMode;
             }
           });

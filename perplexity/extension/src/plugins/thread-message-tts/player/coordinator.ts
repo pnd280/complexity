@@ -2,7 +2,8 @@ import { PplxStreamingTtsPlayer } from "@/plugins/thread-message-tts/player/pplx
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export class PplxTtsPlayerCoordinator {
-  private static instance: PplxTtsPlayerCoordinator;
+  private static instance: PplxTtsPlayerCoordinator =
+    new PplxTtsPlayerCoordinator();
 
   private player: PplxStreamingTtsPlayer | null = null;
   private onPlayerStop: (() => void) | null = null;
@@ -10,9 +11,6 @@ export class PplxTtsPlayerCoordinator {
   private constructor() {}
 
   public static getInstance(): PplxTtsPlayerCoordinator {
-    if (PplxTtsPlayerCoordinator.instance == null) {
-      PplxTtsPlayerCoordinator.instance = new PplxTtsPlayerCoordinator();
-    }
     return PplxTtsPlayerCoordinator.instance;
   }
 

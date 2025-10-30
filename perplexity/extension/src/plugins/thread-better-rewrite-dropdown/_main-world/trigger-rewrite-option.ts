@@ -1,7 +1,6 @@
 import FiberSearchService from "@/plugins/__core__/_main-world/fiber-search";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 import { walkFiberNode } from "@/utils/wrappers/react-fiber";
 
 export async function triggerRewriteOption(params: {
@@ -35,9 +34,10 @@ export async function triggerRewriteOption(params: {
 
   if (fiberNode == null) return false;
 
-  const [triggerRewriteOptionHandler] = errorWrapper<() => void>(() => {
-    return walkFiberNode(fiberNode, params.fiberConfig.dataNodePath);
-  })();
+  const [triggerRewriteOptionHandler] = tryCatch(
+    () =>
+      walkFiberNode(fiberNode, params.fiberConfig.dataNodePath) as () => void,
+  );
 
   if (triggerRewriteOptionHandler == null) return false;
 

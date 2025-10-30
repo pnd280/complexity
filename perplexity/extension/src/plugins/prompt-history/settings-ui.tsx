@@ -20,15 +20,12 @@ export const pluginId: PluginId = "promptHistory";
 
 export default function PromptHistoryPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["promptHistory"];
 
   const handleEnableChange = (checked: boolean) => {
     mutation.mutate((draft) => {
       draft.plugins["promptHistory"].enabled = checked;
     });
   };
-
-  if (!settings) return null;
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
@@ -38,11 +35,11 @@ export default function PromptHistoryPluginSettingsUi() {
       </p>
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["promptHistory"].enabled}
         onCheckedChange={({ checked }) => handleEnableChange(checked)}
       />
 
-      {pluginSettings?.enabled && (
+      {settings.plugins["promptHistory"].enabled && (
         <div className="x:ml-8 x:flex x:flex-col x:gap-2">
           <SlashCommandMenuActivationShortcutsSettings />
 
@@ -56,7 +53,7 @@ export default function PromptHistoryPluginSettingsUi() {
                 </div>
               </div>
             }
-            checked={pluginSettings?.trigger.onSubmit ?? false}
+            checked={settings.plugins["promptHistory"].trigger.onSubmit}
             onCheckedChange={({ checked }) => {
               mutation.mutate((draft) => {
                 draft.plugins["promptHistory"].trigger.onSubmit = checked;
@@ -74,7 +71,7 @@ export default function PromptHistoryPluginSettingsUi() {
                 </div>
               </div>
             }
-            checked={pluginSettings?.trigger.onNavigation ?? false}
+            checked={settings.plugins["promptHistory"].trigger.onNavigation}
             onCheckedChange={({ checked }) => {
               mutation.mutate((draft) => {
                 draft.plugins["promptHistory"].trigger.onNavigation = checked;
@@ -97,8 +94,8 @@ export default function PromptHistoryPluginSettingsUi() {
 function SlashCommandMenuActivationShortcutsSettings() {
   const { settings, mutation } = useExtensionSettings();
 
-  const shortcutType = settings?.plugins["promptHistory"]?.shortcut?.type;
-  const shortcutValue = settings?.plugins["promptHistory"]?.shortcut?.value;
+  const shortcutType = settings.plugins["promptHistory"].shortcut.type;
+  const shortcutValue = settings.plugins["promptHistory"].shortcut.value;
   const shortcutTypeItems = [
     { id: "keybinding", title: "Keyboard Shortcut" },
     { id: "command", title: "Text Command" },
@@ -123,7 +120,7 @@ function SlashCommandMenuActivationShortcutsSettings() {
             itemToString: (item) => item.title,
             itemToValue: (item) => item.id,
           })}
-          value={[shortcutType ?? "keybinding"]}
+          value={[shortcutType]}
           positioning={{ sameWidth: true }}
           onValueChange={({ value }) => {
             mutation.mutate((draft) => {

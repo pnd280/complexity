@@ -16,7 +16,7 @@ const BaseCodeBlockWrapper = memo(function BaseCodeBlockWrapper() {
   const isSelectedArtifactCodeBlock =
     selectedArtifactCodeBlockLocation?.messageBlockIndex ===
       sourceMessageBlockIndex &&
-    selectedArtifactCodeBlockLocation?.codeBlockIndex === sourceCodeBlockIndex;
+    selectedArtifactCodeBlockLocation.codeBlockIndex === sourceCodeBlockIndex;
 
   return (
     <div

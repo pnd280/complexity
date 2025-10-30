@@ -42,7 +42,7 @@ const HighlightedCodeWrapper = memo(() => {
   if (!codeBlock) return null;
 
   const showLineNumbers =
-    fineGrainedSettings?.showLineNumbers ?? globalSettings?.showLineNumbers;
+    fineGrainedSettings?.showLineNumbers ?? globalSettings.showLineNumbers;
 
   return (
     <div

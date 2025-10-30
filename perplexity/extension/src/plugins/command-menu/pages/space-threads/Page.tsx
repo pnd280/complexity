@@ -13,7 +13,7 @@ const SpaceThreadsPage = memo(() => {
 
   if (currentPage?.pageId !== "spaceThreads") return null;
 
-  const spaceSlug = currentPage?.args?.spaceSlug;
+  const spaceSlug = currentPage.args.spaceSlug;
 
   if (!spaceSlug) {
     return null;

@@ -51,7 +51,7 @@ export class PluginManifestsRegistry {
       visited.add(id);
 
       const plugin = this.meta[id];
-      const deps = plugin?.dependencies?.plugins;
+      const deps = plugin.dependencies?.plugins;
 
       if (deps) {
         for (const depId of deps) {
@@ -220,7 +220,7 @@ export class PluginManifestsRegistry {
       const allDeps = new Set<PluginId>();
       const plugin = PluginManifestsRegistry.meta[pluginId];
 
-      if (plugin?.dependencies?.plugins) {
+      if (plugin.dependencies?.plugins) {
         for (const dep of plugin.dependencies.plugins) {
           allDeps.add(dep);
           const transitiveDeps = visit(dep, path);

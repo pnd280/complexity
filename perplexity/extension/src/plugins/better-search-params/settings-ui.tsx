@@ -14,13 +14,12 @@ export const pluginId: PluginId = "betterSearchParams";
 
 export default function SpacesThreadsForceWritingModePluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
-  const pluginSettings = settings?.plugins["betterSearchParams"];
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <Switch
         textLabel="Enable"
-        checked={pluginSettings?.enabled ?? false}
+        checked={settings.plugins["betterSearchParams"].enabled}
         onCheckedChange={({ checked }) => {
           mutation.mutate((draft) => {
             draft.plugins["betterSearchParams"].enabled = checked;

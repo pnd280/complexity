@@ -26,7 +26,7 @@ export function usePromptHistory({
         InfiniteData<{ items: PromptHistory[]; total: number }, number>
       >(
         promptHistoryQueries.infinite.detail({
-          searchTerm: previousSearchValue ?? "",
+          searchTerm: previousSearchValue,
         }).queryKey,
       );
     },

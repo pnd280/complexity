@@ -1,5 +1,4 @@
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export function initFetchInterceptor() {
   const originalFetch = window.fetch;
@@ -9,9 +8,9 @@ export function initFetchInterceptor() {
       return originalFetch.call(window, input, init);
     }
 
-    const [modifiedBody, error] = await errorWrapper(() =>
+    const [modifiedBody, error] = await tryCatch(() =>
       interceptRequest(input, init.body as string),
-    )();
+    );
 
     if (error) {
       return originalFetch.call(window, input, init);
@@ -44,7 +43,7 @@ async function interceptRequest(input: RequestInfo | URL, body: string) {
       },
     });
 
-  return resp.payload.data;
+  return resp?.payload.data ?? "";
 }
 
 function parseSSEChunk(chunk: string): { event: string; data: string }[] {

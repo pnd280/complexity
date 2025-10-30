@@ -20,9 +20,11 @@ export default function InstantCssEnable() {
 
   const { data: grandtedPermissions } = useExtensionPermissions();
 
+  if (grandtedPermissions?.permissions == null) return null;
+
   const hasPermissions =
-    grandtedPermissions?.permissions?.includes("scripting") &&
-    grandtedPermissions?.permissions?.includes("webNavigation");
+    grandtedPermissions.permissions.includes("scripting") &&
+    grandtedPermissions.permissions.includes("webNavigation");
 
   if (hasPermissions) return null;
 

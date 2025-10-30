@@ -20,7 +20,7 @@ import { softNavigate } from "@/plugins/__core__/_main-world/spa-router/utils";
 import { PplxApiService } from "@/services/externals/pplx-api";
 import { setCookie } from "@/utils/dom-utils/generics";
 import { fetchTextResource } from "@/utils/misc/utils";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
+import { tryCatch } from "@/utils/wrappers/try-catch";
 
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
@@ -64,11 +64,11 @@ export function ArtifactsPrePromptInstallationDialog() {
         365,
       );
 
-      await errorWrapper(() =>
+      await tryCatch(() =>
         PplxApiService.updateSpace(data.uuid, {
           enable_web_by_default: false,
         }),
-      )();
+      );
 
       void softNavigate(`/spaces/${data.slug}`);
     },
@@ -125,7 +125,7 @@ export function ArtifactsPrePromptInstallationDialog() {
                   className="x:float-right x:mt-4 x:mr-4"
                   content={artfiactsInstruction}
                 />
-                <div className="x:max-w-full x:p-4 x:break-words x:whitespace-pre-line">
+                <div className="x:max-w-full x:p-4 x:wrap-break-word x:whitespace-pre-line">
                   {artfiactsInstruction}
                 </div>
               </>
