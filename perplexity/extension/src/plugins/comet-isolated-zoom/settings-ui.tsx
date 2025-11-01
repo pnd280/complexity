@@ -32,7 +32,7 @@ export default function ThreadMessageTtsPluginSettingsUi() {
         <div className="x:text-muted-foreground">
           <div>Use Ctrl/Cmd + Mouse Wheel or Ctrl/Cmd + 0 to reset zoom.</div>
           <div>
-            Or use this slider when you can't zoom on the Assistant window.
+            Or use this slider when you can&apos;t zoom on the Assistant window.
           </div>
         </div>
         <div className="x:flex x:flex-col x:gap-2">

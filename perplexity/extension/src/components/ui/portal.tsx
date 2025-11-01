@@ -1,5 +1,5 @@
 import { Portal as ArkPortal } from "@ark-ui/react/portal";
-import React from "react";
+import type React from "react";
 
 type PortalProps = {
   children: React.ReactNode;

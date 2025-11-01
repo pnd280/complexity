@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
@@ -11,9 +10,7 @@ export default defineConfig({
       project: "./tsconfig.json",
     },
   },
-  plugins: {
-    "@typescript-eslint": tseslint.plugin,
-  },
+  extends: [tseslint.configs.recommended],
   rules: {
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-explicit-any": "warn",

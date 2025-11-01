@@ -63,7 +63,10 @@ export function FullScreenReleaseNotesPage() {
                     <Trans
                       tKey="common.sponsorDialog.cometAffiliate.title"
                       components={[
-                        <PplxPro className="x:mx-1 x:inline-block x:text-xl x:text-primary" />,
+                        <PplxPro
+                          key="pplx-pro"
+                          className="x:mx-1 x:inline-block x:text-xl x:text-primary"
+                        />,
                       ]}
                     />
                   </div>

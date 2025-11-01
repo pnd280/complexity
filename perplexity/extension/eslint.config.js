@@ -48,6 +48,9 @@ export default defineConfig([
   },
   {
     extends: [baseReactConfig],
+    rules: {
+      "react/jsx-no-undef": "off",
+    },
     ignores: [...commonIgnores, "e2e/**"],
   },
   boundariesConfig,

@@ -362,10 +362,6 @@ export class AsyncDependencyRegistry<
       this._pendingWarnings.set(id, warningTimeoutId);
 
       return new Promise<TRegistry[K]>((resolve) => {
-        if (this._pendingResolvers == null) {
-          this._pendingResolvers = new Map();
-        }
-
         if (!this._pendingResolvers.has(id)) {
           this._pendingResolvers.set(id, new Set());
         }

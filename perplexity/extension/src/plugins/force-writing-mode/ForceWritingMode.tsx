@@ -93,7 +93,7 @@ export function ForceWritingModeToggle() {
         <DialogFooter>
           <DialogClose asChild>
             <Button onClick={() => setShowWarning(false)}>
-              I understand, don't show again
+              I understand, don&apos;t show again
             </Button>
           </DialogClose>
           <DialogClose asChild>

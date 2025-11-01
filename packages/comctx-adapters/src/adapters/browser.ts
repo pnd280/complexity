@@ -4,15 +4,15 @@ type MessageMeta = {
   sender: {
     tabId: NonNullable<chrome.runtime.MessageSender["tab"]>["id"];
     frameId: chrome.runtime.MessageSender["frameId"];
-  };
+  } | null;
 };
 
 export class BrowserRuntimeAdapter implements Adapter<MessageMeta> {
   sendMessage: SendMessage<MessageMeta> = async (message) => {
     if (message.meta.sender != null && message.meta.sender.tabId != null) {
-      chrome.tabs.sendMessage(message.meta.sender.tabId, message);
+      void chrome.tabs.sendMessage(message.meta.sender.tabId, message);
     } else {
-      chrome.runtime.sendMessage(message);
+      void chrome.runtime.sendMessage(message);
     }
   };
 

@@ -1,4 +1,5 @@
-import React, { Activity } from "react";
+import type React from "react";
+import { Activity } from "react";
 
 import { Portal } from "@/components/ui/portal";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";

@@ -54,7 +54,7 @@ export function CommandDialog({
           }}
           {...commandProps}
           className={cn(
-            "x:[&_[cmdk-group-heading]]:px-2 x:[&_[cmdk-group-heading]]:font-medium x:[&_[cmdk-group-heading]]:text-muted-foreground x:[&_[cmdk-group]]:px-2 x:[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 x:[&_[cmdk-input-wrapper]_svg]:h-4 x:[&_[cmdk-input-wrapper]_svg]:w-4 x:[&_[cmdk-input]]:h-12 x:[&_[cmdk-item]_svg]:h-4 x:[&_[cmdk-item]_svg]:w-4",
+            "x:[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 x:[&_[cmdk-input-wrapper]_svg]:h-4 x:[&_[cmdk-input-wrapper]_svg]:w-4 x:[&_[cmdk-item]_svg]:h-4 x:[&_[cmdk-item]_svg]:w-4 x:**:[[cmdk-group-heading]]:px-2 x:**:[[cmdk-group-heading]]:font-medium x:**:[[cmdk-group-heading]]:text-muted-foreground x:**:[[cmdk-group]]:px-2 x:**:[[cmdk-input]]:h-12",
             commandProps?.className,
           )}
         >
@@ -80,6 +80,7 @@ export function CommandInput({
         "x:flex x:items-center x:border-b x:border-border/50 x:px-3",
         className,
       )}
+      // eslint-disable-next-line react/no-unknown-property
       cmdk-input-wrapper=""
     >
       <CommandPrimitive.Input
@@ -136,7 +137,7 @@ export function CommandGroup({
   return (
     <CommandPrimitive.Group
       className={cn(
-        "x:overflow-hidden x:p-1 x:text-foreground x:[&_[cmdk-group-heading]]:px-2 x:[&_[cmdk-group-heading]]:py-1.5 x:[&_[cmdk-group-heading]]:text-xs x:[&_[cmdk-group-heading]]:font-medium x:[&_[cmdk-group-heading]]:text-muted-foreground x:[&:has([cmdk-group-items]:empty)]:hidden",
+        "x:overflow-hidden x:p-1 x:text-foreground x:[&:has([cmdk-group-items]:empty)]:hidden x:**:[[cmdk-group-heading]]:px-2 x:**:[[cmdk-group-heading]]:py-1.5 x:**:[[cmdk-group-heading]]:text-xs x:**:[[cmdk-group-heading]]:font-medium x:**:[[cmdk-group-heading]]:text-muted-foreground",
         className,
       )}
       heading={
@@ -231,7 +232,7 @@ export function CommandItemRightAttributes({
     <Comp
       data-right-attributes
       className={cn(
-        "x:ml-auto x:group-has-[[data-alt-right-attributes]]:group-aria-selected:hidden",
+        "x:ml-auto x:group-has-data-alt-right-attributes:group-aria-selected:hidden",
         className,
       )}
       {...props}

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import queryBoxFollowUpQueryBoxNormalizeCss from "@/plugins/__ui-groups__/elements/query-box/follow-up/follow-up-query-box.css?inline";
-import queryBoxMainQueryBoxNormalizeCss from "@/plugins/__ui-groups__/elements/query-box/main/main-query-box.css?inline";
+import queryBoxFollowUpQueryBoxNormalizeCss from "@/plugins/__ui-groups__/elements/query-box/follow-up/styles.css?inline";
+import queryBoxMainQueryBoxNormalizeCss from "@/plugins/__ui-groups__/elements/query-box/main/styles.css?inline";
 import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const queryBoxMainQueryBoxNormalizeCssResourceConfig =

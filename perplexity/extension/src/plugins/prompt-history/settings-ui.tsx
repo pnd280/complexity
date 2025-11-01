@@ -147,7 +147,7 @@ function SlashCommandMenuActivationShortcutsSettings() {
           <HotkeyRecorderUi />
         ) : (
           <div className="x:flex x:w-fit x:items-center x:rounded-lg x:border x:p-0.5 x:*:font-mono x:*:tracking-widest">
-            <span className="x:ml-2">//</span>
+            <span className="x:ml-2">{`//`}</span>
             <Input
               className="x:w-full x:max-w-[300px] x:border-none x:p-0 x:text-base x:focus-visible:ring-0 x:focus-visible:ring-transparent"
               placeholder="..."

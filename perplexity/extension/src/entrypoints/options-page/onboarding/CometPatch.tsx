@@ -22,7 +22,7 @@ export default function CometPatch() {
           context.goToNextStep();
         }}
       >
-        No, I'm not using Comet
+        No, I&apos;m not using Comet
       </Button>
     </div>
   );

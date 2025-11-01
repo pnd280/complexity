@@ -125,8 +125,8 @@ export function ThemeForm() {
                     readable, and remove font ligatures.
                   </span>
                   <span className="x:block x:font-bold">
-                    Require at least one plugin in the "Thread" category to be
-                    active.
+                    Require at least one plugin in the &quot;Thread&quot;
+                    category to be active.
                   </span>
                 </FormDescription>
               </div>

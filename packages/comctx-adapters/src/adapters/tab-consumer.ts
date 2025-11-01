@@ -16,12 +16,8 @@ export class TabConsumerAdapter implements Adapter<MessageMeta> {
     this.frameId = frameId ?? 0;
   }
 
-  sendMessage: SendMessage<MessageMeta> = (message) => {
-    const tab = chrome.tabs.get(this.tabId);
-
-    if (tab == null) return;
-
-    chrome.tabs.sendMessage(this.tabId, message, {
+  sendMessage: SendMessage<MessageMeta> = async (message) => {
+    void chrome.tabs.sendMessage(this.tabId, message, {
       frameId: this.frameId,
     });
   };

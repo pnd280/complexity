@@ -1,4 +1,5 @@
 import { toast } from "@/components/ui/use-toast";
+import { getPlatform } from "@/hooks/usePlatformDetection";
 import {
   openInNewTab,
   softNavigate,
@@ -25,7 +26,7 @@ export default function SpacesSearchItemsFooter() {
     commandMenuStore.getState().setFooterItems([
       {
         title: t("plugin-command-menu.spaces.footer.copyId"),
-        keybinding: [Key.Control, "c"],
+        keybinding: [getPlatform() === "mac" ? Key.Meta : Key.Control, "c"],
         onSelect: async () => {
           await navigator.clipboard.writeText(space.uuid);
 
