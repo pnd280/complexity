@@ -1,5 +1,6 @@
-import deepClone from "lodash/cloneDeep";
+import cloneDeep from "lodash/cloneDeep";
 
+import { APP_CONFIG } from "@/app.config";
 import FiberSearchService from "@/plugins/__core__/_main-world/fiber-search";
 import {
   localInternalSearchStatesStatesFiberPath,
@@ -9,6 +10,7 @@ import type {
   InternalSearchStatesObserverStoreType,
   SearchStates,
 } from "@/plugins/__core__/dom-observers/internal-search-states/store";
+import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { walkFiberNode } from "@/utils/wrappers/react-fiber";
 
 export async function setInternalSearchStates({
@@ -20,7 +22,7 @@ export async function setInternalSearchStates({
   remoteValidationFiberPath?: string[];
   remoteStatesFiberPath?: string[];
 }): Promise<void> {
-  const statesFiberNode = getStatesNodePath({
+  const statesFiberNode = await getStatesNodePath({
     remoteStatesFiberPath,
     remoteValidationFiberPath,
   });
@@ -49,7 +51,7 @@ export async function getInternalSearchStates({
   remoteValidationFiberPath?: string[];
   remoteStatesFiberPath?: string[];
 }): Promise<SearchStates | null> {
-  const statesFiberNode = getStatesNodePath({
+  const statesFiberNode = await getStatesNodePath({
     remoteStatesFiberPath,
     remoteValidationFiberPath,
   });
@@ -57,13 +59,13 @@ export async function getInternalSearchStates({
   if (statesFiberNode == null) return null;
 
   return {
-    sources: deepClone(statesFiberNode.sources) ?? [],
+    sources: cloneDeep(statesFiberNode.sources) ?? [],
     model: statesFiberNode.configuredModel ?? null,
     searchMode: statesFiberNode.configuredSearchMode ?? "search",
   };
 }
 
-function getStatesNodePath({
+async function getStatesNodePath({
   remoteStatesFiberPath,
   remoteValidationFiberPath,
 }: {
@@ -83,12 +85,16 @@ function getStatesNodePath({
       },
     },
     {
-      rootElementSelector: "#root",
+      rootElementSelector: (await DomSelectorsService.Instance.getCache()).ROOT,
       maxDepth: 100,
     },
   );
 
   if (fiberNode == null) {
+    if (APP_CONFIG.IS_DEV) {
+      console.error("❌ [InternalSearchStates] States fiber node not found");
+    }
+
     return null;
   }
 

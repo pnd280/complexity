@@ -60,12 +60,12 @@ export default function ArtifactsList() {
                       </span>
                     ) : (
                       <>
-                        <span className="x:hidden x:text-sm x:text-muted-foreground x:lg:block">
+                        <span className="x:text-sm x:text-muted-foreground">
                           {description}
                         </span>
                         {count > 1 && (
                           <span className="x:flex x:items-center x:gap-1 x:text-sm x:text-muted-foreground">
-                            <span className="x:hidden x:lg:block">•</span>
+                            <span>•</span>
                             {t("plugin-artifacts.list.versions", { count })}
                           </span>
                         )}

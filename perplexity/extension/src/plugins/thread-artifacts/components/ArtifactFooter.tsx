@@ -22,7 +22,7 @@ export default function ArtifactFooter() {
   ) as ArtifactLanguage;
 
   return (
-    <div className="x:flex x:w-full x:items-center x:justify-between x:border-t x:border-border/50 x:bg-background x:p-2 x:px-4">
+    <div className="x:sticky x:bottom-0 x:z-10 x:flex x:w-full x:items-center x:justify-between x:border-t x:border-border/50 x:bg-background x:p-2 x:px-4">
       <AutonomousArtifactVersionsNavigator />
       <div className="x:ml-auto x:flex x:items-center x:gap-1">
         {ARTIFACT_LANGUAGE_ACTION_BUTTONS[language] &&

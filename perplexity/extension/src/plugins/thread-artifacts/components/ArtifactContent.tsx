@@ -20,6 +20,9 @@ export default function ArtifactContent() {
   const language = getInterpretedArtifactLanguage(
     selectedCodeBlock?.content.language ?? "text",
   );
+
+  console.log(language, selectedCodeBlock?.content.language);
+
   const previewKey = useArtifactsStore((state) => state.refreshPreviewKey);
   const isValidArtifactCode = useArtifactsStore(
     (state) => state.isValidArtifactCode,

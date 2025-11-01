@@ -3,6 +3,9 @@ export const ARTIFACT_LANGUAGES = {
   mermaid: "mermaid",
   markmap: "markmap",
   html: "html",
+  svg: "html",
+  md: "markdown",
+  mmd: "mermaid",
   react: "react",
   plantuml: "plantuml",
 } as const satisfies Partial<Record<string, string>>;

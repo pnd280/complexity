@@ -39,6 +39,9 @@ export const ARTIFACT_INITIAL_STATE: Record<ArtifactLanguage, ArtifactState> = {
   react: "code",
   plantuml: "code",
   markmap: "preview",
+  svg: "preview",
+  md: "preview",
+  mmd: "preview",
 };
 
 type ArtifactPlaceholders = Record<
@@ -70,6 +73,9 @@ AsyncLoaderRegistry.register({
       react: t("plugin-artifacts.toggle.preview"),
       plantuml: t("plugin-artifacts.toggle.preview"),
       markmap: t("plugin-artifacts.toggle.preview"),
+      svg: t("plugin-artifacts.toggle.preview"),
+      md: t("plugin-artifacts.toggle.preview"),
+      mmd: t("plugin-artifacts.toggle.preview"),
     };
 
     ARTIFACTS_LANGUAGE_RAW_TOGGLE_TEXT = {
@@ -79,14 +85,31 @@ AsyncLoaderRegistry.register({
       react: t("plugin-artifacts.toggle.code"),
       plantuml: t("plugin-artifacts.toggle.code"),
       markmap: t("plugin-artifacts.toggle.code"),
+      svg: t("plugin-artifacts.toggle.code"),
+      md: t("plugin-artifacts.toggle.code"),
+      mmd: t("plugin-artifacts.toggle.code"),
     };
 
     ARTIFACT_PLACEHOLDERS = {
+      md: {
+        icon: StashArticle,
+        defaultTitle: "Markdown",
+        description: t("plugin-artifacts.placeholder.description", {
+          name: "markdown",
+        }),
+      },
       markdown: {
         icon: StashArticle,
         defaultTitle: "Markdown",
         description: t("plugin-artifacts.placeholder.description", {
           name: "markdown",
+        }),
+      },
+      mmd: {
+        icon: TreeOutlineRounded,
+        defaultTitle: "Mermaid",
+        description: t("plugin-artifacts.placeholder.description", {
+          name: "mermaid",
         }),
       },
       mermaid: {
@@ -99,6 +122,13 @@ AsyncLoaderRegistry.register({
       html: {
         icon: MdiXml,
         defaultTitle: "HTML",
+        description: t("plugin-artifacts.placeholder.description", {
+          name: "html",
+        }),
+      },
+      svg: {
+        icon: MdiXml,
+        defaultTitle: "SVG",
         description: t("plugin-artifacts.placeholder.description", {
           name: "html",
         }),
@@ -129,9 +159,12 @@ AsyncLoaderRegistry.register({
 });
 
 export const ARTIFACT_RENDERERS: Record<ArtifactLanguage, ComponentType> = {
+  mmd: MermaidRenderer,
   mermaid: MermaidRenderer,
+  md: MarkdownRenderer,
   markdown: MarkdownRenderer,
   html: HtmlRenderer,
+  svg: HtmlRenderer,
   react: ReactRenderer,
   plantuml: PlantUmlRenderer,
   markmap: MarkmapRenderer,
@@ -141,9 +174,12 @@ export const ARTIFACT_LANGUAGE_ACTION_BUTTONS: Record<
   ArtifactLanguage,
   ComponentType | null
 > = {
+  mmd: null,
   mermaid: MermaidArtifactsActionButtonsWrapper,
   html: null,
+  svg: null,
   react: null,
+  md: null,
   markdown: null,
   plantuml: PlantUmlArtifactsActionButtonsWrapper,
   markmap: MarkmapArtifactsActionButtonsWrapper,

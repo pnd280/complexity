@@ -3,7 +3,6 @@ import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
 type ThreadDomObserverStoreType = {
-  $pageWrapper: JQuery<HTMLElement> | null;
   $navbar: JQuery<HTMLElement> | null;
   $overflowMenuButtonWrapper: JQuery<HTMLElement> | null;
   $wrapper: JQuery<HTMLElement> | null;
@@ -22,7 +21,6 @@ export const threadDomObserverStore =
           $navbar: null,
           $overflowMenuButtonWrapper: null,
           $wrapper: null,
-          $pageWrapper: null,
           $messageBlocksWrapper: null,
           states: {
             isInFlight: false,
@@ -32,7 +30,6 @@ export const threadDomObserverStore =
               $navbar: null,
               $overflowMenuButtonWrapper: null,
               $wrapper: null,
-              $pageWrapper: null,
               $messageBlocksWrapper: null,
               states: {
                 isInFlight: false,

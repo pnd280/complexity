@@ -5,12 +5,10 @@ import {
   observeNavbarOverflowMenuButtonWrapper,
   observeNavbar,
   observeWrapper,
-  observePageWrapper,
   observeMessageBlocksWrapper,
 } from "@/plugins/__core__/dom-observers/thread/observers";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import { createDomObserverId } from "@/plugins/__core__/dom-observers/types";
-import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
@@ -46,7 +44,6 @@ export default function () {
 }
 
 function cleanup() {
-  domObserverService.unsubscribe(createDomObserverId("thread", "pageWrapper"));
   domObserverService.unsubscribe(createDomObserverId("thread", "navbar"));
   domObserverService.unsubscribe(
     createDomObserverId("thread", "navbarOverflowMenuButton"),
@@ -61,10 +58,6 @@ function observeThread(location: ReturnType<typeof whereAmI>) {
   cleanup();
 
   if (location === "thread") {
-    observePageWrapper({
-      observerId: createDomObserverId("thread", "pageWrapper"),
-    });
-
     observeNavbar({
       observerId: createDomObserverId("thread", "navbar"),
     });
@@ -81,10 +74,6 @@ function observeThread(location: ReturnType<typeof whereAmI>) {
       observerId: createDomObserverId("thread", "messageBlocksWrapper"),
     });
   } else if (location === "comet_assistant") {
-    observePageWrapper({
-      observerId: createDomObserverId("thread", "pageWrapper"),
-    });
-
     observeWrapper({
       observerId: createDomObserverId("thread", "wrapper"),
     });
@@ -94,11 +83,5 @@ function observeThread(location: ReturnType<typeof whereAmI>) {
     });
   } else {
     threadDomObserverStore.getState().resetStore();
-
-    $(
-      DomSelectorsService.Root.cplxAttribute(
-        DomSelectorsService.Root.internalAttributes.THREAD.PAGE_WRAPPER,
-      ),
-    ).internalComponentAttr(null);
   }
 }

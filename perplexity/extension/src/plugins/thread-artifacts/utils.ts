@@ -3,24 +3,12 @@ import {
   type ArtifactLanguage,
 } from "@/plugins/thread-artifacts/types";
 
-export const ARTIFACT_INTERPRETED_LANGUAGES: Record<string, ArtifactLanguage> =
-  {
-    svg: "html",
-    md: "markdown",
-    mmd: "mermaid",
-    plantuml: "plantuml",
-    markmap: "markmap",
-  };
-
 export const isArtifactLanguageString = (
   languageString: string | null | undefined,
 ): languageString is ArtifactLanguage => {
   if (languageString == null) return false;
 
-  return (
-    languageString in ARTIFACT_LANGUAGES ||
-    languageString in ARTIFACT_INTERPRETED_LANGUAGES
-  );
+  return languageString in ARTIFACT_LANGUAGES;
 };
 
 export const isAutonomousArtifactLanguageString = (
@@ -45,7 +33,7 @@ export const getInterpretedArtifactLanguage = (
   languageString: string,
 ): ArtifactLanguage | undefined => {
   if (isArtifactLanguageString(languageString))
-    return ARTIFACT_INTERPRETED_LANGUAGES[languageString];
+    return ARTIFACT_LANGUAGES[languageString];
 
   if (isAutonomousArtifactLanguageString(languageString))
     return languageString.split(":")[1] as ArtifactLanguage;

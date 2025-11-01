@@ -23,7 +23,7 @@ export default definePlugin({
       uiRouteSegment: "thread-toc",
     },
     dependencies: {
-      corePlugins: ["domObservers:thread:messageBlocks"],
+      corePlugins: ["domObservers:thread", "domObservers:thread:messageBlocks"],
     },
   },
   settingsSchema: {

@@ -1,3 +1,4 @@
+import { APP_CONFIG } from "@/app.config";
 import FiberSearchService from "@/plugins/__core__/_main-world/fiber-search";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { DomSelectorsServiceImpl } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
@@ -32,7 +33,13 @@ export async function triggerRewriteOption(params: {
     },
   );
 
-  if (fiberNode == null) return false;
+  if (fiberNode == null) {
+    if (APP_CONFIG.IS_DEV) {
+      console.error("❌ [TriggerRewriteOption] No fiber node found");
+    }
+
+    return false;
+  }
 
   const [triggerRewriteOptionHandler] = tryCatch(
     () =>

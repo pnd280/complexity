@@ -3,32 +3,6 @@ import { domObserverService } from "@/plugins/__core__/dom-observers";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
-export function observePageWrapper({ observerId }: { observerId: string }) {
-  return domObserverService.subscribe({
-    id: observerId,
-    selector: DomSelectorsService.Root.cachedSync.THREAD.PAGE_WRAPPER,
-    onAdd: (node) => {
-      const $pageWrapper = $(node as HTMLElement);
-
-      if (!$pageWrapper.length) return;
-
-      $pageWrapper.internalComponentAttr(
-        DomSelectorsService.Root.internalAttributes.THREAD.PAGE_WRAPPER,
-      );
-
-      threadDomObserverStore.setState({
-        $pageWrapper,
-      });
-    },
-    onRemove: () => {
-      threadDomObserverStore.setState({
-        $pageWrapper: null,
-      });
-    },
-    existingCheck: true,
-  });
-}
-
 export function observeNavbar({ observerId }: { observerId: string }) {
   return domObserverService.subscribe({
     id: observerId,

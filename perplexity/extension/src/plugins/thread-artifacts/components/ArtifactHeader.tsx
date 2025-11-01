@@ -49,7 +49,7 @@ export default function ArtifactHeader() {
   if (!isArtifactLanguage && !isAutonomousArtifactLanguage) return null;
 
   return (
-    <div className="x:flex x:w-full x:items-center x:justify-between x:border-b x:border-border/50 x:bg-background x:p-2 x:px-4">
+    <div className="x:sticky x:top-0 x:z-10 x:flex x:w-full x:items-center x:justify-between x:border-b x:border-border/50 x:bg-background x:p-2 x:px-4">
       <div
         className="x:line-clamp-1 x:cursor-pointer x:text-muted-foreground"
         onClick={() => {

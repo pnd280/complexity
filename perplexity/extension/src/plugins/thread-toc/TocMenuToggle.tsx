@@ -1,37 +1,40 @@
-import React, { Activity } from "react";
+import { Activity } from "react";
 
-import TablerMenu from "~icons/tabler/menu-2";
+import { Portal } from "@/components/ui/portal";
+import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+
+import TablerMenuDeep from "~icons/tabler/menu-deep";
 
 type TocMenuToggleProps = {
-  top: number;
   isOpen: boolean;
   isFloating: boolean;
   onToggleOpen: () => void;
 };
 
 export function TocMenuToggle({
-  top,
   isOpen,
   isFloating,
   onToggleOpen,
 }: TocMenuToggleProps) {
+  const threadWrapper = useThreadDomObserverStore(
+    (store) => store.$wrapper?.[0],
+    deepEqual,
+  );
+
   return (
-    <Activity mode={isFloating && !isOpen ? "visible" : "hidden"}>
-      <div
-        role="button"
-        id="thread-toc-menu-toggle"
-        className={cn(
-          "x:fixed x:top-(--panel-top) x:-right-3 x:z-20 x:flex x:h-16 x:w-8 x:items-center x:justify-center x:rounded-md x:border x:border-border/50 x:bg-secondary x:text-muted-foreground x:shadow-lg x:transition-colors x:animate-in x:fade-in x:hover:text-foreground",
-        )}
-        style={
-          {
-            ["--panel-top"]: `${top}px`,
-          } as React.CSSProperties
-        }
-        onClick={onToggleOpen}
-      >
-        <TablerMenu className="x:size-4" />
-      </div>
-    </Activity>
+    <Portal container={threadWrapper}>
+      <Activity mode={isFloating && !isOpen ? "visible" : "hidden"}>
+        <div
+          role="button"
+          id="thread-toc-menu-toggle"
+          className={cn(
+            "x:absolute x:right-0 x:z-20 x:flex x:text-muted-foreground x:opacity-30 x:transition-colors x:animate-in x:fade-in x:hover:text-foreground x:hover:opacity-100 x:md:right-4",
+          )}
+          onClick={onToggleOpen}
+        >
+          <TablerMenuDeep className="x:size-8" />
+        </div>
+      </Activity>
+    </Portal>
   );
 }

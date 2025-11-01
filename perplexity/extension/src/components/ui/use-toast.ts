@@ -155,17 +155,42 @@ export function toast({ ...props }: Toast) {
     dispatch({ type: "DISMISS_TOAST", toastId: id });
   }
 
-  dispatch({
-    type: "ADD_TOAST",
-    toast: {
-      ...props,
-      id,
-      open: true,
-      onOpenChange: function (open) {
-        if (!open) dismiss();
+  // Check if adding this toast would exceed the limit
+  const currentToastCount = memoryState.toasts.length;
+  if (currentToastCount >= TOAST_LIMIT) {
+    // Dismiss the oldest toast first
+    const oldestToast = memoryState.toasts[memoryState.toasts.length - 1];
+    if (oldestToast) {
+      dispatch({ type: "DISMISS_TOAST", toastId: oldestToast.id });
+    }
+
+    // Delay adding the new toast to allow the old one to start sliding out
+    setTimeout(function () {
+      dispatch({
+        type: "ADD_TOAST",
+        toast: {
+          ...props,
+          id,
+          open: true,
+          onOpenChange: function (open) {
+            if (!open) dismiss();
+          },
+        },
+      });
+    }, 150); // Small delay to allow slide-out animation to start
+  } else {
+    dispatch({
+      type: "ADD_TOAST",
+      toast: {
+        ...props,
+        id,
+        open: true,
+        onOpenChange: function (open) {
+          if (!open) dismiss();
+        },
       },
-    },
-  });
+    });
+  }
 
   return {
     id: id,

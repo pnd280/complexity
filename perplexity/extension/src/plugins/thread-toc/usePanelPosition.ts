@@ -9,7 +9,7 @@ import type { TocItem } from "@/plugins/thread-toc/useThreadTocItems";
 export const PANEL_WIDTH = 300;
 
 type PanelPosition = {
-  position: { top: number; left: number };
+  position: { left: number };
   isOverflowing: boolean;
 };
 
@@ -57,55 +57,21 @@ export function usePanelPosition({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     void (isSidebarPinned && windowSize != null && url != null);
 
-    if (threadWrapper == null) {
+    if (threadWrapper == null || activeMessageBlockContentWrapper == null) {
       return null;
     }
 
-    const $threadWrapper = $(threadWrapper);
-    const $children = $threadWrapper.children();
+    const threadContentWrapperOffsetRight =
+      activeMessageBlockContentWrapper.offsetLeft +
+      activeMessageBlockContentWrapper.offsetWidth;
 
-    const $firstChild = $children.first();
-    const threadWrapperOffset = $firstChild.offset();
-    if (!threadWrapperOffset) {
-      console.log("threadWrapperOffset is null");
-      return null;
-    }
-
-    const navbarHeightStr =
-      document.body.style.getPropertyValue("--header-height");
-    const navbarHeight = navbarHeightStr ? parseInt(navbarHeightStr) : 53;
-
-    let threadContentWrapperWidth =
-      activeMessageBlockContentWrapper?.offsetWidth ?? 0;
-
-    const validChildren = $children.filter((index, child) => {
-      return index > 0 && !child.classList.contains("fixed");
-    });
-
-    if (validChildren.length > 0) threadContentWrapperWidth += 32;
-
-    validChildren.each((_, child) => {
-      const width = $(child).width();
-      if (width != null) threadContentWrapperWidth += width;
-    });
-
-    const threadContentWrapperOffsetLeft =
-      activeMessageBlockContentWrapper?.getBoundingClientRect().left ?? 0;
-
-    const panelRightEdge =
-      threadContentWrapperOffsetLeft +
-      threadContentWrapperWidth +
-      PANEL_WIDTH +
-      32;
+    const panelRightEdge = threadContentWrapperOffsetRight + PANEL_WIDTH + 64;
 
     return {
       position: {
-        top: navbarHeight + 20,
-        left: threadContentWrapperWidth + threadContentWrapperOffsetLeft + 28,
+        left: threadContentWrapperOffsetRight + 32,
       },
-      isOverflowing:
-        panelRightEdge > window.innerWidth ||
-        threadContentWrapperOffsetLeft === 0,
+      isOverflowing: panelRightEdge > threadWrapper.offsetWidth,
     };
   }, [
     isSidebarPinned,
