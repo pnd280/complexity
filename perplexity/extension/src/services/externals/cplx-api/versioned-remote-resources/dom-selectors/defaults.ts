@@ -13,7 +13,7 @@ export const DOM_SELECTORS: DomSelectors = {
     CHILD: {
       MENU: ".group\\/sidebar-menu",
     },
-    MOBILE_TRIGGER: `.h-headerHeight.backdrop-blur-md button:has(svg>path[d="M4 6l16 0 M4 12l16 0 M4 18l16 0"])`,
+    MOBILE_TRIGGER: `.h-headerHeight.backdrop-blur-md button:has(svg > use[*|href="#pplx-icon-menu-2"])`,
     PIN_SIDEBAR_BUTTON: 'button[data-testid="sidebar-pin-sidebar"]',
   },
   THREAD: {
@@ -49,18 +49,15 @@ export const DOM_SELECTORS: DomSelectors = {
       FOOTER:
         ".gap-y-sm.md\\:gap-y-md.flex.flex-col > .flex.items-center.justify-between",
       FOOTER_CHILD: {
-        DISPLAY_MODEL_BUTTON:
-          'button:has(svg>path[d="M5 5m0 1a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1z M9 9h6v6h-6z M3 10h2 M3 14h2 M10 3v2 M14 3v2 M21 10h-2 M21 14h-2 M14 21v-2 M10 21v-2"])',
-        REWRITE_BUTTON:
-          'button:has(svg>path[d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3 M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"])',
+        DISPLAY_MODEL_BUTTON: 'button:has(svg > use[*|href="#pplx-icon-cpu"])',
+        REWRITE_BUTTON: 'button:has(svg > use[*|href="#pplx-icon-repeat"])',
         REWRITE_BUTTON_WRAPPER:
-          'div:has(>span>button svg>path[d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3 M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"])',
-        COPY_BUTTON:
-          'button:has(>div>div>svg>path[d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"])',
+          'div:has(> span > button svg > use[*|href="#pplx-icon-repeat"])',
+        COPY_BUTTON: 'button:has(>div>div>svg>use[*|href="#pplx-icon-copy"])',
         THUMBS_DOWN_BUTTON:
-          'button:has(>div>div>svg>path[d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"])',
+          'button:has(>div>div>svg>use[*|href="#pplx-icon-thumb-down"])',
         MISC_BUTTON_WRAPPER:
-          'div:has(>span>button>div>div>svg>path[d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"])',
+          'div:has(>span>button svg > use[*|href="#pplx-icon-dots"])',
       },
       IMAGE_GEN: {
         HEADER: "div:has(+.gap-sm.grid.grid-cols-2)",
@@ -106,12 +103,10 @@ export const DOM_SELECTORS: DomSelectors = {
       EDIT_QUERY: "div[contenteditable='true'][role='textbox']:not([id])",
       ARBITRARY: "#ask-input,div[contenteditable='true'][role='textbox']",
     },
-    ATTACH_BUTTON:
-      'button:has(svg>path[d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5"])',
+    ATTACH_BUTTON: 'button:has(svg>use[*|href="#pplx-icon-paperclip"])',
     SUBMIT_BUTTON:
-      'button[data-testid="submit-button"], button:has(>div>div>svg>path[d="M0 12.6663C0 13.4018 0.59792 13.9997 1.33333 13.9997C2.06875 13.9997 2.66667 13.4018 2.66667 12.6663V11.333C2.66667 10.5975 2.06875 9.99967 1.33333 9.99967C0.59792 9.99967 0 10.5975 0 11.333V12.6663ZM6.66667 5.33301C7.40213 5.33301 8 5.93087 8 6.66634V17.333C8 18.0685 7.40213 18.6663 6.66667 18.6663C5.9312 18.6663 5.33333 18.0685 5.33333 17.333V6.66634C5.33333 5.93087 5.9312 5.33301 6.66667 5.33301ZM10.6667 21.333C10.6667 22.0685 11.2645 22.6663 12 22.6663C12.7355 22.6663 13.3333 22.0685 13.3333 21.333V2.66634C13.3333 1.93093 12.7355 1.33301 12 1.33301C11.2645 1.33301 10.6667 1.93093 10.6667 2.66634V21.333ZM17.3333 5.33301C18.0688 5.33301 18.6667 5.93087 18.6667 6.66634V17.333C18.6667 18.0685 18.0688 18.6663 17.3333 18.6663C16.5979 18.6663 16 18.0685 16 17.333V6.66634C16 5.93087 16.5979 5.33301 17.3333 5.33301ZM24 11.333C24 10.5975 23.4021 9.99967 22.6667 9.99967C21.9312 9.99967 21.3333 10.5975 21.3333 11.333V12.6663C21.3333 13.4018 21.9312 13.9997 22.6667 13.9997C23.4021 13.9997 24 13.4018 24 12.6663V11.333Z"]), button:has(>div>div>svg>path[d="M17 4h-10a3 3 0 0 0 -3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3 -3v-10a3 3 0 0 0 -3 -3z"])',
-    FORK_BUTTON:
-      'button:has(svg>path[d="M12 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M7 8v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2 -2v-2 M12 12l0 4"])',
+      'button[data-testid="submit-button"], button:has(>div>div>svg>path[d="M0 12.6663C0 13.4018 0.59792 13.9997 1.33333 13.9997C2.06875 13.9997 2.66667 13.4018 2.66667 12.6663V11.333C2.66667 10.5975 2.06875 9.99967 1.33333 9.99967C0.59792 9.99967 0 10.5975 0 11.333V12.6663ZM6.66667 5.33301C7.40213 5.33301 8 5.93087 8 6.66634V17.333C8 18.0685 7.40213 18.6663 6.66667 18.6663C5.9312 18.6663 5.33333 18.0685 5.33333 17.333V6.66634C5.33333 5.93087 5.9312 5.33301 6.66667 5.33301ZM10.6667 21.333C10.6667 22.0685 11.2645 22.6663 12 22.6663C12.7355 22.6663 13.3333 22.0685 13.3333 21.333V2.66634C13.3333 1.93093 12.7355 1.33301 12 1.33301C11.2645 1.33301 10.6667 1.93093 10.6667 2.66634V21.333ZM17.3333 5.33301C18.0688 5.33301 18.6667 5.93087 18.6667 6.66634V17.333C18.6667 18.0685 18.0688 18.6663 17.3333 18.6663C16.5979 18.6663 16 18.0685 16 17.333V6.66634C16 5.93087 16.5979 5.33301 17.3333 5.33301ZM24 11.333C24 10.5975 23.4021 9.99967 22.6667 9.99967C21.9312 9.99967 21.3333 10.5975 21.3333 11.333V12.6663C21.3333 13.4018 21.9312 13.9997 22.6667 13.9997C23.4021 13.9997 24 13.4018 24 12.6663V11.333Z"]), button:has(svg > use[*|href="#pplx-icon-git-fork"])',
+    FORK_BUTTON: 'button:has(svg > use[*|href="#pplx-icon-git-fork"])',
     PRO_SEARCH_TOGGLE: "button#copilot-toggle",
     INCOGNITO_TOGGLE: ".mr-xs.flex.shrink-0.items-center",
     TYPEAHEAD_MENU: "#typeahead-menu",
@@ -136,7 +131,7 @@ export const DOM_SELECTORS: DomSelectors = {
     THREAD_TITLE:
       ".min-w-0 .cursor-pointer.transition.duration-300.hover\\:opacity-70",
     THREAD_TITLE_INPUT: 'input[placeholder="Untitled"]',
-    OVERFLOW_MENU_BUTTON_WRAPPER: `div:has(>span>button>div>div>svg>path[d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0 M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"])`,
+    OVERFLOW_MENU_BUTTON_WRAPPER: `div:has(>span>button svg > use[*|href="#pplx-icon-dots"])`,
   },
 } as const;
 
