@@ -22,9 +22,8 @@ const HighlightedCodeWrapper = memo(() => {
   const code = codeBlock?.content.code ?? "";
   const language = codeBlock?.content.language;
 
-  const interpretedLanguage = getInterpretedArtifactLanguage(
-    language ?? "text",
-  );
+  const interpretedLanguage =
+    getInterpretedArtifactLanguage(language ?? "text") ?? language;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
