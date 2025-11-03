@@ -1,4 +1,4 @@
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import {
   internalSearchStatesStatesFiberPathResourceConfig,
   internalSearchStatesValidateFiberPathResourceConfig,

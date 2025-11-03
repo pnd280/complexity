@@ -110,8 +110,12 @@ export default class PersistentQueryClient {
   };
 
   wipeQueryCache = async (): Promise<void> => {
-    void storage.removeItem(`local:queryCacheBuster:${this.id}`);
-    void this.persister.removeClient();
+    await PersistentQueryClient.wipeQueryCache(this.id, this.persister);
+  };
+
+  public static wipeQueryCache = async (id: string, persister?: Persister) => {
+    await storage.removeItem(`local:queryCacheBuster:${id}`);
+    await (persister ?? createDexiePersister(id)).removeClient();
   };
 
   private initInvalidator() {

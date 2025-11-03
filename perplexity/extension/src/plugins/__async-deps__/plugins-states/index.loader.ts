@@ -1,5 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { PluginsStatesService } from "@/plugins/__async-deps__/plugins-states";
 import { CplxVersionsService } from "@/services/externals/cplx-api/remote-resources/versions";
 

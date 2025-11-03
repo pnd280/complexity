@@ -1,6 +1,6 @@
 import { Portal } from "@/components/ui/portal";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import ArtifactContent from "@/plugins/thread-artifacts/components/ArtifactContent";

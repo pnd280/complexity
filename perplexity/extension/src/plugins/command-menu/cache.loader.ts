@@ -1,7 +1,7 @@
 import { QueryObserver } from "@tanstack/react-query";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 declare module "@/plugins/__async-deps__/async-loaders" {

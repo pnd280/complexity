@@ -1,4 +1,4 @@
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import type { CodeBlock } from "@/plugins/__core__/dom-observers/thread/code-blocks/types";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { betterCodeBlocksFineGrainedOptionsQueries } from "@/plugins/thread-better-code-blocks/indexed-db/query-keys";

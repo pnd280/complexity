@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { getActiveQueryBox } from "@/plugins/__ui-groups__/elements/query-box/utils";
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
 import { useForceWritingModeStore } from "@/plugins/force-writing-mode/store";

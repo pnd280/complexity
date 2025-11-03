@@ -1,5 +1,5 @@
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import { threadTocCssResourceConfig } from "@/plugins/thread-toc/index.remote-resources";
 import { TocMenuToggle } from "@/plugins/thread-toc/TocMenuToggle";

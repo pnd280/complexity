@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Ul } from "@/components/ui/typography";
 import { persistentQueryClient } from "@/entrypoints/options-page/persistent-query-client";
-import { persistentQueryClient as csPersistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient as csPersistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { db } from "@/services/infra/indexed-db";
 

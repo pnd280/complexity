@@ -11,7 +11,7 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import { Image } from "@/components/ui/image";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { usePluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
 import { cometAffiliateRemoteResourceConfig } from "@/services/externals/cplx-api/remote-resources/comet-affiliate/index.remote-resources";
 import { getRemoteResource } from "@/services/externals/cplx-api/remote-resources/utils";

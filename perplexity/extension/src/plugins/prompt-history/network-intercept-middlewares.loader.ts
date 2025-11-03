@@ -1,5 +1,5 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 import { parsePerplexityAskEvent } from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";

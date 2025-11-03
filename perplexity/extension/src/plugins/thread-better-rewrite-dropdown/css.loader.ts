@@ -1,5 +1,5 @@
 import { globalCssStore } from "@/plugins/__async-deps__/global-stores/global-css-store";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { threadBetterRewriteDropdownHideNativeDropdownsCssResourceConfig } from "@/plugins/thread-better-rewrite-dropdown/index.remote-resources";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 

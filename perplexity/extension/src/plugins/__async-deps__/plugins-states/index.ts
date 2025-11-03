@@ -1,5 +1,5 @@
 import { APP_CONFIG } from "@/app.config";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-cache";
+import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { featureCompatResourceConfig } from "@/plugins/__async-deps__/plugins-states/index.remote-resources";
 import type { PluginsEnableStates } from "@/plugins/__async-deps__/plugins-states/types";
 import {
