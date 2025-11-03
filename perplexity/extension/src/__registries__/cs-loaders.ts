@@ -13,7 +13,7 @@ export async function executeLibCsLoaders() {
 
 export async function executeCsLoaders() {
   const loaders = import.meta.glob(
-    ["@/plugins/**/loader.{ts,tsx}", "@/plugins/**/*.loader.{ts,tsx}"],
+    ["@/plugins/**/loader.*", "@/plugins/**/*.loader.*"],
     {
       eager: false,
     },
@@ -31,8 +31,6 @@ export async function executeCsLoaders() {
   const importedModules = await Promise.all(modulePromises);
 
   const executionPromises = importedModules.map(async ({ path, module }) => {
-    invariant("default" in module, `Loader "${path}" has no default export`);
-
     try {
       await Promise.resolve((module.default as () => void | Promise<void>)());
     } catch (error) {

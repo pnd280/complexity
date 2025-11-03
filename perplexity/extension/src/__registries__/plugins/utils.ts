@@ -6,6 +6,6 @@ export const definePlugin = <
   const TParams extends PluginManifest<TId>,
 >(
   params: TParams & PluginManifest<TId>,
-): TParams => {
+): TParams & PluginManifest<TId> => {
   return params;
 };

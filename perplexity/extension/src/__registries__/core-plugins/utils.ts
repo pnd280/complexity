@@ -6,7 +6,7 @@ import type {
 export const defineCorePlugin = <
   const T extends CorePluginManifest<CorePluginId>,
 >(
-  params: T,
-) => {
+  params: T & CorePluginManifest<CorePluginId>,
+): T & CorePluginManifest<CorePluginId> => {
   return params;
 };

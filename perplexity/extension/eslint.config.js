@@ -1,14 +1,15 @@
-// @ts-check
 import {
   baseConfig,
   baseImportConfig,
   baseReactConfig,
   baseTypescriptConfig,
 } from "@complexity/eslint-config";
+
 import globals from "globals";
 import { defineConfig } from "eslint/config";
 import boundariesConfig from "./eslint-config/boundaries/index.js";
 import tanstackQueryConfig from "./eslint-config/tanstack-query.js";
+import moduleExportsConfig from "./eslint-config/module-exports/index.js";
 
 const commonIgnores = [
   "dist/**",
@@ -21,7 +22,7 @@ export default defineConfig([
   baseConfig,
   {
     extends: [baseTypescriptConfig],
-    ignores: [...commonIgnores, "**/*.js"],
+    ignores: [...commonIgnores, "**/*.js", "eslint-config/**"],
   },
   {
     extends: [
@@ -55,6 +56,7 @@ export default defineConfig([
   },
   boundariesConfig,
   tanstackQueryConfig,
+  moduleExportsConfig,
   {
     languageOptions: {
       ecmaVersion: 2020,
@@ -63,7 +65,10 @@ export default defineConfig([
         ...globals.browser,
         ...globals.es2020,
       },
+      parserOptions: {
+        projectService: true,
+      },
     },
-    ignores: [...commonIgnores],
+    ignores: [...commonIgnores, "eslint-config/**"],
   },
 ]);

@@ -1,5 +1,3 @@
-// @ts-check
-
 export const elements = [
   {
     type: "module-registries",

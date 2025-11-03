@@ -167,14 +167,12 @@ export class PluginManifestsRegistry {
 }
 
 (function () {
-  const entries = import.meta.glob("@/plugins/**/index.manifest.ts", {
+  const entries = import.meta.glob("@/plugins/*/index.manifest.ts", {
     eager: true,
   }) as Record<string, Record<string, unknown>>;
 
   const sortedEntries = Object.entries(entries)
     .map(([path, module]) => {
-      invariant("default" in module, `Plugin "${path}" has no default export`);
-
       const params = module.default as PluginManifest<
         keyof PluginsSettingsRegistry
       >;

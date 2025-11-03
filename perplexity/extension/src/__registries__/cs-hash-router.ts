@@ -10,10 +10,5 @@ export const hashRouterObservers: RouteObject[] = (() => {
         default: RouteObject;
       }
     >,
-  ).map((module) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    invariant(module.default != null, "[HashRouter] Invalid context");
-
-    return module.default;
-  });
+  ).map((module) => module.default);
 })();
