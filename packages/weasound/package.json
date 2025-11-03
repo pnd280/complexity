@@ -40,6 +40,6 @@
     "typescript": "catalog:types"
   },
   "dependencies": {
-    "eslint": "9.38.0"
+    "eslint": "catalog:lint"
   }
 }
