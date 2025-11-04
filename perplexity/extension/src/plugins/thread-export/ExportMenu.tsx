@@ -21,7 +21,7 @@ import TablerFileDownload from "~icons/tabler/file-download";
 import TablerFileExport from "~icons/tabler/file-export";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
-export default function ExportMenu() {
+export function ThreadExportMenu() {
   const { isMobile } = useIsMobileStore();
   const { copyThread, isFetching, getContent } = useCopyPplxThread();
   const [open, setOpen] = useState(false);

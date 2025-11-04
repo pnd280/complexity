@@ -1,7 +1,7 @@
 import { useThreadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
-const OBSERVER_ID = "cplx-thread-message-footer-extra-buttons-wrapper";
+const OBSERVER_ID = "thread-message-footer-extra-buttons-wrapper";
 
 export function useCreatePortalContainers(): (Element | null)[] {
   const messageBlocks = useThreadMessageBlocksDomObserverStore(

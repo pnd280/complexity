@@ -3,15 +3,15 @@ import { lazily } from "react-lazily";
 import type { UiGroupId } from "@/__registries__/cs-ui/types";
 import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
 
-const { ThreadExportMenu } = lazily(
-  () => import("@/plugins/thread-export/ExportMenu"),
+const { TocMenuToggle } = lazily(
+  () => import("@/plugins/thread-toc/TocMenuToggle"),
 );
 
-const ExportThreadWrapper = withPluginsGuard(ThreadExportMenu, {
-  dependentPluginIds: ["thread:exportThread"],
+export const TocMenuToggleWrapper = withPluginsGuard(TocMenuToggle, {
+  dependentPluginIds: ["thread:toc"],
   location: ["thread"],
 });
 
 export const uiGroup: UiGroupId = "thread:navbarAttributes";
 
-export default ExportThreadWrapper;
+export default TocMenuToggleWrapper;

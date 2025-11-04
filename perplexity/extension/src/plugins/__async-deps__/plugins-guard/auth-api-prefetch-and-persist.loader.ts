@@ -1,14 +1,11 @@
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
-import {
-  getPplxAuthOrgStatusQueryObserver,
-  getPplxAuthQueryObserver,
-} from "@/plugins/__async-deps__/plugins-guard/store.loader";
 import type {
   PplxAuthSessionApiResponse,
   PplxOrgSettingsApiResponse,
 } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import { isSubArray } from "@/utils/misc/utils";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -24,16 +21,21 @@ export default async function () {
     id: "store:pluginGuards:authApiPrefetch",
     dependencies: [],
     loader: async () => {
-      getPplxAuthQueryObserver().subscribe((data) => {
-        if (data.status !== "success" || data.fetchStatus !== "idle") return;
-
-        void persistentQueryClient.persistQueryClient();
-      });
-
-      getPplxAuthOrgStatusQueryObserver().subscribe((data) => {
-        if (data.status !== "success" || data.fetchStatus !== "idle") return;
-
-        void persistentQueryClient.persistQueryClient();
+      persistentQueryClient.queryClient.getQueryCache().subscribe((event) => {
+        if (
+          isSubArray(
+            pplxApiQueries.auth.detail().queryKey as unknown as unknown[],
+            event.query.queryKey,
+          )
+        ) {
+          if (
+            event.type !== "observerResultsUpdated" ||
+            event.query.state.status !== "success" ||
+            event.query.state.fetchStatus !== "idle"
+          ) {
+            void persistentQueryClient.persistQueryClient();
+          }
+        }
       });
 
       return {

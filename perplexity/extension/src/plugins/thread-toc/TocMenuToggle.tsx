@@ -1,40 +1,29 @@
 import { Activity } from "react";
 
-import { Portal } from "@/components/ui/portal";
-import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
+import Tooltip from "@/components/Tooltip";
+import { Button } from "@/components/ui/button";
+import { useThreadTocStore } from "@/plugins/thread-toc/store";
 
-import TablerMenuDeep from "~icons/tabler/menu-deep";
+import TablerMenu2 from "~icons/tabler/menu-2";
 
-type TocMenuToggleProps = {
-  isOpen: boolean;
-  isFloating: boolean;
-  onToggleOpen: () => void;
-};
-
-export function TocMenuToggle({
-  isOpen,
-  isFloating,
-  onToggleOpen,
-}: TocMenuToggleProps) {
-  const threadWrapper = useThreadDomObserverStore(
-    (store) => store.$wrapper?.[0],
-    deepEqual,
-  );
+export function TocMenuToggle() {
+  const isOpen = useThreadTocStore((state) => state.isOpen);
+  const setIsOpen = useThreadTocStore((state) => state.setIsOpen);
+  const panelPosition = useThreadTocStore((state) => state.panelPosition);
+  const isFloating = panelPosition?.isOverflowing;
 
   return (
-    <Portal container={threadWrapper}>
-      <Activity mode={isFloating && !isOpen ? "visible" : "hidden"}>
-        <div
-          role="button"
-          id="thread-toc-menu-toggle"
-          className={cn(
-            "x:absolute x:right-0 x:z-20 x:flex x:text-muted-foreground x:opacity-30 x:transition-colors x:animate-in x:fade-in x:hover:text-foreground x:hover:opacity-100 x:md:right-4",
-          )}
-          onClick={onToggleOpen}
+    <Activity mode={isFloating ? "visible" : "hidden"}>
+      <Tooltip content="Table of Contents">
+        <Button
+          className={cn(isOpen && "x:text-primary")}
+          variant={isOpen ? "default" : "ghost"}
+          size="sm"
+          onClick={() => setIsOpen(!isOpen)}
         >
-          <TablerMenuDeep className="x:size-8" />
-        </div>
-      </Activity>
-    </Portal>
+          <TablerMenu2 className="x:size-4" />
+        </Button>
+      </Tooltip>
+    </Activity>
   );
 }

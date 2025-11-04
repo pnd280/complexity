@@ -1,6 +1,6 @@
-import type { TocItem as TocItemType } from "@/plugins/thread-toc/useThreadTocItems";
+import type { TocItem as TocItemType } from "@/plugins/thread-toc/store/types";
 
-const TocItem = memo(function TocItem({
+export default function TocItem({
   item,
   onClick,
   onContextMenu,
@@ -38,6 +38,4 @@ const TocItem = memo(function TocItem({
       </div>
     </div>
   );
-});
-
-export default TocItem;
+}

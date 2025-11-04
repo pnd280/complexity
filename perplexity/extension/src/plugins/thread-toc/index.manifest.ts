@@ -24,6 +24,7 @@ export default definePlugin({
     },
     dependencies: {
       corePlugins: ["domObservers:thread", "domObservers:thread:messageBlocks"],
+      uiGroups: ["thread:navbarAttributes"],
     },
   },
   settingsSchema: {

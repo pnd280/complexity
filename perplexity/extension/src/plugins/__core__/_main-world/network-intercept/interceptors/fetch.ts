@@ -3,27 +3,30 @@ import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_ma
 export function initFetchInterceptor() {
   const originalFetch = window.fetch;
 
-  window.fetch = async function (input: RequestInfo | URL, init?: RequestInit) {
-    if (init?.body == null || typeof init.body !== "string") {
-      return originalFetch.call(window, input, init);
+  window.fetch = async function (
+    request: RequestInfo | URL,
+    init?: RequestInit,
+  ) {
+    // void logRequest(constructUrl(request), init?.body as string);
+
+    if (init?.body != null && typeof init.body === "string") {
+      const [modifiedBody, error] = await tryCatch(() =>
+        interceptRequest(request, init.body as string),
+      );
+
+      if (error) {
+        return originalFetch.call(window, request, init);
+      }
+
+      if (modifiedBody === "") {
+        return new Response("", { status: 200 });
+      }
+
+      init.body = modifiedBody;
     }
 
-    const [modifiedBody, error] = await tryCatch(() =>
-      interceptRequest(input, init.body as string),
-    );
-
-    if (error) {
-      return originalFetch.call(window, input, init);
-    }
-
-    if (modifiedBody === "") {
-      return new Response("", { status: 200 });
-    }
-
-    init.body = modifiedBody;
-
-    const response = await originalFetch.call(window, input, init);
-    const url = constructUrl(input);
+    const response = await originalFetch.call(window, request, init);
+    const url = constructUrl(request);
 
     if (response.headers.get("content-type")?.includes("text/event-stream")) {
       return handleStreamingResponse(response, url);
@@ -33,13 +36,13 @@ export function initFetchInterceptor() {
   };
 }
 
-async function interceptRequest(input: RequestInfo | URL, body: string) {
+async function interceptRequest(request: RequestInfo | URL, body: string) {
   const resp =
     await NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares({
       data: {
         type: "networkIntercept:fetchEvent",
         event: "request",
-        payload: { url: constructUrl(input), data: body },
+        payload: { url: constructUrl(request), data: body },
       },
     });
 
@@ -87,7 +90,7 @@ function handleStreamingResponse(response: Response, url: string) {
             const events = parseSSEChunk(chunk);
 
             for (const event of events) {
-              await log(url, response.status, event.data);
+              void logResponse(url, response.status, event.data);
             }
 
             controller.enqueue(result.value);
@@ -111,11 +114,21 @@ function handleStreamingResponse(response: Response, url: string) {
 async function handleRegularResponse(response: Response, url: string) {
   const clonedResponse = response.clone();
   const body = await clonedResponse.text();
-  await log(url, response.status, body);
+  void logResponse(url, response.status, body);
   return response;
 }
 
-async function log(url: string, status: number, data: string) {
+async function logRequest(url: string, data: string) {
+  void NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares({
+    data: {
+      type: "networkIntercept:fetchEvent",
+      event: "request",
+      payload: { url, data },
+    },
+  });
+}
+
+async function logResponse(url: string, status: number, data: string) {
   void NetworkInterceptMiddlewareManagerService.Proxy.noop({
     data: {
       type: "networkIntercept:fetchEvent",
@@ -127,6 +140,6 @@ async function log(url: string, status: number, data: string) {
 
 function constructUrl(url: unknown) {
   if (url instanceof URL) return url.href;
-  if (typeof url === "string") return url;
+  if (typeof url === "string") return new URL(url, window.location.origin).href;
   return "";
 }

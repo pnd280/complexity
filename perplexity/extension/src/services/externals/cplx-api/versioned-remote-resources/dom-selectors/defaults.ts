@@ -155,7 +155,6 @@ export const INTERNAL_ATTRIBUTES = {
   THREAD: {
     NAVBAR: "thread-navbar",
     NAVBAR_CHILD: {
-      EXPORT_THREAD_BUTTON: "thread-export-button",
       OVERFLOW_MENU_BUTTON_WRAPPER: "thread-overflow-menu-button-wrapper",
     },
     WRAPPER: "thread-wrapper",

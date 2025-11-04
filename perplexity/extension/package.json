@@ -1,6 +1,6 @@
 {
   "name": "pplx-ext",
-  "version": "2.7.12",
+  "version": "2.7.13",
   "author": "pnd280",
   "type": "module",
   "scripts": {
@@ -41,7 +41,7 @@
     "@comctx-adapters/core": "workspace:*",
     "@complexity/async-dep-registry": "workspace:*",
     "@complexity/i18n": "workspace:*",
-    "@dotenvx/dotenvx": "^1.51.0",
+    "@dotenvx/dotenvx": "^1.51.1",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-scroll-area": "^1.2.10",

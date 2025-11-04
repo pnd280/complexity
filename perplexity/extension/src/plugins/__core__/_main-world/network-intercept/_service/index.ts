@@ -1,3 +1,4 @@
+import { APP_CONFIG } from "@/app.config";
 import type {
   Middleware,
   MiddlewareNameBasedPriority,
@@ -133,6 +134,8 @@ export class NetworkInterceptMiddlewareManagerImpl {
   }
 
   async noop({ data }: { data: MiddlewareData }) {
+    if (!APP_CONFIG.IS_DEV) return;
+
     switch (data.type) {
       case "networkIntercept:webSocketEvent":
         // console.log("%cwebSocketEvent", "color: blue", {

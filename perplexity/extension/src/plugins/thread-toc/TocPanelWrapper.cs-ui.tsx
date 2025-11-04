@@ -2,11 +2,11 @@ import { lazily } from "react-lazily";
 
 import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
 
-const { ThreadToc } = lazily(() => import("@/plugins/thread-toc/ThreadToc"));
+const { TocPanel } = lazily(() => import("@/plugins/thread-toc/TocPanel"));
 
-export const ThreadTocWrapper = withPluginsGuard(ThreadToc, {
+export const TocPanelWrapper = withPluginsGuard(TocPanel, {
   dependentPluginIds: ["thread:toc"],
   location: ["thread"],
 });
 
-export default ThreadTocWrapper;
+export default TocPanelWrapper;

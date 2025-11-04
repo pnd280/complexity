@@ -82,6 +82,17 @@ export default class CsUiRegistry {
       CsUiRegistry.Components,
     );
 
+  static ThreadNavbarAttributesGroupComponents = (() =>
+    CsUiRegistry.Components.map((module, idx) => {
+      if (module.uiGroup == null) return null;
+
+      if (
+        typeof module.uiGroup === "string" &&
+        module.uiGroup === "thread:navbarAttributes"
+      )
+        return <module.default key={idx} />;
+    }).filter((component) => component != null))();
+
   static CommandMenuItemsGroupComponents = (() =>
     CsUiRegistry.Components.map((module, idx) => {
       if (module.uiGroup == null) return null;

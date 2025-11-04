@@ -23,13 +23,13 @@ declare module "@/plugins/__async-deps__/async-loaders" {
   }
 }
 
-export const getPplxAuthQueryObserver = () =>
+const getPplxAuthQueryObserver = () =>
   new QueryObserver(
     persistentQueryClient.queryClient,
     pplxApiQueries.auth.detail(),
   );
 
-export const getPplxAuthOrgStatusQueryObserver = () =>
+const getPplxAuthOrgStatusQueryObserver = () =>
   new QueryObserver(
     persistentQueryClient.queryClient,
     pplxApiQueries.auth.orgStatus.detail(),
