@@ -1,5 +1,5 @@
-import { pplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
-import { spaRouterStoreSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { PositionObserver } from "position-observer";
+
 import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { threadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
 import { threadTocStore } from "@/plugins/thread-toc/store";
@@ -33,52 +33,29 @@ export default function () {
     (state) => state.tocItems,
     (tocItems) => {
       utils.setCurrentTocItems(tocItems);
-      const delay = utils.getDebounceDelay(tocItems.length);
-      utils.debouncedCalculatePanelPosition(delay);
+      utils.calculatePanelPosition();
     },
     { equalityFn: deepEqual },
   );
+
+  const observer = new PositionObserver((_entries) => {
+    utils.calculatePanelPosition();
+  });
 
   threadDomObserverStore.subscribe(
     (state) => state.$wrapper,
     ($wrapper) => {
       utils.setCurrentThreadWrapper($wrapper?.[0] ?? null);
       utils.calculatePanelPosition();
+
+      observer.disconnect();
+
+      if ($wrapper == null) {
+        return;
+      }
+
+      observer.observe($wrapper[0] as Element);
     },
     { equalityFn: deepEqual },
   );
-
-  pplxCookiesStore.subscribe(
-    (state) =>
-      state.cookies.find((cookie) => cookie.name === "isSidebarPinned"),
-    () => {
-      utils.calculatePanelPosition();
-    },
-    { equalityFn: deepEqual },
-  );
-
-  spaRouterStoreSubscribe(
-    (url) => url,
-    () => {
-      utils.calculatePanelPosition();
-    },
-  );
-
-  const handleResize = () => {
-    const newWidth = window.innerWidth;
-    const newHeight = window.innerHeight;
-
-    if (
-      newWidth !== utils.getWindowWidth() ||
-      newHeight !== utils.getWindowHeight()
-    ) {
-      utils.setWindowWidth(newWidth);
-      utils.setWindowHeight(newHeight);
-
-      const delay = utils.getDebounceDelay(utils.getCurrentTocItems().length);
-      utils.debouncedCalculatePanelPosition(delay);
-    }
-  };
-
-  window.addEventListener("resize", handleResize);
 }

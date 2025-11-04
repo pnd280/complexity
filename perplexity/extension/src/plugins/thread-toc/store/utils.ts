@@ -1,14 +1,14 @@
+import debounce from "lodash/debounce";
+
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
 import { threadTocStore } from "@/plugins/thread-toc/store";
 import type { TocItem } from "@/plugins/thread-toc/store/types";
 
-const DEBOUNCE_DELAY_THRESHOLD = 5;
-const DEBOUNCE_DELAY_MS = 200;
 const PANEL_PADDING = 64;
 const PANEL_MARGIN = 32;
 const DEFAULT_HEADER_HEIGHT = 53;
 const MAX_PANEL_WIDTH = 300;
-const MIN_PANEL_WIDTH = 150;
+const MIN_PANEL_WIDTH = 230;
 
 let activeId: number | null = null;
 let topMostId: number | null = null;
@@ -19,7 +19,6 @@ let pendingUpdate = false;
 
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerHeight;
-let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 let currentTocItems: TocItem[] = [];
 let currentThreadWrapper: HTMLElement | null = null;
 let currentMessageBlocks: MessageBlock[] | null = null;
@@ -189,69 +188,62 @@ const getActiveMessageBlockContentWrapper = (): HTMLElement | null => {
   return messageBlock.nodes.$contentWrapper[0] ?? null;
 };
 
-const calculatePanelPosition = () => {
-  if (currentThreadWrapper == null || currentTocItems.length === 0) {
-    threadTocStore.setState({ panelPosition: null });
-    return;
-  }
+const calculatePanelPosition = debounce(
+  () => {
+    if (currentThreadWrapper == null || currentTocItems.length === 0) {
+      threadTocStore.setState({ panelPosition: null });
+      return;
+    }
 
-  const activeMessageBlockContentWrapper =
-    getActiveMessageBlockContentWrapper();
+    const activeMessageBlockContentWrapper =
+      getActiveMessageBlockContentWrapper();
 
-  if (activeMessageBlockContentWrapper == null) {
-    threadTocStore.setState({ panelPosition: null });
-    return;
-  }
+    if (activeMessageBlockContentWrapper == null) {
+      threadTocStore.setState({ panelPosition: null });
+      return;
+    }
 
-  const threadContentWrapperOffsetRight =
-    activeMessageBlockContentWrapper.offsetLeft +
-    activeMessageBlockContentWrapper.offsetWidth;
+    const threadContentWrapperOffsetRight =
+      activeMessageBlockContentWrapper.offsetLeft +
+      activeMessageBlockContentWrapper.offsetWidth;
 
-  const availableSpace =
-    currentThreadWrapper.offsetWidth -
-    threadContentWrapperOffsetRight -
-    PANEL_PADDING -
-    PANEL_MARGIN;
+    if (threadContentWrapperOffsetRight <= 0) {
+      threadTocStore.setState({ panelPosition: null });
+      return;
+    }
 
-  const panelWidth = Math.max(
-    MIN_PANEL_WIDTH,
-    Math.min(MAX_PANEL_WIDTH, availableSpace),
-  );
+    const availableSpace =
+      currentThreadWrapper.offsetWidth -
+      threadContentWrapperOffsetRight -
+      PANEL_PADDING -
+      PANEL_MARGIN;
 
-  const panelRightEdge =
-    threadContentWrapperOffsetRight + panelWidth + PANEL_PADDING;
-  const isOverflowing = panelRightEdge > currentThreadWrapper.offsetWidth;
+    const panelWidth = Math.max(
+      MIN_PANEL_WIDTH,
+      Math.min(MAX_PANEL_WIDTH, availableSpace),
+    );
 
-  threadTocStore.setState({
-    panelPosition: {
-      position: {
-        left: threadContentWrapperOffsetRight + PANEL_MARGIN,
+    const panelRightEdge =
+      threadContentWrapperOffsetRight + panelWidth + PANEL_PADDING;
+    const isOverflowing = panelRightEdge > currentThreadWrapper.offsetWidth;
+
+    threadTocStore.setState({
+      panelPosition: {
+        position: {
+          left: threadContentWrapperOffsetRight + PANEL_MARGIN,
+        },
+        isOverflowing,
+        width: isOverflowing ? MAX_PANEL_WIDTH : panelWidth,
       },
-      isOverflowing,
-      width: isOverflowing ? MAX_PANEL_WIDTH : panelWidth,
-    },
-  });
-};
-
-const getDebounceDelay = (tocItemsLength: number) => {
-  return tocItemsLength > DEBOUNCE_DELAY_THRESHOLD ? DEBOUNCE_DELAY_MS : 0;
-};
-
-const debouncedCalculatePanelPosition = (delay: number) => {
-  if (debounceTimer) {
-    clearTimeout(debounceTimer);
-  }
-  debounceTimer = setTimeout(() => {
-    calculatePanelPosition();
-    debounceTimer = null;
-  }, delay);
-};
+    });
+  },
+  150,
+  { leading: true, trailing: true, maxWait: 1000 },
+);
 
 export const utils = {
   updateItems,
   calculatePanelPosition,
-  debouncedCalculatePanelPosition,
-  getDebounceDelay,
   setCurrentMessageBlocks: (blocks: MessageBlock[] | null) => {
     currentMessageBlocks = blocks;
   },

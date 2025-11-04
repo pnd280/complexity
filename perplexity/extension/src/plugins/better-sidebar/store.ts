@@ -2,8 +2,6 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
-import { getCookie } from "@/utils/dom-utils/generics";
-
 export type BetterSidebarStoreType = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -14,7 +12,9 @@ export const betterSidebarStore =
     subscribeWithSelector(
       immer(
         (set): BetterSidebarStoreType => ({
-          open: getCookie("isSidebarPinned") === "true",
+          open:
+            localStorage.getItem("pplx.local-user-settings.isSidebarPinned") ===
+            "true",
           setOpen: (open) => set({ open }),
         }),
       ),

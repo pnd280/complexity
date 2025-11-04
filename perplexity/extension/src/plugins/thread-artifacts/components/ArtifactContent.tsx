@@ -5,7 +5,6 @@ import ArtifactPreview from "@/plugins/thread-artifacts/components/Preview";
 import { ARTIFACT_INITIAL_STATE } from "@/plugins/thread-artifacts/consts";
 import { useArtifactsStore } from "@/plugins/thread-artifacts/store";
 import { getInterpretedArtifactLanguage } from "@/plugins/thread-artifacts/utils";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 export default function ArtifactContent() {
   const selectedCodeBlockLocation = useArtifactsStore(
@@ -20,8 +19,6 @@ export default function ArtifactContent() {
   const language = getInterpretedArtifactLanguage(
     selectedCodeBlock?.content.language ?? "text",
   );
-
-  console.log(language, selectedCodeBlock?.content.language);
 
   const previewKey = useArtifactsStore((state) => state.refreshPreviewKey);
   const isValidArtifactCode = useArtifactsStore(
@@ -38,7 +35,7 @@ export default function ArtifactContent() {
           ? "code"
           : artifactViewMode
       }
-      className={cn(PPLX_SCROLLBAR_CLASSES, "x:size-full x:overflow-auto")}
+      className={cn("custom-scrollbar", "x:size-full x:overflow-auto")}
     >
       <TabContent value="code" className="x:size-full">
         <ArtifactCodeView />

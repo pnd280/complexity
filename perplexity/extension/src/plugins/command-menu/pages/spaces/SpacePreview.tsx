@@ -4,7 +4,6 @@ import MarkdownRenderer from "@/components/MarkdownRenderer";
 import SpaceItemFile from "@/plugins/command-menu/pages/spaces/SpaceItemFile";
 import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 import TablerLink from "~icons/tabler/link";
 
@@ -42,7 +41,7 @@ export default function SpacePreview({ space }: { space: Space }) {
           </div>
           <div
             className={cn(
-              PPLX_SCROLLBAR_CLASSES,
+              "custom-scrollbar",
               "x:max-h-[240px] x:overflow-y-auto x:rounded-md x:bg-secondary x:p-2",
             )}
           >

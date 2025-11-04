@@ -16,7 +16,6 @@ import usePortalContainer from "@/plugins/image-gen-model-selector/usePortalCont
 import { PplxImageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-image-models";
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 import { isReactNode } from "@/types/utils.types";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 import TablerCpu from "~icons/tabler/cpu";
 import TablerPhoto from "~icons/tabler/photo";
@@ -77,7 +76,7 @@ export function ImageGenModelSelector() {
         </Tooltip>
         <SelectContent
           className={cn(
-            PPLX_SCROLLBAR_CLASSES,
+            "custom-scrollbar",
             "x:max-h-[500px] x:max-w-[200px] x:overflow-auto x:font-sans",
           )}
         >

@@ -11,7 +11,6 @@ import TocItem from "@/plugins/thread-toc/TocItem";
 import { useHandleTouch } from "@/plugins/thread-toc/useHandleTouch";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { scrollToElement } from "@/utils/dom-utils/generics";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 import TablerX from "~icons/tabler/x";
 
@@ -26,7 +25,7 @@ export function TocPanel() {
   const tocItems = useThreadTocStore((state) => state.tocItems);
   const panelPosition = useThreadTocStore((state) => state.panelPosition);
 
-  const threadWrapper = useThreadDomObserverStore(
+  const portalContainer = useThreadDomObserverStore(
     (store) => store.$wrapper?.[0],
     deepEqual,
   );
@@ -46,7 +45,7 @@ export function TocPanel() {
 
   const shouldShowToc = tocItems.length > 1 && panelPosition != null;
 
-  if (!shouldShowToc || threadWrapper == null) return null;
+  if (!shouldShowToc || portalContainer == null) return null;
 
   const isFloating = panelPosition.isOverflowing;
   const width = panelPosition.width;
@@ -54,7 +53,7 @@ export function TocPanel() {
 
   return (
     <Activity mode={isFloating && !isOpen ? "hidden" : "visible"}>
-      <Portal container={threadWrapper}>
+      <Portal container={portalContainer}>
         <div
           id="thread-toc-container"
           className={cn("x:absolute x:w-(--panel-width)", {
@@ -79,7 +78,7 @@ export function TocPanel() {
           )}
           <div
             className={cn(
-              PPLX_SCROLLBAR_CLASSES,
+              "custom-scrollbar",
               "x:flex x:h-full x:flex-col x:gap-2 x:overflow-y-auto",
               {
                 "x:max-h-[60vh] x:p-4": isFloating,

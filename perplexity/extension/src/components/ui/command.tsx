@@ -5,8 +5,6 @@ import * as React from "react";
 
 import type { DialogProps } from "@/components/ui/dialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
-import { getTaskScheduler, isInContentScript } from "@/utils/misc/utils";
 
 import TablerSearch from "~icons/tabler/search";
 
@@ -105,7 +103,7 @@ export function CommandList({
   return (
     <CommandPrimitive.List
       className={cn(
-        isInContentScript() ? PPLX_SCROLLBAR_CLASSES : "custom-scrollbar",
+        "custom-scrollbar",
         "x:max-h-[300px] x:scroll-pt-2 x:scroll-pb-2 x:overflow-x-hidden x:overflow-y-auto",
         className,
       )}
@@ -297,37 +295,4 @@ export function CommandItemSkeleton({
       ))}
     </div>
   );
-}
-
-/**
- * Custom hook to handle manual scrolling for CommandList when CommandItems are memoized
- * Use this when the default scroll behavior glitches
- * or use scroll-padding-block-start and scroll-padding-block-end to add padding to the top and bottom of the list
- */
-export function useCommandListManualScroll({
-  enabled,
-  commandListRef,
-  willUpdateValue,
-}: {
-  enabled: boolean;
-  commandListRef: React.RefObject<HTMLDivElement | null>;
-  willUpdateValue: string;
-}) {
-  useEffect(() => {
-    if (!enabled || !commandListRef.current) return;
-
-    getTaskScheduler()(() => {
-      const selectedItem = commandListRef.current?.querySelector(
-        '[cmdk-item][aria-selected="true"]',
-      );
-
-      if (selectedItem && selectedItem instanceof HTMLElement) {
-        selectedItem.scrollIntoView({
-          block: "nearest",
-          inline: "nearest",
-          behavior: "instant",
-        });
-      }
-    });
-  }, [commandListRef, enabled, willUpdateValue]);
 }

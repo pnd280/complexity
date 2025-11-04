@@ -19,11 +19,17 @@ export default function useLoadMoreItems({
     rootMargin: "0px 0px 5px 0px",
   });
 
-  useEffect(() => {
-    if (entry?.isIntersecting && hasNextPage && !isFetching) {
+  const fetch = useEffectEvent(() => {
+    if (hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [entry, hasNextPage, isFetching, fetchNextPage]);
+  });
+
+  useEffect(() => {
+    if (!entry?.isIntersecting) return;
+
+    fetch();
+  }, [entry]);
 
   return { triggerRef };
 }

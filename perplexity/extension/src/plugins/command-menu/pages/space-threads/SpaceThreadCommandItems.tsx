@@ -57,7 +57,9 @@ export default function SpaceThreadCommandItems({
           {isFetchingNextPage && (
             <CommandItemSkeleton count={3} className="x:h-14" />
           )}
-          {hasNextPage && <div ref={triggerRef} className="x:h-30" />}
+          {hasNextPage && !isFetchingNextPage && (
+            <div ref={triggerRef} className="x:h-30" />
+          )}
         </>
       )}
 

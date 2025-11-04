@@ -12,7 +12,6 @@ import { useArtifactsStore } from "@/plugins/thread-artifacts/store";
 import { useHandleArtifactsState } from "@/plugins/thread-artifacts/useHandleArtifactsState";
 import useHandleAutonomousArtifactsState from "@/plugins/thread-artifacts/useHandleAutonomousArtifactsState";
 import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import { getCookie } from "@/utils/dom-utils/generics";
 
 const normalizeCss = await getVersionedRemoteResource(
   normalizeCssResourceConfig,
@@ -57,7 +56,11 @@ export function Artifacts() {
   }, [isArtifactOpen, isArtifactsListOpen]);
 
   useEffect(() => {
-    if (isArtifactOpen && getCookie("isSidebarPinned") === "true") {
+    const isSidebarPinned =
+      localStorage.getItem("pplx.local-user-settings.isSidebarPinned") ===
+      "true";
+
+    if (isArtifactOpen && isSidebarPinned) {
       const $pinSidebarButton = $(
         DomSelectorsService.Root.cachedSync.SIDEBAR.PIN_SIDEBAR_BUTTON,
       );

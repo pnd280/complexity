@@ -10,7 +10,6 @@ import SpacesPage from "@/plugins/command-menu/pages/spaces/Page";
 import ThreadsPage from "@/plugins/command-menu/pages/threads/Page";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 import { keysToString } from "@/utils/misc/utils";
 
 export function CommandMenu() {
@@ -80,7 +79,7 @@ export function CommandMenu() {
             )}
           >
             <CommandList
-              className={cn("x:min-h-[400px] x:scroll-pt-32 x:scroll-pb-22", {
+              className={cn("x:min-h-[400px] x:scroll-pt-32 x:scroll-pb-26", {
                 "x:h-[500px] x:max-h-[500px]": sidecarOpen,
               })}
             >
@@ -93,7 +92,7 @@ export function CommandMenu() {
           {sidecarOpen && (
             <div
               className={cn(
-                PPLX_SCROLLBAR_CLASSES,
+                "custom-scrollbar",
                 "x:h-[500px] x:max-h-[500px] x:overflow-y-auto",
               )}
             >

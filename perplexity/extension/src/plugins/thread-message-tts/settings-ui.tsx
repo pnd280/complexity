@@ -19,7 +19,7 @@ export default function ThreadMessageTtsPluginSettingsUi() {
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
-      <div>Right-click to open voice menu. Only supports English content.</div>
+      <div>Right-click on the play button to open voice menu.</div>
       <Switch
         textLabel="Enable"
         checked={settings.plugins["thread:messageTts"].enabled}

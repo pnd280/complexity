@@ -4,7 +4,6 @@ import { useBlurHandler } from "@/plugins/__core__/slash-command/hooks/useBlurHa
 import useSlashCommandPanel from "@/plugins/__core__/slash-command/hooks/useSlashCommandPanel";
 import IndexPage from "@/plugins/__core__/slash-command/pages/IndexPage";
 import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 declare module "@/__registries__/cs-ui/types" {
   interface UiGroupsRegistry {
@@ -28,7 +27,7 @@ export function SlashCommandMenu() {
         ref={contentRef}
         data-slash-command-menu-content
         className={cn(
-          PPLX_SCROLLBAR_CLASSES,
+          "custom-scrollbar",
           "x:w-(--reference-width) x:overflow-x-hidden x:rounded-2xl x:border-border/80 x:bg-secondary x:p-0 x:shadow-lg",
         )}
         onKeyDown={(e) => {

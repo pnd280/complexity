@@ -9,7 +9,6 @@ import {
   getModelsByType,
 } from "@/plugins/language-model-selector/utils";
 import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 export default function DesktopContent() {
   const context = use(LanguageModelSelectorContext);
@@ -38,7 +37,7 @@ export default function DesktopContent() {
   return (
     <Comp
       className={cn(
-        PPLX_SCROLLBAR_CLASSES,
+        "custom-scrollbar",
         "x:flex x:max-h-[calc(var(--available-height))] x:items-start x:justify-between x:gap-2 x:overflow-y-auto x:p-2",
       )}
     >

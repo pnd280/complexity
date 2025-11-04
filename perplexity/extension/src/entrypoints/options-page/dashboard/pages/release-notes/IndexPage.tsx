@@ -4,7 +4,6 @@ import ChangelogRenderer from "@/components/changelog/ChangelogRenderer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useVersionPagination } from "@/entrypoints/options-page/dashboard/pages/release-notes/hooks/useVersionPagination";
 import { cplxApiQueries } from "@/services/externals/cplx-api/query-keys";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
@@ -44,9 +43,7 @@ export function IndexPage() {
         </p>
       </div>
 
-      <div
-        className={cn("x:relative x:max-w-7xl x:pb-8", PPLX_SCROLLBAR_CLASSES)}
-      >
+      <div className={cn("x:relative x:max-w-7xl x:pb-8")}>
         {loadedVersions.map((version, index) => {
           const changelogQuery = changelogQueries[index];
           const isLoading = changelogQuery?.isLoading;

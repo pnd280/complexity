@@ -8,7 +8,6 @@ import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versio
 import { InstantCssService } from "@/services/features/instant-css";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { sendMessage } from "@/types/chrome-runtime-message";
-import { getCookie } from "@/utils/dom-utils/generics";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -57,7 +56,9 @@ export async function applyLayoutShiftPreventionInstantCss({
 
   if (!tabId) return;
 
-  const state = getCookie("isSidebarPinned");
+  const state = localStorage.getItem(
+    "pplx.local-user-settings.isSidebarPinned",
+  );
 
   const action = enabled
     ? InstantCssService.registerInstantCss
