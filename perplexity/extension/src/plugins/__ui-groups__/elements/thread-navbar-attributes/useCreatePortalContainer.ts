@@ -10,10 +10,11 @@ export function useCreatePortalContainer(): HTMLElement | null {
   );
 
   if (!$overflowMenuButtonWrapper?.[0]) {
+    $(DomSelectorsService.Root.cplxAttribute(OBSERVER_ID)).remove();
     return null;
   }
 
-  const $wrapper = $($overflowMenuButtonWrapper[0]).parent();
+  const $wrapper = $overflowMenuButtonWrapper.parent();
 
   const $existingPortalContainer = $wrapper.find(
     DomSelectorsService.Root.cplxAttribute(OBSERVER_ID),

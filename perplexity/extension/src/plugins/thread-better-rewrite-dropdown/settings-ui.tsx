@@ -26,7 +26,7 @@ export default function BetterThreadRewriteDropdownsPluginSettingsUi() {
 
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/raCxpyE.png"
+          src="https://images2.imgbox.com/c2/60/HHmlJffQ_o.png"
           alt="better-thread-rewrite-dropdowns"
           className="x:w-full"
         />

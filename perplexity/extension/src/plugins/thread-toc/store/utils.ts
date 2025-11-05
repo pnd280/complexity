@@ -190,7 +190,7 @@ const getActiveMessageBlockContentWrapper = (): HTMLElement | null => {
 
 const calculatePanelPosition = debounce(
   () => {
-    if (currentThreadWrapper == null || currentTocItems.length === 0) {
+    if (currentThreadWrapper == null || currentTocItems.length < 2) {
       threadTocStore.setState({ panelPosition: null });
       return;
     }

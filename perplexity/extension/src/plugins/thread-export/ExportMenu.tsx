@@ -115,8 +115,6 @@ export function ThreadExportMenu() {
         </PopoverTrigger>
       </Tooltip>
       <PopoverContent>
-        <div className="x:text-sm x:font-medium">Export all messages</div>
-
         <div className="x:flex x:flex-col x:gap-4">
           <ExportFormatSelect onValueChange={setFormat} />
           <Checkbox

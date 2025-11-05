@@ -30,6 +30,7 @@ export async function triggerRewriteOption(params: {
       exact: true,
       maxDepth: 100,
       cache: false,
+      traverseDirection: "up",
     },
   );
 

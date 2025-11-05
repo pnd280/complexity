@@ -10,7 +10,10 @@ import { SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
 import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import type {
+  LanguageModel,
+  LanguageModelCode,
+} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 import TablerCpu from "~icons/tabler/cpu";
 
@@ -59,47 +62,57 @@ export default function LanguageModelGroup({
           {title}
         </LabelComp>
       )}
-      {models.map((model) => renderModelItem(model))}
+      {models.map((model) =>
+        renderModelItem({ model, modelsLimits, tooltipPlacement, ItemComp }),
+      )}
     </GroupComp>
   );
+}
 
-  function renderModelItem(model: LanguageModel) {
-    const Icon = PplxLanguageModelsService.icons[model.icon] ?? TablerCpu;
+function renderModelItem({
+  model,
+  modelsLimits,
+  tooltipPlacement,
+  ItemComp,
+}: {
+  model: LanguageModel;
+  modelsLimits: Partial<Record<LanguageModelCode, number | null>>;
+  tooltipPlacement: "left" | "right";
+  ItemComp: typeof DropdownMenuItem | typeof SelectItem;
+}) {
+  const Icon = PplxLanguageModelsService.icons[model.icon] ?? TablerCpu;
 
-    const modelLimit = modelsLimits[model.code as keyof typeof modelsLimits];
-    const limit =
-      modelLimit === Infinity
-        ? t("plugin-model-selectors.languageModelSelector.usesLeft.unlimited")
-        : typeof modelLimit === "number"
-          ? t("plugin-model-selectors.languageModelSelector.usesLeft.limited", {
-              count: modelLimit,
-            })
-          : "";
+  const modelLimit = modelsLimits[model.code as keyof typeof modelsLimits];
+  const limit =
+    modelLimit === Infinity
+      ? t("plugin-model-selectors.languageModelSelector.usesLeft.unlimited")
+      : typeof modelLimit === "number"
+        ? t("plugin-model-selectors.languageModelSelector.usesLeft.limited", {
+            count: modelLimit,
+          })
+        : "";
 
-    const tooltipContent = limit;
+  const tooltipContent = limit;
 
-    return (
-      <Tooltip
+  return (
+    <Tooltip
+      key={model.code}
+      content={<div className="x:max-w-48 x:text-pretty">{tooltipContent}</div>}
+      disabled={modelsLimits[model.code as keyof typeof modelsLimits] == null}
+      positioning={{ placement: tooltipPlacement, gutter: 10 }}
+    >
+      <ItemComp
         key={model.code}
-        content={
-          <div className="x:max-w-48 x:text-pretty">{tooltipContent}</div>
-        }
-        disabled={modelsLimits[model.code as keyof typeof modelsLimits] == null}
-        positioning={{ placement: tooltipPlacement, gutter: 10 }}
+        item={model.code}
+        value={model.code}
+        className="x:flex x:cursor-pointer x:items-center x:justify-start x:gap-2 x:text-foreground"
+        onClick={() => {
+          localStorage.setItem("cplx:lastSelectedLanguageModel", model.code);
+        }}
       >
-        <ItemComp
-          key={model.code}
-          item={model.code}
-          value={model.code}
-          className="x:flex x:cursor-pointer x:items-center x:justify-start x:gap-2 x:text-foreground"
-          onClick={() => {
-            localStorage.setItem("cplx:lastSelectedLanguageModel", model.code);
-          }}
-        >
-          <Icon className="x:size-4" />
-          <span className="x:truncate">{model.label}</span>
-        </ItemComp>
-      </Tooltip>
-    );
-  }
+        <Icon className="x:size-4" />
+        <span className="x:truncate">{model.label}</span>
+      </ItemComp>
+    </Tooltip>
+  );
 }

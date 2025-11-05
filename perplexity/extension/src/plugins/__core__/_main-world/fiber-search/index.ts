@@ -65,6 +65,20 @@ export default class FiberSearchService {
    *   },
    *   { rootElementSelector: "#root", exact: true, findAll: true, maxDepth: 10, profile: true }
    * );
+   *
+   * @example
+   * // Search upward through parent nodes
+   * const parentNode = FiberSearchServiceImpl.findFiberNodes(
+   *   { name: "ParentComponent" },
+   *   { rootElementSelector: "#child", traverseDirection: "up" }
+   * );
+   *
+   * @example
+   * // Search in both directions
+   * const nodes = FiberSearchServiceImpl.findFiberNodes(
+   *   { name: "SharedComponent" },
+   *   { rootElementSelector: "#root", findAll: true, traverseDirection: "both" }
+   * );
    */
   static findFiberNodes(
     condition: NameSearchCondition,

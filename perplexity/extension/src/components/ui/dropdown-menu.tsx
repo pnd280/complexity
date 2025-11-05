@@ -32,7 +32,7 @@ export function DropdownMenuContent({
       <Menu.Positioner>
         <Menu.Content
           className={cn(
-            "x:z-50 x:min-w-[8rem] x:overflow-hidden x:rounded-xl x:border x:border-border/50 x:bg-popover x:p-2 x:text-popover-foreground x:shadow-md x:focus-visible:outline-none",
+            "x:z-50 x:min-w-32 x:overflow-hidden x:rounded-xl x:border x:border-border/50 x:bg-popover x:p-2 x:text-popover-foreground x:shadow-md x:focus-visible:outline-none",
             "x:data-[state=open]:animate-in x:data-[state=open]:fade-in x:data-[state=open]:zoom-in-95",
             "x:data-[state=closed]:animate-out x:data-[state=closed]:fade-out x:data-[state=closed]:zoom-out-95",
             "x:data-[placement^=bottom]:origin-top x:data-[placement^=left]:origin-right",

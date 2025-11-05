@@ -4,12 +4,13 @@ export type Fiber = {
   child: Fiber | null;
   sibling: Fiber | null;
   alternate: Fiber | null;
+  return?: Fiber | null;
   [key: string]: unknown;
 };
 
 type CacheKey = string;
 type FiberPath = {
-  directions: ("child" | "sibling")[];
+  directions: ("child" | "sibling" | "return")[];
 };
 type CacheValue = {
   paths: FiberPath[] | null;
@@ -22,7 +23,7 @@ function followPath(root: Fiber, path: FiberPath): Fiber | null {
   let current: Fiber | null = root;
   for (const direction of path.directions) {
     if (current == null) return null;
-    current = current[direction];
+    current = (current[direction] as Fiber | null | undefined) ?? null;
   }
   return current;
 }
@@ -46,6 +47,7 @@ function generateCacheKey(
     options.findAll ?? false,
     "exact" in options ? (options.exact ?? false) : false,
     "expectSameDepth" in options ? (options.expectSameDepth ?? false) : false,
+    options.traverseDirection ?? "down",
   ].join("|");
 
   return `${conditionKey}::${optionsKey}`;
@@ -87,6 +89,14 @@ type CommonFiberSearchOptions = {
   cache?: boolean;
   /** @default false */
   profile?: boolean;
+  /**
+   * Direction to traverse the fiber tree.
+   * - "down": Traverse downward through children and siblings (default)
+   * - "up": Traverse upward through parent nodes (via `.return`) and their siblings
+   * - "both": Traverse in both directions
+   * @default "down"
+   */
+  traverseDirection?: "up" | "down" | "both";
 };
 
 export type SingleResultOptions = CommonFiberSearchOptions & {
@@ -320,6 +330,182 @@ function searchAllFibers(params: {
   return resultPaths;
 }
 
+function searchAllFibersWithUpward(params: {
+  startFiber: Fiber;
+  nodeMatches: (node: Fiber) => boolean;
+  maxDepth: number;
+  expectSameDepth: boolean;
+  visitedNodesRef: VisitedNodesRef;
+}) {
+  const {
+    startFiber,
+    nodeMatches,
+    maxDepth,
+    expectSameDepth,
+    visitedNodesRef,
+  } = params;
+  const resultPaths: FiberPath[] = [];
+  const stackNodes: (Fiber | null)[] = [startFiber];
+  const stackDepths: number[] = [0];
+  const stackPaths: ("child" | "sibling" | "return")[][] = [[]];
+  const visited = new Set<Fiber>();
+  let targetDepth: number | null = null;
+
+  while (stackNodes.length) {
+    const node = stackNodes.pop();
+    const depth = stackDepths.pop();
+    const currentPath = stackPaths.pop();
+    if (
+      node == null ||
+      depth == null ||
+      currentPath == null ||
+      Math.abs(depth) > maxDepth
+    )
+      continue;
+
+    if (visited.has(node)) continue;
+    visited.add(node);
+
+    if (expectSameDepth && targetDepth != null && depth !== targetDepth) {
+      continue;
+    }
+
+    visitedNodesRef.current++;
+
+    if (nodeMatches(node)) {
+      resultPaths.push({ directions: currentPath });
+      if (expectSameDepth && targetDepth == null) {
+        targetDepth = depth;
+      }
+    }
+
+    // Traverse downward (child and sibling)
+    const sibling = node.sibling;
+    if (sibling != null && !visited.has(sibling)) {
+      stackNodes.push(sibling);
+      stackDepths.push(depth);
+      stackPaths.push([...currentPath, "sibling"]);
+    }
+    const child = node.child;
+    if (
+      child != null &&
+      !visited.has(child) &&
+      (!expectSameDepth || targetDepth == null)
+    ) {
+      stackNodes.push(child);
+      stackDepths.push(depth + 1);
+      stackPaths.push([...currentPath, "child"]);
+    }
+
+    // Traverse upward (return)
+    const parent = node.return;
+    if (
+      parent != null &&
+      !visited.has(parent) &&
+      (!expectSameDepth || targetDepth == null)
+    ) {
+      stackNodes.push(parent);
+      stackDepths.push(depth - 1);
+      stackPaths.push([...currentPath, "return"]);
+    }
+
+    // Traverse upward siblings (parent's siblings)
+    if (parent != null) {
+      const parentSibling = parent.sibling;
+      if (parentSibling != null && !visited.has(parentSibling)) {
+        stackNodes.push(parentSibling);
+        stackDepths.push(depth - 1);
+        stackPaths.push([...currentPath, "return", "sibling"]);
+      }
+    }
+  }
+
+  return resultPaths;
+}
+
+function searchAllFibersUpward(params: {
+  startFiber: Fiber;
+  nodeMatches: (node: Fiber) => boolean;
+  maxDepth: number;
+  expectSameDepth: boolean;
+  visitedNodesRef: VisitedNodesRef;
+}) {
+  const {
+    startFiber,
+    nodeMatches,
+    maxDepth,
+    expectSameDepth,
+    visitedNodesRef,
+  } = params;
+  const resultPaths: FiberPath[] = [];
+  const stackNodes: (Fiber | null)[] = [startFiber];
+  const stackDepths: number[] = [0];
+  const stackPaths: ("return" | "sibling")[][] = [[]];
+  const visited = new Set<Fiber>();
+  let targetDepth: number | null = null;
+
+  while (stackNodes.length) {
+    const node = stackNodes.pop();
+    const depth = stackDepths.pop();
+    const currentPath = stackPaths.pop();
+    if (
+      node == null ||
+      depth == null ||
+      currentPath == null ||
+      Math.abs(depth) > maxDepth
+    )
+      continue;
+
+    if (visited.has(node)) continue;
+    visited.add(node);
+
+    if (expectSameDepth && targetDepth != null && depth !== targetDepth) {
+      continue;
+    }
+
+    visitedNodesRef.current++;
+
+    if (nodeMatches(node)) {
+      resultPaths.push({ directions: currentPath });
+      if (expectSameDepth && targetDepth == null) {
+        targetDepth = depth;
+      }
+    }
+
+    // Only traverse upward (return)
+    const parent = node.return;
+    if (
+      parent != null &&
+      !visited.has(parent) &&
+      (!expectSameDepth || targetDepth == null)
+    ) {
+      stackNodes.push(parent);
+      stackDepths.push(depth - 1);
+      stackPaths.push([...currentPath, "return"]);
+    }
+
+    // Traverse upward siblings (parent's siblings)
+    if (parent != null) {
+      const parentSibling = parent.sibling;
+      if (parentSibling != null && !visited.has(parentSibling)) {
+        stackNodes.push(parentSibling);
+        stackDepths.push(depth - 1);
+        stackPaths.push([...currentPath, "return", "sibling"]);
+      }
+    }
+
+    // Also check current node's siblings at the same level (when going upward, siblings are lateral moves)
+    const sibling = node.sibling;
+    if (sibling != null && !visited.has(sibling)) {
+      stackNodes.push(sibling);
+      stackDepths.push(depth);
+      stackPaths.push([...currentPath, "sibling"]);
+    }
+  }
+
+  return resultPaths;
+}
+
 function searchSingleFiber(params: {
   startFiber: Fiber;
   nodeMatches: (node: Fiber) => boolean;
@@ -362,6 +548,142 @@ function searchSingleFiber(params: {
       queueNodes.push(sibling);
       queueDepths.push(depth);
       queuePaths.push([...currentPath, "sibling"]);
+    }
+  }
+
+  return null;
+}
+
+function searchSingleFiberUpward(params: {
+  startFiber: Fiber;
+  nodeMatches: (node: Fiber) => boolean;
+  maxDepth: number;
+  visitedNodesRef: VisitedNodesRef;
+}) {
+  const { startFiber, nodeMatches, maxDepth, visitedNodesRef } = params;
+  const queueNodes: (Fiber | null)[] = [startFiber];
+  const queueDepths: number[] = [0];
+  const queuePaths: ("return" | "sibling")[][] = [[]];
+  const visited = new Set<Fiber>();
+  let head = 0;
+
+  while (head < queueNodes.length) {
+    const node = queueNodes[head];
+    const depth = queueDepths[head];
+    const currentPath = queuePaths[head];
+    head++;
+    if (
+      node == null ||
+      depth == null ||
+      currentPath == null ||
+      Math.abs(depth) > maxDepth
+    )
+      continue;
+
+    if (visited.has(node)) continue;
+    visited.add(node);
+
+    visitedNodesRef.current++;
+
+    if (nodeMatches(node)) {
+      return { directions: currentPath };
+    }
+
+    // Only traverse upward (return)
+    const parent = node.return;
+    if (parent != null && !visited.has(parent)) {
+      queueNodes.push(parent);
+      queueDepths.push(depth - 1);
+      queuePaths.push([...currentPath, "return"]);
+    }
+
+    // Traverse upward siblings (parent's siblings)
+    if (parent != null) {
+      const parentSibling = parent.sibling;
+      if (parentSibling != null && !visited.has(parentSibling)) {
+        queueNodes.push(parentSibling);
+        queueDepths.push(depth - 1);
+        queuePaths.push([...currentPath, "return", "sibling"]);
+      }
+    }
+
+    // Also check current node's siblings at the same level (lateral moves)
+    const sibling = node.sibling;
+    if (sibling != null && !visited.has(sibling)) {
+      queueNodes.push(sibling);
+      queueDepths.push(depth);
+      queuePaths.push([...currentPath, "sibling"]);
+    }
+  }
+
+  return null;
+}
+
+function searchSingleFiberWithUpward(params: {
+  startFiber: Fiber;
+  nodeMatches: (node: Fiber) => boolean;
+  maxDepth: number;
+  visitedNodesRef: VisitedNodesRef;
+}) {
+  const { startFiber, nodeMatches, maxDepth, visitedNodesRef } = params;
+  const queueNodes: (Fiber | null)[] = [startFiber];
+  const queueDepths: number[] = [0];
+  const queuePaths: ("child" | "sibling" | "return")[][] = [[]];
+  const visited = new Set<Fiber>();
+  let head = 0;
+
+  while (head < queueNodes.length) {
+    const node = queueNodes[head];
+    const depth = queueDepths[head];
+    const currentPath = queuePaths[head];
+    head++;
+    if (
+      node == null ||
+      depth == null ||
+      currentPath == null ||
+      Math.abs(depth) > maxDepth
+    )
+      continue;
+
+    if (visited.has(node)) continue;
+    visited.add(node);
+
+    visitedNodesRef.current++;
+
+    if (nodeMatches(node)) {
+      return { directions: currentPath };
+    }
+
+    // Traverse downward (child and sibling)
+    const child = node.child;
+    if (child != null && !visited.has(child)) {
+      queueNodes.push(child);
+      queueDepths.push(depth + 1);
+      queuePaths.push([...currentPath, "child"]);
+    }
+    const sibling = node.sibling;
+    if (sibling != null && !visited.has(sibling)) {
+      queueNodes.push(sibling);
+      queueDepths.push(depth);
+      queuePaths.push([...currentPath, "sibling"]);
+    }
+
+    // Traverse upward (return)
+    const parent = node.return;
+    if (parent != null && !visited.has(parent)) {
+      queueNodes.push(parent);
+      queueDepths.push(depth - 1);
+      queuePaths.push([...currentPath, "return"]);
+    }
+
+    // Traverse upward siblings (parent's siblings)
+    if (parent != null) {
+      const parentSibling = parent.sibling;
+      if (parentSibling != null && !visited.has(parentSibling)) {
+        queueNodes.push(parentSibling);
+        queueDepths.push(depth - 1);
+        queuePaths.push([...currentPath, "return", "sibling"]);
+      }
     }
   }
 
@@ -450,6 +772,20 @@ export function findFiberNodes(
  *   { name: "DynamicComponent" },
  *   { rootElementSelector: "#root", cache: false }
  * );
+ *
+ * @example
+ * // Search upward through parent nodes
+ * const parentNode = findFiberNodes(
+ *   { name: "ParentComponent" },
+ *   { rootElementSelector: "#child", traverseDirection: "up" }
+ * );
+ *
+ * @example
+ * // Search in both directions
+ * const nodes = findFiberNodes(
+ *   { name: "SharedComponent" },
+ *   { rootElementSelector: "#root", findAll: true, traverseDirection: "both" }
+ * );
  */
 export function findFiberNodes(
   condition: FiberSearchCondition,
@@ -462,6 +798,7 @@ export function findFiberNodes(
     "expectSameDepth" in options ? options.expectSameDepth === true : false;
   const cache = options.cache !== false;
   const profile = options.profile === true;
+  const traverseDirection = options.traverseDirection ?? "down";
 
   let shouldReturnCached = false;
   let cachedPaths: FiberPath[] | null = null;
@@ -575,13 +912,30 @@ export function findFiberNodes(
   const startedAt = profile ? performance.now() : 0;
 
   if (findAll) {
-    const resultPaths = searchAllFibers({
-      startFiber,
-      nodeMatches,
-      maxDepth,
-      expectSameDepth,
-      visitedNodesRef,
-    });
+    const resultPaths =
+      traverseDirection === "up"
+        ? searchAllFibersUpward({
+            startFiber,
+            nodeMatches,
+            maxDepth,
+            expectSameDepth,
+            visitedNodesRef,
+          })
+        : traverseDirection === "both"
+          ? searchAllFibersWithUpward({
+              startFiber,
+              nodeMatches,
+              maxDepth,
+              expectSameDepth,
+              visitedNodesRef,
+            })
+          : searchAllFibers({
+              startFiber,
+              nodeMatches,
+              maxDepth,
+              expectSameDepth,
+              visitedNodesRef,
+            });
 
     const results: Fiber[] = [];
     for (const path of resultPaths) {
@@ -597,6 +951,7 @@ export function findFiberNodes(
         mode: "findAll",
         cached: false,
         cacheEnabled: cache,
+        traverseDirection,
         durationMs: Number(duration.toFixed(2)),
         visitedNodes: visitedNodesRef.current,
         matches: results.length,
@@ -624,12 +979,27 @@ export function findFiberNodes(
     return results;
   }
 
-  const resultPath = searchSingleFiber({
-    startFiber,
-    nodeMatches,
-    maxDepth,
-    visitedNodesRef,
-  });
+  const resultPath =
+    traverseDirection === "up"
+      ? searchSingleFiberUpward({
+          startFiber,
+          nodeMatches,
+          maxDepth,
+          visitedNodesRef,
+        })
+      : traverseDirection === "both"
+        ? searchSingleFiberWithUpward({
+            startFiber,
+            nodeMatches,
+            maxDepth,
+            visitedNodesRef,
+          })
+        : searchSingleFiber({
+            startFiber,
+            nodeMatches,
+            maxDepth,
+            visitedNodesRef,
+          });
 
   const result = resultPath ? followPath(startFiber, resultPath) : null;
 
@@ -639,6 +1009,7 @@ export function findFiberNodes(
       mode: "single",
       cached: false,
       cacheEnabled: cache,
+      traverseDirection,
       durationMs: Number(duration.toFixed(2)),
       visitedNodes: visitedNodesRef.current,
       match: result ? getComponentNameFromFiber(result) : null,

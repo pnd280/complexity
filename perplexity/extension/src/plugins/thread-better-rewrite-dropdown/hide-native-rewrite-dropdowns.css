@@ -1,5 +1,5 @@
 [data-cplx-component="message-block-footer"] > :first-child {
-  > div:has(svg > use[*|href="#pplx-icon-repeat"]) {
+  > button:has(use[*|href="#pplx-icon-repeat"]) {
     display: none;
   }
 }

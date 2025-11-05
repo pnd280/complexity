@@ -8,7 +8,7 @@ import {
 } from "@/plugins/language-model-selector/utils";
 import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 
-export default function MobileContent({ ...props }: DialogProps) {
+export default function MobileContent({ children, ...props }: DialogProps) {
   const subTier = usePluginGuardsStore((store) => store.subTier);
 
   const searchModels = getModelsByType("search");
@@ -24,6 +24,7 @@ export default function MobileContent({ ...props }: DialogProps) {
         closeButton={false}
         className="x:flex x:flex-col x:gap-2"
       >
+        {children}
         <LanguageModelGroup
           title={
             subTier === "max" ? (

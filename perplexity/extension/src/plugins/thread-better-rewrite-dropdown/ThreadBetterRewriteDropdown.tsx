@@ -6,15 +6,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { useRegisteredGlobalCssEntry } from "@/plugins/__async-deps__/global-stores/global-css-store";
-import {
-  threadMessageBlocksDomObserverStore,
-  useThreadMessageBlocksDomObserverStore,
-} from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import { useThreadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { useThreadMessageIndexContext } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 import { DesktopContent } from "@/plugins/language-model-selector/index.public";
 import { MobileContent } from "@/plugins/language-model-selector/index.public";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/index.public";
 import { handleRewrite } from "@/plugins/thread-better-rewrite-dropdown/handle-rewrite";
+import RedoSearchSwitch from "@/plugins/thread-better-rewrite-dropdown/RedoSearchSwitch";
 import { isLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
@@ -26,6 +24,8 @@ export function ThreadBetterRewriteDropdown() {
   const [highlightedItem, setHighlightedItem] =
     useState<LanguageModelCode | null>("claude2");
 
+  const [redoSearch, setRedoSearch] = useState<boolean>(false);
+
   useRegisteredGlobalCssEntry({
     entryIds: ["thread-message-footer-hide-native-rewrite-dropdowns"],
     subscriberId: "thread-better-rewrite-dropdown#" + messageBlockIndex,
@@ -33,7 +33,18 @@ export function ThreadBetterRewriteDropdown() {
 
   const isReadOnly = useThreadMessageBlocksDomObserverStore((store) => {
     return store.messageBlocks?.[messageBlockIndex]?.states.isReadOnly;
-  }, deepEqual);
+  });
+
+  const modelPreferences = useThreadMessageBlocksDomObserverStore((store) => {
+    return store.messageBlocks?.[messageBlockIndex]?.content.displayModel;
+  });
+
+  const haveSources = useThreadMessageBlocksDomObserverStore((store) => {
+    return (
+      store.messageBlocks?.[messageBlockIndex]?.content.webResults != null &&
+      store.messageBlocks[messageBlockIndex].content.webResults.length > 0
+    );
+  });
 
   if (isReadOnly) return null;
 
@@ -48,10 +59,6 @@ export function ThreadBetterRewriteDropdown() {
       }}
       onOpenChange={async ({ open }) => {
         if (open) {
-          const modelPreferences =
-            threadMessageBlocksDomObserverStore.getState().messageBlocks?.[
-              messageBlockIndex
-            ]?.content.displayModel;
           setHighlightedItem(modelPreferences ?? null);
         }
 
@@ -66,6 +73,7 @@ export function ThreadBetterRewriteDropdown() {
         handleRewrite({
           selectedModel: value as LanguageModelCode,
           messageBlockIndex,
+          redoSearch: redoSearch === true,
         });
       }}
     >
@@ -90,9 +98,24 @@ export function ThreadBetterRewriteDropdown() {
           <MobileContent
             open={isOpen}
             onOpenChange={({ open }) => setIsOpen(open)}
-          />
+          >
+            {haveSources && (
+              <RedoSearchSwitch
+                redoSearch={redoSearch}
+                setRedoSearch={setRedoSearch}
+              />
+            )}
+          </MobileContent>
         ) : (
-          <DesktopContent />
+          <DesktopContent className="x:flex x:flex-col-reverse x:gap-2">
+            {haveSources && (
+              <RedoSearchSwitch
+                className="x:w-full x:border-t x:border-border/50 x:p-2 x:pt-3"
+                redoSearch={redoSearch}
+                setRedoSearch={setRedoSearch}
+              />
+            )}
+          </DesktopContent>
         )}
       </LanguageModelSelectorContext>
     </DropdownMenu>

@@ -16,8 +16,16 @@ export const threadBetterRewriteDropdownFiberConfigResourceConfig =
     name: "plugin.threadBetterRewriteDropdown.fiberConfig",
     type: "json",
     fallback: {
-      name: "DropDownMenu",
-      dataNodePath: ["memoizedProps", "footer", "props", "onClickRewrite"],
+      name: "DropdownMenu",
+      dataNodePath: [
+        "return",
+        "memoizedProps",
+        "children",
+        "props",
+        "footer",
+        "props",
+        "onClickRewrite",
+      ],
     },
     zodSchema: z.object({
       name: z.string(),

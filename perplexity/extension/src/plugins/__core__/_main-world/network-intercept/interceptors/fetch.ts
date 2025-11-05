@@ -7,62 +7,59 @@ export function initFetchInterceptor() {
     request: RequestInfo | URL,
     init?: RequestInit,
   ) {
-    // void logRequest(constructUrl(request), init?.body as string);
-
     if (init?.body != null && typeof init.body === "string") {
       const [modifiedBody, error] = await tryCatch(() =>
-        interceptRequest(request, init.body as string),
+        NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares({
+          data: {
+            type: "networkIntercept:fetchEvent",
+            event: "request",
+            payload: {
+              url: constructUrl(request),
+              data: init.body?.toString() ?? "",
+            },
+          },
+        }),
       );
 
       if (error) {
         return originalFetch.call(window, request, init);
       }
 
-      if (modifiedBody === "") {
+      if (modifiedBody != null && modifiedBody.payload.data === "") {
         return new Response("", { status: 200 });
       }
 
-      init.body = modifiedBody;
+      init.body = modifiedBody?.payload.data ?? "";
     }
 
     const response = await originalFetch.call(window, request, init);
-    const url = constructUrl(request);
 
     if (response.headers.get("content-type")?.includes("text/event-stream")) {
-      return handleStreamingResponse(response, url);
+      return handleStreamingResponse(response);
     }
 
-    return handleRegularResponse(response, url);
+    return handleRegularResponse(response);
   };
-}
-
-async function interceptRequest(request: RequestInfo | URL, body: string) {
-  const resp =
-    await NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares({
-      data: {
-        type: "networkIntercept:fetchEvent",
-        event: "request",
-        payload: { url: constructUrl(request), data: body },
-      },
-    });
-
-  return resp?.payload.data ?? "";
 }
 
 function parseSSEChunk(chunk: string): { event: string; data: string }[] {
   const events: { event: string; data: string }[] = [];
-  const eventStrings = chunk.split("\n\n").filter(Boolean);
+  const eventStrings = chunk
+    .replace(/\r\n|\r/g, "\n")
+    .split("\n\n")
+    .filter(Boolean);
 
   for (const eventString of eventStrings) {
     const lines = eventString.split("\n");
-    let event = "message";
+    let event = "";
     let data = "";
 
     for (const line of lines) {
-      if (line.startsWith("event:")) {
-        event = line.slice(6).trim();
-      } else if (line.startsWith("data:")) {
-        data = line.slice(5).trim();
+      const sanitizedLine = line.trim();
+      if (sanitizedLine.startsWith("event:")) {
+        event = sanitizedLine.slice(6).trim();
+      } else if (sanitizedLine.startsWith("data:")) {
+        data = sanitizedLine.slice(5).trim();
       }
     }
 
@@ -74,7 +71,7 @@ function parseSSEChunk(chunk: string): { event: string; data: string }[] {
   return events;
 }
 
-function handleStreamingResponse(response: Response, url: string) {
+function handleStreamingResponse(response: Response) {
   const reader = response.body?.getReader();
   if (!reader) return response;
 
@@ -87,10 +84,23 @@ function handleStreamingResponse(response: Response, url: string) {
           let result = await reader.read();
           while (!result.done) {
             const chunk = decoder.decode(result.value, { stream: true });
+
             const events = parseSSEChunk(chunk);
 
             for (const event of events) {
-              void logResponse(url, response.status, event.data);
+              void NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares(
+                {
+                  data: {
+                    type: "networkIntercept:fetchEvent",
+                    event: "response",
+                    payload: {
+                      url: constructUrl(response.url),
+                      status: response.status,
+                      data: event.data,
+                    },
+                  },
+                },
+              );
             }
 
             controller.enqueue(result.value);
@@ -111,31 +121,21 @@ function handleStreamingResponse(response: Response, url: string) {
   );
 }
 
-async function handleRegularResponse(response: Response, url: string) {
+async function handleRegularResponse(response: Response) {
   const clonedResponse = response.clone();
   const body = await clonedResponse.text();
-  void logResponse(url, response.status, body);
-  return response;
-}
-
-async function logRequest(url: string, data: string) {
-  void NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares({
-    data: {
-      type: "networkIntercept:fetchEvent",
-      event: "request",
-      payload: { url, data },
-    },
-  });
-}
-
-async function logResponse(url: string, status: number, data: string) {
   void NetworkInterceptMiddlewareManagerService.Proxy.noop({
     data: {
       type: "networkIntercept:fetchEvent",
       event: "response",
-      payload: { url, status, data },
+      payload: {
+        url: constructUrl(response.url),
+        status: response.status,
+        data: body,
+      },
     },
   });
+  return response;
 }
 
 function constructUrl(url: unknown) {

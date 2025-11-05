@@ -1,4 +1,4 @@
 [data-cplx-component="message-block-footer"]
-  button:has(> div > div svg > use[*|href="#pplx-icon-copy"]) {
+  button:has(use[*|href="#pplx-icon-copy"]) {
   display: none;
 }

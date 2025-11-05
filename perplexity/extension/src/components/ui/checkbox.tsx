@@ -5,13 +5,13 @@ import type { ReactNode } from "react";
 import TablerCheck from "~icons/tabler/check";
 
 const checkboxVariants = cva(
-  "x:size-4 x:shrink-0 x:rounded-sm x:border x:border-border x:ring-offset-background x:transition-all x:group-data-disabled:cursor-not-allowed x:group-data-disabled:opacity-50 x:focus-visible:ring-2 x:focus-visible:ring-ring x:focus-visible:ring-offset-2 x:focus-visible:outline-none x:data-[state=checked]:bg-primary x:data-[state=checked]:text-foreground-subtle",
+  "x:shrink-0 x:rounded-sm x:border x:border-border x:ring-offset-background x:transition-all x:group-data-disabled:cursor-not-allowed x:group-data-disabled:opacity-50 x:focus-visible:ring-2 x:focus-visible:ring-ring x:focus-visible:ring-offset-2 x:focus-visible:outline-none x:data-[state=checked]:bg-primary x:data-[state=checked]:text-foreground-subtle",
   {
     variants: {
       size: {
-        sm: "x:size-3",
-        base: "x:size-4",
-        lg: "x:size-5",
+        sm: "x:size-3.5",
+        base: "x:size-4.5",
+        lg: "x:size-5.5",
       },
     },
     defaultVariants: {
