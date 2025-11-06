@@ -1,3 +1,5 @@
+import { createParser, type EventSourceMessage } from "eventsource-parser";
+
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
 
 export function initFetchInterceptor() {
@@ -42,35 +44,6 @@ export function initFetchInterceptor() {
   };
 }
 
-function parseSSEChunk(chunk: string): { event: string; data: string }[] {
-  const events: { event: string; data: string }[] = [];
-  const eventStrings = chunk
-    .replace(/\r\n|\r/g, "\n")
-    .split("\n\n")
-    .filter(Boolean);
-
-  for (const eventString of eventStrings) {
-    const lines = eventString.split("\n");
-    let event = "";
-    let data = "";
-
-    for (const line of lines) {
-      const sanitizedLine = line.trim();
-      if (sanitizedLine.startsWith("event:")) {
-        event = sanitizedLine.slice(6).trim();
-      } else if (sanitizedLine.startsWith("data:")) {
-        data = sanitizedLine.slice(5).trim();
-      }
-    }
-
-    if (data) {
-      events.push({ event, data });
-    }
-  }
-
-  return events;
-}
-
 function handleStreamingResponse(response: Response) {
   const reader = response.body?.getReader();
   if (!reader) return response;
@@ -80,29 +53,29 @@ function handleStreamingResponse(response: Response) {
   return new Response(
     new ReadableStream({
       async start(controller) {
+        const parser = createParser({
+          onEvent(event: EventSourceMessage) {
+            void NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares(
+              {
+                data: {
+                  type: "networkIntercept:fetchEvent",
+                  event: "response",
+                  payload: {
+                    url: constructUrl(response.url),
+                    status: response.status,
+                    data: event.data,
+                  },
+                },
+              },
+            );
+          },
+        });
+
         try {
           let result = await reader.read();
           while (!result.done) {
             const chunk = decoder.decode(result.value, { stream: true });
-
-            const events = parseSSEChunk(chunk);
-
-            for (const event of events) {
-              void NetworkInterceptMiddlewareManagerService.Proxy.executeMiddlewares(
-                {
-                  data: {
-                    type: "networkIntercept:fetchEvent",
-                    event: "response",
-                    payload: {
-                      url: constructUrl(response.url),
-                      status: response.status,
-                      data: event.data,
-                    },
-                  },
-                },
-              );
-            }
-
+            parser.feed(chunk);
             controller.enqueue(result.value);
             result = await reader.read();
           }

@@ -3,7 +3,10 @@ import z from "zod";
 import { toast } from "@/components/ui/use-toast";
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
-import { isSearchLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
+import {
+  isLabsLanguageModelCode,
+  isResearchLanguageModelCode,
+} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -61,7 +64,8 @@ export default function () {
           }
 
           if (
-            !isSearchLanguageModelCode(parsedData.display_model) ||
+            isResearchLanguageModelCode(parsedData.display_model) ||
+            isLabsLanguageModelCode(parsedData.display_model) ||
             parsedData.status !== "COMPLETED"
           ) {
             return skip();
