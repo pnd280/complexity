@@ -1,4 +1,3 @@
-import FaMarkdown from "@/components/icons/FaMarkdown";
 import Tooltip from "@/components/Tooltip";
 import {
   DropdownMenu,
@@ -14,6 +13,7 @@ import TablerCheck from "~icons/tabler/check";
 import TablerCopy from "~icons/tabler/copy";
 import TablerLinkOff from "~icons/tabler/link-off";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
+import TablerMarkdown from "~icons/tabler/markdown";
 
 type CopyButtonProps = {
   messageBlockIndex: number;
@@ -71,7 +71,7 @@ const CopyButton = memo(function CopyButton({
             value={"with-citations" satisfies CopyOptions}
             className="x:flex x:items-center x:gap-2"
           >
-            <FaMarkdown className="x:size-4" />
+            <TablerMarkdown className="x:size-4" />
             <span>{t("plugin-better-copy-buttons.options.default")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem

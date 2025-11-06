@@ -1,4 +1,3 @@
-import PplxRewrite from "@/components/icons/PplxRewrite";
 import Tooltip from "@/components/Tooltip";
 import {
   DropdownMenu,
@@ -15,6 +14,8 @@ import { handleRewrite } from "@/plugins/thread-better-rewrite-dropdown/handle-r
 import RedoSearchSwitch from "@/plugins/thread-better-rewrite-dropdown/RedoSearchSwitch";
 import { isLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+
+import TaberRepeat from "~icons/tabler/repeat";
 
 export function ThreadBetterRewriteDropdown() {
   const messageBlockIndex = useThreadMessageIndexContext();
@@ -83,7 +84,7 @@ export function ThreadBetterRewriteDropdown() {
             className="x:cursor-pointer x:rounded-full x:p-2 x:text-muted-foreground x:transition-all x:hover:bg-muted/50 x:hover:text-foreground x:active:scale-95"
             tabIndex={0}
           >
-            <PplxRewrite className="x:size-4" />
+            <TaberRepeat className="x:size-4" />
           </div>
         </DropdownMenuTrigger>
       </Tooltip>

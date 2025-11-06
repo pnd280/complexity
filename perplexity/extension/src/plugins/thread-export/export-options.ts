@@ -1,19 +1,18 @@
-import FaFileTypePdf from "@/components/icons/FaFileTypePdf";
-import FaMarkdown from "@/components/icons/FaMarkdown";
-
 import TablerBrandHtml5 from "~icons/tabler/brand-html5";
+import TablerFileTypePdf from "~icons/tabler/file-type-pdf";
+import TablerMarkdown from "~icons/tabler/markdown";
 
 export const EXPORT_OPTIONS = [
   {
     label: "Markdown",
     value: "markdown",
-    icon: FaMarkdown,
+    icon: TablerMarkdown,
     isDisabled: false,
   },
   {
     label: "PDF (soon)",
     value: "pdf",
-    icon: FaFileTypePdf,
+    icon: TablerFileTypePdf,
     isDisabled: true,
   },
   {

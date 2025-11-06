@@ -42,7 +42,8 @@ export default function CometAffiliateDialog() {
 
   return (
     <Dialog
-      open={!dismissed}
+      // open={!dismissed}
+      open
       closeOnInteractOutside={false}
       closeOnEscape={false}
       onExitComplete={() => setDismissed(true)}
@@ -81,7 +82,7 @@ export default function CometAffiliateDialog() {
           >
             <CometCard rotateDepth={5} translateDepth={5}>
               <Image
-                src="https://pbs.twimg.com/card_img/1978322318423162880/kT2NMCxf?format=png&name=900x900"
+                src="https://cdn.cplx.app/assets/grow_comet.jpg"
                 alt="Comet Invitation"
                 className="x:rounded-xl"
               />

@@ -53,9 +53,6 @@ export function FullScreenReleaseNotesPage() {
         <div className="x:flex x:flex-col x:gap-8 x:md:flex-row x:md:justify-between">
           <ChangelogRenderer changelog={data} />
           <div className="x:border-foreground-subtle x:md:border-l x:md:pl-8">
-            <h2 className="x:text-xl x:font-medium">
-              Support future development
-            </h2>
             <div className="x:mt-4 x:flex x:flex-col x:gap-4">
               {cometAffiliateConfig.enabled && (
                 <div className="x:w-full x:space-y-2">

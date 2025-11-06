@@ -1,10 +1,11 @@
 import Cplx from "@/components/icons/Cplx";
-import FaArrowUpRight from "@/components/icons/FaArrowUpRight";
 import { Portal } from "@/components/ui/portal";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { useSettingsPageDomObserverStore } from "@/plugins/__core__/dom-observers/settings-page/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { ContentScriptBgUtilsService } from "@/services/features/content-script-utils/service-init.bg-worker";
+
+import TablerArrowUpRight from "~icons/tabler/arrow-up-right";
 
 export function SettingsDashboardLink() {
   const isMobile = useIsMobileStore((store) => store.isMobile);
@@ -59,7 +60,7 @@ export function SettingsDashboardLink() {
           <Cplx className="x:size-4 x:fill-foreground" />
           <div>Complexity</div>
         </div>
-        <FaArrowUpRight className="x:ml-auto x:size-3.5 x:text-muted-foreground" />
+        <TablerArrowUpRight className="x:ml-auto x:size-4 x:text-muted-foreground" />
       </div>
     </Portal>
   );

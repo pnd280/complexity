@@ -72,10 +72,13 @@ export default function () {
           const title =
             queryStr.length > 100 ? queryStr.slice(0, 100) + "..." : queryStr;
 
-          const notification = new Notification("Your answer is ready!", {
-            body: title,
-            icon: "https://www.google.com/s2/favicons?sz=128&domain=perplexity.ai",
-          });
+          const notification = new Notification(
+            t("plugin-thread-message-completion-notification.answerIsReady"),
+            {
+              body: title,
+              icon: "https://www.google.com/s2/favicons?sz=128&domain=perplexity.ai",
+            },
+          );
 
           notification.onclick = () => {
             window.focus();

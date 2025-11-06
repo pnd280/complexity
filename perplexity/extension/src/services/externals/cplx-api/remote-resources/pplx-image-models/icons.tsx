@@ -1,5 +1,5 @@
 import BlackForestLabs from "@/components/icons/BlackForestLabsIcon";
-import { IconParkOutlineBytedance } from "@/components/icons/ByteDance.";
+import { IconParkOutlineBytedance } from "@/components/icons/ByteDance";
 import type { ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
 
 import SiGoogleGemini from "~icons/simple-icons/googlegemini";
