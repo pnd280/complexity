@@ -1,17 +1,20 @@
 import type { Oklch } from "culori";
 import { oklch } from "culori";
 import dedent from "dedent";
-import type { DeepRequired } from "react-hook-form";
+import type z from "zod";
 
 import vibrantBaseCss from "@/data/dashboard/themes/assets/vibrant-base.css?inline";
 import {
   cometColors,
   cplxColors,
 } from "@/data/dashboard/themes/built-in-colors";
-import type { Theme } from "@/data/dashboard/themes/theme.types";
+import type {
+  Theme,
+  ThemeFormSchema,
+} from "@/data/dashboard/themes/theme.types";
 import type { ThemeFormValues } from "@/data/dashboard/themes/theme.types";
 
-export const initialValues: DeepRequired<ThemeFormValues> = {
+export const initialThemeFormValues: ThemeFormValues = {
   title: "Untitled Theme",
   fonts: { ui: "", mono: "" },
   accentColor: "",
@@ -25,8 +28,7 @@ type ThemeDataResult = Pick<Theme, "css" | "displayBannerColors">;
 type ColorPaletteForAccent = Parameters<typeof generateAccentColorOverrides>[0];
 
 export function generateThemeData(
-  data: ThemeFormValues,
-  defaultValues: DeepRequired<ThemeFormValues>,
+  data: z.input<typeof ThemeFormSchema>,
 ): ThemeDataResult {
   const cssParts: string[] = [];
   let displayBannerColors: string[] = [];
@@ -53,8 +55,8 @@ export function generateThemeData(
   }
 
   const fontUiData = {
-    uiFont: data.fonts.ui ?? defaultValues.fonts.ui,
-    monoFont: data.fonts.mono ?? defaultValues.fonts.mono,
+    uiFont: data.fonts.ui,
+    monoFont: data.fonts.mono,
   };
 
   if (

@@ -1,68 +1,69 @@
-import { useFormContext, useWatch } from "react-hook-form";
+import { useField } from "@tanstack/react-form";
 
+import {
+  FieldDescription,
+  FieldError,
+  FieldSet,
+} from "@/components/form/field";
 import { Input } from "@/components/ui/input";
-import type { ThemeFormValues } from "@/data/dashboard/themes/theme.types";
 import BuiltInColorPicker from "@/entrypoints/options-page/dashboard/pages/themes/components/ColorInput/BuiltInColorPicker";
+import { useThemeFormContext } from "@/entrypoints/options-page/dashboard/pages/themes/context/ThemeFormContext";
 
-type ColorInputProps = {
-  value: string | undefined;
-  onChange: (value: string) => void;
-  disabled?: boolean;
-};
+export function ColorInput() {
+  const { form, isPending } = useThemeFormContext();
 
-export function ColorInput({ value, onChange, disabled }: ColorInputProps) {
-  const { control } = useFormContext<ThemeFormValues>();
-
-  const accentColorSelection = useWatch({
+  const accentColorSelectionField = useField({
+    form,
     name: "accentColorSelection",
-    control,
   });
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newValue = e.target.value;
+  const accentColorField = useField({
+    form,
+    name: "accentColor",
+  });
 
-    if (newValue && !newValue.startsWith("#")) {
-      newValue = `#${newValue}`;
-    }
-
-    onChange(newValue);
-  };
-
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value.toUpperCase());
-  };
-
-  const inputValue = value ?? "";
+  const errors = accentColorField.state.meta.errors;
 
   return (
-    <div className="x:flex x:flex-col x:gap-4">
+    <FieldSet>
       <BuiltInColorPicker />
-      {accentColorSelection === "custom" && (
-        <div className="x:space-y-2">
-          <div className="x:flex x:items-center x:gap-2">
+      {accentColorSelectionField.state.value === "custom" && (
+        <>
+          <div className="x:flex x:items-center x:gap-4">
             <Input
-              disabled={disabled}
+              disabled={isPending}
               type="color"
               className="x:h-10 x:w-14"
-              value={value || "#000000"}
+              value={accentColorField.state.value || "#000000"}
               tabIndex={-1}
-              onChange={handleColorChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                accentColorField.handleChange(e.target.value);
+              }}
             />
             <Input
               type="text"
-              disabled={disabled}
+              disabled={isPending}
               className="x:font-mono"
               placeholder="#000000"
-              value={inputValue}
+              value={accentColorField.state.value}
               maxLength={7}
-              onChange={handleTextChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                let newValue = e.target.value;
+
+                if (newValue && !newValue.startsWith("#")) {
+                  newValue = `#${newValue}`;
+                }
+
+                accentColorField.handleChange(newValue);
+              }}
             />
           </div>
-          <div className="x:text-sm x:text-muted-foreground">
+          {errors.length > 0 && <FieldError errors={errors} />}
+          <FieldDescription className="x:text-sm x:text-muted-foreground">
             Complementary shades will be generated based on the provided color.
-          </div>
-        </div>
+          </FieldDescription>
+        </>
       )}
-    </div>
+    </FieldSet>
   );
 }

@@ -22,13 +22,11 @@ export default function ThemeCardBanner({ theme }: ThemeCardBannerProps) {
 }
 
 function getBannerColors(theme: Theme): string[] | null {
-  const selection = theme.config?.accentColorSelection;
-
-  if (!selection) return null;
+  const selection = theme.config.accentColorSelection;
 
   if (selection === "built-in") {
     const color = [...cplxColors, ...cometColors].find(
-      (c) => c.value === theme.config?.builtInAccentColor,
+      (c) => c.value === theme.config.builtInAccentColor,
     );
 
     if (!color) return null;

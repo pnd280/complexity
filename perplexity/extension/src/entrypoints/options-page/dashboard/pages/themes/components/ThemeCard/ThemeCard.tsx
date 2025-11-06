@@ -40,7 +40,7 @@ export default function ThemeCard({ theme, type }: ThemeCardProps) {
       </div>
 
       <CardHeader className="x:space-y-0">
-        <CardTitle className="x:text-lg">{theme.title}</CardTitle>
+        <CardTitle className="x:text-lg">{theme.config.title}</CardTitle>
         <CardDescription>{theme.description}</CardDescription>
       </CardHeader>
 

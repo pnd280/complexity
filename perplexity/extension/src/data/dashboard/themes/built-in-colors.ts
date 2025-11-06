@@ -204,3 +204,10 @@ export const cometColors = [
 export type BuiltInColorValue =
   | (typeof cplxColors)[number]["value"]
   | (typeof cometColors)[number]["value"];
+
+export function isBuiltInColorValue(value: string): value is BuiltInColorValue {
+  return (
+    cplxColors.some((c) => c.value === value) ||
+    cometColors.some((c) => c.value === value)
+  );
+}

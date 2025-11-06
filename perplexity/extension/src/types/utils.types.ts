@@ -9,6 +9,10 @@ export type RemoveNull<T, K extends keyof T = never> = {
   [P in keyof T]: P extends K ? (T[P] extends infer U | null ? U : T[P]) : T[P];
 };
 
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
+
 export function isNotNumber(value: unknown): boolean {
   return typeof value !== "number" || isNaN(value);
 }

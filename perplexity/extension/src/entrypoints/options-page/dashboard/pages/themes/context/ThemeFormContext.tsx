@@ -1,15 +1,11 @@
-import type { UseFormReturn } from "react-hook-form";
+import { createContext, use } from "react";
 
-import type { ThemeFormValues } from "@/data/dashboard/themes/theme.types";
+import type { useBaseThemeForm } from "@/entrypoints/options-page/dashboard/pages/themes/context/useBaseThemeForm";
+import { invariant } from "@/utils/misc/utils";
 
 export type ThemeFormContextType = {
-  form: UseFormReturn<ThemeFormValues>;
+  form: ReturnType<typeof useBaseThemeForm>;
   isPending: boolean;
-  isDeleting?: boolean;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  deleteTheme?: () => Promise<void>;
-  submitText: string;
-  footer?: React.ReactNode;
 };
 
 export const ThemeFormContext = createContext<ThemeFormContextType | null>(

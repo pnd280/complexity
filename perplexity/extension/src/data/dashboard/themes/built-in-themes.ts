@@ -8,7 +8,6 @@ export type BuiltInThemeId = "complexity" | "complexity-shy-moment";
 export const BUILTIN_THEME_REGISTRY: (Theme & { id: BuiltInThemeId })[] = [
   {
     id: "complexity",
-    title: "Complexity Blue",
     description: "Official Complexity Blue theme",
     css: complexityBase + "\n" + complexityBlue,
     displayBannerColors: ["44.28% 0.131 255.75", "74.28% 0.131 255.75"],
@@ -18,6 +17,8 @@ export const BUILTIN_THEME_REGISTRY: (Theme & { id: BuiltInThemeId })[] = [
         ui: "",
         mono: "",
       },
+      accentColor: "",
+      customCss: "",
       accentColorSelection: "built-in",
       builtInAccentColor: "cplx-blue",
       enhanceThreadTypography: true,
@@ -25,7 +26,6 @@ export const BUILTIN_THEME_REGISTRY: (Theme & { id: BuiltInThemeId })[] = [
   },
   {
     id: "complexity-shy-moment",
-    title: "Shy Moment",
     description: "Official Complexity Purple theme",
     css: complexityBase + "\n" + shyMoment,
     displayBannerColors: ["73.59% 0.141 285.60", "83.59% 0.113 285.60"],
@@ -35,6 +35,8 @@ export const BUILTIN_THEME_REGISTRY: (Theme & { id: BuiltInThemeId })[] = [
         ui: "",
         mono: "",
       },
+      accentColor: "",
+      customCss: "",
       accentColorSelection: "built-in",
       builtInAccentColor: "cplx-shy-moment",
       enhanceThreadTypography: true,

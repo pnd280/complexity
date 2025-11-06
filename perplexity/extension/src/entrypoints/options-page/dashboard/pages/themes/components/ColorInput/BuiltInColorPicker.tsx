@@ -1,4 +1,4 @@
-import { useFormContext, useWatch } from "react-hook-form";
+import { useField, useStore } from "@tanstack/react-form";
 
 import Tooltip from "@/components/Tooltip";
 import {
@@ -13,7 +13,7 @@ import {
   type BuiltInColorValue,
   type ColorPalette,
 } from "@/data/dashboard/themes/built-in-colors";
-import type { ThemeFormValues } from "@/data/dashboard/themes/theme.types";
+import { useThemeFormContext } from "@/entrypoints/options-page/dashboard/pages/themes/context/ThemeFormContext";
 
 import TablerCircleXFilled from "~icons/tabler/circle-x-filled";
 import TablerPaletteFilled from "~icons/tabler/palette-filled";
@@ -86,28 +86,28 @@ function ActionOption({ value, icon, tooltip, isSelected }: ActionOptionProps) {
 }
 
 export default function BuiltInColorPicker() {
-  const { control, setValue, resetField } = useFormContext<ThemeFormValues>();
+  const { form } = useThemeFormContext();
 
-  const accentColorSelection = useWatch({
+  const accentColorSelectionField = useField({
+    form,
     name: "accentColorSelection",
-    control,
   });
 
-  const selectedColor = useWatch({
-    name: "builtInAccentColor",
-    control,
-  });
+  const selectedColor = useStore(
+    form.store,
+    (state) => state.values.builtInAccentColor,
+  );
 
   const allColors = [...cplxColors, ...cometColors] as ColorPalette[];
 
   const handleColorSelect = (color: BuiltInColorValue) => {
-    setValue("builtInAccentColor", color);
+    form.setFieldValue("builtInAccentColor", color);
   };
 
   const handleValueChange = (value: string) => {
     if (value === "custom" || value === "default") {
-      resetField("accentColor");
-      setValue("accentColorSelection", value);
+      form.resetField("accentColor");
+      accentColorSelectionField.handleChange(value);
       return;
     }
 
@@ -117,8 +117,8 @@ export default function BuiltInColorPicker() {
   };
 
   const setBuiltInSelection = () => {
-    resetField("accentColor");
-    setValue("accentColorSelection", "built-in");
+    form.resetField("accentColor");
+    accentColorSelectionField.handleChange("built-in");
   };
 
   return (
@@ -134,7 +134,7 @@ export default function BuiltInColorPicker() {
           option={option}
           isSelected={
             selectedColor === option.value &&
-            accentColorSelection === "built-in"
+            accentColorSelectionField.state.value === "built-in"
           }
           onClick={setBuiltInSelection}
         />
@@ -144,14 +144,14 @@ export default function BuiltInColorPicker() {
         value="custom"
         icon={<TablerPaletteFilled />}
         tooltip="Create custom color"
-        isSelected={accentColorSelection === "custom"}
+        isSelected={accentColorSelectionField.state.value === "custom"}
       />
 
       <ActionOption
         value="default"
         icon={<TablerCircleXFilled />}
         tooltip="No color modification"
-        isSelected={accentColorSelection === "default"}
+        isSelected={accentColorSelectionField.state.value === "default"}
       />
     </RadioRoot>
   );
