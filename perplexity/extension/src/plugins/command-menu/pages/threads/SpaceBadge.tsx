@@ -19,7 +19,7 @@ export default function SpaceBadge({
           e.preventDefault();
           e.stopPropagation();
           void softNavigate(`/spaces/${space.slug}`);
-          commandMenuStore.getState().setOpen(false);
+          commandMenuStore.getState().states.setOpen(false);
         }}
       >
         <div className="x:flex x:items-center x:gap-2">

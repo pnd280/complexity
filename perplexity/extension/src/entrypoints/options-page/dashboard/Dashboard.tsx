@@ -24,7 +24,7 @@ export function Dashboard() {
       <main className="x:w-full">
         <CometCompatibilityPsa />
         <Psa />
-        <div className="x:mx-auto x:mt-11 x:min-h-dvh x:w-full x:max-w-[1800px] x:px-8 x:py-4 x:md:mt-0">
+        <div className="x:mx-auto x:mt-11 x:min-h-dvh x:w-full x:max-w-[1800px] x:px-4 x:py-4 x:md:mt-0">
           <Suspense fallback={<LoadingOverlay />}>
             <Outlet />
           </Suspense>

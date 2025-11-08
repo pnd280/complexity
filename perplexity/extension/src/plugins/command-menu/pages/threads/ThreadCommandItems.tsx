@@ -10,10 +10,10 @@ import usePplxInfiniteThreads from "@/plugins/command-menu/pages/threads/usePplx
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
 
 export default function ThreadCommandItems() {
-  useCommandMenuStore((store) => store.open);
+  useCommandMenuStore((store) => store.states.open);
 
   const searchValue = useDebounce(
-    useCommandMenuStore((store) => store.searchValue),
+    useCommandMenuStore((store) => store.states.searchValue),
     300,
   );
 

@@ -39,7 +39,6 @@ export default definePlugin({
       uiRouteSegment: "prompt-history",
     },
     dependencies: {
-      uiGroups: ["slashCommandMenu:pages"],
       corePlugins: ["spaRouter", "networkIntercept", "slashCommand"],
     },
   },

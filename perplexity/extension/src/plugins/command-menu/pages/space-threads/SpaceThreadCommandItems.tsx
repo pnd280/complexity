@@ -14,10 +14,10 @@ export default function SpaceThreadCommandItems({
 }: {
   spaceSlug: Space["slug"];
 }) {
-  useCommandMenuStore((store) => store.open);
+  useCommandMenuStore((store) => store.states.open);
 
   const searchValue = useDebounce(
-    useCommandMenuStore((store) => store.searchValue),
+    useCommandMenuStore((store) => store.states.searchValue),
     300,
   );
 
@@ -29,6 +29,7 @@ export default function SpaceThreadCommandItems({
     hasNextPage,
     isFetching,
     isFetchingNextPage,
+    error,
   } = usePplxInfiniteSpaceThreads({
     spaceSlug,
   });
@@ -38,6 +39,8 @@ export default function SpaceThreadCommandItems({
     isFetching,
     fetchNextPage,
   });
+
+  console.log(error);
 
   return (
     <>

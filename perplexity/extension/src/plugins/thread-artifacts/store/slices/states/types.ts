@@ -1,9 +1,9 @@
-import type { ArtifactState } from "@/plugins/thread-artifacts/types";
+import type { ArtifactView } from "@/plugins/thread-artifacts/types";
 
 export interface ArtifactStateSlice {
-  state: ArtifactState;
-  setState: (state: ArtifactState) => void;
   isValidArtifactCode: boolean;
+  view: ArtifactView;
+  setView: (state: ArtifactView) => void;
   hasAutoPreviewTriggered: boolean;
   setHasAutoPreviewTriggered: (value: boolean) => void;
 }

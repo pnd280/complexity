@@ -2,7 +2,7 @@ import { useSlashCommandMenuStore } from "@/plugins/__core__/slash-command/store
 import type { PageStack } from "@/plugins/__core__/slash-command/store/slices/pages/types";
 
 export function useCurrentPage(): PageStack | null {
-  const pageStack = useSlashCommandMenuStore((state) => state.pageStack);
+  const pageStack = useSlashCommandMenuStore((store) => store.pagesStack.stack);
 
   if (pageStack.length === 0) return null;
 

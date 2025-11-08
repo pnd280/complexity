@@ -95,7 +95,7 @@ export default function BuiltInColorPicker() {
 
   const selectedColor = useStore(
     form.store,
-    (state) => state.values.builtInAccentColor,
+    (store) => store.values.builtInAccentColor,
   );
 
   const allColors = [...cplxColors, ...cometColors] as ColorPalette[];

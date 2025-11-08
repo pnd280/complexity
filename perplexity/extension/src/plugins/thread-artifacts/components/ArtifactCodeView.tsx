@@ -8,12 +8,12 @@ import { getInterpretedArtifactLanguage } from "@/plugins/thread-artifacts/utils
 
 export default function ArtifactCodeView() {
   const colorScheme = useColorSchemeStore(
-    (state) => state.colorScheme,
+    (store) => store.colorScheme,
     deepEqual,
   );
 
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
   const selectedCodeBlock = useThreadCodeBlock({
     messageBlockIndex: selectedCodeBlockLocation?.messageBlockIndex,

@@ -17,7 +17,7 @@ const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
     useMirroredCodeBlockContext();
 
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const isSelected =
@@ -45,12 +45,12 @@ const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
       )}
       onClick={() => {
         artifactsStore.setState((draft) => {
-          draft.selectedCodeBlockLocation = {
+          draft.selection.selectedCodeBlockLocation = {
             messageBlockIndex: sourceMessageBlockIndex,
             codeBlockIndex: sourceCodeBlockIndex,
           };
-          draft.state = "preview";
-          draft.isArtifactsListOpen = false;
+          draft.states.view = "preview";
+          draft.ui.isArtifactsListOpen = false;
         });
       }}
     >

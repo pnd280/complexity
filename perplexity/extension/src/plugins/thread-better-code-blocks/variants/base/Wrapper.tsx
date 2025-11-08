@@ -11,7 +11,7 @@ const BaseCodeBlockWrapper = memo(function BaseCodeBlockWrapper() {
   const isArtifactEnabled =
     PluginsStatesService.cachedEnableStates?.["thread:artifacts"];
   const selectedArtifactCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
   const isSelectedArtifactCodeBlock =
     selectedArtifactCodeBlockLocation?.messageBlockIndex ===

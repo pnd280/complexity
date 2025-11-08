@@ -4,11 +4,11 @@ import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/messa
 import { threadTocStore } from "@/plugins/thread-toc/store";
 import type { TocItem } from "@/plugins/thread-toc/store/types";
 
-const PANEL_PADDING = 64;
+const PANEL_PADDING = 32;
 const PANEL_MARGIN = 32;
 const DEFAULT_HEADER_HEIGHT = 53;
 const MAX_PANEL_WIDTH = 300;
-const MIN_PANEL_WIDTH = 230;
+const MIN_PANEL_WIDTH = 200;
 
 let activeId: number | null = null;
 let topMostId: number | null = null;

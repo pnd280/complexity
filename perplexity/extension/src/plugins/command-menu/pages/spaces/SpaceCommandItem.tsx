@@ -21,9 +21,9 @@ import { formatRelativeTime } from "@/services/infra/i18n";
 import { emojiCodeToString } from "@/utils/misc/utils";
 
 export default function SpaceCommandItem({ space }: { space: Space }) {
-  const url = useSpaRouter((state) => state.url);
+  const url = useSpaRouter((store) => store.url);
 
-  const sidecarOpen = useCommandMenuStore((store) => store.sidecarOpen);
+  const sidecarOpen = useCommandMenuStore((store) => store.sidecar.open);
 
   return (
     <a
@@ -40,9 +40,9 @@ export default function SpaceCommandItem({ space }: { space: Space }) {
         onSelect={() => {
           if (isHotkeyPressed(Key.Alt)) {
             void openInNewTab(`/spaces/${space.slug}`);
-            commandMenuStore.getState().setOpen(false);
+            commandMenuStore.getState().states.setOpen(false);
           } else if (isHotkeyPressed(Key.Shift)) {
-            commandMenuStore.getState().pushPage({
+            commandMenuStore.getState().pagesStack.push({
               pageId: "spaceThreads",
               args: {
                 spaceSlug: space.slug,
@@ -56,7 +56,7 @@ export default function SpaceCommandItem({ space }: { space: Space }) {
             });
           } else {
             void softNavigate(`/spaces/${space.slug}`);
-            commandMenuStore.getState().setOpen(false);
+            commandMenuStore.getState().states.setOpen(false);
           }
         }}
       >

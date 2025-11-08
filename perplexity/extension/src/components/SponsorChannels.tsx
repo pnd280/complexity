@@ -12,7 +12,7 @@ export default function SponsorChannels() {
           {t("common.sponsorDialog.donation.title")}
         </div>
         <div className="x:flex x:flex-col x:gap-2">
-          <Button asChild className="x:space-x-2">
+          <Button asChild>
             <a
               href="https://paypal.me/pnd280"
               target="_blank"
@@ -23,7 +23,7 @@ export default function SponsorChannels() {
               <span>PayPal</span>
             </a>
           </Button>
-          <Button asChild className="x:space-x-2">
+          <Button asChild>
             <a
               href="https://ko-fi.com/pnd280"
               target="_blank"
@@ -40,7 +40,7 @@ export default function SponsorChannels() {
         <div className="x:text-muted-foreground">
           {t("common.sponsorDialog.sponsorship.title")}
         </div>
-        <Button asChild className="x:group x:w-full x:space-x-2">
+        <Button asChild className="x:group x:w-full">
           <a href="mailto:pnd280@gmail.com" target="_blank" rel="noreferrer">
             <span className="x:flex x:items-center x:gap-2 x:group-hover:hidden">
               <TablerMail className="x:size-6" />

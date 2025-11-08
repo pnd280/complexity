@@ -128,7 +128,7 @@ export const DOM_SELECTORS: DomSelectors = {
     THREAD_TITLE:
       ".min-w-0 .cursor-pointer.transition.duration-300.hover\\:opacity-70",
     THREAD_TITLE_INPUT: 'input[placeholder="Untitled"]',
-    OVERFLOW_MENU_BUTTON_WRAPPER: `div:has(>span>button svg > use[*|href="#pplx-icon-dots"])`,
+    OVERFLOW_MENU_BUTTON_WRAPPER: `div:has(>button svg > use[*|href="#pplx-icon-dots"])`,
   },
 } as const;
 

@@ -3,9 +3,9 @@ import { usePopover } from "@ark-ui/react";
 import { useSlashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
 
 export default function useSlashCommandPanel() {
-  const open = useSlashCommandMenuStore((state) => state.open);
+  const open = useSlashCommandMenuStore((store) => store.states.open);
   const positioningOptions = useSlashCommandMenuStore(
-    (state) => state.anchor.positioningOptions,
+    (store) => store.anchor.positioningOptions,
     deepEqual,
   );
 

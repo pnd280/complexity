@@ -26,7 +26,7 @@ type ThreadItemProps = {
 };
 
 const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
-  const url = useSpaRouter((state) => state.url);
+  const url = useSpaRouter((store) => store.url);
 
   const currentPage = useCurrentPage();
 
@@ -63,7 +63,7 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
             void softNavigate(`/search/${thread.slug}`);
           }
 
-          commandMenuStore.getState().setOpen(false);
+          commandMenuStore.getState().states.setOpen(false);
         }}
       >
         <CommandItemTitle className="x:flex x:w-full x:items-start x:justify-center">

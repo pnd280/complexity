@@ -13,7 +13,7 @@ export function ThreadNavbarAttributesPluginsGroup() {
 
   return (
     <Portal container={portalContainer as HTMLElement}>
-      <div className="x:flex x:items-center">
+      <div className="x:flex x:items-center x:gap-2">
         {CsUiRegistry.ThreadNavbarAttributesGroupComponents}
       </div>
     </Portal>

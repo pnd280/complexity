@@ -12,6 +12,8 @@ export function getMatchedPageCommand({
   const command = match[1];
   if (!command) return null;
 
+  // TODO: Implement command registry
+
   const promptHistoryShortcut =
     ExtensionSettingsService.cachedSync.plugins["promptHistory"].shortcut;
 

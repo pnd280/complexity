@@ -138,7 +138,11 @@ export async function getResourceContent(params: {
         const { stdout: minifiedContent } = await execAsync(
           `pnpx @tailwindcss/cli --minify -i ${resource.fallback}`,
         );
-        return minifiedContent;
+        // Remove Tailwind CSS legal comments
+        return minifiedContent.replace(
+          /\/\*!\s*tailwindcss\s+v[\d.]+\s*\|\s*MIT License\s*\|\s*https:\/\/tailwindcss\.com\s*\*\/\s*/g,
+          "",
+        );
       }
       case "txt":
         // Assuming fallback is already a string for txt

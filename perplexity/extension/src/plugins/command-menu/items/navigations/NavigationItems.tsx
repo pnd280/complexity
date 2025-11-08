@@ -24,7 +24,7 @@ const locationMap = {
 } as const satisfies Record<string, ReturnType<typeof whereAmI>>;
 
 export default function NavigationItems() {
-  const url = useSpaRouter((state) => state.url);
+  const url = useSpaRouter((store) => store.url);
   const location = whereAmI(url);
 
   const items = getGroupedItems({
@@ -48,7 +48,7 @@ export default function NavigationItems() {
                   keywords={item.keywords}
                   onSelect={() => {
                     item.onSelect();
-                    commandMenuStore.getState().setOpen(false);
+                    commandMenuStore.getState().states.setOpen(false);
                   }}
                 >
                   <CommandItemIcon asChild>

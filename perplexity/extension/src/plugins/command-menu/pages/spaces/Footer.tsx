@@ -13,7 +13,9 @@ import {
 export default function SpacesSearchItemsFooter() {
   const { data: spaces } = usePplxSpaces();
 
-  const selectingValue = useCommandMenuStore((store) => store.selectingValue);
+  const selectingValue = useCommandMenuStore(
+    (store) => store.states.selectingValue,
+  );
 
   useEffect(() => {
     if (!selectingValue) return;
@@ -23,7 +25,7 @@ export default function SpacesSearchItemsFooter() {
     if (!space) return;
 
     // TODO: bind keys to actions, prevent duplication in the Item itself
-    commandMenuStore.getState().setFooterItems([
+    commandMenuStore.getState().footer.setItems([
       {
         title: t("plugin-command-menu.spaces.footer.copyId"),
         keybinding: [getPlatform() === "mac" ? Key.Meta : Key.Control, "c"],
@@ -41,14 +43,14 @@ export default function SpacesSearchItemsFooter() {
         keybinding: [Key.Alt, Key.Enter],
         onSelect: () => {
           void openInNewTab(`/spaces/${space.slug}`);
-          commandMenuStore.getState().setOpen(false);
+          commandMenuStore.getState().states.setOpen(false);
         },
       },
       {
         title: t("plugin-command-menu.spaces.footer.searchInSpace"),
         keybinding: [Key.Shift, Key.Enter],
         onSelect: () => {
-          commandMenuStore.getState().pushPage({
+          commandMenuStore.getState().pagesStack.push({
             pageId: "spaceThreads",
             args: {
               spaceSlug: space.slug,
@@ -67,13 +69,13 @@ export default function SpacesSearchItemsFooter() {
         keybinding: [Key.Enter],
         onSelect: () => {
           void softNavigate(`/spaces/${space.slug}`);
-          commandMenuStore.getState().setOpen(false);
+          commandMenuStore.getState().states.setOpen(false);
         },
       },
     ]);
 
     return () => {
-      commandMenuStore.getState().setFooterItems([]);
+      commandMenuStore.getState().footer.setItems([]);
     };
   }, [selectingValue, spaces]);
 

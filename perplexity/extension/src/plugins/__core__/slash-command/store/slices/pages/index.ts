@@ -1,73 +1,31 @@
-import type { SlashCommandPageId } from "@/plugins/__core__/slash-command/store/slices/pages/types";
-import type { PageStack } from "@/plugins/__core__/slash-command/store/slices/pages/types";
-import type { BoundStateCreator } from "@/plugins/__core__/slash-command/store/types";
+import type { SlashCommandMenuStoreType } from "@/plugins/__core__/slash-command/store";
+import type { SliceCreator } from "@/types/utils.types";
 
-export type PagesStackSlice = {
-  pageStack: PageStack[];
-  pushPage: <P extends SlashCommandPageId>(page: PageStack<P>) => void;
-  popPage: () => PageStack | undefined;
-  peekPage: () => PageStack | undefined;
-  reset: () => void;
+declare module "@/plugins/__core__/slash-command/store" {
+  interface SlashCommandMenuStoreType {
+    pages: PagesSlice;
+  }
+}
+
+export type PagesSlice = {
+  pages: React.ReactElement[];
+  addPage: (page: React.ReactElement) => void;
+  removePage: (page: React.ReactElement) => void;
 };
 
-export const createPagesStackSlice: BoundStateCreator<PagesStackSlice> = (
-  set,
-  get,
-) => ({
-  pageStack: [],
-
-  pushPage: <PageId extends SlashCommandPageId>(page: PageStack<PageId>) => {
-    const currentStack = get().pageStack;
-
-    if (
-      currentStack.length > 0 &&
-      currentStack[currentStack.length - 1]?.pageId === page.pageId
-    ) {
-      return;
-    }
-
-    let newStack = [...currentStack];
-
-    const existingIndex = currentStack.findIndex(
-      (p) => p.pageId === page.pageId,
-    );
-
-    if (existingIndex !== -1) {
-      newStack = [
-        ...currentStack.slice(0, existingIndex),
-        ...currentStack.slice(existingIndex + 1),
-      ];
-    }
-
-    newStack.push(page as PageStack);
-
-    set({
-      pageStack: newStack,
+export const createPagesSlice: SliceCreator<
+  PagesSlice,
+  SlashCommandMenuStoreType
+> = (set) => ({
+  pages: [],
+  addPage: (page) => {
+    set((draft) => {
+      draft.pages.pages.push(page);
     });
   },
-
-  popPage: () => {
-    const currentStack = get().pageStack;
-    if (currentStack.length === 0) return undefined;
-
-    const lastPage = currentStack[currentStack.length - 1];
-
-    set({
-      pageStack: currentStack.slice(0, -1),
+  removePage: (page) => {
+    set((draft) => {
+      draft.pages.pages = draft.pages.pages.filter((p) => p !== page);
     });
-
-    return lastPage;
   },
-
-  peekPage: () => {
-    const currentStack = get().pageStack;
-    return currentStack.length > 0
-      ? currentStack[currentStack.length - 1]
-      : undefined;
-  },
-
-  reset: () =>
-    set({
-      pageStack: [],
-    }),
 });

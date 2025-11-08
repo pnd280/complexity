@@ -12,8 +12,9 @@ export default function SandpackArtifactActionButtonsWrapper() {
   const { mutate: createCodeSandbox, isPending } = useMutation({
     mutationKey: ["create-code-sandbox"],
     mutationFn: async () => {
-      const files = artifactsStore.getState().sandpackPreviewRef?.getClient()
-        ?.sandboxSetup.files;
+      const files = artifactsStore
+        .getState()
+        .preview.sandpackPreviewRef?.getClient()?.sandboxSetup.files;
 
       if (!files) return;
 

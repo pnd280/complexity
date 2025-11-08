@@ -15,7 +15,7 @@ import {
 
 export default function HtmlRenderer() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({
@@ -51,7 +51,9 @@ const MemoizedPreviewContainer = memo(function MemoizedPreviewContainer({
 
   useEffect(() => {
     if (previewRef.current) {
-      artifactsStore.getState().setSandpackPreviewRef(previewRef.current);
+      artifactsStore
+        .getState()
+        .preview.setSandpackPreviewRef(previewRef.current);
     }
   }, []);
 

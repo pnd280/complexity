@@ -30,7 +30,7 @@ export default function () {
   );
 
   threadTocStore.subscribe(
-    (state) => state.tocItems,
+    (store) => store.tocItems,
     (tocItems) => {
       utils.setCurrentTocItems(tocItems);
       utils.calculatePanelPosition();
@@ -43,7 +43,7 @@ export default function () {
   });
 
   threadDomObserverStore.subscribe(
-    (state) => state.$wrapper,
+    (store) => store.$wrapper,
     ($wrapper) => {
       utils.setCurrentThreadWrapper($wrapper?.[0] ?? null);
       utils.calculatePanelPosition();

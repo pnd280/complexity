@@ -36,7 +36,8 @@ export function createTextboxAdapter(
       lexicalUtils.insertText(
         element,
         text,
-        slashCommandMenuStore.getState().bufferTextCaretPosition ?? undefined,
+        slashCommandMenuStore.getState().anchor.bufferTextCaretPosition ??
+          undefined,
       );
     } else {
       textareaUtils.insertText(element as HTMLTextAreaElement, text);

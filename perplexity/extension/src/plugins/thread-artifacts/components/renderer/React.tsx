@@ -23,7 +23,7 @@ import {
 
 export default memo(function ReactRenderer() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({
@@ -85,8 +85,8 @@ function PreviewContainer({
       <SandpackLayout>
         <SandpackPreview
           ref={(previewRef) => {
-            artifactsStore.setState({
-              sandpackPreviewRef: previewRef,
+            artifactsStore.setState((draft) => {
+              draft.preview.sandpackPreviewRef = previewRef;
             });
           }}
           showRefreshButton={false}
@@ -100,7 +100,7 @@ function PreviewContainer({
 
 function FixErrorButtons() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({

@@ -4,7 +4,7 @@ import { useArtifactsStore } from "@/plugins/thread-artifacts/store";
 
 export default function MarkdownRenderer() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({

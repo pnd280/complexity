@@ -57,7 +57,7 @@ export function SidebarProvider({
   children,
   ...props
 }: SidebarProviderProps) {
-  const isMobile = useIsMobileStore((state) => state.isMobile);
+  const isMobile = useIsMobileStore((store) => store.isMobile);
 
   const [_open, _setOpen] = useState(defaultOpen);
   const open = openProp ?? _open;

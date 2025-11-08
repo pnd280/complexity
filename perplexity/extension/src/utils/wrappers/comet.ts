@@ -42,15 +42,14 @@ export async function isCsInjectable(): Promise<boolean | null> {
 
     if (whereAmI(tab.url) === "unknown") continue;
 
-    const [, error] = await tryCatch(
-      async () =>
-        await chrome.scripting.executeScript({
-          target: { tabId },
-          func: () => {},
-        }),
+    const [, error] = await tryCatch(async () =>
+      chrome.scripting.executeScript({
+        target: { tabId },
+        func: () => {},
+      }),
     );
 
-    if (error) {
+    if (error && error.message.includes("ExtensionsSettings policy")) {
       return false;
     }
 

@@ -13,7 +13,9 @@ function CommandItemGuard({
   show = true,
   hideOnDirty = false,
 }: CommandItemGuardProps) {
-  const isDirty = useCommandMenuStore((state) => state.searchValue.length > 0);
+  const isDirty = useCommandMenuStore(
+    (store) => store.states.searchValue.length > 0,
+  );
 
   if (!show) return null;
   if (!eager && !isDirty) return null;

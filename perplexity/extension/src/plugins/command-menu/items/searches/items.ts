@@ -14,7 +14,7 @@ export const getRawItems = (): CommandItemProps[] => [
         .threadsSearch,
     keywords: ["search"],
     onSelect: () => {
-      commandMenuStore.getState().pushPage({
+      commandMenuStore.getState().pagesStack.push({
         pageId: "threads",
         searchPlaceholder: t("plugin-command-menu.search.threadsPlaceholder"),
         shouldLocalFilter: false,
@@ -36,7 +36,7 @@ export const getRawItems = (): CommandItemProps[] => [
         .spacesSearch,
     keywords: ["search"],
     onSelect: () => {
-      commandMenuStore.getState().pushPage({
+      commandMenuStore.getState().pagesStack.push({
         pageId: "spaces",
         searchPlaceholder: t("plugin-command-menu.search.spacesPlaceholder"),
         shouldLocalFilter: true,

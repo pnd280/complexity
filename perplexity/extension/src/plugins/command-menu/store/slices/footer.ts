@@ -1,4 +1,11 @@
-import type { BoundStateCreator } from "@/plugins/command-menu/store/types";
+import type { CommandMenuStoreType } from "@/plugins/command-menu/store";
+import type { SliceCreator } from "@/types/utils.types";
+
+declare module "@/plugins/command-menu/store" {
+  interface CommandMenuStoreType {
+    footer: FooterSlice;
+  }
+}
 
 export type FooterItem = {
   title: string;
@@ -7,11 +14,17 @@ export type FooterItem = {
 };
 
 export type FooterSlice = {
-  footerItems: FooterItem[];
-  setFooterItems: (items: FooterItem[]) => void;
+  items: FooterItem[];
+  setItems: (items: FooterItem[]) => void;
 };
 
-export const createFooterSlice: BoundStateCreator<FooterSlice> = (set) => ({
-  footerItems: [],
-  setFooterItems: (items) => set({ footerItems: items }),
+export const createFooterSlice: SliceCreator<
+  FooterSlice,
+  CommandMenuStoreType
+> = (set) => ({
+  items: [],
+  setItems: (items) =>
+    set((draft) => {
+      draft.footer.items = items;
+    }),
 });

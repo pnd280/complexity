@@ -1,29 +1,23 @@
 body {
   &[location="thread"],
   &[location="comet_assistant"] {
-    /* Message Block Dividers */
-    [data-cplx-component="message-block"] {
-      .border-b.md\:pb-12.max-w-threadContentWidth {
-        border-bottom-color: --alpha(var(--ring) / 30%);
-      }
-
+    [data-cplx-component="message-block"]
       [data-cplx-component="message-block-answer"] {
-        /* Typography */
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        strong {
-          color: var(--primary);
-        }
-      }
-
-      /* Inline Code */
-      code:not(pre code) {
+      /* Typography */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      strong {
         color: var(--primary);
       }
+    }
+
+    /* Inline Code */
+    code:not(pre code) {
+      color: var(--primary);
     }
   }
 

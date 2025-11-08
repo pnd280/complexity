@@ -8,21 +8,23 @@ import { getInterpretedArtifactLanguage } from "@/plugins/thread-artifacts/utils
 
 export default function ArtifactContent() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
   const selectedCodeBlock = useThreadCodeBlock({
     messageBlockIndex: selectedCodeBlockLocation?.messageBlockIndex,
     codeBlockIndex: selectedCodeBlockLocation?.codeBlockIndex,
   });
   const isInFlight = selectedCodeBlock?.states.isInFlight;
-  const artifactViewMode = useArtifactsStore((state) => state.state);
+  const artifactViewMode = useArtifactsStore((store) => store.states.view);
   const language = getInterpretedArtifactLanguage(
     selectedCodeBlock?.content.language ?? "text",
   );
 
-  const previewKey = useArtifactsStore((state) => state.refreshPreviewKey);
+  const previewKey = useArtifactsStore(
+    (store) => store.preview.forceRefreshKey,
+  );
   const isValidArtifactCode = useArtifactsStore(
-    (state) => state.isValidArtifactCode,
+    (store) => store.states.isValidArtifactCode,
   );
 
   if (!isValidArtifactCode || !language) return null;

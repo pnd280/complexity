@@ -1,5 +1,6 @@
 import React from "react";
 import { ZodError } from "zod";
+import type { StateCreator } from "zustand/vanilla";
 
 export type Nullable<T> = T | null;
 
@@ -40,3 +41,10 @@ export function isZodError(error: unknown): error is ZodError {
     Array.isArray((error as ZodError).issues)
   );
 }
+
+export type SliceCreator<Slice, Store> = StateCreator<
+  Store,
+  [["zustand/subscribeWithSelector", never], ["zustand/immer", never]],
+  [],
+  Slice
+>;

@@ -1,15 +1,11 @@
-import CsUiRegistry from "@/__registries__/cs-ui";
 import { PopoverContent, PopoverRootProvider } from "@/components/ui/popover";
 import { useBlurHandler } from "@/plugins/__core__/slash-command/hooks/useBlurHandler";
 import useSlashCommandPanel from "@/plugins/__core__/slash-command/hooks/useSlashCommandPanel";
 import IndexPage from "@/plugins/__core__/slash-command/pages/IndexPage";
-import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
-
-declare module "@/__registries__/cs-ui/types" {
-  interface UiGroupsRegistry {
-    "slashCommandMenu:pages": void;
-  }
-}
+import {
+  slashCommandMenuStore,
+  useSlashCommandMenuStore,
+} from "@/plugins/__core__/slash-command/store";
 
 export function SlashCommandMenu() {
   const popover = useSlashCommandPanel();
@@ -20,6 +16,11 @@ export function SlashCommandMenu() {
     contentRef,
     exceptionalElementSelectors: ["[data-prompt-history-clear-all-dialog]"],
   });
+
+  const externalPages = useSlashCommandMenuStore(
+    (store) => store.pages.pages,
+    deepEqual,
+  );
 
   return (
     <PopoverRootProvider lazyMount unmountOnExit value={popover}>
@@ -32,12 +33,12 @@ export function SlashCommandMenu() {
         )}
         onKeyDown={(e) => {
           if (e.key === Key.Escape) {
-            slashCommandMenuStore.getState().setOpen(false);
+            slashCommandMenuStore.getState().states.setOpen(false);
           }
         }}
       >
         <IndexPage />
-        {CsUiRegistry.SlashCommandMenuPagesGroupComponents}
+        {externalPages}
       </PopoverContent>
     </PopoverRootProvider>
   );

@@ -1,23 +1,30 @@
+import type { CommandMenuStoreType } from "@/plugins/command-menu/store";
 import type { CommandMenuPageId } from "@/plugins/command-menu/store/slices/pages/types";
 import type { PageStack } from "@/plugins/command-menu/store/slices/pages/types";
-import type { BoundStateCreator } from "@/plugins/command-menu/store/types";
+import type { SliceCreator } from "@/types/utils.types";
+
+declare module "@/plugins/command-menu/store" {
+  interface CommandMenuStoreType {
+    pagesStack: PagesStackSlice;
+  }
+}
 
 export type PagesStackSlice = {
-  pageStack: PageStack[];
-  pushPage: <P extends CommandMenuPageId>(page: PageStack<P>) => void;
-  popPage: () => PageStack | undefined;
-  peekPage: () => PageStack | undefined;
+  stack: PageStack[];
+  push: <P extends CommandMenuPageId>(page: PageStack<P>) => void;
+  pop: () => PageStack | undefined;
+  peek: () => PageStack | undefined;
   reset: () => void;
 };
 
-export const createPagesStackSlice: BoundStateCreator<PagesStackSlice> = (
-  set,
-  get,
-) => ({
-  pageStack: [],
+export const createPagesStackSlice: SliceCreator<
+  PagesStackSlice,
+  CommandMenuStoreType
+> = (set, get) => ({
+  stack: [],
 
-  pushPage: <PageId extends CommandMenuPageId>(page: PageStack<PageId>) => {
-    const currentStack = get().pageStack;
+  push: <PageId extends CommandMenuPageId>(page: PageStack<PageId>) => {
+    const currentStack = get().pagesStack.stack;
 
     if (
       currentStack.length > 0 &&
@@ -41,50 +48,52 @@ export const createPagesStackSlice: BoundStateCreator<PagesStackSlice> = (
 
     newStack.push(page as PageStack);
 
-    set({
-      pageStack: newStack,
-      shouldLocalFilter: page.shouldLocalFilter,
-      searchValue:
+    set((draft) => {
+      draft.pagesStack.stack = newStack;
+      draft.states.shouldLocalFilter = page.shouldLocalFilter;
+      draft.states.searchValue =
         page.args != null && "searchValue" in page.args
-          ? page.args.searchValue
-          : "",
-      selectingValue: "",
-      sidecarOpen: page.sidecarOpen,
+          ? (page.args.searchValue ?? "")
+          : "";
+      draft.states.selectingValue = "";
+      draft.sidecar.open = page.sidecarOpen;
     });
   },
 
-  popPage: () => {
-    const currentStack = get().pageStack;
+  pop: () => {
+    const currentStack = get().pagesStack.stack;
     if (currentStack.length === 0) return undefined;
 
     const lastPage = currentStack[currentStack.length - 1];
 
     const secondLastPage = currentStack[currentStack.length - 2];
 
-    set({
-      pageStack: currentStack.slice(0, -1),
-      searchValue: "",
-      selectingValue: "",
-      shouldLocalFilter: secondLastPage?.shouldLocalFilter ?? true,
-      sidecarOpen: secondLastPage?.sidecarOpen ?? false,
+    set((draft) => {
+      draft.pagesStack.stack = currentStack.slice(0, -1);
+      draft.states.searchValue = "";
+      draft.states.selectingValue = "";
+      draft.states.shouldLocalFilter =
+        secondLastPage?.shouldLocalFilter ?? true;
+      draft.sidecar.open = secondLastPage?.sidecarOpen ?? false;
     });
 
     return lastPage;
   },
 
-  peekPage: () => {
-    const currentStack = get().pageStack;
+  peek: () => {
+    const currentStack = get().pagesStack.stack;
     return currentStack.length > 0
       ? currentStack[currentStack.length - 1]
       : undefined;
   },
 
-  reset: () =>
-    set({
-      pageStack: [],
-      sidecarOpen: false,
-      shouldLocalFilter: true,
-      searchValue: "",
-      selectingValue: "",
-    }),
+  reset: () => {
+    set((draft) => {
+      draft.pagesStack.stack = [];
+      draft.sidecar.open = false;
+      draft.states.shouldLocalFilter = true;
+      draft.states.searchValue = "";
+      draft.states.selectingValue = "";
+    });
+  },
 });

@@ -42,7 +42,7 @@ export default function SpacePreview({ space }: { space: Space }) {
           <div
             className={cn(
               "custom-scrollbar",
-              "x:max-h-[240px] x:overflow-y-auto x:rounded-md x:bg-secondary x:p-2",
+              "x:max-h-60 x:overflow-y-auto x:rounded-md x:bg-secondary x:p-2",
             )}
           >
             <MarkdownRenderer markdown={space.instructions} />

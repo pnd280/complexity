@@ -69,7 +69,7 @@ function initializeFromCookie(): void {
 
 function syncFromInternalSearchStates(): void {
   internalSearchStatesObserverStore.subscribe(
-    (state) => state.model,
+    (store) => store.model,
     (model) => {
       if (model == null || !isLanguageModelCode(model)) {
         return;
@@ -82,7 +82,7 @@ function syncFromInternalSearchStates(): void {
 
 function syncToInternalSearchStates(): void {
   betterLanguageModelSelectorStore.subscribe(
-    (state) => state.model,
+    (store) => store.model,
     (model) => {
       if (!isLanguageModelCode(model)) {
         return;

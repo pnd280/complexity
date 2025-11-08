@@ -8,7 +8,9 @@ import TablerLoaderCircle from "~icons/tabler/loader-2";
 import TablerX from "~icons/tabler/x";
 
 export default function ArtifactsList() {
-  const artifactBlocks = useArtifactsStore((state) => state.artifactBlocks);
+  const artifactBlocks = useArtifactsStore(
+    (store) => store.blocks.artifactBlocks,
+  );
 
   return (
     <div className="x:flex x:size-full x:flex-col x:gap-4">
@@ -20,7 +22,7 @@ export default function ArtifactsList() {
           variant="ghost"
           size="iconSm"
           onClick={() => {
-            artifactsStore.getState().closeArtifactsList();
+            artifactsStore.getState().ui.closeArtifactsList();
           }}
         >
           <TablerX className="x:size-4 x:text-muted-foreground" />

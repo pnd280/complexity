@@ -5,7 +5,7 @@ const OBSERVER_ID = "query-edit-button-group-wrapper";
 
 export function useCreatePortalContainers(): (Element | null)[] {
   const messageBlocks = useThreadMessageBlocksDomObserverStore(
-    (state) => state.messageBlocks,
+    (store) => store.messageBlocks,
     deepEqual,
   );
 

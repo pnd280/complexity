@@ -6,7 +6,7 @@ import TablerCpu from "~icons/tabler/cpu";
 
 export default function CometAssistantLanguageModelSelectorTriggerButton() {
   const selectedLanguageModel = useBetterLanguageModelSelectorStore(
-    (state) => state.model,
+    (store) => store.model,
   );
 
   const modelInfo = (() =>

@@ -37,7 +37,7 @@ export function ZenModeCommandMenuEntries() {
                 keywords={item.keywords}
                 onSelect={() => {
                   item.onSelect();
-                  commandMenuStore.getState().setOpen(false);
+                  commandMenuStore.getState().states.setOpen(false);
                 }}
               >
                 <CommandItemIcon asChild>

@@ -25,7 +25,7 @@ export function Artifacts() {
   useHandleAutonomousArtifactsState();
 
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({
@@ -34,7 +34,7 @@ export function Artifacts() {
   });
   const isArtifactOpen = selectedCodeBlockLocation != null;
   const isArtifactsListOpen = useArtifactsStore(
-    (state) => state.isArtifactsListOpen,
+    (store) => store.ui.isArtifactsListOpen,
   );
 
   useInsertCss({

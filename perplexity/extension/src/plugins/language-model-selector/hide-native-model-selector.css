@@ -19,7 +19,7 @@
   }
 }
 
-/* .cplx-model-mismatch-warning {
+.cplx-model-mismatch-warning {
   background-color: var(--caution);
   color: var(--caution-foreground);
-} */
+}

@@ -1,12 +1,29 @@
+import type { ArtifactsStoreType } from "@/plugins/thread-artifacts/store";
 import type { PreviewSlice } from "@/plugins/thread-artifacts/store/slices/preview/types";
-import type { BoundStateCreator } from "@/plugins/thread-artifacts/store/types";
+import type { SliceCreator } from "@/types/utils.types";
 
-export const createPreviewSlice: BoundStateCreator<PreviewSlice> = (set) => ({
-  refreshPreviewKey: 0,
+declare module "@/plugins/thread-artifacts/store" {
+  interface ArtifactsStoreType {
+    preview: PreviewSlice;
+  }
+}
+
+export const createPreviewSlice: SliceCreator<
+  PreviewSlice,
+  ArtifactsStoreType
+> = (set) => ({
+  forceRefreshKey: 0,
+  refresh: () => {
+    set(
+      (draft) =>
+        (draft.preview.forceRefreshKey = draft.preview.forceRefreshKey + 1),
+    );
+  },
+
   sandpackPreviewRef: null,
-
-  refreshPreview: () =>
-    set((state) => ({ refreshPreviewKey: state.refreshPreviewKey + 1 })),
-
-  setSandpackPreviewRef: (ref) => set({ sandpackPreviewRef: ref }),
+  setSandpackPreviewRef: (ref) => {
+    set((draft) => {
+      draft.preview.sandpackPreviewRef = ref;
+    });
+  },
 });

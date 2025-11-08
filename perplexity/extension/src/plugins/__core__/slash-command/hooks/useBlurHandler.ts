@@ -10,7 +10,7 @@ export function useBlurHandler({
   contentRef: React.RefObject<HTMLElement | null>;
   exceptionalElementSelectors?: string[];
 }) {
-  const open = useSlashCommandMenuStore((state) => state.open);
+  const open = useSlashCommandMenuStore((store) => store.states.open);
 
   const isPartOfExceptionalElements = useCallback(
     (target: Node | null) => {
@@ -39,7 +39,7 @@ export function useBlurHandler({
       if (contentRef.current?.contains(eventTarget)) return;
 
       if (!isPartOfExceptionalElements(eventTarget)) {
-        slashCommandMenuStore.getState().setOpen(false);
+        slashCommandMenuStore.getState().states.setOpen(false);
       }
     };
 
@@ -53,7 +53,7 @@ export function useBlurHandler({
           contentRef.current.contains(activeElement);
 
         if (!isWithinContent && !isPartOfExceptionalElements(activeElement)) {
-          slashCommandMenuStore.getState().setOpen(false);
+          slashCommandMenuStore.getState().states.setOpen(false);
         }
       }, 0);
     };

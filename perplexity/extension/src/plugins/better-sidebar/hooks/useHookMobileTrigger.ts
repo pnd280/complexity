@@ -5,7 +5,7 @@ const attrId = "better-sidebar-mobile-trigger-hook";
 
 export default function useHookMobileTrigger() {
   const mobileTrigger = useSidebarDomObserverStore(
-    (state) => state.mobileTrigger,
+    (store) => store.mobileTrigger,
     deepEqual,
   );
 

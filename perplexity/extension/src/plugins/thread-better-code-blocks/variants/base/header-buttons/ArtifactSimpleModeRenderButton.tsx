@@ -30,11 +30,11 @@ export default function ArtifactSimpleModeRenderButton() {
           className="x:cursor-pointer x:text-muted-foreground x:transition-colors x:hover:text-foreground"
           onClick={() => {
             artifactsStore.setState((draft) => {
-              draft.selectedCodeBlockLocation = {
+              draft.selection.selectedCodeBlockLocation = {
                 messageBlockIndex: sourceMessageBlockIndex,
                 codeBlockIndex: sourceCodeBlockIndex,
               };
-              draft.state = "preview";
+              draft.states.view = "preview";
             });
           }}
         >

@@ -9,7 +9,7 @@ import { getInterpretedArtifactLanguage } from "@/plugins/thread-artifacts/utils
 
 export default function ArtifactFooter() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({

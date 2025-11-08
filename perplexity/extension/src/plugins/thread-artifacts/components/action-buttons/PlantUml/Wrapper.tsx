@@ -6,7 +6,9 @@ import { generatePlantUMLUrl } from "@/plugins/thread-artifacts/utils/plant-uml"
 import TablerExternalLink from "~icons/tabler/external-link";
 
 export default function PlantUmlArtifactsActionButtonsWrapper() {
-  const { selectedCodeBlockLocation } = useArtifactsStore();
+  const selectedCodeBlockLocation = useArtifactsStore(
+    (store) => store.selection.selectedCodeBlockLocation,
+  );
 
   const selectedCodeBlock = useThreadCodeBlock({
     messageBlockIndex: selectedCodeBlockLocation?.messageBlockIndex,

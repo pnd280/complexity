@@ -12,4 +12,4 @@ export const ARTIFACT_LANGUAGES = {
 
 export type ArtifactLanguage = keyof typeof ARTIFACT_LANGUAGES;
 
-export type ArtifactState = "preview" | "code";
+export type ArtifactView = "preview" | "code";

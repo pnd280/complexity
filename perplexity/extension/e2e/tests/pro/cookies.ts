@@ -16,5 +16,3 @@ export const cookies = [
     value: process.env.NEXT_AUTH_SESSION_TOKEN || "",
   },
 ];
-
-export const username = process.env.TEST_USERNAME || "defaultUsername";

@@ -12,7 +12,7 @@ import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/
 
 const HighlightedCodeWrapper = memo(() => {
   const colorScheme = useColorSchemeStore(
-    (state) => state.colorScheme,
+    (store) => store.colorScheme,
     deepEqual,
   );
 

@@ -18,7 +18,7 @@ export default function MarkmapRenderer() {
   const { colorScheme } = useColorSchemeStore();
 
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({

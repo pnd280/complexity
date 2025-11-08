@@ -13,12 +13,12 @@ export default function CommandFooter() {
   const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
 
   const footerItems = useCommandMenuStore(
-    (store) => store.footerItems,
+    (store) => store.footer.items,
     deepEqual,
   );
 
-  const sidecarItems = useCommandMenuStore((store) => store.sidecarItems);
-  const sidecarOpen = useCommandMenuStore((store) => store.sidecarOpen);
+  const sidecarItems = useCommandMenuStore((store) => store.sidecar.items);
+  const sidecarOpen = useCommandMenuStore((store) => store.sidecar.open);
 
   if (footerItems.length === 0) return null;
 
@@ -47,7 +47,7 @@ export default function CommandFooter() {
                 role="button"
                 className="x:m-0 x:flex x:items-center x:gap-2 x:rounded-lg x:px-2 x:py-1 x:text-xs x:text-foreground x:transition-all x:hover:bg-secondary"
                 onClick={() => {
-                  commandMenuStore.getState().setSidecarOpen(!sidecarOpen);
+                  commandMenuStore.getState().sidecar.setOpen(!sidecarOpen);
                 }}
               >
                 {sidecarOpen ? <LuMinimize /> : <LuMaximize />}

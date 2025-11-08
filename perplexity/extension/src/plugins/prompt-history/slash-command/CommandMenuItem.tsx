@@ -36,8 +36,8 @@ const PromptHistoryCommandMenuItem = memo(
         keywords={item.keywords}
         className="x:gap-2"
         onSelect={() => {
-          slashCommandMenuStore.getState().setBufferText(item.prompt);
-          slashCommandMenuStore.getState().setOpen(false);
+          slashCommandMenuStore.getState().anchor.setBufferText(item.prompt);
+          slashCommandMenuStore.getState().states.setOpen(false);
         }}
       >
         <CommandItemTitle className="x:line-clamp-3 x:wrap-break-word x:whitespace-pre-wrap">

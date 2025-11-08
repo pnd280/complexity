@@ -19,9 +19,11 @@ export function CommandMenu() {
     shouldLocalFilter,
     open,
     setOpen,
-    sidecarOpen,
-    setSidecarOpen,
-  } = useCommandMenuStore();
+  } = useCommandMenuStore((store) => store.states);
+
+  const { open: sidecarOpen, setOpen: setSidecarOpen } = useCommandMenuStore(
+    (store) => store.sidecar,
+  );
 
   const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
 

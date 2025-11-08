@@ -23,7 +23,7 @@ export default function TocItem({
       }}
     >
       <div
-        className={cn("x:min-h-5 x:min-w-[2px] x:rounded-full", {
+        className={cn("x:min-h-5 x:min-w-0.5 x:rounded-full", {
           "x:bg-foreground": item.isActive,
           "x:bg-muted-foreground": !item.isActive,
         })}

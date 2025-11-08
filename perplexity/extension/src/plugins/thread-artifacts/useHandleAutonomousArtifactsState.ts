@@ -13,7 +13,7 @@ import {
 
 export default function useHandleAutonomousArtifactsState() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
   const selectedCodeBlock = useThreadCodeBlock({
     messageBlockIndex: selectedCodeBlockLocation?.messageBlockIndex,
@@ -21,7 +21,7 @@ export default function useHandleAutonomousArtifactsState() {
   });
   const isArtifactOpen = selectedCodeBlockLocation != null;
   const hasAutoPreviewTriggered = useArtifactsStore(
-    (state) => state.hasAutoPreviewTriggered,
+    (store) => store.states.hasAutoPreviewTriggered,
   );
   const codeBlocksChunks = useThreadCodeBlocksDomObserverStore(
     (store) => store.codeBlocksChunks,
@@ -63,7 +63,7 @@ export default function useHandleAutonomousArtifactsState() {
           if (!codeBlock.states.isInFlight || isCurrentlySelected) continue;
 
           const lastAutoOpenCodeBlockLocation =
-            artifactsStore.getState().lastAutoOpenCodeBlockLocation;
+            artifactsStore.getState().selection.lastAutoOpenCodeBlockLocation;
 
           if (
             lastAutoOpenCodeBlockLocation &&
@@ -73,22 +73,22 @@ export default function useHandleAutonomousArtifactsState() {
             continue;
 
           artifactsStore.setState((draft) => {
-            draft.selectedCodeBlockLocation = {
+            draft.selection.selectedCodeBlockLocation = {
               messageBlockIndex: chunkIndex,
               codeBlockIndex: codeIndex,
             };
-            draft.state =
+            draft.states.view =
               ARTIFACT_INITIAL_STATE[
                 getInterpretedArtifactLanguage(
                   codeBlock.content.language as ArtifactLanguage,
                 ) as ArtifactLanguage
               ];
-            draft.hasAutoPreviewTriggered = false;
-            draft.lastAutoOpenCodeBlockLocation = {
+            draft.states.hasAutoPreviewTriggered = false;
+            draft.selection.lastAutoOpenCodeBlockLocation = {
               messageBlockIndex: chunkIndex,
               codeBlockIndex: codeIndex,
             };
-            draft.isArtifactsListOpen = false;
+            draft.ui.isArtifactsListOpen = false;
           });
 
           break messageBlockLoop;
@@ -120,11 +120,11 @@ export default function useHandleAutonomousArtifactsState() {
       if (!shouldTriggerAutoPreview) return;
 
       artifactsStore.setState((draft) => {
-        draft.hasAutoPreviewTriggered = true;
+        draft.states.hasAutoPreviewTriggered = true;
       });
 
       artifactsStore.setState((draft) => {
-        draft.state = "preview";
+        draft.states.view = "preview";
       });
     },
     [

@@ -15,7 +15,7 @@ export default function () {
       if (!pluginsEnableStates["betterSidebar"]) return;
 
       betterSidebarStore.subscribe(
-        (state) => state.open,
+        (store) => store.open,
         (open) => {
           $(document.body).attr(
             "cplx-better-sidebar-state",

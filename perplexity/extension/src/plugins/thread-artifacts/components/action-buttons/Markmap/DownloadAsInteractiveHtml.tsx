@@ -11,7 +11,9 @@ import {
 import TablerDownload from "~icons/tabler/download";
 
 export default function DownloadAsInteractiveHtml() {
-  const { selectedCodeBlockLocation } = useArtifactsStore();
+  const selectedCodeBlockLocation = useArtifactsStore(
+    (store) => store.selection.selectedCodeBlockLocation,
+  );
 
   const selectedCodeBlock = useThreadCodeBlock({
     codeBlockIndex: selectedCodeBlockLocation?.codeBlockIndex,

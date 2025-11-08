@@ -1,15 +1,31 @@
-import type { BoundStateCreator } from "@/plugins/command-menu/store/types";
+import type { CommandMenuStoreType } from "@/plugins/command-menu/store";
+import type { SliceCreator } from "@/types/utils.types";
+
+declare module "@/plugins/command-menu/store" {
+  interface CommandMenuStoreType {
+    sidecar: SidecarSlice;
+  }
+}
 
 export type SidecarSlice = {
-  sidecarOpen: boolean;
-  setSidecarOpen: (open: boolean) => void;
-  sidecarItems: React.ReactNode | null;
-  setSidecarItems: (items: React.ReactNode | null) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  items: React.ReactNode | null;
+  setItems: (items: React.ReactNode | null) => void;
 };
 
-export const createSidecarSlice: BoundStateCreator<SidecarSlice> = (set) => ({
-  sidecarOpen: false,
-  setSidecarOpen: (open) => set({ sidecarOpen: open }),
-  sidecarItems: null,
-  setSidecarItems: (items) => set({ sidecarItems: items }),
+export const createSidecarSlice: SliceCreator<
+  SidecarSlice,
+  CommandMenuStoreType
+> = (set) => ({
+  open: false,
+  setOpen: (open) =>
+    set((draft) => {
+      draft.sidecar.open = open;
+    }),
+  items: null,
+  setItems: (items) =>
+    set((draft) => {
+      draft.sidecar.items = items;
+    }),
 });

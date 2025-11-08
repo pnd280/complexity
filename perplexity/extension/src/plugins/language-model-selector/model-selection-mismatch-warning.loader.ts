@@ -37,7 +37,6 @@ export default function () {
             messageBlock.nodes.$displayModelButton.toggleClass(
               "cplx-model-mismatch-warning",
               messageBlock.content.userSelectedModel != null &&
-                messageBlock.content.displayModel !== "turbo" &&
                 messageBlock.content.userSelectedModel !==
                   messageBlock.content.displayModel,
             );

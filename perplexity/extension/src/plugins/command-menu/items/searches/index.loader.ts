@@ -22,7 +22,7 @@ export default function () {
       items.forEach((item) => {
         hotkeysJs(keysToString(item.keybinding), () => {
           item.onSelect();
-          commandMenuStore.getState().setOpen(true);
+          commandMenuStore.getState().states.setOpen(true);
         });
       });
     },

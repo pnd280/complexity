@@ -70,6 +70,6 @@ function setupKeybinding() {
     event.stopImmediatePropagation();
     event.preventDefault();
     toggleZenMode();
-    commandMenuStore.getState().setOpen(false);
+    commandMenuStore.getState().states.setOpen(false);
   });
 }

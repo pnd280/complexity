@@ -42,13 +42,13 @@ function createAnchorData(
   target: HTMLElement,
   anchorElement: HTMLElement,
   options: Pick<
-    NonNullable<AnchorSlice["anchor"]["positioningOptions"]>,
+    NonNullable<AnchorSlice["positioningOptions"]>,
     "placement" | "gutter"
   >,
 ): {
   element: HTMLElement;
   inputField: HTMLElement;
-  positioningOptions: NonNullable<AnchorSlice["anchor"]["positioningOptions"]>;
+  positioningOptions: NonNullable<AnchorSlice["positioningOptions"]>;
   contentActions: ReturnType<typeof createTextboxAdapter>;
 } {
   return {
@@ -67,7 +67,7 @@ function createAnchorData(
 export function getAnchor(
   target: HTMLElement,
 ): Pick<
-  AnchorSlice["anchor"],
+  AnchorSlice,
   "element" | "inputField" | "positioningOptions" | "contentActions"
 > | null {
   if (isQueryBoxTextbox(target)) {

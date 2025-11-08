@@ -64,8 +64,8 @@ const items = [
 
 export function BetterSidebar() {
   const portalContainer = usePortalContainer();
-  const isMobile = useIsMobileStore((state) => state.isMobile);
-  const open = useBetterSidebarStore((state) => state.open);
+  const isMobile = useIsMobileStore((store) => store.isMobile);
+  const open = useBetterSidebarStore((store) => store.open);
 
   useHookMobileTrigger();
 

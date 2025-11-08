@@ -29,7 +29,7 @@ export function ThreadExportMenu() {
   const [_format, setFormat] = useState<ExportOption["value"]>("markdown");
 
   const isThreadInFlight = useThreadDomObserverStore(
-    (state) => state.states.isInFlight,
+    (store) => store.states.isInFlight,
     deepEqual,
   );
 

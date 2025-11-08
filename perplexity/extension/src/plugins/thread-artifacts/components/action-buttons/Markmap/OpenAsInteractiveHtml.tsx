@@ -7,7 +7,9 @@ import { useArtifactsStore } from "@/plugins/thread-artifacts/store";
 import TablerExternalLink from "~icons/tabler/external-link";
 
 export default function OpenAsInteractiveHtml() {
-  const { selectedCodeBlockLocation } = useArtifactsStore();
+  const selectedCodeBlockLocation = useArtifactsStore(
+    (store) => store.selection.selectedCodeBlockLocation,
+  );
 
   const selectedCodeBlock = useThreadCodeBlock({
     messageBlockIndex: selectedCodeBlockLocation?.messageBlockIndex,

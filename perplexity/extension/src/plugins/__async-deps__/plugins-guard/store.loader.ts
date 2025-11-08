@@ -150,7 +150,7 @@ function setupAuthenticationTracking(
   });
 
   // const unsubscribeLoginGuard = pluginGuardsStore.subscribe(
-  //   (state) => state.isLoggedIn,
+  //   (store) => store.isLoggedIn,
   //   (isLoggedIn) => {
   //     if (isLoggedIn === false) return;
 

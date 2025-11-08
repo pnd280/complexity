@@ -39,7 +39,7 @@ export default function () {
 
             const store = slashCommandMenuStore.getState();
 
-            store.setBufferTextCaretPosition(selection.start);
+            store.anchor.setBufferTextCaretPosition(selection.start);
 
             store.anchor.actions.setElement(anchor.element);
             store.anchor.actions.setInputField(target);
@@ -47,12 +47,12 @@ export default function () {
               anchor.positioningOptions,
             );
             store.anchor.actions.setContentActions(anchor.contentActions);
-            store.pushPage({
+            store.pagesStack.pushPage({
               pageId,
               args: undefined,
             });
 
-            store.setOpen(true);
+            store.states.setOpen(true);
           });
         });
       } else {

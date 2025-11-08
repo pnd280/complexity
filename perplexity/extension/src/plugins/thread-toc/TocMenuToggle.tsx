@@ -7,9 +7,9 @@ import { useThreadTocStore } from "@/plugins/thread-toc/store";
 import TablerMenu2 from "~icons/tabler/menu-2";
 
 export function TocMenuToggle() {
-  const isOpen = useThreadTocStore((state) => state.isOpen);
-  const setIsOpen = useThreadTocStore((state) => state.setIsOpen);
-  const panelPosition = useThreadTocStore((state) => state.panelPosition);
+  const isOpen = useThreadTocStore((store) => store.isOpen);
+  const setIsOpen = useThreadTocStore((store) => store.setIsOpen);
+  const panelPosition = useThreadTocStore((store) => store.panelPosition);
   const isFloating = panelPosition?.isOverflowing;
 
   return (

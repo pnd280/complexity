@@ -12,7 +12,7 @@ import PlantUmlRenderer from "@/plugins/thread-artifacts/components/renderer/Pla
 import ReactRenderer from "@/plugins/thread-artifacts/components/renderer/React";
 import type {
   ArtifactLanguage,
-  ArtifactState,
+  ArtifactView,
 } from "@/plugins/thread-artifacts/types";
 
 import ArcticonsUmlClassEditor from "~icons/arcticons/uml-class-editor";
@@ -32,7 +32,7 @@ export let ARTIFACTS_LANGUAGE_RAW_TOGGLE_TEXT: Record<
   string
 > = {} as Record<ArtifactLanguage, string>;
 
-export const ARTIFACT_INITIAL_STATE: Record<ArtifactLanguage, ArtifactState> = {
+export const ARTIFACT_INITIAL_STATE: Record<ArtifactLanguage, ArtifactView> = {
   markdown: "preview",
   mermaid: "code",
   html: "code",

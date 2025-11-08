@@ -10,7 +10,9 @@ export default function PreviewToggle({
 }: {
   language: ArtifactLanguage;
 }) {
-  const { state, setState } = useArtifactsStore();
+  const { view: state, setView: setState } = useArtifactsStore(
+    (store) => store.states,
+  );
 
   return (
     <div

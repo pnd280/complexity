@@ -24,7 +24,7 @@ export default function SupportChannels() {
               <img
                 src="https://images2.imgbox.com/dc/dd/nPOEmVsb_o.png"
                 alt="Discord Community"
-                className="x:h-full x:w-full x:object-cover x:object-left-top x:shadow-lg"
+                className="x:h-full x:w-full x:object-cover x:object-top-left x:shadow-lg"
               />
             </div>
           </a>
@@ -48,7 +48,7 @@ export default function SupportChannels() {
               <img
                 src="https://images2.imgbox.com/fe/64/XooVAoQp_o.png"
                 alt="GitHub Issues"
-                className="x:h-full x:w-full x:object-cover x:object-left-top x:shadow-lg"
+                className="x:h-full x:w-full x:object-cover x:object-top-left x:shadow-lg"
               />
             </div>
           </a>

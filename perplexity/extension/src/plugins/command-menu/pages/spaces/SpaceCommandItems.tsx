@@ -11,11 +11,11 @@ import { useCommandMenuStore } from "@/plugins/command-menu/store";
 import { keysToString } from "@/utils/misc/utils";
 
 export default function SpaceCommandItems() {
-  const open = useCommandMenuStore((store) => store.open);
+  const open = useCommandMenuStore((store) => store.states.open);
 
   const { data, isLoading, isError } = usePplxSpaces();
 
-  const value = useCommandMenuStore((store) => store.selectingValue);
+  const value = useCommandMenuStore((store) => store.states.selectingValue);
 
   useHotkeys(
     keysToString([Key.Control, "c"]),

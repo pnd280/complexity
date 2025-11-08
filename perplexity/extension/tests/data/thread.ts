@@ -622,7 +622,7 @@ export const normalThreadApiResponse = [
 
 export const exportedThreadWithCitations = `# adele  
   
-# Answer (Claude 4 Sonnet):  
+# Answer (claude2):  
 Adele Laurie Blue Adkins, known professionally as Adele, is an English singer-songwriter who has become one of the world's most successful and acclaimed musical artists[1]. Born on May 5, 1988, in Tottenham, London, Adele has achieved remarkable success in her career, earning numerous accolades and breaking multiple records in the music industry.
 
 ## Career Highlights
@@ -671,7 +671,7 @@ Adele's ability to connect with her audience through her music and her down-to-e
 
 # What are some of Adele's most iconic songs  
   
-# Answer (Claude 4 Sonnet):  
+# Answer (claude2):  
 Adele has released numerous iconic and critically acclaimed songs throughout her career. Some of her most iconic tracks include:
 
 1. "Rolling in the Deep" - This powerful anthem from her album *21* became one of Adele's signature songs and biggest hits[2][8].
@@ -708,7 +708,7 @@ These songs span Adele's entire career and showcase her powerful vocals, emotion
 
 export const exportedThreadWithoutCitations = `# adele  
   
-# Answer (Claude 4 Sonnet):  
+# Answer (claude2):  
 Adele Laurie Blue Adkins, known professionally as Adele, is an English singer-songwriter who has become one of the world's most successful and acclaimed musical artists. Born on May 5, 1988, in Tottenham, London, Adele has achieved remarkable success in her career, earning numerous accolades and breaking multiple records in the music industry.
 
 ## Career Highlights
@@ -749,7 +749,7 @@ Adele's ability to connect with her audience through her music and her down-to-e
 
 # What are some of Adele's most iconic songs  
   
-# Answer (Claude 4 Sonnet):  
+# Answer (claude2):  
 Adele has released numerous iconic and critically acclaimed songs throughout her career. Some of her most iconic tracks include:
 
 1. "Rolling in the Deep" - This powerful anthem from her album *21* became one of Adele's signature songs and biggest hits.

@@ -7,7 +7,11 @@ import {
 import TablerChevronLeft from "~icons/tabler/chevron-left";
 
 export default function CommandInput() {
-  const { pageStack, searchValue, setSearchValue } = useCommandMenuStore();
+  const { stack: pageStack } = useCommandMenuStore((store) => store.pagesStack);
+
+  const { searchValue, setSearchValue } = useCommandMenuStore(
+    (store) => store.states,
+  );
 
   const placeholder =
     pageStack.length < 1
@@ -20,7 +24,7 @@ export default function CommandInput() {
         <div
           className="x:ml-2 x:cursor-pointer x:text-muted-foreground"
           onClick={() => {
-            commandMenuStore.getState().popPage();
+            commandMenuStore.getState().pagesStack.pop();
           }}
         >
           <TablerChevronLeft className="x:size-4" />
@@ -35,9 +39,9 @@ export default function CommandInput() {
           if (searchValue.length > 0) return;
           if (e.key !== Key.Backspace) return;
           if (pageStack.length === 0) {
-            commandMenuStore.getState().setOpen(false);
+            commandMenuStore.getState().states.setOpen(false);
           }
-          commandMenuStore.getState().popPage();
+          commandMenuStore.getState().pagesStack.pop();
         }}
       />
     </div>

@@ -5,7 +5,7 @@ const OBSERVER_ID = "thread-navbar-attributes-wrapper";
 
 export function useCreatePortalContainer(): HTMLElement | null {
   const $overflowMenuButtonWrapper = useThreadDomObserverStore(
-    (state) => state.$overflowMenuButtonWrapper,
+    (store) => store.$overflowMenuButtonWrapper,
     deepEqual,
   );
 
@@ -24,7 +24,7 @@ export function useCreatePortalContainer(): HTMLElement | null {
 
   const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
 
-  $wrapper.append($portalContainer);
+  $overflowMenuButtonWrapper.after($portalContainer);
 
   return $portalContainer[0] ?? null;
 }

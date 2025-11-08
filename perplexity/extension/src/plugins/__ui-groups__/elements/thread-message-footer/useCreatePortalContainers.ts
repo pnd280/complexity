@@ -5,7 +5,7 @@ const OBSERVER_ID = "thread-message-footer-extra-buttons-wrapper";
 
 export function useCreatePortalContainers(): (Element | null)[] {
   const messageBlocks = useThreadMessageBlocksDomObserverStore(
-    (state) => state.messageBlocks,
+    (store) => store.messageBlocks,
     deepEqual,
   );
 

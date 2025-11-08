@@ -13,7 +13,7 @@ import TablerArrowRight from "~icons/tabler/arrow-right";
 
 export default function AutonomousArtifactVersionsNavigator() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
 
   const selectedCodeBlock = useThreadCodeBlock({
@@ -21,7 +21,9 @@ export default function AutonomousArtifactVersionsNavigator() {
     codeBlockIndex: selectedCodeBlockLocation?.codeBlockIndex,
   });
 
-  const artifactBlocks = useArtifactsStore((state) => state.artifactBlocks);
+  const artifactBlocks = useArtifactsStore(
+    (store) => store.blocks.artifactBlocks,
+  );
   const artifactTitle = getArtifactTitle(selectedCodeBlock?.content.language);
 
   const versions = artifactBlocks[artifactTitle];
@@ -51,7 +53,7 @@ export default function AutonomousArtifactVersionsNavigator() {
           artifactsStore.setState((draft) => {
             const newLocation = versions.location[currentLocationIndex - 1];
             if (!newLocation) return;
-            draft.selectedCodeBlockLocation = newLocation;
+            draft.selection.selectedCodeBlockLocation = newLocation;
           });
         }}
       >
@@ -61,7 +63,7 @@ export default function AutonomousArtifactVersionsNavigator() {
         className="x:line-clamp-1 x:cursor-pointer x:text-sm x:text-muted-foreground"
         onClick={() => {
           const selectedCodeBlockLocation =
-            artifactsStore.getState().selectedCodeBlockLocation;
+            artifactsStore.getState().selection.selectedCodeBlockLocation;
           if (!selectedCodeBlockLocation) return;
 
           const selector = `${DomSelectorsService.Root.cplxAttribute(
@@ -86,7 +88,7 @@ export default function AutonomousArtifactVersionsNavigator() {
           artifactsStore.setState((draft) => {
             const newLocation = versions.location[currentLocationIndex + 1];
             if (!newLocation) return;
-            draft.selectedCodeBlockLocation = newLocation;
+            draft.selection.selectedCodeBlockLocation = newLocation;
           });
         }}
       >

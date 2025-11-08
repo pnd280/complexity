@@ -20,10 +20,10 @@ const threadTocCss = await getVersionedRemoteResource(
 );
 
 export function TocPanel() {
-  const isOpen = useThreadTocStore((state) => state.isOpen);
-  const setIsOpen = useThreadTocStore((state) => state.setIsOpen);
-  const tocItems = useThreadTocStore((state) => state.tocItems);
-  const panelPosition = useThreadTocStore((state) => state.panelPosition);
+  const isOpen = useThreadTocStore((store) => store.isOpen);
+  const setIsOpen = useThreadTocStore((store) => store.setIsOpen);
+  const tocItems = useThreadTocStore((store) => store.tocItems);
+  const panelPosition = useThreadTocStore((store) => store.panelPosition);
 
   const portalContainer = useThreadDomObserverStore(
     (store) => store.$wrapper?.[0],
@@ -58,7 +58,7 @@ export function TocPanel() {
           id="thread-toc-container"
           className={cn("x:absolute x:w-(--panel-width)", {
             "x:left-(--panel-left)": !isFloating,
-            "x:right-4 x:rounded-md x:border x:border-border/50 x:bg-secondary x:shadow-lg x:md:right-8":
+            "x:right-4 x:rounded-xl x:border x:border-border/50 x:bg-secondary x:shadow-lg x:md:right-8":
               isFloating,
           })}
           style={
@@ -68,24 +68,24 @@ export function TocPanel() {
             } as React.CSSProperties
           }
         >
-          {isFloating && (
-            <div
-              className="x:absolute x:top-2 x:right-2 x:cursor-pointer x:rounded-full x:p-1 x:text-muted-foreground x:transition-colors x:hover:text-foreground"
-              onClick={() => setIsOpen(false)}
-            >
-              <TablerX className="x:size-4" />
-            </div>
-          )}
           <div
             className={cn(
               "custom-scrollbar",
               "x:flex x:h-full x:flex-col x:gap-2 x:overflow-y-auto",
               {
-                "x:max-h-[60vh] x:p-4": isFloating,
+                "x:max-h-[60vh] x:p-4 x:pr-10": isFloating,
                 "x:max-h-[80vh]": !isFloating,
               },
             )}
           >
+            {isFloating && (
+              <div
+                className="x:absolute x:top-2 x:right-2 x:cursor-pointer x:rounded-full x:p-1 x:text-muted-foreground x:transition-colors x:hover:text-foreground"
+                onClick={() => setIsOpen(false)}
+              >
+                <TablerX className="x:size-4" />
+              </div>
+            )}
             {tocItems.map((item, idx) => (
               <TocItem
                 key={idx}

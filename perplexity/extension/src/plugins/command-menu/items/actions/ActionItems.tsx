@@ -16,10 +16,10 @@ import { getGroupedItems } from "@/plugins/command-menu/utils";
 import { whereAmI } from "@/utils/misc/utils";
 
 export default function ActionItems() {
-  const url = useSpaRouter((state) => state.url);
+  const url = useSpaRouter((store) => store.url);
   const location = whereAmI(url);
   const isIncognito = usePplxIncognitoMode();
-  const colorScheme = useColorSchemeStore((state) => state.colorScheme);
+  const colorScheme = useColorSchemeStore((store) => store.colorScheme);
 
   const items = getGroupedItems({
     getter: getRawItems,
@@ -45,7 +45,7 @@ export default function ActionItems() {
                 keywords={item.keywords}
                 onSelect={() => {
                   item.onSelect();
-                  commandMenuStore.getState().setOpen(false);
+                  commandMenuStore.getState().states.setOpen(false);
                 }}
               >
                 <CommandItemIcon asChild>

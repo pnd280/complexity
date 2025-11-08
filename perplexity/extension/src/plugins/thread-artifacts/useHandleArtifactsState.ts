@@ -10,7 +10,7 @@ import {
 
 export function useHandleArtifactsState() {
   const selectedCodeBlockLocation = useArtifactsStore(
-    (state) => state.selectedCodeBlockLocation,
+    (store) => store.selection.selectedCodeBlockLocation,
   );
   const codeBlocksChunks = useThreadCodeBlocksDomObserverStore(
     (store) => store.codeBlocksChunks,
@@ -23,7 +23,7 @@ export function useHandleArtifactsState() {
 
       if (!selectedCodeBlockLocation) {
         artifactsStore.setState((draft) => {
-          draft.isValidArtifactCode = false;
+          draft.states.isValidArtifactCode = false;
         });
         return;
       }
@@ -38,7 +38,7 @@ export function useHandleArtifactsState() {
           isAutonomousArtifactLanguageString(codeBlock.content.language));
 
       artifactsStore.setState((draft) => {
-        draft.isValidArtifactCode = isValidArtifactCode;
+        draft.states.isValidArtifactCode = isValidArtifactCode;
       });
     },
     [codeBlocksChunks, selectedCodeBlockLocation],
@@ -53,7 +53,7 @@ export function useHandleArtifactsState() {
         codeBlocksChunks[messageBlockIndex]?.[codeBlockIndex] != null;
 
       if (!codeBlockExists) {
-        artifactsStore.getState().close();
+        artifactsStore.getState().selection.close();
       }
     },
     [selectedCodeBlockLocation, codeBlocksChunks],

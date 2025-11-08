@@ -1,4 +1,11 @@
-import type { BoundStateCreator } from "@/plugins/command-menu/store/types";
+import type { CommandMenuStoreType } from "@/plugins/command-menu/store";
+import type { SliceCreator } from "@/types/utils.types";
+
+declare module "@/plugins/command-menu/store" {
+  interface CommandMenuStoreType {
+    states: StatesSlice;
+  }
+}
 
 export type StatesSlice = {
   open: boolean;
@@ -11,13 +18,28 @@ export type StatesSlice = {
   setShouldLocalFilter: (value: boolean) => void;
 };
 
-export const createStatesSlice: BoundStateCreator<StatesSlice> = (set) => ({
+export const createStatesSlice: SliceCreator<
+  StatesSlice,
+  CommandMenuStoreType
+> = (set) => ({
   open: false,
-  setOpen: (value) => set({ open: value }),
+  setOpen: (value) =>
+    set((draft) => {
+      draft.states.open = value;
+    }),
   searchValue: "",
-  setSearchValue: (value) => set({ searchValue: value }),
+  setSearchValue: (value) =>
+    set((draft) => {
+      draft.states.searchValue = value;
+    }),
   selectingValue: "",
-  setSelectingValue: (value) => set({ selectingValue: value }),
+  setSelectingValue: (value) =>
+    set((draft) => {
+      draft.states.selectingValue = value;
+    }),
   shouldLocalFilter: true,
-  setShouldLocalFilter: (value) => set({ shouldLocalFilter: value }),
+  setShouldLocalFilter: (value) =>
+    set((draft) => {
+      draft.states.shouldLocalFilter = value;
+    }),
 });

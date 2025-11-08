@@ -122,7 +122,7 @@ export const ThreadSearchResponseApiSchema = z.object({
   thread_access: z.number(),
   query_count: z.number(),
   search_focus: z.string(),
-  read_write_token: z.string(),
+  read_write_token: z.string().nullable().optional(),
   collection: SpaceSchema.pick({
     uuid: true,
     title: true,
