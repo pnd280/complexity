@@ -10,7 +10,7 @@ import { ExtensionSettingsService } from "@/services/infra/extension-api-wrapper
 
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
-const BaseCodeBlockWrapperHeader = memo(function BaseCodeBlockWrapperHeader() {
+export default function BaseCodeBlockWrapperHeader() {
   const { codeBlock, isHorizontalOverflowing, isVerticalOverflowing } =
     useMirroredCodeBlockContext();
 
@@ -77,6 +77,4 @@ const BaseCodeBlockWrapperHeader = memo(function BaseCodeBlockWrapperHeader() {
       </div>
     </div>
   );
-});
-
-export default BaseCodeBlockWrapperHeader;
+}

@@ -92,23 +92,6 @@ export default class CsUiRegistry {
       )
         return <module.default key={idx} />;
     }).filter((component) => component != null))();
-
-  static CommandMenuItemsGroupComponents = (() =>
-    CsUiRegistry.Components.map((module, idx) => {
-      if (module.uiGroup == null) return null;
-
-      if (
-        typeof module.uiGroup === "string" &&
-        module.uiGroup === "commandMenu"
-      )
-        return <module.default key={idx} />;
-
-      if (
-        Array.isArray(module.uiGroup) &&
-        module.uiGroup.includes("commandMenu")
-      )
-        return <module.default key={idx} />;
-    }).filter((component) => component != null))();
 }
 
 (function () {

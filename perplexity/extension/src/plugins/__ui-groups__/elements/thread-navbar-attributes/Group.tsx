@@ -1,6 +1,6 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import { useCreatePortalContainer } from "@/plugins/__ui-groups__/elements/thread-navbar-attributes/useCreatePortalContainer";
+import { usePortalContainer } from "@/plugins/__ui-groups__/elements/thread-navbar-attributes/usePortalContainer";
 
 declare module "@/__registries__/cs-ui/types" {
   interface UiGroupsRegistry {
@@ -9,7 +9,7 @@ declare module "@/__registries__/cs-ui/types" {
 }
 
 export function ThreadNavbarAttributesPluginsGroup() {
-  const portalContainer = useCreatePortalContainer();
+  const portalContainer = usePortalContainer();
 
   return (
     <Portal container={portalContainer as HTMLElement}>

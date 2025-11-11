@@ -59,6 +59,7 @@ export default function () {
           store.anchor.actions.setInputField(target);
           store.anchor.actions.setPositioningOptions(anchor.positioningOptions);
           store.anchor.actions.setContentActions(anchor.contentActions);
+          store.anchor.actions.setPortalContainer(anchor.portalContainer);
 
           store.pagesStack.pushPage({
             pageId,

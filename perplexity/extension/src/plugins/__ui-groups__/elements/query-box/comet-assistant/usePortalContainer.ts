@@ -1,6 +1,13 @@
+import { useQueryBoxesDomObserverStore } from "@/plugins/__core__/dom-observers/query-boxes/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 
-export function usePortalContainer(wrapper: HTMLElement | null) {
+export function usePortalContainer() {
+  "use no memo";
+
+  const wrapper = useQueryBoxesDomObserverStore(
+    (store) => store.wrapper.cometAssistant,
+  );
+
   if (!wrapper) return null;
 
   const $existingPortalContainer = $(

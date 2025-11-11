@@ -6,22 +6,23 @@ import {
   INTERNAL_ATTRIBUTES,
   TEST_ID,
 } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/defaults";
-import { type DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
+import type { DomSelectors } from "@/services/externals/cplx-api/versioned-remote-resources/dom-selectors/types";
 import { invariant } from "@/utils/misc/utils";
 
 export const csProxyServiceName = "domSelectorsService";
 
 export class DomSelectorsServiceImpl {
-  static local: DomSelectors = DOM_SELECTORS;
+  static local: typeof DOM_SELECTORS = DOM_SELECTORS;
 
-  static remote: DomSelectors | null = null;
+  static remote: typeof DOM_SELECTORS | DomSelectors | null = null;
 
   static internalAttributes = INTERNAL_ATTRIBUTES;
 
   static testIds = TEST_ID;
 
-  static getCache() {
-    return DomSelectorsServiceImpl.remote ?? DomSelectorsServiceImpl.local;
+  static getCache(): typeof DOM_SELECTORS {
+    return (DomSelectorsServiceImpl.remote ??
+      DomSelectorsServiceImpl.local) as typeof DOM_SELECTORS;
   }
 
   static get cachedSync() {
@@ -33,8 +34,10 @@ export class DomSelectorsServiceImpl {
     return DomSelectorsServiceImpl.getCache();
   }
 
-  static cplxAttribute(attribute: string): `[data-cplx-component="${string}"]` {
-    return `[data-cplx-component="${attribute}"]`;
+  static cplxAttribute<T extends string>(
+    attribute: T,
+  ): `[data-cplx-component='${T}']` {
+    return `[data-cplx-component="${attribute}"]` as `[data-cplx-component='${T}']`;
   }
 }
 export type DomSelectorsService = typeof DomSelectorsServiceImpl;

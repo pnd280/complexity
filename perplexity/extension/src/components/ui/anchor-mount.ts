@@ -137,7 +137,6 @@ const AnchorMount = ({
       }
 
       if (!alreadyPlaced) {
-        console.log(node);
         anchorElement.insertAdjacentElement(
           insertAdjacentElementPositionMap[position],
           node,

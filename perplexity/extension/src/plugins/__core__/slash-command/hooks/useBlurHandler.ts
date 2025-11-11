@@ -58,12 +58,24 @@ export function useBlurHandler({
       }, 0);
     };
 
+    const handleScroll = (event: Event) => {
+      const eventTarget = event.target as Node;
+
+      if (contentRef.current?.contains(eventTarget)) return;
+
+      if (!isPartOfExceptionalElements(eventTarget)) {
+        slashCommandMenuStore.getState().states.setOpen(false);
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("focusout", handleFocusOut);
+    document.addEventListener("scroll", handleScroll, true);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("focusout", handleFocusOut);
+      document.removeEventListener("scroll", handleScroll, true);
     };
   }, [open, contentRef, isPartOfExceptionalElements]);
 }

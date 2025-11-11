@@ -1,26 +1,19 @@
-import { toast } from "@/components/ui/use-toast";
-
-const WrapperContext = createContext(null);
-
 export function Playground() {
+  // "use no memo";
+
   const [count, setCount] = useState(0);
 
   return (
-    <WrapperContext value={null}>
-      <div className="p-8 bg-gray-50 min-h-screen">
-        <div>{count}</div>
-        <button
-          onClick={() => {
-            toast({
-              title: count,
-              description: "lorem ipsum dolor sit amet",
-            });
-            setCount(count + 1);
-          }}
-        >
-          test
-        </button>
-      </div>
-    </WrapperContext>
+    <div className="x:flex x:gap-2">
+      <HelloWorld />
+      <div>{count}</div>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
   );
+}
+
+function HelloWorld() {
+  console.log("HelloWorld Component Rerender");
+
+  return <div>Hello World</div>;
 }

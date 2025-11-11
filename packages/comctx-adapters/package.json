@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "comctx": "^1.4.3",
-    "tsup": "^8.5.0"
+    "tsup": "^8.5.1"
   },
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",

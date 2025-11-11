@@ -5,7 +5,7 @@ import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks
 import ArtifactPlaceholderWrapper from "@/plugins/thread-better-code-blocks/variants/artifact-placeholders/Wrapper";
 import BaseCodeBlockWrapper from "@/plugins/thread-better-code-blocks/variants/base/Wrapper";
 
-const MirroredCodeBlock = memo(function MirroredCodeBlock() {
+export default function MirroredCodeBlock() {
   const { codeBlock } = useMirroredCodeBlockContext();
 
   const { isMobile } = useIsMobileStore();
@@ -20,6 +20,4 @@ const MirroredCodeBlock = memo(function MirroredCodeBlock() {
   if (!codeBlock) return null;
 
   return <BaseCodeBlockWrapper />;
-});
-
-export default MirroredCodeBlock;
+}

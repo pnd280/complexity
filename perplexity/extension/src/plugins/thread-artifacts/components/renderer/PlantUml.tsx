@@ -18,7 +18,7 @@ import {
 
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
-const SVGContent = memo(function SVGContent({ svg }: { svg: string }) {
+function SVGContent({ svg }: { svg: string }) {
   useEffect(() => {
     const $svg = $("#artifact-plantuml-container").find("svg");
 
@@ -41,7 +41,7 @@ const SVGContent = memo(function SVGContent({ svg }: { svg: string }) {
       }}
     />
   );
-});
+}
 
 export default function PlantUmlRenderer() {
   const { colorScheme } = useColorSchemeStore();

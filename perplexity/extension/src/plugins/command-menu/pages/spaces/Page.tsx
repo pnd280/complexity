@@ -7,12 +7,10 @@ declare module "@/plugins/command-menu/store/slices/pages/types" {
   }
 }
 
-const SpacesPage = memo(() => {
+export default function SpacesPage() {
   return (
     <CommandPage pageId="spaces">
       <SpaceCommandItems />
     </CommandPage>
   );
-});
-
-export default SpacesPage;
+}

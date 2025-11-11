@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
 
 import { createAnchorSlice } from "@/plugins/__core__/slash-command/store/slices/anchor";
-import { createPagesSlice } from "@/plugins/__core__/slash-command/store/slices/pages";
+import { createPagesSlice } from "@/plugins/__core__/slash-command/store/slices/pages/externals";
 import { createPagesStackSlice } from "@/plugins/__core__/slash-command/store/slices/pages/stack";
 import { createStatesSlice } from "@/plugins/__core__/slash-command/store/slices/states";
 
@@ -17,7 +17,7 @@ export const slashCommandMenuStore =
         (set, get, ...props): SlashCommandMenuStoreType => ({
           states: createStatesSlice(set, get, ...props),
           anchor: createAnchorSlice(set, get, ...props),
-          pages: createPagesSlice(set, get, ...props),
+          externalPages: createPagesSlice(set, get, ...props),
           pagesStack: createPagesStackSlice(set, get, ...props),
         }),
       ),

@@ -1,19 +1,16 @@
-import { lazily } from "react-lazily";
+import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
+import { CommandMenuExternalPage } from "@/plugins/command-menu/index.public";
+import { ZenModeCommandMenuEntries } from "@/plugins/zen-mode/command-menu/Entries";
 
-import type { UiGroupId } from "@/__registries__/cs-ui/types";
-import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
+export default function ZenModeCommandMenuEntriesWrapper() {
+  return (
+    <CsUiPluginsGuard dependentPluginIds={["zenMode"]}>
+      <CommandMenuExternalPage>
+        <ZenModeCommandMenuEntries />
+      </CommandMenuExternalPage>
+    </CsUiPluginsGuard>
+  );
+}
 
-const { ZenModeCommandMenuEntries } = lazily(
-  () => import("@/plugins/zen-mode/command-menu/Entries"),
-);
-
-const ZenModeCommandMenuEntriesWrapper = withPluginsGuard(
-  ZenModeCommandMenuEntries,
-  {
-    dependentPluginIds: ["zenMode"],
-  },
-);
-
-export const uiGroup: UiGroupId = "commandMenu";
-
-export default ZenModeCommandMenuEntriesWrapper;
+ZenModeCommandMenuEntriesWrapper.displayName =
+  "ZenModeCommandMenuEntriesWrapper";

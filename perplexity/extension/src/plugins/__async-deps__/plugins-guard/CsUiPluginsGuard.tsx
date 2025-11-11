@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import { APP_CONFIG } from "@/app.config";
@@ -169,7 +169,7 @@ function useGuardConditions(props: CsUiPluginsGuardProps) {
   };
 }
 
-function CsUiPluginsGuardInner(
+export default function CsUiPluginsGuard(
   props: CsUiPluginsGuardProps,
 ): React.ReactNode | null {
   const [retryCount, setRetryCount] = useState(0);
@@ -274,11 +274,7 @@ function CsUiPluginsGuardInner(
   );
 }
 
-export default function CsUiPluginsGuard(
-  props: CsUiPluginsGuardProps,
-): React.ReactNode | null {
-  return <CsUiPluginsGuardInner {...props} />;
-}
+CsUiPluginsGuard.displayName = "CsUiPluginsGuard";
 
 function RenderError({
   boundaryError,

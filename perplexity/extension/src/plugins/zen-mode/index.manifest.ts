@@ -30,7 +30,6 @@ export default definePlugin({
     dependencies: {
       corePlugins: ["spaRouter"],
       plugins: ["commandMenu"],
-      uiGroups: ["commandMenu"],
     },
   },
   settingsSchema: {

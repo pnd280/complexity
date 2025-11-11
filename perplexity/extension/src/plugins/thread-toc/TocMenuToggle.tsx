@@ -1,3 +1,4 @@
+import { useLocalStorage } from "@uidotdev/usehooks";
 import { Activity } from "react";
 
 import Tooltip from "@/components/Tooltip";
@@ -12,12 +13,23 @@ export function TocMenuToggle() {
   const panelPosition = useThreadTocStore((store) => store.panelPosition);
   const isFloating = panelPosition?.isOverflowing;
 
+  const [newPosImpressionShowed, setNewPosImpressionShowed] = useLocalStorage(
+    "cplx.plugin:thread:toc.newToggleImpressionShowed",
+    false,
+  );
+
   return (
     <Activity mode={isFloating ? "visible" : "hidden"}>
-      <Tooltip content="Table of Contents">
+      <Tooltip
+        content="Table of Contents"
+        defaultOpen={!newPosImpressionShowed}
+        onOpenChange={() => {
+          setNewPosImpressionShowed(true);
+        }}
+      >
         <Button
           className={cn(isOpen && "x:text-primary")}
-          variant={isOpen ? "default" : "ghost"}
+          variant={isOpen || !newPosImpressionShowed ? "default" : "ghost"}
           size="sm"
           onClick={() => setIsOpen(!isOpen)}
         >

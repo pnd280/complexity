@@ -24,6 +24,8 @@ export const createArtifactStateSlice: SliceCreator<
 
   hasAutoPreviewTriggered: false,
   setHasAutoPreviewTriggered: (value) => {
-    set((draft) => (draft.states.hasAutoPreviewTriggered = value));
+    set((draft) => {
+      draft.states.hasAutoPreviewTriggered = value;
+    });
   },
 });

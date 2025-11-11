@@ -1,16 +1,28 @@
 import { lazily } from "react-lazily";
 
 import type { UiGroupId } from "@/__registries__/cs-ui/types";
-import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
+import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
+import { useSlashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
 
 const { SlashCommandMenu } = lazily(
   () => import("@/plugins/__core__/slash-command/SlashCommandMenu"),
 );
 
-const SlashCommandMenuWrapper = withPluginsGuard(SlashCommandMenu, {
-  dependentCorePluginIds: ["slashCommand"],
-});
+export default function SlashCommandMenuWrapper() {
+  const shouldEnable = useSlashCommandMenuStore(
+    (store) => store.externalPages.pages.length > 0,
+  );
+
+  return (
+    <CsUiPluginsGuard
+      dependentCorePluginIds={["slashCommand"]}
+      additionalCheck={() => shouldEnable}
+    >
+      <SlashCommandMenu />
+    </CsUiPluginsGuard>
+  );
+}
+
+SlashCommandMenuWrapper.displayName = "SlashCommandMenuWrapper";
 
 export const uiGroup: UiGroupId = "global";
-
-export default SlashCommandMenuWrapper;

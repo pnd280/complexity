@@ -25,15 +25,14 @@ export default function usePluginsStates() {
   const { latestVersion, isLoading: isLoadingLatestVersion } =
     useExtensionUpdate();
 
-  const pluginsStates = (() =>
-    updatePluginStatesWithFeatureCompat({
-      pluginsStates: initializePluginStates(),
-      featureCompat: APP_CONFIG.IS_DEV
-        ? featureCompatResourceConfig.fallback
-        : featureCompat,
-      currentVersion: APP_CONFIG.VERSION,
-      latestAvailableVersion: latestVersion,
-    }))();
+  const pluginsStates = updatePluginStatesWithFeatureCompat({
+    pluginsStates: initializePluginStates(),
+    featureCompat: APP_CONFIG.IS_DEV
+      ? featureCompatResourceConfig.fallback
+      : featureCompat,
+    currentVersion: APP_CONFIG.VERSION,
+    latestAvailableVersion: latestVersion,
+  });
 
   const isLoading = isFetchingFeatureCompat || isLoadingLatestVersion;
 

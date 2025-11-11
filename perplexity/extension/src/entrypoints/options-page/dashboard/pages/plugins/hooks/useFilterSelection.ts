@@ -14,6 +14,8 @@ type FilterSelectionOptions<T extends string> = {
 export function useFilterSelection<T extends string>(
   options: FilterSelectionOptions<T>,
 ) {
+  "use memo";
+
   const { selected, excluded, updateSelected, updateExcluded } = options;
 
   const handleSelect = (item: T) => {
@@ -86,5 +88,14 @@ export function usePluginFilterSelection() {
   return {
     handleTagSelect,
     handleCategorySelect,
+    clear: () => {
+      setFilters({
+        ...filters,
+        tags: [],
+        excludeTags: [],
+        categories: [],
+        excludeCategories: [],
+      });
+    },
   };
 }

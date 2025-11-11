@@ -2,12 +2,15 @@
 import rootConfig from "../../eslint.config.js";
 import { defineConfig } from "eslint/config";
 
-export default defineConfig({
+export default defineConfig([
   ...rootConfig,
-  languageOptions: {
-    parserOptions: {
-      project: "./tsconfig.json",
-      tsconfigRootDir: import.meta.dirname,
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
-});
+]);

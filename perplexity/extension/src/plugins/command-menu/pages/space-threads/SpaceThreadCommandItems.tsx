@@ -29,7 +29,6 @@ export default function SpaceThreadCommandItems({
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-    error,
   } = usePplxInfiniteSpaceThreads({
     spaceSlug,
   });
@@ -39,8 +38,6 @@ export default function SpaceThreadCommandItems({
     isFetching,
     fetchNextPage,
   });
-
-  console.log(error);
 
   return (
     <>

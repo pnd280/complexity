@@ -12,7 +12,7 @@ import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks
 
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
-const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
+export default function ArtifactPlaceholderWrapper() {
   const { codeBlock, sourceMessageBlockIndex, sourceCodeBlockIndex } =
     useMirroredCodeBlockContext();
 
@@ -89,6 +89,4 @@ const ArtifactPlaceholderWrapper = memo(function ArtifactPlaceholderWrapper() {
       </div>
     </div>
   );
-});
-
-export default ArtifactPlaceholderWrapper;
+}

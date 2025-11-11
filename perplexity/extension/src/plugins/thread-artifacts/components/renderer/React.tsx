@@ -21,7 +21,7 @@ import {
   isAutonomousArtifactLanguageString,
 } from "@/plugins/thread-artifacts/utils";
 
-export default memo(function ReactRenderer() {
+export default function ReactRenderer() {
   const selectedCodeBlockLocation = useArtifactsStore(
     (store) => store.selection.selectedCodeBlockLocation,
   );
@@ -58,7 +58,7 @@ export default memo(function ReactRenderer() {
       </SandpackProvider>
     </div>
   );
-});
+}
 
 function PreviewContainer({
   code,

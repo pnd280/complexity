@@ -9,10 +9,9 @@ export default function CometAssistantLanguageModelSelectorTriggerButton() {
     (store) => store.model,
   );
 
-  const modelInfo = (() =>
-    Object.values(PplxLanguageModelsService.allModels)
-      .flat()
-      .find((m) => m.code === selectedLanguageModel))();
+  const modelInfo = Object.values(PplxLanguageModelsService.allModels)
+    .flat()
+    .find((m) => m.code === selectedLanguageModel);
 
   const isAuto = modelInfo?.label.toLowerCase().includes("auto");
 

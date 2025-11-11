@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import type { PluginId } from "@/__registries__/plugins/meta.types";
 import { Switch } from "@/components/ui/switch";
@@ -21,8 +21,6 @@ export default function BetterCodeBlocksPluginSettingsUi() {
     betterCodeBlocksFineGrainedOptionsQueries.list.detail(),
   );
 
-  const isFromPluginList = useLocation().state?.fromPluginList;
-
   return (
     <div className="x:flex x:flex-col x:gap-4">
       <Header />
@@ -34,9 +32,6 @@ export default function BetterCodeBlocksPluginSettingsUi() {
             const newSearchParams = new URLSearchParams(searchParams);
             newSearchParams.set("tab", value);
             setSearchParams(newSearchParams, {
-              state: {
-                fromPluginList: isFromPluginList,
-              },
               replace: true,
             });
           }}

@@ -104,7 +104,7 @@ export function CommandList({
     <CommandPrimitive.List
       className={cn(
         "custom-scrollbar",
-        "x:max-h-[300px] x:scroll-pt-2 x:scroll-pb-2 x:overflow-x-hidden x:overflow-y-auto",
+        "x:scroll-pt-2 x:scroll-pb-2 x:overflow-x-hidden x:overflow-y-auto",
         className,
       )}
       {...props}

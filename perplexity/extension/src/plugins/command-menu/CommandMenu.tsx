@@ -4,6 +4,7 @@ import { Command, CommandDialog, CommandList } from "@/components/ui/command";
 import CommandFooter from "@/plugins/command-menu/components/CommandFooter";
 import CommandInput from "@/plugins/command-menu/components/CommandInput";
 import CommandSidecar from "@/plugins/command-menu/components/CommandSidecar";
+import { ExternalPages } from "@/plugins/command-menu/pages/ExternalPages";
 import IndexPage from "@/plugins/command-menu/pages/IndexPage";
 import SpaceThreadsPage from "@/plugins/command-menu/pages/space-threads/Page";
 import SpacesPage from "@/plugins/command-menu/pages/spaces/Page";
@@ -81,11 +82,15 @@ export function CommandMenu() {
             )}
           >
             <CommandList
-              className={cn("x:min-h-[400px] x:scroll-pt-32 x:scroll-pb-26", {
-                "x:h-[500px] x:max-h-[500px]": sidecarOpen,
-              })}
+              className={cn(
+                "x:max-h-[700px] x:min-h-[400px] x:scroll-pt-32 x:scroll-pb-26",
+                {
+                  "x:h-[500px] x:max-h-[500px]": sidecarOpen,
+                },
+              )}
             >
               <IndexPage />
+              <ExternalPages />
               <SpacesPage />
               <ThreadsPage />
               <SpaceThreadsPage />

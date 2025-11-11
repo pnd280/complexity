@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 import type { PluginSettingsUIs } from "@/__registries__/plugin-settings-uis";
 import type { PluginId, PluginMeta } from "@/__registries__/plugins/meta.types";
 import type { PluginTagKeys } from "@/data/dashboard/plugin-meta/types";
@@ -8,7 +6,7 @@ import {
   getLockdownSubText,
   getLockdownText,
   isPluginLockedDown,
-} from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/usePluginLockdown";
+} from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-card/utils";
 import usePluginsStates from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginsStates";
 import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
 
@@ -16,7 +14,7 @@ type PluginCardContextType = {
   pluginId: PluginId;
   pluginInfo: {
     title: string;
-    description: ReactNode;
+    description: React.ReactNode;
     tags: readonly PluginTagKeys[];
     requiredPermissions: NonNullable<
       PluginMeta<PluginId>["extensionPermissions"]
@@ -44,7 +42,7 @@ export function PluginCardProvider({
   children,
   pluginId,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
   pluginId: PluginId;
 }) {
   const { pluginInfo, state, actions } = usePluginCard(pluginId);
@@ -57,19 +55,18 @@ export function PluginCardProvider({
 
   const isEnabled = useExtensionSettings().settings.plugins[pluginId].enabled;
 
-  const value = (() =>
-    ({
-      pluginId,
-      pluginInfo,
-      state: {
-        ...state,
-        isEnabled,
-        isLockedDown,
-        lockdownText,
-        lockdownSubText,
-      },
-      actions,
-    }) satisfies PluginCardContextType)();
+  const value = {
+    pluginId,
+    pluginInfo,
+    state: {
+      ...state,
+      isEnabled,
+      isLockedDown,
+      lockdownText,
+      lockdownSubText,
+    },
+    actions,
+  } satisfies PluginCardContextType;
 
   return <PluginCardContext value={value}>{children}</PluginCardContext>;
 }

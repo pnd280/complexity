@@ -7,7 +7,7 @@ export default defineConfig({
     parser: tseslint.parser,
     parserOptions: {
       alwaysTryTypes: true,
-      project: "./tsconfig.json",
+      projectService: true,
     },
   },
   extends: [tseslint.configs.recommended],

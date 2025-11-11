@@ -36,7 +36,7 @@
     "libav.js": "4.5.6",
     "prettier": "catalog:lint",
     "terser": "^5.44.1",
-    "tsup": "^8.5.0",
+    "tsup": "^8.5.1",
     "typescript": "catalog:types"
   },
   "dependencies": {

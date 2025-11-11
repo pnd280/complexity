@@ -35,7 +35,7 @@ export default function HtmlRenderer() {
   );
 }
 
-const MemoizedPreviewContainer = memo(function MemoizedPreviewContainer({
+function MemoizedPreviewContainer({
   code,
   isInFlight,
 }: {
@@ -76,4 +76,4 @@ const MemoizedPreviewContainer = memo(function MemoizedPreviewContainer({
       </SandpackProvider>
     </div>
   );
-});
+}

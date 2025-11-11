@@ -4,7 +4,7 @@ import { useMirroredCodeBlockContext } from "@/plugins/thread-better-code-blocks
 import BetterCodeBlockHeader from "@/plugins/thread-better-code-blocks/variants/base/Header";
 import HighlightedCodeWrapper from "@/plugins/thread-better-code-blocks/variants/HighlightedCode";
 
-const BaseCodeBlockWrapper = memo(function BaseCodeBlockWrapper() {
+export default function BaseCodeBlockWrapper() {
   const { maxHeight, maxWidth, sourceMessageBlockIndex, sourceCodeBlockIndex } =
     useMirroredCodeBlockContext();
 
@@ -36,6 +36,4 @@ const BaseCodeBlockWrapper = memo(function BaseCodeBlockWrapper() {
       <HighlightedCodeWrapper />
     </div>
   );
-});
-
-export default BaseCodeBlockWrapper;
+}

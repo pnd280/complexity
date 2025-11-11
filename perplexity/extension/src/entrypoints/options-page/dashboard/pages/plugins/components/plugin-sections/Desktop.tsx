@@ -3,8 +3,8 @@ import PluginMeta from "@/data/dashboard/plugin-meta";
 import { type PluginCategoryKey } from "@/data/dashboard/plugin-meta/types";
 import NoPluginsFound from "@/entrypoints/options-page/dashboard/pages/plugins/components/NoPluginsFound";
 import { PluginsGrid } from "@/entrypoints/options-page/dashboard/pages/plugins/components/PluginsGrid";
+import { useFilteredPluginCategories } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilteredPluginCategories";
 import { useFilteredPlugins } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/useFilteredPlugins";
-import { usePluginCategories } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginCategories";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
 
 export default function DesktopPluginSections() {
@@ -17,7 +17,7 @@ export default function DesktopPluginSections() {
     categories: filters.categories,
   });
 
-  const { filteredPluginsByCat } = usePluginCategories({
+  const filteredPluginsByCat = useFilteredPluginCategories({
     filteredPluginIds,
   });
 

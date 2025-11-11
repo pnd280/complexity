@@ -44,11 +44,10 @@ export default function BasePermissions() {
 
   const { data: permissions } = useExtensionPermissions();
 
-  const grantedPermissions = (() =>
-    new Set([
-      ...(permissions?.permissions ?? []),
-      ...(permissions?.origins ?? []),
-    ]))();
+  const grantedPermissions = new Set([
+    ...(permissions?.permissions ?? []),
+    ...(permissions?.origins ?? []),
+  ]);
 
   if (!permissions) return null;
 

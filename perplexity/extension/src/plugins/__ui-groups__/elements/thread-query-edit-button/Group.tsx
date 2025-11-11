@@ -1,7 +1,7 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
 import { ThreadMessageIndexContextProvider } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
-import { useCreatePortalContainers } from "@/plugins/__ui-groups__/elements/thread-query-edit-button/useCreatePortalContainers";
+import { usePortalContainers } from "@/plugins/__ui-groups__/elements/thread-query-edit-button/usePortalContainers";
 
 declare module "@/__registries__/cs-ui/types" {
   interface UiGroupsRegistry {
@@ -10,21 +10,15 @@ declare module "@/__registries__/cs-ui/types" {
 }
 
 export function ThreadQueryEditButtonPluginsGroup() {
-  const portalContainers = useCreatePortalContainers();
+  const portalContainers = usePortalContainers();
 
   return portalContainers.map((portalContainer, messageBlockIndex) => (
     <Portal key={messageBlockIndex} container={portalContainer as HTMLElement}>
       <ThreadMessageIndexContextProvider messageBlockIndex={messageBlockIndex}>
-        <MemoizedWrapper />
+        <div className="x:flex x:h-full x:items-center">
+          {CsUiRegistry.ThreadQueryEditButtonGroupComponents}
+        </div>
       </ThreadMessageIndexContextProvider>
     </Portal>
   ));
 }
-
-const MemoizedWrapper = memo(function MemoizedWrapper() {
-  return (
-    <div className="x:flex x:h-full x:items-center">
-      {CsUiRegistry.ThreadQueryEditButtonGroupComponents}
-    </div>
-  );
-});

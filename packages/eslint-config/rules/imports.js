@@ -12,7 +12,7 @@ export default defineConfig({
     "import/resolver": {
       typescript: {
         alwaysTryTypes: true,
-        project: "./tsconfig.json",
+        projectService: true,
       },
     },
     "import/parsers": {

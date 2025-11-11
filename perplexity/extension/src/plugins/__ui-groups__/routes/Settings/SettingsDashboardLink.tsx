@@ -15,36 +15,32 @@ export function SettingsDashboardLink() {
     isMobile ? undefined : deepEqual,
   );
 
-  const portalContainer = (() => {
-    if (!sidebarWrapper) return null;
+  if (!sidebarWrapper) return null;
 
-    const $sidebarWrapper = $(sidebarWrapper);
+  const $sidebarWrapper = $(sidebarWrapper);
 
-    if (!$sidebarWrapper.length) return null;
+  if (!$sidebarWrapper.length) return null;
 
-    const $existingContainer = $(sidebarWrapper).find(
-      DomSelectorsService.Root.cplxAttribute(
-        DomSelectorsService.Root.internalAttributes.SETTINGS_PAGE
-          .CPLX_DASHBOARD_LINK,
-      ),
-    );
+  const $existingContainer = $sidebarWrapper.find(
+    DomSelectorsService.Root.cplxAttribute(
+      DomSelectorsService.Root.internalAttributes.SETTINGS_PAGE
+        .CPLX_DASHBOARD_LINK,
+    ),
+  );
 
-    if ($existingContainer[0]) return $existingContainer[0];
-
-    const $portalContainer = $("<div>")
+  const portalContainer =
+    $existingContainer[0] ??
+    $("<div>")
       .internalComponentAttr(
         DomSelectorsService.Root.internalAttributes.SETTINGS_PAGE
           .CPLX_DASHBOARD_LINK,
       )
       .insertAfter(
-        $(sidebarWrapper).find(
+        $sidebarWrapper.find(
           DomSelectorsService.Root.cachedSync.SETTINGS_PAGE.SIDEBAR_CHILD
             .BACK_BUTTON,
         ),
-      );
-
-    return $portalContainer[0];
-  })();
+      )[0];
 
   if (portalContainer == null) return null;
 

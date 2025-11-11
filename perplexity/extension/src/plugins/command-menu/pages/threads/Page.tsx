@@ -10,7 +10,7 @@ declare module "@/plugins/command-menu/store/slices/pages/types" {
   }
 }
 
-const ThreadsPage = memo(() => {
+export default function ThreadsPage() {
   return (
     <CommandPage pageId="threads">
       <ThreadsSearchFiltersProvider>
@@ -19,6 +19,4 @@ const ThreadsPage = memo(() => {
       </ThreadsSearchFiltersProvider>
     </CommandPage>
   );
-});
-
-export default ThreadsPage;
+}

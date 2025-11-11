@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { PluginSettingsUis } from "@/__registries__/plugin-settings-uis";
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
@@ -10,7 +10,8 @@ import useExtensionSettings from "@/services/infra/extension-api-wrappers/extens
 
 export function usePluginCard(pluginId: PluginId) {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { search } = useLocation();
+
   const { settings, mutation } = useExtensionSettings();
 
   const { data: permissions, isLoading: isPermissionsLoading } =
@@ -57,14 +58,7 @@ export function usePluginCard(pluginId: PluginId) {
   })();
 
   const navigateToPluginDetails = () => {
-    void navigate(
-      `/plugins/${uiRouteSegment}?${new URLSearchParams(searchParams)}`,
-      {
-        state: {
-          fromPluginList: true,
-        },
-      },
-    );
+    void navigate(`/plugins/${uiRouteSegment}${search}`);
   };
 
   const togglePlugin = ({ checked }: { checked: boolean }) => {

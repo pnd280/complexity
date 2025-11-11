@@ -51,6 +51,7 @@ export default function () {
               pageId,
               args: undefined,
             });
+            store.anchor.actions.setPortalContainer(anchor.portalContainer);
 
             store.states.setOpen(true);
           });

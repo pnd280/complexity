@@ -10,8 +10,10 @@
 import "@/assets/index.css";
 import "@/assets/extension.css";
 
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import { formDevtoolsPlugin } from "@tanstack/react-form-devtools";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 
@@ -50,7 +52,15 @@ import { isCometBrowser, isCsInjectable } from "@/utils/wrappers/comet";
     <QueryClientProvider client={persistentQueryClient.queryClient}>
       <RouterProvider router={router} />
       <Toaster />
-      <ReactQueryDevtools />
+      <TanStackDevtools
+        plugins={[
+          {
+            name: "Tanstack Query",
+            render: <ReactQueryDevtoolsPanel />,
+          },
+          formDevtoolsPlugin(),
+        ]}
+      />
     </QueryClientProvider>,
   );
 })();

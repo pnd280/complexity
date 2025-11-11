@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom";
+
 import PluginSections from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugin-sections/PluginSections";
 import PluginsFilter from "@/entrypoints/options-page/dashboard/pages/plugins/components/plugins-filter";
 import SearchInput from "@/entrypoints/options-page/dashboard/pages/plugins/components/SearchInput";
@@ -20,6 +22,8 @@ export default function IndexPage() {
       </div>
 
       <PluginSections />
+
+      <Outlet />
     </div>
   );
 }

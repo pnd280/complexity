@@ -7,7 +7,7 @@ type CommandItemGuardProps = {
   show?: boolean;
 };
 
-function CommandItemGuard({
+export default function CommandItemGuard({
   children,
   eager = true,
   show = true,
@@ -22,5 +22,3 @@ function CommandItemGuard({
   if (hideOnDirty && isDirty) return null;
   return children;
 }
-
-export default memo(CommandItemGuard);

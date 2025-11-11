@@ -14,10 +14,9 @@ export const createPreviewSlice: SliceCreator<
 > = (set) => ({
   forceRefreshKey: 0,
   refresh: () => {
-    set(
-      (draft) =>
-        (draft.preview.forceRefreshKey = draft.preview.forceRefreshKey + 1),
-    );
+    set((draft) => {
+      draft.preview.forceRefreshKey += 1;
+    });
   },
 
   sandpackPreviewRef: null,

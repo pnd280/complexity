@@ -3,7 +3,7 @@ import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-in
 
 const OBSERVER_ID = "query-edit-button-group-wrapper";
 
-export function useCreatePortalContainers(): (Element | null)[] {
+export function usePortalContainers(): (Element | null)[] {
   const messageBlocks = useThreadMessageBlocksDomObserverStore(
     (store) => store.messageBlocks,
     deepEqual,

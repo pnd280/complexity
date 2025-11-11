@@ -16,6 +16,7 @@ declare module "@/plugins/__core__/slash-command/store" {
 export type AnchorSlice = {
   element: HTMLElement | null;
   positioningOptions: UsePopoverProps["positioning"] | null;
+  portalContainer: HTMLElement | null;
   inputField: HTMLElement | null;
   contentActions: {
     getWordAtCaret: () => ReturnType<typeof getWordAtCaret>;
@@ -35,6 +36,7 @@ export type AnchorSlice = {
     } | null;
   } | null;
   actions: {
+    setPortalContainer: (portalContainer: HTMLElement | null) => void;
     setElement: (element: HTMLElement | null) => void;
     setPositioningOptions: (
       positioningOptions: UsePopoverProps["positioning"] | null,
@@ -77,11 +79,19 @@ export const createAnchorSlice: SliceCreator<
 > = (set, get) => ({
   element: null,
   positioningOptions: null,
+  portalContainer: null,
   inputField: null,
   caretPosition: null,
   contentActions: null,
 
   actions: {
+    setPortalContainer: (portalContainer) =>
+      set({
+        anchor: {
+          ...get().anchor,
+          portalContainer,
+        },
+      }),
     setElement: (element) =>
       set({
         anchor: {

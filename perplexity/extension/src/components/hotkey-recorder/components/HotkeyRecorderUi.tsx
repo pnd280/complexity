@@ -30,6 +30,50 @@ export function HotkeyRecorderUi({
   stop,
   showError = false,
 }: HotkeyRecorderUiProps) {
+  const renderHotkeyDisplay = () => {
+    if (isRecording && recordedKeys != null && !recordedKeys.size) {
+      return (
+        <div className="x:flex x:items-center x:gap-2">
+          {savedKeys.length > 0 ? (
+            <>
+              <KeyCombo
+                keys={formatKeys(savedKeys)}
+                keyClassName="x:bg-secondary"
+              />
+              <span className="x:text-xs x:text-muted-foreground">
+                Press new keys to change...
+              </span>
+            </>
+          ) : (
+            <div className="x:flex x:items-center x:gap-2 x:text-muted-foreground">
+              <div className="x:h-1.5 x:w-1.5 x:animate-pulse x:rounded-full x:bg-primary" />
+              Press any key...
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div className="x:flex x:items-center x:gap-2">
+          <KeyCombo
+            keys={formatKeys(displayKeys)}
+            keyClassName="x:bg-secondary"
+          />
+          {!isRecording && (
+            <span
+              className={cn(
+                "x:font-medium x:text-muted-foreground",
+                savedKeys.length > 0 && "x:text-xs",
+              )}
+            >
+              {savedKeys.length > 0 ? "Click to edit" : "Set new keys"}
+            </span>
+          )}
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="x:flex x:flex-col x:gap-3">
       <div className="x:flex x:items-center x:gap-3">
@@ -76,48 +120,4 @@ export function HotkeyRecorderUi({
         )}
     </div>
   );
-
-  function renderHotkeyDisplay() {
-    if (isRecording && recordedKeys != null && !recordedKeys.size) {
-      return (
-        <div className="x:flex x:items-center x:gap-2">
-          {savedKeys.length > 0 ? (
-            <>
-              <KeyCombo
-                keys={formatKeys(savedKeys)}
-                keyClassName="x:bg-secondary"
-              />
-              <span className="x:text-xs x:text-muted-foreground">
-                Press new keys to change...
-              </span>
-            </>
-          ) : (
-            <div className="x:flex x:items-center x:gap-2 x:text-muted-foreground">
-              <div className="x:h-1.5 x:w-1.5 x:animate-pulse x:rounded-full x:bg-primary" />
-              Press any key...
-            </div>
-          )}
-        </div>
-      );
-    } else {
-      return (
-        <div className="x:flex x:items-center x:gap-2">
-          <KeyCombo
-            keys={formatKeys(displayKeys)}
-            keyClassName="x:bg-secondary"
-          />
-          {!isRecording && (
-            <span
-              className={cn(
-                "x:font-medium x:text-muted-foreground",
-                savedKeys.length > 0 && "x:text-xs",
-              )}
-            >
-              {savedKeys.length > 0 ? "Click to edit" : "Set new keys"}
-            </span>
-          )}
-        </div>
-      );
-    }
-  }
 }

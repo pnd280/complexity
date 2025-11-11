@@ -3,7 +3,9 @@ import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-in
 
 const OBSERVER_ID = "thread-navbar-attributes-wrapper";
 
-export function useCreatePortalContainer(): HTMLElement | null {
+export function usePortalContainer(): HTMLElement | null {
+  "use no memo";
+
   const $overflowMenuButtonWrapper = useThreadDomObserverStore(
     (store) => store.$overflowMenuButtonWrapper,
     deepEqual,

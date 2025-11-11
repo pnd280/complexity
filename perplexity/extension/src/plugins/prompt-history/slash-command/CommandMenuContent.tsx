@@ -110,13 +110,14 @@ export function PromptHistoryCommandMenuContent() {
     | `top-${string}`
     | undefined;
 
-  if (items == null) return null;
-
   return (
     <Command
-      className={cn("x:flex x:bg-background x:dark:bg-secondary", {
-        "x:flex-col-reverse": placement?.startsWith("top"),
-      })}
+      className={cn(
+        "x:flex x:rounded-none x:bg-background x:dark:bg-secondary",
+        {
+          "x:flex-col-reverse": placement?.startsWith("top"),
+        },
+      )}
       value={selectingValue}
       onValueChange={setSelectingValue}
     >
@@ -132,7 +133,7 @@ export function PromptHistoryCommandMenuContent() {
       />
       <CommandList className="x:h-[200px] x:scroll-pt-10 x:scroll-pb-10">
         <CommandGroup>
-          {items.map((item) => (
+          {items?.map((item) => (
             <PromptHistoryCommandMenuItem
               key={item.id}
               searchValue={searchValue}
@@ -140,16 +141,16 @@ export function PromptHistoryCommandMenuContent() {
               onDelete={deleteItem}
             />
           ))}
-          {!isLoading && (
-            <CommandEmpty className="x:flex x:w-full x:items-center x:justify-center">
-              {t("plugin-prompt-history.search.noResults")}
-            </CommandEmpty>
-          )}
           {(isLoading || isFetchingNextPage) && (
             <CommandItemSkeleton count={3} className="x:h-5" />
           )}
-          {hasNextPage && <div ref={triggerRef} className="x:h-30" />}
         </CommandGroup>
+        {!isLoading && (
+          <CommandEmpty className="x:flex x:w-full x:items-center x:justify-center">
+            {t("plugin-prompt-history.search.noResults")}
+          </CommandEmpty>
+        )}
+        {hasNextPage && <div ref={triggerRef} className="x:h-30" />}
       </CommandList>
     </Command>
   );

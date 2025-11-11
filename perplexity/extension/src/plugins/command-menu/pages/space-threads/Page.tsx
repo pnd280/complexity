@@ -8,7 +8,7 @@ declare module "@/plugins/command-menu/store/slices/pages/types" {
   }
 }
 
-const SpaceThreadsPage = memo(() => {
+export default function SpaceThreadsPage() {
   const currentPage = useCurrentPage();
 
   if (currentPage?.pageId !== "spaceThreads") return null;
@@ -24,6 +24,4 @@ const SpaceThreadsPage = memo(() => {
       <SpaceThreadCommandItems spaceSlug={spaceSlug} />
     </CommandPage>
   );
-});
-
-export default SpaceThreadsPage;
+}

@@ -1,7 +1,7 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
 import { ScopedQueryBoxContextProvider } from "@/plugins/__ui-groups__/elements/query-box/context";
-import useLeftToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/space/hooks/useLeftToolbarPortalContainer copy";
+import useLeftToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/space/hooks/useLeftToolbarPortalContainer";
 import useRightToolbarPortalContainer from "@/plugins/__ui-groups__/elements/query-box/space/hooks/useRightToolbarPortalContainer";
 
 export default function SpaceQueryBoxWrapper() {

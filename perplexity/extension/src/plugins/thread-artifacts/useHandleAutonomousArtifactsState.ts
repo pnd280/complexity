@@ -35,7 +35,7 @@ export default function useHandleAutonomousArtifactsState() {
       messageBlockLoop: for (
         let chunkIndex = codeBlocksChunks.length - 1;
         chunkIndex >= 0;
-        chunkIndex--
+        chunkIndex -= 1
       ) {
         const messageBlock = codeBlocksChunks[chunkIndex];
 
@@ -44,7 +44,7 @@ export default function useHandleAutonomousArtifactsState() {
         for (
           let codeIndex = messageBlock.length - 1;
           codeIndex >= 0;
-          codeIndex--
+          codeIndex -= 1
         ) {
           const codeBlock = messageBlock[codeIndex];
 

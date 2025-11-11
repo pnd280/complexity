@@ -22,7 +22,7 @@ type CopyButtonProps = {
 
 type CopyOptions = "with-citations" | "without-citations";
 
-const CopyButton = memo(function CopyButton({
+export default function CopyButton({
   messageBlockIndex,
   hasSources,
 }: CopyButtonProps) {
@@ -87,7 +87,7 @@ const CopyButton = memo(function CopyButton({
       )}
     </DropdownMenu>
   );
-});
+}
 
 type CopyButtonTriggerProps = {
   isFetching: boolean;
@@ -95,7 +95,7 @@ type CopyButtonTriggerProps = {
   onClick?: () => void;
 };
 
-const CopyButtonTrigger = memo(function CopyButtonTrigger({
+function CopyButtonTrigger({
   isFetching,
   icon,
   onClick,
@@ -120,6 +120,4 @@ const CopyButtonTrigger = memo(function CopyButtonTrigger({
       )}
     </div>
   );
-});
-
-export default CopyButton;
+}

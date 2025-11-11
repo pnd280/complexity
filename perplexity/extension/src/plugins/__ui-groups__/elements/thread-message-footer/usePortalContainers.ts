@@ -3,7 +3,7 @@ import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-in
 
 const OBSERVER_ID = "thread-message-footer-extra-buttons-wrapper";
 
-export function useCreatePortalContainers(): (Element | null)[] {
+export function usePortalContainers(): (Element | null)[] {
   const messageBlocks = useThreadMessageBlocksDomObserverStore(
     (store) => store.messageBlocks,
     deepEqual,

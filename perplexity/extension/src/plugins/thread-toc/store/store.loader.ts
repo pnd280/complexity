@@ -58,4 +58,8 @@ export default function () {
     },
     { equalityFn: deepEqual },
   );
+
+  window.addEventListener("resize", () => {
+    utils.calculatePanelPosition();
+  });
 }

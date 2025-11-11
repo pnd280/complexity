@@ -25,7 +25,7 @@ type ThreadItemProps = {
   searchValue: string;
 };
 
-const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
+export default function ThreadItem({ thread, searchValue }: ThreadItemProps) {
   const url = useSpaRouter((store) => store.url);
 
   const currentPage = useCurrentPage();
@@ -117,6 +117,4 @@ const ThreadItem = memo(({ thread, searchValue }: ThreadItemProps) => {
       </CommandItem>
     </a>
   );
-});
-
-export default ThreadItem;
+}

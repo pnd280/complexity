@@ -40,20 +40,21 @@ export function useCopyPplxThread() {
       withCitations,
       onComplete,
     }: CopyMessageParams) {
-      try {
-        if (withCitations) {
-          await copyMessageWithCitations({ messageBlockIndex });
-        } else {
-          await copyMessageWithoutCitations({ messageBlockIndex, fetchFn });
-        }
-        onComplete?.();
-      } catch (error) {
-        toast({
-          title: "❌ Failed to copy message",
-          description:
-            error instanceof Error ? error.message : "Unknown error occurred",
+      return (
+        withCitations
+          ? copyMessageWithCitations({ messageBlockIndex })
+          : copyMessageWithoutCitations({ messageBlockIndex, fetchFn })
+      )
+        .then(() => {
+          onComplete?.();
+        })
+        .catch((error) => {
+          toast({
+            title: "❌ Failed to copy message",
+            description:
+              error instanceof Error ? error.message : "Unknown error occurred",
+          });
         });
-      }
     },
     copyThread: async function copyThread({
       withCitations,
@@ -62,20 +63,21 @@ export function useCopyPplxThread() {
       withCitations: CopyMessageParams["withCitations"];
       onComplete?: CopyMessageParams["onComplete"];
     }) {
-      try {
-        if (withCitations) {
-          await copyThreadWithCitations({ fetchFn });
-        } else {
-          await copyThreadWithoutCitations({ fetchFn });
-        }
-      } catch (error) {
-        toast({
-          title: "❌ Failed to copy thread",
-          description:
-            error instanceof Error ? error.message : "Unknown error occurred",
+      return (
+        withCitations
+          ? copyThreadWithCitations({ fetchFn })
+          : copyThreadWithoutCitations({ fetchFn })
+      )
+        .then(() => {
+          onComplete?.();
+        })
+        .catch((error) => {
+          toast({
+            title: "❌ Failed to copy thread",
+            description:
+              error instanceof Error ? error.message : "Unknown error occurred",
+          });
         });
-      }
-      onComplete?.();
     },
     getContent: async function getContent({
       withCitations,

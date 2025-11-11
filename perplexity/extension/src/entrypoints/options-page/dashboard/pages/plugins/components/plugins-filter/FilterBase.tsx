@@ -9,7 +9,6 @@ type FilterBaseProps<T extends string> = {
   selectedItems: T[];
   excludedItems: T[];
   onSelect: (item: T) => void;
-  getItemState?: (item: T) => FilterState;
 };
 
 export default function FilterBase<T extends string>({
@@ -18,24 +17,21 @@ export default function FilterBase<T extends string>({
   selectedItems,
   excludedItems,
   onSelect,
-  getItemState,
 }: FilterBaseProps<T>) {
-  const getState =
-    getItemState ||
-    ((item: T): FilterState => {
-      if (selectedItems.includes(item)) return "include";
-      if (excludedItems.includes(item)) return "exclude";
-      return "none";
-    });
+  const getState = (item: T): FilterState => {
+    if (selectedItems.includes(item)) return "include";
+    if (excludedItems.includes(item)) return "exclude";
+    return "none";
+  };
 
   return (
     <div className="x:flex x:flex-col x:gap-2">
       <div className="x:flex x:items-center x:gap-2 x:px-2">
-        <div className="x:text-lg x:font-medium">{title}</div>
+        <div className="x:font-medium x:text-muted-foreground">{title}</div>
         <div className="x:h-px x:w-full x:bg-border"></div>
       </div>
       <Command>
-        <CommandList className="x:rounded-xl x:p-0 x:shadow-lg x:[&_[cmdk-list-sizer]]:flex x:[&_[cmdk-list-sizer]]:flex-row x:[&_[cmdk-list-sizer]]:flex-wrap">
+        <CommandList className="x:rounded-xl x:p-0 x:shadow-lg x:**:[[cmdk-list-sizer]]:flex x:**:[[cmdk-list-sizer]]:flex-row x:**:[[cmdk-list-sizer]]:flex-wrap">
           {Object.entries(items).map(([key, { label, description }]) => {
             const itemState = getState(key as T);
             return (

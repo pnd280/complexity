@@ -10,7 +10,7 @@ import { getBetterCodeBlockOptions } from "@/plugins/thread-better-code-blocks/u
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
-const HighlightedCodeWrapper = memo(() => {
+export default function HighlightedCodeWrapper() {
   const colorScheme = useColorSchemeStore(
     (store) => store.colorScheme,
     deepEqual,
@@ -74,13 +74,11 @@ const HighlightedCodeWrapper = memo(() => {
       </div>
     </div>
   );
-});
+}
 
 function PreTag({ children }: { children: ReactNode }) {
   return <pre className="x:px-4 x:py-2">{children}</pre>;
 }
-
-export default HighlightedCodeWrapper;
 
 function useOverflowing({
   wrapperRef,

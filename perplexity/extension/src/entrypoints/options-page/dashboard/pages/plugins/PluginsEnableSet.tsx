@@ -87,11 +87,10 @@ export default function PluginsEnableSet() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { settings, mutation } = useExtensionSettings();
-  const isDefaultSettings = (() =>
-    isEqual(
-      settings.plugins,
-      PluginManifestsRegistry.settingsFallbackValues,
-    ))();
+  const isDefaultSettings = isEqual(
+    settings.plugins,
+    PluginManifestsRegistry.settingsFallbackValues,
+  );
   const [open, setOpen] = useState(
     searchParams.get("from") === "onboarding" && isDefaultSettings,
   );

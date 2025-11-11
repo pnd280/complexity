@@ -1,5 +1,5 @@
 import type { DialogOpenChangeDetails } from "@ark-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { PluginSettingsUis } from "@/__registries__/plugin-settings-uis";
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
@@ -23,19 +23,12 @@ export default function PluginSettingsModal({
 }: PluginSettingsModalProps) {
   const navigate = useNavigate();
   const { isMobile } = useIsMobileStore();
-  const location = useLocation();
 
   const plugin = PluginManifestsRegistry.meta[pluginId];
 
-  const fromPluginList = location.state?.fromPluginList === true;
-
   const handleClose = ({ open }: DialogOpenChangeDetails) => {
     if (!open) {
-      if (fromPluginList) {
-        void navigate(-1);
-      } else {
-        void navigate("/plugins");
-      }
+      void navigate(-1);
     }
   };
 

@@ -1,6 +1,6 @@
 import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
-import { useCreatePortalContainers } from "@/plugins/__ui-groups__/elements/thread-message-footer/useCreatePortalContainers";
+import { usePortalContainers } from "@/plugins/__ui-groups__/elements/thread-message-footer/usePortalContainers";
 import { ThreadMessageIndexContextProvider } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
 
 declare module "@/__registries__/cs-ui/types" {
@@ -10,21 +10,15 @@ declare module "@/__registries__/cs-ui/types" {
 }
 
 export function ThreadMessageFooterPluginsGroup() {
-  const portalContainers = useCreatePortalContainers();
+  const portalContainers = usePortalContainers();
 
   return portalContainers.map((portalContainer, index) => (
     <Portal key={index} container={portalContainer as HTMLElement}>
       <ThreadMessageIndexContextProvider messageBlockIndex={index}>
-        <MemoizedWrapper />
+        <div className="x:flex x:items-center x:gap-1">
+          {CsUiRegistry.ThreadMessageFooterGroupComponents}
+        </div>
       </ThreadMessageIndexContextProvider>
     </Portal>
   ));
 }
-
-const MemoizedWrapper = memo(function MemoizedWrapper() {
-  return (
-    <div className="x:flex x:items-center x:gap-1">
-      {CsUiRegistry.ThreadMessageFooterGroupComponents}
-    </div>
-  );
-});

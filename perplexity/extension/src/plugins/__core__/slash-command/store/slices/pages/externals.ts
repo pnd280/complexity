@@ -3,29 +3,31 @@ import type { SliceCreator } from "@/types/utils.types";
 
 declare module "@/plugins/__core__/slash-command/store" {
   interface SlashCommandMenuStoreType {
-    pages: PagesSlice;
+    externalPages: ExternalPagesSlice;
   }
 }
 
-export type PagesSlice = {
+export type ExternalPagesSlice = {
   pages: React.ReactElement[];
   addPage: (page: React.ReactElement) => void;
   removePage: (page: React.ReactElement) => void;
 };
 
 export const createPagesSlice: SliceCreator<
-  PagesSlice,
+  ExternalPagesSlice,
   SlashCommandMenuStoreType
 > = (set) => ({
   pages: [],
   addPage: (page) => {
     set((draft) => {
-      draft.pages.pages.push(page);
+      draft.externalPages.pages.push(page);
     });
   },
   removePage: (page) => {
     set((draft) => {
-      draft.pages.pages = draft.pages.pages.filter((p) => p !== page);
+      draft.externalPages.pages = draft.externalPages.pages.filter(
+        (p) => p !== page,
+      );
     });
   },
 });

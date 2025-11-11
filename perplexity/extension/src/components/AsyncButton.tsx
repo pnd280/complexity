@@ -28,9 +28,8 @@ export default function AsyncButton({
         description:
           error instanceof Error ? error.message : "An unknown error occurred",
       });
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   return (

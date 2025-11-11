@@ -9,6 +9,7 @@ import {
 import {
   CommandItemGuard,
   commandMenuStore,
+  CommandPage,
 } from "@/plugins/command-menu/index.public";
 import { getGroupedItems } from "@/plugins/command-menu/index.public";
 import { getRawItems } from "@/plugins/zen-mode/command-menu/items";
@@ -23,7 +24,7 @@ export function ZenModeCommandMenuEntries() {
   });
 
   return (
-    <>
+    <CommandPage pageId={null}>
       {items.map(({ groupName, items }) => (
         <CommandGroup key={groupName} heading={groupName}>
           {items.map((item) => (
@@ -52,6 +53,6 @@ export function ZenModeCommandMenuEntries() {
           ))}
         </CommandGroup>
       ))}
-    </>
+    </CommandPage>
   );
 }

@@ -13,7 +13,7 @@ type PluginCardProps = {
   pluginId: PluginId;
 };
 
-const PluginCardContent = memo(() => {
+function PluginCardContent() {
   const {
     state: {
       isLoading,
@@ -47,14 +47,12 @@ const PluginCardContent = memo(() => {
       )}
     </div>
   );
-});
+}
 
-const PluginCard = memo(({ pluginId }: PluginCardProps) => {
+export default function PluginCard({ pluginId }: PluginCardProps) {
   return (
     <PluginCardProvider pluginId={pluginId}>
       <PluginCardContent />
     </PluginCardProvider>
   );
-});
-
-export default PluginCard;
+}

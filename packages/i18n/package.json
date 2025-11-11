@@ -25,12 +25,12 @@
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
     "@types/node": "22.17.2",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
+    "@types/react": "^19.2.4",
+    "@types/react-dom": "^19.2.3",
     "eslint": "catalog:lint",
     "globals": "16.5.0",
     "prettier": "catalog:lint",
-    "tsup": "^8.5.0",
+    "tsup": "^8.5.1",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint"
   }
