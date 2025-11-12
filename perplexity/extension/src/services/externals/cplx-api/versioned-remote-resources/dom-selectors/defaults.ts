@@ -44,8 +44,7 @@ export const DOM_SELECTORS = {
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */
-      FOOTER:
-        ".gap-y-sm.md\\:gap-y-md.flex.flex-col > .flex.items-center.justify-between",
+      FOOTER: ".gap-y-md.flex.flex-col > .flex.items-center.justify-between",
       FOOTER_CHILD: {
         DISPLAY_MODEL_BUTTON: 'button:has(use[*|href="#pplx-icon-cpu"])',
         REWRITE_BUTTON: 'button:has(use[*|href="#pplx-icon-repeat"])',

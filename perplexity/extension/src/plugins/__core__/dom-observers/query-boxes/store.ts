@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 export type QueryBoxesDomObserverStoreType = {
   wrapper: {
@@ -37,7 +37,7 @@ export type QueryBoxesDomObserverStoreType = {
 export const queryBoxesDomObserverStore =
   createWithEqualityFn<QueryBoxesDomObserverStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set, get): QueryBoxesDomObserverStoreType => ({
           wrapper: {
             main: null,

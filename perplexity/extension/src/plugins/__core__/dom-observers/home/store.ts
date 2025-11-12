@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 type HomeDomObserverStoreType = {
   slogan: HTMLElement | null;
@@ -10,7 +10,7 @@ type HomeDomObserverStoreType = {
 export const homeDomObserverStore =
   createWithEqualityFn<HomeDomObserverStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): HomeDomObserverStoreType => ({
           slogan: null,
           resetStore: () => {

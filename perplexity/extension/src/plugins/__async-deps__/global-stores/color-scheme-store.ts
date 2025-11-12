@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import { setCookie } from "@/utils/dom-utils/generics";
 import { whereAmI } from "@/utils/misc/utils";
@@ -14,7 +14,7 @@ type ColorSchemeStoreType = {
 
 export const colorSchemeStore = createWithEqualityFn<ColorSchemeStoreType>()(
   subscribeWithSelector(
-    immer(
+    mutative(
       (): ColorSchemeStoreType => ({
         colorScheme: "system",
         setColorScheme: (scheme) => {

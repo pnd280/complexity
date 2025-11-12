@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import { DomObserversMainWorldActions } from "@/plugins/__core__/dom-observers/_main-world";
 import {
@@ -25,7 +25,7 @@ export type InternalSearchStatesObserverStoreType = SearchStates & {
 export const internalSearchStatesObserverStore =
   createWithEqualityFn<InternalSearchStatesObserverStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (): InternalSearchStatesObserverStoreType => ({
           sources: [],
           model: null,

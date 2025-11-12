@@ -1,7 +1,7 @@
 import { useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import useThreadCodeBlock from "@/plugins/__core__/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
 
@@ -34,7 +34,7 @@ type InitialState = Omit<
 export const createStore = (initialState: InitialState) =>
   createWithEqualityFn<MirroredCodeBlockStore>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): MirroredCodeBlockStore => ({
           ...initialState,
           setIsWrapped: (isWrapped) => {

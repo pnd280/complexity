@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 type ThreadDomObserverStoreType = {
   $navbar: JQuery<HTMLElement> | null;
@@ -16,7 +16,7 @@ type ThreadDomObserverStoreType = {
 export const threadDomObserverStore =
   createWithEqualityFn<ThreadDomObserverStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): ThreadDomObserverStoreType => ({
           $navbar: null,
           $overflowMenuButtonWrapper: null,

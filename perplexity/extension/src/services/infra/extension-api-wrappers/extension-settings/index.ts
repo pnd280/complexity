@@ -1,4 +1,4 @@
-import { produce } from "immer";
+import { create } from "mutative";
 import z from "zod";
 
 import { ExtensionSettingsStorageServiceImpl as ExtensionSettingsStorageServiceStatic } from "@/services/infra/extension-api-wrappers/extension-settings/storage";
@@ -92,7 +92,7 @@ export class ExtensionSettingsService {
   public static async set(
     updater: (draft: ExtensionSettings) => void,
   ): Promise<ExtensionSettings> {
-    const newSettings = produce(
+    const newSettings = create(
       await (isInContentScript()
         ? ExtensionSettingsService.getWithoutCacheInvalidation()
         : ExtensionSettingsService.get()),

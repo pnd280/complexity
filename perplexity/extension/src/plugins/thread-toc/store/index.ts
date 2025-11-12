@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
+import { mutative } from "zustand-mutative";
 
 import type { PanelPosition, TocItem } from "@/plugins/thread-toc/store/types";
 
@@ -13,7 +13,7 @@ type ThreadTocStore = {
 
 export const threadTocStore = create<ThreadTocStore>()(
   subscribeWithSelector(
-    immer(
+    mutative(
       (set): ThreadTocStore => ({
         isOpen: false,
         setIsOpen: (isOpen: boolean) => set({ isOpen }),

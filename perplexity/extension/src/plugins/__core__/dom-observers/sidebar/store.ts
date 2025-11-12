@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 type SidebarDomObserverStoreType = {
   wrapper: HTMLElement | null;
@@ -12,7 +12,7 @@ type SidebarDomObserverStoreType = {
 export const sidebarDomObserverStore =
   createWithEqualityFn<SidebarDomObserverStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): SidebarDomObserverStoreType => ({
           wrapper: null,
           mobileTrigger: null,

@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import { createBlocksSlice } from "@/plugins/thread-artifacts/store/slices/blocks";
 import { createPreviewSlice } from "@/plugins/thread-artifacts/store/slices/preview";
@@ -18,7 +18,7 @@ export interface ArtifactsStoreType {}
 
 export const artifactsStore = createWithEqualityFn<ArtifactsStoreType>()(
   subscribeWithSelector(
-    immer((set, get, ...props) => ({
+    mutative((set, get, ...props) => ({
       ui: createUISlice(set, get, ...props),
       blocks: createBlocksSlice(set, get, ...props),
       selection: createSelectionSlice(set, get, ...props),

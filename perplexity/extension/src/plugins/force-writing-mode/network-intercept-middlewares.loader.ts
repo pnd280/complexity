@@ -1,4 +1,4 @@
-import { produce } from "immer";
+import { create } from "mutative";
 
 import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
@@ -54,7 +54,7 @@ export default function () {
           if (!isCollectionThread) return skip();
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const newParams = produce(parsedData.params, (draft: any) => {
+          const newParams = create(parsedData.params, (draft: any) => {
             draft.sources = [];
             draft.search_focus = "writing";
           });

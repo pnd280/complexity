@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import type { CodeBlock } from "@/plugins/__core__/dom-observers/thread/code-blocks/types";
 
@@ -12,7 +12,7 @@ type ThreadCodeBlocksDomObserverStoreType = {
 export const threadCodeBlocksDomObserverStore =
   createWithEqualityFn<ThreadCodeBlocksDomObserverStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): ThreadCodeBlocksDomObserverStoreType => ({
           codeBlocksChunks: null,
           resetStore: () => {

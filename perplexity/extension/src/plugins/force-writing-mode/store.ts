@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 type ForceWritingModeStore = {
   spacesThreadsForceWritingMode: boolean;
@@ -10,7 +10,7 @@ type ForceWritingModeStore = {
 export const forceWritingModeStore =
   createWithEqualityFn<ForceWritingModeStore>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): ForceWritingModeStore => ({
           spacesThreadsForceWritingMode: false,
           setSpacesThreadsForceWritingMode: (forceWritingMode) => {

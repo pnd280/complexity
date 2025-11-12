@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 export type BetterSidebarStoreType = {
   open: boolean;
@@ -10,7 +10,7 @@ export type BetterSidebarStoreType = {
 export const betterSidebarStore =
   createWithEqualityFn<BetterSidebarStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): BetterSidebarStoreType => ({
           open:
             localStorage.getItem("pplx.local-user-settings.isSidebarPinned") ===

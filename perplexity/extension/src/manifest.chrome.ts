@@ -1,7 +1,7 @@
 import { baseManifest, type ManifestV3Options } from "./manifest.base";
-import { produce } from "immer";
+import { create } from "mutative";
 
-const chromeManifest = produce(baseManifest, (draft) => {
+const chromeManifest = create(baseManifest, (draft) => {
   draft.background = {
     service_worker: "src/entrypoints/background/index.ts",
     type: "module",

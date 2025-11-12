@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import { createAnchorSlice } from "@/plugins/__core__/slash-command/store/slices/anchor";
 import { createPagesSlice } from "@/plugins/__core__/slash-command/store/slices/pages/externals";
@@ -13,7 +13,7 @@ export interface SlashCommandMenuStoreType {}
 export const slashCommandMenuStore =
   createWithEqualityFn<SlashCommandMenuStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set, get, ...props): SlashCommandMenuStoreType => ({
           states: createStatesSlice(set, get, ...props),
           anchor: createAnchorSlice(set, get, ...props),

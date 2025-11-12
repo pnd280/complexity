@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useImmer } from "use-immer";
+import { useMutative } from "use-mutative";
 
 import {
   defaultFiltersState,
@@ -17,7 +17,7 @@ export function ThreadsSearchFiltersProvider({
   children: ReactNode;
 }) {
   const [state, updateState] =
-    useImmer<ThreadsSearchFiltersState>(defaultFiltersState);
+    useMutative<ThreadsSearchFiltersState>(defaultFiltersState);
 
   const actions = {
     setSource: (value: SourceValue) => {

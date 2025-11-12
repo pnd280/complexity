@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import type { MessageBlock } from "@/plugins/__core__/dom-observers/thread/message-blocks/types";
 
@@ -12,7 +12,7 @@ type ThreadMessageBlocksDomObserverStoreType = {
 export const threadMessageBlocksDomObserverStore =
   createWithEqualityFn<ThreadMessageBlocksDomObserverStoreType>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): ThreadMessageBlocksDomObserverStoreType => ({
           messageBlocks: null,
           resetStore: () => {

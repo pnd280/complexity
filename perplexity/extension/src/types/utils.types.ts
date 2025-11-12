@@ -44,7 +44,7 @@ export function isZodError(error: unknown): error is ZodError {
 
 export type SliceCreator<Slice, Store> = StateCreator<
   Store,
-  [["zustand/subscribeWithSelector", never], ["zustand/immer", never]],
+  [["zustand/subscribeWithSelector", never], ["zustand/mutative", never]],
   [],
   Slice
 >;

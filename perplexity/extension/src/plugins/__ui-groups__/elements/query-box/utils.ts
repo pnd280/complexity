@@ -1,4 +1,4 @@
-import { produce } from "immer";
+import { create } from "mutative";
 
 import { pplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
@@ -90,7 +90,7 @@ export function setModelCookie({
     return;
   }
 
-  const newValue = produce(parsedCookie, (draft) => {
+  const newValue = create(parsedCookie, (draft) => {
     draft[type] = modelCode;
   });
 

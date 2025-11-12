@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GlobalCssStoreRegistry {}
@@ -31,7 +31,7 @@ type GlobalCssStoreType = {
 
 export const globalCssStore = createWithEqualityFn<GlobalCssStoreType>()(
   subscribeWithSelector(
-    immer(
+    mutative(
       (set): GlobalCssStoreType => ({
         cssEntries: {} as GlobalCssStoreType["cssEntries"],
         addedToDom: new Set<keyof GlobalCssStoreRegistry>(),

@@ -1,10 +1,10 @@
-import { produce } from "immer";
+import { create } from "mutative";
 
 import { PluginManifestsRegistry } from "@/__registries__/plugins";
 import type { PluginId } from "@/__registries__/plugins/meta.types";
 import type { ExtensionSettings } from "@/services/infra/extension-api-wrappers/extension-settings/types";
 
-export const ESSENTIALS_ONLY: ExtensionSettings["plugins"] = produce(
+export const ESSENTIALS_ONLY: ExtensionSettings["plugins"] = create(
   PluginManifestsRegistry.settingsFallbackValues,
   (draft) => {
     draft["thread:toc"].enabled = true;
@@ -13,7 +13,7 @@ export const ESSENTIALS_ONLY: ExtensionSettings["plugins"] = produce(
   },
 );
 
-export const POWER_USER: ExtensionSettings["plugins"] = produce(
+export const POWER_USER: ExtensionSettings["plugins"] = create(
   PluginManifestsRegistry.settingsFallbackValues,
   (draft) => {
     draft["promptHistory"].enabled = true;
@@ -26,7 +26,7 @@ export const POWER_USER: ExtensionSettings["plugins"] = produce(
   },
 );
 
-export const ALL_PLUGINS: ExtensionSettings["plugins"] = produce(
+export const ALL_PLUGINS: ExtensionSettings["plugins"] = create(
   PluginManifestsRegistry.settingsFallbackValues,
   (draft) => {
     Object.keys(draft).forEach((key) => {

@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 export type Cookie = {
   name: string;
@@ -13,7 +13,7 @@ type PplxCookiesStoreType = {
 
 export const pplxCookiesStore = createWithEqualityFn<PplxCookiesStoreType>()(
   subscribeWithSelector(
-    immer(
+    mutative(
       (): PplxCookiesStoreType => ({
         cookies: [],
       }),

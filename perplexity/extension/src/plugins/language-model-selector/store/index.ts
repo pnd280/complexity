@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
@@ -12,7 +12,7 @@ type BetterLanguageModelSelectorStore = {
 export const betterLanguageModelSelectorStore =
   createWithEqualityFn<BetterLanguageModelSelectorStore>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): BetterLanguageModelSelectorStore => ({
           model: "pplx_pro",
           setModel: (selectedLanguageModel) => {

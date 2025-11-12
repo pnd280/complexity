@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import type { RouterEvent } from "@/plugins/__core__/_main-world/spa-router/spa-router.types";
 import { isInContentScript } from "@/utils/misc/utils";
@@ -13,7 +13,7 @@ export type SpaRouterStore = {
 
 export const spaRouterStore = createWithEqualityFn<SpaRouterStore>()(
   subscribeWithSelector(
-    immer(
+    mutative(
       (): SpaRouterStore => ({
         state: "complete",
         url: isInContentScript() ? window.location.href : "",

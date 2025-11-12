@@ -1,5 +1,5 @@
 import { storage } from "@wxt-dev/storage";
-import { produce } from "immer";
+import { create } from "mutative";
 
 import type {
   InstantCss,
@@ -24,7 +24,7 @@ export class InstantCssStorageServiceImpl {
   private static async set(
     updater: (draft: InstantCssSettings) => void,
   ): Promise<void> {
-    const newSettings = produce(
+    const newSettings = create(
       await InstantCssStorageServiceImpl.get(),
       updater,
     );

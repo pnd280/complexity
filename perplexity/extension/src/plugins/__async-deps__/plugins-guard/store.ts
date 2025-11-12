@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import type { PplxSubTier } from "@/plugins/__async-deps__/plugins-guard/guards";
 import type { whereAmI } from "@/utils/misc/utils";
@@ -17,7 +17,7 @@ export type PluginGuardsStoreType = {
 
 export const pluginGuardsStore = createWithEqualityFn<PluginGuardsStoreType>()(
   subscribeWithSelector(
-    immer(
+    mutative(
       (): PluginGuardsStoreType => ({
         grantedPermissions: [],
         currentLocation: "unknown",

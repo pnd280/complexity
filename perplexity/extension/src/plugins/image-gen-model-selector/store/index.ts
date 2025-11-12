@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
 import { type ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
@@ -15,7 +15,7 @@ type ImageGenModelSelectorStore = {
 export const imageGenModelSelectorStore =
   createWithEqualityFn<ImageGenModelSelectorStore>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): ImageGenModelSelectorStore => ({
           model: "default",
           setModel: async (selectedImageGenModel) => {

@@ -21,12 +21,6 @@ export const pluginId: PluginId = "promptHistory";
 export default function PromptHistoryPluginSettingsUi() {
   const { settings, mutation } = useExtensionSettings();
 
-  const handleEnableChange = (checked: boolean) => {
-    mutation.mutate((draft) => {
-      draft.plugins["promptHistory"].enabled = checked;
-    });
-  };
-
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
       <p>
@@ -36,7 +30,11 @@ export default function PromptHistoryPluginSettingsUi() {
       <Switch
         textLabel="Enable"
         checked={settings.plugins["promptHistory"].enabled}
-        onCheckedChange={({ checked }) => handleEnableChange(checked)}
+        onCheckedChange={({ checked }) => {
+          mutation.mutate((draft) => {
+            draft.plugins["promptHistory"].enabled = checked;
+          });
+        }}
       />
 
       {settings.plugins["promptHistory"].enabled && (
@@ -80,6 +78,7 @@ export default function PromptHistoryPluginSettingsUi() {
           />
         </div>
       )}
+
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
           src="https://i.imgur.com/3miAzlF.png"

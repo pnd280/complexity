@@ -1,5 +1,5 @@
-import { produce } from "immer";
 import omit from "lodash/omit";
+import { create } from "mutative";
 
 import { APP_CONFIG } from "@/app.config";
 import { DEFAULT_EXTENSION_SETTINGS } from "@/services/infra/extension-api-wrappers/extension-settings/defaults";
@@ -31,7 +31,7 @@ export const migrations = {
   },
   3: (oldSettings): ExtensionSettings => {
     const [result, error] = tryCatch(() => {
-      return produce(oldSettings, (draft) => {
+      return create(oldSettings, (draft) => {
         draft.plugins.commandMenu.keybindings.toggle = [
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (oldSettings.plugins.commandMenu as any).hotkey,

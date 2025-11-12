@@ -5,7 +5,7 @@ import Tooltip from "@/components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { useThreadTocStore } from "@/plugins/thread-toc/store";
 
-import TablerMenu2 from "~icons/tabler/menu-2";
+import TablerAlignLeft from "~icons/tabler/align-left";
 
 export function TocMenuToggle() {
   const isOpen = useThreadTocStore((store) => store.isOpen);
@@ -33,7 +33,7 @@ export function TocMenuToggle() {
           size="sm"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <TablerMenu2 className="x:size-4" />
+          <TablerAlignLeft className="x:size-4" />
         </Button>
       </Tooltip>
     </Activity>
