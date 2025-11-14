@@ -15,9 +15,17 @@ export default {
     },
     copy: "복사",
   },
+  waiting: {
+    title: "잠시 기다려주세요...",
+    description: "내용을 추출 중입니다. 잠시 시간이 걸릴 수 있습니다",
+  },
   errors: {
     downloadFailed: {
       title: "❌ 다운로드 실패",
+      unknownError: "알 수 없는 오류가 발생했습니다",
+    },
+    copyFailed: {
+      title: "❌ 복사 실패",
       unknownError: "알 수 없는 오류가 발생했습니다",
     },
   },

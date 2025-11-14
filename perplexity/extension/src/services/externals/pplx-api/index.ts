@@ -16,6 +16,7 @@ import type {
   PplxAiProfileApiResponse,
   PplxAuthSessionApiResponse,
   PplxOrgSettingsApiResponse,
+  ThreadApiResponse,
 } from "@/services/externals/pplx-api/pplx-api.types";
 import {
   PplxAiProfileApiResponseSchema,
@@ -145,18 +146,49 @@ export class PplxApiService {
   ): Promise<ThreadMessageApiResponse[]> {
     if (!threadSlug) throw new Error("Thread slug is required");
 
-    const url = ENDPOINTS.RESOURCES.THREADS.GET_ONE(threadSlug);
+    const allEntries: ThreadMessageApiResponse[] = [];
+    let hasNextPage = true;
+    let cursor: string | undefined;
 
-    const resp = await fetchTextResource(url);
+    while (hasNextPage) {
+      const url = ENDPOINTS.RESOURCES.THREADS.GET_ONE({
+        slug: threadSlug,
+        cursor,
+      });
 
-    const data = jsonUtils.safeParse(resp);
+      const resp = await fetchTextResource(url);
 
-    if (data == null) throw new Error("Failed to fetch thread info");
+      const data = jsonUtils.safeParse(resp) as ThreadApiResponse | null;
 
-    if (data.entries == null || data.entries?.length <= 0)
-      throw new Error("Thread not found");
+      if (data == null) throw new Error("Failed to fetch thread info");
 
-    return z.array(ThreadMessageApiResponseSchema).parse(data.entries);
+      if (data.entries.length === 0) {
+        if (allEntries.length === 0) {
+          throw new Error("Thread not found");
+        }
+        break;
+      }
+
+      const parsedEntries = z
+        .array(ThreadMessageApiResponseSchema)
+        .parse(data.entries);
+
+      allEntries.push(...parsedEntries);
+
+      hasNextPage = data.has_next_page;
+      cursor = data.next_cursor ?? undefined;
+
+      if (hasNextPage) {
+        await sleep(200);
+      }
+
+      console.log(
+        "fetching paginated thread, total entries fetched so far:",
+        allEntries.length,
+      );
+    }
+
+    return allEntries;
   }
 
   static async fetchThreads({

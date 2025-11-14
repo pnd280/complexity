@@ -15,9 +15,17 @@ export default {
     },
     copy: "复制",
   },
+  waiting: {
+    title: "请稍候...",
+    description: "正在提取内容，这可能需要一些时间",
+  },
   errors: {
     downloadFailed: {
       title: "❌ 下载失败",
+      unknownError: "发生未知错误",
+    },
+    copyFailed: {
+      title: "❌ 复制失败",
       unknownError: "发生未知错误",
     },
   },

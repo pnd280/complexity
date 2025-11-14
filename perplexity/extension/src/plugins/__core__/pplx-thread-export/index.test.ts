@@ -12,11 +12,9 @@ import {
 
 describe("ThreadExport", () => {
   describe("exportThread method", () => {
-    const instance = new PplxThreadExport({});
-
     it("should return a thread with citations", () => {
       expect(
-        instance.exportThread({
+        PplxThreadExport.exportThread({
           threadJSON:
             normalThreadApiResponse as unknown as ThreadMessageApiResponse[],
           includeCitations: true,
@@ -26,7 +24,7 @@ describe("ThreadExport", () => {
 
     it("should return a thread without citations", () => {
       expect(
-        instance.exportThread({
+        PplxThreadExport.exportThread({
           threadJSON:
             normalThreadApiResponse as unknown as ThreadMessageApiResponse[],
           includeCitations: false,
@@ -36,7 +34,7 @@ describe("ThreadExport", () => {
 
     it("should return a message with citations", () => {
       expect(
-        instance.exportThread({
+        PplxThreadExport.exportThread({
           threadJSON:
             normalThreadApiResponse as unknown as ThreadMessageApiResponse[],
           includeCitations: true,
@@ -47,7 +45,7 @@ describe("ThreadExport", () => {
 
     it("should return a message without citations", () => {
       expect(
-        instance.exportThread({
+        PplxThreadExport.exportThread({
           threadJSON:
             normalThreadApiResponse as unknown as ThreadMessageApiResponse[],
           includeCitations: false,

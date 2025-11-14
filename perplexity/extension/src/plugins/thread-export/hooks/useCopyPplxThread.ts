@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { toast } from "@/components/ui/use-toast";
-import { threadMessageBlocksDomObserverStore } from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
+import {
+  threadMessageBlocksDomObserverStore,
+  useThreadMessageBlocksDomObserverStore,
+} from "@/plugins/__core__/dom-observers/thread/message-blocks/store";
 import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
 import { PplxThreadExport } from "@/plugins/__core__/pplx-thread-export";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
 import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 import { parseUrl } from "@/utils/misc/utils";
@@ -15,7 +17,10 @@ type FetchFn = () => Promise<ThreadMessageApiResponse[] | undefined>;
 type CopyMessageParams = {
   messageBlockIndex: number;
   withCitations: boolean;
-  onComplete?: () => void;
+};
+
+type CopyThreadParams = {
+  withCitations: boolean;
 };
 
 type GetContentParams = {
@@ -28,69 +33,72 @@ export function useCopyPplxThread() {
 
   const { isFetching, refetch } = useQuery({
     ...pplxApiQueries.thread.detail(threadSlug),
+    retry: false,
     enabled: false,
   });
 
-  const fetchFn = async () => (await refetch()).data;
+  const fetchFn: FetchFn = async () => {
+    const messageBlocksFiberData =
+      useThreadMessageBlocksDomObserverStore.getState().messageBlocks;
+
+    if (messageBlocksFiberData == null || messageBlocksFiberData.length > 50) {
+      return (await refetch({ throwOnError: true })).data;
+    }
+
+    return messageBlocksFiberData.map((messageBlock) => ({
+      query_str: messageBlock.content.title,
+      text: {
+        answer: messageBlock.content.answer,
+        web_results: messageBlock.content.webResults,
+      },
+      backend_uuid: messageBlock.content.backendUuid,
+      author_image: null,
+      author_username: null,
+      thread_url_slug: threadSlug,
+      display_model: messageBlock.content.displayModel,
+    }));
+  };
 
   return {
     isFetching,
-    copyMessage: async function copyMessage({
+    copyMessage: async ({
       messageBlockIndex,
       withCitations,
-      onComplete,
-    }: CopyMessageParams) {
+    }: CopyMessageParams) => {
       return (
         withCitations
           ? copyMessageWithCitations({ messageBlockIndex })
-          : copyMessageWithoutCitations({ messageBlockIndex, fetchFn })
-      )
-        .then(() => {
-          onComplete?.();
-        })
-        .catch((error) => {
-          toast({
-            title: "❌ Failed to copy message",
-            description:
-              error instanceof Error ? error.message : "Unknown error occurred",
-          });
+          : copyMessageWithoutCitations({ messageBlockIndex })
+      ).catch((error) => {
+        toast({
+          title: "❌ Failed to copy message",
+          description:
+            error instanceof Error ? error.message : "Unknown error occurred",
         });
+      });
     },
-    copyThread: async function copyThread({
-      withCitations,
-      onComplete,
-    }: {
-      withCitations: CopyMessageParams["withCitations"];
-      onComplete?: CopyMessageParams["onComplete"];
-    }) {
+    copyThread: async ({ withCitations }: CopyThreadParams) => {
       return (
         withCitations
           ? copyThreadWithCitations({ fetchFn })
           : copyThreadWithoutCitations({ fetchFn })
-      )
-        .then(() => {
-          onComplete?.();
-        })
-        .catch((error) => {
-          toast({
-            title: "❌ Failed to copy thread",
-            description:
-              error instanceof Error ? error.message : "Unknown error occurred",
-          });
+      ).catch((error) => {
+        toast({
+          title: "❌ Failed to copy thread",
+          description:
+            error instanceof Error ? error.message : "Unknown error occurred",
         });
+      });
     },
-    getContent: async function getContent({
+    getContent: async ({
       withCitations,
       messageBlockIndex,
-    }: GetContentParams) {
+    }: GetContentParams) => {
       const threadJson = await fetchFn();
-      if (threadJson == null) {
-        throw new Error("Failed to fetch thread info");
-      }
 
-      return new PplxThreadExport({
-        languageModels: PplxLanguageModelsService.allModelsFlat,
-      }).exportThread({
+      invariant(threadJson != null, "Failed to fetch thread info");
+
+      return PplxThreadExport.exportThread({
         threadJSON: threadJson,
         includeCitations: withCitations,
         messageIndex: messageBlockIndex,
@@ -147,16 +155,22 @@ async function copyMessageWithCitations({
 
 async function copyMessageWithoutCitations({
   messageBlockIndex,
-  fetchFn,
 }: {
   messageBlockIndex: number;
-  fetchFn: FetchFn;
 }) {
-  void copyContent({
-    messageBlockIndex,
-    fetchFn,
-    withCitations: false,
+  const content =
+    threadMessageBlocksDomObserverStore.getState().messageBlocks?.[
+      messageBlockIndex
+    ]?.content;
+
+  invariant(content != null, "Content not found");
+
+  const message = PplxThreadExport.trimReferences({
+    answer: content.answer,
+    webResults: content.webResults,
   });
+
+  void dualClipboardPut({ markdown: message });
 }
 
 async function copyThreadWithCitations({ fetchFn }: { fetchFn: FetchFn }) {
@@ -177,13 +191,10 @@ async function copyContent({
   fetchFn: FetchFn;
 }) {
   const threadJson = await fetchFn();
-  if (threadJson == null) {
-    throw new Error("Failed to fetch thread info");
-  }
 
-  const message = new PplxThreadExport({
-    languageModels: PplxLanguageModelsService.allModelsFlat,
-  }).exportThread({
+  invariant(threadJson != null, "Failed to fetch thread info");
+
+  const message = PplxThreadExport.exportThread({
     threadJSON: threadJson,
     includeCitations: withCitations,
     messageIndex: messageBlockIndex,

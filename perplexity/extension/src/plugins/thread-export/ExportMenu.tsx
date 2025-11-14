@@ -6,14 +6,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { toast } from "@/components/ui/use-toast";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
 import { useThreadDomObserverStore } from "@/plugins/__core__/dom-observers/thread/store";
-import type { ExportOption } from "@/plugins/thread-export/export-options";
 import { ExportFormatSelect } from "@/plugins/thread-export/ExportFormatSelect";
+import { handleThreadCopy } from "@/plugins/thread-export/handlers/handleThreadCopy";
+import { handleThreadDownload } from "@/plugins/thread-export/handlers/handleThreadDownload";
 import { useCopyPplxThread } from "@/plugins/thread-export/hooks/useCopyPplxThread";
-import downloadFile from "@/utils/misc/download-file";
+import { useDelayedToast } from "@/plugins/thread-export/hooks/useDelayedToast";
 
 import TablerCheck from "~icons/tabler/check";
 import TablerCopy from "~icons/tabler/copy";
@@ -26,7 +26,8 @@ export function ThreadExportMenu() {
   const { copyThread, isFetching, getContent } = useCopyPplxThread();
   const [open, setOpen] = useState(false);
   const [includeCitations, setIncludeCitations] = useState(true);
-  const [_format, setFormat] = useState<ExportOption["value"]>("markdown");
+
+  const { showDelayedToast, dismissDelayedToast } = useDelayedToast();
 
   const isThreadInFlight = useThreadDomObserverStore(
     (store) => store.states.isInFlight,
@@ -39,59 +40,35 @@ export function ThreadExportMenu() {
     <TablerFileExport className="x:size-4" />
   );
 
-  const [copyConfirmText, setCopyConfirmText] = useToggleButtonText({
-    defaultText: null,
-  });
+  const [copyConfirmText, setCopyConfirmText, setCopyConfirmTextDefault] =
+    useToggleButtonText({
+      defaultText: null,
+    });
 
-  const handleDownload = async (withCitations: boolean) => {
-    const filename = `${document.title.substring(0, 100)} ${withCitations ? "" : " (no-citations)"}.md`;
+  const handleDownloadClick = async () => {
+    setOpen(false);
+    await handleThreadDownload({
+      getContent,
+      withCitations: includeCitations,
+      showDelayedToast,
+      dismissDelayedToast,
+      t,
+    });
+  };
 
-    try {
-      const start = performance.now();
-      const content = await getContent({ withCitations });
-      const elapsed = performance.now() - start;
-
-      // if the time between calling .showSaveFilePicker and the last user gesture is too long, the browser will raise a security error.
-      if (elapsed > 500) {
-        toast({
-          title: (
-            <div className="x:flex x:items-center x:gap-1">
-              <TablerFileDownload className="x:size-4 x:text-primary" />
-              <span>
-                {t(
-                  "plugin-thread-export.actions.largeFileDownloadPrompt.title",
-                )}
-              </span>
-            </div>
-          ),
-          description: t(
-            "plugin-thread-export.actions.largeFileDownloadPrompt.description",
-          ),
-          className: "x:cursor-pointer",
-          onClick: () => {
-            void downloadFile({
-              data: content,
-              filename,
-            });
-          },
-        });
-        return;
-      }
-
-      await downloadFile({
-        data: content,
-        filename,
-      });
-    } catch (error) {
-      console.error("Failed to download:", error);
-      toast({
-        title: t("plugin-thread-export.errors.downloadFailed.title"),
-        description:
-          error instanceof Error
-            ? error.message
-            : t("plugin-thread-export.errors.downloadFailed.unknownError"),
-      });
-    }
+  const handleCopyClick = async () => {
+    setOpen(false);
+    await handleThreadCopy({
+      copyThread,
+      withCitations: includeCitations,
+      showDelayedToast,
+      dismissDelayedToast,
+      setCopyConfirmText,
+      setCopyConfirmTextDefault,
+      t,
+      loaderIcon: <TablerLoaderCircle className="x:size-4 x:animate-spin" />,
+      checkIcon: <TablerCheck className="x:size-4" />,
+    });
   };
 
   return (
@@ -106,7 +83,7 @@ export function ThreadExportMenu() {
             disabled={isThreadInFlight || isFetching}
             variant="ghost"
             size="sm"
-            className="x:box-content x:h-8 x:px-2.5"
+            className="x:box-content x:h-8 x:px-2.5 x:text-muted-foreground"
           >
             {isFetching
               ? defaultIdleText
@@ -116,7 +93,7 @@ export function ThreadExportMenu() {
       </Tooltip>
       <PopoverContent>
         <div className="x:flex x:flex-col x:gap-4">
-          <ExportFormatSelect onValueChange={setFormat} />
+          <ExportFormatSelect />
           <Checkbox
             label={t("plugin-thread-export.includeCitations")}
             defaultChecked={includeCitations}
@@ -128,8 +105,7 @@ export function ThreadExportMenu() {
             <Button
               className="x:flex x:items-center x:gap-2"
               onClick={() => {
-                void handleDownload(includeCitations);
-                setOpen(false);
+                void handleDownloadClick();
               }}
             >
               <TablerFileDownload />
@@ -138,13 +114,7 @@ export function ThreadExportMenu() {
             <Button
               className="x:flex x:items-center x:gap-2"
               onClick={() => {
-                void copyThread({
-                  withCitations: includeCitations,
-                  onComplete: () => {
-                    setCopyConfirmText(<TablerCheck className="x:size-4" />);
-                  },
-                });
-                setOpen(false);
+                void handleCopyClick();
               }}
             >
               <TablerCopy />

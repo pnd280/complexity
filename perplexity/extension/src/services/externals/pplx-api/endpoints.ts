@@ -26,8 +26,17 @@ export const ENDPOINTS = {
 
   RESOURCES: {
     THREADS: {
-      GET_ONE: (threadSlug: string) =>
-        `https://www.perplexity.ai/rest/thread/${threadSlug}?version=2.18&source=default&limit=9999`,
+      GET_ONE: ({ slug, cursor }: { slug: string; cursor?: string }) => {
+        const url = new URL(`https://www.perplexity.ai/rest/thread/${slug}`);
+        url.searchParams.set("version", "2.18");
+        url.searchParams.set("source", "default");
+        url.searchParams.set("from_first", "true");
+        url.searchParams.set("limit", "100");
+        if (cursor != null) {
+          url.searchParams.set("cursor", cursor);
+        }
+        return url.toString();
+      },
       GET_ALL:
         "https://www.perplexity.ai/rest/thread/list_ask_threads?version=2.18&source=default",
     },

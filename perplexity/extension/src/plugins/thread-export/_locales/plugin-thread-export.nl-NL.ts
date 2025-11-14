@@ -15,9 +15,17 @@ export default {
     },
     copy: "Kopiëren",
   },
+  waiting: {
+    title: "Even geduld alstublieft...",
+    description: "Inhoud wordt geëxtraheerd, dit kan even duren",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Downloaden mislukt",
+      unknownError: "Onbekende fout opgetreden",
+    },
+    copyFailed: {
+      title: "❌ Kopiëren mislukt",
       unknownError: "Onbekende fout opgetreden",
     },
   },

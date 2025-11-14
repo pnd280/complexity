@@ -15,9 +15,17 @@ export default {
     },
     copy: "Копирај",
   },
+  waiting: {
+    title: "Молимо вас да чекате...",
+    description: "Извлачење садржаја, ово може потрајати",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Преузимање није успело",
+      unknownError: "Дошло је до непознате грешке",
+    },
+    copyFailed: {
+      title: "❌ Копирање није успело",
       unknownError: "Дошло је до непознате грешке",
     },
   },

@@ -15,9 +15,17 @@ export default {
     },
     copy: "Kopírovať",
   },
+  waiting: {
+    title: "Prosím čakajte...",
+    description: "Extrahovanie obsahu, to môže chvíľu trvať",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Sťahovanie zlyhalo",
+      unknownError: "Vyskytla sa neznáma chyba",
+    },
+    copyFailed: {
+      title: "❌ Kopírovanie zlyhalo",
       unknownError: "Vyskytla sa neznáma chyba",
     },
   },

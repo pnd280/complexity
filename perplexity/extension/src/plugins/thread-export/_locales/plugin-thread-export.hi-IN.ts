@@ -15,9 +15,17 @@ export default {
     },
     copy: "कॉपी करें",
   },
+  waiting: {
+    title: "कृपया प्रतीक्षा करें...",
+    description: "सामग्री निकाली जा रही है, इसमें कुछ समय लग सकता है",
+  },
   errors: {
     downloadFailed: {
       title: "❌ डाउनलोड विफल रहा",
+      unknownError: "अज्ञात त्रुटि हुई",
+    },
+    copyFailed: {
+      title: "❌ कॉपी विफल रहा",
       unknownError: "अज्ञात त्रुटि हुई",
     },
   },

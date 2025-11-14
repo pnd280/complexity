@@ -15,9 +15,17 @@ export default {
     },
     copy: "Kopiuj",
   },
+  waiting: {
+    title: "Proszę czekać...",
+    description: "Wyodrębnianie treści, może to chwilę potrwać",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Pobieranie nie powiodło się",
+      unknownError: "Wystąpił nieznany błąd",
+    },
+    copyFailed: {
+      title: "❌ Kopiowanie nie powiodło się",
       unknownError: "Wystąpił nieznany błąd",
     },
   },

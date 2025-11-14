@@ -15,9 +15,17 @@ export default {
     },
     copy: "Copy",
   },
+  waiting: {
+    title: "Please wait...",
+    description: "Extracting content, this may take a moment",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Failed to download",
+      unknownError: "Unknown error occurred",
+    },
+    copyFailed: {
+      title: "❌ Failed to copy",
       unknownError: "Unknown error occurred",
     },
   },

@@ -15,9 +15,17 @@ export default {
     },
     copy: "Salin",
   },
+  waiting: {
+    title: "Harap tunggu...",
+    description: "Mengekstrak konten, ini mungkin memakan waktu",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Gagal mengunduh",
+      unknownError: "Terjadi kesalahan yang tidak diketahui",
+    },
+    copyFailed: {
+      title: "❌ Gagal menyalin",
       unknownError: "Terjadi kesalahan yang tidak diketahui",
     },
   },

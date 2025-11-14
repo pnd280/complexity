@@ -15,9 +15,17 @@ export default {
     },
     copy: "Kopieren",
   },
+  waiting: {
+    title: "Bitte warten...",
+    description: "Inhalte werden extrahiert, dies kann einen Moment dauern",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Herunterladen fehlgeschlagen",
+      unknownError: "Unbekannter Fehler aufgetreten",
+    },
+    copyFailed: {
+      title: "❌ Kopieren fehlgeschlagen",
       unknownError: "Unbekannter Fehler aufgetreten",
     },
   },

@@ -15,9 +15,18 @@ export default {
     },
     copy: "Copia",
   },
+  waiting: {
+    title: "Per favore aspetta...",
+    description:
+      "Estrazione del contenuto, questo potrebbe richiedere un momento",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Download fallito",
+      unknownError: "Si è verificato un errore sconosciuto",
+    },
+    copyFailed: {
+      title: "❌ Copia fallita",
       unknownError: "Si è verificato un errore sconosciuto",
     },
   },

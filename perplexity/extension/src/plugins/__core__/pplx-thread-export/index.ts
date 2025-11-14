@@ -1,65 +1,25 @@
-import { pplxLocalLanguageModels } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/defaults";
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import type { ThreadMessageApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
-import { jsonUtils } from "@/utils/misc/utils";
+import type z from "zod";
 
-type ThreadAnswer = {
-  answer: string;
-  web_results: PplxWebResult[];
-};
+import type {
+  ThreadMessageApiResponse,
+  ThreadMessageTextSchema,
+} from "@/services/externals/pplx-api/pplx-api.types";
 
-export type PplxWebResult = {
-  name: string;
-  url: string;
-  snippet: string;
-};
+export type PplxWebResult = z.infer<
+  typeof ThreadMessageTextSchema.shape.web_results
+>[number];
 
 export class PplxThreadExport {
-  private languageModels: LanguageModel[];
-
-  constructor({ languageModels }: { languageModels?: LanguageModel[] }) {
-    this.languageModels =
-      languageModels ?? Object.values(pplxLocalLanguageModels).flat();
-  }
-
-  private static extractQuery(message: ThreadMessageApiResponse) {
+  static extractQuery(message: ThreadMessageApiResponse) {
     return message.query_str;
   }
 
-  private static extractAnswer(message: ThreadMessageApiResponse) {
-    const text = jsonUtils.safeParse(message.text);
-
-    return (
-      (text.answer as string) ||
-      (
-        jsonUtils.safeParse(
-          text[text.length - 1].content.answer,
-        ) as ThreadAnswer
-      ).answer
-    );
+  static extractAnswer(message: ThreadMessageApiResponse) {
+    return message.text.answer;
   }
 
-  private static extractWebResults(
-    message: ThreadMessageApiResponse,
-  ): PplxWebResult[] {
-    const text = jsonUtils.safeParse(message.text);
-
-    const webResults = text.web_results as PplxWebResult[] | undefined;
-
-    if (webResults != null) {
-      return webResults;
-    }
-
-    return (
-      jsonUtils.safeParse(text[text.length - 1].content.answer) as ThreadAnswer
-    ).web_results;
-  }
-
-  private getModelName(displayModel: string): string {
-    return (
-      this.languageModels.find((model) => model.code === displayModel)?.label ||
-      displayModel
-    );
+  static extractWebResults(message: ThreadMessageApiResponse): PplxWebResult[] {
+    return message.text.web_results;
   }
 
   static formatWebResults(webResults: PplxWebResult[]) {
@@ -71,30 +31,26 @@ export class PplxThreadExport {
       .join("  \n");
   }
 
-  private static formatAnswerWithCitations(params: {
+  static formatAnswerWithCitations(params: {
     query: string;
     answer: string;
-    modelName: string;
     formattedWebResults: string;
     includeQuery: boolean;
   }): string {
-    const { query, answer, modelName, formattedWebResults, includeQuery } =
-      params;
+    const { query, answer, formattedWebResults, includeQuery } = params;
 
-    return [
-      `# ${query}`,
-      "",
-      `# Answer (${modelName}):`,
-      answer,
-      "",
-      "# Citations:",
-      formattedWebResults,
-    ]
+    return [`# ${query}`, "", answer, "", "# Citations:", formattedWebResults]
       .slice(-(includeQuery ? 0 : 4))
       .join("  \n");
   }
 
-  private static trimReferences(answer: string, webResults: PplxWebResult[]) {
+  static trimReferences({
+    answer,
+    webResults,
+  }: {
+    answer: string;
+    webResults: PplxWebResult[];
+  }) {
     webResults.forEach((_, index) => {
       const findText = `\\[${index + 1}\\]`;
       answer = answer.replace(new RegExp(findText, "g"), "");
@@ -103,20 +59,19 @@ export class PplxThreadExport {
     return answer;
   }
 
-  private static formatAnswerWithoutCitations(params: {
+  static formatAnswerWithoutCitations(params: {
     query: string;
     answer: string;
-    modelName: string;
     includeQuery: boolean;
   }): string {
-    const { query, answer, modelName, includeQuery } = params;
+    const { query, answer, includeQuery } = params;
 
-    return [`# ${query}`, "", `# Answer (${modelName}):`, answer]
+    return [`# ${query}`, "", answer]
       .slice(-(includeQuery ? 0 : 1))
       .join("  \n");
   }
 
-  private exportMessage({
+  static exportMessage({
     message,
     includeCitations,
     includeQuery,
@@ -129,32 +84,29 @@ export class PplxThreadExport {
     const rawAnswer = PplxThreadExport.extractAnswer(message);
     const webResults = PplxThreadExport.extractWebResults(message);
     const formattedWebResults = PplxThreadExport.formatWebResults(webResults);
-    const modelName = this.getModelName(message.display_model);
 
     if (includeCitations) {
       return PplxThreadExport.formatAnswerWithCitations({
         query,
         answer: rawAnswer,
-        modelName,
         formattedWebResults,
         includeQuery: includeQuery ?? true,
       });
     }
 
-    const answerWithoutCitations = PplxThreadExport.trimReferences(
-      rawAnswer,
+    const answerWithoutCitations = PplxThreadExport.trimReferences({
+      answer: rawAnswer,
       webResults,
-    );
+    });
 
     return PplxThreadExport.formatAnswerWithoutCitations({
       query,
       answer: answerWithoutCitations,
-      modelName,
       includeQuery: includeQuery ?? true,
     });
   }
 
-  exportThread({
+  static exportThread({
     threadJSON,
     includeCitations,
     messageIndex,
@@ -169,7 +121,7 @@ export class PplxThreadExport {
 
     // Export a single message if messageIndex is provided
     if (messageIndex != null && threadJSON[messageIndex] != null) {
-      const exportedMessage = this.exportMessage({
+      const exportedMessage = PplxThreadExport.exportMessage({
         message: threadJSON[messageIndex],
         includeCitations,
         includeQuery: false,
@@ -181,7 +133,7 @@ export class PplxThreadExport {
     // Export the entire thread
     const exportedThread = threadJSON
       .map((message) =>
-        this.exportMessage({
+        PplxThreadExport.exportMessage({
           message,
           includeCitations,
         }),

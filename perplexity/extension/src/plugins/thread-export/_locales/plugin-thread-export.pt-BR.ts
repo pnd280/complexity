@@ -15,9 +15,17 @@ export default {
     },
     copy: "Copiar",
   },
+  waiting: {
+    title: "Por favor aguarde...",
+    description: "Extraindo o conteúdo, isto pode levar um momento",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Falha ao baixar",
+      unknownError: "Ocorreu um erro desconhecido",
+    },
+    copyFailed: {
+      title: "❌ Falha ao copiar",
       unknownError: "Ocorreu um erro desconhecido",
     },
   },

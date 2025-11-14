@@ -15,9 +15,17 @@ export default {
     },
     copy: "কপি",
   },
+  waiting: {
+    title: "অনুগ্রহ করে অপেক্ষা করুন...",
+    description: "সামগ্রী নিষ্কাশন করা হচ্ছে, এটি কিছু সময় লাগতে পারে",
+  },
   errors: {
     downloadFailed: {
       title: "❌ ডাউনলোড ব্যর্থ হয়েছে",
+      unknownError: "অজানা ত্রুটি ঘটেছে",
+    },
+    copyFailed: {
+      title: "❌ অনুলিপি ব্যর্থ হয়েছে",
       unknownError: "অজানা ত্রুটি ঘটেছে",
     },
   },

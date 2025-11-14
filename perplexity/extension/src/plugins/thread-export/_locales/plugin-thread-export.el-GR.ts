@@ -15,9 +15,17 @@ export default {
     },
     copy: "Αντιγραφή",
   },
+  waiting: {
+    title: "Παρακαλώ περιμένετε...",
+    description: "Εξαγωγή περιεχομένου, αυτό μπορεί να πάρει λίγο χρόνο",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Η λήψη απέτυχε",
+      unknownError: "Προέκυψε άγνωστο σφάλμα",
+    },
+    copyFailed: {
+      title: "❌ Η αντιγραφή απέτυχε",
       unknownError: "Προέκυψε άγνωστο σφάλμα",
     },
   },

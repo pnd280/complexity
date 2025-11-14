@@ -12,7 +12,6 @@ import { useCopyPplxThread } from "@/plugins/thread-export/index.public";
 import TablerCheck from "~icons/tabler/check";
 import TablerCopy from "~icons/tabler/copy";
 import TablerLinkOff from "~icons/tabler/link-off";
-import TablerLoaderCircle from "~icons/tabler/loader-2";
 import TablerMarkdown from "~icons/tabler/markdown";
 
 type CopyButtonProps = {
@@ -30,17 +29,7 @@ export default function CopyButton({
     defaultText: <TablerCopy className="x:size-3.5" />,
   });
 
-  const { copyMessage, isFetching } = useCopyPplxThread();
-
-  const handleCopy = async (withCitations: boolean) => {
-    if (isFetching) return;
-
-    await copyMessage({
-      messageBlockIndex,
-      withCitations,
-      onComplete: () => setTriggerIcon(<TablerCheck className="x:size-3.5" />),
-    });
-  };
+  const { copyMessage } = useCopyPplxThread();
 
   useRegisteredGlobalCssEntry({
     entryIds: ["thread-message-footer-hide-native-copy-buttons"],
@@ -52,16 +41,29 @@ export default function CopyButton({
       lazyMount
       unmountOnExit
       positioning={{ placement: "bottom-end" }}
-      onSelect={({ value }) => {
-        void handleCopy((value as CopyOptions) === "with-citations");
+      onSelect={async ({ value }) => {
+        await copyMessage({
+          messageBlockIndex,
+          withCitations: (value as CopyOptions) === "with-citations",
+        });
+
+        setTriggerIcon(<TablerCheck className="x:size-3.5" />);
       }}
     >
       <Tooltip content={t("plugin-better-copy-buttons.tooltip")}>
         <DropdownMenuTrigger asChild>
           <CopyButtonTrigger
-            isFetching={isFetching}
             icon={triggerIcon}
-            onClick={() => !hasSources && handleCopy(true)}
+            onClick={async () => {
+              if (hasSources) return;
+
+              await copyMessage({
+                messageBlockIndex,
+                withCitations: true,
+              });
+
+              setTriggerIcon(<TablerCheck className="x:size-3.5" />);
+            }}
           />
         </DropdownMenuTrigger>
       </Tooltip>
@@ -90,13 +92,11 @@ export default function CopyButton({
 }
 
 type CopyButtonTriggerProps = {
-  isFetching: boolean;
   icon: React.ReactNode;
   onClick?: () => void;
 };
 
 function CopyButtonTrigger({
-  isFetching,
   icon,
   onClick,
   ...props
@@ -107,17 +107,10 @@ function CopyButtonTrigger({
       tabIndex={0}
       className={cn(
         "x:cursor-pointer x:rounded-full x:p-2 x:text-muted-foreground x:transition-all x:hover:bg-muted/50 x:hover:text-foreground x:active:scale-95",
-        {
-          "x:cursor-not-allowed x:opacity-50": isFetching,
-        },
       )}
       onClick={onClick}
     >
-      {isFetching ? (
-        <TablerLoaderCircle className="x:size-4 x:animate-spin" />
-      ) : (
-        icon
-      )}
+      {icon}
     </div>
   );
 }

@@ -15,9 +15,17 @@ export default {
     },
     copy: "Copiază",
   },
+  waiting: {
+    title: "Vă rugăm să așteptați...",
+    description: "Extragerea conținutului, aceasta poate dura ceva timp",
+  },
   errors: {
     downloadFailed: {
       title: "❌ Descărcarea a eșuat",
+      unknownError: "A apărut o eroare necunoscută",
+    },
+    copyFailed: {
+      title: "❌ Copierea a eșuat",
       unknownError: "A apărut o eroare necunoscută",
     },
   },
