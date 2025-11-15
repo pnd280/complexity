@@ -76,8 +76,11 @@ export class InstantCssCoordinator {
 
     try {
       const tabs = await chrome.tabs.query({});
+
       const validTabIds = new Set(
-        tabs.map((tab) => tab.id).filter(Boolean) as number[],
+        tabs
+          .filter((tab) => tab.id != null && tab.url != null)
+          .map((tab) => tab.id),
       );
 
       let removedCount = 0;

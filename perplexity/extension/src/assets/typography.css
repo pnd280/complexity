@@ -6,3 +6,7 @@ body .x\:prose,
     @apply x:relative x:inline-block x:rounded x:bg-muted x:px-[0.3rem] x:py-[0.2rem] x:font-mono x:text-sm x:font-semibold;
   }
 }
+
+mark {
+  @apply x:bg-primary/10 x:text-primary;
+}

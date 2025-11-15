@@ -14,6 +14,7 @@ let proxyServiceInstance: QueryCacheServiceType | undefined;
 const [registerService, getService] = defineProxy(getQueryCacheRootService, {
   namespace: backgroundProxyServiceName,
   backup: false,
+  heartbeatCheck: false,
 });
 
 function getQueryCacheRootService(): QueryCacheServiceType {

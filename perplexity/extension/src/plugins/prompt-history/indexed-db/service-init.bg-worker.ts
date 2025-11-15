@@ -14,6 +14,7 @@ let proxyServiceInstance: PromptHistoryServiceType | undefined;
 const [registerService, getService] = defineProxy(getPromptHistoryRootService, {
   namespace: backgroundProxyServiceName,
   backup: false,
+  heartbeatCheck: false,
 });
 
 function getPromptHistoryRootService(): PromptHistoryServiceType {

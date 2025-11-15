@@ -16,6 +16,7 @@ const [registerService, getService] = defineProxy(
   {
     namespace: backgroundProxyServiceName,
     backup: false,
+    heartbeatCheck: false,
   },
 );
 
