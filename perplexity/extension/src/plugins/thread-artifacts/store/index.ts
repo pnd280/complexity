@@ -13,7 +13,6 @@ export type {
   ArtifactBlock,
 } from "@/plugins/thread-artifacts/store/slices/blocks/types";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ArtifactsStoreType {}
 
 export const artifactsStore = createWithEqualityFn<ArtifactsStoreType>()(

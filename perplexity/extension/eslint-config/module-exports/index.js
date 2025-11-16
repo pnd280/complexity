@@ -106,17 +106,4 @@ export default defineConfig([
       },
     ],
   ),
-  createTypedExportsRule(
-    ["src/plugins/**/*.cs-ui.tsx"],
-    [
-      {
-        type: "default",
-        tsType: {
-          name: "ReactComponent",
-          path: "@/__registries__/types",
-        },
-        message: "Must export default a valid React component.",
-      },
-    ],
-  ),
 ]);

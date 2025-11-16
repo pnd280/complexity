@@ -1,45 +1,44 @@
-import type { ReactNode } from "react";
-
 import { toast } from "@/components/ui/use-toast";
 
 type HandleCopyParams = {
   copyThread: (params: { withCitations: boolean }) => Promise<void>;
   withCitations: boolean;
-  showDelayedToast: (params: { title: string; description: string }) => void;
-  dismissDelayedToast: () => void;
-  setCopyConfirmText: (text: ReactNode) => void;
-  setCopyConfirmTextDefault: (text: ReactNode) => void;
-  t: typeof t;
-  loaderIcon: ReactNode;
-  checkIcon: ReactNode;
 };
 
 export async function handleThreadCopy({
   copyThread,
   withCitations,
-  showDelayedToast,
-  dismissDelayedToast,
-  setCopyConfirmText,
-  setCopyConfirmTextDefault,
-  t,
-  loaderIcon,
-  checkIcon,
-}: HandleCopyParams) {
-  setCopyConfirmTextDefault(loaderIcon);
+}: HandleCopyParams): Promise<boolean> {
+  let toastTimeout: number | null = null;
+  let toastRef: ReturnType<typeof toast> | null = null;
 
-  showDelayedToast({
-    title: t("plugin-thread-export.waiting.title"),
-    description: t("plugin-thread-export.waiting.description"),
-  });
+  const showWaitingToast = () => {
+    toastTimeout = window.setTimeout(() => {
+      toastRef = toast({
+        title: t("plugin-thread-export.waiting.title"),
+        description: t("plugin-thread-export.waiting.description"),
+        duration: Infinity,
+      });
+    }, 1500);
+  };
+
+  const dismissWaitingToast = () => {
+    if (toastTimeout != null) {
+      clearTimeout(toastTimeout);
+    }
+    toastRef?.dismiss();
+  };
+
+  showWaitingToast();
 
   try {
     await copyThread({
       withCitations,
     });
-    dismissDelayedToast();
-    setCopyConfirmText(checkIcon);
+    dismissWaitingToast();
+    return true;
   } catch (error) {
-    dismissDelayedToast();
+    dismissWaitingToast();
     console.error("Copy failed:", error);
     toast({
       title: t("plugin-thread-export.errors.copyFailed.title"),
@@ -48,5 +47,6 @@ export async function handleThreadCopy({
           ? error.message
           : t("plugin-thread-export.errors.copyFailed.unknownError"),
     });
+    return false;
   }
 }

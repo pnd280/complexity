@@ -26,7 +26,6 @@ export default definePlugin({
     dependencies: {
       corePlugins: ["domObservers:thread:messageBlocks"],
       plugins: ["queryBox:languageModelSelector"],
-      uiGroups: ["thread:messageBlocks:footer"],
     },
   },
   settingsSchema: {

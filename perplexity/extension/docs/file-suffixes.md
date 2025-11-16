@@ -12,8 +12,6 @@ Convention: `*.<suffix>.{ts,tsx}`
 
 ## `manifest.core`
 
-## `cs-ui`
-
 ## `hash-router`
 
 ## `bg-worker`

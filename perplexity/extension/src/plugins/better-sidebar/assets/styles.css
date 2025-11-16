@@ -4,7 +4,7 @@
   display: none;
 
   & + [class^="erp"][style^="padding"] {
-    @apply x:md:pl-2!;
+    @apply x:md:pl-0!;
   }
 }
 

@@ -2,7 +2,6 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { createWithEqualityFn } from "zustand/traditional";
 import { mutative } from "zustand-mutative";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GlobalCssStoreRegistry {}
 
 type GlobalCssStoreType = {

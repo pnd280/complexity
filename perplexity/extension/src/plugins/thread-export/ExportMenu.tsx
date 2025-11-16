@@ -13,7 +13,6 @@ import { ExportFormatSelect } from "@/plugins/thread-export/ExportFormatSelect";
 import { handleThreadCopy } from "@/plugins/thread-export/handlers/handleThreadCopy";
 import { handleThreadDownload } from "@/plugins/thread-export/handlers/handleThreadDownload";
 import { useCopyPplxThread } from "@/plugins/thread-export/hooks/useCopyPplxThread";
-import { useDelayedToast } from "@/plugins/thread-export/hooks/useDelayedToast";
 
 import TablerCheck from "~icons/tabler/check";
 import TablerCopy from "~icons/tabler/copy";
@@ -26,8 +25,6 @@ export function ThreadExportMenu() {
   const { copyThread, isFetching, getContent } = useCopyPplxThread();
   const [open, setOpen] = useState(false);
   const [includeCitations, setIncludeCitations] = useState(true);
-
-  const { showDelayedToast, dismissDelayedToast } = useDelayedToast();
 
   const isThreadInFlight = useThreadDomObserverStore(
     (store) => store.states.isInFlight,
@@ -44,32 +41,6 @@ export function ThreadExportMenu() {
     useToggleButtonText({
       defaultText: null,
     });
-
-  const handleDownloadClick = async () => {
-    setOpen(false);
-    await handleThreadDownload({
-      getContent,
-      withCitations: includeCitations,
-      showDelayedToast,
-      dismissDelayedToast,
-      t,
-    });
-  };
-
-  const handleCopyClick = async () => {
-    setOpen(false);
-    await handleThreadCopy({
-      copyThread,
-      withCitations: includeCitations,
-      showDelayedToast,
-      dismissDelayedToast,
-      setCopyConfirmText,
-      setCopyConfirmTextDefault,
-      t,
-      loaderIcon: <TablerLoaderCircle className="x:size-4 x:animate-spin" />,
-      checkIcon: <TablerCheck className="x:size-4" />,
-    });
-  };
 
   return (
     <Popover
@@ -104,8 +75,12 @@ export function ThreadExportMenu() {
           <div className="x:flex x:gap-2">
             <Button
               className="x:flex x:items-center x:gap-2"
-              onClick={() => {
-                void handleDownloadClick();
+              onClick={async () => {
+                setOpen(false);
+                await handleThreadDownload({
+                  getContent,
+                  withCitations: includeCitations,
+                });
               }}
             >
               <TablerFileDownload />
@@ -113,8 +88,20 @@ export function ThreadExportMenu() {
             </Button>
             <Button
               className="x:flex x:items-center x:gap-2"
-              onClick={() => {
-                void handleCopyClick();
+              onClick={async () => {
+                setOpen(false);
+                setCopyConfirmTextDefault(
+                  <TablerLoaderCircle className="x:size-4 x:animate-spin" />,
+                );
+
+                if (
+                  await handleThreadCopy({
+                    copyThread,
+                    withCitations: includeCitations,
+                  })
+                ) {
+                  setCopyConfirmText(<TablerCheck className="x:size-4" />);
+                }
               }}
             >
               <TablerCopy />

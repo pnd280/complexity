@@ -31,12 +31,6 @@ export default definePlugin({
         "domObservers:internalSearchStates",
         "domObservers:thread:messageBlocks",
       ],
-      uiGroups: [
-        "queryBoxes:toolbar:main:ll",
-        "queryBoxes:toolbar:space:ll",
-        "queryBoxes:toolbar:followUp:ll",
-        "queryBoxes:toolbar:cometAssistant:rl",
-      ],
     },
   },
   settingsSchema: {

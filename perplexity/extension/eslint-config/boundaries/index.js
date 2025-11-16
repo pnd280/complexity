@@ -15,7 +15,7 @@ export default defineConfig(
     },
 
     rules: {
-      "boundaries/no-unknown": ["error"],
+      "boundaries/no-unknown": ["off"],
       "boundaries/no-unknown-files": ["error"],
       "boundaries/element-types": [
         "error",

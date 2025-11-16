@@ -1,22 +1,24 @@
 import { lazily } from "react-lazily";
 
-import { shouldEnableUiGroup } from "@/plugins/__async-deps__/plugins-guard/predicates";
-import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
+import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
+import { useThreadQueryEditButtonRegistry } from "@/plugins/__ui-groups__/elements/thread-query-edit-button/Group";
 
 const { ThreadQueryEditButtonPluginsGroup } = lazily(
   () =>
     import("@/plugins/__ui-groups__/elements/thread-query-edit-button/Group"),
 );
 
-const ThreadQueryEditButtonPluginsGroupWrapper = withPluginsGuard(
-  ThreadQueryEditButtonPluginsGroup,
-  {
-    location: ["thread", "comet_assistant"],
-    additionalCheck: () =>
-      shouldEnableUiGroup({
-        uiGroup: "thread:messageBlocks:queryEditButton",
-      }),
-  },
-);
+export default function ThreadQueryEditButtonComponentsGroupWrapper() {
+  const shouldEnable = useThreadQueryEditButtonRegistry(
+    (store) => store.components.length > 0,
+  );
 
-export default ThreadQueryEditButtonPluginsGroupWrapper;
+  return (
+    <CsUiPluginsGuard
+      location={["thread", "comet_assistant"]}
+      additionalCheck={() => shouldEnable}
+    >
+      <ThreadQueryEditButtonPluginsGroup />
+    </CsUiPluginsGuard>
+  );
+}

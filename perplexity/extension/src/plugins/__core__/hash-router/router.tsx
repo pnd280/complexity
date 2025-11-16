@@ -1,9 +1,9 @@
-import { createHashRouter } from "react-router-dom";
+import { createHashRouter as createHashRouterReactRouterDom } from "react-router-dom";
 
 import { hashRouterObservers } from "@/__registries__/cs-hash-router";
 
-export const createRouter = () =>
-  createHashRouter([
+export const createHashRouter = () =>
+  createHashRouterReactRouterDom([
     {
       path: "/",
       element: null,

@@ -1,5 +1,3 @@
-// @ts-check
-
 export const rules = [
   {
     from: "module-registries",

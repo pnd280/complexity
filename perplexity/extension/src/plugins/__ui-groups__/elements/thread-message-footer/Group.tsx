@@ -1,13 +1,15 @@
-import CsUiRegistry from "@/__registries__/cs-ui";
 import { Portal } from "@/components/ui/portal";
 import { usePortalContainers } from "@/plugins/__ui-groups__/elements/thread-message-footer/usePortalContainers";
 import { ThreadMessageIndexContextProvider } from "@/plugins/__ui-groups__/elements/thread-message-index-context";
+import { createUiGroupRegistry } from "@/plugins/__ui-groups__/registry-factory";
 
-declare module "@/__registries__/cs-ui/types" {
-  interface UiGroupsRegistry {
-    "thread:messageBlocks:footer": void;
-  }
-}
+// eslint-disable-next-line react-refresh/only-export-components
+export const {
+  registry: threadMessageFooterRegistry,
+  useRegistry: useThreadMessageFooterRegistry,
+  Components: ThreadMessageFooterComponents,
+  ComponentRegister: ThreadMessageFooterComponentRegister,
+} = createUiGroupRegistry();
 
 export function ThreadMessageFooterPluginsGroup() {
   const portalContainers = usePortalContainers();
@@ -16,7 +18,7 @@ export function ThreadMessageFooterPluginsGroup() {
     <Portal key={index} container={portalContainer as HTMLElement}>
       <ThreadMessageIndexContextProvider messageBlockIndex={index}>
         <div className="x:flex x:items-center x:gap-1">
-          {CsUiRegistry.ThreadMessageFooterGroupComponents}
+          <ThreadMessageFooterComponents />
         </div>
       </ThreadMessageIndexContextProvider>
     </Portal>

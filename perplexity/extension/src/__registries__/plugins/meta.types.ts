@@ -3,7 +3,6 @@ import type Dexie from "dexie";
 import type z from "zod";
 
 import type { CorePluginId } from "@/__registries__/core-plugins/types";
-import type { UiGroupId } from "@/__registries__/cs-ui/types";
 import type {
   PluginCategoryKey,
   PluginTagKeys,
@@ -24,17 +23,16 @@ export type PluginMeta<T extends PluginId> = {
 
   dependencies?: {
     corePlugins?: readonly CorePluginId[];
-    uiGroups?: readonly UiGroupId[];
     plugins?: readonly PluginId[];
   };
 
   extensionPermissions?: {
     requiredPermissions?: readonly {
-      permission: chrome.runtime.ManifestPermissions;
+      permission: chrome.runtime.ManifestPermission;
       rationale: string;
     }[];
     optionalPermissions?: readonly {
-      permission: chrome.runtime.ManifestPermissions;
+      permission: chrome.runtime.ManifestPermission;
       rationale: string;
     }[];
   };
@@ -44,7 +42,6 @@ export type PluginMetaMap = {
   [K in PluginId]: PluginMeta<K>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PluginsSettingsRegistry {}
 
 /**
@@ -59,7 +56,6 @@ export type PluginsSettingsSchema = {
  */
 export type PluginId = keyof PluginsSettingsRegistry;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PluginsIndexedDbRegistry {}
 
 export type PluginsIndexedDbSchema = {
@@ -84,7 +80,6 @@ export type PluginIndexedDbConfig = {
   schema?: z.ZodType<unknown>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PluginsDbDataRegistry {}
 
 export type PluginsDbDataSchema = {

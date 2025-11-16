@@ -107,18 +107,6 @@ function useRegisterGlobalCss() {
   const subscriberId = "language-model-selector";
 
   useRegisteredGlobalCssEntry({
-    entryIds: ["normalize-main-query-box"],
-    subscriberId,
-    subscribe: store.type === "main",
-  });
-
-  useRegisteredGlobalCssEntry({
-    entryIds: ["normalize-follow-up-query-box"],
-    subscriberId,
-    subscribe: store.type === "follow-up",
-  });
-
-  useRegisteredGlobalCssEntry({
     entryIds: ["hide-native-model-selector"],
     subscriberId: `${subscriberId}#${store.type}`,
     subscribe: true,

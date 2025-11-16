@@ -226,7 +226,7 @@ function SidebarFloatingTrigger() {
     <SidebarTrigger
       id="sidebar-floating-trigger"
       className={cn(
-        "x:invisible x:fixed x:inset-2 x:z-10 x:h-max x:w-max x:rounded-xl x:rounded-tl-none x:rounded-bl-none x:border x:border-l-0 x:border-border/50 x:bg-secondary x:p-3 x:opacity-0 x:transition-all x:hover:bg-secondary x:lg:rounded-bl-none",
+        "x:invisible x:fixed x:inset-2 x:left-0 x:z-10 x:h-max x:w-max x:rounded-xl x:rounded-tl-none x:rounded-bl-none x:border x:border-l-0 x:border-border/50 x:bg-secondary x:p-3 x:opacity-0 x:transition-all x:hover:bg-secondary x:lg:rounded-bl-none",
         {
           "x:visible x:opacity-100": !open,
         },

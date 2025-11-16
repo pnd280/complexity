@@ -42,7 +42,8 @@ export default function () {
       NetworkInterceptMiddlewareManagerService.Root.updateMiddleware({
         id: "message-completion-notification",
         async middlewareFn({ data, skip }) {
-          if (document.visibilityState === "visible") return skip();
+          if (document.visibilityState === "visible" && document.hasFocus())
+            return skip();
 
           const isSSEResponse =
             data.type === "networkIntercept:fetchEvent" &&

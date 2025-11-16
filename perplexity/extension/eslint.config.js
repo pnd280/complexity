@@ -54,6 +54,12 @@ export default defineConfig([
     },
     ignores: [...commonIgnores, "e2e/**"],
   },
+  {
+    files: ["**/*.loader.*"],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
   boundariesConfig,
   tanstackQueryConfig,
   moduleExportsConfig,

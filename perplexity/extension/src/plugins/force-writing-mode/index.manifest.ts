@@ -26,7 +26,6 @@ export default definePlugin({
 
     dependencies: {
       corePlugins: ["domObservers:queryBoxes"],
-      uiGroups: ["queryBoxes:toolbar:space:rl"],
     },
   },
   settingsSchema: {

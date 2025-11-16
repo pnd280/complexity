@@ -6,31 +6,42 @@ import TablerFileDownload from "~icons/tabler/file-download";
 type HandleDownloadParams = {
   getContent: (params: { withCitations: boolean }) => Promise<string>;
   withCitations: boolean;
-  showDelayedToast: (params: { title: string; description: string }) => void;
-  dismissDelayedToast: () => void;
-  t: typeof t;
 };
 
 export async function handleThreadDownload({
   getContent,
   withCitations,
-  showDelayedToast,
-  dismissDelayedToast,
-  t,
-}: HandleDownloadParams) {
+}: HandleDownloadParams): Promise<void> {
   const filename = `${document.title.substring(0, 100)} ${withCitations ? "" : " (no-citations)"}.md`;
 
-  showDelayedToast({
-    title: t("plugin-thread-export.waiting.title"),
-    description: t("plugin-thread-export.waiting.description"),
-  });
+  let toastTimeout: number | null = null;
+  let toastRef: ReturnType<typeof toast> | null = null;
+
+  const showWaitingToast = () => {
+    toastTimeout = window.setTimeout(() => {
+      toastRef = toast({
+        title: t("plugin-thread-export.waiting.title"),
+        description: t("plugin-thread-export.waiting.description"),
+        duration: Infinity,
+      });
+    }, 1500);
+  };
+
+  const dismissWaitingToast = () => {
+    if (toastTimeout != null) {
+      clearTimeout(toastTimeout);
+    }
+    toastRef?.dismiss();
+  };
+
+  showWaitingToast();
 
   try {
     const start = performance.now();
     const content = await getContent({ withCitations });
     const elapsed = performance.now() - start;
 
-    dismissDelayedToast();
+    dismissWaitingToast();
 
     // if the time between calling .showSaveFilePicker and the last user gesture is too long, the browser will raise a security error.
     if (elapsed > 500) {
@@ -56,7 +67,6 @@ export async function handleThreadDownload({
         },
         duration: Infinity,
       });
-      return;
     }
 
     await downloadFile({
@@ -64,7 +74,7 @@ export async function handleThreadDownload({
       filename,
     });
   } catch (error) {
-    dismissDelayedToast();
+    dismissWaitingToast();
     console.error("Failed to download:", error);
     toast({
       title: t("plugin-thread-export.errors.downloadFailed.title"),

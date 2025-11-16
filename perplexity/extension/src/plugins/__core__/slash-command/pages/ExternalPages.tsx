@@ -1,25 +1,8 @@
-import { useLayoutEffect } from "react";
+import { createUiGroupRegistry } from "@/plugins/__ui-groups__/registry-factory";
 
-import {
-  slashCommandMenuStore,
-  useSlashCommandMenuStore,
-} from "@/plugins/__core__/slash-command/store";
-
-export function ExternalPages() {
-  return useSlashCommandMenuStore((store) => store.externalPages.pages);
-}
-
-export function SlashCommandExternalPage({
-  children,
-}: {
-  children: React.ReactElement;
-}) {
-  useLayoutEffect(() => {
-    slashCommandMenuStore.getState().externalPages.addPage(children);
-    return () => {
-      slashCommandMenuStore.getState().externalPages.removePage(children);
-    };
-  }, [children]);
-
-  return null;
-}
+export const {
+  registry: externalPagesRegistry,
+  useRegistry: useExternalPagesRegistry,
+  Components: ExternalPages,
+  ComponentRegister: ExternalPageRegister,
+} = createUiGroupRegistry();
