@@ -1,23 +1,24 @@
-import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
-import { csUiRootComponentsRegistry } from "@/plugins/__ui-groups__/_root/CsUiRoot";
+import CsUiGuard from "@/entrypoints/contexts/content-scripts/services/ui-guard/CsUiGuard";
+import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
 import { CommandMenuExternalPageRegister } from "@/plugins/command-menu/index.public";
 import { ZenModeCommandMenuEntries } from "@/plugins/zen-mode/command-menu/Entries";
 
 function ZenModeCommandMenuEntriesWrapper() {
   return (
-    <CsUiPluginsGuard dependentPluginIds={["zenMode"]}>
-      <CommandMenuExternalPageRegister>
+    <CsUiGuard dependentPluginIds={["zenMode"]}>
+      <CommandMenuExternalPageRegister id="plugin:zenMode:commandMenuEntries">
         <ZenModeCommandMenuEntries />
       </CommandMenuExternalPageRegister>
-    </CsUiPluginsGuard>
+    </CsUiGuard>
   );
 }
 
 ZenModeCommandMenuEntriesWrapper.displayName =
   "ZenModeCommandMenuEntriesWrapper";
 
-export default function loader() {
-  csUiRootComponentsRegistry
-    .getState()
-    .add(<ZenModeCommandMenuEntriesWrapper />);
+export default function () {
+  csUiMount({
+    id: "plugin:zenMode:commandMenuEntries",
+    component: <ZenModeCommandMenuEntriesWrapper />,
+  });
 }

@@ -9,13 +9,13 @@ import {
   openInNewTab,
   softNavigate,
   useSpaRouter,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import type { Space } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
-import { formatRelativeTime } from "@/services/infra/i18n";
+import { formatRelativeTime } from "@/services/i18n";
 import { emojiCodeToString } from "@/utils/misc/utils";
 import hotkeys from "@/utils/wrappers/hotkeys-js";
 

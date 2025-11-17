@@ -1,4 +1,4 @@
-import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type LanguageModelSelectorContext = {
   component: "select" | "dropdown";

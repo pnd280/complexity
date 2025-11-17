@@ -13,7 +13,7 @@ export type MozManifest = ManifestV3Options & {
   };
 };
 
-const mozManifest = create(baseManifest as MozManifest, (draft) => {
+const mozManifest = create(baseManifest as unknown as MozManifest, (draft) => {
   draft.browser_specific_settings = {
     gecko: {
       id: "complexity@ngocdg",
@@ -24,7 +24,7 @@ const mozManifest = create(baseManifest as MozManifest, (draft) => {
     },
   };
   draft.background = {
-    scripts: ["src/entrypoints/background/index.ts"],
+    scripts: ["src/entrypoints/contexts/background/index.ts"],
     type: "module",
   };
   draft.commands = {

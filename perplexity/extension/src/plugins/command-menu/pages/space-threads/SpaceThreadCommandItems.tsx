@@ -2,12 +2,12 @@ import { useDebounce } from "@uidotdev/usehooks";
 
 import { CommandGroup } from "@/components/ui/command";
 import { CommandItemSkeleton } from "@/components/ui/command";
+import type { Space } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import usePplxInfiniteSpaceThreads from "@/plugins/command-menu/pages/space-threads/usePplxInfiniteSpaceThreads";
 import ThreadItem from "@/plugins/command-menu/pages/threads/ThreadItem";
 import ThreadListLoader from "@/plugins/command-menu/pages/threads/ThreadListLoader";
 import useLoadMoreItems from "@/plugins/command-menu/pages/threads/useLoadMoreItems";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
-import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
 
 export default function SpaceThreadCommandItems({
   spaceSlug,

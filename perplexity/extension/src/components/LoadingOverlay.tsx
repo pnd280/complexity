@@ -14,7 +14,7 @@ export default function LoadingOverlay({
       )}
       {...props}
     >
-      <TablerLoaderCircle className="x:size-8 x:animate-spin x:text-primary" />
+      <TablerLoaderCircle className="x:size-8 x:animate-spin x:text-primary x:opacity-50" />
     </div>
   );
 }

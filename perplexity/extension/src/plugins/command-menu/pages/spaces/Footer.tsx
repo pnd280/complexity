@@ -1,9 +1,9 @@
 import { toast } from "@/components/ui/use-toast";
-import { getPlatform } from "@/hooks/usePlatformDetection";
 import {
   openInNewTab,
   softNavigate,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import { getPlatform } from "@/hooks/usePlatformDetection";
 import usePplxSpaces from "@/plugins/command-menu/pages/spaces/usePplxSpaces";
 import {
   commandMenuStore,

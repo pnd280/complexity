@@ -12,12 +12,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { getActiveQueryBox } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
+import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
-import { getActiveQueryBox } from "@/plugins/__ui-groups__/elements/query-box/utils";
+import type manifest from "@/plugins/force-writing-mode/index.manifest";
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
 import { useForceWritingModeStore } from "@/plugins/force-writing-mode/store";
-import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 import TablerPencil from "~icons/tabler/pencil";
 
@@ -29,7 +30,7 @@ const normalizeCss = await getVersionedRemoteResource(
 export function ForceWritingModeToggle() {
   const [isOpen, setIsOpen] = useState(false);
   const [showWarning, setShowWarning] = useLocalStorage(
-    "cplx.plugin:queryBox:spacesThreadsForceWritingMode:showWarning",
+    "cplx.plugin:queryBox:spacesThreadsForceWritingMode:showWarning" satisfies `cplx.plugin:${typeof manifest.meta.id}:${string}`,
     true,
   );
 

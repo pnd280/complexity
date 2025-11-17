@@ -1,26 +1,29 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-const pageId = "promptHistory" as const;
-import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
-import { getAnchor } from "@/plugins/__core__/slash-command/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import { slashCommandMenuStore } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store";
+import { getAnchor } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/utils";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import { getTaskScheduler, keysToString } from "@/utils/misc/utils";
 import hotkeys from "@/utils/wrappers/hotkeys-js";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:promptHistory:shortcut-init": void;
   }
 }
 
+const pageId = "promptHistory" as const;
+
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:shortcut-init",
-    dependencies: ["cache:pluginsEnableStates"],
-    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStatesV2"],
+    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
       if (!pluginsEnableStates["promptHistory"]) return;
 
       const shortcut =
-        ExtensionSettingsService.cachedSync.plugins["promptHistory"].shortcut;
+        PluginsSettingSnapshotsService.getPluginSnapshot(
+          "promptHistory",
+        ).shortcut;
 
       if (shortcut.type === "keybinding") {
         hotkeys(keysToString(shortcut.value), () => {

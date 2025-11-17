@@ -7,8 +7,8 @@ import {
   CommandItemRightAttributes,
   CommandItemTitle,
 } from "@/components/ui/command";
-import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
-import { formatRelativeTime } from "@/services/infra/i18n";
+import { slashCommandMenuStore } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store";
+import { formatRelativeTime } from "@/services/i18n";
 
 import TablerTrash from "~icons/tabler/trash";
 

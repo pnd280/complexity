@@ -1,4 +1,4 @@
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 
 export function toggleZenMode(forceState?: boolean): boolean {
   const previousZenMode = $("body").attr("data-cplx-zen-mode");
@@ -13,7 +13,7 @@ export function toggleZenMode(forceState?: boolean): boolean {
 
   $("body").attr("data-cplx-zen-mode", newZenMode);
 
-  if (ExtensionSettingsService.cachedSync.plugins["zenMode"].persistent) {
+  if (PluginsSettingSnapshotsService.getPluginSnapshot("zenMode").persistent) {
     localStorage.setItem("cplx.zen-mode.last-state", newZenMode);
   }
 

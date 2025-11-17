@@ -11,12 +11,12 @@ import {
   openInNewTab,
   softNavigate,
   useSpaRouter,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import type { ThreadSearchResponseApi } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import { useCurrentPage } from "@/plugins/command-menu/hooks/useCurrentPage";
 import SpaceBadge from "@/plugins/command-menu/pages/threads/SpaceBadge";
 import { commandMenuStore } from "@/plugins/command-menu/store";
-import type { ThreadSearchResponseApi } from "@/services/externals/pplx-api/pplx-api.types";
-import { formatExactDate, formatRelativeTime } from "@/services/infra/i18n";
+import { formatExactDate, formatRelativeTime } from "@/services/i18n";
 import { jsonUtils } from "@/utils/misc/utils";
 import hotkeys from "@/utils/wrappers/hotkeys-js";
 

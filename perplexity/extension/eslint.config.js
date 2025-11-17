@@ -12,6 +12,7 @@ import tanstackQueryConfig from "./eslint-config/tanstack-query.js";
 import moduleExportsConfig from "./eslint-config/module-exports/index.js";
 
 const commonIgnores = [
+  "*.js",
   "dist/**",
   "node_modules/**",
   "**/*.config.js",
@@ -55,14 +56,20 @@ export default defineConfig([
     ignores: [...commonIgnores, "e2e/**"],
   },
   {
-    files: ["**/*.loader.*"],
+    files: ["**/*.loader.*", "**/*.opt-loader.*"],
     rules: {
       "react-refresh/only-export-components": "off",
     },
   },
   boundariesConfig,
-  tanstackQueryConfig,
   moduleExportsConfig,
+  tanstackQueryConfig,
+  {
+    rules: {
+      "unicorn/filename-case": "off",
+    },
+    files: ["src/**/_locales/*.ts"],
+  },
   {
     languageOptions: {
       ecmaVersion: 2020,

@@ -1,13 +1,13 @@
 import { lazily } from "react-lazily";
 
-import { withPluginsGuard } from "@/plugins/__async-deps__/plugins-guard/withPluginsGuard";
-import { csUiRootComponentsRegistry } from "@/plugins/__ui-groups__/_root/CsUiRoot";
+import { withCsUiGuard } from "@/entrypoints/contexts/content-scripts/services/ui-guard/hof";
+import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
 
 const { ImageGenModelSelector } = lazily(
   () => import("@/plugins/image-gen-model-selector/ImageGenModelSelector"),
 );
 
-const ImageGenModelSelectorWrapper = withPluginsGuard(ImageGenModelSelector, {
+const ImageGenModelSelectorWrapper = withCsUiGuard(ImageGenModelSelector, {
   dependentPluginIds: ["imageGenModelSelector"],
   location: ["thread"],
   desktopOnly: true,
@@ -16,6 +16,9 @@ const ImageGenModelSelectorWrapper = withPluginsGuard(ImageGenModelSelector, {
   leastTier: "pro",
 });
 
-export default function loader() {
-  csUiRootComponentsRegistry.getState().add(<ImageGenModelSelectorWrapper />);
+export default function () {
+  csUiMount({
+    id: "plugin:imageGenModelSelector",
+    component: <ImageGenModelSelectorWrapper />,
+  });
 }

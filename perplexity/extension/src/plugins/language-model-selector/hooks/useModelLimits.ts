@@ -1,6 +1,6 @@
-import usePplxUserSettings from "@/hooks/usePplxUserSettings";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import usePplxUserSettings from "@/entrypoints/hooks/usePplxUserSettings";
+import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
+import type { LanguageModel } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function useModelLimits() {
   const { data } = usePplxUserSettings();

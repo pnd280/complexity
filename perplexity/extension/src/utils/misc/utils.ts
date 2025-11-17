@@ -203,7 +203,7 @@ export function emojiCodeToString(emojiCode: string): string {
 }
 
 export function getOptionsPageUrl({ isDev }: { isDev: boolean }) {
-  const prefix = isDev ? "src/entrypoints/options-page/" : "";
+  const prefix = isDev ? "src/entrypoints/contexts/options-page/" : "";
 
   return chrome.runtime.getURL(`${prefix}options.html`);
 }

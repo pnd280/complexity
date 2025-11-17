@@ -1,16 +1,17 @@
 import KeyCombo from "@/components/KeyCombo";
 import Tooltip from "@/components/Tooltip";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 import LuMaximize from "~icons/lucide/maximize-2";
 import LuMinimize from "~icons/lucide/minimize-2";
 
 export default function CommandFooter() {
-  const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
+  const settings =
+    PluginsSettingSnapshotsService.getPluginSnapshot("commandMenu");
 
   const footerItems = useCommandMenuStore(
     (store) => store.footer.items,

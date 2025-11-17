@@ -1,16 +1,17 @@
 import { create } from "mutative";
 
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { pluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
-} from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/utils/parse-perplexity-ask-event";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { pluginGuardsStore } from "@/entrypoints/contexts/content-scripts/services/ui-guard/store";
+import { settingsStorage as prodDevModeSettingsStorage } from "@/entrypoints/services/features/production-dev-mode/settings";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import { betterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:languageModelSelector:networkInterceptMiddlewares": void;
   }
@@ -19,9 +20,11 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:languageModelSelector:networkInterceptMiddlewares",
-    dependencies: ["cache:pluginsEnableStates"],
-    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStatesV2"],
+    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
       if (!pluginsEnableStates["queryBox:languageModelSelector"]) return;
+
+      const prodDevMode = await prodDevModeSettingsStorage.getValue();
 
       let unsub: (() => void) | undefined = undefined; // must do this to prevent strict temporal dead zone on Firefox
 
@@ -55,14 +58,14 @@ export default function () {
 
               const isRetry = parsedData.params.query_source == "retry";
 
-              const settings = ExtensionSettingsService.cachedSync;
+              const settings = PluginsSettingSnapshotsService.getPluginSnapshot(
+                "queryBox:languageModelSelector",
+              );
 
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const newParams = create(parsedData.params, (draft: any) => {
                 draft.timezone =
-                  settings.devMode &&
-                  settings.plugins["queryBox:languageModelSelector"]
-                    .spoofTimezone
+                  prodDevMode.enabled && settings.spoofTimezone
                     ? "America/Los_Angeles"
                     : parsedData.params.timezone;
 

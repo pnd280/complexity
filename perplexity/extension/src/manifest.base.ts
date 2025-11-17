@@ -6,7 +6,7 @@ import packageData from ".././package.json";
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export type ManifestV3Options = Exclude<Awaited<ManifestV3Export>, Function>;
 
-export const baseManifest: ManifestV3Options = {
+export const baseManifest = {
   manifest_version: 3,
   name: "Complexity | Perplexity AI Supercharged",
   description:
@@ -25,7 +25,7 @@ export const baseManifest: ManifestV3Options = {
   },
   options_ui: {
     open_in_tab: true,
-    page: "src/entrypoints/options-page/options.html",
+    page: "src/entrypoints/contexts/options-page/options.html",
   },
 
   permissions: [
@@ -47,14 +47,14 @@ export const baseManifest: ManifestV3Options = {
     {
       matches: APP_CONFIG["perplexity-ai"].globalMatches,
       exclude_matches: APP_CONFIG["perplexity-ai"].globalExcludeMatches,
-      js: ["src/entrypoints/content-scripts/index.ts"],
+      js: ["src/entrypoints/contexts/content-scripts/index.ts"],
       run_at:
         APP_CONFIG.BROWSER === "firefox" ? "document_end" : "document_start",
     },
     {
       matches: APP_CONFIG["perplexity-ai"].globalMatches,
       exclude_matches: APP_CONFIG["perplexity-ai"].globalExcludeMatches,
-      js: ["src/entrypoints/content-scripts/starting-styles.ts"],
+      js: ["src/entrypoints/contexts/content-scripts/starting-styles.ts"],
       run_at: "document_start",
     },
   ],
@@ -65,4 +65,4 @@ export const baseManifest: ManifestV3Options = {
       matches: ["*://*/*"],
     },
   ],
-};
+} as const satisfies ManifestV3Options;

@@ -1,0 +1,29 @@
+import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import type { PplxWebResult } from "@/entrypoints/services/externals/pplx-api/pplx-thread-parser";
+
+export type MessageBlock = {
+  nodes: {
+    $wrapper: JQuery<HTMLElement>;
+    $query: JQuery<HTMLElement>;
+    $queryEditButtonGroup: JQuery<HTMLElement>;
+    $contentWrapper: JQuery<HTMLElement>;
+    $answer: JQuery<HTMLElement>;
+    $footer: JQuery<HTMLElement>;
+    $displayModelButton: JQuery<HTMLElement>;
+  };
+  content: {
+    backendUuid: string;
+    title: string;
+    answer: string;
+    webResults: PplxWebResult[];
+    displayModel: LanguageModelCode;
+    userSelectedModel: LanguageModelCode | null;
+    authorUuid: string | null;
+  };
+  states: {
+    isInFlight: boolean;
+    isReadOnly: boolean;
+    isEditingQuery: boolean;
+    isVirtualized: boolean;
+  };
+};

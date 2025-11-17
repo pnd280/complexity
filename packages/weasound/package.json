@@ -33,7 +33,7 @@
   "devDependencies": {
     "@complexity/typescript-config": "workspace:*",
     "@types/node": "22.17.2",
-    "libav.js": "4.5.6",
+    "libav.js": "6.8.8",
     "prettier": "catalog:lint",
     "terser": "^5.44.1",
     "tsup": "^8.5.1",

@@ -1,0 +1,35 @@
+@reference "../../../assets/index.css";
+
+#root {
+  @apply x:flex;
+
+  & > .border-subtlest.ring-subtlest.divide-subtlest.bg-underlay {
+    @apply x:flex-1;
+  }
+
+  /* hide the query to prevent navbar overflow */
+  [data-cplx-component="thread-navbar"] .max-w-\[300px\] {
+    @apply x:hidden;
+  }
+
+  #cplx-artifact {
+    @apply x:absolute x:top-(--header-height) x:right-4 x:size-full x:max-h-[calc(100dvh-12rem)] x:max-w-3/4 x:overflow-y-auto x:rounded-xl x:border x:border-border/50 x:bg-secondary x:xl:static x:xl:h-auto x:xl:max-h-dvh x:xl:w-full x:xl:max-w-none x:xl:flex-1/3 x:xl:rounded-none;
+  }
+}
+
+body[data-cplx-artifact-active-panel="list"] {
+  #root > .border-subtlest.ring-subtlest.divide-subtlest.bg-underlay {
+    @apply x:xl:flex-1/2;
+  }
+
+  #cplx-artifact {
+    @apply x:max-w-1/2 x:xl:flex-1;
+  }
+}
+
+body[data-cplx-artifact-active-panel] {
+  /* the "Help" floating button */
+  main > .bottom-md.right-md.m-sm.fixed.hidden {
+    display: none;
+  }
+}

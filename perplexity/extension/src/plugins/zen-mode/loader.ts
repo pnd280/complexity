@@ -1,18 +1,18 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
+import type { PluginsSettings } from "@/entrypoints/services/plugins/settings/types";
 import { commandMenuStore } from "@/plugins/command-menu/index.public";
 import {
   alwaysHideRelatedQuestionsCssResourceConfig,
   zenModeCssResourceConfig,
 } from "@/plugins/zen-mode/index.remote-resources";
 import { toggleZenMode } from "@/plugins/zen-mode/utils";
-import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { insertCss } from "@/utils/dom-utils/generics";
 import { keysToString } from "@/utils/misc/utils";
 import hotkeys from "@/utils/wrappers/hotkeys-js";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:zenMode": void;
   }
@@ -21,10 +21,13 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default async function () {
   AsyncLoaderRegistry.register({
     id: "plugin:zenMode",
-    dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
+    dependencies: [
+      "cache:pluginsEnableStatesV2",
+      "cache:pluginSettingSnapshots",
+    ],
     loader: async ({
-      "cache:pluginsEnableStates": pluginsEnableStates,
-      "cache:extensionSettings": extensionSettings,
+      "cache:pluginsEnableStatesV2": pluginsEnableStates,
+      "cache:pluginSettingSnapshots": pluginSettingSnapshots,
     }) => {
       if (!pluginsEnableStates["zenMode"]) return;
 
@@ -36,14 +39,14 @@ export default async function () {
         id: "zen-mode",
       });
 
-      if (extensionSettings.plugins["zenMode"].persistent) {
+      if (pluginSettingSnapshots["zenMode"].persistent) {
         $(document.body).attr(
           "data-cplx-zen-mode",
           localStorage.getItem("cplx.zen-mode.last-state") ?? "false",
         );
       }
 
-      if (extensionSettings.plugins["zenMode"].alwaysHideRelatedQuestions) {
+      if (pluginSettingSnapshots["zenMode"].alwaysHideRelatedQuestions) {
         insertCss({
           css: await getVersionedRemoteResource(
             alwaysHideRelatedQuestionsCssResourceConfig,
@@ -58,15 +61,13 @@ export default async function () {
         );
       }
 
-      setupKeybinding();
+      setupKeybinding(pluginSettingSnapshots["zenMode"].hotkey);
     },
   });
 }
 
-function setupKeybinding() {
-  const settings = ExtensionSettingsService.cachedSync;
-
-  hotkeys(keysToString(settings.plugins["zenMode"].hotkey), (event) => {
+function setupKeybinding(hotkey: PluginsSettings["zenMode"]["hotkey"]) {
+  hotkeys(keysToString(hotkey), (event) => {
     event.stopImmediatePropagation();
     event.preventDefault();
     toggleZenMode();

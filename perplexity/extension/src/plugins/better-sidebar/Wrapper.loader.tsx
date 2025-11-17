@@ -1,7 +1,7 @@
 import { lazily } from "react-lazily";
 
-import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
-import { csUiRootComponentsRegistry } from "@/plugins/__ui-groups__/_root/CsUiRoot";
+import CsUiGuard from "@/entrypoints/contexts/content-scripts/services/ui-guard/CsUiGuard";
+import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
 
 const { BetterSidebar } = lazily(
   () => import("@/plugins/better-sidebar/BetterSidebar"),
@@ -9,12 +9,15 @@ const { BetterSidebar } = lazily(
 
 function BetterSidebarWrapper() {
   return (
-    <CsUiPluginsGuard requiresLoggedIn dependentPluginIds={["betterSidebar"]}>
+    <CsUiGuard requiresLoggedIn dependentPluginIds={["betterSidebar"]}>
       <BetterSidebar />
-    </CsUiPluginsGuard>
+    </CsUiGuard>
   );
 }
 
-export default function loader() {
-  csUiRootComponentsRegistry.getState().add(<BetterSidebarWrapper />);
+export default function () {
+  csUiMount({
+    id: "plugin:betterSidebar",
+    component: <BetterSidebarWrapper />,
+  });
 }

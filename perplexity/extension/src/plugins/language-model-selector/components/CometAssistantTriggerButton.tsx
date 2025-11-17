@@ -1,6 +1,6 @@
 import Tooltip from "@/components/Tooltip";
+import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
 import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
 
 import TablerCpu from "~icons/tabler/cpu";
 
