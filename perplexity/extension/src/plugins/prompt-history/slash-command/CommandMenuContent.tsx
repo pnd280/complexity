@@ -1,7 +1,6 @@
 import { usePopoverContext } from "@ark-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useHotkeys } from "react-hotkeys-hook";
 
 import {
   Command,
@@ -19,6 +18,7 @@ import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import PromptHistoryCommandMenuItem from "@/plugins/prompt-history/slash-command/CommandMenuItem";
 import { keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 export function PromptHistoryCommandMenuContent() {
   const queryClient = useQueryClient();
@@ -70,37 +70,44 @@ export function PromptHistoryCommandMenuContent() {
     });
   };
 
-  useHotkeys(
-    keysToString([getPlatform() === "mac" ? Key.Meta : Key.Control, "c"]),
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  const handleCopy = useEffectEvent((e: KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-      $(`[data-value='${selectingValue}'] [data-copy-button]`).trigger("click");
-    },
-    {
-      enableOnFormTags: true,
-      preventDefault: true,
-    },
-  );
+    $(`[data-value='${selectingValue}'] [data-copy-button]`).trigger("click");
+  });
 
-  useHotkeys(
-    Key.Delete,
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  useEffect(() => {
+    const copyKeyCombo = keysToString([
+      getPlatform() === "mac" ? Key.Meta : Key.Control,
+      "c",
+    ]);
 
-      const prompt = items?.find((item) => item.id === selectingValue);
+    hotkeys(copyKeyCombo, handleCopy);
 
-      if (prompt == null) return;
+    return () => {
+      hotkeys.unbind(copyKeyCombo, handleCopy);
+    };
+  }, []);
 
-      void deleteItem(prompt.id);
-    },
-    {
-      enableOnFormTags: true,
-      preventDefault: true,
-    },
-  );
+  const handleDelete = useEffectEvent((e: KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const prompt = items?.find((item) => item.id === selectingValue);
+
+    if (prompt == null) return;
+
+    void deleteItem(prompt.id);
+  });
+
+  useEffect(() => {
+    hotkeys(Key.Delete, handleDelete);
+
+    return () => {
+      hotkeys.unbind(Key.Delete, handleDelete);
+    };
+  }, []);
 
   const { getContentProps } = usePopoverContext();
 

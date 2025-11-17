@@ -1,5 +1,4 @@
 import { Highlight } from "@ark-ui/react/highlight";
-import { isHotkeyPressed } from "react-hotkeys-hook";
 
 import ClockTemporary from "@/components/icons/ClockTemporary";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +18,7 @@ import { commandMenuStore } from "@/plugins/command-menu/store";
 import type { ThreadSearchResponseApi } from "@/services/externals/pplx-api/pplx-api.types";
 import { formatExactDate, formatRelativeTime } from "@/services/infra/i18n";
 import { jsonUtils } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 type ThreadItemProps = {
   thread: ThreadSearchResponseApi;
@@ -57,7 +57,7 @@ export default function ThreadItem({ thread, searchValue }: ThreadItemProps) {
         keywords={keywords}
         className="x:flex-col x:items-start x:justify-center x:gap-2"
         onSelect={() => {
-          if (isHotkeyPressed(Key.Alt)) {
+          if (hotkeys.isPressed(Key.Alt)) {
             void openInNewTab(`/search/${thread.slug}`);
           } else {
             void softNavigate(`/search/${thread.slug}`);

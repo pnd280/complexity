@@ -1,5 +1,3 @@
-import { isHotkeyPressed } from "react-hotkeys-hook";
-
 import PplxDiscover from "@/components/icons/PplxDiscover";
 import PplxLabs from "@/components/icons/PplxLabs";
 import PplxSpace from "@/components/icons/PplxSpace";
@@ -9,6 +7,7 @@ import {
   softNavigate,
 } from "@/plugins/__core__/_main-world/spa-router/utils";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 import BiPplx from "~icons/bi/perplexity";
 import TablerSettings from "~icons/tabler/settings";
@@ -34,7 +33,7 @@ const createNavigationItem = ({
   keybinding: [],
   keywords: navigationKeywords,
   onSelect: () => {
-    if (isHotkeyPressed(Key.Alt)) {
+    if (hotkeys.isPressed(Key.Alt)) {
       void openInNewTab(url);
     } else {
       void softNavigate(url);

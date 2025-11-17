@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useHotkeys } from "react-hotkeys-hook";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
 import { keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 const SIDEBAR_WIDTH = "264px";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
@@ -70,28 +70,29 @@ export function SidebarProvider({
     }
   };
 
-  // Helper to toggle the sidebar.
   const toggleSidebar = () => {
     setOpen((open) => !open);
   };
 
-  useHotkeys(
-    keysToString([
+  const handleToggleSidebar = useEffectEvent((event: KeyboardEvent) => {
+    event.preventDefault();
+    window.dispatchEvent(new Event("resize"));
+    toggleSidebar();
+  });
+
+  useEffect(() => {
+    const keyCombo = keysToString([
       getPlatform() === "mac" ? Key.Meta : Key.Control,
       SIDEBAR_KEYBOARD_SHORTCUT,
-    ]),
-    () => {
-      window.dispatchEvent(new Event("resize"));
-      toggleSidebar();
-    },
-    {
-      enableOnFormTags: true,
-      preventDefault: true,
-    },
-  );
+    ]);
 
-  // We add a state so that we can do data-state="expanded" or "collapsed".
-  // This makes it easier to style the sidebar with Tailwind classes.
+    hotkeys(keyCombo, handleToggleSidebar);
+
+    return () => {
+      hotkeys.unbind(keyCombo, handleToggleSidebar);
+    };
+  }, []);
+
   const state = open ? "expanded" : "collapsed";
 
   const contextValue: SidebarContextProps = {

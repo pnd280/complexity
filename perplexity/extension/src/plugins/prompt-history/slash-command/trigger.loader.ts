@@ -4,7 +4,7 @@ import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
 import { getAnchor } from "@/plugins/__core__/slash-command/utils";
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { getTaskScheduler, keysToString } from "@/utils/misc/utils";
-import hotkeysJs from "@/utils/wrappers/hotkeys-js";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -23,7 +23,7 @@ export default function () {
         ExtensionSettingsService.cachedSync.plugins["promptHistory"].shortcut;
 
       if (shortcut.type === "keybinding") {
-        hotkeysJs(keysToString(shortcut.value), () => {
+        hotkeys(keysToString(shortcut.value), () => {
           const target = document.activeElement;
 
           if (!target || !(target instanceof HTMLElement)) return;

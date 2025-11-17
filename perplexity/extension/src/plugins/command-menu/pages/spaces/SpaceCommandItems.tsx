@@ -1,5 +1,3 @@
-import { useHotkeys } from "react-hotkeys-hook";
-
 import { CommandEmpty, CommandGroup } from "@/components/ui/command";
 import { CommandItemSkeleton } from "@/components/ui/command";
 import { toast } from "@/components/ui/use-toast";
@@ -9,6 +7,7 @@ import SpaceCommandItem from "@/plugins/command-menu/pages/spaces/SpaceCommandIt
 import usePplxSpaces from "@/plugins/command-menu/pages/spaces/usePplxSpaces";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
 import { keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 export default function SpaceCommandItems() {
   const open = useCommandMenuStore((store) => store.states.open);
@@ -17,24 +16,28 @@ export default function SpaceCommandItems() {
 
   const value = useCommandMenuStore((store) => store.states.selectingValue);
 
-  useHotkeys(
-    keysToString([Key.Control, "c"]),
-    async (e) => {
-      e.stopPropagation();
+  const handleCopyId = useEffectEvent((e: KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-      await navigator.clipboard.writeText(value);
-
+    void navigator.clipboard.writeText(value).then(() => {
       toast({
         title: t("plugin-command-menu.spaces.footer.copyIdSuccess"),
         description: value,
       });
-    },
-    {
-      preventDefault: true,
-      enableOnFormTags: true,
-      enabled: open,
-    },
-  );
+    });
+  });
+
+  useEffect(() => {
+    if (!open) return;
+
+    const keyCombo = keysToString([Key.Control, "c"]);
+    hotkeys(keyCombo, handleCopyId);
+
+    return () => {
+      hotkeys.unbind(keyCombo, handleCopyId);
+    };
+  }, [open]);
 
   if (isLoading) return <CommandItemSkeleton count={5} />;
   if (isError)

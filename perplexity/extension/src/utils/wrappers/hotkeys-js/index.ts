@@ -1,12 +1,12 @@
-import hotkeys from "hotkeys-js";
+import { default as hotkeysJs } from "hotkeys-js";
 
-const hotkeysJs = hotkeys.noConflict();
+const hotkeys: typeof hotkeysJs = hotkeysJs.noConflict();
 
-hotkeysJs.filter = (_event: KeyboardEvent) => {
+hotkeys.filter = (_event: KeyboardEvent) => {
   return true;
 };
 
-export default hotkeysJs;
+export default hotkeys;
 
 export function isFormTag(event: KeyboardEvent) {
   const target = event.target as HTMLElement;

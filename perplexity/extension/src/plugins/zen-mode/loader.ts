@@ -10,7 +10,7 @@ import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versio
 import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { insertCss } from "@/utils/dom-utils/generics";
 import { keysToString } from "@/utils/misc/utils";
-import hotkeysJs from "@/utils/wrappers/hotkeys-js";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -66,7 +66,7 @@ export default async function () {
 function setupKeybinding() {
   const settings = ExtensionSettingsService.cachedSync;
 
-  hotkeysJs(keysToString(settings.plugins["zenMode"].hotkey), (event) => {
+  hotkeys(keysToString(settings.plugins["zenMode"].hotkey), (event) => {
     event.stopImmediatePropagation();
     event.preventDefault();
     toggleZenMode();

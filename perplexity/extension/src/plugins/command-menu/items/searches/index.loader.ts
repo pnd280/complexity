@@ -2,7 +2,7 @@ import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import { getRawItems } from "@/plugins/command-menu/items/searches/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import { keysToString } from "@/utils/misc/utils";
-import hotkeysJs from "@/utils/wrappers/hotkeys-js";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 declare module "@/plugins/__async-deps__/async-loaders" {
   interface AsyncLoadersRegistry {
@@ -20,7 +20,7 @@ export default function () {
       const items = getRawItems();
 
       items.forEach((item) => {
-        hotkeysJs(keysToString(item.keybinding), () => {
+        hotkeys(keysToString(item.keybinding), () => {
           item.onSelect();
           commandMenuStore.getState().states.setOpen(true);
         });

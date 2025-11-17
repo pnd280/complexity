@@ -1,11 +1,11 @@
 import { useTransition } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
 
 import { Input } from "@/components/ui/input";
 import { usePluginFilters } from "@/entrypoints/options-page/dashboard/pages/plugins/hooks/usePluginFilters";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
 import { keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 export default function SearchInput() {
   const { isMobile } = useIsMobileStore();
@@ -21,18 +21,23 @@ export default function SearchInput() {
     });
   };
 
-  useHotkeys(
-    keysToString([getPlatform() === "mac" ? Key.Meta : Key.Control, "e"]),
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  const handleFocusSearch = useEffectEvent((e: KeyboardEvent) => {
+    e.preventDefault();
+    $("#search-plugins").trigger("focus");
+  });
 
-      $("#search-plugins").trigger("focus");
-    },
-    {
-      preventDefault: true,
-    },
-  );
+  useEffect(() => {
+    const keyCombo = keysToString([
+      getPlatform() === "mac" ? Key.Meta : Key.Control,
+      "e",
+    ]);
+
+    hotkeys(keyCombo, handleFocusSearch);
+
+    return () => {
+      hotkeys.unbind(keyCombo, handleFocusSearch);
+    };
+  }, []);
 
   return (
     <Input
