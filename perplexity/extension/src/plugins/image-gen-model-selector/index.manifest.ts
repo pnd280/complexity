@@ -1,35 +1,42 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/image-gen-model-selector/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    imageGenModelSelector: z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
+const meta = definePluginMeta({
+  id: "imageGenModelSelector",
+  name: "Image Generation Model Selector",
+  description: "Enable selection of different image generation models",
 });
 
-export default definePlugin({
-  meta: {
-    id: "imageGenModelSelector",
-    title: "Image Generation Model Selector",
-    description: "Enable selection of different image generation models",
-    dashboardMeta: {
-      tags: ["ui", "desktopOnly", "pplxPro"],
-      categories: ["thread"],
-      uiRouteSegment: "image-gen-model-selector",
-    },
-    dependencies: {
-      corePlugins: ["webSocket", "domObservers:thread"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["ui", "desktopOnly", "pplxPro"],
+  categories: ["thread"],
+  uiRouteSegment: "image-gen-model-selector",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["webSocket", "domObservers:thread"],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

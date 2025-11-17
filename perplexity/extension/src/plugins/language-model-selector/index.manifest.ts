@@ -1,44 +1,47 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/language-model-selector/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    "queryBox:languageModelSelector": z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
-  showModelSelectionMismatchWarning: z.boolean(),
-  spoofTimezone: z.boolean(),
+const meta = definePluginMeta({
+  id: "queryBox:languageModelSelector",
+  name: "Language Model Selector",
+  description: "Select the language model for the chat",
 });
 
-export default definePlugin({
-  meta: {
-    id: "queryBox:languageModelSelector",
-    title: "Better Language Model Selector",
-    description: "Take complete control of all available language models",
-    dashboardMeta: {
-      tags: ["ui", "pplxPro", "cometAssistant"],
-      categories: ["queryBox", "comet"],
-      uiRouteSegment: "query-box-language-model-selector",
-    },
-    dependencies: {
-      corePlugins: [
-        "networkIntercept",
-        "domObservers:queryBoxes",
-        "domObservers:internalSearchStates",
-        "domObservers:thread:messageBlocks",
-      ],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-      showModelSelectionMismatchWarning: true,
-      spoofTimezone: false,
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["ui", "pplxPro", "cometAssistant"],
+  categories: ["queryBox", "comet"],
+  uiRouteSegment: "query-box-language-model-selector",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: [
+    "networkIntercept",
+    "domObservers:queryBoxes",
+    "domObservers:internalSearchStates",
+    "domObservers:thread:messageBlocks",
+  ],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

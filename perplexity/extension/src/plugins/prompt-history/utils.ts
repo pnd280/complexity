@@ -1,7 +1,7 @@
 import {
   getActiveQueryBoxTextbox,
   isLexical,
-} from "@/plugins/__ui-groups__/elements/query-box/utils";
+} from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import { getTextContent } from "@/utils/dom-utils/lexical-utils";
 

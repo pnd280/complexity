@@ -1,68 +1,44 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import { indexedDbSchemas } from "@/plugins/prompt-history/indexed-db";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/prompt-history/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-import { SlashCommandMenuTabShortcutSchema } from "@/plugins/__core__/slash-command/shortcuts.types.public";
-import type { PromptHistory } from "@/plugins/prompt-history/types";
-import { PromptHistorySchema } from "@/plugins/prompt-history/types";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    promptHistory: z.infer<typeof schema>;
-  }
-
-  interface PluginsIndexedDbRegistry {
-    promptHistory: PromptHistory;
-  }
-
-  interface PluginsDbDataRegistry {
-    promptHistory: PromptHistory[];
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
-  shortcut: SlashCommandMenuTabShortcutSchema,
-  trigger: z.object({
-    onSubmit: z.boolean(),
-    onNavigation: z.boolean(),
-  }),
+const meta = definePluginMeta({
+  id: "promptHistory",
+  name: "Prompt History",
+  description: "Reuse previous prompts",
 });
 
-export default definePlugin({
-  meta: {
-    id: "promptHistory",
-    title: "Prompt History",
-    description: "Reuse previous prompts",
-    dashboardMeta: {
-      tags: ["slashCommand"],
-      categories: ["queryBox"],
-      uiRouteSegment: "prompt-history",
-    },
-    dependencies: {
-      corePlugins: ["spaRouter", "networkIntercept", "slashCommand"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-      shortcut: {
-        type: "command",
-        value: "h",
-      },
-      trigger: {
-        onSubmit: true,
-        onNavigation: true,
-      },
-    },
-  },
-  indexedDb: {
-    versions: [
-      {
-        version: 6,
-        schema: "&id, prompt, createdAt",
-      },
-    ],
-    schema: PromptHistorySchema,
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["slashCommand"],
+  categories: ["queryBox"],
+  uiRouteSegment: "prompt-history",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["spaRouter", "networkIntercept", "slashCommand"],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+  indexedDbSchemas,
+} satisfies PluginManifestExports;
+
+export default manifest;

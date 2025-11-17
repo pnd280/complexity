@@ -1,11 +1,11 @@
 import { lazily } from "react-lazily";
 
-import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
-import { csUiRootComponentsRegistry } from "@/plugins/__ui-groups__/_root/CsUiRoot";
-import { CometAssistantQueryBoxToolbarComponentRegister } from "@/plugins/__ui-groups__/elements/query-box/comet-assistant/Group";
-import { FollowUpQueryBoxToolbarComponentRegister } from "@/plugins/__ui-groups__/elements/query-box/follow-up/Group";
-import { MainQueryBoxToolbarComponentRegister } from "@/plugins/__ui-groups__/elements/query-box/main/Group";
-import { SpaceQueryBoxToolbarComponentRegister } from "@/plugins/__ui-groups__/elements/query-box/space/Group";
+import CsUiGuard from "@/entrypoints/contexts/content-scripts/services/ui-guard/CsUiGuard";
+import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
+import { CometAssistantQueryBoxToolbarComponentRegister } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/comet-assistant/Group";
+import { FollowUpQueryBoxToolbarComponentRegister } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/follow-up/Group";
+import { MainQueryBoxToolbarComponentRegister } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/main/Group";
+import { SpaceQueryBoxToolbarComponentRegister } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/space/Group";
 
 const { LanguageModelSelector } = lazily(
   () => import("@/plugins/language-model-selector/LanguageModelSelector"),
@@ -13,23 +13,38 @@ const { LanguageModelSelector } = lazily(
 
 function LanguageModelSelectorWrapper() {
   return (
-    <CsUiPluginsGuard dependentPluginIds={["queryBox:languageModelSelector"]}>
-      <MainQueryBoxToolbarComponentRegister group="ll">
+    <CsUiGuard dependentPluginIds={["queryBox:languageModelSelector"]}>
+      <MainQueryBoxToolbarComponentRegister
+        id="plugin:queryBox:languageModelSelector"
+        group="ll"
+      >
         <LanguageModelSelector />
       </MainQueryBoxToolbarComponentRegister>
-      <SpaceQueryBoxToolbarComponentRegister group="ll">
+      <SpaceQueryBoxToolbarComponentRegister
+        id="plugin:queryBox:languageModelSelector"
+        group="ll"
+      >
         <LanguageModelSelector />
       </SpaceQueryBoxToolbarComponentRegister>
-      <FollowUpQueryBoxToolbarComponentRegister group="ll">
+      <FollowUpQueryBoxToolbarComponentRegister
+        id="plugin:queryBox:languageModelSelector"
+        group="ll"
+      >
         <LanguageModelSelector />
       </FollowUpQueryBoxToolbarComponentRegister>
-      <CometAssistantQueryBoxToolbarComponentRegister group="rl">
+      <CometAssistantQueryBoxToolbarComponentRegister
+        id="plugin:queryBox:languageModelSelector"
+        group="rl"
+      >
         <LanguageModelSelector />
       </CometAssistantQueryBoxToolbarComponentRegister>
-    </CsUiPluginsGuard>
+    </CsUiGuard>
   );
 }
 
-export default function loader() {
-  csUiRootComponentsRegistry.getState().add(<LanguageModelSelectorWrapper />);
+export default function () {
+  csUiMount({
+    id: "plugin:queryBox:languageModelSelector",
+    component: <LanguageModelSelectorWrapper />,
+  });
 }

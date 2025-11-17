@@ -1,7 +1,7 @@
 import { lazily } from "react-lazily";
 
-import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
-import { csUiRootComponentsRegistry } from "@/plugins/__ui-groups__/_root/CsUiRoot";
+import CsUiGuard from "@/entrypoints/contexts/content-scripts/services/ui-guard/CsUiGuard";
+import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
 
 const { CommandMenu } = lazily(
   () => import("@/plugins/command-menu/CommandMenu"),
@@ -9,15 +9,18 @@ const { CommandMenu } = lazily(
 
 function CommandMenuWrapper() {
   return (
-    <CsUiPluginsGuard
+    <CsUiGuard
       excludeLocation={["comet_assistant"]}
       dependentPluginIds={["commandMenu"]}
     >
       <CommandMenu />
-    </CsUiPluginsGuard>
+    </CsUiGuard>
   );
 }
 
-export default function loader() {
-  csUiRootComponentsRegistry.getState().add(<CommandMenuWrapper />);
+export default function () {
+  csUiMount({
+    id: "plugin:commandMenu",
+    component: <CommandMenuWrapper />,
+  });
 }

@@ -1,38 +1,66 @@
 export const elements = [
   {
-    type: "module-registries",
+    type: "entrypoints",
     mode: "full",
-    pattern: ["src/__registries__/**/*"],
+    capture: ["path", "loaderType"],
+    pattern: ["src/**/{bg-worker,opt-loader}.*"],
   },
 
   {
-    type: "extension-entrypoints",
+    type: "entrypoints",
     mode: "full",
-    pattern: [
-      "src/entrypoints/*/**/*",
-      "src/plugins/*/**/settings-ui.tsx",
-      "src/plugins/*/**/settings-ui/index.tsx",
-    ],
+    capture: ["path", "prefix", "loader"],
+    pattern: ["src/**/*.{bg-worker,opt-loader}.*"],
   },
 
   {
-    type: "plugin-runtime-deps",
+    type: "entrypoints",
     mode: "full",
-    pattern: ["src/plugins/{__async-deps__,__core__,__ui-groups__}/**/*"],
+    capture: ["context"],
+    pattern: ["src/entrypoints/contexts/{background,options-page,content-scripts}/**/*"],
+  },
+
+  {
+    type: "entrypoints",
+    mode: "full",
+    pattern: ["src/entrypoints/**/*"],
   },
 
   {
     type: "plugin-public-exports",
     mode: "full",
-    capture: ["pluginName"],
-    pattern: ["src/plugins/**/*.public.*"],
+    capture: ["group", "name"],
+    pattern: ["src/plugins/_*/*/**/public.*", "src/plugins/_*/*/**/*.public.*"],
+  },
+
+  {
+    type: "plugin-public-exports",
+    mode: "full",
+    capture: ["name"],
+    pattern: ["src/plugins/*/**/public.*", "src/plugins/*/**/*.public.*"],
   },
 
   {
     type: "plugin",
     mode: "full",
-    capture: ["pluginName"],
+    capture: ["group", "name"],
+    pattern: ["src/plugins/_*/*/**/*"],
+  },
+
+  {
+    type: "plugin",
+    mode: "full",
+    capture: ["name"],
     pattern: ["src/plugins/*/**/*"],
+  },
+
+  {
+    type: "shared",
+    mode: "full",
+    capture: ["type"],
+    pattern: [
+      "src/*/**/*",
+    ],
   },
 
   {
@@ -40,7 +68,6 @@ export const elements = [
     mode: "full",
     pattern: [
       "src/*.ts",
-      "src/{components,assets,hooks,services,types,utils,data}/**/*",
     ],
   },
 ];

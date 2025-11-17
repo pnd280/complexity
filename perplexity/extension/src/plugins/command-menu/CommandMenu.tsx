@@ -1,4 +1,5 @@
 import { Command, CommandDialog, CommandList } from "@/components/ui/command";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import CommandFooter from "@/plugins/command-menu/components/CommandFooter";
 import CommandInput from "@/plugins/command-menu/components/CommandInput";
 import CommandSidecar from "@/plugins/command-menu/components/CommandSidecar";
@@ -8,7 +9,6 @@ import SpaceThreadsPage from "@/plugins/command-menu/pages/space-threads/Page";
 import SpacesPage from "@/plugins/command-menu/pages/spaces/Page";
 import ThreadsPage from "@/plugins/command-menu/pages/threads/Page";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { keysToString } from "@/utils/misc/utils";
 import hotkeys from "@/utils/wrappers/hotkeys-js";
 
@@ -25,7 +25,8 @@ export function CommandMenu() {
     (store) => store.sidecar,
   );
 
-  const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
+  const settings =
+    PluginsSettingSnapshotsService.getPluginSnapshot("commandMenu");
 
   const handleToggleMenu = useEffectEvent((e: KeyboardEvent) => {
     e.stopImmediatePropagation();

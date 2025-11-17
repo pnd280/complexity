@@ -1,4 +1,4 @@
-import { useSidebarDomObserverStore } from "@/plugins/__core__/dom-observers/sidebar/store";
+import { useSidebarDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/sidebar/store";
 
 export default function usePortalContainer() {
   "use no memo";

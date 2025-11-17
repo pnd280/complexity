@@ -1,8 +1,8 @@
 import { lazily } from "react-lazily";
 
-import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
-import { csUiRootComponentsRegistry } from "@/plugins/__ui-groups__/_root/CsUiRoot";
-import { SpaceQueryBoxToolbarComponentRegister } from "@/plugins/__ui-groups__/elements/query-box/space/Group";
+import CsUiGuard from "@/entrypoints/contexts/content-scripts/services/ui-guard/CsUiGuard";
+import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
+import { SpaceQueryBoxToolbarComponentRegister } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/space/Group";
 
 const { ForceWritingModeToggle } = lazily(
   () => import("@/plugins/force-writing-mode/ForceWritingMode"),
@@ -10,16 +10,20 @@ const { ForceWritingModeToggle } = lazily(
 
 function ForceWritingModeToggleWrapper() {
   return (
-    <CsUiPluginsGuard
-      dependentPluginIds={["queryBox:spacesThreadsForceWritingMode"]}
-    >
-      <SpaceQueryBoxToolbarComponentRegister group="rl">
+    <CsUiGuard dependentPluginIds={["queryBox:spacesThreadsForceWritingMode"]}>
+      <SpaceQueryBoxToolbarComponentRegister
+        id="plugin:queryBox:spacesThreadsForceWritingMode:forceWritingModeToggle"
+        group="rl"
+      >
         <ForceWritingModeToggle />
       </SpaceQueryBoxToolbarComponentRegister>
-    </CsUiPluginsGuard>
+    </CsUiGuard>
   );
 }
 
-export default function loader() {
-  csUiRootComponentsRegistry.getState().add(<ForceWritingModeToggleWrapper />);
+export default function () {
+  csUiMount({
+    id: "plugin:queryBox:spacesThreadsForceWritingMode:forceWritingModeToggle",
+    component: <ForceWritingModeToggleWrapper />,
+  });
 }

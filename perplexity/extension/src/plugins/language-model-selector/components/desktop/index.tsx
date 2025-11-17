@@ -1,14 +1,14 @@
 import { DropdownMenuContent } from "@/components/ui/dropdown-menu";
 import { SelectContent } from "@/components/ui/select";
-import { usePluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
-import { ScopedQueryBoxContext } from "@/plugins/__ui-groups__/elements/query-box/context";
+import { usePluginGuardsStore } from "@/entrypoints/contexts/content-scripts/services/ui-guard/store";
+import { ScopedQueryBoxContext } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/context";
+import { LanguageModelTypeIcons } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 import LanguageModelGroup from "@/plugins/language-model-selector/components/desktop/LanguageModelGroup";
 import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
 import {
   getAdvancedStandaloneModels,
   getModelsByType,
 } from "@/plugins/language-model-selector/utils";
-import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
 
 export default function DesktopContent({
   children,

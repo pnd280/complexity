@@ -1,25 +1,18 @@
-// eslint-disable-next-line boundaries/element-types
-import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
-
-export async function setLexicalEditorContent({
+export function setLexicalEditorContent({
   content,
+  activeTextbox,
 }: {
   content: string;
+  activeTextbox: HTMLElement;
 }) {
-  const domSelectors = await DomSelectorsService.Proxy.getCache();
+  if (!(activeTextbox instanceof HTMLElement)) return;
 
-  const activeElement = $(
-    `${domSelectors.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,
-  )[0];
+  if (activeTextbox.contentEditable !== "true") return;
 
-  if (!(activeElement instanceof HTMLElement)) return;
-
-  if (activeElement.contentEditable !== "true") return;
-
-  if (!("__lexicalEditor" in activeElement)) return;
+  if (!("__lexicalEditor" in activeTextbox)) return;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const editor = activeElement.__lexicalEditor as any;
+  const editor = activeTextbox.__lexicalEditor as any;
 
   const textState = JSON.stringify({
     root: {
@@ -56,21 +49,19 @@ export async function setLexicalEditorContent({
   editor.focus();
 }
 
-export async function getLexicalEditorJsonContent() {
-  const domSelectors = await DomSelectorsService.Proxy.getCache();
+export async function getLexicalEditorJsonContent(activeTextbox: HTMLElement) {
+  // const activeElement = $(
+  //   `${domSelectors.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,
+  // )[0];
 
-  const activeElement = $(
-    `${domSelectors.QUERY_BOX.TEXTBOX.ARBITRARY}:last`,
-  )[0];
+  if (!(activeTextbox instanceof HTMLElement)) return;
 
-  if (!(activeElement instanceof HTMLElement)) return;
+  if (activeTextbox.contentEditable !== "true") return;
 
-  if (activeElement.contentEditable !== "true") return;
-
-  if (!("__lexicalEditor" in activeElement)) return;
+  if (!("__lexicalEditor" in activeTextbox)) return;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const editor = activeElement.__lexicalEditor as any;
+  const editor = activeTextbox.__lexicalEditor as any;
 
   const editorState = editor.getEditorState();
 

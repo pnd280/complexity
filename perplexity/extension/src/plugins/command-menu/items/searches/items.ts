@@ -1,8 +1,8 @@
 import PplxSpace from "@/components/icons/PplxSpace";
 import PplxThread from "@/components/icons/PplxThread";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export const getRawItems = (): CommandItemProps[] => [
   {
@@ -10,8 +10,8 @@ export const getRawItems = (): CommandItemProps[] => [
     group: t("plugin-command-menu.groups.search"),
     icon: PplxThread,
     keybinding:
-      ExtensionSettingsService.cachedSync.plugins.commandMenu.keybindings
-        .threadsSearch,
+      PluginsSettingSnapshotsService.getPluginSnapshot("commandMenu")
+        .keybindings.threadsSearch,
     keywords: ["search"],
     onSelect: () => {
       commandMenuStore.getState().pagesStack.push({
@@ -32,8 +32,8 @@ export const getRawItems = (): CommandItemProps[] => [
     group: t("plugin-command-menu.groups.search"),
     icon: PplxSpace,
     keybinding:
-      ExtensionSettingsService.cachedSync.plugins.commandMenu.keybindings
-        .spacesSearch,
+      PluginsSettingSnapshotsService.getPluginSnapshot("commandMenu")
+        .keybindings.spacesSearch,
     keywords: ["search"],
     onSelect: () => {
       commandMenuStore.getState().pagesStack.push({

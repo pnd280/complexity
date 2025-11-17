@@ -6,9 +6,9 @@ import {
   CommandItemRightAttributes,
   CommandItemTitle,
 } from "@/components/ui/command";
-import { useColorSchemeStore } from "@/plugins/__async-deps__/global-stores/color-scheme-store";
-import usePplxIncognitoMode from "@/plugins/__async-deps__/hooks/usePplxIncognitoMode";
-import { useSpaRouter } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { useSpaRouter } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import usePplxIncognitoMode from "@/entrypoints/contexts/content-scripts/hooks/usePplxIncognitoMode";
+import { useColorSchemeStore } from "@/entrypoints/contexts/content-scripts/stores/color-scheme-store";
 import CommandItemGuard from "@/plugins/command-menu/components/CommandItemGuard";
 import { getRawItems } from "@/plugins/command-menu/items/actions/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";

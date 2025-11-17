@@ -1,7 +1,7 @@
 import { z } from "zod";
 
+import { defineVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources";
 import normalizeCss from "@/plugins/force-writing-mode/styles.css?inline";
-import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const normalizeCssResourceConfig = defineVersionedRemoteResource({
   name: "plugin.forceWritingMode.normalizeCss",

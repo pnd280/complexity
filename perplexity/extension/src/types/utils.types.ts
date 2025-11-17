@@ -14,6 +14,23 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
+export type MapValue<T> = T extends Map<any, infer V> ? V : never;
+
+export type NullablePartial<T> = {
+  [key in keyof T]+?: T[key] | undefined | null;
+};
+
+/**
+ * Maps all properties of type T to never.
+ */
+export type Never<T> = {
+  [K in keyof T]: never;
+};
+
+export type ContextLoaderExport = () => void;
+
+export type String = string;
+
 export function isNotNumber(value: unknown): boolean {
   return typeof value !== "number" || isNaN(value);
 }

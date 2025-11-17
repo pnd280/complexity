@@ -1,6 +1,6 @@
 import type { TranslationShape } from "@complexity/i18n";
 
-import type translations from "@/plugins/language-model-selector/_locales/plugin-model-selectors.en-US";
+import type translations from "@/plugins/language-model-selector/_locales/en-US";
 
 export const namespace = "plugin-model-selectors";
 

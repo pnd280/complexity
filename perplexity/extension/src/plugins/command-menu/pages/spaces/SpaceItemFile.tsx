@@ -2,8 +2,8 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import Tooltip from "@/components/Tooltip";
 import { toast } from "@/components/ui/use-toast";
-import type { SpaceFilesApiResponse } from "@/services/externals/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import type { SpaceFilesApiResponse } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 
 import TablerFile from "~icons/tabler/file";
 

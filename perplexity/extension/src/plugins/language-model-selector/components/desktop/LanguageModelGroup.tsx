@@ -7,13 +7,13 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select";
-import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
-import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
+import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
 import type {
   LanguageModel,
   LanguageModelCode,
-} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+} from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
+import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
 
 import TablerCpu from "~icons/tabler/cpu";
 

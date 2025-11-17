@@ -1,15 +1,15 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
+import { InstantCssService } from "@/entrypoints/services/features/instant-css";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import {
   betterSidebarNormalizeCollapsedCssResourceConfig,
   betterSidebarNormalizeExpandedCssResourceConfig,
 } from "@/plugins/better-sidebar/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import { InstantCssService } from "@/services/features/instant-css";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { sendMessage } from "@/types/chrome-runtime-message";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:betterSidebar:instantCss": void;
   }
@@ -18,9 +18,9 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:betterSidebar:instantCss",
-    dependencies: ["cache:pluginsEnableStates", "store:pluginGuards"],
+    dependencies: ["cache:pluginsEnableStatesV2", "store:pluginGuards"],
     loader: async ({
-      "cache:pluginsEnableStates": pluginsEnableStates,
+      "cache:pluginsEnableStatesV2": pluginsEnableStates,
       "store:pluginGuards": pluginGuardsStore,
     }) => {
       await applyLayoutShiftPreventionInstantCss({
@@ -29,7 +29,7 @@ export default function () {
           InstantCssService.hasPermissionsSync({
             grantedPermissions: pluginGuardsStore.grantedPermissions,
           }) &&
-          ExtensionSettingsService.cachedSync.plugins.betterSidebar
+          PluginsSettingSnapshotsService.getPluginSnapshot("betterSidebar")
             .shouldPreventLayoutShift,
       });
     },

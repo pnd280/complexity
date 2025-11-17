@@ -1,14 +1,16 @@
 import { useHotkeyRecorder } from "@/components/hotkey-recorder";
-import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
+import { useSettings } from "@/plugins/command-menu/settings";
 
 export default function SpacesSearchPageKeybinding() {
-  const { settings, mutation } = useExtensionSettings();
+  const { settings, update } = useSettings();
 
   const { HotkeyRecorderUi } = useHotkeyRecorder({
-    defaultKeys: settings.plugins["commandMenu"].keybindings.spacesSearch,
+    defaultKeys: settings.keybindings.spacesSearch,
     onSave: (keys) => {
-      mutation.mutate((draft) => {
-        draft.plugins["commandMenu"].keybindings.spacesSearch = keys;
+      void update({
+        updateFn: (draft) => {
+          draft.keybindings.spacesSearch = keys;
+        },
       });
     },
   });

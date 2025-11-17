@@ -1,4 +1,4 @@
-import { createUiGroupRegistry } from "@/plugins/__ui-groups__/registry-factory";
+import { createUiGroupRegistry } from "@/entrypoints/utils/ui-registry-factory";
 
 export const {
   registry: externalPagesRegistry,

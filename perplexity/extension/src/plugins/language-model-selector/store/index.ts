@@ -2,7 +2,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { createWithEqualityFn } from "zustand/traditional";
 import { mutative } from "zustand-mutative";
 
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import type { LanguageModel } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type BetterLanguageModelSelectorStore = {
   model: LanguageModel["code"];

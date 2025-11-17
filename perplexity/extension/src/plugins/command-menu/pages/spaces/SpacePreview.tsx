@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import type { Space } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 import SpaceItemFile from "@/plugins/command-menu/pages/spaces/SpaceItemFile";
-import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
 import TablerLink from "~icons/tabler/link";
 

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { softNavigate } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { softNavigate } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import type { ThreadSearchResponseApi } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import { commandMenuStore } from "@/plugins/command-menu/store";
-import type { ThreadSearchResponseApi } from "@/services/externals/pplx-api/pplx-api.types";
 import { emojiCodeToString } from "@/utils/misc/utils";
 
 export default function SpaceBadge({

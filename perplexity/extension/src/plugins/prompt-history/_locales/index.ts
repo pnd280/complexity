@@ -1,6 +1,6 @@
 import type { TranslationShape } from "@complexity/i18n";
 
-import type translations from "@/plugins/prompt-history/_locales/plugin-prompt-history.en-US";
+import type translations from "@/plugins/prompt-history/_locales/en-US";
 
 export const namespace = "plugin-prompt-history";
 

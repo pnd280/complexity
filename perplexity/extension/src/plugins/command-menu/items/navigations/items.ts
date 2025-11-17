@@ -5,7 +5,7 @@ import PplxThread from "@/components/icons/PplxThread";
 import {
   openInNewTab,
   softNavigate,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
 import hotkeys from "@/utils/wrappers/hotkeys-js";
 

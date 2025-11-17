@@ -1,7 +1,7 @@
 import {
   openInNewTab,
   softNavigate,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
 import {
   commandMenuStore,
   useCommandMenuStore,

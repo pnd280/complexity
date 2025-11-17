@@ -1,6 +1,6 @@
-import { domObserverService } from "@/plugins/__core__/dom-observers";
-import { createDomObserverId } from "@/plugins/__core__/dom-observers/types";
-import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
+import { domObserverService } from "@/services/features/dom-observer";
+import { createDomObserverId } from "@/services/features/dom-observer/types";
 
 export default function usePortalContainer() {
   const [container, setContainer] = useState<HTMLElement | null>(null);

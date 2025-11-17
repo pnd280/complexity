@@ -1,37 +1,42 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/home-custom-slogan/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    "home:customSlogan": z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
-  slogan: z.string(),
+const meta = definePluginMeta({
+  id: "home:customSlogan",
+  name: "Custom Home Slogan",
+  description: "Customize the slogan on the homepage",
 });
 
-export default definePlugin({
-  meta: {
-    id: "home:customSlogan",
-    title: "Custom Home Slogan",
-    description: "Customize the slogan on the homepage",
-    dashboardMeta: {
-      tags: ["ui"],
-      categories: ["misc"],
-      uiRouteSegment: "home-custom-slogan",
-    },
-    dependencies: {
-      corePlugins: ["domObservers:home"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-      slogan: "",
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["ui"],
+  categories: ["misc"],
+  uiRouteSegment: "home-custom-slogan",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["domObservers:home"],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

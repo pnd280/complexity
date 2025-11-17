@@ -1,6 +1,6 @@
 import type { OmitKeyof } from "@tanstack/react-query";
 
-import type { ThreadsSearchPayload } from "@/services/externals/pplx-api/pplx-api.types";
+import type { ThreadsSearchPayload } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 
 export type SourceValue = ThreadsSearchPayload["querySourceFilter"];
 export type TypeValue = ThreadsSearchPayload["threadTypeFilter"];

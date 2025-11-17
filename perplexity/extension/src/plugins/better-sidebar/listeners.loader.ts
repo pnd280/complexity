@@ -1,9 +1,9 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import { applyLayoutShiftPreventionInstantCss } from "@/plugins/better-sidebar/prevent-layout-shift.loader";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:betterSidebar:nativeSidebarPinStateListeners": void;
   }
@@ -12,8 +12,8 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:betterSidebar:nativeSidebarPinStateListeners",
-    dependencies: ["cache:pluginsEnableStates"],
-    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStatesV2"],
+    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
       betterSidebarStore.subscribe(
         (store) => store.open,
         (open) => {
@@ -26,7 +26,7 @@ export default function () {
 
           void applyLayoutShiftPreventionInstantCss({
             enabled:
-              ExtensionSettingsService.cachedSync.plugins["betterSidebar"]
+              PluginsSettingSnapshotsService.getPluginSnapshot("betterSidebar")
                 .shouldPreventLayoutShift,
           });
         },

@@ -5,7 +5,7 @@ import {
   backgroundProxyServiceName,
   PromptHistoryServiceImpl,
   type PromptHistoryService as PromptHistoryServiceType,
-} from "@/plugins/prompt-history/indexed-db";
+} from "@/plugins/prompt-history/indexed-db/service";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: PromptHistoryServiceType | undefined;

@@ -1,21 +1,21 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { internalSearchStatesObserverStore } from "@/plugins/__core__/dom-observers/internal-search-states/store";
-import { setModelCookie } from "@/plugins/__ui-groups__/elements/query-box/utils";
-import {
-  betterLanguageModelSelectorStore,
-  useBetterLanguageModelSelectorStore,
-} from "@/plugins/language-model-selector/store";
+import { internalSearchStatesObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/internal-search-states/store";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { setModelCookie } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
 import {
   isLanguageModelCode,
   isSearchLanguageModelCode,
   isResearchLanguageModelCode,
-} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
+} from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type {
   LanguageModelCode,
   LanguageModelType,
-} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+} from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import {
+  betterLanguageModelSelectorStore,
+  useBetterLanguageModelSelectorStore,
+} from "@/plugins/language-model-selector/store";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:languageModelSelector:sync": void;
   }
@@ -24,8 +24,8 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function (): void {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:languageModelSelector:sync",
-    dependencies: ["cache:pluginsEnableStates", "cache:languageModels"],
-    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStatesV2", "cache:languageModels"],
+    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
       if (!pluginsEnableStates["queryBox:languageModelSelector"]) return;
 
       syncToInternalSearchStates();

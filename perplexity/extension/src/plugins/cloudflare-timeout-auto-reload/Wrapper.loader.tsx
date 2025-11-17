@@ -1,7 +1,7 @@
 import { lazily } from "react-lazily";
 
-import CsUiPluginsGuard from "@/plugins/__async-deps__/plugins-guard/CsUiPluginsGuard";
-import { csUiRootComponentsRegistry } from "@/plugins/__ui-groups__/_root/CsUiRoot";
+import CsUiGuard from "@/entrypoints/contexts/content-scripts/services/ui-guard/CsUiGuard";
+import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
 
 const { CloudflareTimeoutActionDialog } = lazily(
   () => import("@/plugins/cloudflare-timeout-auto-reload/ActionDialog"),
@@ -9,14 +9,15 @@ const { CloudflareTimeoutActionDialog } = lazily(
 
 function CloudflareTimeoutActionDialogWrapper() {
   return (
-    <CsUiPluginsGuard dependentPluginIds={["cloudflareTimeoutAutoReload"]}>
+    <CsUiGuard dependentPluginIds={["cloudflareTimeoutAutoReload"]}>
       <CloudflareTimeoutActionDialog />
-    </CsUiPluginsGuard>
+    </CsUiGuard>
   );
 }
 
-export default function loader() {
-  csUiRootComponentsRegistry
-    .getState()
-    .add(<CloudflareTimeoutActionDialogWrapper />);
+export default function () {
+  csUiMount({
+    id: "plugin:cloudflareTimeoutAutoReload:actionDialog",
+    component: <CloudflareTimeoutActionDialogWrapper />,
+  });
 }

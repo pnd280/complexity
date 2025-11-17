@@ -6,6 +6,7 @@
   },
   "files.exclude": {
     "**/.DS_Store": true,
+    "**/.eslintcache": true,
     "**/.git": true,
     "**/.hg": true,
     "**/.svn": true,
@@ -13,8 +14,7 @@
     "**/*.tsbuildinfo": true,
     "**/CVS": true,
     "**/node_modules": true,
-    "**/Thumbs.db": true,
-    "**/.eslintcache": true
+    "**/Thumbs.db": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -61,10 +61,11 @@
   },
   "window.title": "${dirty}pplx-ext${separator}${activeRepositoryBranchName}${separator}${activeEditorShort}",
   "workbench.editor.customLabels.patterns": {
-    "**/src/entrypoints/background/index.ts": "Entrypoint - Background",
-    "**/src/entrypoints/content-scripts/index.ts": "Entrypoint - Content Scripts",
-    "**/src/entrypoints/options-page/index.tsx": "Entrypoint - Options Page",
-    "**/src/plugins/**/index.manifest.ts": "Plugin Manifest - ${dirname}",
-    "**/src/plugins/**/index.manifest.core.ts": "Core Plugin Manifest - ${dirname}"
-  }
+    "**/src/entrypoints/contexts/background/index.ts": "Entrypoint - Background",
+    "**/src/entrypoints/contexts/content-scripts/index.ts": "Entrypoint - Content Scripts",
+    "**/src/entrypoints/contexts/options-page/index.tsx": "Entrypoint - Options Page",
+    "**/src/{entrypoints,plugins}/**/index.manifest.core.ts": "Core Plugin Manifest - ${dirname}",
+    "**/src/{entrypoints,plugins}/**/index.manifest.ts": "Plugin Manifest - ${dirname}"
+  },
+  "todo-tree.tree.scanMode": "workspace only"
 }
