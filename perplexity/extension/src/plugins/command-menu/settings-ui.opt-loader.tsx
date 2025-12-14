@@ -33,7 +33,7 @@ function CommandMenuPluginSettingsUi() {
       )}
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/m8x0hm1.png"
+          src="https://cdn.cplx.app/images/m8x0hm1.png"
           alt="command-menu"
           className="x:w-full"
         />

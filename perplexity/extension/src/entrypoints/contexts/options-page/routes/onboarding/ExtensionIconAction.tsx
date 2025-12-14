@@ -24,7 +24,7 @@ export default function ExtensionIconAction() {
         </HoverCardTrigger>
         <HoverCardContent>
           <Image
-            src="https://i.imgur.com/UF288wx.png"
+            src="https://cdn.cplx.app/images/UF288wx.png"
             alt="Dashboard Shortcut"
             className="x:w-full"
           />
@@ -119,7 +119,7 @@ function ExtensionIconActionSelect() {
             </HoverCardTrigger>
             <HoverCardContent>
               <Image
-                src="https://i.imgur.com/zgT1Wlz.png"
+                src="https://cdn.cplx.app/images/zgT1Wlz.png"
                 alt="How do I access the Settings Dashboard?"
                 className="x:max-w-[300px]"
               />

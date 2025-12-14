@@ -82,8 +82,8 @@ export default function ExtensionUpdateInfoDialogWrapper({
                 <Image
                   src={
                     APP_CONFIG.BROWSER === "chrome"
-                      ? "https://i.imgur.com/IMLecmp.png"
-                      : "https://i.imgur.com/f2x3Mtl.png"
+                      ? "https://cdn.cplx.app/images/IMLecmp.png"
+                      : "https://cdn.cplx.app/images/f2x3Mtl.png"
                   }
                   alt="extension-management-page"
                   className="x:size-full x:object-cover"

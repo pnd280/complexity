@@ -22,7 +22,7 @@ function ForceWritingModePluginSettingsUi() {
 
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/Fgbejst.png"
+          src="https://cdn.cplx.app/images/Fgbejst.png"
           alt="raw-headings"
           className="x:w-full"
         />
