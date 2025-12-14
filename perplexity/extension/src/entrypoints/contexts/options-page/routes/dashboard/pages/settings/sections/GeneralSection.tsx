@@ -33,7 +33,7 @@ export default function GeneralSection() {
             </HoverCardTrigger>
             <HoverCardContent>
               <Image
-                src="https://i.imgur.com/UF288wx.png"
+                src="https://cdn.cplx.app/images/UF288wx.png"
                 alt="Dashboard Shortcut"
                 className="x:w-full"
               />

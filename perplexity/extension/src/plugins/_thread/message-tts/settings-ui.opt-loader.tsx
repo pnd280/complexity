@@ -60,7 +60,7 @@ function ThreadMessageTtsPluginSettingsUi() {
 
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/1aNm9q0.png"
+          src="https://cdn.cplx.app/images/1aNm9q0.png"
           alt="thread-message-tts"
           className="x:w-full"
         />

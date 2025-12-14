@@ -22,7 +22,7 @@ function RawHeadingsPluginSettingsUi() {
 
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/IQJbP39.png"
+          src="https://cdn.cplx.app/images/IQJbP39.png"
           alt="raw-headings"
           className="x:w-full"
         />

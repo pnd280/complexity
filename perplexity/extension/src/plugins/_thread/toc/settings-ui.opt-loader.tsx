@@ -25,7 +25,7 @@ function ThreadToCPluginSettingsUi() {
 
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/LpC4yZ8.png"
+          src="https://cdn.cplx.app/images/LpC4yZ8.png"
           alt="thread-toc"
           className="x:mx-auto x:w-full x:max-w-lg"
         />

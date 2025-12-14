@@ -16,7 +16,7 @@ export default function PluginEcosystem() {
         <div className="x:relative x:rounded-xl x:border x:border-primary/50">
           <div className="x:absolute x:top-1/2 x:left-1/2 x:z-0 x:size-[120%] x:-translate-x-1/2 x:-translate-y-1/2 x:rounded-full x:bg-primary/20 x:blur-2xl x:transition-all x:duration-500 x:ease-in-out" />
           <img
-            src="https://i.imgur.com/I576QlN.png"
+            src="https://cdn.cplx.app/images/I576QlN.png"
             alt="Plugin Ecosystem"
             className="x:relative x:w-full x:rounded-xl x:shadow-lg"
           />

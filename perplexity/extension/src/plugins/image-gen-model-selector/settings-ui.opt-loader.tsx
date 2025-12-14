@@ -24,7 +24,7 @@ function ImageGenModelSelectorPluginSettingsUi() {
         }}
       />
       <img
-        src="https://i.imgur.com/qf6cb9i.png"
+        src="https://cdn.cplx.app/images/qf6cb9i.png"
         alt="image-gen-model-selector"
         className="x:mx-auto x:w-full x:max-w-[700px]"
       />

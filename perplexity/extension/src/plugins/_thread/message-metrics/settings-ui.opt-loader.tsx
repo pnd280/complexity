@@ -36,7 +36,7 @@ function ThreadShowMessageLengthPluginSettingsUi() {
 
       <div className="x:mx-auto x:w-full x:max-w-[700px]">
         <Image
-          src="https://i.imgur.com/8a6WMCS.png"
+          src="https://cdn.cplx.app/images/8a6WMCS.png"
           alt="thread-show-message-length"
           className="x:w-full"
         />

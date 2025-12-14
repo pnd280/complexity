@@ -10,7 +10,7 @@ export default function MultiLingualSupport() {
         support channels or switch to English for the best experience.
       </div>
       <div className="x:overflow-hidden x:rounded-xl x:border x:border-border/50">
-        <img src="https://i.imgur.com/IOW63ev.png" />
+        <img src="https://cdn.cplx.app/images/IOW63ev.png" />
       </div>
     </div>
   );
