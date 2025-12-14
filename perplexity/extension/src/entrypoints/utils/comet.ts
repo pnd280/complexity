@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { APP_CONFIG } from "@/app.config";
-import { BgUtilsService } from "@/entrypoints/services/features/bg-utils/service-init.bg-worker";
 import { whereAmI } from "@/utils/misc/utils";
 
 export function isCometBrowserSync(): boolean {
@@ -14,15 +13,7 @@ export function isCometBrowserSync(): boolean {
 export async function isCometBrowser(): Promise<boolean> {
   if (APP_CONFIG.BROWSER !== "chrome") return false;
 
-  const currentTabId = (await chrome.tabs.getCurrent())?.id;
-
-  if (currentTabId == null) return false;
-
-  const sidecarTabId = await BgUtilsService.Instance.cometGetSidecarTabId({
-    currentTabId,
-  });
-
-  return sidecarTabId != null;
+  return ((await chrome.windows.getCurrent()) as any).sidecarTabId != null;
 }
 
 export function isCsInjectableSync(): boolean | null {
