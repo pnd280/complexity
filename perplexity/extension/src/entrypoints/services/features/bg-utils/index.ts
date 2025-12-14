@@ -4,19 +4,6 @@ import { getOptionsPageUrl } from "@/utils/misc/utils";
 export const backgroundProxyServiceName = "BgUtilsService";
 
 export class BgUtilsServiceImpl {
-  static async cometGetSidecarTabId({
-    currentTabId,
-  }: {
-    currentTabId: number;
-  }) {
-    const windowId = (await chrome.tabs.get(currentTabId)).windowId;
-
-    const window = await chrome.windows.get(windowId);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (window as any).sidecarTabId as number | undefined;
-  }
-
   static async openOptionsPage() {
     void chrome.runtime.openOptionsPage();
   }
