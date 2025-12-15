@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/prompt-history/_locales/index";
 
 export default {
   clearAllButton: {
@@ -16,4 +16,4 @@ export default {
     placeholder: "프롬프트 기록 검색...",
     noResults: "결과가 없습니다",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

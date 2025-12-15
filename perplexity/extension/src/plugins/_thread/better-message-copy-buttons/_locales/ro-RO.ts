@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/_thread/better-message-copy-buttons/_locales/index";
 
 export default {
   tooltip: "Copiază mesajul",
@@ -6,4 +6,4 @@ export default {
     default: "Implicit",
     withoutCitations: "Fără citate",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

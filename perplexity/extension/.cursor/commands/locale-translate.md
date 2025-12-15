@@ -3,34 +3,6 @@
 1. UPDATE or CREATE the locale files for the specified language (ALWAYS use English as reference).
 2. DO NOT ask for confirmation - process ALL languages if not being asked specifically for one.
 
-```
-index.ts (DO NOT TOUCH THIS FILE!)
-{namespace}.en-US.ts
-{namespace}.id-ID.ts
-{namespace}.el-GR.ts
-{namespace}.de-DE.ts
-{namespace}.zh-TW.ts
-{namespace}.zh-CN.ts
-{namespace}.sr-Cyrl-ME.ts
-{namespace}.sk-SK.ts
-{namespace}.ro-RO.ts
-{namespace}.pt-PT.ts
-{namespace}.pt-BR.ts
-{namespace}.pl-PL.ts
-{namespace}.nl-NL.ts
-{namespace}.ko-KR.ts
-{namespace}.ja-JP.ts
-{namespace}.it-IT.ts
-{namespace}.hu-HU.ts
-{namespace}.hr-HR.ts
-{namespace}.hi-IN.ts
-{namespace}.fr-FR.ts
-{namespace}.es-ES.ts
-{namespace}.cs-CZ.ts
-{namespace}.bn-BD.ts
-{namespace}.ru-RU.ts
-```
-
 ## Output Instructions
 
 - Do NOT output warnings or notes - just the requested translation.

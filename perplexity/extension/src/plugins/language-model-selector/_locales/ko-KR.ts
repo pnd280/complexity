@@ -1,4 +1,6 @@
-import { dt, type LanguageMessages } from "@complexity/i18n";
+import { dt } from "@complexity/i18n";
+
+import type { Translations } from "@/plugins/language-model-selector/_locales";
 
 export default {
   languageModelSelector: {
@@ -19,8 +21,12 @@ export default {
         },
       }),
     },
+    modelsListEditToggle: {
+      instruction: "모든 모델을 클릭하여 목록에서 표시/숨기기",
+      save: "저장",
+    },
   },
   imageGenModelSelector: {
     tooltip: "이미지 모델 선택",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

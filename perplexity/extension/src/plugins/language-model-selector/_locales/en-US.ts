@@ -19,6 +19,10 @@ export default {
         },
       }),
     },
+    modelsListEditToggle: {
+      instruction: "Click on any model to show/hide it from the list",
+      save: "Save",
+    },
   },
   imageGenModelSelector: {
     tooltip: "Choose image model",
