@@ -18,17 +18,18 @@ declare module "@/entrypoints/services/plugins/types" {
 const meta = definePluginMeta({
   id: "imageGenModelSelector",
   name: "Image Generation Model Selector",
-  description: "Enable selection of different image generation models",
+  description:
+    "Select different image generation models via the Command Menu plugin",
 });
 
 const dashboardMeta = definePluginDashboardMeta({
   tags: ["ui", "desktopOnly", "pplxPro"],
-  categories: ["thread"],
+  categories: ["misc"],
   uiRouteSegment: "image-gen-model-selector",
 });
 
 const dependencies = definePluginDependencies({
-  plugins: ["webSocket", "domObservers:thread"],
+  plugins: ["commandMenu"],
 });
 
 const manifest = {

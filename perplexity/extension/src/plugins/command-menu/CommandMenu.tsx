@@ -64,7 +64,7 @@ export function CommandMenu() {
     <CommandDialog
       dialogContentProps={{
         className: cn({
-          "x:max-w-[1000px]": sidecarOpen,
+          "x:max-w-250": sidecarOpen,
           "x:max-w-3xl": !sidecarOpen,
         }),
       }}
@@ -88,9 +88,9 @@ export function CommandMenu() {
           >
             <CommandList
               className={cn(
-                "x:max-h-[700px] x:min-h-[400px] x:scroll-pt-32 x:scroll-pb-26",
+                "x:max-h-175 x:min-h-100 x:scroll-pt-32 x:scroll-pb-26",
                 {
-                  "x:h-[500px] x:max-h-[500px]": sidecarOpen,
+                  "x:h-125 x:max-h-125": sidecarOpen,
                 },
               )}
             >
@@ -105,7 +105,7 @@ export function CommandMenu() {
             <div
               className={cn(
                 "custom-scrollbar",
-                "x:h-[500px] x:max-h-[500px] x:overflow-y-auto",
+                "x:h-125 x:max-h-125 x:overflow-y-auto",
               )}
             >
               <CommandSidecar />
