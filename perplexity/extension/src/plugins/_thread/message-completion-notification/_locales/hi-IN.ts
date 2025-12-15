@@ -1,5 +1,5 @@
-import { type LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/_thread/message-completion-notification/_locales/index";
 
 export default {
   answerIsReady: "आपका उत्तर तैयार है!",
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

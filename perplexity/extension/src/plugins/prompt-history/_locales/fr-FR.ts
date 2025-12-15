@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/prompt-history/_locales/index";
 
 export default {
   clearAllButton: {
@@ -16,4 +16,4 @@ export default {
     placeholder: "Rechercher dans l'historique des invites...",
     noResults: "Aucun résultat trouvé",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

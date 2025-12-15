@@ -1,4 +1,6 @@
-import { dt, type LanguageMessages } from "@complexity/i18n";
+import { dt } from "@complexity/i18n";
+
+import type { Translations } from "@/plugins/language-model-selector/_locales";
 
 export default {
   languageModelSelector: {
@@ -19,8 +21,12 @@ export default {
         },
       }),
     },
+    modelsListEditToggle: {
+      instruction: "তালিকা থেকে প্রদর্শন/লুকানোর জন্য যেকোনো মডেলে ক্লিক করুন",
+      save: "সংরক্ষণ",
+    },
   },
   imageGenModelSelector: {
     tooltip: "ইমেজ মডেল নির্বাচন করুন",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

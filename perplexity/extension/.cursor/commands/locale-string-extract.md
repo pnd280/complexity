@@ -18,15 +18,13 @@
 ## Examples
 
 ```ts
-import type { LanguageMessages } from "@complexity/i18n";
-
 export default {
   noPluginsFound: {
     title: "No plugins found",
     description:
       "Try adjusting your search term/filters or <0>request a new one</0> 😉",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;
 ```
 
 ```tsx

@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/_thread/better-code-blocks/_locales/index";
 
 export default {
   headerButtons: {
@@ -11,4 +11,4 @@ export default {
       collapse: "Recolher",
     },
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

@@ -1,4 +1,6 @@
-import { dt, type LanguageMessages } from "@complexity/i18n";
+import { dt } from "@complexity/i18n";
+
+import type { Translations } from "@/plugins/language-model-selector/_locales";
 
 export default {
   languageModelSelector: {
@@ -19,8 +21,12 @@ export default {
         },
       }),
     },
+    modelsListEditToggle: {
+      instruction: "点击任何模型以在列表中显示/隐藏",
+      save: "保存",
+    },
   },
   imageGenModelSelector: {
     tooltip: "选择图像模型",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

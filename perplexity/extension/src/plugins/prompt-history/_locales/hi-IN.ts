@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/prompt-history/_locales/index";
 
 export default {
   clearAllButton: {
@@ -16,4 +16,4 @@ export default {
     placeholder: "प्रॉम्प्ट इतिहास खोजें...",
     noResults: "कोई परिणाम नहीं मिला",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

@@ -1,4 +1,6 @@
-import { dt, type LanguageMessages } from "@complexity/i18n";
+import { dt } from "@complexity/i18n";
+
+import type { Translations } from "@/plugins/language-model-selector/_locales";
 
 export default {
   languageModelSelector: {
@@ -19,8 +21,12 @@ export default {
         },
       }),
     },
+    modelsListEditToggle: {
+      instruction: "Kliknij dowolny model, aby go wyświetlić/ukryć z listy",
+      save: "Zapisz",
+    },
   },
   imageGenModelSelector: {
     tooltip: "Wybierz model obrazu",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

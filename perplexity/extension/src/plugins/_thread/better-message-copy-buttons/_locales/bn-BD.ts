@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/_thread/better-message-copy-buttons/_locales/index";
 
 export default {
   tooltip: "বার্তা কপি করুন",
@@ -6,4 +6,4 @@ export default {
     default: "ডিফল্ট",
     withoutCitations: "উদ্ধৃতি ছাড়া",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;

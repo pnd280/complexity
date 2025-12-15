@@ -1,4 +1,4 @@
-import type { LanguageMessages } from "@complexity/i18n";
+import type { Translations } from "@/plugins/prompt-history/_locales/index";
 
 export default {
   clearAllButton: {
@@ -16,4 +16,4 @@ export default {
     placeholder: "Eingabeverlauf durchsuchen...",
     noResults: "Keine Ergebnisse gefunden",
   },
-} as const satisfies LanguageMessages;
+} as const satisfies Translations;
