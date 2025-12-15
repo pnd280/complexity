@@ -6,9 +6,7 @@ import { ThreadMessageFooterComponentRegister } from "@/entrypoints/contexts/con
 
 const { BetterMessageCopyButton } = lazily(
   () =>
-    import(
-      "@/plugins/_thread/better-message-copy-buttons/ThreadBetterMessageCopyButton"
-    ),
+    import("@/plugins/_thread/better-message-copy-buttons/ThreadBetterMessageCopyButton"),
 );
 
 function ThreadBetterMessageCopyButtonWrapper() {

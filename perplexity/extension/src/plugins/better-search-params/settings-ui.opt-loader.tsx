@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+
 import {
   HoverCard,
   HoverCardContent,
@@ -10,8 +12,14 @@ import { registerSettingsUi } from "@/entrypoints/contexts/options-page/routes/d
 import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
 import { useSettings } from "@/plugins/better-search-params/settings";
 
+import TablerLoaderCircle from "~icons/tabler/loader-2";
+
 function BetterSearchParamsPluginSettingsUi() {
   const { settings, update } = useSettings();
+
+  const { data: languageModels, isLoading: isLoadingLanguageModels } = useQuery(
+    PplxLanguageModelsService.query,
+  );
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
@@ -40,7 +48,7 @@ function BetterSearchParamsPluginSettingsUi() {
                 </div>
               </HoverCardTrigger>
               <HoverCardContent>
-                <div className="x:mx-auto x:w-full x:max-w-[700px]">
+                <div className="x:mx-auto x:w-full x:max-w-175">
                   <Image
                     src="https://images2.imgbox.com/a8/75/vfYWRB5p_o.png"
                     alt="better-search-params"
@@ -86,7 +94,7 @@ function BetterSearchParamsPluginSettingsUi() {
                 Use the <InlineCode>Command Menu</InlineCode> plugin to find the
                 space ID.
               </div>
-              <div className="x:mx-auto x:w-full x:max-w-[700px]">
+              <div className="x:mx-auto x:w-full x:max-w-175">
                 <Image
                   src="https://images2.imgbox.com/6d/44/1P5GHUdG_o.png"
                   alt="How to find spaceId?"
@@ -99,17 +107,22 @@ function BetterSearchParamsPluginSettingsUi() {
           <li>
             <span>Available values for </span>
             <InlineCode>&#123;model&#125;</InlineCode>:
-            <div className="x:mt-1 x:ml-8 x:flex x:flex-col x:gap-2">
-              {Object.values(PplxLanguageModelsService.allModels)
-                .flat()
-                .filter((model) => !model.isMax && model.label !== "Auto")
-                .map((model) => (
-                  <div key={model.code}>
-                    <span>{model.label}</span>
-                    <InlineCode className="x:ml-1">{model.code}</InlineCode>
-                  </div>
-                ))}
-            </div>
+            {isLoadingLanguageModels && (
+              <TablerLoaderCircle className="x:ml-2 x:inline-block x:size-4 x:animate-spin x:text-muted-foreground" />
+            )}
+            {languageModels && (
+              <div className="x:mt-1 x:ml-8 x:flex x:flex-col x:gap-2">
+                {Object.values(languageModels)
+                  .flat()
+                  .filter((model) => !model.isMax && model.label !== "Auto")
+                  .map((model) => (
+                    <div key={model.code}>
+                      <span>{model.label}</span>
+                      <InlineCode className="x:ml-1">{model.code}</InlineCode>
+                    </div>
+                  ))}
+              </div>
+            )}
           </li>
         </Ul>
       </div>

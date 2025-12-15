@@ -6,9 +6,7 @@ import { ThreadMessageFooterComponentRegister } from "@/entrypoints/contexts/con
 
 const { ThreadBetterRewriteDropdown } = lazily(
   () =>
-    import(
-      "@/plugins/_thread/better-rewrite-dropdown/ThreadBetterRewriteDropdown"
-    ),
+    import("@/plugins/_thread/better-rewrite-dropdown/ThreadBetterRewriteDropdown"),
 );
 
 function ThreadBetterRewriteDropdownWrapper() {

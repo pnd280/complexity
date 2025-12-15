@@ -6,9 +6,7 @@ import { useThreadQueryEditButtonRegistry } from "@/entrypoints/contexts/content
 
 const { ThreadQueryEditButtonPluginsGroup } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/query-edit-button/Group"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/query-edit-button/Group"),
 );
 
 function ThreadQueryEditButtonComponentsGroupWrapper() {

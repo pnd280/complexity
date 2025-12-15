@@ -33,9 +33,9 @@ export const DOM_SELECTORS = {
       QUERY_WRAPPER: ".isolate.mx-auto > .bg-base",
       QUERY: ".group\\/query",
       QUERY_EDIT_BUTTON_GROUP:
-        ".absolute.bottom-0.right-0:not(.pointer-events-none)",
+        ".pointer-events-none.group-hover\\:opacity-100.focus-within\\:pointer-events-auto.focus-within\\:opacity-100",
       QUERY_EDIT_BUTTON_GROUP_CHILD: {
-        EDIT_QUERY_BUTTON: 'button[data-testid="edit-query-button"]',
+        EDIT_QUERY_BUTTON: 'button:has(use[*|href="#pplx-icon-pencil"])',
       },
       STICKY_HEADER: ".h-headerHeight.bg-transparent",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
@@ -45,6 +45,10 @@ export const DOM_SELECTORS = {
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */
       FOOTER: ".gap-y-md.flex.flex-col > .flex.items-center.justify-between",
+      FOOTER_GROUP: {
+        FIRST: ">div:first-child",
+        SECOND: ">div:last-child",
+      },
       FOOTER_CHILD: {
         DISPLAY_MODEL_BUTTON: 'button:has(use[*|href="#pplx-icon-cpu"])',
         REWRITE_BUTTON: 'button:has(use[*|href="#pplx-icon-repeat"])',

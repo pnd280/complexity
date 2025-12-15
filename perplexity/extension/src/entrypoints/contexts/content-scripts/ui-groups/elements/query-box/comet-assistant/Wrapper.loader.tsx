@@ -6,9 +6,7 @@ import { useCometAssistantQueryBoxToolbarRegistry } from "@/entrypoints/contexts
 
 const { CometAssistantQueryBoxToolbarComponentsGroup } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/comet-assistant/Group"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/comet-assistant/Group"),
 );
 
 function CometAssistantQueryBoxToolbarComponentsGroupWrapper() {

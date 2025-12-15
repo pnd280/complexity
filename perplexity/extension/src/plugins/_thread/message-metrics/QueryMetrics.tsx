@@ -1,6 +1,13 @@
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { useThreadMessageBlocksDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/thread/message-blocks/store";
 import { useThreadMessageIndexContext } from "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/message-index-context";
 import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
+
+import TablerInfoCircle from "~icons/tabler/info-circle";
 
 export function QueryMetrics() {
   const messageBlockIndex = useThreadMessageIndexContext();
@@ -24,13 +31,36 @@ export function QueryMetrics() {
   );
 
   if (!metrics) return null;
+
   const { wordCount, characterCount, tokenCount } = metrics;
 
   return (
-    <div className="x:flex x:h-full x:items-center x:px-2 x:text-xs x:text-muted-foreground">
-      {wordCount} {t("common.misc.words")} | {characterCount}{" "}
-      {t("common.misc.characters")}
-      {settings.showTokens ? ` | ${tokenCount} tokens` : ""}
-    </div>
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <div className="x:flex x:h-full x:cursor-pointer x:items-center x:rounded-full x:p-2 x:text-muted-foreground x:transition-all x:hover:bg-muted/50 x:hover:text-foreground">
+          <TablerInfoCircle className="x:size-4" />
+        </div>
+      </HoverCardTrigger>
+      <HoverCardContent>
+        <div className="x:grid x:grid-cols-2 x:gap-x-3 x:gap-y-1 x:text-sm">
+          <div className="x:text-muted-foreground">
+            {t("common.misc.words")}
+          </div>
+          <div className="x:text-right">{wordCount}</div>
+
+          <div className="x:text-muted-foreground">
+            {t("common.misc.characters")}
+          </div>
+          <div className="x:text-right">{characterCount}</div>
+
+          {settings.showTokens && (
+            <>
+              <div className="x:text-muted-foreground">tokens</div>
+              <div className="x:text-right">~{tokenCount}</div>
+            </>
+          )}
+        </div>
+      </HoverCardContent>
+    </HoverCard>
   );
 }

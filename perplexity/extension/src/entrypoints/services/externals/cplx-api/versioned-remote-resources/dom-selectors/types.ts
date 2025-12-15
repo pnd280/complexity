@@ -37,6 +37,10 @@ export const DomSelectorsSchema = z.object({
       ANSWER: z.string(),
       ANSWER_TEXT_CONTENT: z.string(),
       FOOTER: z.string(),
+      FOOTER_GROUP: z.object({
+        FIRST: z.string(),
+        SECOND: z.string(),
+      }),
       FOOTER_CHILD: z.object({
         DISPLAY_MODEL_BUTTON: z.string(),
         REWRITE_BUTTON: z.string(),

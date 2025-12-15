@@ -24,7 +24,7 @@ const meta = definePluginMeta({
 
 const dashboardMeta = definePluginDashboardMeta({
   tags: ["ui", "pplxPro"],
-  categories: ["thread", "featured"],
+  categories: ["thread"],
   uiRouteSegment: "thread-better-rewrite-dropdowns",
 });
 

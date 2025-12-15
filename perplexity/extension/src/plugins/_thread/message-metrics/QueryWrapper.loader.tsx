@@ -23,7 +23,7 @@ function ThreadQueryMetricsWrapper() {
 
 export default function () {
   csUiMount({
-    id: "plugin:thread:messageMetrics",
+    id: "plugin:thread:messageMetrics:query",
     component: <ThreadQueryMetricsWrapper />,
   });
 }

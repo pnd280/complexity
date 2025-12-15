@@ -1,7 +1,7 @@
 import { useThreadMessageBlocksDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/thread/message-blocks/store";
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
 
-const OBSERVER_ID = "thread-message-footer-extra-buttons-wrapper";
+const OBSERVER_ID = "thread-message-footer-secondary-extra-buttons-wrapper";
 
 export function usePortalContainers(): (Element | null)[] {
   const messageBlocks = useThreadMessageBlocksDomObserverStore(
@@ -21,15 +21,21 @@ export function usePortalContainers(): (Element | null)[] {
     const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
 
     const $anchor = messageBlock.nodes.$footer.find(
-      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_GROUP.FIRST,
+      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+        .MISC_BUTTON_WRAPPER,
     );
 
-    const hasSources = messageBlock.content.webResults.length > 0;
-
-    if (hasSources) {
-      $anchor.children().last().before($portalContainer);
+    if ($anchor.length) {
+      $anchor.before($portalContainer);
     } else {
-      $anchor.append($portalContainer);
+      const copyButtonWrapper = messageBlock.nodes.$footer.find(
+        DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+          .COPY_BUTTON,
+      );
+
+      if (copyButtonWrapper.length) {
+        copyButtonWrapper.after($portalContainer);
+      }
     }
 
     return $portalContainer[0] ?? null;

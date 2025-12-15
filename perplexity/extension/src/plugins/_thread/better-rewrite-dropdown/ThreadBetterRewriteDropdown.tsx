@@ -36,6 +36,12 @@ export function ThreadBetterRewriteDropdown() {
     return store.messageBlocks?.[messageBlockIndex]?.states.isReadOnly;
   });
 
+  const isNotTextAnswer = useThreadMessageBlocksDomObserverStore((store) => {
+    return (
+      store.messageBlocks?.[messageBlockIndex]?.content.answer.length === 0
+    );
+  });
+
   const modelPreferences = useThreadMessageBlocksDomObserverStore((store) => {
     return store.messageBlocks?.[messageBlockIndex]?.content.displayModel;
   });
@@ -47,7 +53,7 @@ export function ThreadBetterRewriteDropdown() {
     );
   });
 
-  if (isReadOnly) return null;
+  if (isReadOnly || isNotTextAnswer) return null;
 
   return (
     <DropdownMenu
@@ -55,9 +61,6 @@ export function ThreadBetterRewriteDropdown() {
       unmountOnExit
       open={isOpen}
       highlightedValue={highlightedItem}
-      positioning={{
-        placement: "bottom-end",
-      }}
       onOpenChange={async ({ open }) => {
         if (open) {
           setHighlightedItem(modelPreferences ?? null);
@@ -81,6 +84,7 @@ export function ThreadBetterRewriteDropdown() {
       <Tooltip content={t("common.misc.rewrite")}>
         <DropdownMenuTrigger asChild>
           <div
+            data-better-rewrite-dropdown="true"
             className="x:cursor-pointer x:rounded-full x:p-2 x:text-muted-foreground x:transition-all x:hover:bg-muted/50 x:hover:text-foreground x:active:scale-95"
             tabIndex={0}
           >

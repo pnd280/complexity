@@ -62,8 +62,8 @@ export function MessageMetrics() {
 
             {settings.showTokens && metrics.tokenCount != null && (
               <>
-                <div className="x:text-muted-foreground">tokens:</div>
-                <div className="x:text-right">{metrics.tokenCount}</div>
+                <div className="x:text-muted-foreground">tokens</div>
+                <div className="x:text-right">~{metrics.tokenCount}</div>
               </>
             )}
           </div>

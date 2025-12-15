@@ -8,7 +8,7 @@ export const settingsSchemas = definePluginSettingsSchemas({
   1: {
     schema: z.object({
       enabled: z.boolean(),
-      playbackRate: z.number().min(0.75).max(2),
+      playbackRate: z.number().min(0.05).max(2),
     }),
     fallback: {
       enabled: false,

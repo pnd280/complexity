@@ -22,23 +22,17 @@ const { Dashboard } = lazily(
 
 const { IndexPage: ReleaseNotesPage } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/options-page/routes/dashboard/pages/release-notes/IndexPage"
-    ),
+    import("@/entrypoints/contexts/options-page/routes/dashboard/pages/release-notes/IndexPage"),
 );
 
 const { FullScreenReleaseNotesPage } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/options-page/routes/dashboard/pages/release-notes/FullScreenReleaseNotesPage"
-    ),
+    import("@/entrypoints/contexts/options-page/routes/dashboard/pages/release-notes/FullScreenReleaseNotesPage"),
 );
 
 const { IndexPage: SettingsPage } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/options-page/routes/dashboard/pages/settings/IndexPage"
-    ),
+    import("@/entrypoints/contexts/options-page/routes/dashboard/pages/settings/IndexPage"),
 );
 
 const { Onboarding } = lazily(
