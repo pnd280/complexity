@@ -2,7 +2,7 @@ import { lazily } from "react-lazily";
 
 import CsUiGuard from "@/entrypoints/contexts/content-scripts/services/ui-guard/CsUiGuard";
 import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_root/CsUiRoot";
-import { ThreadMessageFooterComponentRegister } from "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/message-footer/Group";
+import { ThreadMessageFooterSecondaryComponentRegister } from "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/message-footer-secondary/Group";
 
 const { ThreadMessageTtsButton } = lazily(
   () => import("@/plugins/_thread/message-tts/ThreadMessageTtsButton"),
@@ -11,9 +11,9 @@ const { ThreadMessageTtsButton } = lazily(
 function ThreadMessageTtsButtonWrapper() {
   return (
     <CsUiGuard requiresLoggedIn dependentPluginIds={["thread:messageTts"]}>
-      <ThreadMessageFooterComponentRegister id="plugin:thread:messageTts">
+      <ThreadMessageFooterSecondaryComponentRegister id="plugin:thread:messageTts">
         <ThreadMessageTtsButton />
-      </ThreadMessageFooterComponentRegister>
+      </ThreadMessageFooterSecondaryComponentRegister>
     </CsUiGuard>
   );
 }

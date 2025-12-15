@@ -6,9 +6,7 @@ import { useThreadMessageFooterRegistry } from "@/entrypoints/contexts/content-s
 
 const { ThreadMessageFooterPluginsGroup } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/message-footer/Group"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/message-footer/Group"),
 );
 
 function ThreadMessageFooterComponentsGroupWrapper() {

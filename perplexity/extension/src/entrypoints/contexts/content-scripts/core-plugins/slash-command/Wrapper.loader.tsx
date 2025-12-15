@@ -6,9 +6,7 @@ import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_roo
 
 const { SlashCommandMenu } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/SlashCommandMenu"
-    ),
+    import("@/entrypoints/contexts/content-scripts/core-plugins/slash-command/SlashCommandMenu"),
 );
 
 function SlashCommandMenuWrapper() {

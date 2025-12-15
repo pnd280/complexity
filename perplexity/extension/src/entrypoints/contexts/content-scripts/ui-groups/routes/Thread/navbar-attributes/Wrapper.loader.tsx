@@ -6,9 +6,7 @@ import { useThreadNavbarAttributesRegistry } from "@/entrypoints/contexts/conten
 
 const { ThreadNavbarAttributesPluginsGroup } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/navbar-attributes/Group"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/navbar-attributes/Group"),
 );
 
 function ThreadNavbarAttributesComponentsGroupWrapper() {

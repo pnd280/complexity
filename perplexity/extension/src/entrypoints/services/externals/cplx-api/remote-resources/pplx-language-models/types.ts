@@ -2,24 +2,42 @@ import { z } from "zod";
 
 import type { pplxLocalLanguageModels } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/defaults";
 
-export const LanguageModelSchema = z.object({
+export const LanguageModelBaseSchema = z.object({
   label: z.string(),
   shortLabel: z.string(),
-  code: z.string() as z.ZodType<LanguageModelCode>,
+  code: z.string(),
   isReasoning: z.boolean(),
   limitKey: z.string().optional(),
   isMax: z.boolean().optional(),
   icon: z.string(),
 });
 
+export type LanguageModelBase = z.infer<typeof LanguageModelBaseSchema>;
+
+export const LanguageModelSchema = LanguageModelBaseSchema.extend({
+  code: z.string<LanguageModelCode>(),
+});
+
 export type LanguageModel = z.infer<typeof LanguageModelSchema>;
 
-export const LanguageModelsListSchema = z.object({
-  search: z.array(LanguageModelSchema),
-  research: z.array(LanguageModelSchema),
-  studio: z.array(LanguageModelSchema),
-  study: z.array(LanguageModelSchema),
-});
+const createLanguageModelsListSchema = <T extends z.ZodTypeAny>(schema: T) =>
+  z.object({
+    search: z.array(schema),
+    research: z.array(schema),
+    studio: z.array(schema),
+    study: z.array(schema),
+  });
+
+export const LanguageModelsListBaseSchema = createLanguageModelsListSchema(
+  LanguageModelBaseSchema,
+);
+
+export type LanguageModelsListBase = z.infer<
+  typeof LanguageModelsListBaseSchema
+>;
+
+export const LanguageModelsListSchema =
+  createLanguageModelsListSchema(LanguageModelSchema);
 
 export type LanguageModelsList = z.infer<typeof LanguageModelsListSchema>;
 

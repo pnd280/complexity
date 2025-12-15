@@ -1,4 +1,4 @@
-export const ThreadMessageIndexContext = createContext<number>(0);
+export const ThreadMessageIndexContext = createContext<number | null>(null);
 
 export function ThreadMessageIndexContextProvider({
   messageBlockIndex,
@@ -15,5 +15,12 @@ export function ThreadMessageIndexContextProvider({
 }
 
 export function useThreadMessageIndexContext() {
-  return use(ThreadMessageIndexContext);
+  const context = use(ThreadMessageIndexContext);
+
+  invariant(
+    context !== null,
+    "useThreadMessageIndexContext must be used within a ThreadMessageIndexContextProvider",
+  );
+
+  return context;
 }

@@ -6,9 +6,7 @@ import { useSpaceQueryBoxToolbarRegistry } from "@/entrypoints/contexts/content-
 
 const { SpaceQueryBoxToolbarComponentsGroup } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/space/Group"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/space/Group"),
 );
 
 function SpaceQueryBoxToolbarComponentsGroupWrapper() {

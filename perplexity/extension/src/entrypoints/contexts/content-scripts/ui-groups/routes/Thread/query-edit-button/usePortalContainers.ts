@@ -12,14 +12,13 @@ export function usePortalContainers(): (Element | null)[] {
   if (messageBlocks == null) return [];
 
   return messageBlocks.map((messageBlock) => {
-    if (messageBlock.states.isEditingQuery || messageBlock.states.isInFlight)
-      return null;
+    if (messageBlock.states.isEditingQuery) return null;
 
-    const $target = messageBlock.nodes.$queryEditButtonGroup.find(
-      '[data-testid="edit-query-button-group"]',
-    );
+    const $anchor = messageBlock.nodes.$queryEditButtonGroup;
 
-    const $existingPortalContainer = $target.find(
+    if (!$anchor[0]) return null;
+
+    const $existingPortalContainer = $anchor.find(
       `div${DomSelectorsService.Root.cplxAttribute(OBSERVER_ID)}`,
     );
 
@@ -27,7 +26,7 @@ export function usePortalContainers(): (Element | null)[] {
 
     const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
 
-    $target.prepend($portalContainer);
+    $anchor.prepend($portalContainer);
 
     return $portalContainer[0] ?? null;
   });

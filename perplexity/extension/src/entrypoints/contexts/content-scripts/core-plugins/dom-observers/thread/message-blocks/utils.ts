@@ -243,19 +243,16 @@ function getMessageBlockStates({
     };
   }
 
-  const isQueryEditButtonGroupPresent =
-    $query.find(
-      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE
-        .QUERY_EDIT_BUTTON_GROUP,
+  const isRewriteBtnPresent =
+    $footer.find(
+      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
+        .REWRITE_BUTTON_WRAPPER,
     ).length > 0;
 
-  $wrapper.attr(
-    "data-read-only",
-    isQueryEditButtonGroupPresent ? "false" : "true",
-  );
+  $wrapper.attr("data-read-only", isRewriteBtnPresent ? "false" : "true");
 
   return {
-    isReadOnly: !isQueryEditButtonGroupPresent,
+    isReadOnly: !isRewriteBtnPresent,
     isInFlight,
     isEditingQuery,
   };

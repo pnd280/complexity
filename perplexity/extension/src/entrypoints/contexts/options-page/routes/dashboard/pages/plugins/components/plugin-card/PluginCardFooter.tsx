@@ -34,22 +34,21 @@ export function PluginCardFooter() {
   return (
     <CardFooter className="x:mt-auto x:flex x:justify-between">
       <div className="x:flex x:gap-2">
-        {hasSettingsUi && (
+        <div className={cn({ "x:invisible": !hasSettingsUi })}>
           <RequirePermissionsDialogWrapper
             asChild
             requiredPermissions={requiredPermissions}
           >
             <Button
               onClick={() => {
-                if (!hasAllRequiredPermissions) return;
-
+                if (!hasSettingsUi || !hasAllRequiredPermissions) return;
                 navigateToPluginDetails();
               }}
             >
               Details
             </Button>
           </RequirePermissionsDialogWrapper>
-        )}
+        </div>
       </div>
 
       {settings.enabled && !areAllDependentPluginsEnabled && (

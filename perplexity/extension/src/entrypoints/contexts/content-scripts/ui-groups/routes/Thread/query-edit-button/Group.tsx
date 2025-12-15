@@ -17,7 +17,7 @@ export function ThreadQueryEditButtonPluginsGroup() {
   return portalContainers.map((portalContainer, messageBlockIndex) => (
     <Portal key={messageBlockIndex} container={portalContainer as HTMLElement}>
       <ThreadMessageIndexContextProvider messageBlockIndex={messageBlockIndex}>
-        <div className="x:flex x:h-full x:items-center x:border-r x:border-border/30">
+        <div className="x:flex x:h-full x:items-center">
           <ThreadQueryEditButtonComponents />
         </div>
       </ThreadMessageIndexContextProvider>

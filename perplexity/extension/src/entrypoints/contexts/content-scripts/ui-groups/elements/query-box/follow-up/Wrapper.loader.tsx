@@ -6,9 +6,7 @@ import { useFollowUpQueryBoxToolbarRegistry } from "@/entrypoints/contexts/conte
 
 const { FollowUpQueryBoxToolbarComponentsGroup } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/follow-up/Group"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/follow-up/Group"),
 );
 
 function FollowUpQueryBoxToolbarComponentsGroupWrapper() {

@@ -5,9 +5,7 @@ import { csUiMount } from "@/entrypoints/contexts/content-scripts/ui-groups/_roo
 
 const { SettingsDashboardLink } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/routes/Settings/SettingsDashboardLink"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/routes/Settings/SettingsDashboardLink"),
 );
 
 function SettingsPageComponents() {

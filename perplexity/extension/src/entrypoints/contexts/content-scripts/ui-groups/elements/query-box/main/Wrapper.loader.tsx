@@ -6,9 +6,7 @@ import { useMainQueryBoxToolbarRegistry } from "@/entrypoints/contexts/content-s
 
 const { MainQueryBoxToolbarComponentsGroup } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/main/Group"
-    ),
+    import("@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/main/Group"),
 );
 
 function MainQueryBoxToolbarComponentsGroupWrapper() {

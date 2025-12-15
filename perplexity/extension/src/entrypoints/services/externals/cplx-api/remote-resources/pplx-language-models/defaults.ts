@@ -1,3 +1,5 @@
+import type { LanguageModelsListBase } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+
 export const pplxLocalLanguageModels = {
   search: [
     {
@@ -295,4 +297,4 @@ export const pplxLocalLanguageModels = {
       icon: "auto",
     },
   ],
-} as const;
+} as const satisfies LanguageModelsListBase;

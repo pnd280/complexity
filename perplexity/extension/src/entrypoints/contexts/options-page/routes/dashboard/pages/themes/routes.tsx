@@ -8,23 +8,17 @@ import { BUILTIN_THEME_REGISTRY } from "@/entrypoints/core-plugins/custom-themes
 
 const { CreateThemePage } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/options-page/routes/dashboard/pages/themes/pages/create-theme/CreateThemePage"
-    ),
+    import("@/entrypoints/contexts/options-page/routes/dashboard/pages/themes/pages/create-theme/CreateThemePage"),
 );
 
 const { EditThemePage } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/options-page/routes/dashboard/pages/themes/pages/edit-theme/EditThemePage"
-    ),
+    import("@/entrypoints/contexts/options-page/routes/dashboard/pages/themes/pages/edit-theme/EditThemePage"),
 );
 
 const { ThemesListing } = lazily(
   () =>
-    import(
-      "@/entrypoints/contexts/options-page/routes/dashboard/pages/themes/pages/ThemesListing"
-    ),
+    import("@/entrypoints/contexts/options-page/routes/dashboard/pages/themes/pages/ThemesListing"),
 );
 
 export const ThemesPageRoutes: RouteObject[] = [

@@ -17,9 +17,9 @@ declare module "@/entrypoints/services/plugins/types" {
 
 const meta = definePluginMeta({
   id: "thread:messageTts",
-  name: "Message TTS",
+  name: "Message Text-to-Speech",
   description:
-    "Enable text-to-speech for messages in threads. Requires a logged in account.",
+    "Enable text-to-speech for messages in threads. Only works on logged in sessions (Pro status not needed).",
 });
 
 const dashboardMeta = definePluginDashboardMeta({

@@ -18,7 +18,8 @@ declare module "@/entrypoints/services/plugins/types" {
 const meta = definePluginMeta({
   id: "betterSearchParams",
   name: "Better Search Params",
-  description: "Better Search Params",
+  description:
+    "Create and use custom omnibox search params with different models, focus modes, Spaces and incognito mode, etc.",
 });
 
 const dashboardMeta = definePluginDashboardMeta({

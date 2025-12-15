@@ -3,13 +3,8 @@
 #root {
   @apply x:flex;
 
-  & > .border-subtlest.ring-subtlest.divide-subtlest.bg-underlay {
+  & > .border-subtlest.ring-subtlest.divide-subtlest.bg-base {
     @apply x:flex-1;
-  }
-
-  /* hide the query to prevent navbar overflow */
-  [data-cplx-component="thread-navbar"] .max-w-\[300px\] {
-    @apply x:hidden;
   }
 
   #cplx-artifact {
@@ -18,7 +13,7 @@
 }
 
 body[data-cplx-artifact-active-panel="list"] {
-  #root > .border-subtlest.ring-subtlest.divide-subtlest.bg-underlay {
+  #root > .border-subtlest.ring-subtlest.divide-subtlest.bg-base {
     @apply x:xl:flex-1/2;
   }
 

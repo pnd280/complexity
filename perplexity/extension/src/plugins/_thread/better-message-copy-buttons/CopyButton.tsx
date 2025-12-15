@@ -26,7 +26,7 @@ export default function CopyButton({
   hasSources,
 }: CopyButtonProps) {
   const [triggerIcon, setTriggerIcon] = useToggleButtonText({
-    defaultText: <TablerCopy className="x:size-3.5" />,
+    defaultText: <TablerCopy className="x:size-4" />,
   });
 
   const { copyMessage } = useCopyPplxThread();
@@ -40,14 +40,13 @@ export default function CopyButton({
     <DropdownMenu
       lazyMount
       unmountOnExit
-      positioning={{ placement: "bottom-end" }}
       onSelect={async ({ value }) => {
         await copyMessage({
           messageBlockIndex,
           withCitations: (value as CopyOptions) === "with-citations",
         });
 
-        setTriggerIcon(<TablerCheck className="x:size-3.5" />);
+        setTriggerIcon(<TablerCheck className="x:size-4" />);
       }}
     >
       <Tooltip content={t("plugin-better-copy-buttons.tooltip")}>
@@ -62,7 +61,7 @@ export default function CopyButton({
                 withCitations: true,
               });
 
-              setTriggerIcon(<TablerCheck className="x:size-3.5" />);
+              setTriggerIcon(<TablerCheck className="x:size-4" />);
             }}
           />
         </DropdownMenuTrigger>
