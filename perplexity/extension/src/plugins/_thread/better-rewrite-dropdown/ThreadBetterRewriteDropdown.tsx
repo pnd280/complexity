@@ -11,9 +11,11 @@ import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-ap
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { handleRewrite } from "@/plugins/_thread/better-rewrite-dropdown/handle-rewrite";
 import RedoSearchSwitch from "@/plugins/_thread/better-rewrite-dropdown/RedoSearchSwitch";
-import { DesktopContent } from "@/plugins/language-model-selector/index.public";
-import { MobileContent } from "@/plugins/language-model-selector/index.public";
-import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/index.public";
+import {
+  DesktopContent,
+  LanguageModelSelectorProvider,
+  MobileContent,
+} from "@/plugins/language-model-selector/index.public";
 
 import TaberRepeat from "~icons/tabler/repeat";
 
@@ -93,11 +95,9 @@ export function ThreadBetterRewriteDropdown() {
         </DropdownMenuTrigger>
       </Tooltip>
 
-      <LanguageModelSelectorContext
-        value={{
-          component: "dropdown",
-          setHighlightedItem,
-        }}
+      <LanguageModelSelectorProvider
+        type="rewrite"
+        setHighlightedItem={setHighlightedItem}
       >
         {isMobile ? (
           <MobileContent
@@ -122,7 +122,7 @@ export function ThreadBetterRewriteDropdown() {
             )}
           </DesktopContent>
         )}
-      </LanguageModelSelectorContext>
+      </LanguageModelSelectorProvider>
     </DropdownMenu>
   );
 }

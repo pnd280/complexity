@@ -12,9 +12,10 @@ import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-ap
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import CometAssistantLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/CometAssistantTriggerButton";
 import DesktopContent from "@/plugins/language-model-selector/components/desktop";
+import ModelsListEditToggle from "@/plugins/language-model-selector/components/desktop/ModelsListEditToggle";
 import MobileContent from "@/plugins/language-model-selector/components/mobile";
 import BetterLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/TriggerButton";
-import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
+import { LanguageModelSelectorProvider } from "@/plugins/language-model-selector/context";
 import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { getSelectItems } from "@/plugins/language-model-selector/utils";
 
@@ -78,11 +79,9 @@ export function LanguageModelSelector() {
           <BetterLanguageModelSelectorTriggerButton />
         )}
       </SelectTrigger>
-      <LanguageModelSelectorContext
-        value={{
-          component: "select",
-          setHighlightedItem,
-        }}
+      <LanguageModelSelectorProvider
+        type="selector"
+        setHighlightedItem={setHighlightedItem}
       >
         {isMobile && !isCometAssistant ? (
           <SelectContext>
@@ -94,9 +93,11 @@ export function LanguageModelSelector() {
             )}
           </SelectContext>
         ) : (
-          <DesktopContent />
+          <DesktopContent className="x:group x:flex-col-reverse">
+            <ModelsListEditToggle />
+          </DesktopContent>
         )}
-      </LanguageModelSelectorContext>
+      </LanguageModelSelectorProvider>
     </Select>
   );
 }

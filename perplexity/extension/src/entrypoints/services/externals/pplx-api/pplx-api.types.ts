@@ -13,6 +13,17 @@ export type PplxUserSettingsApiResponse = z.infer<
   typeof PplxUserSettingsApiResponseSchema
 >;
 
+export const PplxRateLimitsApiResponseSchema = z.object({
+  remaining_pro: z.number(),
+  remaining_research: z.number(),
+  remaining_labs: z.number(),
+  model_specific_limits: z.record(z.string(), z.number()),
+});
+
+export type PplxRateLimitsApiResponse = z.infer<
+  typeof PplxRateLimitsApiResponseSchema
+>;
+
 export type PplxAuthSessionApiResponse = {
   user: {
     name: string;
