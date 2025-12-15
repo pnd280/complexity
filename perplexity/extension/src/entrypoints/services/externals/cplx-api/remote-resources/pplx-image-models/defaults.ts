@@ -1,22 +1,17 @@
 export const pplxLocalImageModels = [
   {
-    label: "Auto",
-    shortLabel: "Auto",
-    code: "default",
-  },
-  {
     label: "Nano Banana",
     shortLabel: "Nano Banana",
     code: "gemini-flash",
   },
   {
-    label: "Seedream 4.0",
+    label: "Seedream 4.5",
     shortLabel: "Seedream",
     code: "seedream",
   },
   {
-    label: "GPT-4o",
-    shortLabel: "GPT-4o",
+    label: "GPT Image 1",
+    shortLabel: "GPT Image 1",
     code: "gpt-4o-image",
   },
   {
@@ -25,8 +20,8 @@ export const pplxLocalImageModels = [
     code: "flux",
   },
   {
-    label: "DALL-E 3",
-    shortLabel: "DALL-E",
-    code: "dall-e-3",
+    label: "Auto",
+    shortLabel: "Auto",
+    code: "default",
   },
 ] as const;
