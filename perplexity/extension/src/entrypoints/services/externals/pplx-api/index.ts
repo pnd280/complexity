@@ -17,10 +17,12 @@ import type {
   PplxAuthSessionApiResponse,
   PplxOrgSettingsApiResponse,
   ThreadApiResponse,
+  PplxRateLimitsApiResponse,
 } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import {
   PplxAiProfileApiResponseSchema,
   PplxOrgSettingsApiResponseSchema,
+  PplxRateLimitsApiResponseSchema,
   SpaceDetailsSchema,
   SpaceFileDownloadUrlApiResponseSchema,
   SpaceFilesApiResponseSchema,
@@ -92,6 +94,14 @@ export class PplxApiService {
 
       return saveUserSettingsViaWebSocket(settings, socketInstance);
     }
+  }
+
+  static async fetchRateLimits(): Promise<PplxRateLimitsApiResponse> {
+    const resp = await fetchTextResource(ENDPOINTS.RATE_LIMITS.INDEX);
+
+    return PplxRateLimitsApiResponseSchema.loose().parse(
+      jsonUtils.safeParse(resp),
+    );
   }
 
   static async fetchAiProfile(): Promise<PplxAiProfileApiResponse> {

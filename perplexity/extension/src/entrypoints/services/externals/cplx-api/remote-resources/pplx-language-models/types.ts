@@ -1,13 +1,16 @@
 import { z } from "zod";
 
 import type { pplxLocalLanguageModels } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/defaults";
+import type { PplxRateLimitsApiResponse } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 
 export const LanguageModelBaseSchema = z.object({
   label: z.string(),
   shortLabel: z.string(),
   code: z.string(),
   isReasoning: z.boolean(),
-  limitKey: z.string().optional(),
+  limitKeyPath: z
+    .array(z.string<keyof PplxRateLimitsApiResponse | (string & {})>())
+    .optional(),
   isMax: z.boolean().optional(),
   icon: z.string(),
 });

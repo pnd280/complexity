@@ -21,6 +21,16 @@ export const pplxApiQueries = {
       }),
   },
 
+  rateLimits: {
+    all: () => [...pplxApiQueries.all(), "rateLimits"] as const,
+    detail: () =>
+      queryOptions({
+        queryKey: [...pplxApiQueries.rateLimits.all()] as const,
+        queryFn: () => PplxApiService.fetchRateLimits(),
+      }),
+    staleTime: ms("5s"),
+  },
+
   auth: {
     all: () => [...pplxApiQueries.all(), "auth"] as const,
     detail: () =>

@@ -17,6 +17,10 @@ export const ENDPOINTS = {
       "https://www.perplexity.ai/rest/enterprise/user/organization?version=2.15&source=default",
   },
 
+  RATE_LIMITS: {
+    INDEX: "https://www.perplexity.ai/rest/rate-limit/all",
+  },
+
   AI_PROFILE: {
     INDEX:
       "https://www.perplexity.ai/rest/user/get_user_ai_profile?version=2.18&source=default",
