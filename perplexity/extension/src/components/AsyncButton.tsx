@@ -18,22 +18,26 @@ export default function AsyncButton({
 }: AsyncButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleClick = async () => {
-    setIsLoading(true);
-    try {
-      await onClick();
-    } catch (error) {
-      toast({
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "An unknown error occurred",
-      });
-    }
-    setIsLoading(false);
-  };
-
   return (
-    <Button disabled={disabled || isLoading} onClick={handleClick} {...props}>
+    <Button
+      disabled={disabled || isLoading}
+      onClick={async () => {
+        setIsLoading(true);
+        try {
+          await onClick();
+        } catch (error) {
+          toast({
+            title: "Error",
+            description:
+              error instanceof Error
+                ? error.message
+                : "An unknown error occurred",
+          });
+        }
+        setIsLoading(false);
+      }}
+      {...props}
+    >
       {isLoading ? loadingText : children}
     </Button>
   );

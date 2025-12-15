@@ -1,9 +1,9 @@
 import Tooltip from "@/components/Tooltip";
 import { Separator } from "@/components/ui/separator";
+import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
+import { LanguageModelTypeIcons } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
+import type { LanguageModelType } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import { LanguageModelTypeIcons } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/icons";
-import type { LanguageModelType } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 import TablerCpu from "~icons/tabler/cpu";
 

@@ -540,6 +540,7 @@ export class AudioCaptureMR extends AudioCapture {
           {
             devLimit: 1024,
             unify: false,
+            copyoutPacket: "ptr",
           },
         );
 

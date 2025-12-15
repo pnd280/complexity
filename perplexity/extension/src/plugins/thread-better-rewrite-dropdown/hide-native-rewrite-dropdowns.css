@@ -1,5 +1,0 @@
-[data-cplx-component="message-block-footer"] > :first-child {
-  > button:has(use[*|href="#pplx-icon-repeat"]) {
-    display: none;
-  }
-}

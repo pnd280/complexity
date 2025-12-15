@@ -1,35 +1,42 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/block-analytic-events/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    blockAnalyticEvents: z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
+const meta = definePluginMeta({
+  id: "blockAnalyticEvents",
+  name: "Block Analytic Events",
+  description: "Prevent Perplexity from sending analytic/tracking events",
 });
 
-export default definePlugin({
-  meta: {
-    id: "blockAnalyticEvents",
-    title: "Block Analytic Events",
-    description: "Prevent Perplexity from sending analytic/tracking events",
-    dashboardMeta: {
-      tags: ["privacy"],
-      categories: ["misc"],
-      uiRouteSegment: "block-analytic-events",
-    },
-    dependencies: {
-      corePlugins: ["networkIntercept"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["privacy"],
+  categories: ["misc"],
+  uiRouteSegment: "block-analytic-events",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["networkIntercept"],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

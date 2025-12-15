@@ -1,22 +1,42 @@
-import usePplxUserSettings from "@/hooks/usePplxUserSettings";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { useQuery } from "@tanstack/react-query";
 
-export function useModelLimits() {
-  const { data } = usePplxUserSettings();
+import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
+import type { LanguageModel } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import type { PplxRateLimitsApiResponse } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 
-  const limits: Partial<Record<LanguageModel["code"], number | null>> = {};
+const getLimitValue = (
+  limitKeyPath: string[],
+  rateLimits: PplxRateLimitsApiResponse,
+): number | null => {
+  const [limit, error] = tryCatch(() =>
+    Number(limitKeyPath.reduce((acc, key) => (acc as any)[key], rateLimits)),
+  );
 
-  Object.values(PplxLanguageModelsService.allModels)
+  return error ? null : limit;
+};
+
+export function useModelLimits(): Record<LanguageModel["code"], number | null> {
+  const { data: rateLimits } = useQuery(pplxApiQueries.rateLimits.detail());
+
+  if (!rateLimits)
+    return Object.values(PplxLanguageModelsService.allModels)
+      .flat()
+      .reduce(
+        (acc, { code }) => ({
+          ...acc,
+          [code]: null,
+        }),
+        {} as Record<LanguageModel["code"], number | null>,
+      );
+
+  return Object.values(PplxLanguageModelsService.allModels)
     .flat()
-    .forEach((model) => {
-      const limitKey = model.limitKey;
-      if (!limitKey) {
-        limits[model.code] = null;
-      } else {
-        limits[model.code] = Number(data?.[limitKey as keyof typeof data]);
-      }
-    });
-
-  return limits;
+    .reduce(
+      (acc, { limitKeyPath, code }) => ({
+        ...acc,
+        [code]: limitKeyPath ? getLimitValue(limitKeyPath, rateLimits) : null,
+      }),
+      {} as Record<LanguageModel["code"], number | null>,
+    );
 }

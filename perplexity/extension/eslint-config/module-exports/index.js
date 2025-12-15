@@ -21,101 +21,48 @@ const createTypedExportsRule = (files, requirements) => ({
 
 export default defineConfig([
   createTypedExportsRule(
-    ["src/plugins/__core__/**/index.manifest.core.ts"],
+    ["src/{entrypoints,plugins}/**/index.manifest.ts"],
     [
       {
         type: "default",
         tsType: {
-          name: "CorePluginManifest",
-          path: "@/__registries__/core-plugins/types",
+          name: "PluginManifestExports",
+          path: "@/entrypoints/services/plugins/types/index",
         },
+        message: "Must export a valid plugin manifest.",
       },
     ],
   ),
   createTypedExportsRule(
-    ["src/plugins/*/index.manifest.ts"],
+    ["src/{entrypoints,plugins}/**/_locales/index.ts"],
     [
-      {
-        type: "default",
-        tsType: {
-          name: "PluginManifest",
-          path: "@/__registries__/plugins/types",
-        },
-      },
-    ],
-  ),
-  createTypedExportsRule(
-    ["src/{services,plugins,entrypoints}/**/*.bg-worker.ts"],
-    [
-      {
-        type: "default",
-        tsType: {
-          name: "DefaultExportFunction",
-          path: "@/__registries__/types",
-        },
-        message: "Must export default a valid function.",
-      },
-    ],
-  ),
-  createTypedExportsRule(
-    ["src/plugins/**/*.hash-router.ts"],
-    [
-      {
-        type: "default",
-        tsType: {
-          name: "ReactRouterRouteObject",
-          path: "@/__registries__/types",
-        },
-        message:
-          "Must export default a valid React Router route object `RouteObject`.",
-      },
-    ],
-  ),
-  createTypedExportsRule(
-    ["src/plugins/**/loader.*", "src/plugins/**/*.loader.*"],
-    [
-      {
-        type: "default",
-        tsType: {
-          name: "DefaultExportFunction",
-          path: "@/__registries__/types",
-        },
-        message: "Must export default a valid function.",
-      },
-    ],
-  ),
-  createTypedExportsRule(
-    ["src/plugins/*/settings-ui.tsx", "src/plugins/*/settings-ui/index.tsx"],
-    [
-      {
-        type: "default",
-        tsType: {
-          name: "ReactComponent",
-          path: "@/__registries__/types",
-        },
-        message: "Must export default a valid React component.",
-      },
       {
         type: "named",
-        exportName: "pluginId",
         tsType: {
-          name: "PluginId",
-          path: "@/__registries__/plugins/meta.types",
+          name: "String",
+          path: "@/types/utils.types",
         },
-        message: "Must export a string which matches a valid `pluginId`.",
+        message: "Must export a valid locale namespace.",
       },
     ],
   ),
   createTypedExportsRule(
-    ["src/plugins/**/*.cs-ui.tsx"],
+    [
+      "src/{entrypoints,plugins}/**/bg-worker.ts",
+      "src/{entrypoints,plugins}/**/*.bg-worker.ts",
+      "src/{entrypoints,plugins}/**/opt-loader.*",
+      "src/{entrypoints,plugins}/**/*.opt-loader.*",
+      "src/{entrypoints,plugins}/**/loader.*",
+      "src/{entrypoints,plugins}/**/*.loader.*",
+    ],
     [
       {
         type: "default",
         tsType: {
-          name: "ReactComponent",
-          path: "@/__registries__/types",
+          name: "ContextLoaderExport",
+          path: "@/types/utils.types",
         },
-        message: "Must export default a valid React component.",
+        message: "Must export default a valid function.",
       },
     ],
   ),

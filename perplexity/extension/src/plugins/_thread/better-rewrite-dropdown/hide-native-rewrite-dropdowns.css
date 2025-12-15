@@ -1,0 +1,6 @@
+[data-cplx-component="message-block"][data-read-only="false"]
+  [data-cplx-component="message-block-footer"]
+  > :first-child:has([data-better-rewrite-dropdown="true"])
+  > button:has(use[*|href="#pplx-icon-repeat"]) {
+  display: none;
+}

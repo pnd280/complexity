@@ -1,35 +1,37 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/comet-isolated-zoom/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    "comet:isolatedZoom": z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
-  zoomLevel: z.number().min(0.25).max(5).prefault(1),
+const meta = definePluginMeta({
+  id: "comet:isolatedZoom",
+  name: "Comet: Isolated Zoom",
+  description:
+    "Enable interface zoom on Comet Assistant without affecting the main page",
 });
 
-export default definePlugin({
-  meta: {
-    id: "comet:isolatedZoom",
-    title: "Comet: Isolated Zoom",
-    description:
-      "Enable interface zoom on Comet Assistant without affecting the main page",
-    dashboardMeta: {
-      tags: ["ui", "cometAssistant", "cometAssistantOnly"],
-      categories: ["comet"],
-      uiRouteSegment: "comet-isolated-zoom",
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-      zoomLevel: 1,
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["ui", "cometAssistant", "cometAssistantOnly"],
+  categories: ["comet"],
+  uiRouteSegment: "comet-isolated-zoom",
 });
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

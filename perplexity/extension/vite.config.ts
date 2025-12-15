@@ -28,6 +28,7 @@ export default defineConfig(() => ({
     emptyOutDir: true,
     outDir: `dist/${APP_CONFIG.BROWSER}`,
     reportCompressedSize: false,
+    // minify: "esbuild",
     rollupOptions: {
       output: {
         chunkFileNames: "assets/cplx-chunk-[hash].js",
@@ -37,6 +38,11 @@ export default defineConfig(() => ({
     },
   },
 
+  // esbuild: {
+  //   minifyIdentifiers: false,
+  //   keepNames: true,
+  // },
+
   plugins: [
     crx({
       manifest:
@@ -44,6 +50,7 @@ export default defineConfig(() => ({
       browser: APP_CONFIG.BROWSER,
     }),
     react({
+      include: [/\.ts$/, /\.tsx$/, /(?<!settings)\.ts$/],
       babel: {
         plugins: ["babel-plugin-react-compiler"],
       },
@@ -63,8 +70,8 @@ export default defineConfig(() => ({
       globs: [
         "src/**/*",
         "public/**/*",
-        "!src/entrypoints/options-page/**/*",
-        "!src/plugins/**/settings-ui.tsx",
+        "!src/entrypoints/contexts/options-page/**/*",
+        "!src/plugins/**/settings-ui.opt-loader.tsx",
         "!src/plugins/**/settings-ui/**/*",
       ],
     }),
@@ -78,7 +85,7 @@ export default defineConfig(() => ({
     // build
     vitePluginMoveHtml([
       {
-        src: "src/entrypoints/options-page/options.html",
+        src: "src/entrypoints/contexts/options-page/options.html",
         dest: "options.html",
       },
     ]),
@@ -108,14 +115,14 @@ export default defineConfig(() => ({
     },
     warmup: {
       clientFiles: [
-        "src/entrypoints/content-scripts/index.ts",
-        "src/entrypoints/options-page/options.html",
+        "src/entrypoints/contexts/content-scripts/index.ts",
+        "src/entrypoints/contexts/options-page/options.html",
       ],
     },
   },
 
   test: {
-    exclude: ["node_modules", "e2e/**", "dist/**", "release/**"],
+    exclude: ["node_modules", "e2e/**", "dist/**", "release/**", "temp/**"],
     setupFiles: ["./tests/vitest.setup.ts"],
   },
 }));

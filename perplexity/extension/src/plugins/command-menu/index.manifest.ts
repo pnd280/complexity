@@ -1,51 +1,42 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/command-menu/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-import { getPlatform } from "@/hooks/usePlatformDetection";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    commandMenu: z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
-  keybindings: z.object({
-    toggle: z.array(z.string()),
-    threadsSearch: z.array(z.string()),
-    spacesSearch: z.array(z.string()),
-    toggleSidecar: z.array(z.string()),
-  }),
+const meta = definePluginMeta({
+  id: "commandMenu",
+  name: "Command Menu",
+  description: "Quickly navigate around and invoke actions",
 });
 
-export default definePlugin({
-  meta: {
-    id: "commandMenu",
-    title: "Command Menu",
-    description: "Quickly navigate around and invoke actions",
-    dashboardMeta: {
-      tags: ["ui", "desktopOnly"],
-      categories: ["misc"],
-      uiRouteSegment: "command-menu",
-    },
-    dependencies: {
-      corePlugins: ["spaRouter", "webSocket"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      keybindings: {
-        toggle: [
-          getPlatform() === "mac" ? Key.Meta : Key.Control,
-          getPlatform() === "mac" ? "i" : "k",
-        ],
-        threadsSearch: [Key.Alt, "t"],
-        spacesSearch: [Key.Alt, "y"],
-        toggleSidecar: [getPlatform() === "mac" ? Key.Meta : Key.Control, "e"],
-      },
-      enabled: false,
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["ui", "desktopOnly"],
+  categories: ["misc"],
+  uiRouteSegment: "command-menu",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["spaRouter", "webSocket"],
+});
+
+const manifest = {
+  meta,
+  dependencies,
+  dashboardMeta,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

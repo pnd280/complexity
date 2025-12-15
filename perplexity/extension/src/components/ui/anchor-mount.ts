@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // original author: https://github.com/molvqingtai/react-magic-portal
 
 import React, { useLayoutEffect } from "react";

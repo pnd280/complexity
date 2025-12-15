@@ -1,9 +1,0 @@
-@reference "../../assets/index.css";
-
-#thread-toc-container {
-  top: calc(var(--header-height) + 20px);
-}
-
-#thread-toc-menu-toggle {
-  @apply x:top-[calc(var(--header-height)+100px)] x:md:top-[calc(var(--header-height)+20px)];
-}

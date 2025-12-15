@@ -1,4 +1,4 @@
-import usePplxUserSettings from "@/hooks/usePplxUserSettings";
+import usePplxUserSettings from "@/entrypoints/hooks/usePplxUserSettings";
 
 export default function useCloudflareTimeout() {
   const { failureReason } = usePplxUserSettings();

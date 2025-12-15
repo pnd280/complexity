@@ -1,13 +1,13 @@
 import { QueryObserver } from "@tanstack/react-query";
 
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { persistentQueryClient } from "@/plugins/__async-deps__/persistent-query-client";
-import { pluginGuardsStore } from "@/plugins/__async-deps__/plugins-guard/store";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { pluginGuardsStore } from "@/entrypoints/contexts/content-scripts/services/ui-guard/store";
+import { isImageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-image-models/types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 import { imageGenModelSelectorStore } from "@/plugins/image-gen-model-selector/store";
-import { isImageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:imageGenModelSelector:initStore": void;
   }
@@ -16,8 +16,8 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:imageGenModelSelector:initStore",
-    dependencies: ["cache:pluginsEnableStates"],
-    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStatesV2"],
+    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
       if (!pluginsEnableStates["imageGenModelSelector"]) return;
 
       initImageGenModelSelectorStore();

@@ -1,5 +1,3 @@
-import { isHotkeyPressed } from "react-hotkeys-hook";
-
 import PplxSpace from "@/components/icons/PplxSpace";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -11,14 +9,15 @@ import {
   openInNewTab,
   softNavigate,
   useSpaRouter,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import type { Space } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
-import { formatRelativeTime } from "@/services/infra/i18n";
+import { formatRelativeTime } from "@/services/i18n";
 import { emojiCodeToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 export default function SpaceCommandItem({ space }: { space: Space }) {
   const url = useSpaRouter((store) => store.url);
@@ -38,10 +37,10 @@ export default function SpaceCommandItem({ space }: { space: Space }) {
         keywords={space.title.split(" ")}
         className="x:flex-col x:items-start x:justify-center x:gap-2"
         onSelect={() => {
-          if (isHotkeyPressed(Key.Alt)) {
+          if (hotkeys.isPressed(Key.Alt)) {
             void openInNewTab(`/spaces/${space.slug}`);
             commandMenuStore.getState().states.setOpen(false);
-          } else if (isHotkeyPressed(Key.Shift)) {
+          } else if (hotkeys.isPressed(Key.Shift)) {
             commandMenuStore.getState().pagesStack.push({
               pageId: "spaceThreads",
               args: {

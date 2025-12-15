@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import type { Space } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 import type { ControlledQueryOptions } from "@/types/tanstack-query.types";
 
 const _queryKey = pplxApiQueries.spaces.all();

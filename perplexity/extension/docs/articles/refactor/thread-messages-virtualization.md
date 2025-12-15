@@ -23,7 +23,7 @@ Since these virtualized messages aren't present in the DOM, the extension can't 
 
 _Thread ToC Plugin: messages appear/disappear as you scroll_
 
-![thread-toc-before](https://i.imgur.com/ZLQaIia.gif)
+![thread-toc-before](https://cdn.cplx.app/images/ZLQaIia.gif)
 
 ## What's the solution?
 
@@ -37,7 +37,7 @@ But the hard part is figuring out how to find the correct node that holds this d
 2. Finding its DOM wrapper node where siblings represent other messages
 3. Traversing up the fiber tree until locating the node containing data for all messages
 
-![devtool-thread-wrapper-fiber-node](https://i.imgur.com/IBfREF6.png)
+![devtool-thread-wrapper-fiber-node](https://cdn.cplx.app/images/IBfREF6.png)
 
 Once we have found the correct node, the rest is just a matter of rewriting the parsing logic.
 
@@ -51,4 +51,4 @@ We've got everything working at its fullest again - however, the underlying arch
 
 As I've mentioned in [Complexity's Discord server](https://discord.cplx.app/), the design of future plugins will be heading towards less DOM manipulation, or at least avoid UI parts that are very likely to change.
 
-![discord-convo](https://i.imgur.com/zIGbTwZ.png)
+![discord-convo](https://cdn.cplx.app/images/zIGbTwZ.png)

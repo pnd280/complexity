@@ -1,14 +1,16 @@
 import { useHotkeyRecorder } from "@/components/hotkey-recorder";
-import useExtensionSettings from "@/services/infra/extension-api-wrappers/extension-settings/useExtensionSettings";
+import { useSettings } from "@/plugins/command-menu/settings";
 
 export default function ThreadsSearchPageKeybinding() {
-  const { settings, mutation } = useExtensionSettings();
+  const { settings, update } = useSettings();
 
   const { HotkeyRecorderUi } = useHotkeyRecorder({
-    defaultKeys: settings.plugins["commandMenu"].keybindings.threadsSearch,
+    defaultKeys: settings.keybindings.threadsSearch,
     onSave: (keys) => {
-      mutation.mutate((draft) => {
-        draft.plugins["commandMenu"].keybindings.threadsSearch = keys;
+      void update({
+        updateFn: (draft) => {
+          draft.keybindings.threadsSearch = keys;
+        },
       });
     },
   });

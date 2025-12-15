@@ -5,7 +5,7 @@ import {
   backgroundProxyServiceName,
   PromptHistoryServiceImpl,
   type PromptHistoryService as PromptHistoryServiceType,
-} from "@/plugins/prompt-history/indexed-db";
+} from "@/plugins/prompt-history/indexed-db/service";
 import { isBackgroundScript } from "@/utils/misc/utils";
 
 let rootServiceInstance: PromptHistoryServiceType | undefined;
@@ -14,6 +14,7 @@ let proxyServiceInstance: PromptHistoryServiceType | undefined;
 const [registerService, getService] = defineProxy(getPromptHistoryRootService, {
   namespace: backgroundProxyServiceName,
   backup: false,
+  heartbeatCheck: false,
 });
 
 function getPromptHistoryRootService(): PromptHistoryServiceType {

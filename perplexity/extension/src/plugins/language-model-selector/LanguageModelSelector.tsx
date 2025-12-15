@@ -1,22 +1,23 @@
 import { createListCollection } from "@ark-ui/react";
 
 import { Select, SelectContext, SelectTrigger } from "@/components/ui/select";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
-import { useRegisteredGlobalCssEntry } from "@/plugins/__async-deps__/global-stores/global-css-store";
-import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
+import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
+import { useRegisteredGlobalCssEntry } from "@/entrypoints/contexts/content-scripts/stores/global-css-store";
 import {
   ScopedQueryBoxContext,
   useScopedQueryBoxContext,
-} from "@/plugins/__ui-groups__/elements/query-box/context";
-import { getActiveQueryBoxTextbox } from "@/plugins/__ui-groups__/elements/query-box/utils";
+} from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/context";
+import { getActiveQueryBoxTextbox } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
+import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import CometAssistantLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/CometAssistantTriggerButton";
 import DesktopContent from "@/plugins/language-model-selector/components/desktop";
+import ModelsListEditToggle from "@/plugins/language-model-selector/components/desktop/ModelsListEditToggle";
 import MobileContent from "@/plugins/language-model-selector/components/mobile";
 import BetterLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/TriggerButton";
-import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
+import { LanguageModelSelectorProvider } from "@/plugins/language-model-selector/context";
 import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-selector/store";
 import { getSelectItems } from "@/plugins/language-model-selector/utils";
-import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 export function LanguageModelSelector() {
   const { isMobile } = useIsMobileStore();
@@ -78,11 +79,9 @@ export function LanguageModelSelector() {
           <BetterLanguageModelSelectorTriggerButton />
         )}
       </SelectTrigger>
-      <LanguageModelSelectorContext
-        value={{
-          component: "select",
-          setHighlightedItem,
-        }}
+      <LanguageModelSelectorProvider
+        type="selector"
+        setHighlightedItem={setHighlightedItem}
       >
         {isMobile && !isCometAssistant ? (
           <SelectContext>
@@ -94,9 +93,11 @@ export function LanguageModelSelector() {
             )}
           </SelectContext>
         ) : (
-          <DesktopContent />
+          <DesktopContent className="x:group x:flex-col-reverse">
+            <ModelsListEditToggle />
+          </DesktopContent>
         )}
-      </LanguageModelSelectorContext>
+      </LanguageModelSelectorProvider>
     </Select>
   );
 }
@@ -105,18 +106,6 @@ function useRegisterGlobalCss() {
   const { store } = useScopedQueryBoxContext();
 
   const subscriberId = "language-model-selector";
-
-  useRegisteredGlobalCssEntry({
-    entryIds: ["normalize-main-query-box"],
-    subscriberId,
-    subscribe: store.type === "main",
-  });
-
-  useRegisteredGlobalCssEntry({
-    entryIds: ["normalize-follow-up-query-box"],
-    subscriberId,
-    subscribe: store.type === "follow-up",
-  });
 
   useRegisteredGlobalCssEntry({
     entryIds: ["hide-native-model-selector"],

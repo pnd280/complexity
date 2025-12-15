@@ -1,5 +1,4 @@
 import { Highlight } from "@ark-ui/react/highlight";
-import { isHotkeyPressed } from "react-hotkeys-hook";
 
 import ClockTemporary from "@/components/icons/ClockTemporary";
 import { Badge } from "@/components/ui/badge";
@@ -12,13 +11,14 @@ import {
   openInNewTab,
   softNavigate,
   useSpaRouter,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import type { ThreadSearchResponseApi } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import { useCurrentPage } from "@/plugins/command-menu/hooks/useCurrentPage";
 import SpaceBadge from "@/plugins/command-menu/pages/threads/SpaceBadge";
 import { commandMenuStore } from "@/plugins/command-menu/store";
-import type { ThreadSearchResponseApi } from "@/services/externals/pplx-api/pplx-api.types";
-import { formatExactDate, formatRelativeTime } from "@/services/infra/i18n";
+import { formatExactDate, formatRelativeTime } from "@/services/i18n";
 import { jsonUtils } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 type ThreadItemProps = {
   thread: ThreadSearchResponseApi;
@@ -57,7 +57,7 @@ export default function ThreadItem({ thread, searchValue }: ThreadItemProps) {
         keywords={keywords}
         className="x:flex-col x:items-start x:justify-center x:gap-2"
         onSelect={() => {
-          if (isHotkeyPressed(Key.Alt)) {
+          if (hotkeys.isPressed(Key.Alt)) {
             void openInNewTab(`/search/${thread.slug}`);
           } else {
             void softNavigate(`/search/${thread.slug}`);

@@ -18,6 +18,10 @@ export default defineConfig({
     "@typescript-eslint/no-this-alias": "error",
     "@typescript-eslint/no-unsafe-declaration-merging": "error",
     "@typescript-eslint/no-unnecessary-condition": "error",
+    "@typescript-eslint/no-empty-object-type": [
+      "error",
+      { allowInterfaces: "always" },
+    ],
     "@typescript-eslint/no-floating-promises": [
       "warn",
       {

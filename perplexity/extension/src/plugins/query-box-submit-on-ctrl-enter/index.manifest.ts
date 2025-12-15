@@ -1,36 +1,43 @@
-import { z } from "zod";
-
-import { definePlugin } from "@/__registries__/plugins/utils";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
 import { getPlatform } from "@/hooks/usePlatformDetection";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/query-box-submit-on-ctrl-enter/settings";
 
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    "queryBox:submitOnCtrlEnter": z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
+const meta = definePluginMeta({
+  id: "queryBox:submitOnCtrlEnter",
+  name: `Submit on ${getPlatform() === "mac" ? "Cmd" : "Ctrl"}+Enter`,
+  description: `Insert new line on Enter, submit on ${getPlatform() === "mac" ? "Cmd" : "Ctrl"}+Enter`,
 });
 
-export default definePlugin({
-  meta: {
-    id: "queryBox:submitOnCtrlEnter",
-    title: `Submit on ${getPlatform() === "mac" ? "Cmd" : "Ctrl"}+Enter`,
-    description: `Insert new line on Enter, submit on ${getPlatform() === "mac" ? "Cmd" : "Ctrl"}+Enter`,
-    dashboardMeta: {
-      tags: [],
-      categories: ["queryBox"],
-      uiRouteSegment: "query-box-submit-on-ctrl-enter",
-    },
-    dependencies: {
-      corePlugins: ["domObservers:queryBoxes"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: [],
+  categories: ["queryBox"],
+  uiRouteSegment: "query-box-submit-on-ctrl-enter",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["domObservers:queryBoxes"],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;
