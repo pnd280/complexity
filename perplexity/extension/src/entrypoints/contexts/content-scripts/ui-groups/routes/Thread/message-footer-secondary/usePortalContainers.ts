@@ -21,22 +21,12 @@ export function usePortalContainers(): (Element | null)[] {
     const $portalContainer = $("<div>").internalComponentAttr(OBSERVER_ID);
 
     const $anchor = messageBlock.nodes.$footer.find(
-      DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
-        .MISC_BUTTON_WRAPPER,
+      `${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_GROUP.SECOND} ${DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD.THUMBS_UP_BUTTON}`,
     );
 
-    if ($anchor.length) {
-      $anchor.before($portalContainer);
-    } else {
-      const copyButtonWrapper = messageBlock.nodes.$footer.find(
-        DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.FOOTER_CHILD
-          .COPY_BUTTON,
-      );
+    if (!$anchor.length) return null;
 
-      if (copyButtonWrapper.length) {
-        copyButtonWrapper.after($portalContainer);
-      }
-    }
+    $anchor.before($portalContainer);
 
     return $portalContainer[0] ?? null;
   });

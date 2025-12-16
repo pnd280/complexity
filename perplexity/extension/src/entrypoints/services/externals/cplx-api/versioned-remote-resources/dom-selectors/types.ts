@@ -47,6 +47,7 @@ export const DomSelectorsSchema = z.object({
         REWRITE_BUTTON_WRAPPER: z.string(),
         COPY_BUTTON: z.string(),
         THUMBS_DOWN_BUTTON: z.string(),
+        THUMBS_UP_BUTTON: z.string(),
         MISC_BUTTON_WRAPPER: z.string(),
       }),
       IMAGE_GEN: z.object({

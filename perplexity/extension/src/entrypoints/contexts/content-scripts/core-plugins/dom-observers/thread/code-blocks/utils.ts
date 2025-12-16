@@ -14,8 +14,18 @@ export function getExistingCodeBlocks(
   );
 }
 
-export function isNodeStale($node: JQuery<Element> | null): boolean {
-  return $node == null || $node[0] == null || !document.contains($node[0]);
+export function isNodeStale({
+  $wrapper,
+  $node,
+}: {
+  $wrapper: JQuery<Element> | null;
+  $node: JQuery<Element> | null;
+}): boolean {
+  if ($wrapper == null || $node == null) return true;
+
+  return (
+    $wrapper[0] != null || $node[0] == null || !$wrapper[0]!.contains($node[0])
+  );
 }
 
 export function createOrRefreshCodeBlock({
@@ -33,9 +43,20 @@ export function createOrRefreshCodeBlock({
 }): { nodes: CodeBlock["nodes"]; states: CodeBlock["states"] } {
   const $codeBlock = $(codeBlockElement);
 
+  const $messageBlockWrapper =
+    messageBlocks[messageBlockIndex]?.nodes.$wrapper ?? null;
+
   const nodes =
-    existingCodeBlock && !isNodeStale(existingCodeBlock.nodes.$wrapper)
-      ? refreshStaleCodeBlockNodes(existingCodeBlock.nodes, $codeBlock)
+    existingCodeBlock &&
+    !isNodeStale({
+      $wrapper: $messageBlockWrapper,
+      $node: existingCodeBlock.nodes.$wrapper,
+    })
+      ? refreshStaleCodeBlockNodes({
+          $messageBlockWrapper,
+          existingNodes: existingCodeBlock.nodes,
+          $codeBlock,
+        })
       : createFreshCodeBlockNodes($codeBlock);
 
   setCodeBlockAttributes(nodes, codeBlockIndex);
@@ -51,17 +72,32 @@ export function createOrRefreshCodeBlock({
   return { nodes, states };
 }
 
-export function refreshStaleCodeBlockNodes(
-  existingNodes: CodeBlock["nodes"],
-  $codeBlock: JQuery<Element>,
-): CodeBlock["nodes"] {
+export function refreshStaleCodeBlockNodes({
+  $messageBlockWrapper,
+  existingNodes,
+  $codeBlock,
+}: {
+  $messageBlockWrapper: JQuery<Element> | null;
+  existingNodes: CodeBlock["nodes"];
+  $codeBlock: JQuery<Element>;
+}): CodeBlock["nodes"] {
   const nodes = { ...existingNodes };
 
-  if (isNodeStale(nodes.$wrapper)) {
+  if (
+    isNodeStale({
+      $wrapper: $messageBlockWrapper,
+      $node: nodes.$wrapper,
+    })
+  ) {
     nodes.$wrapper = $codeBlock;
   }
 
-  if (isNodeStale(nodes.$nativeCopyButton)) {
+  if (
+    isNodeStale({
+      $wrapper: $messageBlockWrapper,
+      $node: nodes.$nativeCopyButton,
+    })
+  ) {
     nodes.$nativeCopyButton = $codeBlock.find(
       DomSelectorsService.Root.cachedSync.THREAD.MESSAGE.CODE_BLOCK
         .NATIVE_COPY_BUTTON,

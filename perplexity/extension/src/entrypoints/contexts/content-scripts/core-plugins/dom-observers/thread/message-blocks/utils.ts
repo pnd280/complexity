@@ -129,8 +129,16 @@ function getComponentNodes({
   return nodes;
 }
 
-function isNodeStale($node: JQuery<Element>): boolean {
-  return $node[0] == null || !document.contains($node[0]);
+function isNodeStale({
+  $wrapper,
+  $node,
+}: {
+  $wrapper: JQuery<Element>;
+  $node: JQuery<Element>;
+}): boolean {
+  return (
+    $wrapper[0] != null || $node[0] == null || !$wrapper[0]!.contains($node[0])
+  );
 }
 
 function refreshStaleNodes(
@@ -140,29 +148,29 @@ function refreshStaleNodes(
   const SELECTORS = DomSelectorsService.Root.cachedSync.THREAD.MESSAGE;
   const nodes = { ...existingNodes };
 
-  if (isNodeStale(nodes.$query)) {
+  if (isNodeStale({ $wrapper, $node: nodes.$query })) {
     nodes.$query = $wrapper.find(SELECTORS.QUERY_WRAPPER);
   }
 
-  if (isNodeStale(nodes.$contentWrapper)) {
+  if (isNodeStale({ $wrapper, $node: nodes.$contentWrapper })) {
     nodes.$contentWrapper = $wrapper.find(SELECTORS.CONTENT_WRAPPER);
   }
 
-  if (isNodeStale(nodes.$answer)) {
+  if (isNodeStale({ $wrapper, $node: nodes.$answer })) {
     nodes.$answer = $wrapper.find(SELECTORS.ANSWER);
   }
 
-  if (isNodeStale(nodes.$footer)) {
+  if (isNodeStale({ $wrapper, $node: nodes.$footer })) {
     nodes.$footer = $wrapper.find(SELECTORS.FOOTER);
   }
 
-  if (isNodeStale(nodes.$queryEditButtonGroup)) {
+  if (isNodeStale({ $wrapper, $node: nodes.$queryEditButtonGroup })) {
     nodes.$queryEditButtonGroup = nodes.$query.find(
       SELECTORS.QUERY_EDIT_BUTTON_GROUP,
     );
   }
 
-  if (isNodeStale(nodes.$displayModelButton)) {
+  if (isNodeStale({ $wrapper, $node: nodes.$displayModelButton })) {
     nodes.$displayModelButton = nodes.$footer.find(
       SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
     );

@@ -55,6 +55,7 @@ export const DOM_SELECTORS = {
         REWRITE_BUTTON_WRAPPER: 'button:has(use[*|href="#pplx-icon-repeat"])',
         COPY_BUTTON: 'button:has(use[*|href="#pplx-icon-copy"])',
         THUMBS_DOWN_BUTTON: 'button:has(use[*|href="#pplx-icon-thumb-down"])',
+        THUMBS_UP_BUTTON: 'button:has(use[*|href="#pplx-icon-thumb-up"])',
         MISC_BUTTON_WRAPPER: 'div:has(>button use[*|href="#pplx-icon-dots"])',
       },
       IMAGE_GEN: {
