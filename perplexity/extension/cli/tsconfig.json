@@ -4,14 +4,14 @@
     "allowJs": false,
     "baseUrl": ".",
     "incremental": false,
-    "lib": ["ES2022"],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "noEmit": true,
+    "skipLibCheck": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "~/*": ["./*"],
-      "#/*": ["../*"]
+      "@/*": ["./src/*", "../src/*"],
+      "#ext/*": ["../*"]
     }
   },
-  "exclude": ["node_modules"],
-  "include": ["**/*.ts"]
+  "exclude": ["node_modules", "../src"],
+  "include": ["src/**/*"]
 }

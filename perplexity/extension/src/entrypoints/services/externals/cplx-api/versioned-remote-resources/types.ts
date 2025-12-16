@@ -9,11 +9,6 @@ export type VersionedRemoteResource<T> = {
   zodSchema: z.ZodType<T>;
 };
 
-export type VersionedRemoteResourceReturnType<T> =
-  VersionedRemoteResource<T> & {
-    isVersioned: true;
-  };
-
 export const VersionedRemoteResourceListingSchema = z.record(
   z.string(),
   z.record(z.string(), z.string()),

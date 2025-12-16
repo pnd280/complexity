@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import process from "process";
 
-import packageJson from "#/package.json" assert { type: "json" };
-import { tryCatch } from "#/src/utils/wrappers/try-catch";
+import packageJson from "#ext/package.json" assert { type: "json" };
+import { tryCatch } from "@/utils/wrappers/try-catch";
 import { Logger } from "@complexity/cli-logger";
 
 import { execAsync } from "@/utils";

@@ -8,5 +8,3 @@ export type RemoteResource<T> = {
   fallback: T;
   zodSchema: z.ZodType<T>;
 };
-
-export type RemoteResourceReturnType<T> = RemoteResource<T>;

@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
 
-import type { RemoteResourceReturnType } from "#/src/entrypoints/services/externals/cplx-api/remote-resources/types";
-import { remoteResourceTypes } from "#/src/entrypoints/services/externals/cplx-api/types";
+import type { RemoteResource } from "@/entrypoints/services/externals/cplx-api/remote-resources/types";
+import { remoteResourceTypes } from "@/entrypoints/services/externals/cplx-api/types";
 import type {
   VersionedRemoteResourceListing,
-  VersionedRemoteResourceReturnType,
-} from "#/src/entrypoints/services/externals/cplx-api/versioned-remote-resources/types";
+  VersionedRemoteResource,
+} from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/types";
 import { globSync } from "glob";
 import semver from "semver";
 
@@ -121,9 +121,7 @@ export function updateListingData(params: {
 }
 
 export async function getResourceContent(params: {
-  resource:
-    | VersionedRemoteResourceReturnType<unknown>
-    | RemoteResourceReturnType<unknown>;
+  resource: VersionedRemoteResource<unknown> | RemoteResource<unknown>;
 }): Promise<string> {
   const { resource } = params;
 
@@ -178,7 +176,7 @@ export async function getResourceContent(params: {
 
 export function isVersionedRemoteResource(
   resourceConfig: unknown,
-): resourceConfig is VersionedRemoteResourceReturnType<unknown> {
+): resourceConfig is VersionedRemoteResource<unknown> {
   return (
     typeof resourceConfig === "object" &&
     resourceConfig != null &&
@@ -189,6 +187,6 @@ export function isVersionedRemoteResource(
 
 export function isRemoteResource(
   resourceConfig: unknown,
-): resourceConfig is RemoteResourceReturnType<unknown> {
+): resourceConfig is RemoteResource<unknown> {
   return !isVersionedRemoteResource(resourceConfig);
 }

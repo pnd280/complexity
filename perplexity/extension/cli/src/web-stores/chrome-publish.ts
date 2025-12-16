@@ -1,7 +1,7 @@
 import fs from "fs";
 import process from "process";
 
-import packageJson from "#/package.json" assert { type: "json" };
+import packageJson from "#ext/package.json" assert { type: "json" };
 import { Logger } from "@complexity/cli-logger";
 import chalk from "chalk";
 import chromeWebstoreUpload from "chrome-webstore-upload";
@@ -36,7 +36,7 @@ async function main(): Promise<void> {
   const zip = fs.createReadStream(zipPath);
   const response = await store.uploadExisting(zip);
 
-  if (response == null || response.uploadState !== "SUCCESS") {
+  if (response.uploadState !== "SUCCESS") {
     logger.error("Failed to upload the extension to the Chrome Web Store");
     console.log(response);
     process.exit(1);

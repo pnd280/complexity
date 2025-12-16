@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import process from "process";
 
-import packageJson from "#/package.json" assert { type: "json" };
+import packageJson from "#ext/package.json" assert { type: "json" };
 import { Logger } from "@complexity/cli-logger";
 import chalk from "chalk";
 import { Command } from "commander";

@@ -19,7 +19,7 @@
     "chrome-webstore-upload": "^4.0.3",
     "commander": "^14.0.2",
     "glob": "^13.0.0",
-    "inquirer": "^13.0.2",
+    "inquirer": "^13.1.0",
     "mime-types": "^3.0.2",
     "semver": "^7.7.3",
     "web-ext": "^9.2.0"
