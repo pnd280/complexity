@@ -71,6 +71,22 @@ export const pplxLocalLanguageModels = {
       limitKeyPath: ["remaining_pro"],
     },
     {
+      label: "Gemini 3 Flash",
+      shortLabel: "Gemini 3 Flash",
+      code: "gemini30flash",
+      isReasoning: false,
+      icon: "gemini",
+      limitKeyPath: ["remaining_pro"],
+    },
+    {
+      label: "Gemini 3 Flash (High)",
+      shortLabel: "Gemini 3 Flash Thinking",
+      code: "gemini30flash_high",
+      isReasoning: true,
+      icon: "gemini",
+      limitKeyPath: ["remaining_pro"],
+    },
+    {
       label: "GPT-5.2",
       shortLabel: "GPT-5.2",
       code: "gpt52",

@@ -1,5 +1,4 @@
 import Tooltip from "@/components/Tooltip";
-import type { LanguageModel } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { ModelItem } from "@/plugins/language-model-selector/components/desktop/ModelItem";
 import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
 import { useSelectorUi } from "@/plugins/language-model-selector/hooks/useSelectorUi";

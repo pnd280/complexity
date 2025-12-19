@@ -89,8 +89,8 @@ In addition to common TypeScript/React rules, this project includes:
 
 - Strict null checks ([`@typescript-eslint/strict-boolean-expressions`](https://typescript-eslint.io/rules/strict-boolean-expressions/))
 - Filename casing enforcement (`PascalCase`, `kebab-case`, `camelCase`)
-- Automatic global imports via `unimport` ([config](../src/types/unimport.config.ts))
-- Import scoping via [`eslint-plugin-boundaries`](https://github.com/javierbrea/eslint-plugin-boundaries) ([config](../eslint-config/boundaries.js))
+- Automatic global imports via `unimport` ([config](../../src/auto-imports-config.ts))
+- Import scoping via [`eslint-plugin-boundaries`](https://github.com/javierbrea/eslint-plugin-boundaries) ([config](../../eslint-config/boundaries/index.js))
 
 ## Troubleshooting
 
