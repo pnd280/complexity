@@ -10,7 +10,7 @@ import type {
   SearchStates,
 } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/internal-search-states/store";
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
-import FiberSearchService from "@/services/features/fiber-search";
+import { findFiberNodes } from "@/utils/dom-utils/fiber-search";
 import { walkFiberNode } from "@/utils/wrappers/react-fiber";
 
 export async function setInternalSearchStates({
@@ -77,7 +77,7 @@ async function getStatesNodePath({
   const statesPath =
     remoteStatesFiberPath ?? localInternalSearchStatesStatesFiberPath;
 
-  const fiberNode = FiberSearchService.findFiberNodes(
+  const fiberNode = findFiberNodes(
     {
       fn: (fiber) => {
         const validationResult = walkFiberNode(fiber, validationPath);

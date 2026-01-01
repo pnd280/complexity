@@ -4,7 +4,7 @@ import { APP_CONFIG } from "@/app.config";
 import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { DomSelectorsServiceImpl } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
 import type { PplxWebResult } from "@/entrypoints/services/externals/pplx-api/pplx-thread-parser";
-import FiberSearchService from "@/services/features/fiber-search";
+import { findFiberNodes } from "@/utils/dom-utils/fiber-search";
 import { walkFiberNode } from "@/utils/wrappers/react-fiber";
 
 export type MessageBlockFiberData = {
@@ -26,7 +26,7 @@ export async function getThreadMessages({
     messageNodePath: string[];
   };
 }): Promise<MessageBlockFiberData[] | null> {
-  const fiberNodes = FiberSearchService.findFiberNodes(
+  const fiberNodes = findFiberNodes(
     {
       name: fiberConfig.name,
     },
