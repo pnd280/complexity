@@ -4,6 +4,8 @@ const MIME_TYPE_TO_EXTENSION: Record<string, string> = {
   "application/json": ".json",
   "text/markdown": ".md",
   "text/plain": ".txt",
+  "audio/wav": ".wav",
+  "audio/wave": ".wav",
 };
 
 const EXTENSION_TO_MIME_TYPE: Record<string, string> = Object.entries(
@@ -20,15 +22,23 @@ export default async function downloadFile({
   data,
   filename,
   mimeType,
+  useFilePicker = false,
 }: {
-  data: string;
+  data: string | ArrayBuffer;
   filename: string;
   mimeType?: string;
+  useFilePicker?: boolean;
 }) {
   const resolvedMimeType =
     mimeType || inferMimeTypeFromFilename(filename) || "application/json";
 
-  if (APP_CONFIG.BROWSER === "chrome" && "showSaveFilePicker" in window) {
+  // File System Access API requires active user gesture, which is often lost
+  // after async operations. Only use it when explicitly requested.
+  if (
+    useFilePicker &&
+    APP_CONFIG.BROWSER === "chrome" &&
+    "showSaveFilePicker" in window
+  ) {
     await downloadFileChrome(data, filename, resolvedMimeType);
   } else {
     downloadFileGeneric(data, filename, resolvedMimeType);
@@ -41,7 +51,7 @@ function inferMimeTypeFromFilename(filename: string): string | null {
 }
 
 async function downloadFileChrome(
-  data: string,
+  data: string | ArrayBuffer,
   filename: string,
   mimeType: string,
 ) {
@@ -64,13 +74,20 @@ async function downloadFileChrome(
     await writable.write(data);
     await writable.close();
   } catch (error: unknown) {
-    if (error instanceof Error && error.name !== "AbortError") {
-      console.error("Failed to save file:", error);
+    if (error instanceof Error && error.name === "AbortError") {
+      // User cancelled the save dialog - throw so caller knows
+      throw new Error("Download cancelled");
     }
+    console.error("Failed to save file:", error);
+    throw error;
   }
 }
 
-function downloadFileGeneric(data: string, filename: string, mimeType: string) {
+function downloadFileGeneric(
+  data: string | ArrayBuffer,
+  filename: string,
+  mimeType: string,
+) {
   try {
     const blob = new Blob([data], { type: mimeType });
     const url = URL.createObjectURL(blob);
@@ -82,8 +99,7 @@ function downloadFileGeneric(data: string, filename: string, mimeType: string) {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("Failed to save file:", error);
-    }
+    console.error("Failed to save file:", error);
+    throw error;
   }
 }
