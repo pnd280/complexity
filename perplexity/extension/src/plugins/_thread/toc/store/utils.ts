@@ -99,15 +99,15 @@ const updateActiveItem = (id: number) => {
 
   activeId = id;
 
-  threadTocStore.setState((state) => ({
-    tocItems: state.tocItems.map((item) =>
-      item.id === id
-        ? { ...item, isActive: true }
-        : item.isActive
-          ? { ...item, isActive: false }
-          : item,
-    ),
-  }));
+  threadTocStore.setState((draft) => {
+    for (const item of draft.tocItems) {
+      if (item.id === id) {
+        item.isActive = true;
+      } else if (item.isActive) {
+        item.isActive = false;
+      }
+    }
+  });
 };
 
 const updateTopMostItem = (id: number) => {
@@ -115,15 +115,15 @@ const updateTopMostItem = (id: number) => {
 
   topMostId = id;
 
-  threadTocStore.setState((state) => ({
-    tocItems: state.tocItems.map((item) =>
-      item.id === id
-        ? { ...item, isActiveTopMost: true }
-        : item.isActiveTopMost
-          ? { ...item, isActiveTopMost: false }
-          : item,
-    ),
-  }));
+  threadTocStore.setState((draft) => {
+    for (const item of draft.tocItems) {
+      if (item.id === id) {
+        item.isActiveTopMost = true;
+      } else if (item.isActiveTopMost) {
+        item.isActiveTopMost = false;
+      }
+    }
+  });
 };
 
 const updateItems = (
