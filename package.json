@@ -18,7 +18,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "prettier": "catalog:lint",
-    "turbo": "^2.6.3",
+    "turbo": "^2.7.2",
     "typescript": "catalog:types"
   },
   "packageManager": "pnpm@10.25.0",
