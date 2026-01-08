@@ -22,10 +22,10 @@
     "@types/chrome": "catalog:types",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
-    "globals": "16.5.0",
+    "globals": "17.0.0",
     "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
-    "vite": "^7.3.0"
+    "vite": "^7.3.1"
   }
 }
