@@ -22,7 +22,7 @@ export const pplxLocalLanguageModels = {
       label: "Claude 4.5 Opus",
       shortLabel: "Opus 4.5",
       code: "claude45opus",
-      isReasoning: true,
+      isReasoning: false,
       isMax: true,
       icon: "claude",
       limitKeyPath: ["model_specific_limits", "claude45opus"],
