@@ -13,8 +13,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default async function () {
   AsyncLoaderRegistry.register({
     id: "plugin:comet:isolatedZoom",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["comet:isolatedZoom"]) return;
 
       if (whereAmI() !== "comet_assistant") return;

@@ -12,8 +12,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "corePlugin:mainWorld:networkIntercept",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["networkIntercept"]) return;
 
       void injectMainWorldScript({

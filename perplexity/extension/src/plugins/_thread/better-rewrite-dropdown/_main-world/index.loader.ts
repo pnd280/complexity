@@ -12,8 +12,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:thread:betterRewriteDropdowns:mainWorldActions",
-    dependencies: ["cache:pluginsEnableStatesV2", "cache:domSelectors"],
-    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates", "cache:domSelectors"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["thread:betterRewriteDropdowns"]) return;
 
       void injectMainWorldScript({

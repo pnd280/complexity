@@ -34,7 +34,7 @@
 - Supports 22 languages
 - [**Supports the new Comet browser**](./perplexity/extension/docs/comet-enable-extensions.md)
 - Supports Firefox Android
-- Navigate to [`./perplexity/extension/`](./perplexity/extension/) for more information
+- Contribution: [`./perplexity/extension/`](./perplexity/extension/)
 
 ## Donate/Sponsor
 

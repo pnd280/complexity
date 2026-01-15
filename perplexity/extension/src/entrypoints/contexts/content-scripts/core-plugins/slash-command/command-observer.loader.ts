@@ -16,8 +16,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:slashCommandMenu:observer",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["slashCommand"]) return;
 
       $(document.body).on("keydown", (e) => {

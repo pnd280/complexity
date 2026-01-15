@@ -79,8 +79,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:submitOnCtrlEnter",
-    dependencies: ["cache:pluginsEnableStatesV2", "cache:domSelectors"],
-    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates", "cache:domSelectors"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["queryBox:submitOnCtrlEnter"]) return;
 
       queryBoxesDomObserverStore.subscribe(

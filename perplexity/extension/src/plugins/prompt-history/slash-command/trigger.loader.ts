@@ -16,8 +16,8 @@ const pageId = "promptHistory" as const;
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:shortcut-init",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["promptHistory"]) return;
 
       const shortcut =

@@ -16,8 +16,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:imageGenModelSelector:initStore",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["imageGenModelSelector"]) return;
 
       initImageGenModelSelectorStore();

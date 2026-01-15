@@ -21,12 +21,9 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default async function () {
   AsyncLoaderRegistry.register({
     id: "plugin:zenMode",
-    dependencies: [
-      "cache:pluginsEnableStatesV2",
-      "cache:pluginSettingSnapshots",
-    ],
+    dependencies: ["cache:pluginsEnableStates", "cache:pluginSettingSnapshots"],
     loader: async ({
-      "cache:pluginsEnableStatesV2": pluginsEnableStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:pluginSettingSnapshots": pluginSettingSnapshots,
     }) => {
       if (!pluginsEnableStates["zenMode"]) return;

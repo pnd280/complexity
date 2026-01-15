@@ -15,8 +15,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "corePlugin:domObservers:sidebar",
-    dependencies: ["cache:pluginsEnableStatesV2", "cache:domSelectors"],
-    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates", "cache:domSelectors"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["domObservers:sidebar"]) return;
 
       void observeSidebar();

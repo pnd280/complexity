@@ -11,12 +11,9 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:listeners",
-    dependencies: [
-      "cache:pluginsEnableStatesV2",
-      "cache:pluginSettingSnapshots",
-    ],
+    dependencies: ["cache:pluginsEnableStates", "cache:pluginSettingSnapshots"],
     loader: ({
-      "cache:pluginsEnableStatesV2": pluginsEnableStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:pluginSettingSnapshots": pluginSettingSnapshots,
     }) => {
       if (

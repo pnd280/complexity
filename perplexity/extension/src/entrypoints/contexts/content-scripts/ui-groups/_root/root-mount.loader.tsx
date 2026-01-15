@@ -16,7 +16,7 @@ export default function csUiRootLoader() {
     dependencies: [
       "lib:i18n",
       "lib:dayjs",
-      "cache:pluginsEnableStatesV2",
+      "cache:pluginsEnableStates",
       "cache:languageModels",
       "cache:domSelectors",
     ],

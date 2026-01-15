@@ -11,12 +11,12 @@ export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:languageModelSelector:modelSelectionMismatchWarning",
     dependencies: [
-      "cache:pluginsEnableStatesV2",
+      "cache:pluginsEnableStates",
       "cache:pluginSettingSnapshots",
       "store:pluginGuards",
     ],
     loader: ({
-      "cache:pluginsEnableStatesV2": pluginsEnableStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:pluginSettingSnapshots": pluginSettingSnapshots,
       "store:pluginGuards": pluginGuards,
     }) => {

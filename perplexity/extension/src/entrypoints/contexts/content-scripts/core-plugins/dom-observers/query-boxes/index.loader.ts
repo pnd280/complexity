@@ -22,10 +22,10 @@ export default function () {
     id: "corePlugin:domObservers:queryBoxes",
     dependencies: [
       "corePlugin:mainWorld:spaRouter",
-      "cache:pluginsEnableStatesV2",
+      "cache:pluginsEnableStates",
       "cache:domSelectors",
     ],
-    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["domObservers:queryBoxes"]) return;
 
       spaRouteChangeCompleteSubscribe(
