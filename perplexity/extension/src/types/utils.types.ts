@@ -14,6 +14,7 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type MapValue<T> = T extends Map<any, infer V> ? V : never;
 
 export type NullablePartial<T> = {

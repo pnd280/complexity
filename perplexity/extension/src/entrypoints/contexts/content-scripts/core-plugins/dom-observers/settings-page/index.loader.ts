@@ -15,7 +15,7 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "corePlugin:domObservers:settingsPage",
-    dependencies: ["cache:pluginsEnableStatesV2", "cache:domSelectors"],
+    dependencies: ["cache:pluginsEnableStates", "cache:domSelectors"],
     loader: () => {
       spaRouteChangeCompleteSubscribe(
         (url) => {

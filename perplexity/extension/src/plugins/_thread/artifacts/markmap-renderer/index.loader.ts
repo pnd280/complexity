@@ -12,8 +12,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "corePlugin:mainWorld:markmapRenderer",
-    dependencies: ["cache:pluginsEnableStatesV2", "cache:domSelectors"],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates", "cache:domSelectors"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["thread:artifacts"]) return;
 
       void injectMainWorldScript({

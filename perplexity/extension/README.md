@@ -47,10 +47,10 @@ A powerful browser extension that enhances your Perplexity AI experience with ad
 
 ## Documentation
 
-- [Architecture](./docs/architecture.md)
-- [Tech Stack](./docs/tech-stack.md)
-- [DX](./docs/dx.md)
-- [Build your own plugin](./docs/build-your-own-plugin.md)
+- [Architecture](./docs/development/architecture.md)
+- [Tech Stack](./docs/development/tech-stack.md)
+- [DX](./docs/development/dx.md)
+- [Build your own plugin](./docs/development/build-your-own-plugin.md)
 
 ## Privacy & Security
 

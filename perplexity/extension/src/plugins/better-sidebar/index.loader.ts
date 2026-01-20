@@ -18,8 +18,8 @@ const normalizeCss = await getVersionedRemoteResource(
 export default function () {
   AsyncLoaderRegistry.register({
     id: "betterSidebar:hideNativeSidebar",
-    dependencies: ["cache:pluginsEnableStatesV2", "store:pluginGuards"],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates", "store:pluginGuards"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["betterSidebar"]) return;
 
       insertCss({

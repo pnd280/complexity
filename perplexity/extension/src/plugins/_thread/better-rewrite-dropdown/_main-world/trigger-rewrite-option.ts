@@ -1,7 +1,7 @@
 import { APP_CONFIG } from "@/app.config";
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
 import { DomSelectorsServiceImpl } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/dom-selectors";
-import FiberSearchService from "@/services/features/fiber-search";
+import { findFiberNodes } from "@/utils/dom-utils/fiber-search";
 import { walkFiberNode } from "@/utils/wrappers/react-fiber";
 
 export async function triggerRewriteOption(params: {
@@ -21,7 +21,7 @@ export async function triggerRewriteOption(params: {
     DomSelectorsServiceImpl.internalAttributes.THREAD.MESSAGE.FOOTER,
   )} ${domSelectors.THREAD.MESSAGE.FOOTER_CHILD.REWRITE_BUTTON_WRAPPER}`;
 
-  const fiberNode = FiberSearchService.findFiberNodes(
+  const fiberNode = findFiberNodes(
     {
       name: params.fiberConfig.name,
     },

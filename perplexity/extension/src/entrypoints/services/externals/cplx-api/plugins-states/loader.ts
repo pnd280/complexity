@@ -6,7 +6,7 @@ import { CplxVersionsService } from "@/entrypoints/services/externals/cplx-api/r
 
 declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
-    "cache:pluginsEnableStatesV2": ReturnType<
+    "cache:pluginsEnableStates": ReturnType<
       typeof PluginsStatesV2Service.getEnableStatesCachedSync
     >;
   }
@@ -14,7 +14,7 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 
 export default function () {
   AsyncLoaderRegistry.register({
-    id: "cache:pluginsEnableStatesV2",
+    id: "cache:pluginsEnableStates",
     dependencies: ["cache:pluginSettingSnapshots"],
     loader: async ({
       "cache:pluginSettingSnapshots": pluginSettingSnapshots,

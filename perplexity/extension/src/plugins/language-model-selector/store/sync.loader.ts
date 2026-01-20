@@ -24,8 +24,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function (): void {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:languageModelSelector:sync",
-    dependencies: ["cache:pluginsEnableStatesV2", "cache:languageModels"],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates", "cache:languageModels"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["queryBox:languageModelSelector"]) return;
 
       syncToInternalSearchStates();

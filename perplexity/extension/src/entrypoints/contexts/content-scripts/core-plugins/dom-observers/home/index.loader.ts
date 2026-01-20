@@ -17,7 +17,7 @@ export default function () {
     id: "corePlugin:domObservers:home",
     dependencies: [
       "corePlugin:mainWorld:spaRouter",
-      "cache:pluginsEnableStatesV2",
+      "cache:pluginsEnableStates",
       "cache:domSelectors",
     ],
     loader: () => {

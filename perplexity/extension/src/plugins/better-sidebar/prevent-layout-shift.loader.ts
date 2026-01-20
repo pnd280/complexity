@@ -18,9 +18,9 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:betterSidebar:instantCss",
-    dependencies: ["cache:pluginsEnableStatesV2", "store:pluginGuards"],
+    dependencies: ["cache:pluginsEnableStates", "store:pluginGuards"],
     loader: async ({
-      "cache:pluginsEnableStatesV2": pluginsEnableStates,
+      "cache:pluginsEnableStates": pluginsEnableStates,
       "store:pluginGuards": pluginGuardsStore,
     }) => {
       await applyLayoutShiftPreventionInstantCss({

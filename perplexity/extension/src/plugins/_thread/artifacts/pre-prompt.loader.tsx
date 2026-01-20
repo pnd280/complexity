@@ -15,8 +15,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:thread:artifacts:prePromptInstallationDialog",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader: ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       const artifactsPrePromptInstallationDialogRouterRoute: RouteObject = {
         path: "/cplx/thread-artifacts/install-pre-prompt-as-space",
         loader: () => {

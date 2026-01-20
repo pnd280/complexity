@@ -23,10 +23,10 @@ export default function () {
     dependencies: [
       "corePlugin:mainWorld:spaRouter",
       "corePlugin:domObservers:mainWorldActions",
-      "cache:pluginsEnableStatesV2",
+      "cache:pluginsEnableStates",
       "cache:domSelectors",
     ],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["domObservers:thread"]) return;
 
       spaRouteChangeCompleteSubscribe(

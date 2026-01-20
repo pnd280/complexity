@@ -14,23 +14,19 @@
 
 Each plugin follows a feature-based structure in its own directory:
 
-```
+```bash
 src/plugins/your-plugin-name/
-├── components/                       # UI components
-├── hooks/                            # React hooks
-├── index.manifest.ts[*]              # Entry point and registration
-├── index.loader.ts[*]                # Main content script loader
-├── settings-ui.opt-loader.tsx[*]     # Settings UI registration
-├── settings.ts                       # Settings schemas and storage
-├── permissions.ts                    # Permissions definition
-├── store.ts                          # State management (Zustand)
-├── utils.ts                          # Utility functions
-├── types.ts                          # Type definitions
-└── **/*.public.ts[*]                 # Public exports
+├── index.manifest.ts [*][**]        # Entry point and registration
+├── index.loader.ts [*]               # Main content script loader
+├── settings-ui.opt-loader.tsx [*]    # Settings UI registration (optional)
+└── **/*.public.ts [*]                # Public exports (optional)
 ```
 
 > [!IMPORTANT]
-> `[*]` Exact naming required for auto-discovery.
+> `[*]` Exact naming required for auto-discovery
+
+> [!IMPORTANT]
+> `[**]` For frequently reused (meta) fields (settings storage, permissions, etc.), it's highly recommended to declare them in separate files
 
 > [!TIP]
 > use `_<group>` folder naming to group related plugins
@@ -130,7 +126,52 @@ export default manifest;
 
 ### 3. Settings (`settings.ts`)
 
-Define your settings schema and storage.
+Define your settings schema using Zod, create a versioned storage service, and export a React hook for accessing settings.
+
+```typescript
+import z from "zod";
+
+import { definePluginSettingsSchemas } from "@/entrypoints/services/plugins/defines";
+import { PluginSettingsService } from "@/entrypoints/services/plugins/settings";
+import usePluginSettings from "@/entrypoints/services/plugins/settings/usePluginSettings";
+
+// 1. Define versioned schemas with fallback values
+export const settingsSchemas = definePluginSettingsSchemas({
+  1: {
+    schema: z.object({
+      enabled: z.boolean(),
+      // Add your custom settings here
+      customOption: z.string(),
+    }),
+    fallback: {
+      enabled: false,
+      customOption: "",
+    },
+    // Optional: upgrade function for migrating from previous version
+    // upgrade: (previous) => ({ ...previous, newField: "default" }),
+  },
+});
+
+// 2. Export inferred type for type safety
+export type Settings = z.infer<(typeof settingsSchemas)[1]["schema"]>;
+
+// 3. Create storage service instance
+export const settingsStorage = new PluginSettingsService<Settings>({
+  id: "myFeature", // Must match plugin id
+  settingsSchemas,
+});
+
+// 4. Export React hook for components
+export function useSettings() {
+  return usePluginSettings(settingsStorage);
+}
+```
+
+**Key Points:**
+- **Versioned schemas**: Use numeric keys (`1`, `2`, etc.) to enable schema migrations
+- **Fallback values**: Required defaults when settings don't exist or fail validation
+- **Storage ID**: Must match your plugin's `meta.id` for proper namespacing
+- **React hook**: Use `useSettings()` in components for reactive settings access
 
 ### 4. Logic (`index.loader.ts`)
 

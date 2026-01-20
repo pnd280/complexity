@@ -47,8 +47,7 @@ Modular architecture for independent feature implementation:
 
 ## Dependency Boundaries
 
-- [Dependency boundaries](../eslint-config/boundaries/index.js).
-- [Auto-registered modules](./file-suffixes.md).
+- [Dependency boundaries](../../eslint-config/boundaries/index.js)
 
 ### Import Rules
 

@@ -13,10 +13,10 @@ export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:noFocusByDefault",
     dependencies: [
-      "cache:pluginsEnableStatesV2",
+      "cache:pluginsEnableStates",
       "corePlugin:domObservers:mainWorldActions",
     ],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["noFocusByDefault"]) return;
 
       spaRouteChangeCompleteSubscribe(

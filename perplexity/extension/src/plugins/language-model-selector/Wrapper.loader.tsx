@@ -13,7 +13,12 @@ const { LanguageModelSelector } = lazily(
 
 function LanguageModelSelectorWrapper() {
   return (
-    <CsUiGuard dependentPluginIds={["queryBox:languageModelSelector"]}>
+    <CsUiGuard
+      requiresLoggedIn
+      mustHaveActiveSub
+      leastTier="pro"
+      dependentPluginIds={["queryBox:languageModelSelector"]}
+    >
       <MainQueryBoxToolbarComponentRegister
         id="plugin:queryBox:languageModelSelector"
         group="ll"

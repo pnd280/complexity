@@ -72,6 +72,7 @@ export class MermaidRendererServiceImpl {
       };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mermaid = (window as any).mermaid as Mermaid;
 
     try {

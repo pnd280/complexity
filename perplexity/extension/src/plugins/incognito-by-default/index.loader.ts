@@ -12,8 +12,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:incognitoByDefault",
-    dependencies: ["cache:pluginsEnableStatesV2", "store:pplxCookies"],
-    loader({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) {
+    dependencies: ["cache:pluginsEnableStates", "store:pplxCookies"],
+    loader({ "cache:pluginsEnableStates": pluginsEnableStates }) {
       if (!pluginsEnableStates.incognitoByDefault) return;
 
       spaRouteChangeCompleteSubscribe(

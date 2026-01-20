@@ -30,7 +30,7 @@ export const DOM_SELECTORS = {
       },
     },
     MESSAGE: {
-      QUERY_WRAPPER: ".isolate.mx-auto > .bg-base",
+      QUERY_WRAPPER: ".isolate.mx-auto > div > div > .bg-base",
       QUERY: ".group\\/query",
       QUERY_EDIT_BUTTON_GROUP:
         ".pointer-events-none.group-hover\\:opacity-100.focus-within\\:pointer-events-auto.focus-within\\:opacity-100",
@@ -39,8 +39,7 @@ export const DOM_SELECTORS = {
       },
       STICKY_HEADER: ".h-headerHeight.bg-transparent",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
-      CONTENT_WRAPPER:
-        ".isolate.mx-auto > .bg-base ~ .max-w-threadContentWidth",
+      CONTENT_WRAPPER: ".isolate.mx-auto > div > div > .bg-base + div", // ref QUERY_WRAPPER ⬆️
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */

@@ -12,8 +12,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default async function () {
   AsyncLoaderRegistry.register({
     id: "plugin:commandMenu:prefetchAndPersist",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["commandMenu"]) return;
 
       persistentQueryClient.queryClient.getQueryCache().subscribe((event) => {

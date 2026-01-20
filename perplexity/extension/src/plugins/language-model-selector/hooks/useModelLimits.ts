@@ -10,6 +10,7 @@ const getLimitValue = (
   rateLimits: PplxRateLimitsApiResponse,
 ): number | null => {
   const [limit, error] = tryCatch(() =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Number(limitKeyPath.reduce((acc, key) => (acc as any)[key], rateLimits)),
   );
 

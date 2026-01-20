@@ -1,0 +1,2 @@
+- Directly run `tsc` to check for type errors. No need to use `--noEmit` flag.
+- Run `pnpm lint` to check for lint errors.

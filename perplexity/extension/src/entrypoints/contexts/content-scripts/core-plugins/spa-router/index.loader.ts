@@ -13,11 +13,11 @@ export default function () {
   AsyncLoaderRegistry.register({
     id: "corePlugin:mainWorld:spaRouter",
     dependencies: [
-      "cache:pluginsEnableStatesV2",
+      "cache:pluginsEnableStates",
       "cache:domSelectors",
       "corePlugin:mainWorld:spaRouter:listeners",
     ],
-    loader: async ({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) => {
+    loader: async ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["spaRouter"]) return;
 
       void injectMainWorldScript({

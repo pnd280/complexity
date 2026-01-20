@@ -32,7 +32,7 @@ export const baseManifest = {
     "storage",
     "unlimitedStorage",
     "contextMenus",
-    "declarativeNetRequestWithHostAccess",
+    // "declarativeNetRequestWithHostAccess",
     "scripting",
   ],
   optional_permissions: ["webNavigation", "management"],

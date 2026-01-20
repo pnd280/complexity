@@ -13,8 +13,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:commandMenu:searchItems:setupKeybindings",
-    dependencies: ["cache:pluginsEnableStatesV2"],
-    loader({ "cache:pluginsEnableStatesV2": pluginsEnableStates }) {
+    dependencies: ["cache:pluginsEnableStates"],
+    loader({ "cache:pluginsEnableStates": pluginsEnableStates }) {
       if (!pluginsEnableStates.commandMenu) return;
 
       const items = getRawItems();
