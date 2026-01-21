@@ -91,7 +91,7 @@ socket.on("audio", (packet: { data: ArrayLike<number>; uuid: string }) => {
 
 ### File Naming
 
-- **Single message**: `message-{uuid}-{voice}.wav`
+- **Single message**: `message-{uuid.slice(0, 8)}-{voice}.wav`
 - **Conversation**: `conversation-{timestamp}-{voice}.wav`
 
 ### Error Handling
