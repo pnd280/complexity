@@ -92,6 +92,7 @@ export default function ThreadTtsDownloadButton() {
           description: "No audio data received",
           variant: "caution",
         });
+        setDialogOpen(false);
         return;
       }
 
