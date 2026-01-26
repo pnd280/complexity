@@ -1,27 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import type { Space } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 import SpaceItemFile from "@/plugins/command-menu/pages/spaces/SpaceItemFile";
-import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 import TablerLink from "~icons/tabler/link";
 
 export default function SpacePreview({ space }: { space: Space }) {
   const { data: spaceDetails } = useQuery({
-    ...pplxApiQueries.space.detail(space?.uuid ?? ""),
+    ...pplxApiQueries.space.detail(space.uuid),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    staleTime: 10000,
+    staleTime: ms("10s"),
   });
 
   const { data: files } = useQuery({
-    ...pplxApiQueries.space.files.detail(space?.uuid ?? ""),
-    enabled: spaceDetails?.file_count != null && spaceDetails.file_count > 0,
+    ...pplxApiQueries.space.files.detail(space.uuid),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    staleTime: 30000,
+    staleTime: ms("30s"),
   });
 
   return (
@@ -43,15 +41,15 @@ export default function SpacePreview({ space }: { space: Space }) {
           </div>
           <div
             className={cn(
-              PPLX_SCROLLBAR_CLASSES,
-              "x:max-h-[240px] x:overflow-y-auto x:rounded-md x:bg-secondary x:p-2",
+              "custom-scrollbar",
+              "x:max-h-60 x:overflow-y-auto x:rounded-md x:bg-secondary x:p-2",
             )}
           >
             <MarkdownRenderer markdown={space.instructions} />
           </div>
         </div>
       )}
-      {files && files?.num_total_files > 0 && (
+      {files && files.num_total_files > 0 && (
         <div className="x:flex x:flex-col x:justify-between x:gap-2">
           <div className="x:text-sm x:font-medium x:text-muted-foreground">
             {t("plugin-command-menu.spaces.preview.files", {
@@ -59,7 +57,7 @@ export default function SpacePreview({ space }: { space: Space }) {
             })}
           </div>
           {files.files.map((file, index) => (
-            <SpaceItemFile key={index} file={file} spaceUuid={space.uuid} />
+            <SpaceItemFile key={index} file={file} />
           ))}
         </div>
       )}

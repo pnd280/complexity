@@ -42,14 +42,15 @@ A powerful browser extension that enhances your Perplexity AI experience with ad
 
 - Provides a comprehensive set of added features and UI/UX improvements with excellent modularity and customization
 - Supports 22 languages
-- Runs flawlessly on Firefox Android
+- [**Supports the new Comet browser**](./docs/comet-enable-extensions.md)
+- Supports Firefox Android
 
 ## Documentation
 
-- [Architecture](./docs/architecture.md)
-- [Tech Stack](./docs/tech-stack.md)
-- [DX](./docs/dx.md)
-- [Build your own plugin](./docs/build-your-own-plugin.md)
+- [Architecture](./docs/development/architecture.md)
+- [Tech Stack](./docs/development/tech-stack.md)
+- [DX](./docs/development/dx.md)
+- [Build your own plugin](./docs/development/build-your-own-plugin.md)
 
 ## Privacy & Security
 

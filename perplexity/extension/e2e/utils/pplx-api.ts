@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 
-import { ENDPOINTS } from "@/services/externals/pplx-api/endpoints";
-import { PplxUserSettingsApiResponseSchema } from "@/services/externals/pplx-api/pplx-api.types";
+import { ENDPOINTS } from "@/entrypoints/services/externals/pplx-api/endpoints";
+import { PplxUserSettingsApiResponseSchema } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 
 export type AuthSession = {
   user: {

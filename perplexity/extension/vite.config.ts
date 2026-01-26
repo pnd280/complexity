@@ -9,7 +9,7 @@ import Unimport from "unimport/unplugin";
 import chromeManifest from "./src/manifest.chrome";
 import firefoxManifest from "./src/manifest.firefox";
 import { APP_CONFIG } from "./src/app.config";
-import unimportConfig from "./src/types/unimport.config";
+import unimportConfig from "./src/auto-imports-config";
 import tailwindcss from "@tailwindcss/vite";
 import Icons from "unplugin-icons/vite";
 
@@ -28,6 +28,7 @@ export default defineConfig(() => ({
     emptyOutDir: true,
     outDir: `dist/${APP_CONFIG.BROWSER}`,
     reportCompressedSize: false,
+    // minify: "esbuild",
     rollupOptions: {
       output: {
         chunkFileNames: "assets/cplx-chunk-[hash].js",
@@ -37,13 +38,23 @@ export default defineConfig(() => ({
     },
   },
 
+  // esbuild: {
+  //   minifyIdentifiers: false,
+  //   keepNames: true,
+  // },
+
   plugins: [
     crx({
       manifest:
         APP_CONFIG.BROWSER === "chrome" ? chromeManifest : firefoxManifest,
       browser: APP_CONFIG.BROWSER,
     }),
-    react(),
+    react({
+      include: [/\.ts$/, /\.tsx$/, /(?<!settings)\.ts$/],
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
     tailwindcss(),
     vitePluginTailwindCustomPrefixes(),
     Unimport.vite(unimportConfig),
@@ -59,8 +70,8 @@ export default defineConfig(() => ({
       globs: [
         "src/**/*",
         "public/**/*",
-        "!src/entrypoints/options-page/**/*",
-        "!src/plugins/**/settings-ui.tsx",
+        "!src/entrypoints/contexts/options-page/**/*",
+        "!src/plugins/**/settings-ui.opt-loader.tsx",
         "!src/plugins/**/settings-ui/**/*",
       ],
     }),
@@ -74,7 +85,7 @@ export default defineConfig(() => ({
     // build
     vitePluginMoveHtml([
       {
-        src: "src/entrypoints/options-page/options.html",
+        src: "src/entrypoints/contexts/options-page/options.html",
         dest: "options.html",
       },
     ]),
@@ -95,16 +106,23 @@ export default defineConfig(() => ({
     //   host: "localhost",
     //   protocol: "ws",
     // },
+    watch: {
+      ignored: (filePath) => {
+        const normalizedPath = filePath.replace(/\\/g, "/");
+        const srcPath = path.resolve(__dirname, "src").replace(/\\/g, "/");
+        return !normalizedPath.startsWith(srcPath);
+      },
+    },
     warmup: {
       clientFiles: [
-        "src/entrypoints/content-scripts/index.ts",
-        "src/entrypoints/options-page/options.html",
+        "src/entrypoints/contexts/content-scripts/index.ts",
+        "src/entrypoints/contexts/options-page/options.html",
       ],
     },
   },
 
   test: {
-    exclude: ["node_modules", "e2e/**", "dist/**", "release/**"],
+    exclude: ["node_modules", "e2e/**", "dist/**", "release/**", "temp/**"],
     setupFiles: ["./tests/vitest.setup.ts"],
   },
 }));

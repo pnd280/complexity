@@ -1,0 +1,98 @@
+[
+  {
+    "text": "বাংলা (বাংলাদেশ)",
+    "value": "bn-BD"
+  },
+  {
+    "text": "čeština (Česko)",
+    "value": "cs-CZ"
+  },
+  {
+    "text": "Deutsch (Deutschland)",
+    "value": "de-DE"
+  },
+  {
+    "text": "Ελληνικά (Ελλάδα)",
+    "value": "el-GR"
+  },
+  {
+    "text": "American English",
+    "value": "en-US"
+  },
+  {
+    "text": "español de España",
+    "value": "es-ES"
+  },
+  {
+    "text": "français (France)",
+    "value": "fr-FR"
+  },
+  {
+    "text": "हिन्दी (भारत)",
+    "value": "hi-IN"
+  },
+  {
+    "text": "hrvatski (Hrvatska)",
+    "value": "hr-HR"
+  },
+  {
+    "text": "magyar (Magyarország)",
+    "value": "hu-HU"
+  },
+  {
+    "text": "Indonesia (Indonesia)",
+    "value": "id-ID"
+  },
+  {
+    "text": "italiano (Italia)",
+    "value": "it-IT"
+  },
+  {
+    "text": "日本語 (日本)",
+    "value": "ja-JP"
+  },
+  {
+    "text": "한국어(대한민국)",
+    "value": "ko-KR"
+  },
+  {
+    "text": "Nederlands (Nederland)",
+    "value": "nl-NL"
+  },
+  {
+    "text": "polski (Polska)",
+    "value": "pl-PL"
+  },
+  {
+    "text": "português (Brasil)",
+    "value": "pt-BR"
+  },
+  {
+    "text": "português europeu",
+    "value": "pt-PT"
+  },
+  {
+    "text": "română (România)",
+    "value": "ro-RO"
+  },
+  {
+    "text": "русский (Россия)",
+    "value": "ru-RU"
+  },
+  {
+    "text": "slovenčina (Slovensko)",
+    "value": "sk-SK"
+  },
+  {
+    "text": "српски (ћирилица, Црна Гора)",
+    "value": "sr-Cyrl-ME"
+  },
+  {
+    "text": "简体中文",
+    "value": "zh-CN"
+  },
+  {
+    "text": "繁體中文",
+    "value": "zh-TW"
+  }
+]

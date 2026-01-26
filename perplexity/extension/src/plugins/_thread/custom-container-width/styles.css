@@ -1,0 +1,9 @@
+body[location="thread"] {
+  .bottom-safeAreaInsetBottom .max-w-threadContentWidth.mx-auto {
+    max-width: 740px;
+  }
+
+  .dark\:shadow-\[0_4px_12px_rgba\(0\,0\,0\,0\.12\)\,0_32px_16px_36px_oklch\(var\(--dark-background-base-color\)\)\] {
+    box-shadow: none !important;
+  }
+}

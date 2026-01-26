@@ -7,7 +7,7 @@ import {
   CommandItemRightAttributes,
   CommandItemTitle,
 } from "@/components/ui/command";
-import { useSpaRouter } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { useSpaRouter } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
 import CommandItemGuard from "@/plugins/command-menu/components/CommandItemGuard";
 import NavigationItemsFooter from "@/plugins/command-menu/items/navigations/Footer";
 import { getRawItems } from "@/plugins/command-menu/items/navigations/items";
@@ -24,17 +24,13 @@ const locationMap = {
 } as const satisfies Record<string, ReturnType<typeof whereAmI>>;
 
 export default function NavigationItems() {
-  const url = useSpaRouter((state) => state.url);
+  const url = useSpaRouter((store) => store.url);
   const location = whereAmI(url);
 
-  const items = useMemo(
-    () =>
-      getGroupedItems({
-        getter: getRawItems,
-        params: {},
-      }),
-    [],
-  );
+  const items = getGroupedItems({
+    getter: getRawItems,
+    params: {},
+  });
 
   return (
     <>
@@ -52,7 +48,7 @@ export default function NavigationItems() {
                   keywords={item.keywords}
                   onSelect={() => {
                     item.onSelect();
-                    commandMenuStore.getState().setOpen(false);
+                    commandMenuStore.getState().states.setOpen(false);
                   }}
                 >
                   <CommandItemIcon asChild>

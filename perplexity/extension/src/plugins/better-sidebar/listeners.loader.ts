@@ -1,10 +1,9 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import { applyLayoutShiftPreventionInstantCss } from "@/plugins/better-sidebar/prevent-layout-shift.loader";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { setCookie } from "@/utils/dom-utils/generics";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:betterSidebar:nativeSidebarPinStateListeners": void;
   }
@@ -20,11 +19,14 @@ export default function () {
         (open) => {
           if (!pluginsEnableStates["betterSidebar"]) return;
 
-          setCookie("isSidebarPinned", open.toString(), 365);
+          localStorage.setItem(
+            "pplx.local-user-settings.isSidebarPinned",
+            open.toString(),
+          );
 
           void applyLayoutShiftPreventionInstantCss({
             enabled:
-              ExtensionSettingsService.cachedSync.plugins["betterSidebar"]
+              PluginsSettingSnapshotsService.getPluginSnapshot("betterSidebar")
                 .shouldPreventLayoutShift,
           });
         },

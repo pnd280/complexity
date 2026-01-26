@@ -232,7 +232,7 @@ import type { FeatureStoreType } from "../../types";
 
 export const settingsSubscriptions = (store: FeatureStoreType) => {
   store.subscribe(
-    (state) => state.theme,
+    (store) => store.theme,
     (theme) => {
       // Side effect: sync theme to localStorage
       console.log("Theme changed to:", theme);

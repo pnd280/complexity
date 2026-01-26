@@ -41,6 +41,9 @@ export default function vitePluginTouchOnChange({
   });
 
   const watchPaths = Array.isArray(watch) ? watch : [watch];
+  const absoluteWatchPaths = watchPaths.map((watchPath) =>
+    path.resolve(process.cwd(), watchPath),
+  );
 
   return {
     name: "touch-on-change",
@@ -50,7 +53,15 @@ export default function vitePluginTouchOnChange({
       );
 
       server.watcher.on("change", (file) => {
-        if (watchPaths.some((watchPath) => file.includes(watchPath))) return;
+        const absoluteFile = path.resolve(file);
+
+        // Prevent infinite loop: skip if the changed file is one we're watching
+        if (
+          absoluteWatchPaths.some((watchPath) => absoluteFile === watchPath)
+        ) {
+          logger.verbose(`Skipping ${file} (is a watched file)`);
+          return;
+        }
 
         const relativePath = path
           .relative(process.cwd(), file)

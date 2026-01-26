@@ -1,10 +1,10 @@
 import Incognito from "@/components/icons/Incognito";
-import { getPlatform } from "@/hooks/usePlatformDetection";
+import { softNavigate } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
 import {
   colorSchemeStore,
   type ColorScheme,
-} from "@/plugins/__async-deps__/global-stores/color-scheme-store";
-import { softNavigate } from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/stores/color-scheme-store";
+import { getPlatform } from "@/hooks/usePlatformDetection";
 import type { CommandItemProps } from "@/plugins/command-menu/types";
 import type { whereAmI } from "@/utils/misc/utils";
 

@@ -1,34 +1,43 @@
-import { useImmer } from "use-immer";
+import { useQuery } from "@tanstack/react-query";
 
-import usePplxUserSettings from "@/hooks/usePplxUserSettings";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
+import type { LanguageModel } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import type { PplxRateLimitsApiResponse } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 
-export function useModelLimits() {
-  const { data } = usePplxUserSettings();
-
-  const getModelLimit = useCallback(
-    (model: LanguageModel): number | null => {
-      const limitKey = model.limitKey;
-      if (!limitKey) return null;
-      return Number(data?.[limitKey as keyof typeof data]);
-    },
-    [data],
+const getLimitValue = (
+  limitKeyPath: string[],
+  rateLimits: PplxRateLimitsApiResponse,
+): number | null => {
+  const [limit, error] = tryCatch(() =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Number(limitKeyPath.reduce((acc, key) => (acc as any)[key], rateLimits)),
   );
 
-  const [modelsLimits, setModelsLimits] = useImmer<
-    Partial<Record<LanguageModel["code"], number | null>>
-  >({});
+  return error ? null : limit;
+};
 
-  useEffect(() => {
-    setModelsLimits((draft) => {
-      Object.values(PplxLanguageModelsService.allModels)
-        .flat()
-        .forEach((model) => {
-          draft[model.code] = getModelLimit(model);
-        });
-    });
-  }, [data, getModelLimit, setModelsLimits]);
+export function useModelLimits(): Record<LanguageModel["code"], number | null> {
+  const { data: rateLimits } = useQuery(pplxApiQueries.rateLimits.detail());
 
-  return modelsLimits;
+  if (!rateLimits)
+    return Object.values(PplxLanguageModelsService.allModels)
+      .flat()
+      .reduce(
+        (acc, { code }) => ({
+          ...acc,
+          [code]: null,
+        }),
+        {} as Record<LanguageModel["code"], number | null>,
+      );
+
+  return Object.values(PplxLanguageModelsService.allModels)
+    .flat()
+    .reduce(
+      (acc, { limitKeyPath, code }) => ({
+        ...acc,
+        [code]: limitKeyPath ? getLimitValue(limitKeyPath, rateLimits) : null,
+      }),
+      {} as Record<LanguageModel["code"], number | null>,
+    );
 }

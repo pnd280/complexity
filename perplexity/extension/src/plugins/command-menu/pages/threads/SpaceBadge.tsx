@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { softNavigate } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { softNavigate } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import type { ThreadSearchResponseApi } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import { commandMenuStore } from "@/plugins/command-menu/store";
-import type { ThreadSearchResponseApi } from "@/services/externals/pplx-api/pplx-api.types";
 import { emojiCodeToString } from "@/utils/misc/utils";
 
 export default function SpaceBadge({
@@ -10,13 +10,16 @@ export default function SpaceBadge({
   space: NonNullable<ThreadSearchResponseApi["collection"]>;
 }) {
   return (
-    <Badge variant="outline" className="x:max-w-[200px] x:cursor-pointer">
+    <Badge
+      variant="outline"
+      className="x:max-w-[200px] x:cursor-pointer x:rounded-xl"
+    >
       <div
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           void softNavigate(`/spaces/${space.slug}`);
-          commandMenuStore.getState().setOpen(false);
+          commandMenuStore.getState().states.setOpen(false);
         }}
       >
         <div className="x:flex x:items-center x:gap-2">

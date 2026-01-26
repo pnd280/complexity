@@ -13,8 +13,6 @@ export const HoverCardLocalContext = createContext<HoverCardLocalContext>({
   portal: true,
 });
 
-export const HoverCardLocalContextProvider = HoverCardLocalContext.Provider;
-
 export function HoverCard({
   portal,
   ...props
@@ -22,13 +20,13 @@ export function HoverCard({
   portal?: boolean;
 }) {
   return (
-    <HoverCardLocalContextProvider
+    <HoverCardLocalContext
       value={{
         portal: portal ?? true,
       }}
     >
       <ArkHoverCard.Root unmountOnExit={true} lazyMount={true} {...props} />
-    </HoverCardLocalContextProvider>
+    </HoverCardLocalContext>
   );
 }
 

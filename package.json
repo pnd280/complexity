@@ -16,17 +16,17 @@
   "devDependencies": {
     "@manypkg/cli": "^0.25.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.3",
+    "lint-staged": "^16.2.7",
     "prettier": "catalog:lint",
-    "turbo": "^2.5.8",
+    "turbo": "^2.7.4",
     "typescript": "catalog:types"
   },
-  "packageManager": "pnpm@10.17.1",
+  "packageManager": "pnpm@10.25.0",
   "engines": {
     "node": "^22.12.0"
   },
   "manypkg": {
-    "defaultBranch": "main",
+    "defaultBranch": "nxt",
     "ignoredRules": [],
     "workspaceProtocol": "require"
   }

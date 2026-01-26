@@ -11,14 +11,10 @@ import { getRawItems } from "@/plugins/command-menu/items/searches/items";
 import { getGroupedItems } from "@/plugins/command-menu/utils";
 
 export default function SearchItems() {
-  const items = useMemo(
-    () =>
-      getGroupedItems({
-        getter: getRawItems,
-        params: {},
-      }),
-    [],
-  );
+  const items = getGroupedItems({
+    getter: getRawItems,
+    params: {},
+  });
 
   return (
     <>

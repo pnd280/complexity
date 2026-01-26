@@ -1,7 +1,7 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:betterSidebar:bodySync": void;
   }
@@ -15,7 +15,7 @@ export default function () {
       if (!pluginsEnableStates["betterSidebar"]) return;
 
       betterSidebarStore.subscribe(
-        (state) => state.open,
+        (store) => store.open,
         (open) => {
           $(document.body).attr(
             "cplx-better-sidebar-state",

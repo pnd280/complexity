@@ -1,6 +1,6 @@
 import { initI18n, type DotPaths, type Params } from "@/lib/init";
 
-let i18n: Awaited<ReturnType<typeof initI18n>>;
+let i18n: Awaited<ReturnType<typeof initI18n>> | null = null;
 
 export async function init(params: Parameters<typeof initI18n>[0]) {
   i18n = await initI18n(params);

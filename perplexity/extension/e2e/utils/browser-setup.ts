@@ -4,17 +4,15 @@ import { chromium } from "@playwright/test";
 import { E2E_CONFIG } from "~/e2e/config";
 
 type SetupBrowserOptions = {
-  testId: string;
   headless: boolean;
   cookies: Parameters<BrowserContext["addCookies"]>[0];
 };
 
 export async function setupBrowser({
-  testId,
   headless,
   cookies,
 }: SetupBrowserOptions): Promise<BrowserContext> {
-  const uniqueUserDataDir = `${E2E_CONFIG.TEMP_CHROME_INSTANCES_DIR}/${testId}`;
+  const uniqueUserDataDir = `${E2E_CONFIG.TEMP_CHROME_INSTANCES_DIR}`;
 
   const launchOptions = {
     headless,

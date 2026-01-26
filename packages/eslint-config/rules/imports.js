@@ -1,6 +1,4 @@
-// @ts-check
-
-import * as importPlugin from "eslint-plugin-import";
+import importPlugin from "eslint-plugin-import";
 import importAliasPlugin from "@limegrass/eslint-plugin-import-alias";
 import { defineConfig } from "eslint/config";
 
@@ -14,7 +12,7 @@ export default defineConfig({
     "import/resolver": {
       typescript: {
         alwaysTryTypes: true,
-        project: "./tsconfig.json",
+        projectService: true,
       },
     },
     "import/parsers": {

@@ -9,6 +9,7 @@ import {
 import {
   CommandItemGuard,
   commandMenuStore,
+  CommandPage,
 } from "@/plugins/command-menu/index.public";
 import { getGroupedItems } from "@/plugins/command-menu/index.public";
 import { getRawItems } from "@/plugins/zen-mode/command-menu/items";
@@ -17,17 +18,13 @@ import useZenMode from "@/plugins/zen-mode/hook/useZenMode";
 export function ZenModeCommandMenuEntries() {
   const isZenMode = useZenMode();
 
-  const items = useMemo(
-    () =>
-      getGroupedItems({
-        getter: getRawItems,
-        params: { isZenMode },
-      }),
-    [isZenMode],
-  );
+  const items = getGroupedItems({
+    getter: getRawItems,
+    params: { isZenMode },
+  });
 
   return (
-    <>
+    <CommandPage pageId={null}>
       {items.map(({ groupName, items }) => (
         <CommandGroup key={groupName} heading={groupName}>
           {items.map((item) => (
@@ -41,7 +38,7 @@ export function ZenModeCommandMenuEntries() {
                 keywords={item.keywords}
                 onSelect={() => {
                   item.onSelect();
-                  commandMenuStore.getState().setOpen(false);
+                  commandMenuStore.getState().states.setOpen(false);
                 }}
               >
                 <CommandItemIcon asChild>
@@ -56,6 +53,6 @@ export function ZenModeCommandMenuEntries() {
           ))}
         </CommandGroup>
       ))}
-    </>
+    </CommandPage>
   );
 }

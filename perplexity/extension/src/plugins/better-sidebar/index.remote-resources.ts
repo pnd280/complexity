@@ -1,9 +1,9 @@
 import { z } from "zod";
 
+import { defineVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources";
 import normalizeCollapsedCss from "@/plugins/better-sidebar/assets/collapsed.css?inline";
 import normalizeExpandedCss from "@/plugins/better-sidebar/assets/expanded.css?inline";
 import normalizeCss from "@/plugins/better-sidebar/assets/styles.css?inline";
-import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const betterSidebarNormalizeCssResourceConfig =
   defineVersionedRemoteResource({

@@ -1,26 +1,8 @@
-import type { ReactNode } from "react";
-
 import Tooltip from "@/components/Tooltip";
-import {
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
-import { SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select";
-import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
+import { ModelItem } from "@/plugins/language-model-selector/components/desktop/ModelItem";
 import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import { isSearchLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-
-import TablerCpu from "~icons/tabler/cpu";
-
-type LanguageModelGroupProps = {
-  title: ReactNode;
-  models: LanguageModel[];
-  tooltipPlacement?: "left" | "right";
-  titleTooltip?: ReactNode;
-};
+import { useSelectorUi } from "@/plugins/language-model-selector/hooks/useSelectorUi";
+import type { LanguageModelGroupProps } from "@/plugins/language-model-selector/types";
 
 export default function LanguageModelGroup({
   title,
@@ -28,22 +10,13 @@ export default function LanguageModelGroup({
   tooltipPlacement = "left",
   titleTooltip,
 }: LanguageModelGroupProps) {
-  const context = use(LanguageModelSelectorContext);
-
-  if (!context) throw new Error("LanguageModelSelectorContext not found");
-
-  const { component } = context;
-
-  const GroupComp = component === "dropdown" ? DropdownMenuGroup : SelectGroup;
-  const ItemComp = component === "dropdown" ? DropdownMenuItem : SelectItem;
-  const LabelComp = component === "dropdown" ? DropdownMenuLabel : SelectLabel;
-
+  const { Group: GroupComponent, Label: LabelComponent } = useSelectorUi();
   const modelsLimits = useModelLimits();
 
   if (models.length === 0) return null;
 
   return (
-    <GroupComp className="x:m-0 x:p-0">
+    <GroupComponent className="x:m-0 x:p-0">
       {titleTooltip != null ? (
         <Tooltip
           content={titleTooltip}
@@ -51,61 +24,23 @@ export default function LanguageModelGroup({
             placement: "right",
           }}
         >
-          <LabelComp className="x:font-mono x:whitespace-nowrap x:uppercase">
+          <LabelComponent className="x:font-mono x:whitespace-nowrap x:uppercase">
             {title}
-          </LabelComp>
+          </LabelComponent>
         </Tooltip>
       ) : (
-        <LabelComp className="x:flex x:items-center x:gap-1 x:font-mono x:whitespace-nowrap x:uppercase">
+        <LabelComponent className="x:flex x:items-center x:gap-1 x:font-mono x:whitespace-nowrap x:uppercase">
           {title}
-        </LabelComp>
+        </LabelComponent>
       )}
-      {models.map((model) => renderModelItem(model))}
-    </GroupComp>
-  );
-
-  function renderModelItem(model: LanguageModel) {
-    const Icon = PplxLanguageModelsService.icons[model.icon] ?? TablerCpu;
-
-    const modelLimit = modelsLimits[model.code as keyof typeof modelsLimits];
-    const limit =
-      modelLimit === Infinity
-        ? t("plugin-model-selectors.languageModelSelector.usesLeft.unlimited")
-        : typeof modelLimit === "number"
-          ? t("plugin-model-selectors.languageModelSelector.usesLeft.limited", {
-              count: modelLimit,
-            })
-          : "";
-
-    const tooltipContent = limit;
-
-    return (
-      <Tooltip
-        key={model.code}
-        content={
-          <div className="x:max-w-48 x:text-pretty">{tooltipContent}</div>
-        }
-        disabled={modelsLimits[model.code as keyof typeof modelsLimits] == null}
-        positioning={{ placement: tooltipPlacement, gutter: 10 }}
-      >
-        <ItemComp
+      {models.map((model) => (
+        <ModelItem
           key={model.code}
-          item={model.code}
-          value={model.code}
-          className="x:flex x:cursor-pointer x:items-center x:justify-start x:gap-2 x:text-foreground"
-          onClick={() => {
-            if (!isSearchLanguageModelCode(model.code)) return;
-
-            localStorage.setItem(
-              "cplx.last-selected-language-model",
-              model.code,
-            );
-          }}
-        >
-          <Icon className="x:size-4" />
-          <span className="x:truncate">{model.label}</span>
-        </ItemComp>
-      </Tooltip>
-    );
-  }
+          model={model}
+          modelsLimits={modelsLimits}
+          tooltipPlacement={tooltipPlacement}
+        />
+      ))}
+    </GroupComponent>
+  );
 }

@@ -5,6 +5,8 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
+import { toast } from "@/components/ui/use-toast";
+
 const processor = unified()
   .use(remarkParse)
   .use(remarkRehype)
@@ -19,6 +21,20 @@ export async function dualClipboardPut({
 }): Promise<void> {
   const richText = (await processor.process(markdown)).value as string;
 
+  const waitUntilTabActive = async () => {
+    await new Promise<void>((resolve) => {
+      const handler = () => {
+        if (document.hasFocus()) {
+          window.removeEventListener("focus", handler);
+          setTimeout(() => {
+            resolve();
+          }, 500);
+        }
+      };
+      window.addEventListener("focus", handler);
+    });
+  };
+
   if (typeof ClipboardItem !== "undefined") {
     const html = new Blob([richText], { type: "text/html" });
     const text = new Blob([markdown], { type: "text/plain" });
@@ -26,7 +42,19 @@ export async function dualClipboardPut({
       "text/html": html,
       "text/plain": text,
     });
+
+    const isDocumentFocused = document.hasFocus();
+
+    if (!isDocumentFocused) {
+      await waitUntilTabActive();
+    }
+
     await navigator.clipboard.write([data]);
+    if (!isDocumentFocused) {
+      toast({
+        title: "Copied to clipboard",
+      });
+    }
   } else {
     const listener = (e: ClipboardEvent) => {
       e.clipboardData?.setData("text/html", richText);
@@ -34,6 +62,9 @@ export async function dualClipboardPut({
       e.preventDefault();
     };
     document.addEventListener("copy", listener);
+
+    await waitUntilTabActive();
+
     document.execCommand("copy");
     document.removeEventListener("copy", listener);
   }

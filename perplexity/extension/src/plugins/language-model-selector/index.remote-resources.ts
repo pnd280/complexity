@@ -1,7 +1,7 @@
 import { z } from "zod";
 
+import { defineVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources";
 import hideNativeModelSelectorCss from "@/plugins/language-model-selector/hide-native-model-selector.css?inline";
-import { defineVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources";
 
 export const hideNativeModelSelectorCssResourceConfig =
   defineVersionedRemoteResource({

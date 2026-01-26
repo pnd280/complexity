@@ -1,0 +1,19 @@
+import { z } from "zod";
+
+import { type RemoteResourceType } from "@/entrypoints/services/externals/cplx-api/types";
+
+export type VersionedRemoteResource<T> = {
+  name: string;
+  type: RemoteResourceType;
+  fallback: T;
+  zodSchema: z.ZodType<T>;
+};
+
+export const VersionedRemoteResourceListingSchema = z.record(
+  z.string(),
+  z.record(z.string(), z.string()),
+);
+
+export type VersionedRemoteResourceListing = z.infer<
+  typeof VersionedRemoteResourceListingSchema
+>;

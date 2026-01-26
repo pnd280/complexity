@@ -1,0 +1,14 @@
+import type { Translations } from "@/plugins/_thread/better-code-blocks/_locales/index";
+
+export default {
+  headerButtons: {
+    wrap: {
+      wrap: "줄 바꿈",
+      unwrap: "줄 바꿈 해제",
+    },
+    expand: {
+      expand: "확장",
+      collapse: "접기",
+    },
+  },
+} as const satisfies Translations;

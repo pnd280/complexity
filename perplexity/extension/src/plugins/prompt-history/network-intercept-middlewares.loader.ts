@@ -1,11 +1,11 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
-import { parsePerplexityAskEvent } from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
+import { NetworkInterceptMiddlewareManagerService } from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/_service/service-init.loader";
+import { parsePerplexityAskEvent } from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/utils/parse-perplexity-ask-event";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
-import { queryClient } from "@/services/infra/query-client";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:promptHistory:networkInterceptMiddleware": void;
   }
@@ -14,14 +14,14 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:networkInterceptMiddleware",
-    dependencies: ["cache:pluginsEnableStates", "cache:extensionSettings"],
+    dependencies: ["cache:pluginsEnableStates", "cache:pluginSettingSnapshots"],
     loader: ({
       "cache:pluginsEnableStates": pluginsEnableStates,
-      "cache:extensionSettings": extensionSettings,
+      "cache:pluginSettingSnapshots": pluginSettingSnapshots,
     }) => {
       if (
         !pluginsEnableStates["promptHistory"] ||
-        !extensionSettings.plugins["promptHistory"].trigger.onSubmit
+        !pluginSettingSnapshots["promptHistory"].trigger.onSubmit
       )
         return;
 
@@ -62,7 +62,7 @@ export default function () {
             prompt: promptString,
           });
 
-          void queryClient.invalidateQueries({
+          void persistentQueryClient.queryClient.invalidateQueries({
             queryKey: promptHistoryQueries.list.all(),
             exact: true,
           });

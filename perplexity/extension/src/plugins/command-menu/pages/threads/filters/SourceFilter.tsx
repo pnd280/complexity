@@ -38,7 +38,7 @@ export default function SourceFilter() {
       positioning={{ sameWidth: true }}
       value={[state.querySourceFilter || "all"] satisfies SourceItem["value"][]}
       onValueChange={({ value: values }) => {
-        const value = values[0] as SourceItem["value"];
+        const value = values[0] as SourceItem["value"] | undefined;
         if (value) {
           actions.setSource(value === "all" ? undefined : value);
         }

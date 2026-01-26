@@ -32,7 +32,7 @@ export function DropdownMenuContent({
       <Menu.Positioner>
         <Menu.Content
           className={cn(
-            "x:z-50 x:min-w-[8rem] x:overflow-hidden x:rounded-xl x:border x:border-border/50 x:bg-popover x:p-2 x:text-popover-foreground x:shadow-md x:focus-visible:outline-none",
+            "x:z-50 x:min-w-32 x:overflow-hidden x:rounded-xl x:border x:border-border/50 x:bg-popover x:p-2 x:text-popover-foreground x:shadow-md x:focus-visible:outline-none",
             "x:data-[state=open]:animate-in x:data-[state=open]:fade-in x:data-[state=open]:zoom-in-95",
             "x:data-[state=closed]:animate-out x:data-[state=closed]:fade-out x:data-[state=closed]:zoom-out-95",
             "x:data-[placement^=bottom]:origin-top x:data-[placement^=left]:origin-right",
@@ -54,7 +54,7 @@ export function DropdownMenuItem({
   return (
     <Menu.Item
       className={cn(
-        "x:relative x:flex x:cursor-default x:items-center x:rounded-sm x:px-2 x:py-1.5 x:text-sm x:transition-colors x:outline-none x:select-none x:focus:bg-primary-foreground x:focus:text-primary x:data-[disabled]:pointer-events-none x:data-[disabled]:opacity-50 x:data-[highlighted]:bg-secondary",
+        "x:relative x:flex x:cursor-default x:items-center x:rounded-sm x:px-2 x:py-1.5 x:text-sm x:transition-colors x:outline-none x:select-none x:focus:bg-foreground-subtle x:focus:text-primary x:data-disabled:pointer-events-none x:data-disabled:opacity-50 x:data-highlighted:bg-secondary",
         inset && "x:pl-8",
         className,
       )}
@@ -118,7 +118,7 @@ export function DropdownMenuSubTrigger({
   return (
     <Menu.TriggerItem
       className={cn(
-        "x:relative x:flex x:cursor-default x:items-center x:justify-between x:rounded-sm x:px-2 x:py-1.5 x:text-sm x:transition-colors x:outline-none x:select-none x:focus:bg-primary-foreground x:focus:text-primary x:data-[disabled]:pointer-events-none x:data-[disabled]:opacity-50 x:data-[highlighted]:bg-secondary x:data-[highlighted]:text-secondary-foreground",
+        "x:relative x:flex x:cursor-default x:items-center x:justify-between x:rounded-sm x:px-2 x:py-1.5 x:text-sm x:transition-colors x:outline-none x:select-none x:focus:bg-foreground-subtle x:focus:text-primary x:data-disabled:pointer-events-none x:data-disabled:opacity-50 x:data-highlighted:bg-secondary x:data-highlighted:text-secondary-foreground",
         className,
       )}
       {...props}

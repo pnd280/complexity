@@ -1,4 +1,5 @@
 {
+  "catppuccin-icons.specificFolders": false,
   "eslint.workingDirectories": [
     {
       "mode": "auto"
@@ -13,34 +14,32 @@
     "**/.hg": true,
     "**/.svn": true,
     "**/.turbo": true,
+    "**/*.tsbuildinfo": true,
     "**/CVS": true,
-    "**/Thumbs.db": true,
     "**/node_modules": true,
-    "**/*.tsbuildinfo": true
+    "**/Thumbs.db": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/.hg/store/**": true,
     "**/.turbo": true,
+    "**/*.tsbuildinfo": true,
     "**/build/**/*": true,
     "**/dist/**/*": true,
-    "**/node_modules/*/**": true,
-    "**/*.tsbuildinfo": true,
-    "packages/webext-bridge/**/*": true
+    "**/node_modules/*/**": true
   },
   "npm.exclude": ["**/build", "**/dist"],
   "npm.scriptExplorerExclude": ["preinstall"],
   "search.exclude": {
-    "**/*.code-search": true,
     "**/.turbo": true,
+    "**/*.code-search": true,
+    "**/*.tsbuildinfo": true,
     "**/bower_components": true,
     "**/build/**/*": true,
     "**/dist/**/*": true,
     "**/node_modules": true,
-    "**/public/locales/**/*": true,
-    "**/*.tsbuildinfo": true,
-    "packages/webext-bridge/**/*": true
+    "**/public/locales/**/*": true
   },
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "typescript.tsserver.maxTsServerMemory": 8192,

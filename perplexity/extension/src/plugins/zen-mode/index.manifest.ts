@@ -1,45 +1,40 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import { settingsSchemas, settingsStorage } from "@/plugins/zen-mode/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-import { getPlatform } from "@/hooks/usePlatformDetection";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    zenMode: z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
-  persistent: z.boolean(),
-  alwaysHideRelatedQuestions: z.boolean(),
-  hotkey: z.array(z.string()),
+const meta = definePluginMeta({
+  id: "zenMode",
+  name: "Zen Mode",
+  description:
+    "Hide elements on the page to focus on the content (toggleable). Enable via the Command Menu plugin.",
 });
 
-export default definePlugin({
-  meta: {
-    id: "zenMode",
-    title: "Zen Mode",
-    description:
-      "Hide elements on the page to focus on the content (toggleable). Enable via the Command Menu plugin.",
-    dashboardMeta: {
-      tags: ["ui", "desktopOnly"],
-      categories: ["misc"],
-      uiRouteSegment: "zen-mode",
-    },
-    dependencies: {
-      corePlugins: ["spaRouter"],
-      plugins: ["commandMenu"],
-      uiGroups: ["commandMenu"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-      persistent: false,
-      alwaysHideRelatedQuestions: false,
-      hotkey: [getPlatform() === "mac" ? Key.Meta : Key.Control, Key.Alt, "z"],
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: ["ui", "desktopOnly"],
+  categories: ["misc"],
+  uiRouteSegment: "zen-mode",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["spaRouter", "commandMenu"],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

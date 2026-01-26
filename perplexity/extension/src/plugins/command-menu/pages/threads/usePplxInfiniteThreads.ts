@@ -1,7 +1,7 @@
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 
-import type { ThreadsSearchPayload } from "@/services/externals/pplx-api/pplx-api.types";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
+import type { ThreadsSearchPayload } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 
 export default function usePplxInfiniteThreads(
   params: Omit<ThreadsSearchPayload, "offset" | "limit">,
@@ -11,7 +11,7 @@ export default function usePplxInfiniteThreads(
       initialPageParam: 0,
       ...params,
     }),
-    staleTime: 5000,
+    staleTime: ms("5s"),
     placeholderData: keepPreviousData,
   });
 

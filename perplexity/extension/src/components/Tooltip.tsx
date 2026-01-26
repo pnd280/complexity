@@ -16,6 +16,7 @@ export type TooltipProps = {
   defaultOpen?: boolean;
   portal?: boolean;
   ref?: RefObject<HTMLSpanElement>;
+  onOpenChange?: (open: boolean) => void;
 };
 
 export default function Tooltip({
@@ -27,6 +28,7 @@ export default function Tooltip({
   defaultOpen,
   portal = true,
   ref,
+  onOpenChange,
 }: TooltipProps) {
   return (
     <TooltipRoot
@@ -39,6 +41,7 @@ export default function Tooltip({
       }}
       disabled={disabled}
       defaultOpen={defaultOpen}
+      onOpenChange={(details) => onOpenChange?.(details.open)}
     >
       <TooltipTrigger asChild>
         <span ref={ref} className={className}>

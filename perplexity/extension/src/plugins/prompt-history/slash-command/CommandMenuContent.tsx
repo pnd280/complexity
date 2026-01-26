@@ -1,6 +1,6 @@
 import { usePopoverContext } from "@ark-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useHotkeys } from "react-hotkeys-hook";
 
 import {
   Command,
@@ -8,7 +8,6 @@ import {
   CommandGroup,
   CommandInput,
   CommandList,
-  useCommandListManualScroll,
 } from "@/components/ui/command";
 import { CommandItemSkeleton } from "@/components/ui/command";
 import { getPlatform } from "@/hooks/usePlatformDetection";
@@ -18,12 +17,15 @@ import { usePromptHistory } from "@/plugins/prompt-history/hooks/usePromptHistor
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import PromptHistoryCommandMenuItem from "@/plugins/prompt-history/slash-command/CommandMenuItem";
-import { queryClient } from "@/services/infra/query-client";
 import { keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 export function PromptHistoryCommandMenuContent() {
+  const queryClient = useQueryClient();
+
   const [searchValue, setSearchValue] = useState("");
   const [selectingValue, setSelectingValue] = useState("");
+
   const debouncedSearchValue = useDebounce(searchValue, 200);
   const {
     items,
@@ -39,59 +41,73 @@ export function PromptHistoryCommandMenuContent() {
     enabled: true,
   });
 
-  const commandListRef = useRef<HTMLDivElement | null>(null);
-
-  useCommandListManualScroll({
-    enabled: true,
-    commandListRef,
-    willUpdateValue: selectingValue,
-  });
-
   const { triggerRef } = useLoadMoreItems({
     hasNextPage,
     isFetching,
     fetchNextPage,
   });
 
-  const deleteItem = useCallback(async (id: string) => {
+  const deleteItem = async (id: string) => {
     await PromptHistoryService.Instance.delete(id);
+
+    if (items != null) {
+      const currentIndex = items.findIndex((item) => item.id === id);
+
+      if (currentIndex !== -1 && items.length > 1) {
+        const nextIndex =
+          currentIndex < items.length - 1 ? currentIndex + 1 : currentIndex - 1;
+        const nextItem = items[nextIndex];
+        if (nextItem != null) {
+          setSelectingValue(nextItem.id);
+        }
+      } else {
+        setSelectingValue("");
+      }
+    }
 
     void queryClient.invalidateQueries({
       queryKey: promptHistoryQueries.infinite.all(),
     });
+  };
+
+  const handleCopy = useEffectEvent((e: KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    $(`[data-value='${selectingValue}'] [data-copy-button]`).trigger("click");
+  });
+
+  useEffect(() => {
+    const copyKeyCombo = keysToString([
+      getPlatform() === "mac" ? Key.Meta : Key.Control,
+      "c",
+    ]);
+
+    hotkeys(copyKeyCombo, handleCopy);
+
+    return () => {
+      hotkeys.unbind(copyKeyCombo, handleCopy);
+    };
   }, []);
 
-  useHotkeys(
-    keysToString([getPlatform() === "mac" ? Key.Meta : Key.Control, "c"]),
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  const handleDelete = useEffectEvent((e: KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-      $(`[data-value='${selectingValue}'] [data-copy-button]`).trigger("click");
-    },
-    {
-      enableOnFormTags: true,
-      preventDefault: true,
-    },
-  );
+    const prompt = items?.find((item) => item.id === selectingValue);
 
-  useHotkeys(
-    Key.Delete,
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    if (prompt == null) return;
 
-      const prompt = items?.find((item) => item.id === selectingValue);
+    void deleteItem(prompt.id);
+  });
 
-      if (prompt == null) return;
+  useEffect(() => {
+    hotkeys(Key.Delete, handleDelete);
 
-      void deleteItem(prompt.id);
-    },
-    {
-      enableOnFormTags: true,
-      preventDefault: true,
-    },
-  );
+    return () => {
+      hotkeys.unbind(Key.Delete, handleDelete);
+    };
+  }, []);
 
   const { getContentProps } = usePopoverContext();
 
@@ -101,13 +117,14 @@ export function PromptHistoryCommandMenuContent() {
     | `top-${string}`
     | undefined;
 
-  if (items == null) return null;
-
   return (
     <Command
-      className={cn("x:flex x:bg-background x:dark:bg-secondary", {
-        "x:flex-col-reverse": placement?.startsWith("top"),
-      })}
+      className={cn(
+        "x:flex x:rounded-none x:bg-background x:dark:bg-secondary",
+        {
+          "x:flex-col-reverse": placement?.startsWith("top"),
+        },
+      )}
       value={selectingValue}
       onValueChange={setSelectingValue}
     >
@@ -121,13 +138,9 @@ export function PromptHistoryCommandMenuContent() {
         value={searchValue}
         onValueChange={setSearchValue}
       />
-      <CommandList
-        ref={commandListRef}
-        data-prompt-history-command-list
-        className="x:h-[200px]"
-      >
+      <CommandList className="x:h-[200px] x:scroll-pt-10 x:scroll-pb-10">
         <CommandGroup>
-          {items.map((item) => (
+          {items?.map((item) => (
             <PromptHistoryCommandMenuItem
               key={item.id}
               searchValue={searchValue}
@@ -135,16 +148,16 @@ export function PromptHistoryCommandMenuContent() {
               onDelete={deleteItem}
             />
           ))}
+          {(isLoading || isFetchingNextPage) && (
+            <CommandItemSkeleton count={3} className="x:h-5" />
+          )}
         </CommandGroup>
         {!isLoading && (
           <CommandEmpty className="x:flex x:w-full x:items-center x:justify-center">
             {t("plugin-prompt-history.search.noResults")}
           </CommandEmpty>
         )}
-        {(isLoading || isFetchingNextPage) && (
-          <CommandItemSkeleton count={3} className="x:h-5" />
-        )}
-        {hasNextPage && <div ref={triggerRef} className="x:h-10" />}
+        {hasNextPage && <div ref={triggerRef} className="x:h-30" />}
       </CommandList>
     </Command>
   );

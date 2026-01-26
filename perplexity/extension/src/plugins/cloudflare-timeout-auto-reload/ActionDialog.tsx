@@ -8,17 +8,18 @@ import {
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import useCloudflareTimeout from "@/plugins/cloudflare-timeout-auto-reload/useCloudflareTimeout";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 export function CloudflareTimeoutActionDialog() {
-  const settings = ExtensionSettingsService.cachedSync;
+  const settings = PluginsSettingSnapshotsService.getPluginSnapshot(
+    "cloudflareTimeoutAutoReload",
+  );
   const { isSessionTimeout, handleReload } = useCloudflareTimeout();
   const [countdown, setCountdown] = useState(5);
   const countdownInterval = useRef<NodeJS.Timeout>(undefined);
 
-  const isAutoReload =
-    settings?.plugins.cloudflareTimeoutAutoReload.behavior === "reload";
+  const isAutoReload = settings.behavior === "reload";
 
   useEffect(() => {
     if (!isSessionTimeout || !isAutoReload) return;

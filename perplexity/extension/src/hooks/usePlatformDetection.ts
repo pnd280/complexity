@@ -1,7 +1,7 @@
 export type Platform = "windows" | "linux" | "mac";
 
 export default function usePlatformDetection(): Platform {
-  return useMemo(() => getPlatform(), []);
+  return getPlatform();
 }
 
 export const getPlatform = () => {

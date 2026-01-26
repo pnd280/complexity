@@ -6,10 +6,11 @@ packages:
 
 catalogs:
   lint:
-    eslint: ^9.37.0
-    prettier: ^3.6.2
-    typescript-eslint: ^8.46.0
+    eslint: ^9.39.2
+    prettier: ^3.7.4
+    typescript-eslint: ^8.53.0
   types:
+    '@types/chrome': ^0.1.33
     typescript: ^5.9.3
 
 ignoredBuiltDependencies:
@@ -17,6 +18,7 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - '@parcel/watcher'
+  - '@swc/core'
   - '@tailwindcss/oxide'
   - es5-ext
   - esbuild

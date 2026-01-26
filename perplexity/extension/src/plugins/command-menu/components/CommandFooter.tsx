@@ -1,24 +1,25 @@
 import KeyCombo from "@/components/KeyCombo";
 import Tooltip from "@/components/Tooltip";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import {
   commandMenuStore,
   useCommandMenuStore,
 } from "@/plugins/command-menu/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 import LuMaximize from "~icons/lucide/maximize-2";
 import LuMinimize from "~icons/lucide/minimize-2";
 
 export default function CommandFooter() {
-  const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
+  const settings =
+    PluginsSettingSnapshotsService.getPluginSnapshot("commandMenu");
 
   const footerItems = useCommandMenuStore(
-    (store) => store.footerItems,
+    (store) => store.footer.items,
     deepEqual,
   );
 
-  const sidecarItems = useCommandMenuStore((store) => store.sidecarItems);
-  const sidecarOpen = useCommandMenuStore((store) => store.sidecarOpen);
+  const sidecarItems = useCommandMenuStore((store) => store.sidecar.items);
+  const sidecarOpen = useCommandMenuStore((store) => store.sidecar.open);
 
   if (footerItems.length === 0) return null;
 
@@ -37,7 +38,7 @@ export default function CommandFooter() {
                   </span>
                   <KeyCombo
                     className="x:ml-2"
-                    keyClassName="x:text-foreground"
+                    keyClassName="x:bg-background"
                     keys={settings.keybindings.toggleSidecar}
                   />
                 </div>
@@ -47,7 +48,7 @@ export default function CommandFooter() {
                 role="button"
                 className="x:m-0 x:flex x:items-center x:gap-2 x:rounded-lg x:px-2 x:py-1 x:text-xs x:text-foreground x:transition-all x:hover:bg-secondary"
                 onClick={() => {
-                  commandMenuStore.getState().setSidecarOpen(!sidecarOpen);
+                  commandMenuStore.getState().sidecar.setOpen(!sidecarOpen);
                 }}
               >
                 {sidecarOpen ? <LuMinimize /> : <LuMaximize />}

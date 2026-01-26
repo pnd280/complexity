@@ -255,6 +255,80 @@ export class AsyncDependencyRegistry<
     }
   }
 
+  /**
+   * Synchronously get an already-loaded dependency value
+   * @param id The unique identifier of the dependency to retrieve
+   * @returns The loaded dependency value
+   * @throws {Error} If the dependency is not registered, not yet loaded, or in an error state
+   * @remarks
+   * This method only returns values for dependencies that have already been loaded.
+   * Use this when you need synchronous access to a dependency that you know has been loaded.
+   * If the dependency hasn't been loaded yet, use the `load()` method instead.
+   * @example
+   * ```typescript
+   * // After loading
+   * await registry.load('queryClient');
+   *
+   * // Later, get synchronously
+   * const queryClient = registry.getSync('queryClient');
+   * ```
+   */
+  getSync<K extends keyof TRegistry>(id: K): TRegistry[K] {
+    const state = this.dependencyStates.get(id);
+
+    if (!this.dependencies.has(id)) {
+      throw new Error(
+        `Dependency "${String(id)}" not registered. Cannot get value of an unregistered dependency.`,
+      );
+    }
+
+    switch (state) {
+      case "loaded":
+        return this.dependencyValues.get(id) as TRegistry[K];
+
+      case "error":
+        throw new Error(
+          `Dependency "${String(id)}" previously failed to load. Cannot get value of a failed dependency.`,
+        );
+
+      case "loading":
+        throw new Error(
+          `Dependency "${String(id)}" is currently loading. Use await load("${String(id)}") to wait for it to finish loading.`,
+        );
+
+      case "pending":
+        throw new Error(
+          `Dependency "${String(id)}" is pending and has not been loaded yet. Use await load("${String(id)}") to load it first.`,
+        );
+
+      case "inactive": {
+        const missingDeps = this.pendingDependencies.get(id);
+        const missingDepsList = missingDeps
+          ? Array.from(missingDeps).map(String).join(", ")
+          : "unknown dependencies";
+
+        throw new Error(
+          `Dependency "${String(id)}" is inactive because it's waiting for: ${missingDepsList}. Register these dependencies first.`,
+        );
+      }
+
+      default:
+        throw new Error(
+          `Dependency "${String(id)}" is in an unknown state. Cannot retrieve value.`,
+        );
+    }
+  }
+
+  /**
+   * Load a specific dependency and all its prerequisites
+   * @param id The unique identifier of the dependency to load
+   * @returns A promise that resolves to the loaded dependency value
+   * @throws {Error} If the dependency is not registered, has a circular dependency, or fails to load
+   * @example
+   * ```typescript
+   * const queryClient = await registry.load('queryClient');
+   * ```
+   */
   async load<K extends keyof TRegistry>(id: K): Promise<TRegistry[K]> {
     const loadingPath = new Set<keyof TRegistry>();
     return this.resolveDependency(id, loadingPath);
@@ -288,10 +362,6 @@ export class AsyncDependencyRegistry<
       this._pendingWarnings.set(id, warningTimeoutId);
 
       return new Promise<TRegistry[K]>((resolve) => {
-        if (this._pendingResolvers == null) {
-          this._pendingResolvers = new Map();
-        }
-
         if (!this._pendingResolvers.has(id)) {
           this._pendingResolvers.set(id, new Set());
         }
@@ -368,10 +438,31 @@ export class AsyncDependencyRegistry<
     return loadPromise as Promise<TRegistry[K]>;
   }
 
+  /**
+   * Load multiple dependencies in parallel
+   * @param ids Array of dependency identifiers to load
+   * @returns A promise that resolves when all specified dependencies are loaded
+   * @throws {Error} If any of the dependencies fail to load
+   * @example
+   * ```typescript
+   * await registry.loadMultiple(['queryClient', 'storage', 'auth']);
+   * ```
+   */
   async loadMultiple(ids: Array<keyof TRegistry>): Promise<void> {
     await Promise.all(ids.map((id) => this.load(id)));
   }
 
+  /**
+   * Reset the registry to its initial state, clearing all dependencies and cached values
+   * @remarks
+   * This will clear all registered dependencies, their states, loaded values, and pending operations.
+   * Use this when you need to restart the dependency system from scratch.
+   * @example
+   * ```typescript
+   * registry.reset();
+   * // Now you can re-register and reload dependencies
+   * ```
+   */
   reset(): void {
     for (const timeoutId of this._pendingWarnings.values()) {
       clearTimeout(timeoutId);
@@ -479,6 +570,20 @@ export class AsyncDependencyRegistry<
     }
   }
 
+  /**
+   * Load all registered dependencies in the optimal order based on their dependency graph
+   * @returns A promise that resolves to an object containing all loaded dependencies
+   * @throws {Error} If any dependency fails to load or if circular dependencies are detected
+   * @remarks
+   * This method analyzes the dependency graph and loads dependencies level by level,
+   * ensuring that all prerequisites are loaded before their dependents. Dependencies
+   * at the same level are loaded in parallel for optimal performance.
+   * @example
+   * ```typescript
+   * const allDeps = await registry.loadAll();
+   * console.log(allDeps.queryClient, allDeps.storage, allDeps.auth);
+   * ```
+   */
   async loadAll(): Promise<
     Record<keyof TRegistry, TRegistry[keyof TRegistry]>
   > {

@@ -22,7 +22,6 @@ import {
   useBetterSidebarStore,
 } from "@/plugins/better-sidebar/store";
 import usePortalContainer from "@/plugins/better-sidebar/usePortalContainer";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 
 import LuPanelLeftClose from "~icons/lucide/panel-left-close";
 import LuPanelLeftOpen from "~icons/lucide/panel-left-open";
@@ -65,8 +64,8 @@ const items = [
 
 export function BetterSidebar() {
   const portalContainer = usePortalContainer();
-  const isMobile = useIsMobileStore((state) => state.isMobile);
-  const open = useBetterSidebarStore((state) => state.open);
+  const isMobile = useIsMobileStore((store) => store.isMobile);
+  const open = useBetterSidebarStore((store) => store.open);
 
   useHookMobileTrigger();
 
@@ -97,7 +96,7 @@ export function BetterSidebar() {
               </Button>
             </div>
           </SidebarHeader>
-          <SidebarContent className={cn(PPLX_SCROLLBAR_CLASSES)}>
+          <SidebarContent className={cn("custom-scrollbar")}>
             <SidebarGroup>
               <SidebarGroupContent>
                 <SidebarMenu>
@@ -227,7 +226,7 @@ function SidebarFloatingTrigger() {
     <SidebarTrigger
       id="sidebar-floating-trigger"
       className={cn(
-        "x:invisible x:fixed x:inset-2 x:z-10 x:h-max x:w-max x:rounded-xl x:rounded-tl-none x:rounded-bl-none x:border x:border-l-0 x:border-border/50 x:bg-secondary x:p-3 x:opacity-0 x:transition-all x:hover:bg-secondary x:lg:rounded-bl-none",
+        "x:invisible x:fixed x:inset-2 x:left-0 x:z-10 x:h-max x:w-max x:rounded-xl x:rounded-tl-none x:rounded-bl-none x:border x:border-l-0 x:border-border/50 x:bg-secondary x:p-3 x:opacity-0 x:transition-all x:hover:bg-secondary x:lg:rounded-bl-none",
         {
           "x:visible x:opacity-100": !open,
         },

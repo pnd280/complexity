@@ -20,15 +20,15 @@
   },
   "dependencies": {
     "comctx": "^1.4.3",
-    "tsup": "^8.5.0"
+    "tsup": "^8.5.1"
   },
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
-    "@types/chrome": "0.1.12",
+    "@types/chrome": "catalog:types",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
-    "globals": "16.4.0",
+    "globals": "17.0.0",
     "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint"

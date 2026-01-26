@@ -1,21 +1,21 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { internalSearchStatesObserverStore } from "@/plugins/__core__/dom-observers/internal-search-states/store";
-import { setModelCookie } from "@/plugins/__ui-groups__/elements/query-box/utils";
-import {
-  betterLanguageModelSelectorStore,
-  useBetterLanguageModelSelectorStore,
-} from "@/plugins/language-model-selector/store";
+import { internalSearchStatesObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/internal-search-states/store";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { setModelCookie } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
 import {
   isLanguageModelCode,
   isSearchLanguageModelCode,
   isResearchLanguageModelCode,
-} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
+} from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type {
   LanguageModelCode,
   LanguageModelType,
-} from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+} from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import {
+  betterLanguageModelSelectorStore,
+  useBetterLanguageModelSelectorStore,
+} from "@/plugins/language-model-selector/store";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:languageModelSelector:sync": void;
   }
@@ -47,12 +47,12 @@ function getModelType(modelCode: LanguageModelCode): LanguageModelType {
 
 function initializeFromCookie(): void {
   const lastSelectedLanguageModel = localStorage.getItem(
-    "cplx.last-selected-language-model",
+    "cplx:lastSelectedLanguageModel",
   );
 
   if (
     !lastSelectedLanguageModel ||
-    !isSearchLanguageModelCode(lastSelectedLanguageModel)
+    !isLanguageModelCode(lastSelectedLanguageModel)
   ) {
     return;
   }
@@ -69,7 +69,7 @@ function initializeFromCookie(): void {
 
 function syncFromInternalSearchStates(): void {
   internalSearchStatesObserverStore.subscribe(
-    (state) => state.model,
+    (store) => store.model,
     (model) => {
       if (model == null || !isLanguageModelCode(model)) {
         return;
@@ -82,9 +82,9 @@ function syncFromInternalSearchStates(): void {
 
 function syncToInternalSearchStates(): void {
   betterLanguageModelSelectorStore.subscribe(
-    (state) => state.model,
+    (store) => store.model,
     (model) => {
-      if (model == null || !isLanguageModelCode(model)) {
+      if (!isLanguageModelCode(model)) {
         return;
       }
 

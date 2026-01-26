@@ -10,17 +10,18 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreground-subtle: var(--foreground-subtle);
 
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
 
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -31,8 +32,10 @@
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
 
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+  --color-caution: var(--caution);
+  --color-caution-foreground: var(--caution-foreground);
+
+  --color-backdrop: var(--backdrop);
 
   --color-border: var(--border);
   --color-input: var(--input);
@@ -47,6 +50,49 @@
 code::before,
 code::after {
   content: "" !important;
+}
+
+.shimmer-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -125px;
+  width: calc(100% + 250px);
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.05) 60%,
+    rgba(255, 255, 255, 0.02) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 250px 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+  animation: shimmer 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0;
+    background-position: left center;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    background-position: right center;
+  }
 }
 
 @keyframes blob {

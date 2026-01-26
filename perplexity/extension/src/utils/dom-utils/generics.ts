@@ -42,7 +42,7 @@ export function getWordOnCaret(element: HTMLTextAreaElement) {
   const text = element.value;
   const caret = element.selectionStart;
 
-  if (!text || caret === undefined) {
+  if (!text) {
     return {
       word: "",
       start: 0,
@@ -370,10 +370,4 @@ export function onScrollDirectionChange({
 
 export function untrapWheel(e: React.WheelEvent<HTMLDivElement>) {
   e.stopPropagation();
-}
-
-export function setCssProperty(property: string, value: string) {
-  requestAnimationFrame(() => {
-    $(document.body).css({ [property]: value });
-  });
 }

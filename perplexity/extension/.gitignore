@@ -29,3 +29,5 @@ secrets.*.js
 /changelogs/listing.json
 
 cdn
+
+.eslintcache

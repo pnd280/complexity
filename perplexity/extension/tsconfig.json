@@ -1,7 +1,6 @@
 {
   "extends": "@complexity/typescript-config/base.json",
   "compilerOptions": {
-    "allowJs": false,
     "baseUrl": ".",
     "jsx": "react-jsx",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],

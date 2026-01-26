@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import packageJson from "#/package.json";
+import packageJson from "#ext/package.json";
 
 import { getRootPath } from "@/utils";
 

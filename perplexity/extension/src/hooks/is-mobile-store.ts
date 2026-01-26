@@ -1,6 +1,6 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
 const MOBILE_BREAKPOINT = 768;
 
@@ -10,14 +10,12 @@ type IsMobileStore = {
 
 const useIsMobileStore = createWithEqualityFn<IsMobileStore>()(
   subscribeWithSelector(
-    immer(
-      (set): IsMobileStore => ({
-        isMobile:
-          typeof window !== "undefined"
-            ? window.innerWidth < MOBILE_BREAKPOINT
-            : false,
-      }),
-    ),
+    mutative(() => ({
+      isMobile:
+        typeof window !== "undefined"
+          ? window.innerWidth < MOBILE_BREAKPOINT
+          : false,
+    })),
   ),
 );
 

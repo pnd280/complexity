@@ -1,9 +1,9 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
-import { internalSearchStatesObserverStore } from "@/plugins/__core__/dom-observers/internal-search-states/store";
+import { internalSearchStatesObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/internal-search-states/store";
+import { spaRouteChangeCompleteSubscribe } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
 import { whereAmI } from "@/utils/misc/utils";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:noFocusByDefault": void;
   }

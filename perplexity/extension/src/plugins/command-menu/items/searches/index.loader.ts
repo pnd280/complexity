@@ -1,10 +1,10 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
 import { getRawItems } from "@/plugins/command-menu/items/searches/items";
 import { commandMenuStore } from "@/plugins/command-menu/store";
 import { keysToString } from "@/utils/misc/utils";
-import hotkeysJs from "@/utils/wrappers/hotkeys-js";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:commandMenu:searchItems:setupKeybindings": void;
   }
@@ -20,9 +20,9 @@ export default function () {
       const items = getRawItems();
 
       items.forEach((item) => {
-        hotkeysJs(keysToString(item.keybinding), () => {
+        hotkeys(keysToString(item.keybinding), () => {
           item.onSelect();
-          commandMenuStore.getState().setOpen(true);
+          commandMenuStore.getState().states.setOpen(true);
         });
       });
     },

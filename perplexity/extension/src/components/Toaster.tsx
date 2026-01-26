@@ -9,7 +9,6 @@ import {
   ToastViewport,
 } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { isReactNode } from "@/types/utils.types";
 
 export function Toaster({
   viewportProps,
@@ -34,9 +33,11 @@ export function Toaster({
             className={cn("x:w-max x:font-sans", className)}
             {...props}
           >
-            <div className="x:grid x:gap-1">
-              {isReactNode(title) && <ToastTitle>{title}</ToastTitle>}
-              {isReactNode(description) && (
+            <div className="x:flex x:flex-col x:items-start x:justify-center x:gap-2">
+              {title != null && title !== "" && (
+                <ToastTitle>{title}</ToastTitle>
+              )}
+              {description != null && description !== "" && (
                 <ToastDescription>{description}</ToastDescription>
               )}
             </div>

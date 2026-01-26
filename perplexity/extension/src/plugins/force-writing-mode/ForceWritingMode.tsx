@@ -12,22 +12,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { getActiveQueryBox } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
+import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
 import { useInsertCss } from "@/hooks/useInsertCss";
-import { getActiveQueryBox } from "@/plugins/__ui-groups__/elements/query-box/utils";
+import type manifest from "@/plugins/force-writing-mode/index.manifest";
 import { normalizeCssResourceConfig } from "@/plugins/force-writing-mode/index.remote-resources";
 import { useForceWritingModeStore } from "@/plugins/force-writing-mode/store";
-import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 
 import TablerPencil from "~icons/tabler/pencil";
 
 const normalizeCss = await getVersionedRemoteResource(
   normalizeCssResourceConfig,
+  persistentQueryClient,
 );
 
 export function ForceWritingModeToggle() {
   const [isOpen, setIsOpen] = useState(false);
-  const [warningShown, setWarningShown] = useLocalStorage(
-    "cplx.spacesThreadsForceWritingMode.warningShown",
+  const [showWarning, setShowWarning] = useLocalStorage(
+    "cplx.plugin:queryBox:spacesThreadsForceWritingMode:showWarning" satisfies `cplx.plugin:${typeof manifest.meta.id}:${string}`,
     true,
   );
 
@@ -57,7 +60,7 @@ export function ForceWritingModeToggle() {
 
   return (
     <Dialog
-      open={warningShown ? isOpen : false}
+      open={showWarning ? isOpen : false}
       onOpenChange={({ open }) => {
         if (!forceWritingMode) return;
 
@@ -68,7 +71,7 @@ export function ForceWritingModeToggle() {
         <DialogTrigger asChild>
           <button
             className={cn(
-              "x:-order-2 x:flex x:size-8 x:cursor-pointer x:items-center x:justify-center x:gap-1 x:rounded-lg x:text-center x:text-sm x:font-medium x:text-muted-foreground x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:hover:bg-primary-foreground x:focus-visible:bg-primary-foreground x:focus-visible:outline-none x:active:scale-95 x:disabled:cursor-not-allowed x:disabled:opacity-50",
+              "x:-order-2 x:flex x:size-8 x:cursor-pointer x:items-center x:justify-center x:gap-1 x:rounded-lg x:text-center x:text-sm x:font-medium x:text-muted-foreground x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:hover:bg-foreground-subtle x:focus-visible:bg-foreground-subtle x:focus-visible:outline-none x:active:scale-95 x:disabled:cursor-not-allowed x:disabled:opacity-50",
               {
                 "x:text-primary": forceWritingMode,
                 "x:hover:text-foreground": !forceWritingMode,
@@ -90,8 +93,8 @@ export function ForceWritingModeToggle() {
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" onClick={() => setWarningShown(false)}>
-              I understand, don't show again
+            <Button onClick={() => setShowWarning(false)}>
+              I understand, don&apos;t show again
             </Button>
           </DialogClose>
           <DialogClose asChild>

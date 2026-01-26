@@ -1,0 +1,74 @@
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { useThreadMessageBlocksDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/thread/message-blocks/store";
+import { useThreadMessageIndexContext } from "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/message-index-context";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
+
+import TablerInfoCircle from "~icons/tabler/info-circle";
+
+export function MessageMetrics() {
+  const messageBlockIndex = useThreadMessageIndexContext();
+
+  const answer = useThreadMessageBlocksDomObserverStore(
+    (store) => store.messageBlocks?.[messageBlockIndex]?.content.answer,
+    deepEqual,
+  );
+
+  const settings = PluginsSettingSnapshotsService.getPluginSnapshot(
+    "thread:messageMetrics",
+  );
+
+  const metrics = answer
+    ? (() => {
+        const wordCount = answer.split(" ").length;
+        const characterCount = answer.length;
+        const tokenCount = settings.showTokens
+          ? Math.ceil(characterCount / 4)
+          : null;
+        return { wordCount, characterCount, tokenCount };
+      })()
+    : null;
+
+  return (
+    <HoverCard
+      portal
+      positioning={{ placement: "top-end" }}
+      openDelay={0}
+      closeDelay={100}
+    >
+      <HoverCardTrigger asChild>
+        <div
+          className="x:cursor-pointer x:rounded-full x:p-2 x:text-muted-foreground x:transition-all x:hover:bg-muted/50 x:hover:text-foreground x:active:scale-95"
+          tabIndex={0}
+        >
+          <TablerInfoCircle className="x:size-4" />
+        </div>
+      </HoverCardTrigger>
+      {metrics && (
+        <HoverCardContent>
+          <div className="x:grid x:grid-cols-2 x:gap-x-3 x:gap-y-1 x:text-sm">
+            <div className="x:text-muted-foreground">
+              {t("common.misc.words")}
+            </div>
+            <div className="x:text-right">{metrics.wordCount}</div>
+
+            <div className="x:text-muted-foreground">
+              {t("common.misc.characters")}
+            </div>
+            <div className="x:text-right">{metrics.characterCount}</div>
+
+            {settings.showTokens && metrics.tokenCount != null && (
+              <>
+                <div className="x:text-muted-foreground">tokens</div>
+                <div className="x:text-right">~{metrics.tokenCount}</div>
+              </>
+            )}
+          </div>
+        </HoverCardContent>
+      )}
+    </HoverCard>
+  );
+}

@@ -1,5 +1,0 @@
-@reference "../../assets/index.css";
-
-[data-cplx-code-block-header][data-sticky="true"] {
-  @apply x:sticky x:top-[var(--header-height)];
-}

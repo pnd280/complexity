@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import type { RemoteResourceReturnType } from "#/src/services/externals/cplx-api/remote-resources/types";
+import type { RemoteResource } from "@/entrypoints/services/externals/cplx-api/remote-resources/types";
 
 import { logger } from "@/r2/config";
 import {
@@ -58,7 +58,7 @@ async function processSingleResourceFile(params: {
 }
 
 async function registerResource(params: {
-  resource: RemoteResourceReturnType<any>;
+  resource: RemoteResource<unknown>;
 }): Promise<void> {
   const { resource } = params;
   const content = await getResourceContent({ resource });

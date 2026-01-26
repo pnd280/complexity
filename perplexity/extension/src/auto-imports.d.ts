@@ -1,0 +1,33 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+export {};
+declare global {
+  const {
+    createContext,
+    lazy,
+    memo,
+    use,
+    useCallback,
+    useContext,
+    useDeferredValue,
+    useEffect,
+    useEffectEvent,
+    useMemo,
+    useReducer,
+    useRef,
+    useState,
+  }: typeof import("react");
+  const {
+    Trans,
+    TransWithPrefix,
+    extendT,
+    t,
+  }: typeof import("@complexity/i18n");
+  const { Key }: typeof import("@/types/keys.ts");
+  const { cn, tw }: typeof import("@/utils/wrappers/cn.ts");
+  const { deepEqual }: typeof import("@/utils/wrappers/deep-equal.ts");
+  const invariant: typeof import("@/utils/misc/utils.ts").invariant;
+  const { isMainWorldContext, sleep }: typeof import("@/utils/misc/utils.ts");
+  const { default: $ }: typeof import("jquery");
+  const ms: typeof import("ms");
+  const tryCatch: typeof import("@/utils/wrappers/try-catch.ts").tryCatch;
+}

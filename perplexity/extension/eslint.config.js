@@ -1,16 +1,18 @@
-// @ts-check
 import {
   baseConfig,
   baseImportConfig,
   baseReactConfig,
   baseTypescriptConfig,
 } from "@complexity/eslint-config";
+
 import globals from "globals";
 import { defineConfig } from "eslint/config";
 import boundariesConfig from "./eslint-config/boundaries/index.js";
 import tanstackQueryConfig from "./eslint-config/tanstack-query.js";
+import moduleExportsConfig from "./eslint-config/module-exports/index.js";
 
 const commonIgnores = [
+  "*.js",
   "dist/**",
   "node_modules/**",
   "**/*.config.js",
@@ -21,7 +23,7 @@ export default defineConfig([
   baseConfig,
   {
     extends: [baseTypescriptConfig],
-    ignores: [...commonIgnores, "**/*.js"],
+    ignores: [...commonIgnores, "**/*.js", "eslint-config/**"],
   },
   {
     extends: [
@@ -48,10 +50,26 @@ export default defineConfig([
   },
   {
     extends: [baseReactConfig],
+    rules: {
+      "react/jsx-no-undef": "off",
+    },
     ignores: [...commonIgnores, "e2e/**"],
   },
+  {
+    files: ["**/*.loader.*", "**/*.opt-loader.*"],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
   boundariesConfig,
+  moduleExportsConfig,
   tanstackQueryConfig,
+  {
+    rules: {
+      "unicorn/filename-case": "off",
+    },
+    files: ["src/**/_locales/*.ts"],
+  },
   {
     languageOptions: {
       ecmaVersion: 2020,
@@ -60,7 +78,10 @@ export default defineConfig([
         ...globals.browser,
         ...globals.es2020,
       },
+      parserOptions: {
+        projectService: true,
+      },
     },
-    ignores: [...commonIgnores],
+    ignores: [...commonIgnores, "eslint-config/**"],
   },
 ]);

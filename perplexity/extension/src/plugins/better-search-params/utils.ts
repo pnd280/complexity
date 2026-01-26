@@ -1,32 +1,49 @@
-import { produce } from "immer";
+import { create } from "mutative";
 
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
-} from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
-import type { LanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/utils/parse-perplexity-ask-event";
+import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 
 type ParsedQuery = {
   query: string | null;
   model: LanguageModelCode | null;
   focusModes: string[] | null;
   isIncognito: boolean | null;
+  spaceId: string | null;
 };
 
 export function parseQuery(searchParams: URLSearchParams): ParsedQuery | null {
-  const query = searchParams.get("q");
+  let query = searchParams.get("q");
   const model = searchParams.get("model");
   const focusModes = searchParams.get("focus")?.split(",") ?? [];
   const isIncognito = searchParams.get("incognito") != null;
+  const spaceId = searchParams.get("space") ?? null;
 
-  return { query, model, focusModes, isIncognito };
+  if (query != null && query.length === 0) {
+    const cometCacheQuery = window.location.href.match(/ca(.*?)che_id/);
+
+    if (cometCacheQuery != null && cometCacheQuery[1] != null) {
+      const [decoded] = tryCatch(() => {
+        return new URLSearchParams(`=${cometCacheQuery[1]}`).get("");
+      });
+
+      if (decoded != null) {
+        query = decoded;
+      }
+    }
+  }
+
+  return { query, model, focusModes, isIncognito, spaceId };
 }
 
 export function setupTempInterceptor({
   model,
   focusModes,
   isIncognito,
+  spaceId,
 }: Omit<ParsedQuery, "query">): (() => void) | undefined {
   const interceptorId = "better-search-params";
 
@@ -59,13 +76,9 @@ export function setupTempInterceptor({
       );
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const newParams = produce(parsedData.params, (draft: any) => {
+      const newParams = create(parsedData.params, (draft: any) => {
         if (model != null) {
           draft.model_preference = model;
-        }
-
-        if (isIncognito) {
-          draft.is_incognito = true;
         }
 
         if (focusModes != null && focusModes.length > 0) {
@@ -75,6 +88,14 @@ export function setupTempInterceptor({
           } else {
             draft.sources = focusModes;
           }
+        }
+
+        if (spaceId != null) {
+          draft.target_collection_uuid = spaceId;
+        }
+
+        if (isIncognito) {
+          draft.is_incognito = true;
         }
       });
 

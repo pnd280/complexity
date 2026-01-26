@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
@@ -8,18 +7,21 @@ export default defineConfig({
     parser: tseslint.parser,
     parserOptions: {
       alwaysTryTypes: true,
-      project: "./tsconfig.json",
+      projectService: true,
     },
   },
-  plugins: {
-    "@typescript-eslint": tseslint.plugin,
-  },
+  extends: [tseslint.configs.recommended],
   rules: {
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/no-this-alias": "error",
     "@typescript-eslint/no-unsafe-declaration-merging": "error",
+    "@typescript-eslint/no-unnecessary-condition": "error",
+    "@typescript-eslint/no-empty-object-type": [
+      "error",
+      { allowInterfaces: "always" },
+    ],
     "@typescript-eslint/no-floating-promises": [
       "warn",
       {

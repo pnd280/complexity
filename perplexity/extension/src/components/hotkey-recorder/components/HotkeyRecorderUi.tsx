@@ -30,54 +30,7 @@ export function HotkeyRecorderUi({
   stop,
   showError = false,
 }: HotkeyRecorderUiProps) {
-  return (
-    <div className="x:flex x:flex-col x:gap-3">
-      <div className="x:flex x:items-center x:gap-3">
-        {isRecording && (
-          <>
-            <Button
-              size="icon"
-              onClick={() => {
-                resetKeys();
-                stop();
-              }}
-            >
-              <TablerX />
-            </Button>
-            <Button
-              disabled={!isValidCombination}
-              size="icon"
-              onClick={handleStopRecording}
-            >
-              <TablerCheck />
-            </Button>
-          </>
-        )}
-        <div
-          className={cn(
-            "x:flex x:items-center x:rounded-md",
-            isRecording
-              ? "x:border x:border-border/50 x:bg-secondary x:px-3 x:py-1.5"
-              : "x:cursor-pointer x:border-2 x:border-dashed x:border-border/50 x:px-3 x:py-1.5 x:transition-all x:hover:border-primary x:hover:bg-secondary",
-          )}
-          onClick={isRecording ? undefined : handleStartRecording}
-        >
-          {renderHotkeyDisplay()}
-        </div>
-      </div>
-      {isRecording &&
-        showError &&
-        recordedKeys != null &&
-        recordedKeys.size > 0 && (
-          <div className="x:flex x:items-center x:gap-2 x:text-sm x:font-medium x:text-destructive">
-            Invalid combination - use at least one modifier key combined with
-            one regular key.
-          </div>
-        )}
-    </div>
-  );
-
-  function renderHotkeyDisplay() {
+  const renderHotkeyDisplay = () => {
     if (isRecording && recordedKeys != null && !recordedKeys.size) {
       return (
         <div className="x:flex x:items-center x:gap-2">
@@ -119,5 +72,52 @@ export function HotkeyRecorderUi({
         </div>
       );
     }
-  }
+  };
+
+  return (
+    <div className="x:flex x:flex-col x:gap-3">
+      <div className="x:flex x:items-center x:gap-3">
+        {isRecording && (
+          <>
+            <Button
+              size="icon"
+              onClick={() => {
+                resetKeys();
+                stop();
+              }}
+            >
+              <TablerX />
+            </Button>
+            <Button
+              disabled={!isValidCombination}
+              size="icon"
+              onClick={handleStopRecording}
+            >
+              <TablerCheck />
+            </Button>
+          </>
+        )}
+        <div
+          className={cn(
+            "x:flex x:items-center x:rounded-md",
+            isRecording
+              ? "x:border x:border-border/50 x:bg-secondary x:px-3 x:py-1.5"
+              : "x:cursor-pointer x:border-2 x:border-dashed x:border-border/50 x:px-3 x:py-1.5 x:transition-all x:hover:border-primary x:hover:bg-secondary",
+          )}
+          onClick={isRecording ? undefined : handleStartRecording}
+        >
+          {renderHotkeyDisplay()}
+        </div>
+      </div>
+      {isRecording &&
+        showError &&
+        recordedKeys != null &&
+        recordedKeys.size > 0 && (
+          <div className="x:flex x:items-center x:gap-2 x:text-sm x:font-medium x:text-caution">
+            Invalid combination - use at least one modifier key combined with
+            one regular key.
+          </div>
+        )}
+    </div>
+  );
 }

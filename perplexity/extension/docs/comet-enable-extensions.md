@@ -1,19 +1,17 @@
-**After running the following command, RESTART the browser.**
+<a target="_blank" href="https://github.com/pnd280/complexity/blob/nxt/perplexity/extension/docs/articles/comet-enable-extensions-article.md">Comet blocks all extensions on perplexity.ai domains</a>. In order for Complexity to work, you need to manually patch it.
 
-### Windows
+## Windows
 
-PowerShell (no admin required)
+Run the following command in PowerShell (elevated)
 
 ```powershell
-irm "https://cdn.cplx.app/assets/comet-patch.ps1" | iex
+irm "https://cdn.cplx.app/comet/win.ps1" | iex
 ```
 
-A shortcut named `Comet - CPLX` will be created on your Desktop. Comet launched through this shortcut will have all extensions enabled on perplexity.ai domains.
+## macOS
 
-### Mac (Contributed by [theJayTea](https://github.com/theJayTea) | [Repo](https://github.com/theJayTea/Comet-Patcher-to-Unblock-Perplexity-Extensions))
+Run the following command in the Terminal
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/theJayTea/Comet-Patcher-to-Unblock-Perplexity-Extensions/main/comet-patch-macos.sh" | bash
+curl -fsSL "https://cdn.cplx.app/comet/mac.sh" | bash
 ```
-
-A shortcut named `Comet - CPLX` will be created at `~/Applications/Comet - CPLX.app`. Comet launched through this shortcut will have all extensions enabled on perplexity.ai domains.

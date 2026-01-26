@@ -1,22 +1,16 @@
-import { useHotkeys } from "react-hotkeys-hook";
-
-import {
-  Command,
-  CommandDialog,
-  CommandList,
-  useCommandListManualScroll,
-} from "@/components/ui/command";
+import { Command, CommandDialog, CommandList } from "@/components/ui/command";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import CommandFooter from "@/plugins/command-menu/components/CommandFooter";
 import CommandInput from "@/plugins/command-menu/components/CommandInput";
 import CommandSidecar from "@/plugins/command-menu/components/CommandSidecar";
+import { ExternalPages } from "@/plugins/command-menu/pages/ExternalPages";
 import IndexPage from "@/plugins/command-menu/pages/IndexPage";
 import SpaceThreadsPage from "@/plugins/command-menu/pages/space-threads/Page";
 import SpacesPage from "@/plugins/command-menu/pages/spaces/Page";
 import ThreadsPage from "@/plugins/command-menu/pages/threads/Page";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
 import { keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 export function CommandMenu() {
   const {
@@ -25,52 +19,52 @@ export function CommandMenu() {
     shouldLocalFilter,
     open,
     setOpen,
-    sidecarOpen,
-    setSidecarOpen,
-  } = useCommandMenuStore();
+  } = useCommandMenuStore((store) => store.states);
 
-  const commandListRef = useRef<HTMLDivElement>(null);
+  const { open: sidecarOpen, setOpen: setSidecarOpen } = useCommandMenuStore(
+    (store) => store.sidecar,
+  );
 
-  const settings = ExtensionSettingsService.cachedSync.plugins.commandMenu;
+  const settings =
+    PluginsSettingSnapshotsService.getPluginSnapshot("commandMenu");
 
-  useCommandListManualScroll({
-    enabled: open,
-    commandListRef,
-    willUpdateValue: selectingValue,
+  const handleToggleMenu = useEffectEvent((e: KeyboardEvent) => {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    setOpen(!open);
   });
 
-  useHotkeys(
-    keysToString(settings.keybindings.toggle),
-    (e) => {
-      e.stopImmediatePropagation();
-      setOpen(!open);
-    },
-    {
-      preventDefault: true,
-      enableOnContentEditable: true,
-      enableOnFormTags: true,
-    },
-  );
+  useEffect(() => {
+    const toggleKeyCombo = keysToString(settings.keybindings.toggle);
+    hotkeys(toggleKeyCombo, handleToggleMenu);
 
-  useHotkeys(
-    keysToString(settings.keybindings.toggleSidecar),
-    (e) => {
-      e.stopImmediatePropagation();
-      setSidecarOpen(!sidecarOpen);
-    },
-    {
-      enabled: open,
-      preventDefault: true,
-      enableOnContentEditable: true,
-      enableOnFormTags: true,
-    },
-  );
+    return () => {
+      hotkeys.unbind(toggleKeyCombo, handleToggleMenu);
+    };
+  }, [settings.keybindings.toggle]);
+
+  const handleToggleSidecar = useEffectEvent((e: KeyboardEvent) => {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    setSidecarOpen(!sidecarOpen);
+  });
+
+  useEffect(() => {
+    if (!open) return;
+
+    const sidecarKeyCombo = keysToString(settings.keybindings.toggleSidecar);
+    hotkeys(sidecarKeyCombo, handleToggleSidecar);
+
+    return () => {
+      hotkeys.unbind(sidecarKeyCombo, handleToggleSidecar);
+    };
+  }, [open, settings.keybindings.toggleSidecar]);
 
   return (
     <CommandDialog
       dialogContentProps={{
         className: cn({
-          "x:max-w-[1000px]": sidecarOpen,
+          "x:max-w-250": sidecarOpen,
           "x:max-w-3xl": !sidecarOpen,
         }),
       }}
@@ -93,13 +87,15 @@ export function CommandMenu() {
             )}
           >
             <CommandList
-              ref={commandListRef}
-              data-command-menu-list
-              className={cn("x:min-h-[400px]", {
-                "x:h-[500px] x:max-h-[500px]": sidecarOpen,
-              })}
+              className={cn(
+                "x:max-h-175 x:min-h-100 x:scroll-pt-32 x:scroll-pb-26",
+                {
+                  "x:h-125 x:max-h-125": sidecarOpen,
+                },
+              )}
             >
               <IndexPage />
+              <ExternalPages />
               <SpacesPage />
               <ThreadsPage />
               <SpaceThreadsPage />
@@ -108,8 +104,8 @@ export function CommandMenu() {
           {sidecarOpen && (
             <div
               className={cn(
-                PPLX_SCROLLBAR_CLASSES,
-                "x:h-[500px] x:max-h-[500px] x:overflow-y-auto",
+                "custom-scrollbar",
+                "x:h-125 x:max-h-125 x:overflow-y-auto",
               )}
             >
               <CommandSidecar />

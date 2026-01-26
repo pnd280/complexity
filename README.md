@@ -32,8 +32,9 @@
 
 - Provides a comprehensive set of added features and UI/UX improvements with excellent modularity and customization
 - Supports 22 languages
-- Runs flawlessly on Firefox Android
-- Navigate to [`./perplexity/extension/`](./perplexity/extension/) for more information
+- [**Supports the new Comet browser**](./perplexity/extension/docs/comet-enable-extensions.md)
+- Supports Firefox Android
+- Contribution: [`./perplexity/extension/`](./perplexity/extension/)
 
 ## Donate/Sponsor
 

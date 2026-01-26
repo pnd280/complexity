@@ -1,11 +1,11 @@
 import { subscribeWithSelector } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { createWithEqualityFn } from "zustand/traditional";
+import { mutative } from "zustand-mutative";
 
-import { type ImageModel } from "@/services/externals/cplx-api/remote-resources/pplx-image-models/types";
-import { PplxApiService } from "@/services/externals/pplx-api";
-import { pplxApiQueries } from "@/services/externals/pplx-api/query-keys";
-import { queryClient } from "@/services/infra/query-client";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { type ImageModel } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-image-models/types";
+import { PplxApiService } from "@/entrypoints/services/externals/pplx-api";
+import { pplxApiQueries } from "@/entrypoints/services/externals/pplx-api/query-keys";
 
 type ImageGenModelSelectorStore = {
   model: ImageModel["code"];
@@ -15,7 +15,7 @@ type ImageGenModelSelectorStore = {
 export const imageGenModelSelectorStore =
   createWithEqualityFn<ImageGenModelSelectorStore>()(
     subscribeWithSelector(
-      immer(
+      mutative(
         (set): ImageGenModelSelectorStore => ({
           model: "default",
           setModel: async (selectedImageGenModel) => {
@@ -24,7 +24,7 @@ export const imageGenModelSelectorStore =
               selectedImageGenModel,
               "fetch",
             );
-            void queryClient.invalidateQueries({
+            void persistentQueryClient.queryClient.invalidateQueries({
               queryKey: pplxApiQueries.userSettings.all(),
             });
           },

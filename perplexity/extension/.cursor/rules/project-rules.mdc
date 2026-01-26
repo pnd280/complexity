@@ -1,8 +1,0 @@
----
-description:
-globs:
-alwaysApply: true
----
-
-- MUST use `pnpm` as package manager
-- PREFER double quotes over single quotes for string literals

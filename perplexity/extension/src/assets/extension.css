@@ -18,11 +18,12 @@
   --font-mono: "JetBrains Mono", monospace;
 
   font-variant-ligatures: none;
+  font-size: 16px;
 }
 
 @layer base {
   * {
-    @apply x:border-border/50 x:font-sans x:text-base;
+    @apply x:border-border/50 x:font-sans x:text-sm;
   }
 
   body {

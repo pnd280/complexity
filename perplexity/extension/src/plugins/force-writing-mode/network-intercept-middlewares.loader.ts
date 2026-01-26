@@ -1,14 +1,14 @@
-import { produce } from "immer";
+import { create } from "mutative";
 
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { NetworkInterceptMiddlewareManagerService } from "@/plugins/__core__/_main-world/network-intercept/_service/service-init.loader";
+import { NetworkInterceptMiddlewareManagerService } from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/_service/service-init.loader";
 import {
   encodePerplexityAskEvent,
   parsePerplexityAskEvent,
-} from "@/plugins/__core__/_main-world/network-intercept/utils/parse-perplexity-ask-event";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/network-intercept/utils/parse-perplexity-ask-event";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
 import { forceWritingModeStore } from "@/plugins/force-writing-mode/store";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:spacesThreadsForceWritingMode": void;
   }
@@ -54,7 +54,7 @@ export default function () {
           if (!isCollectionThread) return skip();
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const newParams = produce(parsedData.params, (draft: any) => {
+          const newParams = create(parsedData.params, (draft: any) => {
             draft.sources = [];
             draft.search_focus = "writing";
           });

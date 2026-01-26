@@ -18,8 +18,6 @@ const SelectLocalContext = createContext<SelectLocalContext>({
   portal: true,
 });
 
-const SelectLocalContextProvider = SelectLocalContext.Provider;
-
 export const SelectContext = ArkSelect.Context;
 
 export function Select<T>({
@@ -29,25 +27,25 @@ export function Select<T>({
   portal?: boolean;
 }) {
   return (
-    <SelectLocalContextProvider
+    <SelectLocalContext
       value={{
         portal: portal ?? true,
       }}
     >
       <ArkSelect.Root<T> unmountOnExit={false} lazyMount={true} {...props} />
-    </SelectLocalContextProvider>
+    </SelectLocalContext>
   );
 }
 
 const selectTriggerVariants = cva(
-  "x:flex x:w-full x:items-center x:justify-between x:rounded-lg x:px-2 x:text-sm x:font-medium x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:focus-visible:bg-primary-foreground x:disabled:cursor-not-allowed x:disabled:opacity-50 x:[&>span]:!truncate",
+  "x:flex x:w-full x:items-center x:justify-between x:rounded-lg x:px-2 x:text-sm x:font-medium x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:focus-visible:bg-foreground-subtle x:disabled:cursor-not-allowed x:disabled:opacity-50 x:[&>span]:truncate!",
   {
     variants: {
       variant: {
         default:
-          "x:bg-primary-foreground x:hover:text-muted-foreground x:focus:outline-none x:active:scale-95",
+          "x:bg-foreground-subtle x:hover:text-muted-foreground x:focus:outline-none x:active:scale-95",
         ghost:
-          "x:text-center x:text-muted-foreground x:hover:bg-primary-foreground x:hover:text-foreground x:active:scale-95",
+          "x:text-center x:text-muted-foreground x:hover:bg-foreground-subtle x:hover:text-foreground x:active:scale-95",
         noStyle: "",
       },
     },
@@ -155,7 +153,7 @@ export function SelectItem({
           className={cn(
             "x:relative x:flex x:cursor-pointer x:items-center x:rounded-sm x:px-2 x:py-1.5 x:text-sm x:outline-none x:select-none",
             "x:data-disabled:cursor-not-allowed x:data-disabled:opacity-50",
-            "x:transition-all x:data-[highlighted]:bg-secondary",
+            "x:transition-all x:data-highlighted:bg-secondary",
             "x:justify-between x:text-muted-foreground x:data-[state=checked]:text-primary",
             {
               "x:bg-secondary": value.includes(props.item),

@@ -26,10 +26,12 @@ const APP_CONFIG = {
   "perplexity-ai": {
     globalMatches: ["https://www.perplexity.ai/*", "https://perplexity.ai/*"],
     globalExcludeMatches: [
-      "https://stripe.perplexity.ai/*",
+      "https://*.stripe.perplexity.ai/*",
       "https://*.perplexity.ai/p/api/*",
       "https://*.perplexity.ai/rest/*",
       "https://*.perplexity.ai/api/*",
+      "https://*.perplexity.ai/help-center/*",
+      "https://*.perplexity.ai/comet*",
       "https://*.labs.perplexity.ai/*",
       "https://*.docs.perplexity.ai/*",
       "https://*.perplexity.ai/hub*",

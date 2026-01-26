@@ -8,9 +8,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "x:bg-primary-foreground x:text-foreground x:hover:text-muted-foreground",
-        destructive:
-          "x:bg-destructive x:text-destructive-foreground x:hover:bg-destructive/90",
+          "x:bg-foreground-subtle x:text-foreground x:hover:text-muted-foreground",
+        caution: "x:bg-caution x:text-caution-foreground x:hover:bg-caution/90",
         outline:
           "x:border x:border-border/50 x:bg-transparent x:text-muted-foreground x:hover:text-foreground",
         primary:
@@ -18,7 +17,7 @@ const buttonVariants = cva(
         secondary:
           "x:bg-secondary x:text-secondary-foreground x:hover:bg-secondary/80",
         ghost:
-          "x:text-muted-foreground x:hover:bg-primary-foreground x:hover:text-foreground",
+          "x:text-muted-foreground x:hover:bg-foreground-subtle x:hover:text-foreground",
         ghostNoOutline:
           "x:rounded-none x:text-muted-foreground x:hover:text-foreground",
         link: "x:text-primary x:underline-offset-4 x:hover:underline",

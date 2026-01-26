@@ -1,0 +1,4 @@
+[data-cplx-component="message-block-footer"]
+  button:has(use[*|href="#pplx-icon-copy"]) {
+  display: none;
+}

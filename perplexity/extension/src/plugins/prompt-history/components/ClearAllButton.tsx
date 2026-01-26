@@ -1,7 +1,10 @@
+import { useQueryClient } from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -10,11 +13,12 @@ import {
 import { useEvent } from "@/hooks/useEvent";
 import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-keys";
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
-import { queryClient } from "@/services/infra/query-client";
 
 import TablerTrash from "~icons/tabler/trash";
 
 export default function ClearAllButton() {
+  const queryClient = useQueryClient();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClearAll = useEvent(async () => {
@@ -41,12 +45,14 @@ export default function ClearAllButton() {
             {t("plugin-prompt-history.clearAllButton.dialog.title")}
           </DialogTitle>
         </DialogHeader>
-        <div>{t("plugin-prompt-history.clearAllButton.dialog.message")}</div>
+        <DialogDescription asChild>
+          <div>{t("plugin-prompt-history.clearAllButton.dialog.message")}</div>
+        </DialogDescription>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <Button onClick={() => setIsOpen(false)}>
             {t("plugin-prompt-history.clearAllButton.dialog.actions.cancel")}
           </Button>
-          <Button variant="destructive" onClick={handleClearAll}>
+          <Button variant="caution" onClick={handleClearAll}>
             {t("plugin-prompt-history.clearAllButton.dialog.actions.confirm")}
           </Button>
         </DialogFooter>

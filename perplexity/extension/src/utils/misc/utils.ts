@@ -1,7 +1,6 @@
 import { MatchPattern } from "@webext-core/match-patterns";
 
 import type { MaybePromise } from "@/types/utils.types";
-import { errorWrapper } from "@/utils/wrappers/error-wrapper";
 
 export const jsonUtils = {
   safeParse(json: string) {
@@ -146,10 +145,7 @@ export function isMainWorldContext() {
   );
 }
 
-export function isExtensionContext() {
-  return !isMainWorldContext();
-}
-
+// TODO: should be isInContentScriptPplx
 export function isInContentScript() {
   return whereAmI() !== "unknown";
 }
@@ -207,7 +203,7 @@ export function emojiCodeToString(emojiCode: string): string {
 }
 
 export function getOptionsPageUrl({ isDev }: { isDev: boolean }) {
-  const prefix = isDev ? "src/entrypoints/options-page/" : "";
+  const prefix = isDev ? "src/entrypoints/contexts/options-page/" : "";
 
   return chrome.runtime.getURL(`${prefix}options.html`);
 }
@@ -236,7 +232,7 @@ export function waitUntil(params: {
       if (isRunning) return;
 
       isRunning = true;
-      const [result, error] = await errorWrapper(condition)();
+      const [result, error] = await tryCatch(async () => condition());
       isRunning = false;
 
       if (!error && result === true) {

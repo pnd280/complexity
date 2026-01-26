@@ -171,7 +171,7 @@ export function FloatingPanelStageTrigger({
     >
       {children != null
         ? children
-        : (stageIcons[stage as keyof typeof stageIcons] ?? null)}
+        : stageIcons[stage as keyof typeof stageIcons]}
     </ArkFloatingPanel.StageTrigger>
   );
 }

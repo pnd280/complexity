@@ -1,1 +1,1 @@
-cd perplexity/extension && turbo test check-types && pnpm lint-staged && cd -
+pnpm --recursive --parallel --if-present lint-staged

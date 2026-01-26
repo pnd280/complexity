@@ -1,9 +1,9 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { pplxCookiesStore } from "@/plugins/__async-deps__/global-stores/pplx-cookies-store";
-import { spaRouteChangeCompleteSubscribe } from "@/plugins/__core__/_main-world/spa-router/utils";
+import { spaRouteChangeCompleteSubscribe } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { pplxCookiesStore } from "@/entrypoints/contexts/content-scripts/stores/pplx-cookies-store";
 import { whereAmI } from "@/utils/misc/utils";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:incognitoByDefault": void;
   }

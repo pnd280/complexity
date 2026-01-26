@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-import rootPackageJson from "#/package.json";
-import type { VersionedRemoteResourceReturnType } from "#/src/services/externals/cplx-api/versioned-remote-resources/types";
+import rootPackageJson from "#ext/package.json";
+import type { VersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/types";
 import chalk from "chalk";
 
 import { logger } from "@/r2/config";
@@ -94,7 +94,7 @@ async function processSingleResourceFile(params: {
 }
 
 async function registerVersionedResource(params: {
-  resource: VersionedRemoteResourceReturnType<any>;
+  resource: VersionedRemoteResource<unknown>;
   listing: ResourceListing;
 }): Promise<ResourceListing | null> {
   const { resource, listing } = params;

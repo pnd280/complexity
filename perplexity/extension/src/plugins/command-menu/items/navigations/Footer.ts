@@ -1,7 +1,7 @@
 import {
   openInNewTab,
   softNavigate,
-} from "@/plugins/__core__/_main-world/spa-router/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
 import {
   commandMenuStore,
   useCommandMenuStore,
@@ -17,9 +17,11 @@ export default function NavigationItemsFooter({
 }: {
   items: ReturnType<typeof getGroupedItems<unknown, CommandItemProps>>;
 }) {
-  const selectingValue = useCommandMenuStore((store) => store.selectingValue);
+  const selectingValue = useCommandMenuStore(
+    (store) => store.states.selectingValue,
+  );
 
-  const itemsMap = useMemo(() => createItemsMap(items), [items]);
+  const itemsMap = createItemsMap(items);
 
   useEffect(() => {
     if (!selectingValue) return;
@@ -30,13 +32,13 @@ export default function NavigationItemsFooter({
 
     const url = `https://${window.location.hostname}/${selectedItem.value !== "home" ? selectedItem.value : ""}`;
 
-    commandMenuStore.getState().setFooterItems([
+    commandMenuStore.getState().footer.setItems([
       {
         title: t("plugin-command-menu.navigation.openInNewTab"),
         keybinding: [Key.Alt, Key.Enter],
         onSelect: () => {
           void openInNewTab(url);
-          commandMenuStore.getState().setOpen(false);
+          commandMenuStore.getState().states.setOpen(false);
         },
       },
       {
@@ -46,13 +48,13 @@ export default function NavigationItemsFooter({
         keybinding: [Key.Enter],
         onSelect: () => {
           void softNavigate(url);
-          commandMenuStore.getState().setOpen(false);
+          commandMenuStore.getState().states.setOpen(false);
         },
       },
     ]);
 
     return () => {
-      commandMenuStore.getState().setFooterItems([]);
+      commandMenuStore.getState().footer.setItems([]);
     };
   }, [selectingValue, itemsMap]);
 

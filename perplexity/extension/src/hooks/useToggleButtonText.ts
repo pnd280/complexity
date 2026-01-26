@@ -7,7 +7,7 @@ type UseToggleButtonTextProps = {
 export default function useToggleButtonText({
   defaultText,
 }: UseToggleButtonTextProps) {
-  const _default = useMemo<ReactNode>(() => defaultText, [defaultText]);
+  const _default = defaultText;
 
   const [text, setText] = useState(_default);
   const timeoutRef = useRef<number | null>(null);

@@ -1,0 +1,181 @@
+# Internationalization
+
+Custom implementation of internationalization (courtesy of [WebDevSimplified](https://www.youtube.com/watch?v=VbZVx13b2oY)).
+
+## Formatting Types
+
+The following format types can be used with the syntax `{variable:type}`:
+
+### Strings
+
+Translation string:
+
+```ts
+// In locale file
+"greeting.simple": "Hello, {name}!"
+```
+
+Usage:
+
+```ts
+t("greeting.simple", { name: "World" });
+// Result: "Hello, World!"
+```
+
+### Pluralization
+
+Translation string:
+
+```ts
+// In locale file
+"notifications.count": dt("You have {count:plural} in your inbox.", {
+  plural: { count: { zero: "no notifications", one: "1 notification", other: "{?} notifications" } },
+})
+```
+
+Usage:
+
+```ts
+t("notifications.count", { count: 5 });
+// Result: "You have 5 notifications in your inbox."
+```
+
+### Enumerations
+
+Translation string:
+
+```ts
+// In locale file
+"profile.status": dt("Your account status is {status:enum}.", {
+  enum: { status: { active: "active", suspended: "temporarily suspended", banned: "permanently banned" } },
+})
+```
+
+Usage:
+
+```ts
+t("profile.status", { status: "suspended" });
+// Result: "Your account status is temporarily suspended."
+```
+
+### Lists
+
+Translation string:
+
+```ts
+// In locale file
+"team.members": "Team members: {members:list}"
+```
+
+Usage:
+
+```ts
+t("team.members", { members: ["Alex", "Taylor", "Jordan"] });
+// Result: "Team members: Alex, Taylor, Jordan"
+```
+
+### Dates
+
+Translation string:
+
+```ts
+// In locale file
+"event.scheduled": "The event is scheduled for {eventDate:date}"
+```
+
+Usage:
+
+```ts
+t("event.scheduled", { eventDate: new Date("2023-12-25") });
+// Result: "The event is scheduled for 12/25/2023"
+```
+
+### Numbers
+
+Translation string:
+
+```ts
+// In locale file
+"product.price": "Product price: ${price:number}"
+```
+
+Usage:
+
+```ts
+t("product.price", { price: 1299.99 });
+// Result: "Product price: $1,299.99"
+```
+
+## Component-Based Translation
+
+### Using `Trans` Component
+
+For translations that include HTML elements:
+
+#### Basic Component Example
+
+Translation string:
+
+```ts
+// In locale file
+"app.welcome": "Welcome to <0>our application</0>, {username}!"
+```
+
+Usage:
+
+```tsx
+<Trans
+  tKey="app.welcome"
+  values={{ username: "Maria" }}
+  components={[<span className="highlight" />]}
+/>
+```
+
+#### Multiple Components Example
+
+Translation string:
+
+```ts
+// In locale file
+"app.instructions": "Click <0>here</0> to start or <1>here</1> to learn more."
+```
+
+Usage:
+
+```tsx
+<Trans
+  tKey="app.instructions"
+  components={[<button onClick={() => startApp()} />, <a href="/tutorial" />]}
+/>
+```
+
+#### Nested Components Example
+
+Translation string:
+
+```ts
+// In locale file
+"app.footer": "Created with <0>modern <1>web</1> technologies</0>"
+```
+
+Usage:
+
+```tsx
+<Trans tKey="app.footer" components={[<em />, <strong />]} />
+```
+
+### Escaping Braces
+
+Translation string:
+
+```ts
+// In locale file
+"syntax.example": "Use \\{curly braces\\} for variables like \\{{exampleVar}\\}"
+```
+
+Usage:
+
+```tsx
+t("syntax.example", { exampleVar: "this" });
+// Result: "Use {curly braces} for variables like {this}"
+```

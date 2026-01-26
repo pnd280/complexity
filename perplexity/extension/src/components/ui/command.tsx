@@ -2,12 +2,9 @@ import { Slot } from "@radix-ui/react-slot";
 import { Command as CommandPrimitive } from "cmdk";
 import type { ComponentProps } from "react";
 import * as React from "react";
-import { useEffect } from "react";
 
 import type { DialogProps } from "@/components/ui/dialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { PPLX_SCROLLBAR_CLASSES } from "@/utils/dom-utils/pplx-scrollbar-classes";
-import { isInContentScript } from "@/utils/misc/utils";
 
 import TablerSearch from "~icons/tabler/search";
 
@@ -55,7 +52,7 @@ export function CommandDialog({
           }}
           {...commandProps}
           className={cn(
-            "x:[&_[cmdk-group-heading]]:px-2 x:[&_[cmdk-group-heading]]:font-medium x:[&_[cmdk-group-heading]]:text-muted-foreground x:[&_[cmdk-group]]:px-2 x:[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 x:[&_[cmdk-input-wrapper]_svg]:h-4 x:[&_[cmdk-input-wrapper]_svg]:w-4 x:[&_[cmdk-input]]:h-12 x:[&_[cmdk-item]_svg]:h-4 x:[&_[cmdk-item]_svg]:w-4",
+            "x:[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 x:[&_[cmdk-input-wrapper]_svg]:h-4 x:[&_[cmdk-input-wrapper]_svg]:w-4 x:[&_[cmdk-item]_svg]:h-4 x:[&_[cmdk-item]_svg]:w-4 x:**:[[cmdk-group-heading]]:px-2 x:**:[[cmdk-group-heading]]:font-medium x:**:[[cmdk-group-heading]]:text-muted-foreground x:**:[[cmdk-group]]:px-2 x:**:[[cmdk-input]]:h-12",
             commandProps?.className,
           )}
         >
@@ -81,6 +78,7 @@ export function CommandInput({
         "x:flex x:items-center x:border-b x:border-border/50 x:px-3",
         className,
       )}
+      // eslint-disable-next-line react/no-unknown-property
       cmdk-input-wrapper=""
     >
       <CommandPrimitive.Input
@@ -105,8 +103,8 @@ export function CommandList({
   return (
     <CommandPrimitive.List
       className={cn(
-        isInContentScript() ? PPLX_SCROLLBAR_CLASSES : "custom-scrollbar",
-        "x:max-h-[300px] x:overflow-x-hidden x:overflow-y-auto",
+        "custom-scrollbar",
+        "x:scroll-pt-2 x:scroll-pb-2 x:overflow-x-hidden x:overflow-y-auto",
         className,
       )}
       {...props}
@@ -137,7 +135,7 @@ export function CommandGroup({
   return (
     <CommandPrimitive.Group
       className={cn(
-        "x:overflow-hidden x:p-1 x:text-foreground x:[&_[cmdk-group-heading]]:px-2 x:[&_[cmdk-group-heading]]:py-1.5 x:[&_[cmdk-group-heading]]:text-xs x:[&_[cmdk-group-heading]]:font-medium x:[&_[cmdk-group-heading]]:text-muted-foreground x:[&:has([cmdk-group-items]:empty)]:hidden",
+        "x:overflow-hidden x:p-1 x:text-foreground x:[&:has([cmdk-group-items]:empty)]:hidden x:**:[[cmdk-group-heading]]:px-2 x:**:[[cmdk-group-heading]]:py-1.5 x:**:[[cmdk-group-heading]]:text-xs x:**:[[cmdk-group-heading]]:font-medium x:**:[[cmdk-group-heading]]:text-muted-foreground",
         className,
       )}
       heading={
@@ -177,7 +175,7 @@ export function CommandItem({
   return (
     <CommandPrimitive.Item
       className={cn(
-        "x:group x:relative x:flex x:cursor-pointer x:items-center x:rounded-lg x:px-2 x:py-2 x:text-sm x:text-foreground x:outline-none x:select-none x:aria-selected:bg-primary-foreground x:aria-selected:text-foreground x:data-[disabled=true]:pointer-events-none x:data-[disabled=true]:opacity-50",
+        "x:group x:relative x:flex x:cursor-pointer x:items-center x:rounded-lg x:px-2 x:py-2 x:text-sm x:text-foreground x:outline-none x:select-none x:aria-selected:bg-foreground-subtle x:aria-selected:text-foreground x:data-[disabled=true]:pointer-events-none x:data-[disabled=true]:opacity-50",
         className,
       )}
       {...props}
@@ -232,7 +230,7 @@ export function CommandItemRightAttributes({
     <Comp
       data-right-attributes
       className={cn(
-        "x:ml-auto x:group-has-[[data-alt-right-attributes]]:group-aria-selected:hidden",
+        "x:ml-auto x:group-has-data-alt-right-attributes:group-aria-selected:hidden",
         className,
       )}
       {...props}
@@ -297,36 +295,4 @@ export function CommandItemSkeleton({
       ))}
     </div>
   );
-}
-
-/**
- * Custom hook to handle manual scrolling for CommandList when using memoized CommandItems.
- * Use this when the default scroll behavior glitches.
- */
-export function useCommandListManualScroll({
-  enabled,
-  commandListRef,
-  willUpdateValue,
-}: {
-  enabled: boolean;
-  commandListRef: React.RefObject<HTMLDivElement | null>;
-  willUpdateValue: string;
-}) {
-  useEffect(() => {
-    if (!enabled || !commandListRef.current) return;
-
-    requestAnimationFrame(() => {
-      const selectedItem = commandListRef.current?.querySelector(
-        '[cmdk-item][aria-selected="true"]',
-      );
-
-      if (selectedItem && selectedItem instanceof HTMLElement) {
-        selectedItem.scrollIntoView({
-          block: "nearest",
-          inline: "nearest",
-          behavior: "instant",
-        });
-      }
-    });
-  }, [commandListRef, enabled, willUpdateValue]);
 }

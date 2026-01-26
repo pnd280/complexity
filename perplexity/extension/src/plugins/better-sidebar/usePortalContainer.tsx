@@ -1,26 +1,24 @@
-import { useSidebarDomObserverStore } from "@/plugins/__core__/dom-observers/sidebar/store";
+import { useSidebarDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/sidebar/store";
 
 export default function usePortalContainer() {
+  "use no memo";
+
   const nativeSidebarWrapper = useSidebarDomObserverStore(
     (store) => store.wrapper,
     deepEqual,
   );
 
-  return useMemo(() => {
-    if (!nativeSidebarWrapper) return null;
+  if (!nativeSidebarWrapper) return;
 
-    const $existingContainer = $("#better-sidebar-container");
+  const $existingContainer = $("#better-sidebar-container");
 
-    if ($existingContainer.length) {
-      return $existingContainer[0];
-    }
+  if ($existingContainer.length) return $existingContainer[0];
 
-    const $container = $("<div>");
+  const $container = $("<div>");
 
-    $container.attr("id", "better-sidebar-container");
+  $container.attr("id", "better-sidebar-container");
 
-    $(nativeSidebarWrapper).before($container);
+  $(nativeSidebarWrapper).before($container);
 
-    return $container[0];
-  }, [nativeSidebarWrapper]);
+  return $container[0];
 }

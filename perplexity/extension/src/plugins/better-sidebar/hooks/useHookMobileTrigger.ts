@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-
-import { useSidebarDomObserverStore } from "@/plugins/__core__/dom-observers/sidebar/store";
+import { useSidebarDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/sidebar/store";
 import { betterSidebarStore } from "@/plugins/better-sidebar/store";
 
 const attrId = "better-sidebar-mobile-trigger-hook";
 
 export default function useHookMobileTrigger() {
   const mobileTrigger = useSidebarDomObserverStore(
-    (state) => state.mobileTrigger,
+    (store) => store.mobileTrigger,
     deepEqual,
   );
 

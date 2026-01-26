@@ -1,15 +1,15 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
+import { InstantCssService } from "@/entrypoints/services/features/instant-css";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import {
   betterSidebarNormalizeCollapsedCssResourceConfig,
   betterSidebarNormalizeExpandedCssResourceConfig,
 } from "@/plugins/better-sidebar/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import { InstantCssService } from "@/services/features/instant-css";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { sendMessage } from "@/types/chrome-runtime-message";
-import { getCookie } from "@/utils/dom-utils/generics";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:betterSidebar:instantCss": void;
   }
@@ -29,7 +29,7 @@ export default function () {
           InstantCssService.hasPermissionsSync({
             grantedPermissions: pluginGuardsStore.grantedPermissions,
           }) &&
-          ExtensionSettingsService.cachedSync.plugins.betterSidebar
+          PluginsSettingSnapshotsService.getPluginSnapshot("betterSidebar")
             .shouldPreventLayoutShift,
       });
     },
@@ -44,15 +44,21 @@ export async function applyLayoutShiftPreventionInstantCss({
   const [normalizeCollapsedCss, normalizeExpandedCss] = await Promise.all([
     getVersionedRemoteResource(
       betterSidebarNormalizeCollapsedCssResourceConfig,
+      persistentQueryClient,
     ),
-    getVersionedRemoteResource(betterSidebarNormalizeExpandedCssResourceConfig),
+    getVersionedRemoteResource(
+      betterSidebarNormalizeExpandedCssResourceConfig,
+      persistentQueryClient,
+    ),
   ]);
 
   const tabId = await sendMessage("getTabId");
 
   if (!tabId) return;
 
-  const state = getCookie("isSidebarPinned");
+  const state = localStorage.getItem(
+    "pplx.local-user-settings.isSidebarPinned",
+  );
 
   const action = enabled
     ? InstantCssService.registerInstantCss

@@ -1,36 +1,43 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginDependencies,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/better-search-params/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    betterSearchParams: z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
+const meta = definePluginMeta({
+  id: "betterSearchParams",
+  name: "Better Search Params",
+  description:
+    "Create and use custom omnibox search params with different models, focus modes, Spaces and incognito mode, etc.",
 });
 
-export default definePlugin({
-  meta: {
-    id: "betterSearchParams",
-    title: "Better Omnibox Search Params",
-    description:
-      'Default omnibox searches always use "Sonar/Auto" model.\nUse this plugin to search with different models, focus modes, and incognito mode, etc.',
-    dashboardMeta: {
-      tags: ["new"],
-      categories: ["misc"],
-      uiRouteSegment: "better-search-params",
-    },
-    dependencies: {
-      corePlugins: ["spaRouter", "networkIntercept"],
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: [],
+  categories: ["misc", "featured"],
+  uiRouteSegment: "better-search-params",
 });
+
+const dependencies = definePluginDependencies({
+  plugins: ["spaRouter", "networkIntercept"],
+});
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  dependencies,
+  settingsSchemas,
+  settingsStorage,
+} satisfies PluginManifestExports;
+
+export default manifest;

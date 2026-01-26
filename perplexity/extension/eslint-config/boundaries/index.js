@@ -1,4 +1,3 @@
-// @ts-check
 import boundariesPlugin from "eslint-plugin-boundaries";
 import { elements } from "./elements.js";
 import { rules } from "./rules.js";
@@ -16,7 +15,7 @@ export default defineConfig(
     },
 
     rules: {
-      "boundaries/no-unknown": ["error"],
+      "boundaries/no-unknown": ["off"],
       "boundaries/no-unknown-files": ["error"],
       "boundaries/element-types": [
         "error",

@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useHotkeys } from "react-hotkeys-hook";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
 import { keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
 const SIDEBAR_WIDTH = "264px";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
@@ -57,56 +57,51 @@ export function SidebarProvider({
   children,
   ...props
 }: SidebarProviderProps) {
-  const isMobile = useIsMobileStore((state) => state.isMobile);
+  const isMobile = useIsMobileStore((store) => store.isMobile);
 
   const [_open, _setOpen] = useState(defaultOpen);
   const open = openProp ?? _open;
-  const setOpen = useCallback(
-    (value: boolean | ((value: boolean) => boolean)) => {
-      const openState = typeof value === "function" ? value(open) : value;
-      if (setOpenProp) {
-        setOpenProp(openState);
-      } else {
-        _setOpen(openState);
-      }
-    },
-    [setOpenProp, open],
-  );
+  const setOpen = (value: boolean | ((value: boolean) => boolean)) => {
+    const openState = typeof value === "function" ? value(open) : value;
+    if (setOpenProp) {
+      setOpenProp(openState);
+    } else {
+      _setOpen(openState);
+    }
+  };
 
-  // Helper to toggle the sidebar.
-  const toggleSidebar = useCallback(() => {
+  const toggleSidebar = () => {
     setOpen((open) => !open);
-  }, [setOpen]);
+  };
 
-  useHotkeys(
-    keysToString([
+  const handleToggleSidebar = useEffectEvent((event: KeyboardEvent) => {
+    event.preventDefault();
+    window.dispatchEvent(new Event("resize"));
+    toggleSidebar();
+  });
+
+  useEffect(() => {
+    const keyCombo = keysToString([
       getPlatform() === "mac" ? Key.Meta : Key.Control,
       SIDEBAR_KEYBOARD_SHORTCUT,
-    ]),
-    () => {
-      window.dispatchEvent(new Event("resize"));
-      toggleSidebar();
-    },
-    {
-      enableOnFormTags: true,
-      preventDefault: true,
-    },
-  );
+    ]);
 
-  // We add a state so that we can do data-state="expanded" or "collapsed".
-  // This makes it easier to style the sidebar with Tailwind classes.
+    hotkeys(keyCombo, handleToggleSidebar);
+
+    return () => {
+      hotkeys.unbind(keyCombo, handleToggleSidebar);
+    };
+  }, []);
+
   const state = open ? "expanded" : "collapsed";
 
-  const contextValue = useMemo<SidebarContextProps>(
-    () => ({
-      state,
-      open,
-      setOpen,
-      isMobile,
-      toggleSidebar,
-    }),
-    [state, open, setOpen, isMobile, toggleSidebar],
-  );
+  const contextValue: SidebarContextProps = {
+    state,
+    open,
+    setOpen,
+    isMobile,
+    toggleSidebar,
+  };
 
   return (
     <SidebarContext value={contextValue}>
@@ -119,7 +114,7 @@ export function SidebarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          "x:group/sidebar-wrapper x:hidden x:min-h-svh x:w-full x:has-[[data-variant=inset]]:bg-secondary x:md:flex",
+          "x:group/sidebar-wrapper x:hidden x:min-h-svh x:w-full x:has-data-[variant=inset]:bg-secondary x:md:flex",
           className,
         )}
         {...props}
@@ -199,7 +194,7 @@ export function Sidebar({
           "x:group-data-[collapsible=offcanvas]:w-0",
           "x:group-data-[side=right]:rotate-180",
           variant === "floating" || variant === "inset"
-            ? "x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
+            ? "x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
             : "x:group-data-[collapsible=icon]:w-(--sidebar-width-icon)",
         )}
       />
@@ -211,7 +206,7 @@ export function Sidebar({
             : "x:right-0 x:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
           // Adjust the padding for floating and inset variants.
           variant === "floating" || variant === "inset"
-            ? "x:p-2 x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
+            ? "x:p-2 x:group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
             : "x:group-data-[collapsible=icon]:w-(--sidebar-width-icon) x:group-data-[side=left]:border-r x:group-data-[side=right]:border-l",
           className,
         )}
@@ -262,7 +257,7 @@ export function SidebarRail({
       title="Toggle Sidebar"
       className={cn(
         "sm:flex x:absolute x:inset-y-0 x:z-20 x:hidden x:w-4 x:-translate-x-1/2 x:transition-all x:ease-linear x:group-data-[side=left]:-right-4 x:group-data-[side=right]:left-0 x:after:absolute x:after:inset-y-0 x:after:left-1/2 x:after:w-[2px] x:hover:after:bg-muted",
-        "x:[[data-side=left]_&]:cursor-w-resize x:[[data-side=right]_&]:cursor-e-resize",
+        "x:in-data-[side=left]:cursor-w-resize x:in-data-[side=right]:cursor-e-resize",
         "x:[[data-side=left][data-state=collapsed]_&]:cursor-e-resize x:[[data-side=right][data-state=collapsed]_&]:cursor-w-resize",
         "x:group-data-[collapsible=offcanvas]:translate-x-0 x:group-data-[collapsible=offcanvas]:after:left-full x:group-data-[collapsible=offcanvas]:hover:bg-secondary",
         "x:[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
@@ -460,11 +455,11 @@ export function SidebarMenuItem({
 }
 
 const sidebarMenuButtonVariants = cva(
-  "x:peer/menu-button x:flex x:w-full x:items-center x:gap-2 x:overflow-hidden x:rounded-lg x:text-left x:text-sm x:font-medium x:text-foreground x:ring-primary x:transition-all x:outline-none x:group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 x:group-data-[collapsible=icon]:!size-8 x:group-data-[collapsible=icon]:!p-2 x:hover:bg-secondary x:focus-visible:ring-2 x:active:bg-secondary x:active:text-foreground x:disabled:pointer-events-none x:disabled:opacity-50 x:aria-disabled:pointer-events-none x:aria-disabled:opacity-50 x:data-[state=open]:hover:bg-secondary x:data-[state=open]:hover:text-foreground x:[&>span:last-child]:truncate x:[&>svg]:size-4 x:[&>svg]:shrink-0",
+  "x:peer/menu-button x:flex x:w-full x:items-center x:gap-2 x:overflow-hidden x:rounded-lg x:text-left x:text-sm x:font-medium x:text-foreground x:ring-primary x:transition-all x:outline-none x:group-has-data-[sidebar=menu-action]/menu-item:pr-8 x:group-data-[collapsible=icon]:size-8! x:group-data-[collapsible=icon]:p-2! x:hover:bg-secondary x:focus-visible:ring-2 x:active:bg-secondary x:active:text-foreground x:disabled:pointer-events-none x:disabled:opacity-50 x:aria-disabled:pointer-events-none x:aria-disabled:opacity-50 x:data-[state=open]:hover:bg-secondary x:data-[state=open]:hover:text-foreground x:[&>span:last-child]:truncate x:[&>svg]:size-4 x:[&>svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "x:hover:bg-primary-foreground",
+        default: "x:hover:bg-foreground-subtle",
       },
       size: {
         default: "x:p-2 x:text-sm",
@@ -518,7 +513,7 @@ export function SidebarMenuAction({
     <Comp
       data-sidebar="menu-action"
       className={cn(
-        "x:absolute x:top-1.5 x:right-2 x:flex x:aspect-square x:w-5 x:items-center x:justify-center x:rounded-lg x:p-0 x:text-muted-foreground x:ring-primary x:transition-all x:outline-none x:peer-hover/menu-button:text-foreground x:hover:bg-primary-foreground x:hover:text-foreground x:focus-visible:ring-2 x:[&>svg]:size-4 x:[&>svg]:shrink-0",
+        "x:absolute x:top-1.5 x:right-2 x:flex x:aspect-square x:w-5 x:items-center x:justify-center x:rounded-lg x:p-0 x:text-muted-foreground x:ring-primary x:transition-all x:outline-none x:peer-hover/menu-button:text-foreground x:hover:bg-foreground-subtle x:hover:text-foreground x:focus-visible:ring-2 x:[&>svg]:size-4 x:[&>svg]:shrink-0",
         // Increases the hit area of the button on mobile.
         "x:after:absolute x:after:-inset-2 x:after:md:hidden",
         "x:peer-data-[size=default]/menu-button:top-2",
@@ -563,9 +558,8 @@ export function SidebarMenuSkeleton({
   showIcon?: boolean;
 }) {
   // Random width between 50 to 90%.
-  const width = useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`;
-  }, []);
+  // eslint-disable-next-line react-hooks/purity
+  const width = `${Math.floor(Math.random() * 40) + 50}%`;
 
   return (
     <div

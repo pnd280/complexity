@@ -111,7 +111,7 @@ export function SliderMarker({ className, ...props }: ArkSlider.MarkerProps) {
   return (
     <ArkSlider.Marker
       className={cn(
-        "x:text-xs x:text-muted-foreground x:before:absolute x:before:top-[-8px] x:before:h-2 x:before:w-[2px] x:before:bg-muted-foreground/50",
+        "x:text-xs x:text-muted-foreground x:before:absolute x:before:-top-2 x:before:h-2 x:before:w-0.5 x:before:bg-muted-foreground/50",
         className,
       )}
       {...props}

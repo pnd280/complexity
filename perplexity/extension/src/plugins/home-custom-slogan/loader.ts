@@ -1,9 +1,10 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-import { homeDomObserverStore } from "@/plugins/__core__/dom-observers/home/store";
-import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
+import { homeDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/home/store";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import { homeCustomSloganCssResourceConfig } from "@/plugins/home-custom-slogan/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 import { insertCss } from "@/utils/dom-utils/generics";
 import { whereAmI } from "@/utils/misc/utils";
 
@@ -17,14 +18,19 @@ async function setupCustomSlogan({
   slogan: HTMLElement | null;
 }) {
   const sloganText =
-    ExtensionSettingsService.cachedSync.plugins["home:customSlogan"].slogan;
+    PluginsSettingSnapshotsService.getPluginSnapshot(
+      "home:customSlogan",
+    ).slogan;
 
   if (sloganText.length <= 0) return;
 
   if (location !== "home" || slogan == null) return removeCss?.();
 
   removeCss = insertCss({
-    css: await getVersionedRemoteResource(homeCustomSloganCssResourceConfig),
+    css: await getVersionedRemoteResource(
+      homeCustomSloganCssResourceConfig,
+      persistentQueryClient,
+    ),
     id: "custom-slogan",
   });
 
@@ -48,7 +54,7 @@ async function setupCustomSlogan({
   $slogan.append($sloganContent);
 }
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:home:customSlogan": void;
   }

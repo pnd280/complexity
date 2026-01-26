@@ -1,19 +1,14 @@
-import {
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
-import { SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select";
-import { LanguageModelSelectorContext } from "@/plugins/language-model-selector/context";
+import type { ReactNode } from "react";
+
+import { PplxLanguageModelsService } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models";
+import type { LanguageModel } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
 import { useModelLimits } from "@/plugins/language-model-selector/hooks/useModelLimits";
-import { PplxLanguageModelsService } from "@/services/externals/cplx-api/remote-resources/pplx-language-models";
-import { isSearchLanguageModelCode } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
-import type { LanguageModel } from "@/services/externals/cplx-api/remote-resources/pplx-language-models/types";
+import { useSelectorUi } from "@/plugins/language-model-selector/hooks/useSelectorUi";
 
 import TablerCpu from "~icons/tabler/cpu";
 
 type MobileLanguageModelGroupProps = {
-  title: React.ReactNode;
+  title: ReactNode;
   models: LanguageModel[];
 };
 
@@ -21,16 +16,11 @@ export default function MobileLanguageModelGroup({
   title,
   models,
 }: MobileLanguageModelGroupProps) {
-  const context = use(LanguageModelSelectorContext);
-
-  if (!context) throw new Error("LanguageModelSelectorContext not found");
-
-  const { component } = context;
-
-  const GroupComp = component === "dropdown" ? DropdownMenuGroup : SelectGroup;
-  const ItemComp = component === "dropdown" ? DropdownMenuItem : SelectItem;
-  const LabelComp = component === "dropdown" ? DropdownMenuLabel : SelectLabel;
-
+  const {
+    Group: GroupComp,
+    Label: LabelComp,
+    Item: ItemComp,
+  } = useSelectorUi();
   const modelsLimits = useModelLimits();
 
   if (models.length === 0) return null;
@@ -69,10 +59,8 @@ export default function MobileLanguageModelGroup({
             value={model.code}
             className="x:gap-2 x:p-4 x:text-base"
             onClick={() => {
-              if (!isSearchLanguageModelCode(model.code)) return;
-
               localStorage.setItem(
-                "cplx.last-selected-language-model",
+                "cplx:lastSelectedLanguageModel",
                 model.code,
               );
             }}

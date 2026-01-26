@@ -1,4 +1,3 @@
-// @ts-check
 import eslintConfigPrettier from "eslint-config-prettier";
 
 import js from "@eslint/js";
@@ -8,7 +7,7 @@ import unicornPlugin from "eslint-plugin-unicorn";
 
 export default defineConfig([
   js.configs.recommended,
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
   eslintConfigPrettier,
   {
     linterOptions: {

@@ -1,10 +1,10 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
 import {
   queryBoxesDomObserverStore,
   type QueryBoxesDomObserverStoreType,
-} from "@/plugins/__core__/dom-observers/query-boxes/store";
-import { DomSelectorsService } from "@/plugins/__core__/dom-selectors/service-init.loader";
-import { isLexical } from "@/plugins/__ui-groups__/elements/query-box/utils";
+} from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/query-boxes/store";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
+import { isLexical } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
 
 const OBSERVER_ID = "submit-on-ctrl-enter";
 
@@ -38,6 +38,10 @@ function submitOnCtrlEnter(
             if (isModifierEnterPressed(e) || isTypeaheadMenuPresent())
               return true;
 
+            if (e.shiftKey) {
+              return true;
+            }
+
             e.stopPropagation();
             return false;
           }
@@ -55,6 +59,10 @@ function submitOnCtrlEnter(
           )
             return;
 
+          if ((e as unknown as KeyboardEvent).shiftKey) {
+            return;
+          }
+
           e.stopPropagation();
         }
       });
@@ -62,7 +70,7 @@ function submitOnCtrlEnter(
   });
 }
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:submitOnCtrlEnter": void;
   }

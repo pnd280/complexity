@@ -1,16 +1,15 @@
-// @ts-check
-
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig({
-  plugins: {
-    react: reactPlugin,
-    "react-hooks": reactHooksPlugin,
-    "react-refresh": reactRefreshPlugin,
-  },
+  extends: [
+    reactPlugin.configs.flat.recommended,
+    reactPlugin.configs.flat["jsx-runtime"],
+    reactHooksPlugin.configs.flat["recommended-latest"],
+    reactRefreshPlugin.configs.recommended,
+  ],
   settings: {
     react: { version: "detect" },
   },

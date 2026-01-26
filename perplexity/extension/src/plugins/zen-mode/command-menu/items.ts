@@ -1,6 +1,6 @@
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import type { CommandItemProps } from "@/plugins/command-menu/index.public";
 import { toggleZenMode } from "@/plugins/zen-mode/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
 
 import LuGrid3X3 from "~icons/lucide/grid-3x3";
 import LuLayoutGrid from "~icons/lucide/layout-grid";
@@ -14,7 +14,8 @@ export const getRawItems = ({ isZenMode }: ItemsParams): CommandItemProps[] => [
     eager: true,
     group: "Zen Mode",
     icon: isZenMode ? LuGrid3X3 : LuLayoutGrid,
-    keybinding: ExtensionSettingsService.cachedSync.plugins["zenMode"].hotkey,
+    keybinding:
+      PluginsSettingSnapshotsService.getPluginSnapshot("zenMode").hotkey,
     keywords: ["actions", "zen", "mode"],
     onSelect: () => toggleZenMode(!isZenMode),
     priority: 0,

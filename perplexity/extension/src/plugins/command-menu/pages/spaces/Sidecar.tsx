@@ -8,7 +8,9 @@ import {
 export default function SpacesSearchItemsSidecar() {
   const { data: spaces } = usePplxSpaces();
 
-  const selectingValue = useCommandMenuStore((store) => store.selectingValue);
+  const selectingValue = useCommandMenuStore(
+    (store) => store.states.selectingValue,
+  );
 
   useEffect(() => {
     if (!selectingValue || !spaces) return;
@@ -17,10 +19,12 @@ export default function SpacesSearchItemsSidecar() {
 
     if (!space) return;
 
-    commandMenuStore.getState().setSidecarItems(<SpacePreview space={space} />);
+    commandMenuStore
+      .getState()
+      .sidecar.setItems(<SpacePreview space={space} />);
 
     return () => {
-      commandMenuStore.getState().setSidecarItems(null);
+      commandMenuStore.getState().sidecar.setItems(null);
     };
   }, [selectingValue, spaces]);
 

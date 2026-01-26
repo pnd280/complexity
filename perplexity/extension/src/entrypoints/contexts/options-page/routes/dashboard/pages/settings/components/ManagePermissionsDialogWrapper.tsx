@@ -1,0 +1,96 @@
+import { useQueryClient } from "@tanstack/react-query";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
+import { extensionPermissionsQueries } from "@/entrypoints/services/extension-api-wrappers/permissions/query-keys";
+import { useExtensionPermissions } from "@/entrypoints/services/extension-api-wrappers/permissions/useExtensionPermissions";
+import { baseManifest } from "@/manifest.base";
+
+const OPTIONAL_PERMISSIONS =
+  baseManifest.optional_permissions satisfies chrome.runtime.ManifestPermission[];
+
+export default function ManagePermissionsDialogWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const queryClient = useQueryClient();
+
+  const { data: grantedPermissions, handleRevokePermission } =
+    useExtensionPermissions();
+
+  if (grantedPermissions == null) {
+    return null;
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Manage Permissions</DialogTitle>
+          <DialogDescription>
+            Grant or revoke extension permissions. Please note that some
+            features may be disabled without the necessary permissions.
+          </DialogDescription>
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+          {OPTIONAL_PERMISSIONS.length > 0 ? (
+            OPTIONAL_PERMISSIONS.map((permission) => {
+              return (
+                <div
+                  key={permission}
+                  className="x:mt-4! x:flex x:flex-col x:gap-2"
+                >
+                  <Switch
+                    textLabel={
+                      <div className="x:flex x:flex-col">
+                        <div className="x:text-lg x:font-medium x:text-primary">
+                          {permission}
+                        </div>
+                      </div>
+                    }
+                    checked={grantedPermissions.permissions?.includes(
+                      permission,
+                    )}
+                    onCheckedChange={async () => {
+                      if (
+                        grantedPermissions.permissions?.includes(permission)
+                      ) {
+                        void handleRevokePermission({
+                          permissions: [permission],
+                        });
+                      } else {
+                        try {
+                          await chrome.permissions.request({
+                            permissions: [permission],
+                          });
+                          void queryClient.invalidateQueries({
+                            queryKey:
+                              extensionPermissionsQueries.permissions.all(),
+                          });
+                        } catch (error) {
+                          alert(`Error granting permissions: ${error}`);
+                        }
+                      }
+                    }}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <div className="x:mx-auto x:block x:py-16 x:text-muted-foreground x:italic">
+              You&apos;re all set!
+            </div>
+          )}
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+}

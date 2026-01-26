@@ -1,9 +1,10 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
+import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
 import { betterSidebarNormalizeCssResourceConfig } from "@/plugins/better-sidebar/index.remote-resources";
-import { getVersionedRemoteResource } from "@/services/externals/cplx-api/versioned-remote-resources/utils";
 import { insertCss } from "@/utils/dom-utils/generics";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "betterSidebar:hideNativeSidebar": void;
   }
@@ -11,6 +12,7 @@ declare module "@/plugins/__async-deps__/async-loaders" {
 
 const normalizeCss = await getVersionedRemoteResource(
   betterSidebarNormalizeCssResourceConfig,
+  persistentQueryClient,
 );
 
 export default function () {

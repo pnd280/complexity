@@ -2,22 +2,22 @@ import { useDebounce } from "@uidotdev/usehooks";
 
 import { CommandGroup } from "@/components/ui/command";
 import { CommandItemSkeleton } from "@/components/ui/command";
+import type { Space } from "@/entrypoints/services/externals/pplx-api/pplx-api.types";
 import usePplxInfiniteSpaceThreads from "@/plugins/command-menu/pages/space-threads/usePplxInfiniteSpaceThreads";
 import ThreadItem from "@/plugins/command-menu/pages/threads/ThreadItem";
 import ThreadListLoader from "@/plugins/command-menu/pages/threads/ThreadListLoader";
 import useLoadMoreItems from "@/plugins/command-menu/pages/threads/useLoadMoreItems";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
-import type { Space } from "@/services/externals/pplx-api/pplx-api.types";
 
 export default function SpaceThreadCommandItems({
   spaceSlug,
 }: {
   spaceSlug: Space["slug"];
 }) {
-  useCommandMenuStore((store) => store.open);
+  useCommandMenuStore((store) => store.states.open);
 
   const searchValue = useDebounce(
-    useCommandMenuStore((store) => store.searchValue),
+    useCommandMenuStore((store) => store.states.searchValue),
     300,
   );
 
@@ -57,7 +57,9 @@ export default function SpaceThreadCommandItems({
           {isFetchingNextPage && (
             <CommandItemSkeleton count={3} className="x:h-14" />
           )}
-          {hasNextPage && <div ref={triggerRef} className="x:h-30" />}
+          {hasNextPage && !isFetchingNextPage && (
+            <div ref={triggerRef} className="x:h-30" />
+          )}
         </>
       )}
 

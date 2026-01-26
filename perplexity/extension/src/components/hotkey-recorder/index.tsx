@@ -22,21 +22,22 @@ export function useHotkeyRecorder({
   const [showError, setShowError] = useState(false);
   const activeKeysRef = useRef<Set<string>>(new Set());
 
-  useEffect(() => {
-    setSavedKeys(defaultKeys);
-  }, [defaultKeys]);
-
   const displayKeys = isRecording
-    ? recordedKeys?.size
+    ? recordedKeys.size
       ? orderKeys(Array.from(recordedKeys))
       : []
     : orderKeys(savedKeys);
 
-  const resetKeys = useCallback(() => {
+  const resetKeys = () => {
     setRecordedKeys(new Set());
     activeKeysRef.current = new Set();
     setShowError(false);
-  }, []);
+  };
+
+  const stop = useEvent(() => {
+    setIsRecording(false);
+    activeKeysRef.current = new Set();
+  });
 
   const keydownHandler = useEvent((e: KeyboardEvent) => {
     e.preventDefault();
@@ -45,12 +46,29 @@ export function useHotkeyRecorder({
 
     const keyName = normalizeKeyName(e.key);
 
+    // Skip "Unidentified" keys (empty after normalization)
+    if (!keyName) {
+      return;
+    }
+
     const isWindows = getPlatform() === "windows";
     if (isWindows && keyName === "Meta") {
       return;
     }
 
     activeKeysRef.current.add(keyName);
+
+    // Check for multiple non-modifier keys immediately
+    const nonModifierKeys = Array.from(activeKeysRef.current)
+      .map((k) => k.toLowerCase())
+      .filter((k) => !MODIFIER_KEYS.has(k));
+
+    if (nonModifierKeys.length > 1) {
+      resetKeys();
+      stop();
+      return;
+    }
+
     setRecordedKeys(new Set(activeKeysRef.current));
   });
 
@@ -64,27 +82,10 @@ export function useHotkeyRecorder({
     }
   });
 
-  const stop = useCallback(() => {
-    setIsRecording(false);
-    window.removeEventListener("keydown", keydownHandler, {
-      capture: true,
-    });
-    window.removeEventListener("keyup", keyupHandler, {
-      capture: true,
-    });
-    activeKeysRef.current = new Set();
-  }, [keydownHandler, keyupHandler]);
-
-  const start = useCallback(() => {
+  const start = () => {
     setIsRecording(true);
     resetKeys();
-    window.addEventListener("keydown", keydownHandler, {
-      capture: true,
-    });
-    window.addEventListener("keyup", keyupHandler, {
-      capture: true,
-    });
-  }, [resetKeys, keydownHandler, keyupHandler]);
+  };
 
   const handleEscape = useEvent((e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -94,28 +95,29 @@ export function useHotkeyRecorder({
     }
   });
 
+  // Manage keydown/keyup event listeners for recording
   useEffect(() => {
-    if (isRecording) {
-      window.addEventListener("keydown", handleEscape);
-    } else {
-      window.removeEventListener("keydown", handleEscape);
-    }
+    if (!isRecording) return;
+
+    window.addEventListener("keydown", keydownHandler, { capture: true });
+    window.addEventListener("keyup", keyupHandler, { capture: true });
+
+    return () => {
+      window.removeEventListener("keydown", keydownHandler, { capture: true });
+      window.removeEventListener("keyup", keyupHandler, { capture: true });
+    };
+  }, [isRecording, keydownHandler, keyupHandler]);
+
+  // Manage Escape key listener
+  useEffect(() => {
+    if (!isRecording) return;
+
+    window.addEventListener("keydown", handleEscape);
 
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [isRecording, stop, handleEscape]);
-
-  useEffect(() => {
-    if (!recordedKeys?.size) return;
-    const nonModifierKeys = Array.from(recordedKeys)
-      .map((k) => k.toLowerCase())
-      .filter((k) => !MODIFIER_KEYS.has(k));
-    if (nonModifierKeys.length > 1) {
-      resetKeys();
-      stop();
-    }
-  }, [recordedKeys, resetKeys, stop]);
+  }, [isRecording, handleEscape]);
 
   const handleStartRecording = () => {
     if (!isRecording) {
@@ -127,7 +129,7 @@ export function useHotkeyRecorder({
   const handleStopRecording = () => {
     if (!isValidKeyCombination(recordedKeys)) {
       resetKeys();
-    } else if (onSave && recordedKeys != null) {
+    } else if (onSave) {
       const orderedKeys = orderKeys(Array.from(recordedKeys));
       setSavedKeys(orderedKeys);
       onSave(orderedKeys);
@@ -135,15 +137,7 @@ export function useHotkeyRecorder({
     stop();
   };
 
-  const isValidCombination =
-    recordedKeys != null ? isValidKeyCombination(recordedKeys) : true;
-
-  useEffect(() => {
-    return () => {
-      window.removeEventListener("keydown", keydownHandler);
-      window.removeEventListener("keyup", keyupHandler);
-    };
-  }, [keydownHandler, keyupHandler]);
+  const isValidCombination = isValidKeyCombination(recordedKeys);
 
   const HotkeyRecorderComponent = () => (
     <HotkeyRecorderUi
@@ -163,7 +157,7 @@ export function useHotkeyRecorder({
   return {
     HotkeyRecorderUi: HotkeyRecorderComponent,
     isRecording,
-    keys: recordedKeys != null ? orderKeys(Array.from(recordedKeys)) : [],
+    keys: orderKeys(Array.from(recordedKeys)),
     startRecording: handleStartRecording,
     stopRecording: handleStopRecording,
     isValidCombination,

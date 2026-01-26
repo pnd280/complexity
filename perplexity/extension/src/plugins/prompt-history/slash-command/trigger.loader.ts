@@ -1,16 +1,17 @@
-import { AsyncLoaderRegistry } from "@/plugins/__async-deps__/async-loaders";
-const pageId = "promptHistory" as const;
-import { slashCommandMenuStore } from "@/plugins/__core__/slash-command/store";
-import { getAnchor } from "@/plugins/__core__/slash-command/utils";
-import { ExtensionSettingsService } from "@/services/infra/extension-api-wrappers/extension-settings";
-import { keysToString } from "@/utils/misc/utils";
-import hotkeysJs from "@/utils/wrappers/hotkeys-js";
+import { slashCommandMenuStore } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store";
+import { getAnchor } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/utils";
+import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
+import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
+import { getTaskScheduler, keysToString } from "@/utils/misc/utils";
+import hotkeys from "@/utils/wrappers/hotkeys-js";
 
-declare module "@/plugins/__async-deps__/async-loaders" {
+declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   interface AsyncLoadersRegistry {
     "plugin:queryBox:promptHistory:shortcut-init": void;
   }
 }
+
+const pageId = "promptHistory" as const;
 
 export default function () {
   AsyncLoaderRegistry.register({
@@ -20,10 +21,12 @@ export default function () {
       if (!pluginsEnableStates["promptHistory"]) return;
 
       const shortcut =
-        ExtensionSettingsService.cachedSync.plugins["promptHistory"].shortcut;
+        PluginsSettingSnapshotsService.getPluginSnapshot(
+          "promptHistory",
+        ).shortcut;
 
       if (shortcut.type === "keybinding") {
-        hotkeysJs(keysToString(shortcut.value), () => {
+        hotkeys(keysToString(shortcut.value), () => {
           const target = document.activeElement;
 
           if (!target || !(target instanceof HTMLElement)) return;
@@ -32,14 +35,14 @@ export default function () {
 
           if (!anchor) return;
 
-          requestAnimationFrame(() => {
+          getTaskScheduler()(() => {
             const selection = anchor.contentActions?.getSelection();
 
             if (!selection) return;
 
             const store = slashCommandMenuStore.getState();
 
-            store.setBufferTextCaretPosition(selection.start);
+            store.anchor.setBufferTextCaretPosition(selection.start);
 
             store.anchor.actions.setElement(anchor.element);
             store.anchor.actions.setInputField(target);
@@ -47,12 +50,13 @@ export default function () {
               anchor.positioningOptions,
             );
             store.anchor.actions.setContentActions(anchor.contentActions);
-            store.pushPage({
+            store.pagesStack.pushPage({
               pageId,
               args: undefined,
             });
+            store.anchor.actions.setPortalContainer(anchor.portalContainer);
 
-            store.setOpen(true);
+            store.states.setOpen(true);
           });
         });
       } else {

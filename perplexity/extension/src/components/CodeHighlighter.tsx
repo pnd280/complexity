@@ -13,7 +13,7 @@ const INTERPRETED_LANGUAGES: Record<string, string> = {
   toml: "ini",
 };
 
-const CodeHighlighter = memo(function CodeHighlighter({
+export default function CodeHighlighter({
   children,
   language,
   codeRef,
@@ -47,6 +47,4 @@ const CodeHighlighter = memo(function CodeHighlighter({
       {children}
     </SyntaxHighlighter>
   );
-});
-
-export default CodeHighlighter;
+}

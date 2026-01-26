@@ -18,14 +18,14 @@
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
-    "@crxjs/vite-plugin": "^2.2.0",
-    "@types/chrome": "0.1.12",
+    "@crxjs/vite-plugin": "^2.3.0",
+    "@types/chrome": "catalog:types",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
-    "globals": "16.4.0",
+    "globals": "17.0.0",
     "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
-    "vite": "^7.1.9"
+    "vite": "^7.3.1"
   }
 }

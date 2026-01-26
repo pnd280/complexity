@@ -6,6 +6,7 @@
   },
   "files.exclude": {
     "**/.DS_Store": true,
+    "**/.eslintcache": true,
     "**/.git": true,
     "**/.hg": true,
     "**/.svn": true,
@@ -50,6 +51,7 @@
     ["cn\\(([^)]*)\\)", "(?:\"([^\"]*)\")|(?:'([^']*)')|(?:`([^`]*)`)"]
   ],
   "tailwindCSS.experimental.configFile": "src/assets/index.css",
+  "todo-tree.tree.scanMode": "workspace only",
   "typescript.format.enable": false,
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "typescript.tsserver.maxTsServerMemory": 8192,
@@ -60,10 +62,10 @@
   },
   "window.title": "${dirty}pplx-ext${separator}${activeRepositoryBranchName}${separator}${activeEditorShort}",
   "workbench.editor.customLabels.patterns": {
-    "**/src/entrypoints/background/index.ts": "Entrypoint - Background",
-    "**/src/entrypoints/content-scripts/index.ts": "Entrypoint - Content Scripts",
-    "**/src/entrypoints/options-page/index.tsx": "Entrypoint - Options Page",
-    "**/src/plugins/**/index.manifest.ts": "Plugin Manifest - ${dirname}",
-    "**/src/plugins/**/index.manifest.core.ts": "Core Plugin Manifest - ${dirname}"
+    "**/src/{entrypoints,plugins}/**/index.manifest.core.ts": "Core Plugin Manifest - ${dirname}",
+    "**/src/{entrypoints,plugins}/**/index.manifest.ts": "Plugin Manifest - ${dirname}",
+    "**/src/entrypoints/contexts/background/index.ts": "Entrypoint - Background",
+    "**/src/entrypoints/contexts/content-scripts/index.ts": "Entrypoint - Content Scripts",
+    "**/src/entrypoints/contexts/options-page/index.tsx": "Entrypoint - Options Page"
   }
 }

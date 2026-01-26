@@ -36,7 +36,7 @@ export default function TypeFilter() {
       positioning={{ sameWidth: true }}
       value={[state.threadTypeFilter || "all"] satisfies TypeItems["value"][]}
       onValueChange={({ value: values }) => {
-        const value = values[0] as TypeItems["value"];
+        const value = values[0] as TypeItems["value"] | undefined;
         if (value) {
           actions.setType(value === "all" ? undefined : value);
         }

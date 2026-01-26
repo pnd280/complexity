@@ -1,34 +1,36 @@
-import { z } from "zod";
+import {
+  definePluginDashboardMeta,
+  definePluginMeta,
+} from "@/entrypoints/services/plugins/defines";
+import type { PluginManifestExports } from "@/entrypoints/services/plugins/types";
+import {
+  settingsSchemas,
+  settingsStorage,
+} from "@/plugins/cloudflare-timeout-auto-reload/settings";
 
-import { definePlugin } from "@/__registries__/plugins/utils";
-
-declare module "@/__registries__/plugins/meta.types" {
-  interface PluginsSettingsRegistry {
-    cloudflareTimeoutAutoReload: z.infer<typeof schema>;
+declare module "@/entrypoints/services/plugins/types" {
+  interface PluginsRegistry {
+    [meta.id]: typeof manifest;
   }
 }
 
-const schema = z.object({
-  enabled: z.boolean(),
-  behavior: z.enum(["reload", "warn-only"]),
+const meta = definePluginMeta({
+  id: "cloudflareTimeoutAutoReload",
+  name: "Cloudflare Timeout Auto Reload",
+  description: "Auto reload the page on Cloudflare timeout",
 });
 
-export default definePlugin({
-  meta: {
-    id: "cloudflareTimeoutAutoReload",
-    title: "Cloudflare Timeout Auto Reload",
-    description: "Auto reload the page on Cloudflare timeout",
-    dashboardMeta: {
-      tags: [],
-      categories: ["misc"],
-      uiRouteSegment: "cloudflare-timeout-auto-reload",
-    },
-  },
-  settingsSchema: {
-    schema,
-    fallback: {
-      enabled: false,
-      behavior: "reload",
-    },
-  },
+const dashboardMeta = definePluginDashboardMeta({
+  tags: [],
+  categories: ["misc"],
+  uiRouteSegment: "cloudflare-timeout-auto-reload",
 });
+
+const manifest = {
+  meta,
+  dashboardMeta,
+  settingsStorage,
+  settingsSchemas,
+} satisfies PluginManifestExports;
+
+export default manifest;
