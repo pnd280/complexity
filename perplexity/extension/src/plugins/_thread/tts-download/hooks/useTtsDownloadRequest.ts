@@ -49,6 +49,8 @@ export default function useTtsDownloadRequest({
         }
       };
 
+      let didFail = false;
+
       const handleError = (packet: unknown) => {
         if (
           packet != null &&
@@ -59,6 +61,7 @@ export default function useTtsDownloadRequest({
           "status" in packet.data[1] &&
           packet.data[1].status === "failed"
         ) {
+          didFail = true;
           onError?.();
           abort();
         }
@@ -67,26 +70,39 @@ export default function useTtsDownloadRequest({
       socket.io.on("packet", handleError);
       socket.on("audio", handleAudio);
 
-      await socket.emitWithAck("voice_over", {
-        is_page: false,
-        version: "2.13",
-        completed: true,
-        uuid: params.backendUuid,
-        preset: params.voice,
-      });
+      const cleanupSocket = () => {
+        socket.off("audio", handleAudio);
+        socket.io.off("packet", handleError);
+        socket.disconnect();
+        if (socketRef.current === socket) {
+          socketRef.current = null;
+        }
+      };
 
-      // Get collected chunks
-      const chunks = collectorRef.current.getAllChunks();
+      try {
+        await socket.emitWithAck("voice_over", {
+          is_page: false,
+          version: "2.13",
+          completed: true,
+          uuid: params.backendUuid,
+          preset: params.voice,
+        });
 
-      // Call completion callback
-      onComplete?.(chunks);
+        // Get collected chunks
+        const chunks = collectorRef.current.getAllChunks();
 
-      socket.off("audio", handleAudio);
-      socket.io.off("packet", handleError);
+        // Call completion callback
+        onComplete?.(chunks);
 
-      socket.disconnect();
-
-      return chunks;
+        return chunks;
+      } catch (error) {
+        if (!didFail) {
+          onError?.();
+        }
+        throw error;
+      } finally {
+        cleanupSocket();
+      }
     },
   });
 
