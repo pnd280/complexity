@@ -34,7 +34,9 @@ function SubmitOnCtrlEnterPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "queryBox:submitOnCtrlEnter",
     ui: <SubmitOnCtrlEnterPluginSettingsUi />,

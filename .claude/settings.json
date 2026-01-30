@@ -1,11 +1,3 @@
 {
-  "permissions": {
-    "allow": [
-      "mcp__ide__getDiagnostics"
-    ]
-  },
-  "enabledPlugins": {
-    "context7@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
-  }
+  "enabledPlugins": {}
 }

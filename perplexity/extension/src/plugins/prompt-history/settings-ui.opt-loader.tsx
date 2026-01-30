@@ -94,7 +94,9 @@ function PromptHistoryPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "promptHistory",
     ui: <PromptHistoryPluginSettingsUi />,

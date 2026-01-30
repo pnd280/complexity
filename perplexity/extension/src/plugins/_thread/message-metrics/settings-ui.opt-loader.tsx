@@ -45,7 +45,9 @@ function ThreadShowMessageLengthPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:messageMetrics",
     ui: <ThreadShowMessageLengthPluginSettingsUi />,

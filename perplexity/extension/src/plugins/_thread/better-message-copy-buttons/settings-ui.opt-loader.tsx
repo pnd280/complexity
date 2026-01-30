@@ -31,7 +31,9 @@ function BetterThreadMessageCopyButtonsPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:betterMessageCopyButtons",
     ui: <BetterThreadMessageCopyButtonsPluginSettingsUi />,

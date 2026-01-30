@@ -16,7 +16,7 @@
    ```bash
    pnpm i -g turbo
    pnpm install
-   pnpm turbo build --filter=./packages/*
+   pnpm turbo build --filter="./packages/*"
    ```
 
 3. **Optional: Use official remote configs registry**

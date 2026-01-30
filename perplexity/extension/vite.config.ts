@@ -106,13 +106,6 @@ export default defineConfig(() => ({
     //   host: "localhost",
     //   protocol: "ws",
     // },
-    watch: {
-      ignored: (filePath) => {
-        const normalizedPath = filePath.replace(/\\/g, "/");
-        const srcPath = path.resolve(__dirname, "src").replace(/\\/g, "/");
-        return !normalizedPath.startsWith(srcPath);
-      },
-    },
     warmup: {
       clientFiles: [
         "src/entrypoints/contexts/content-scripts/index.ts",

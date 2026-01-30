@@ -32,16 +32,15 @@ function CustomHomeSloganPluginSettingsUi() {
       />
       <div className="x:flex x:flex-col x:gap-2">
         <Label className="x:text-muted-foreground">Slogan</Label>
-        <Input
-          value={settings.slogan}
-          onChange={({ target: { value } }) => debouncedMutate(value)}
-        />
+        <Input onChange={(e) => debouncedMutate(e.target.value)} />
       </div>
     </div>
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "home:customSlogan",
     ui: <CustomHomeSloganPluginSettingsUi />,

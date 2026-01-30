@@ -155,7 +155,9 @@ function ArtifactsPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:artifacts",
     ui: <ArtifactsPluginSettingsUi />,

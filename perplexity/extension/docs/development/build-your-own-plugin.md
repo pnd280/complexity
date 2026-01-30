@@ -288,7 +288,9 @@ function MyFeatureSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo"; // Must be present
+  
   registerSettingsUi({
     pluginId: "myFeature",
     ui: <MyFeatureSettingsUi />,

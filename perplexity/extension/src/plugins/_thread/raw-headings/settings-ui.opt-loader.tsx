@@ -31,7 +31,9 @@ function RawHeadingsPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:rawHeadings",
     ui: <RawHeadingsPluginSettingsUi />,

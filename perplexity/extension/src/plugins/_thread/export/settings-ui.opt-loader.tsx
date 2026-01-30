@@ -31,7 +31,9 @@ function ExportThreadPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:exportThread",
     ui: <ExportThreadPluginSettingsUi />,

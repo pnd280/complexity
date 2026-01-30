@@ -192,8 +192,16 @@ export const pplxLocalLanguageModels = {
       icon: "xai",
     },
     {
+      label: "Kimi K2.5 Thinking",
+      shortLabel: "Kimi K2.5",
+      code: "kimik25thinking",
+      isReasoning: true,
+      icon: "kimi",
+      limitKeyPath: ["remaining_pro"],
+    },
+    {
       label: "Kimi K2 Thinking",
-      shortLabel: "Kimi K2 Thinking",
+      shortLabel: "Kimi K2",
       code: "kimik2thinking",
       isReasoning: true,
       icon: "kimi",
