@@ -17,9 +17,19 @@ export const settingsSchemas = definePluginSettingsSchemas({
       spoofTimezone: false,
     },
   },
+  2: {
+    schema: z.object({
+      enabled: z.boolean(),
+      spoofTimezone: z.boolean(),
+    }),
+    fallback: {
+      enabled: false,
+      spoofTimezone: false,
+    },
+  },
 });
 
-export type Settings = z.infer<(typeof settingsSchemas)[1]["schema"]>;
+export type Settings = z.infer<(typeof settingsSchemas)[2]["schema"]>;
 
 export const settingsStorage = new PluginSettingsService<Settings>({
   id: "queryBox:languageModelSelector",

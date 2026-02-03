@@ -1,8 +1,3 @@
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import { Image } from "@/components/ui/image";
 import { Switch } from "@/components/ui/switch";
 import { registerSettingsUi } from "@/entrypoints/contexts/options-page/routes/dashboard/pages/plugins/components/plugin-settings-uis/registry";
@@ -45,30 +40,6 @@ function LanguageModelSelectorPluginSettingsUi() {
       />
       {settings.enabled && (
         <div className="x:flex x:flex-col x:gap-4">
-          <Switch
-            textLabel={
-              <HoverCard openDelay={0}>
-                <HoverCardTrigger className="x:underline x:decoration-dashed x:underline-offset-2">
-                  Show model selection mismatch warning
-                </HoverCardTrigger>
-                <HoverCardContent>
-                  <Image
-                    src="https://images2.imgbox.com/65/94/RhJ98dAM_o.png"
-                    alt="Model selection mismatch warning"
-                    className="x:w-full"
-                  />
-                </HoverCardContent>
-              </HoverCard>
-            }
-            checked={settings.showModelSelectionMismatchWarning}
-            onCheckedChange={({ checked }) => {
-              void update({
-                updateFn(prev) {
-                  prev.showModelSelectionMismatchWarning = checked;
-                },
-              });
-            }}
-          />
           {prodDevMode.enabled && (
             <Switch
               textLabel="Spoof timezone"
@@ -84,7 +55,7 @@ function LanguageModelSelectorPluginSettingsUi() {
           )}
         </div>
       )}
-      <div className="x:mx-auto x:w-full x:max-w-[700px]">
+      <div className="x:mx-auto x:w-full x:max-w-175">
         <Image
           src="https://images2.imgbox.com/07/e4/p9QJLuax_o.png"
           alt="language-model-selector"
