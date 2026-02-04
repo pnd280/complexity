@@ -19,7 +19,7 @@ declare module "@/entrypoints/services/plugins/types" {
 const meta = definePluginMeta({
   id: "thread:betterCodeBlocks",
   name: "Better Code Blocks",
-  description: "Enhance code blocks (in threads)",
+  description: "Extend code blocks with additional features",
 });
 
 const dashboardMeta = definePluginDashboardMeta({

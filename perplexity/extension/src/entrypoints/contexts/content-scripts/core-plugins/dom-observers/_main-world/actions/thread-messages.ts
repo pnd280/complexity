@@ -22,13 +22,14 @@ export async function getThreadMessages({
   fiberConfig,
 }: {
   fiberConfig: {
-    name: string;
     messageNodePath: string[];
   };
 }): Promise<MessageBlockFiberData[] | null> {
   const fiberNodes = findFiberNodes(
     {
-      name: fiberConfig.name,
+      fn(node) {
+        return walkFiberNode(node, fiberConfig.messageNodePath) != null;
+      },
     },
     {
       rootElementSelector: DomSelectorsServiceImpl.cplxAttribute(

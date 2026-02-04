@@ -24,7 +24,6 @@ export async function findMessageBlocks(
   const messageBlocksFiberData =
     await DomObserversMainWorldActions.Instance.getThreadMessages({
       fiberConfig: {
-        name: remoteFiberConfig.name,
         messageNodePath: remoteFiberConfig.messageNodePath,
       },
     });
@@ -60,14 +59,8 @@ function parseMessageBlock({
     )
     .attr("data-index", index);
 
-  const {
-    $query,
-    $queryEditButtonGroup,
-    $contentWrapper,
-    $answer,
-    $footer,
-    $displayModelButton,
-  } = getComponentNodes({ $wrapper, index });
+  const { $query, $queryEditButtonGroup, $contentWrapper, $answer, $footer } =
+    getComponentNodes({ $wrapper, index });
 
   const nodes: MessageBlock["nodes"] = {
     $wrapper,
@@ -76,7 +69,6 @@ function parseMessageBlock({
     $answer,
     $queryEditButtonGroup,
     $footer,
-    $displayModelButton,
   };
 
   const content: MessageBlock["content"] = {
@@ -170,12 +162,6 @@ function refreshStaleNodes(
     );
   }
 
-  if (isNodeStale({ $wrapper, $node: nodes.$displayModelButton })) {
-    nodes.$displayModelButton = nodes.$footer.find(
-      SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
-    );
-  }
-
   return nodes;
 }
 
@@ -197,9 +183,6 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   const $contentWrapper = $elements.filter(SELECTORS.CONTENT_WRAPPER);
 
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
-  const $displayModelButton = $footer.find(
-    SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
-  );
 
   return {
     $wrapper,
@@ -208,7 +191,6 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
     $answer,
     $footer,
     $queryEditButtonGroup,
-    $displayModelButton,
   };
 }
 

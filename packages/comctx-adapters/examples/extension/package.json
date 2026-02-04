@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@comctx-adapters/core": "workspace:*",
-    "comctx": "^1.5.2"
+    "comctx": "^1.6.1"
   },
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",
@@ -22,7 +22,7 @@
     "@types/chrome": "catalog:types",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
-    "globals": "17.2.0",
+    "globals": "17.3.0",
     "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",

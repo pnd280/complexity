@@ -9,7 +9,6 @@ export type MessageBlock = {
     $contentWrapper: JQuery<HTMLElement>;
     $answer: JQuery<HTMLElement>;
     $footer: JQuery<HTMLElement>;
-    $displayModelButton: JQuery<HTMLElement>;
   };
   content: {
     backendUuid: string;

@@ -28,7 +28,7 @@
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
     "eslint": "catalog:lint",
-    "globals": "17.2.0",
+    "globals": "17.3.0",
     "prettier": "catalog:lint",
     "tsup": "^8.5.1",
     "typescript": "catalog:types",

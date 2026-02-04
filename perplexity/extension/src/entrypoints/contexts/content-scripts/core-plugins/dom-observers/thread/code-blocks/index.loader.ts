@@ -18,7 +18,6 @@ export default function () {
     ],
     loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
       if (!pluginsEnableStates["domObservers:thread:codeBlocks"]) return;
-
       observeThreadCodeBlocks();
     },
   });
