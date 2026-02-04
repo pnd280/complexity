@@ -141,9 +141,8 @@ export function generateUiFontsOverrides({
 
   return dedent`
     body {
-      ${uiFont ? `--font-fk-grotesk: "${uiFont}";` : ""}
-      ${uiFont ? `--font-fk-grotesk-neue: "${uiFont}";` : ""}
-      ${monoFont ? `--font-berkeley-mono: "${monoFont}";` : ""}
+      ${uiFont ? `--pplx-sans: "${uiFont}";` : ""}
+      ${monoFont ? `--pplx-mono: "${monoFont}";` : ""}
     }
   `;
 }

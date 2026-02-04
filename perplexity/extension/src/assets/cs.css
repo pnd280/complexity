@@ -5,8 +5,8 @@
 @reference "./index.css";
 
 body {
-  --font-sans: var(--font-fk-grotesk);
-  --font-mono: var(--font-berkeley-mono);
+  --font-sans: var(--pplx-sans);
+  --font-mono: var(--pplx-mono);
 
   @apply x:font-sans;
 }
