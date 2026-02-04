@@ -20,6 +20,8 @@ import vitePluginMoveHtml from "./vite-plugins/vite-plugin-move-html";
 import vitePluginTailwindCustomPrefixes from "./vite-plugins/vite-plugin-tailwind-custom-prefixes";
 // import vitePluginRemoveStaticCssFromManifest from "./vite-plugins/vite-plugin-remove-static-css-from-manifest";
 
+import { excludedShikiLanguages } from "./src/services/shiki/excluded-languages";
+
 export default defineConfig(() => ({
   base: "./",
 
@@ -96,6 +98,12 @@ export default defineConfig(() => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "~": path.resolve(__dirname, "./"),
+      ...Object.fromEntries(
+        excludedShikiLanguages.map((lang) => [
+          `@shikijs/langs/${lang}`,
+          path.resolve(__dirname, "./src/utils/empty-shiki-lang.ts"),
+        ]),
+      ),
     },
   },
 
