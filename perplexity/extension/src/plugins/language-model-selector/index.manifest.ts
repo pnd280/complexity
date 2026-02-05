@@ -19,6 +19,7 @@ const meta = definePluginMeta({
   id: "queryBox:languageModelSelector",
   name: "Language Model Selector",
   description: "Select the language model for the chat",
+  devOnly: true,
 });
 
 const dashboardMeta = definePluginDashboardMeta({

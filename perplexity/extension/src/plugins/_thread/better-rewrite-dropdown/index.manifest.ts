@@ -20,6 +20,7 @@ const meta = definePluginMeta({
   name: "Better Rewrite Dropdowns",
   description:
     "A better dropdown for rewriting messages.\nOptionally forces the agent to redo the search process.",
+  devOnly: true,
 });
 
 const dashboardMeta = definePluginDashboardMeta({
