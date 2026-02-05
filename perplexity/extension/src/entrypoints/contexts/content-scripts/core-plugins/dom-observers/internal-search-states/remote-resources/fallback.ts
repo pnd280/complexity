@@ -1,7 +1,7 @@
 export const localInternalSearchStatesValidateFiberPath = [
   "memoizedProps",
   "value",
-  "isCopilot",
+  "configuredModel",
 ];
 export const localInternalSearchStatesStatesFiberPath = [
   "memoizedProps",
