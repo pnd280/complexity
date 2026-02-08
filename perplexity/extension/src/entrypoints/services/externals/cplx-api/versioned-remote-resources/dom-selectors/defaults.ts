@@ -21,16 +21,16 @@ export const DOM_SELECTORS = {
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
-        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
+        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
       },
       MOBILE: {
-        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
-        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
+        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
       },
     },
     MESSAGE: {
-      QUERY_WRAPPER: ".isolate.mx-auto > div > div > .bg-base",
+      QUERY_WRAPPER: "[role=tabpanel] .flex.flex-col > .bg-base",
       QUERY: ".group\\/query",
       QUERY_EDIT_BUTTON_GROUP:
         ".pointer-events-none.group-hover\\:opacity-100.focus-within\\:pointer-events-auto.focus-within\\:opacity-100",
@@ -39,7 +39,7 @@ export const DOM_SELECTORS = {
       },
       STICKY_HEADER: ".h-headerHeight.bg-transparent",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
-      CONTENT_WRAPPER: ".isolate.mx-auto > div > div > .bg-base + div", // ref QUERY_WRAPPER ⬆️
+      CONTENT_WRAPPER: "[role=tabpanel] .flex.flex-col > .bg-base + div", // ref QUERY_WRAPPER ⬆️
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */
