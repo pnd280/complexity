@@ -18,56 +18,56 @@ export default function () {
     dependencies: ["cache:pluginSettingSnapshots"],
     loader: () => {
       parseCookies();
-      const observer = new MutationObserver(parseCookies());
+
+      const debouncedParseCookies = debounce(parseCookies, 150, {
+        leading: true,
+        trailing: true,
+      });
+
+      const observer = new MutationObserver(debouncedParseCookies);
       observer.observe(document.body, { childList: true, subtree: true });
     },
   });
 }
 
+let prevCookieString = "";
+
 function parseCookies() {
-  let prevCookieString = "";
+  const currentCookieString = document.cookie;
 
-  return debounce(
-    () => {
-      const currentCookieString = document.cookie;
+  if (currentCookieString === prevCookieString) {
+    return;
+  }
 
-      if (currentCookieString === prevCookieString) {
-        return;
-      }
+  prevCookieString = currentCookieString;
 
-      prevCookieString = currentCookieString;
+  const cookieStrings = currentCookieString.split(";");
 
-      const cookieStrings = currentCookieString.split(";");
+  const parsedCookies: Cookie[] = cookieStrings
+    .map((cookieStr) => {
+      const parts = cookieStr.trim().split("=");
+      if (parts.length !== 2) return null;
+      const [cookieName, cookieValue] = parts;
+      if (!cookieName) return null;
+      return {
+        name: cookieName,
+        value: cookieValue,
+      };
+    })
+    .filter((cookie): cookie is Cookie => cookie != null);
 
-      const parsedCookies: Cookie[] = cookieStrings
-        .map((cookieStr) => {
-          const parts = cookieStr.trim().split("=");
-          if (parts.length !== 2) return null;
-          const [cookieName, cookieValue] = parts;
-          if (!cookieName) return null;
-          return {
-            name: cookieName,
-            value: cookieValue,
-          };
-        })
-        .filter((cookie): cookie is Cookie => cookie != null);
+  const prevCookies = pplxCookiesStore.getState().cookies;
 
-      const prevCookies = pplxCookiesStore.getState().cookies;
+  const hasChanged =
+    prevCookies.length !== parsedCookies.length ||
+    prevCookies.some(
+      (prevCookie, index) =>
+        !parsedCookies[index] ||
+        prevCookie.name !== parsedCookies[index].name ||
+        prevCookie.value !== parsedCookies[index].value,
+    );
 
-      const hasChanged =
-        prevCookies.length !== parsedCookies.length ||
-        prevCookies.some(
-          (prevCookie, index) =>
-            !parsedCookies[index] ||
-            prevCookie.name !== parsedCookies[index].name ||
-            prevCookie.value !== parsedCookies[index].value,
-        );
-
-      if (hasChanged) {
-        pplxCookiesStore.setState({ cookies: parsedCookies });
-      }
-    },
-    150,
-    { leading: true, trailing: true },
-  );
+  if (hasChanged) {
+    pplxCookiesStore.setState({ cookies: parsedCookies });
+  }
 }
