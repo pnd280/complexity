@@ -129,7 +129,11 @@ export function PromptHistoryCommandMenuContent() {
       onValueChange={setSelectingValue}
     >
       <CommandInput
-        ref={(e) => e?.focus()}
+        ref={(e) => {
+          setTimeout(() => {
+            e?.focus();
+          }, 0);
+        }}
         className={cn("x:text-xs x:[&_input]:h-8 x:[&_input]:p-0", {
           "x:border-t x:border-b-0": placement?.startsWith("top"),
         })}
@@ -138,7 +142,7 @@ export function PromptHistoryCommandMenuContent() {
         value={searchValue}
         onValueChange={setSearchValue}
       />
-      <CommandList className="x:h-[200px] x:scroll-pt-10 x:scroll-pb-10">
+      <CommandList className="x:h-50 x:scroll-pt-10 x:scroll-pb-10">
         <CommandGroup>
           {items?.map((item) => (
             <PromptHistoryCommandMenuItem

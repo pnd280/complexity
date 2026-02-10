@@ -1,18 +1,15 @@
 body {
   &[location="thread"],
   &[location="comet_assistant"] {
-    [data-cplx-component="message-block"]
-      [data-cplx-component="message-block-answer"] {
-      /* Typography */
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6,
-      strong {
-        color: var(--primary);
-      }
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong {
+      color: var(--primary);
     }
 
     /* Inline Code */

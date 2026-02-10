@@ -1,4 +1,5 @@
 import { slashCommandMenuStore } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store";
+import { registerPageCommand } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store/slices/pages/utils";
 import { getAnchor } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/utils";
 import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
 import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
@@ -60,8 +61,7 @@ export default function () {
           });
         });
       } else {
-        // TODO: implement registration for command
-        // src\plugins\slash-command\store\slices\pages\utils.ts
+        registerPageCommand(shortcut.value, pageId);
       }
     },
   });

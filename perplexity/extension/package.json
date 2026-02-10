@@ -1,6 +1,6 @@
 {
   "name": "pplx-ext",
-  "version": "2.9.8",
+  "version": "2.9.9",
   "author": "pnd280",
   "type": "module",
   "scripts": {
@@ -108,7 +108,7 @@
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
     "@crxjs/vite-plugin": "^2.3.0",
-    "@iconify/json": "^2.2.436",
+    "@iconify/json": "^2.2.437",
     "@playwright/test": "^1.58.2",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
@@ -116,7 +116,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/eslint-plugin-query": "^5.91.4",
-    "@tanstack/react-devtools": "^0.9.4",
+    "@tanstack/react-devtools": "^0.9.5",
     "@tanstack/react-form-devtools": "^0.2.13",
     "@tanstack/react-query-devtools": "^5.91.3",
     "@types/chrome": "catalog:types",

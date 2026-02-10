@@ -1,5 +1,17 @@
 import type { SlashCommandPageId } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store/slices/pages/types";
-import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
+
+const commandRegistry = new Map<string, SlashCommandPageId>();
+
+export function registerPageCommand(
+  command: string,
+  pageId: SlashCommandPageId,
+) {
+  commandRegistry.set(command, pageId);
+}
+
+export function unregisterPageCommand(command: string) {
+  commandRegistry.delete(command);
+}
 
 export function getMatchedPageCommand({
   wordAtCaret,
@@ -12,19 +24,7 @@ export function getMatchedPageCommand({
   const command = match[1];
   if (!command) return null;
 
-  // TODO: Implement command registry
-
-  const promptHistoryShortcut =
-    PluginsSettingSnapshotsService.getPluginSnapshot("promptHistory").shortcut;
-
-  if (
-    promptHistoryShortcut.type === "command" &&
-    promptHistoryShortcut.value === command
-  ) {
-    return "promptHistory";
-  }
-
-  return null;
+  return commandRegistry.get(command) ?? null;
 }
 
 export function isAllowedKey(e: KeyboardEvent) {
