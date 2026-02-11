@@ -68,7 +68,7 @@ export default function CodeHighlighter({
           <span key={lineIndex} className="line">
             {showLineNumbers && (
               <span
-                className="linenumber x:inline-block x:w-8 x:pr-4 x:text-right"
+                className="linenumber x:inline-block x:w-8 x:pr-4 x:text-right x:select-none"
                 style={lineNumberStyle}
               >
                 {lineIndex + 1}
