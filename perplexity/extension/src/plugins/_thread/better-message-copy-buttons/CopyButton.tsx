@@ -67,7 +67,7 @@ export default function CopyButton({
         </DropdownMenuTrigger>
       </Tooltip>
       {hasSources && (
-        <DropdownMenuContent className="x:font-medium">
+        <DropdownMenuContent>
           <DropdownMenuItem
             value={"with-citations" satisfies CopyOptions}
             className="x:flex x:items-center x:gap-2"

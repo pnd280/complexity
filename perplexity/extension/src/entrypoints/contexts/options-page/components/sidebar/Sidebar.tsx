@@ -103,7 +103,7 @@ export default function Sidebar() {
           <div
             role="button"
             tabIndex={0}
-            className="x:group x:relative x:w-full x:cursor-pointer x:rounded-xl x:border x:border-border/50 x:bg-secondary x:p-4 x:text-sm x:text-foreground x:shadow-lg x:transition-all x:hover:scale-101 x:hover:text-foreground x:md:text-balance"
+            className="x:group x:relative x:w-full x:cursor-pointer x:rounded-xl x:border x:border-border/50 x:bg-secondary x:p-4 x:text-sm x:text-foreground x:shadow-lg x:transition-all x:hover:scale-101 x:hover:text-foreground x:md:text-pretty"
           >
             <Trans
               tKey="common.sidebar.supporterMessage"
