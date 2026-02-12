@@ -1,4 +1,4 @@
-import type { CSSProperties, ElementType, ReactNode, RefObject } from "react";
+import type { ElementType, ReactNode, RefObject } from "react";
 import type { BundledLanguage } from "shiki";
 
 import { useShikiHighlighter } from "@/hooks/useShikiHighlighter";
@@ -24,7 +24,6 @@ type CodeHighlighterProps = {
   colorScheme: "dark" | "light";
   codeRef?: RefObject<HTMLDivElement | null>;
   showLineNumbers?: boolean;
-  lineNumberStyle?: CSSProperties;
   PreTag?: ElementType<{ children: ReactNode }>;
 };
 
@@ -34,7 +33,6 @@ export default function CodeHighlighter({
   colorScheme,
   codeRef,
   showLineNumbers,
-  lineNumberStyle,
   PreTag = "pre",
 }: CodeHighlighterProps) {
   const interpretedLanguage = language
@@ -63,17 +61,24 @@ export default function CodeHighlighter({
 
   return (
     <PreTag>
-      <code ref={codeRef} className="x:font-mono" style={{ color: fgColor }}>
+      <code
+        ref={codeRef}
+        className="x:font-mono"
+        style={{
+          color: fgColor,
+          ...(showLineNumbers && { counterReset: "line" }),
+        }}
+      >
         {tokens.tokens.map((line, lineIndex) => (
-          <span key={lineIndex} className="line">
-            {showLineNumbers && (
-              <span
-                className="linenumber x:inline-block x:w-8 x:pr-4 x:text-right x:select-none"
-                style={lineNumberStyle}
-              >
-                {lineIndex + 1}
-              </span>
-            )}
+          <span
+            key={lineIndex}
+            className={
+              showLineNumbers
+                ? "line x:before:inline-block x:before:w-8 x:before:pr-4 x:before:text-right x:before:opacity-50 x:before:content-[counter(line)] x:before:select-none"
+                : "line"
+            }
+            style={showLineNumbers ? { counterIncrement: "line" } : undefined}
+          >
             {line.map((token, tokenIndex) => (
               <span key={tokenIndex} style={{ color: token.color }}>
                 {token.content}

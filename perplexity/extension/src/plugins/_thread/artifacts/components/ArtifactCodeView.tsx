@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import CodeHighlighter from "@/components/CodeHighlighter";
 import useThreadCodeBlock from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/thread/code-blocks/hooks/useThreadCodeBlock";
@@ -26,15 +26,11 @@ export default function ArtifactCodeView() {
     selectedCodeBlock?.content.language ?? "",
   );
 
-  const lineNumberStyle: CSSProperties = {
-    color: "oklch(var(--muted-foreground))",
-  };
-
   return (
     <div
       id="artifact-code-view"
       className={cn(
-        "x:h-full x:w-max x:min-w-full x:text-xs x:[&_span.linenumber]:text-muted-foreground! x:[&>pre]:m-0 x:[&>pre]:size-full x:[&>pre]:rounded-t-none",
+        "x:h-full x:w-max x:min-w-full x:text-xs x:[&>pre]:m-0 x:[&>pre]:size-full x:[&>pre]:rounded-t-none",
         {
           "x:[&_span]:duration-300 x:[&_span]:animate-in x:[&_span]:fade-in":
             isInFlight,
@@ -45,7 +41,6 @@ export default function ArtifactCodeView() {
         showLineNumbers
         colorScheme={colorScheme === "light" ? "light" : "dark"}
         language={language}
-        lineNumberStyle={lineNumberStyle}
         PreTag={PreTag}
       >
         {codeString}
