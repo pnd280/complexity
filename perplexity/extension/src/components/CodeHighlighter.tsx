@@ -58,6 +58,13 @@ export default function CodeHighlighter({
   });
 
   const fgColor = tokens.fg;
+  const lastLine = tokens.tokens[tokens.tokens.length - 1];
+  const renderedLines =
+    children.endsWith("\n") &&
+    lastLine != null &&
+    lastLine.every((token) => token.content === "")
+      ? tokens.tokens.slice(0, -1)
+      : tokens.tokens;
 
   return (
     <PreTag>
@@ -69,7 +76,7 @@ export default function CodeHighlighter({
           ...(showLineNumbers && { counterReset: "line" }),
         }}
       >
-        {tokens.tokens.map((line, lineIndex) => (
+        {renderedLines.map((line, lineIndex) => (
           <span
             key={lineIndex}
             className={
@@ -84,7 +91,7 @@ export default function CodeHighlighter({
                 {token.content}
               </span>
             ))}
-            {lineIndex < tokens.tokens.length - 1 && "\n"}
+            {lineIndex < renderedLines.length - 1 && "\n"}
           </span>
         ))}
       </code>
