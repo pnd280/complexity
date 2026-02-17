@@ -5,71 +5,89 @@ description: "Translate locale files from English (en-US) to target language(s)"
 
 # i18n Translate Command
 
-Translate locale files from English (en-US) to target language(s).
+Translate locale strings from one `en-US.ts` file into locale files.
 
 ## Usage
 
-```
-/i18n-translate [language_code] [file_path]
+```bash
+/i18n-translate [language_code|all] [file_path]
 ```
 
-**Examples:**
+**Examples**
 
-```
+```bash
 /i18n-translate fr-FR src/entrypoints/_locales/en-US.ts
 /i18n-translate de-DE src/plugins/artifacts/_locales/en-US.ts
-/i18n-translate all src/entrypoints/_locales/en-US.ts  # Translate to all supported languages
+/i18n-translate all src/entrypoints/_locales/en-US.ts
 ```
 
 ## Supported Languages
 
-Reference: `.claude/commands/i18n/lang-list.json`
+`bn-BD, cs-CZ, de-DE, el-GR, es-ES, fr-FR, hi-IN, hr-HR, hu-HU, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, pt-PT, ro-RO, ru-RU, sk-SK, sr-Cyrl-ME, zh-CN, zh-TW`
 
-24 languages: bn-BD, cs-CZ, de-DE, el-GR, es-ES, fr-FR, hi-IN, hr-HR, hu-HU, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, pt-PT, ro-RO, ru-RU, sk-SK, sr-Cyrl-ME, zh-CN, zh-TW
+## Strict Rules
 
-## File Structure
+1. Source of truth is `en-US.ts`.
+2. Keep exact object structure and key order.
+3. Preserve placeholders exactly: `{name}`, `{count}`, `{version}`, `{?}`, `<0>`, `<1>`, `<0/>`.
+4. Keep brand/jargon untranslated: `Perplexity`, `Complexity`, `Pro`, `CodeSandbox`, `Comet`.
+5. Preserve emojis and punctuation intent.
+6. Do not edit unrelated files.
+7. Do not rewrite unchanged keys.
 
-**Main app:**
+## Execution Protocol (follow exactly)
 
-```
-src/entrypoints/_locales/
-├── en-US.ts    # Source of truth
-├── fr-FR.ts
-├── de-DE.ts
-└── ...
-```
+1. **Parse inputs**
+   - `language_code`: one supported locale or `all`.
+   - `file_path`: must be an `en-US.ts` locale file.
 
-**Plugins:**
+2. **Validate early**
+   - If `file_path` does not end with `/en-US.ts`, stop and ask for correct path.
+   - If `language_code` is invalid, stop and ask for a valid code.
 
-```
-src/plugins/{plugin-path}/_locales/
-├── en-US.ts    # Source of truth
-├── fr-FR.ts
-└── ...
-```
+3. **Resolve target files (no repo scan)**
+   - `locale_dir = dirname(file_path)`
+   - If `language_code === all`: targets = all supported languages except `en-US`.
+   - Else: targets = `[language_code]`.
+   - Target path pattern: `${locale_dir}/{locale}.ts`.
 
-## Translation Rules
+4. **Determine changed keys only**
+   - If user message includes a unified diff for `file_path`, use it to scope changed keys.
+   - Else, check `git diff -- file_path` once to scope changed keys.
+   - If zero changed keys, stop (no edits).
 
-1. **Use en-US as reference** - always translate from English source
-2. **Maintain exact structure** - same keys, nesting, object shape
-3. **Preserve placeholders:**
-   - `{name}`, `{count}`, `{version}` - keep as-is
-   - `{?}` in plurals - keep as-is
-   - `<0>`, `<1>`, `<0/>` - keep as-is (component markers)
-4. **Keep jargon/brand names untranslated** - e.g., "Perplexity", "Pro", "CodeSandbox"
-5. **Preserve emojis** - keep emoji placement and type
-6. **Escape quotes** - use `\"` for quotes inside strings
-7. **Match tone** - friendly, clear, professional
+5. **Read phase (minimum I/O)**
+   - Read `file_path` once.
+   - Read only target locale files that must be updated.
+   - Batch all target reads in parallel.
 
-## Workflow
+6. **Translate phase**
+   - Translate only scoped changed keys.
+   - Keep existing target strings for all untouched keys.
+   - Keep locale-appropriate tone (friendly, clear, professional).
 
-1. **Read target files first** - ALWAYS read each locale file before editing (Edit tool requires this)
-2. **Batch reads in parallel** - Read all target locale files simultaneously for efficiency
-3. **Then batch edits in parallel** - After reading, apply all edits in a single parallel operation
+7. **Rare ambiguity fallback (only when needed)**
+   - Trigger only if the changed English text is semantically ambiguous without context.
+   - Allow up to **3** extra targeted reads total.
+   - Read in this order and stop as soon as meaning is clear:
+     1) neighboring keys in `en-US.ts`,
+     2) the source file(s) that use the changed translation key,
+     3) closely related files in the same feature folder.
+   - Keep scope narrow; no broad exploration.
 
-## Translation Output
+8. **Edit phase (minimum writes)**
+   - Edit only files where at least one key changes.
+   - One edit batch, in parallel.
+   - Do not reformat unrelated lines.
 
-- Do NOT output notes/warnings
-- For small updates: show only changed portions with location context
-- For large files: split across multiple responses if needed
-- If no specific language requested: translate to ALL supported languages
+9. **Output**
+   - No notes/warnings/explanations.
+   - Show changed portions only, with file path + line context.
+
+## Anti-Waste Constraints
+
+- Do **not** read unrelated command/docs files.
+- Do **not** glob/search the whole repo when paths are derivable.
+- Do **not** edit locale files outside requested target set.
+- Do **not** perform full-file retranslation for a small key diff.
+- Ambiguity fallback is allowed only under step 7 limits.
