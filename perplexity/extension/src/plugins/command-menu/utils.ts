@@ -1,5 +1,20 @@
 import type { CommandItemProps } from "@/plugins/command-menu/types";
 
+const LEGACY_ALT_GLYPH_TO_KEY: Record<string, string> = {
+  "†": "t",
+  "¥": "y",
+};
+
+export function normalizeCommandMenuKeybinding(keys: string[]): string[] {
+  const hasAltModifier = keys.some((key) => key.toLowerCase() === "alt");
+
+  if (!hasAltModifier) {
+    return keys;
+  }
+
+  return keys.map((key) => LEGACY_ALT_GLYPH_TO_KEY[key] ?? key);
+}
+
 export const getItems = <T>({
   getter,
   params,

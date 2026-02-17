@@ -9,6 +9,7 @@ import SpaceThreadsPage from "@/plugins/command-menu/pages/space-threads/Page";
 import SpacesPage from "@/plugins/command-menu/pages/spaces/Page";
 import ThreadsPage from "@/plugins/command-menu/pages/threads/Page";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
+import { normalizeCommandMenuKeybinding } from "@/plugins/command-menu/utils";
 import { keysToString } from "@/utils/misc/utils";
 import hotkeys from "@/utils/wrappers/hotkeys-js";
 
@@ -35,7 +36,9 @@ export function CommandMenu() {
   });
 
   useEffect(() => {
-    const toggleKeyCombo = keysToString(settings.keybindings.toggle);
+    const toggleKeyCombo = keysToString(
+      normalizeCommandMenuKeybinding(settings.keybindings.toggle),
+    );
     hotkeys(toggleKeyCombo, handleToggleMenu);
 
     return () => {
@@ -52,7 +55,9 @@ export function CommandMenu() {
   useEffect(() => {
     if (!open) return;
 
-    const sidecarKeyCombo = keysToString(settings.keybindings.toggleSidecar);
+    const sidecarKeyCombo = keysToString(
+      normalizeCommandMenuKeybinding(settings.keybindings.toggleSidecar),
+    );
     hotkeys(sidecarKeyCombo, handleToggleSidecar);
 
     return () => {
