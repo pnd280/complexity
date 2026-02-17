@@ -143,6 +143,8 @@ export function generateUiFontsOverrides({
     body {
       ${uiFont ? `--pplx-sans: "${uiFont}";` : ""}
       ${monoFont ? `--pplx-mono: "${monoFont}";` : ""}
+      --pplx-serif: var(--pplx-sans) !important;
+      --pplx-answer: var(--pplx-sans) !important;
     }
   `;
 }
