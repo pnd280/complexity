@@ -1,5 +1,6 @@
 body {
   &[location="thread"],
+  &[location="computer"],
   &[location="comet_assistant"] {
     /* Typography */
     h1,

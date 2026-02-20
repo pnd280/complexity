@@ -100,6 +100,7 @@ export const whereAmI = (() => {
     collection: [new MatchPattern(`${hostnameGlob}/spaces/*`)],
     library: [new MatchPattern(`${hostnameGlob}/library*`)],
     thread: [new MatchPattern(`${hostnameGlob}/search/*`)],
+    computer: [new MatchPattern(`${hostnameGlob}/computer/*`)],
     page: [new MatchPattern(`${hostnameGlob}/page/*`)],
     settings: [
       new MatchPattern(`${hostnameGlob}/account*`),

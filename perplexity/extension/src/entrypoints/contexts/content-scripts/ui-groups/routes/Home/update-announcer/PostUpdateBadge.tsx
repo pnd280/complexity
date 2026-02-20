@@ -44,7 +44,7 @@ export function PostUpdateBadge() {
   return (
     <Portal>
       <div
-        className="x:group x:fixed x:top-4 x:right-4"
+        className="x:group x:fixed x:top-14 x:right-4"
         onClick={() => {
           void BgUtilsService.Instance.openFullScreenReleaseNotes({
             version: APP_CONFIG.VERSION,
