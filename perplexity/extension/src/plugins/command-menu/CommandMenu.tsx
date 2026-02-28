@@ -1,3 +1,5 @@
+import { useHotkey } from "@tanstack/react-hotkeys";
+
 import { Command, CommandDialog, CommandList } from "@/components/ui/command";
 import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
 import CommandFooter from "@/plugins/command-menu/components/CommandFooter";
@@ -11,7 +13,7 @@ import ThreadsPage from "@/plugins/command-menu/pages/threads/Page";
 import { useCommandMenuStore } from "@/plugins/command-menu/store";
 import { normalizeCommandMenuKeybinding } from "@/plugins/command-menu/utils";
 import { keysToString } from "@/utils/misc/utils";
-import hotkeys from "@/utils/wrappers/hotkeys-js";
+import { parseHotkeyCombo } from "@/utils/wrappers/hotkeys-js";
 
 export function CommandMenu() {
   const {
@@ -29,41 +31,40 @@ export function CommandMenu() {
   const settings =
     PluginsSettingSnapshotsService.getPluginSnapshot("commandMenu");
 
-  const handleToggleMenu = useEffectEvent((e: KeyboardEvent) => {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    setOpen(!open);
-  });
+  useHotkey(
+    parseHotkeyCombo(
+      keysToString(normalizeCommandMenuKeybinding(settings.keybindings.toggle)),
+    ),
+    (e) => {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      setOpen(!open);
+    },
+    {
+      preventDefault: false,
+      stopPropagation: false,
+      ignoreInputs: false,
+    },
+  );
 
-  useEffect(() => {
-    const toggleKeyCombo = keysToString(
-      normalizeCommandMenuKeybinding(settings.keybindings.toggle),
-    );
-    hotkeys(toggleKeyCombo, handleToggleMenu);
-
-    return () => {
-      hotkeys.unbind(toggleKeyCombo, handleToggleMenu);
-    };
-  }, [settings.keybindings.toggle]);
-
-  const handleToggleSidecar = useEffectEvent((e: KeyboardEvent) => {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    setSidecarOpen(!sidecarOpen);
-  });
-
-  useEffect(() => {
-    if (!open) return;
-
-    const sidecarKeyCombo = keysToString(
-      normalizeCommandMenuKeybinding(settings.keybindings.toggleSidecar),
-    );
-    hotkeys(sidecarKeyCombo, handleToggleSidecar);
-
-    return () => {
-      hotkeys.unbind(sidecarKeyCombo, handleToggleSidecar);
-    };
-  }, [open, settings.keybindings.toggleSidecar]);
+  useHotkey(
+    parseHotkeyCombo(
+      keysToString(
+        normalizeCommandMenuKeybinding(settings.keybindings.toggleSidecar),
+      ),
+    ),
+    (e) => {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      setSidecarOpen(!sidecarOpen);
+    },
+    {
+      enabled: open,
+      preventDefault: false,
+      stopPropagation: false,
+      ignoreInputs: false,
+    },
+  );
 
   return (
     <CommandDialog

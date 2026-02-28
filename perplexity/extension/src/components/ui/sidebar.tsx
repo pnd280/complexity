@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Slot } from "@radix-ui/react-slot";
+import { useHotkey } from "@tanstack/react-hotkeys";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
 import { keysToString } from "@/utils/misc/utils";
-import hotkeys from "@/utils/wrappers/hotkeys-js";
+import { parseHotkeyCombo } from "@/utils/wrappers/hotkeys-js";
 
 const SIDEBAR_WIDTH = "264px";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
@@ -74,24 +75,24 @@ export function SidebarProvider({
     setOpen((open) => !open);
   };
 
-  const handleToggleSidebar = useEffectEvent((event: KeyboardEvent) => {
-    event.preventDefault();
-    window.dispatchEvent(new Event("resize"));
-    toggleSidebar();
-  });
-
-  useEffect(() => {
-    const keyCombo = keysToString([
-      getPlatform() === "mac" ? Key.Meta : Key.Control,
-      SIDEBAR_KEYBOARD_SHORTCUT,
-    ]);
-
-    hotkeys(keyCombo, handleToggleSidebar);
-
-    return () => {
-      hotkeys.unbind(keyCombo, handleToggleSidebar);
-    };
-  }, []);
+  useHotkey(
+    parseHotkeyCombo(
+      keysToString([
+        getPlatform() === "mac" ? Key.Meta : Key.Control,
+        SIDEBAR_KEYBOARD_SHORTCUT,
+      ]),
+    ),
+    (event) => {
+      event.preventDefault();
+      window.dispatchEvent(new Event("resize"));
+      toggleSidebar();
+    },
+    {
+      preventDefault: false,
+      stopPropagation: false,
+      ignoreInputs: false,
+    },
+  );
 
   const state = open ? "expanded" : "collapsed";
 

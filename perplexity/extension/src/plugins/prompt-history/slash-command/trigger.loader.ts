@@ -14,11 +14,16 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 
 const pageId = "promptHistory" as const;
 
+let disposePromptHistoryShortcut: (() => void) | undefined;
+
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:shortcut-init",
     dependencies: ["cache:pluginsEnableStates"],
     loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      disposePromptHistoryShortcut?.();
+      disposePromptHistoryShortcut = undefined;
+
       if (!pluginsEnableStates["promptHistory"]) return;
 
       const shortcut =
@@ -27,7 +32,12 @@ export default function () {
         ).shortcut;
 
       if (shortcut.type === "keybinding") {
-        hotkeys(keysToString(shortcut.value), () => {
+        if (shortcut.value.length === 0) {
+          return;
+        }
+
+        const combo = keysToString(shortcut.value);
+        const handler = () => {
           const target = document.activeElement;
 
           if (!target || !(target instanceof HTMLElement)) return;
@@ -59,7 +69,13 @@ export default function () {
 
             store.states.setOpen(true);
           });
-        });
+        };
+
+        hotkeys(combo, handler);
+
+        disposePromptHistoryShortcut = () => {
+          hotkeys.unbind(combo, handler);
+        };
       } else {
         registerPageCommand(shortcut.value, pageId);
       }
