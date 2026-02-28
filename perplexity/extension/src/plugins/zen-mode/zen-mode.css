@@ -1,13 +1,8 @@
 @reference "../../assets/index.css";
 
 body[data-cplx-zen-mode="true"] {
-  /* the "Help" floating button */
-  main > .bottom-md.right-md.m-sm.fixed.hidden {
-    display: none;
-  }
-
   /* Sidebar */
-  .group\/sidebar {
+  .w-sideBarWidth:has(> .group\/sidebar) {
     display: none;
 
     & + [class^="erp"][style^="padding"]:not([data-erp="tab"] *) {
@@ -18,15 +13,9 @@ body[data-cplx-zen-mode="true"] {
   /* Related follow-ups section */
   &[location="thread"]
     [data-cplx-component="message-block"]:last-of-type
-    .first\:mt-0
-    > div:last-child {
-    .divide-subtlest:has(+ .animate-in.fade-in) {
-      display: none;
-    }
-
-    & > .animate-in.fade-in {
-      display: none;
-    }
+    [data-cplx-component="message-block-footer"]
+    + .border-subtlest.ring-subtlest.divide-subtlest {
+    display: none;
   }
 
   &[location="comet_ntp"] [style="margin-left: -36px;"] {

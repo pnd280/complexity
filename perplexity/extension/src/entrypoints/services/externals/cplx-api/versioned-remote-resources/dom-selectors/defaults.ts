@@ -6,27 +6,27 @@ import type { DomSelectors } from "@/entrypoints/services/externals/cplx-api/ver
 export const DOM_SELECTORS = {
   ROOT: "#root",
   PAGE_WRAPPER:
-    "#root > .border-subtlest.ring-subtlest.divide-subtlest.bg-underlay",
+    "#root > .border-subtlest.ring-subtlest.divide-subtlest.bg-base",
   SIDEBAR: {
     WRAPPER: ".group\\/sidebar",
     CHILD: {
       MENU: ".group\\/sidebar-menu",
     },
-    MOBILE_TRIGGER: `.h-headerHeight.bg-transparent button:has(svg > use[*|href="#pplx-icon-menu-2"])`,
+    MOBILE_TRIGGER: `.h-headerHeight.\\!bg-base\\/95 button:has(svg > use[*|href="#pplx-icon-menu-2"])`,
     PIN_SIDEBAR_BUTTON: 'button[data-testid="sidebar-pin-sidebar"]',
   },
   THREAD: {
-    NAVBAR: ".h-headerHeight.bg-transparent",
-    WRAPPER: ".h-headerHeight.bg-transparent ~ .scrollable-container",
+    NAVBAR: ".h-headerHeight.\\!bg-base\\/95",
+    WRAPPER: ".h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container",
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
-        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
       },
       MOBILE: {
-        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
-        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
       },
     },
     MESSAGE: {
@@ -37,7 +37,7 @@ export const DOM_SELECTORS = {
       QUERY_EDIT_BUTTON_GROUP_CHILD: {
         EDIT_QUERY_BUTTON: 'button:has(use[*|href="#pplx-icon-pencil"])',
       },
-      STICKY_HEADER: ".h-headerHeight.bg-transparent",
+      STICKY_HEADER: ".h-headerHeight.\\!bg-base\\/95",
       SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
       CONTENT_WRAPPER: "[role=tabpanel] .flex.flex-col > .bg-base + div", // ref QUERY_WRAPPER ⬆️
       ANSWER: "div[id*='markdown-content-']",
@@ -122,7 +122,7 @@ export const DOM_SELECTORS = {
       BACK_BUTTON: ".mb-3.ml-2.flex.md\\:px-2",
     },
   },
-  STICKY_NAVBAR: ".h-headerHeight.bg-transparent",
+  STICKY_NAVBAR: ".h-headerHeight.\\!bg-base\\/95",
   SICKY_NAVBAR_CHILD: {
     THREAD_TITLE_WRAPPER:
       ".hidden.max-w-md.grow.items-center.justify-center.gap-x-xs.text-center.md\\:flex",

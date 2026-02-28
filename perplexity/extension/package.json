@@ -1,6 +1,6 @@
 {
   "name": "pplx-ext",
-  "version": "2.9.15",
+  "version": "2.9.16",
   "author": "pnd280",
   "type": "module",
   "scripts": {
@@ -36,7 +36,7 @@
     "zip:firefox": "pnpm dx:firefox gulp createPackage"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.32.0",
+    "@ark-ui/react": "^5.34.0",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@comctx-adapters/core": "workspace:*",
     "@complexity/async-dep-registry": "workspace:*",
@@ -49,7 +49,7 @@
     "@shikijs/themes": "3.22.0",
     "@tanstack/react-form": "^1.28.3",
     "@tanstack/react-query": "^5.90.21",
-    "@tanstack/react-query-persist-client": "^5.90.22",
+    "@tanstack/react-query-persist-client": "^5.90.23",
     "@tanstack/zod-form-adapter": "^0.42.1",
     "@uidotdev/usehooks": "^2.4.1",
     "@webext-core/match-patterns": "^1.0.3",
@@ -146,7 +146,7 @@
     "markmap-render": "^0.18.12",
     "markmap-view": "^0.18.12",
     "mermaid": "^11.12.3",
-    "minimatch": "^10.2.3",
+    "minimatch": "^10.2.4",
     "postcss": "^8.5.6",
     "prettier": "catalog:lint",
     "prettier-plugin-tailwindcss": "^0.7.2",
@@ -154,7 +154,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
-    "unimport": "^5.6.0",
+    "unimport": "^5.7.0",
     "unplugin-icons": "^23.0.1",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
