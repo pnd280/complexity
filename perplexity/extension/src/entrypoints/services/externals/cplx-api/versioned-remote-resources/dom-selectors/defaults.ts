@@ -21,12 +21,12 @@ export const DOM_SELECTORS = {
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
-        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
       },
       MOBILE: {
-        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
-        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full > div.bg-base > div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
       },
     },
     MESSAGE: {
