@@ -2,6 +2,7 @@
   "name": "pplx-ext",
   "version": "2.9.16",
   "author": "pnd280",
+  "license": "MPL-2.0",
   "type": "module",
   "scripts": {
     "build": "pnpm dx:chrome vite build",

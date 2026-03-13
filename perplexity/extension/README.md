@@ -67,6 +67,6 @@ This polished and feature-rich extension is the result of countless hours of ded
 
 ## License
 
-This project uses a custom license allowing personal use and modifications, while prohibiting commercial use, unauthorized distribution, and feature bypassing without permission.
+The source code for this project is licensed under the [Mozilla Public License 2.0](../../LICENSE), unless otherwise noted.
 
-- [Full license terms](../../LICENSE)
+The Complexity name, logos, icons, screenshots, store/listing assets, and other brand assets are not licensed under the MPL. See [TRADEMARKS.md](../../TRADEMARKS.md).

@@ -1,5 +1,6 @@
 {
   "name": "pplx-ext-release-cli",
+  "license": "MPL-2.0",
   "type": "module",
   "scripts": {
     "chrome:publish": "dotenvx run -f .env.chrome --quiet -- bun ./src/web-stores/chrome-publish.ts",
