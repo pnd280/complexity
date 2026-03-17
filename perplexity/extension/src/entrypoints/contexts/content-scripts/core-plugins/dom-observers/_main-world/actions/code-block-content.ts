@@ -69,10 +69,9 @@ function extractCodeContent(fiberNode: any): [string | null, Error | null] {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractLanguageInfo(fiberNode: any): [string | null, Error | null] {
-  return tryCatch(() =>
-    (fiberNode.alternate != null
-      ? fiberNode.alternate
-      : fiberNode
-    ).memoizedProps.children.props.className.replace(/^language-/, ""),
+  return tryCatch(
+    () =>
+      (fiberNode.alternate != null ? fiberNode.alternate : fiberNode)
+        .memoizedProps.children.props.codeBlockProps.language,
   );
 }

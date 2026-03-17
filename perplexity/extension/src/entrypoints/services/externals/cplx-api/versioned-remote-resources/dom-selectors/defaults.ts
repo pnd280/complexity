@@ -43,7 +43,7 @@ export const DOM_SELECTORS = {
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */
-      FOOTER: ".gap-y-lg.flex.flex-col > .flex.items-center.justify-between",
+      FOOTER: ".gap-y-sm.flex.flex-col > .flex.items-center.justify-between",
       FOOTER_GROUP: {
         FIRST: ">div:first-child",
         SECOND: ">div:last-child",

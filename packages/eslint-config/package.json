@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@limegrass/eslint-plugin-import-alias": "^1.6.0",
-    "@typescript-eslint/utils": "^8.57.0",
+    "@limegrass/eslint-plugin-import-alias": "^1.6.1",
+    "@typescript-eslint/utils": "^8.57.2",
     "eslint": "catalog:lint",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "4.4.4",

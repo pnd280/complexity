@@ -27,6 +27,8 @@ export const extensionSettingsQueries = {
       storage: WxtStorageItem<TValue, TMetadata>;
       key: TKey;
     }) =>
+      // should calculate hash based on storage instance
+      // eslint-disable-next-line @tanstack/query/exhaustive-deps
       queryOptions({
         queryKey: extensionSettingsQueries.settings.all({ key }),
         queryFn: () => storage.getValue(),

@@ -8,9 +8,9 @@ catalogs:
   lint:
     eslint: ^9.39.4
     prettier: ^3.8.1
-    typescript-eslint: ^8.57.0
+    typescript-eslint: ^8.57.2
   types:
-    '@types/chrome': ^0.1.37
+    '@types/chrome': ^0.1.38
     typescript: ^5.9.3
 
 ignoredBuiltDependencies:

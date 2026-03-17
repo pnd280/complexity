@@ -17,7 +17,7 @@ export function useVersionPagination() {
     : [];
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["versionPagination"],
+    queryKey: ["versionPagination", { availableVersions }],
     queryFn: ({ pageParam = 0 }) => {
       const startIndex = pageParam as number;
       const count = 1;
