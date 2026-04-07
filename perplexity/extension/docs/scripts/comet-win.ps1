@@ -1,3 +1,4 @@
+clear-host
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
   Write-Host "Please run PowerShell as administrator and try again." -ForegroundColor Red
   return
@@ -116,7 +117,7 @@ function Uninstall-ShortcutFlag {
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Green
-Write-Host "           Comet ManifestV2 + perplexity.ai Enabler" -ForegroundColor Green
+Write-Host "     Comet Extension Enabler (with ManifestV2 support!)     " -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
 
