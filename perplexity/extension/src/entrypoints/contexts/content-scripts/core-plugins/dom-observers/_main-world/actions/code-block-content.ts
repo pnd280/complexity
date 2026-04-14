@@ -71,7 +71,7 @@ function extractCodeContent(fiberNode: any): [string | null, Error | null] {
 function extractLanguageInfo(fiberNode: any): [string | null, Error | null] {
   return tryCatch(
     () =>
-      (fiberNode.alternate != null ? fiberNode.alternate : fiberNode)
-        .memoizedProps.children.props.codeBlockProps.language,
+      (fiberNode.alternate != null ? fiberNode.alternate : fiberNode).return
+        .return.memoizedProps.language,
   );
 }
