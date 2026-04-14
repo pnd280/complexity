@@ -86,7 +86,7 @@ export class MermaidRendererServiceImpl {
         gitGraph: {
           useMaxWidth: true,
         },
-        fontFamily: "var(--font-fk-grotesk)",
+        fontFamily: "var(--pplx-sans)",
       };
 
       mermaid.initialize(config);

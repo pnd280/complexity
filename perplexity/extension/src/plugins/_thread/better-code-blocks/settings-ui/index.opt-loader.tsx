@@ -88,7 +88,9 @@ function Header() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:betterCodeBlocks",
     ui: <BetterCodeBlocksPluginSettingsUi />,

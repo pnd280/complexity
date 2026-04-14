@@ -1,5 +1,6 @@
 {
   "name": "pplx-ext-release-cli",
+  "license": "MPL-2.0",
   "type": "module",
   "scripts": {
     "chrome:publish": "dotenvx run -f .env.chrome --quiet -- bun ./src/web-stores/chrome-publish.ts",
@@ -14,15 +15,15 @@
     "r2:versioned-rr:gen": "dotenvx run -f ./src/r2/.env --quiet -- bun ./src/r2/remote-resources/versioned.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.968.0",
-    "@dotenvx/dotenvx": "^1.51.4",
+    "@aws-sdk/client-s3": "^3.1029.0",
+    "@dotenvx/dotenvx": "^1.61.0",
     "chrome-webstore-upload": "^4.0.3",
-    "commander": "^14.0.2",
-    "glob": "^13.0.0",
-    "inquirer": "^13.2.0",
+    "commander": "^14.0.3",
+    "glob": "^13.0.6",
+    "inquirer": "^13.4.1",
     "mime-types": "^3.0.2",
-    "semver": "^7.7.3",
-    "web-ext": "^9.2.0"
+    "semver": "^7.7.4",
+    "web-ext": "^9.4.0"
   },
   "devDependencies": {
     "@complexity/cli-logger": "workspace:*",

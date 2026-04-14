@@ -1,7 +1,6 @@
 body[data-cplx-zen-mode-always-hide-related-questions="true"][location="thread"]
   [data-cplx-component="message-block"]:last-of-type
-  .first\:mt-0
-  > div:last-child
-  > .animate-in.fade-in {
+  [data-cplx-component="message-block-footer"]
+  + .mt-md:has(> .border-subtlest.ring-subtlest.divide-subtlest) {
   display: none;
 }

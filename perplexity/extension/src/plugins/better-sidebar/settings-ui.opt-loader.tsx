@@ -66,7 +66,9 @@ function BetterSidebarPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "betterSidebar",
     ui: <BetterSidebarPluginSettingsUi />,

@@ -18,6 +18,8 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   }
 }
 
+let disposeZenModeHotkey: (() => void) | undefined;
+
 export default async function () {
   AsyncLoaderRegistry.register({
     id: "plugin:zenMode",
@@ -26,6 +28,9 @@ export default async function () {
       "cache:pluginsEnableStates": pluginsEnableStates,
       "cache:pluginSettingSnapshots": pluginSettingSnapshots,
     }) => {
+      disposeZenModeHotkey?.();
+      disposeZenModeHotkey = undefined;
+
       if (!pluginsEnableStates["zenMode"]) return;
 
       insertCss({
@@ -64,10 +69,23 @@ export default async function () {
 }
 
 function setupKeybinding(hotkey: PluginsSettings["zenMode"]["hotkey"]) {
-  hotkeys(keysToString(hotkey), (event) => {
+  disposeZenModeHotkey?.();
+
+  if (hotkey.length === 0) {
+    return;
+  }
+
+  const combo = keysToString(hotkey);
+  const handler = (event: KeyboardEvent) => {
     event.stopImmediatePropagation();
     event.preventDefault();
     toggleZenMode();
     commandMenuStore.getState().states.setOpen(false);
-  });
+  };
+
+  hotkeys(combo, handler);
+
+  disposeZenModeHotkey = () => {
+    hotkeys.unbind(combo, handler);
+  };
 }

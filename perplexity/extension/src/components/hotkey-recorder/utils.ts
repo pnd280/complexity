@@ -49,3 +49,34 @@ export function normalizeKeyName(keyName: string): string {
   if (keyName === "Unidentified") return "";
   return keyName;
 }
+
+function getAltCodeFallback(code: string): string {
+  const key = /^Key([A-Z])$/.exec(code)?.[1];
+  if (key != null) {
+    return key.toLowerCase();
+  }
+
+  const digit = /^Digit([0-9])$/.exec(code)?.[1];
+  if (digit != null) {
+    return digit;
+  }
+
+  return "";
+}
+
+export function normalizeEventKeyName(event: KeyboardEvent): string {
+  const normalizedKeyName = normalizeKeyName(event.key);
+
+  if (!normalizedKeyName) {
+    return "";
+  }
+
+  if (event.altKey) {
+    const altCodeFallback = getAltCodeFallback(event.code);
+    if (altCodeFallback) {
+      return altCodeFallback;
+    }
+  }
+
+  return normalizedKeyName;
+}

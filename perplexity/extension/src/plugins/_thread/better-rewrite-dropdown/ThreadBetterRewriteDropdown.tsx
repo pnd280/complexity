@@ -8,7 +8,7 @@ import { useRegisteredGlobalCssEntry } from "@/entrypoints/contexts/content-scri
 import { useThreadMessageIndexContext } from "@/entrypoints/contexts/content-scripts/ui-groups/routes/Thread/message-index-context";
 import { isLanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/predicates";
 import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 import { handleRewrite } from "@/plugins/_thread/better-rewrite-dropdown/handle-rewrite";
 import RedoSearchSwitch from "@/plugins/_thread/better-rewrite-dropdown/RedoSearchSwitch";
 import {
@@ -22,7 +22,7 @@ import TaberRepeat from "~icons/tabler/repeat";
 export function ThreadBetterRewriteDropdown() {
   const messageBlockIndex = useThreadMessageIndexContext();
 
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedItem, setHighlightedItem] =
     useState<LanguageModelCode | null>("claude2");

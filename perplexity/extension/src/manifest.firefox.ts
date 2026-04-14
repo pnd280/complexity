@@ -18,6 +18,9 @@ const mozManifest = create(baseManifest as unknown as MozManifest, (draft) => {
     gecko: {
       id: "complexity@ngocdg",
       strict_min_version: "109.0",
+      data_collection_permissions: {
+        required: ["none"],
+      },
     },
     gecko_android: {
       strict_min_version: "120.0",

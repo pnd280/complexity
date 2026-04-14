@@ -67,7 +67,9 @@ function CustomThreadContainerWidthPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:customThreadContainerWidth",
     ui: <CustomThreadContainerWidthPluginSettingsUi />,

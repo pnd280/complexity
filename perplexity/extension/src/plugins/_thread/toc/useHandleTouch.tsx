@@ -1,4 +1,4 @@
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 
 export function useHandleTouch({
   containerRef,
@@ -9,7 +9,7 @@ export function useHandleTouch({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
 
   useEffect(() => {
     if (!isMobile) return;

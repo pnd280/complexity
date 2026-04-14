@@ -6,44 +6,46 @@ import type { DomSelectors } from "@/entrypoints/services/externals/cplx-api/ver
 export const DOM_SELECTORS = {
   ROOT: "#root",
   PAGE_WRAPPER:
-    "#root > .border-subtlest.ring-subtlest.divide-subtlest.bg-underlay",
+    "#root > .border-subtlest.ring-subtlest.divide-subtlest.bg-base",
   SIDEBAR: {
-    WRAPPER: ".group\\/sidebar",
+    WRAPPER: String.raw`.group\/sidebar`,
     CHILD: {
-      MENU: ".group\\/sidebar-menu",
+      MENU: String.raw`.group\/sidebar-menu`,
     },
-    MOBILE_TRIGGER: `.h-headerHeight.bg-transparent button:has(svg > use[*|href="#pplx-icon-menu-2"])`,
+    MOBILE_TRIGGER: `.h-headerHeight.fixed.z-10 button:has(svg > use[*|href="#pplx-icon-menu-2"])`,
     PIN_SIDEBAR_BUTTON: 'button[data-testid="sidebar-pin-sidebar"]',
   },
   THREAD: {
-    NAVBAR: ".h-headerHeight.bg-transparent",
-    WRAPPER: ".h-headerHeight.bg-transparent ~ .scrollable-container",
+    NAVBAR: ".h-headerHeight.fixed.z-10",
+    WRAPPER: String.raw`.h-headerHeight.fixed ~ .\@container.isolate`,
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
-        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
+        NORMAL: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
+        BRANCHED: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
       },
       MOBILE: {
-        NORMAL: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
-        BRANCHED: `.h-headerHeight.bg-transparent ~ .scrollable-container > div:first-child > div.mx-auto.h-full > div > div:last-child`,
+        NORMAL: String.raw`.h-headerHeight ~ div .mx-auto > .flex.flex-col`,
+        BRANCHED: String.raw`.h-headerHeight ~ div .mx-auto > .flex.flex-col`,
       },
     },
     MESSAGE: {
-      QUERY_WRAPPER: ".isolate.mx-auto > div > div > .bg-base",
-      QUERY: ".group\\/query",
-      QUERY_EDIT_BUTTON_GROUP:
-        ".pointer-events-none.group-hover\\:opacity-100.focus-within\\:pointer-events-auto.focus-within\\:opacity-100",
+      QUERY_WRAPPER: "[role=tabpanel] .flex.flex-col > .bg-base",
+      QUERY: String.raw`.group\/query`,
+      QUERY_EDIT_TEXTBOX:
+        'div[contenteditable="true"][role="textbox"]:not([id])',
+      QUERY_EDIT_BUTTON_GROUP: String.raw`.pointer-events-none.group-hover\:opacity-100.focus-within\:pointer-events-auto.focus-within\:opacity-100`,
       QUERY_EDIT_BUTTON_GROUP_CHILD: {
         EDIT_QUERY_BUTTON: 'button:has(use[*|href="#pplx-icon-pencil"])',
       },
-      STICKY_HEADER: ".h-headerHeight.bg-transparent",
-      SOURCES: ".gap-sm.grid.grid-cols-4.md\\:px-0",
-      CONTENT_WRAPPER: ".isolate.mx-auto > div > div > .bg-base + div", // ref QUERY_WRAPPER ⬆️
+      STICKY_HEADER: ".h-headerHeight.fixed.z-10",
+      SOURCES: String.raw`.gap-sm.grid.grid-cols-4.md\:px-0`,
+      CONTENT_WRAPPER: "[role=tabpanel] .flex.flex-col > .bg-base + div", // ref QUERY_WRAPPER ⬆️
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */
-      FOOTER: ".gap-y-md.flex.flex-col > .flex.items-center.justify-between",
+      FOOTER:
+        ".gap-y-sm.flex.flex-col > .flex.items-center.justify-between:has(>:nth-child(2))",
       FOOTER_GROUP: {
         FIRST: ">div:first-child",
         SECOND: ">div:last-child",
@@ -63,7 +65,7 @@ export const DOM_SELECTORS = {
       },
       CODE_BLOCK: {
         /** The outermost container that wraps the pre & code block */
-        WRAPPER: "div.w-full.md\\:max-w-\\[90vw\\]:has(>pre)",
+        WRAPPER: String.raw`div.w-full.md\:max-w-\[90vw\]:has(>pre)`,
         NATIVE_HEADER: ".codeWrapper>div:first-child",
         NATIVE_COPY_BUTTON: 'button[data-testid="copy-code-button"]',
         LANGUAGE_INDICATOR: "[data-testid='code-language-indicator']",
@@ -74,10 +76,9 @@ export const DOM_SELECTORS = {
     },
   },
   HOME: {
-    SLOGAN: ".mb-lg.md\\:absolute.text-center",
-    FOOTER: ".hidden.pb-md.md\\:block>div",
-    COMET_HOME_MAIN_WRAPPER:
-      ".grid.grid-cols-\\[repeat\\(auto-fill\\,minmax\\(160px\\,1fr\\)\\)\\].gap-3",
+    SLOGAN: String.raw`.mb-lg.md\:absolute.text-center`,
+    FOOTER: String.raw`.hidden.pb-md.md\:block>div`,
+    COMET_HOME_MAIN_WRAPPER: String.raw`.grid.grid-cols-\[repeat\(auto-fill\,minmax\(160px\,1fr\)\)\].gap-3`,
   },
   QUERY_BOX: {
     WRAPPER: {
@@ -119,15 +120,13 @@ export const DOM_SELECTORS = {
   SETTINGS_PAGE: {
     SIDEBAR_WRAPPER: ".w-sideBarWidth:has(+.scrollable-container)",
     SIDEBAR_CHILD: {
-      BACK_BUTTON: ".mb-3.ml-2.flex.md\\:px-2",
+      BACK_BUTTON: String.raw`.mb-3.ml-2.flex.md\:px-2`,
     },
   },
-  STICKY_NAVBAR: ".h-headerHeight.bg-transparent",
+  STICKY_NAVBAR: ".h-headerHeight.fixed.z-10",
   SICKY_NAVBAR_CHILD: {
-    THREAD_TITLE_WRAPPER:
-      ".hidden.max-w-md.grow.items-center.justify-center.gap-x-xs.text-center.md\\:flex",
-    THREAD_TITLE:
-      ".min-w-0 .cursor-pointer.transition.duration-300.hover\\:opacity-70",
+    THREAD_TITLE_WRAPPER: String.raw`.hidden.max-w-md.grow.items-center.justify-center.gap-x-xs.text-center.md\:flex`,
+    THREAD_TITLE: String.raw`.min-w-0 .cursor-pointer.transition.duration-300.hover\:opacity-70`,
     THREAD_TITLE_INPUT: 'input[placeholder="Untitled"]',
     OVERFLOW_MENU_BUTTON_WRAPPER: `div:not(:is(.invisible *)):has(>button svg > use[*|href="#pplx-icon-dots"])`,
   },
@@ -161,6 +160,7 @@ export const INTERNAL_ATTRIBUTES = {
     MESSAGE: {
       BLOCK: "message-block",
       QUERY: "message-block-query",
+      QUERY_EDIT_TEXTBOX: "message-block-query-textbox",
       QUERY_EDIT_BUTTON_GROUP: "message-block-query-edit-button-group",
       ANSWER: "message-block-answer",
       CODE_BLOCK: "message-block-code-block",

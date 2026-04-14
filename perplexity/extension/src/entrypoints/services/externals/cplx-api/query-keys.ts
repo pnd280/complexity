@@ -26,8 +26,8 @@ export const cplxApiQueries = {
   remoteResource: {
     all: () => [...cplxApiQueries.all(), "remoteResource"] as const,
     detail: <T>(params: { resourcePath: string; zodSchema: ZodType<T> }) =>
+      // eslint-disable-next-line @tanstack/query/exhaustive-deps
       queryOptions({
-        // eslint-disable-next-line @tanstack/query/exhaustive-deps
         queryKey: [
           ...cplxApiQueries.remoteResource.all(),
           {
@@ -41,8 +41,8 @@ export const cplxApiQueries = {
   versionedRemoteResource: {
     all: () => [...cplxApiQueries.all(), "versionedRemoteResource"] as const,
     detail: <T>(params: { resourcePath: string; zodSchema: ZodType<T> }) =>
+      // eslint-disable-next-line @tanstack/query/exhaustive-deps
       queryOptions({
-        // eslint-disable-next-line @tanstack/query/exhaustive-deps
         queryKey: [
           ...cplxApiQueries.versionedRemoteResource.all(),
           {

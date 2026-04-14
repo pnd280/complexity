@@ -7,8 +7,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useThreadDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/thread/store";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import useToggleButtonText from "@/hooks/useToggleButtonText";
+import { useViewport } from "@/hooks/useViewport";
 import { ExportFormatSelect } from "@/plugins/_thread/export/ExportFormatSelect";
 import { handleThreadCopy } from "@/plugins/_thread/export/handlers/handleThreadCopy";
 import { handleThreadDownload } from "@/plugins/_thread/export/handlers/handleThreadDownload";
@@ -21,7 +21,7 @@ import TablerFileExport from "~icons/tabler/file-export";
 import TablerLoaderCircle from "~icons/tabler/loader-2";
 
 export function ThreadExportMenu() {
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
   const { copyThread, isFetching, getContent } = useCopyPplxThread();
   const [open, setOpen] = useState(false);
   const [includeCitations, setIncludeCitations] = useState(true);

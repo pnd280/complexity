@@ -99,9 +99,13 @@ export function generateAccentColorOverrides({ light, dark }: ColorPalette) {
   invariant(dark.super200, "[ThemesUtils] Invalid context");
 
   return dedent`
+    .animate-pplxIndicator {
+      color: var(--primary) !important;
+    }
+
     ::selection {
-      color: var(--primary);
-      background: --alpha(var(--primary) / 30%);
+      color: var(--primary) !important;
+      background: --alpha(var(--primary) / 30%) !important;
     }
   
     body {
@@ -141,9 +145,10 @@ export function generateUiFontsOverrides({
 
   return dedent`
     body {
-      ${uiFont ? `--font-fk-grotesk: "${uiFont}";` : ""}
-      ${uiFont ? `--font-fk-grotesk-neue: "${uiFont}";` : ""}
-      ${monoFont ? `--font-berkeley-mono: "${monoFont}";` : ""}
+      ${uiFont ? `--pplx-sans: "${uiFont}";` : ""}
+      ${monoFont ? `--pplx-mono: "${monoFont}";` : ""}
+      --pplx-serif: var(--pplx-sans) !important;
+      --pplx-answer: var(--pplx-sans) !important;
     }
   `;
 }

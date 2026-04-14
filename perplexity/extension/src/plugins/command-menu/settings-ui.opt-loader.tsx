@@ -42,7 +42,9 @@ function CommandMenuPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "commandMenu",
     ui: <CommandMenuPluginSettingsUi />,

@@ -18,7 +18,6 @@ export const POWER_USER: PluginsSettings = create(defaults, (draft) => {
   draft["thread:toc"].enabled = true;
   draft["thread:exportThread"].enabled = true;
   draft["thread:betterMessageCopyButtons"].enabled = true;
-  draft["thread:dragAndDropFileToUploadInThread"].enabled = true;
   draft["zenMode"].enabled = true;
 });
 

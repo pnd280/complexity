@@ -56,7 +56,7 @@ export function Checkbox({
     >
       <ArkCheckbox.Control className={cn(checkboxVariants({ size }))}>
         <ArkCheckbox.Indicator>
-          <TablerCheck className="x:size-full x:text-dark" />
+          <TablerCheck className="x:size-full x:text-background x:dark:text-foreground" />
         </ArkCheckbox.Indicator>
       </ArkCheckbox.Control>
       {label != null && label !== "" && (

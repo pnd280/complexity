@@ -77,10 +77,10 @@ export const getRawItems = (): NavigationCommandItemProps[] => [
     value: "settings",
     url: "/account/details",
   }),
-  createNavigationItem({
-    icon: PplxLabs,
-    title: t("plugin-command-menu.navigation.labs"),
-    value: "labs",
-    url: "https://labs.perplexity.ai/",
-  }),
+  // createNavigationItem({
+  //   icon: PplxLabs,
+  //   title: t("plugin-command-menu.navigation.labs"),
+  //   value: "labs",
+  //   url: "https://labs.perplexity.ai/",
+  // }),
 ];

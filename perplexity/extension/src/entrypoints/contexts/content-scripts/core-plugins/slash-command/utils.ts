@@ -92,7 +92,7 @@ export function getAnchor(
       target,
       anchor,
       {
-        gutter: -1,
+        gutter: 5,
         placement: isHomePageTextbox ? "bottom" : "top",
       },
       anchor,
@@ -104,7 +104,7 @@ export function getAnchor(
       target,
       target,
       {
-        gutter: 10,
+        gutter: 20,
         placement: "bottom",
       },
       null,

@@ -21,10 +21,3 @@ body[data-cplx-artifact-active-panel="list"] {
     @apply x:max-w-1/2 x:xl:flex-1;
   }
 }
-
-body[data-cplx-artifact-active-panel] {
-  /* the "Help" floating button */
-  main > .bottom-md.right-md.m-sm.fixed.hidden {
-    display: none;
-  }
-}

@@ -1,4 +1,5 @@
 import { slashCommandMenuStore } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store";
+import { registerPageCommand } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/store/slices/pages/utils";
 import { getAnchor } from "@/entrypoints/contexts/content-scripts/core-plugins/slash-command/utils";
 import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
 import { PluginsSettingSnapshotsService } from "@/entrypoints/services/plugins/settings/snapshots";
@@ -13,11 +14,16 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
 
 const pageId = "promptHistory" as const;
 
+let disposePromptHistoryShortcut: (() => void) | undefined;
+
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:queryBox:promptHistory:shortcut-init",
     dependencies: ["cache:pluginsEnableStates"],
     loader: ({ "cache:pluginsEnableStates": pluginsEnableStates }) => {
+      disposePromptHistoryShortcut?.();
+      disposePromptHistoryShortcut = undefined;
+
       if (!pluginsEnableStates["promptHistory"]) return;
 
       const shortcut =
@@ -26,7 +32,12 @@ export default function () {
         ).shortcut;
 
       if (shortcut.type === "keybinding") {
-        hotkeys(keysToString(shortcut.value), () => {
+        if (shortcut.value.length === 0) {
+          return;
+        }
+
+        const combo = keysToString(shortcut.value);
+        const handler = () => {
           const target = document.activeElement;
 
           if (!target || !(target instanceof HTMLElement)) return;
@@ -58,10 +69,15 @@ export default function () {
 
             store.states.setOpen(true);
           });
-        });
+        };
+
+        hotkeys(combo, handler);
+
+        disposePromptHistoryShortcut = () => {
+          hotkeys.unbind(combo, handler);
+        };
       } else {
-        // TODO: implement registration for command
-        // src\plugins\slash-command\store\slices\pages\utils.ts
+        registerPageCommand(shortcut.value, pageId);
       }
     },
   });

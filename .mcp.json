@@ -1,12 +1,3 @@
 {
-  "mcpServers": {
-    "vscode-mcp": {
-      "type": "stdio",
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@vscode-mcp/vscode-mcp-server@latest"],
-      "env": {
-        "VSCODE_MCP_DISABLED_TOOLS": "list_workspaces,execute_command"
-      }
-    }
-  }
+  "mcpServers": {}
 }

@@ -2,6 +2,7 @@
   "name": "@complexity/async-dep-registry",
   "version": "0.1.0",
   "private": true,
+  "license": "MPL-2.0",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -24,11 +25,11 @@
     "@complexity/typescript-config": "workspace:*",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
-    "globals": "17.0.0",
+    "globals": "17.3.0",
     "prettier": "catalog:lint",
     "tsup": "^8.5.1",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
-    "vitest": "^4.0.17"
+    "vitest": "^4.1.4"
   }
 }

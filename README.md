@@ -51,4 +51,5 @@
 
 ## License
 
-- [Full license terms](./LICENSE)
+- Source code in this repository is licensed under the [Mozilla Public License 2.0](./LICENSE), unless otherwise noted.
+- The Complexity name, logos, icons, screenshots, store/listing assets, and other brand assets are not licensed under the MPL. See [TRADEMARKS.md](./TRADEMARKS.md).

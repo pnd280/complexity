@@ -7,7 +7,7 @@ import {
   MODIFIER_KEYS,
   isValidKeyCombination,
   orderKeys,
-  normalizeKeyName,
+  normalizeEventKeyName,
 } from "@/components/hotkey-recorder/utils";
 import { useEvent } from "@/hooks/useEvent";
 import { getPlatform } from "@/hooks/usePlatformDetection";
@@ -44,7 +44,7 @@ export function useHotkeyRecorder({
     e.stopPropagation();
     e.stopImmediatePropagation();
 
-    const keyName = normalizeKeyName(e.key);
+    const keyName = normalizeEventKeyName(e);
 
     // Skip "Unidentified" keys (empty after normalization)
     if (!keyName) {
@@ -73,7 +73,7 @@ export function useHotkeyRecorder({
   });
 
   const keyupHandler = useEvent((e: KeyboardEvent) => {
-    const keyName = normalizeKeyName(e.key);
+    const keyName = normalizeEventKeyName(e);
     activeKeysRef.current.delete(keyName);
 
     if (activeKeysRef.current.size === 0 && recordedKeys.size > 0) {

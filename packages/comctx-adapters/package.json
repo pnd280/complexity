@@ -2,6 +2,7 @@
   "name": "@comctx-adapters/core",
   "version": "0.1.0",
   "private": true,
+  "license": "MPL-2.0",
   "author": "pnd280",
   "type": "module",
   "main": "./dist/index.js",
@@ -19,7 +20,7 @@
     "lint": "eslint ./src"
   },
   "dependencies": {
-    "comctx": "^1.4.3",
+    "comctx": "^1.6.1",
     "tsup": "^8.5.1"
   },
   "devDependencies": {
@@ -28,7 +29,7 @@
     "@types/chrome": "catalog:types",
     "@types/node": "22.17.2",
     "eslint": "catalog:lint",
-    "globals": "17.0.0",
+    "globals": "17.3.0",
     "prettier": "catalog:lint",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint"

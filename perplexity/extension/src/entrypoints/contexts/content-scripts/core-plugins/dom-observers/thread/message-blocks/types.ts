@@ -2,14 +2,15 @@ import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-ap
 import type { PplxWebResult } from "@/entrypoints/services/externals/pplx-api/pplx-thread-parser";
 
 export type MessageBlock = {
+  windowSize: number;
   nodes: {
     $wrapper: JQuery<HTMLElement>;
     $query: JQuery<HTMLElement>;
+    $queryEditTextBox: JQuery<HTMLElement>;
     $queryEditButtonGroup: JQuery<HTMLElement>;
     $contentWrapper: JQuery<HTMLElement>;
     $answer: JQuery<HTMLElement>;
     $footer: JQuery<HTMLElement>;
-    $displayModelButton: JQuery<HTMLElement>;
   };
   content: {
     backendUuid: string;

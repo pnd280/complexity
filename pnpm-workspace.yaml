@@ -6,15 +6,17 @@ packages:
 
 catalogs:
   lint:
-    eslint: ^9.39.2
-    prettier: ^3.7.4
-    typescript-eslint: ^8.53.0
+    eslint: ^9.39.4
+    prettier: ^3.8.2
+    typescript-eslint: ^8.58.1
   types:
-    '@types/chrome': ^0.1.33
+    '@types/chrome': ^0.1.40
     typescript: ^5.9.3
 
 ignoredBuiltDependencies:
   - unrs-resolver
+
+minimumReleaseAge: 1440
 
 onlyBuiltDependencies:
   - '@parcel/watcher'

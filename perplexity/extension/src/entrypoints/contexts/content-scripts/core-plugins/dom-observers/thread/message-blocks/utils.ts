@@ -6,6 +6,7 @@ import type { MessageBlock } from "@/entrypoints/contexts/content-scripts/core-p
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
 import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
 import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
+import { viewportStore } from "@/hooks/useViewport";
 
 const remoteFiberConfig = await getVersionedRemoteResource(
   threadMessageBlocksFiberConfigResourceConfig,
@@ -24,7 +25,6 @@ export async function findMessageBlocks(
   const messageBlocksFiberData =
     await DomObserversMainWorldActions.Instance.getThreadMessages({
       fiberConfig: {
-        name: remoteFiberConfig.name,
         messageNodePath: remoteFiberConfig.messageNodePath,
       },
     });
@@ -62,21 +62,21 @@ function parseMessageBlock({
 
   const {
     $query,
+    $queryEditTextBox,
     $queryEditButtonGroup,
     $contentWrapper,
     $answer,
     $footer,
-    $displayModelButton,
   } = getComponentNodes({ $wrapper, index });
 
   const nodes: MessageBlock["nodes"] = {
     $wrapper,
     $query,
+    $queryEditTextBox,
     $contentWrapper,
     $answer,
     $queryEditButtonGroup,
     $footer,
-    $displayModelButton,
   };
 
   const content: MessageBlock["content"] = {
@@ -100,6 +100,7 @@ function parseMessageBlock({
   });
 
   return {
+    windowSize: viewportStore.getState().windowWidth,
     nodes,
     content,
     states: {
@@ -152,6 +153,10 @@ function refreshStaleNodes(
     nodes.$query = $wrapper.find(SELECTORS.QUERY_WRAPPER);
   }
 
+  if (isNodeStale({ $wrapper, $node: nodes.$queryEditTextBox })) {
+    nodes.$queryEditTextBox = $wrapper.find(SELECTORS.QUERY_EDIT_TEXTBOX);
+  }
+
   if (isNodeStale({ $wrapper, $node: nodes.$contentWrapper })) {
     nodes.$contentWrapper = $wrapper.find(SELECTORS.CONTENT_WRAPPER);
   }
@@ -170,12 +175,6 @@ function refreshStaleNodes(
     );
   }
 
-  if (isNodeStale({ $wrapper, $node: nodes.$displayModelButton })) {
-    nodes.$displayModelButton = nodes.$footer.find(
-      SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
-    );
-  }
-
   return nodes;
 }
 
@@ -185,6 +184,7 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   const $elements = $wrapper.find(
     [
       SELECTORS.QUERY_WRAPPER,
+      SELECTORS.QUERY_EDIT_TEXTBOX,
       SELECTORS.CONTENT_WRAPPER,
       SELECTORS.ANSWER,
       SELECTORS.FOOTER,
@@ -192,23 +192,21 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   );
 
   const $query = $elements.filter(SELECTORS.QUERY_WRAPPER);
+  const $queryEditTextBox = $elements.filter(SELECTORS.QUERY_EDIT_TEXTBOX);
   const $answer = $elements.filter(SELECTORS.ANSWER);
   const $footer = $elements.filter(SELECTORS.FOOTER);
   const $contentWrapper = $elements.filter(SELECTORS.CONTENT_WRAPPER);
 
   const $queryEditButtonGroup = $query.find(SELECTORS.QUERY_EDIT_BUTTON_GROUP);
-  const $displayModelButton = $footer.find(
-    SELECTORS.FOOTER_CHILD.DISPLAY_MODEL_BUTTON,
-  );
 
   return {
     $wrapper,
     $query,
+    $queryEditTextBox,
     $contentWrapper,
     $answer,
     $footer,
     $queryEditButtonGroup,
-    $displayModelButton,
   };
 }
 
@@ -217,6 +215,9 @@ function setInternalAttributes(nodes: MessageBlock["nodes"]) {
     DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE;
 
   nodes.$query.internalComponentAttr(internalAttrs.QUERY);
+  nodes.$queryEditTextBox.internalComponentAttr(
+    internalAttrs.QUERY_EDIT_TEXTBOX,
+  );
   nodes.$queryEditButtonGroup.internalComponentAttr(
     internalAttrs.QUERY_EDIT_BUTTON_GROUP,
   );

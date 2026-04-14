@@ -91,7 +91,9 @@ function CloudflareTimeoutAutoReloadPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "cloudflareTimeoutAutoReload",
     ui: <CloudflareTimeoutAutoReloadPluginSettingsUi />,

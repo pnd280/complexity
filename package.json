@@ -1,6 +1,7 @@
 {
   "name": "complexity",
   "private": true,
+  "license": "MPL-2.0",
   "scripts": {
     "build": "turbo build",
     "check-deps": "manypkg check",
@@ -16,9 +17,9 @@
   "devDependencies": {
     "@manypkg/cli": "^0.25.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.4.0",
     "prettier": "catalog:lint",
-    "turbo": "^2.7.4",
+    "turbo": "^2.9.6",
     "typescript": "catalog:types"
   },
   "packageManager": "pnpm@10.25.0",

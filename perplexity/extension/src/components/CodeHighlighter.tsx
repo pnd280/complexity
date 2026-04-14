@@ -1,50 +1,100 @@
-import type { ComponentProps, RefObject } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import lightStyle from "react-syntax-highlighter/dist/esm/styles/prism/vs";
-import darkStyle from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+import type { ElementType, ReactNode, RefObject } from "react";
+import type { BundledLanguage } from "shiki";
+
+import { useShikiHighlighter } from "@/hooks/useShikiHighlighter";
 
 const INTERPRETED_LANGUAGES: Record<string, string> = {
-  html: "markup",
+  html: "html",
   react: "jsx",
   markmap: "markdown",
   "c++": "cpp",
   js: "javascript",
   ts: "typescript",
-  toml: "ini",
+  toml: "toml",
+};
+
+const SHIKI_THEMES = {
+  dark: "dark-plus",
+  light: "light-plus",
+} as const;
+
+type CodeHighlighterProps = {
+  children: string;
+  language?: string;
+  colorScheme: "dark" | "light";
+  codeRef?: RefObject<HTMLDivElement | null>;
+  showLineNumbers?: boolean;
+  PreTag?: ElementType<{ children: ReactNode }>;
 };
 
 export default function CodeHighlighter({
   children,
   language,
-  codeRef,
   colorScheme,
-  ...props
-}: ComponentProps<typeof SyntaxHighlighter> & {
-  colorScheme: "dark" | "light";
-  codeRef?: RefObject<HTMLDivElement | null>;
-}) {
+  codeRef,
+  showLineNumbers,
+  PreTag = "pre",
+}: CodeHighlighterProps) {
   const interpretedLanguage = language
     ? (INTERPRETED_LANGUAGES[language] ?? language)
     : "text";
 
-  const targetLanguage = SyntaxHighlighter.supportedLanguages.includes(
-    interpretedLanguage,
-  )
-    ? interpretedLanguage
-    : "text";
+  const { highlighter, isReady, resolvedLanguage } =
+    useShikiHighlighter(interpretedLanguage);
+
+  if (!isReady || !highlighter) {
+    return (
+      <PreTag>
+        <code ref={codeRef} className="x:font-mono">
+          {children}
+        </code>
+      </PreTag>
+    );
+  }
+
+  const tokens = highlighter.codeToTokens(children, {
+    lang: resolvedLanguage as BundledLanguage,
+    theme: SHIKI_THEMES[colorScheme],
+  });
+
+  const fgColor = tokens.fg;
+  const lastLine = tokens.tokens[tokens.tokens.length - 1];
+  const renderedLines =
+    children.endsWith("\n") &&
+    lastLine != null &&
+    lastLine.every((token) => token.content === "")
+      ? tokens.tokens.slice(0, -1)
+      : tokens.tokens;
 
   return (
-    <SyntaxHighlighter
-      style={colorScheme === "dark" ? darkStyle : lightStyle}
-      codeTagProps={{
-        className: "x:font-mono",
-        style: {},
-        ref: codeRef,
-      }}
-      language={targetLanguage}
-      {...props}
-    >
-      {children}
-    </SyntaxHighlighter>
+    <PreTag>
+      <code
+        ref={codeRef}
+        className="x:font-mono"
+        style={{
+          color: fgColor,
+          ...(showLineNumbers && { counterReset: "line" }),
+        }}
+      >
+        {renderedLines.map((line, lineIndex) => (
+          <span
+            key={lineIndex}
+            className={
+              showLineNumbers
+                ? "line x:before:inline-block x:before:w-8 x:before:pr-4 x:before:text-right x:before:opacity-50 x:before:content-[counter(line)] x:before:select-none"
+                : "line"
+            }
+            style={showLineNumbers ? { counterIncrement: "line" } : undefined}
+          >
+            {line.map((token, tokenIndex) => (
+              <span key={tokenIndex} style={{ color: token.color }}>
+                {token.content}
+              </span>
+            ))}
+            {lineIndex < renderedLines.length - 1 && "\n"}
+          </span>
+        ))}
+      </code>
+    </PreTag>
   );
 }

@@ -17,9 +17,9 @@ import TablerLoaderCircle from "~icons/tabler/loader-2";
 function BetterSearchParamsPluginSettingsUi() {
   const { settings, update } = useSettings();
 
-  const { data: languageModels, isLoading: isLoadingLanguageModels } = useQuery(
-    PplxLanguageModelsService.query,
-  );
+  // const { data: languageModels, isLoading: isLoadingLanguageModels } = useQuery(
+  //   PplxLanguageModelsService.query,
+  // );
 
   return (
     <div className="x:flex x:max-w-lg x:flex-col x:gap-4">
@@ -107,7 +107,7 @@ function BetterSearchParamsPluginSettingsUi() {
           <li>
             <span>Available values for </span>
             <InlineCode>&#123;model&#125;</InlineCode>:
-            {isLoadingLanguageModels && (
+            {/* {isLoadingLanguageModels && (
               <TablerLoaderCircle className="x:ml-2 x:inline-block x:size-4 x:animate-spin x:text-muted-foreground" />
             )}
             {languageModels && (
@@ -122,7 +122,15 @@ function BetterSearchParamsPluginSettingsUi() {
                     </div>
                   ))}
               </div>
-            )}
+            )} */}
+            <a
+              className="x:ml-1 x:inline-block x:underline x:decoration-dashed x:underline-offset-4"
+              href="https://www.perplexity.ai/rest/models/config"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://www.perplexity.ai/rest/models/config
+            </a>
           </li>
         </Ul>
       </div>
@@ -130,7 +138,9 @@ function BetterSearchParamsPluginSettingsUi() {
   );
 }
 
-export default function () {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "betterSearchParams",
     ui: <BetterSearchParamsPluginSettingsUi />,

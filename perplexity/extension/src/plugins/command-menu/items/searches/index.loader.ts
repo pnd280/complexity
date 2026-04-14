@@ -10,21 +10,44 @@ declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
   }
 }
 
+let disposeSearchItemKeybindings: (() => void) | undefined;
+
 export default function () {
   AsyncLoaderRegistry.register({
     id: "plugin:commandMenu:searchItems:setupKeybindings",
     dependencies: ["cache:pluginsEnableStates"],
     loader({ "cache:pluginsEnableStates": pluginsEnableStates }) {
+      disposeSearchItemKeybindings?.();
+      disposeSearchItemKeybindings = undefined;
+
       if (!pluginsEnableStates.commandMenu) return;
 
       const items = getRawItems();
+      const unbinders: Array<() => void> = [];
 
       items.forEach((item) => {
-        hotkeys(keysToString(item.keybinding), () => {
+        if (item.keybinding.length === 0) {
+          return;
+        }
+
+        const combo = keysToString(item.keybinding);
+        const handler = () => {
           item.onSelect();
           commandMenuStore.getState().states.setOpen(true);
+        };
+
+        hotkeys(combo, handler);
+
+        unbinders.push(() => {
+          hotkeys.unbind(combo, handler);
         });
       });
+
+      disposeSearchItemKeybindings = () => {
+        unbinders.forEach((unbind) => {
+          unbind();
+        });
+      };
     },
   });
 }

@@ -1,6 +1,6 @@
 import { threadDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/thread/store";
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
-import { isMobileStore } from "@/hooks/is-mobile-store";
+import { viewportStore } from "@/hooks/useViewport";
 import { domObserverService } from "@/services/features/dom-observer";
 
 export function observeNavbar({ observerId }: { observerId: string }) {
@@ -94,7 +94,7 @@ export function observeMessageBlocksWrapper({
 }: {
   observerId: string;
 }) {
-  const isMobile = isMobileStore.getState().isMobile;
+  const isMobile = viewportStore.getState().isMobile;
 
   let selector = isMobile
     ? DomSelectorsService.Root.cachedSync.THREAD.MESSAGE_BLOCKS_WRAPPER.MOBILE

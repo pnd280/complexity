@@ -119,7 +119,9 @@ function ThreadMessageTtsPluginSettingsUi() {
   );
 }
 
-export default function Tets() {
+export default function Wrapper() {
+  "use no memo";
+
   registerSettingsUi({
     pluginId: "thread:messageTts",
     ui: <ThreadMessageTtsPluginSettingsUi />,

@@ -38,7 +38,7 @@ export function Select<T>({
 }
 
 const selectTriggerVariants = cva(
-  "x:flex x:w-full x:items-center x:justify-between x:rounded-lg x:px-2 x:text-sm x:font-medium x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:focus-visible:bg-foreground-subtle x:disabled:cursor-not-allowed x:disabled:opacity-50 x:[&>span]:truncate!",
+  "x:flex x:w-full x:items-center x:justify-between x:rounded-lg x:px-2 x:text-sm x:transition-all x:duration-150 x:outline-none x:placeholder:text-muted-foreground x:focus-visible:bg-foreground-subtle x:disabled:cursor-not-allowed x:disabled:opacity-50 x:[&>span]:truncate!",
   {
     variants: {
       variant: {

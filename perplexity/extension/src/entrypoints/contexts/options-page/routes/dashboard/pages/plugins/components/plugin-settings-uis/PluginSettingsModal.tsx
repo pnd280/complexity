@@ -16,7 +16,7 @@ import type {
   PublicPlugins,
 } from "@/entrypoints/services/plugins/types";
 import { getPluginManifest } from "@/entrypoints/services/plugins/utils";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 
 type PluginSettingsModalProps = {
   pluginId: PluginId;
@@ -26,7 +26,7 @@ export default function PluginSettingsModal({
   pluginId,
 }: PluginSettingsModalProps) {
   const navigate = useNavigate();
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
 
   const {
     meta: { name, description },

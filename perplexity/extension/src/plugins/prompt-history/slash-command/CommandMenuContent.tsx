@@ -1,4 +1,5 @@
 import { usePopoverContext } from "@ark-ui/react";
+import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 
@@ -18,7 +19,9 @@ import { promptHistoryQueries } from "@/plugins/prompt-history/indexed-db/query-
 import { PromptHistoryService } from "@/plugins/prompt-history/indexed-db/service-init.bg-worker";
 import PromptHistoryCommandMenuItem from "@/plugins/prompt-history/slash-command/CommandMenuItem";
 import { keysToString } from "@/utils/misc/utils";
-import hotkeys from "@/utils/wrappers/hotkeys-js";
+import { parseHotkeyCombo } from "@/utils/wrappers/hotkeys-js";
+
+const PROMPT_HISTORY_DELETE_HOTKEY = parseHotkeyCombo(Key.Delete);
 
 export function PromptHistoryCommandMenuContent() {
   const queryClient = useQueryClient();
@@ -70,44 +73,41 @@ export function PromptHistoryCommandMenuContent() {
     });
   };
 
-  const handleCopy = useEffectEvent((e: KeyboardEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  useHotkey(
+    parseHotkeyCombo(
+      keysToString([getPlatform() === "mac" ? Key.Meta : Key.Control, "c"]),
+    ),
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    $(`[data-value='${selectingValue}'] [data-copy-button]`).trigger("click");
-  });
+      $(`[data-value='${selectingValue}'] [data-copy-button]`).trigger("click");
+    },
+    {
+      preventDefault: false,
+      stopPropagation: false,
+      ignoreInputs: false,
+    },
+  );
 
-  useEffect(() => {
-    const copyKeyCombo = keysToString([
-      getPlatform() === "mac" ? Key.Meta : Key.Control,
-      "c",
-    ]);
+  useHotkey(
+    PROMPT_HISTORY_DELETE_HOTKEY,
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    hotkeys(copyKeyCombo, handleCopy);
+      const prompt = items?.find((item) => item.id === selectingValue);
 
-    return () => {
-      hotkeys.unbind(copyKeyCombo, handleCopy);
-    };
-  }, []);
+      if (prompt == null) return;
 
-  const handleDelete = useEffectEvent((e: KeyboardEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const prompt = items?.find((item) => item.id === selectingValue);
-
-    if (prompt == null) return;
-
-    void deleteItem(prompt.id);
-  });
-
-  useEffect(() => {
-    hotkeys(Key.Delete, handleDelete);
-
-    return () => {
-      hotkeys.unbind(Key.Delete, handleDelete);
-    };
-  }, []);
+      void deleteItem(prompt.id);
+    },
+    {
+      preventDefault: false,
+      stopPropagation: false,
+      ignoreInputs: false,
+    },
+  );
 
   const { getContentProps } = usePopoverContext();
 
@@ -129,7 +129,11 @@ export function PromptHistoryCommandMenuContent() {
       onValueChange={setSelectingValue}
     >
       <CommandInput
-        ref={(e) => e?.focus()}
+        ref={(e) => {
+          setTimeout(() => {
+            e?.focus();
+          }, 0);
+        }}
         className={cn("x:text-xs x:[&_input]:h-8 x:[&_input]:p-0", {
           "x:border-t x:border-b-0": placement?.startsWith("top"),
         })}
@@ -138,7 +142,7 @@ export function PromptHistoryCommandMenuContent() {
         value={searchValue}
         onValueChange={setSearchValue}
       />
-      <CommandList className="x:h-[200px] x:scroll-pt-10 x:scroll-pb-10">
+      <CommandList className="x:h-50 x:scroll-pt-10 x:scroll-pb-10">
         <CommandGroup>
           {items?.map((item) => (
             <PromptHistoryCommandMenuItem
