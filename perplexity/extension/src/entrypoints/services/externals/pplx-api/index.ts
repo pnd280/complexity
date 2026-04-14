@@ -331,18 +331,21 @@ export class PplxApiService {
       Space,
       "title" | "instructions" | "emoji" | "model_selection" | "description"
     >,
-    socketInstance: Socket,
   ): Promise<Space> {
-    const resp = await socketInstance.emitWithAck("create_collection", {
-      version: "2.15",
-      source: "default",
-      title: space.title,
-      description: space.description,
-      emoji: space.emoji,
-      instructions: space.instructions,
-      access: 1,
-      model_selection: space.model_selection,
-    });
+    const resp = await fetch(ENDPOINTS.RESOURCES.SPACES.CREATE_ONE, {
+      method: "POST",
+      body: JSON.stringify({
+        access: 1,
+        source: "default",
+        title: space.title,
+        description: space.description,
+        emoji: space.emoji,
+        instructions: space.instructions,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json());
 
     return SpaceSchema.parse(resp);
   }
