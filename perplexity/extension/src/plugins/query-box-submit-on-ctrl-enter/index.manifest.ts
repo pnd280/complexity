@@ -29,7 +29,7 @@ const dashboardMeta = definePluginDashboardMeta({
 });
 
 const dependencies = definePluginDependencies({
-  plugins: ["domObservers:queryBoxes"],
+  plugins: ["domObservers:queryBoxes", "domObservers:thread:messageBlocks"],
 });
 
 const manifest = {
