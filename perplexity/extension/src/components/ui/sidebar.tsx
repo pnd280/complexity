@@ -14,8 +14,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
+import { useViewport } from "@/hooks/useViewport";
 import { keysToString } from "@/utils/misc/utils";
 import { parseHotkeyCombo } from "@/utils/wrappers/hotkeys-js";
 
@@ -58,7 +58,7 @@ export function SidebarProvider({
   children,
   ...props
 }: SidebarProviderProps) {
-  const isMobile = useIsMobileStore((store) => store.isMobile);
+  const isMobile = useViewport((store) => store.isMobile);
 
   const [_open, _setOpen] = useState(defaultOpen);
   const open = openProp ?? _open;

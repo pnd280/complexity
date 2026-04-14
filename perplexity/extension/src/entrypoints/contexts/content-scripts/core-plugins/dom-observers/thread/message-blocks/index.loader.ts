@@ -5,6 +5,7 @@ import { findMessageBlocks } from "@/entrypoints/contexts/content-scripts/core-p
 import { threadDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/thread/store";
 import { AsyncLoaderRegistry } from "@/entrypoints/contexts/content-scripts/services/async-loaders";
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
+import { viewportStore } from "@/hooks/useViewport";
 import { domObserverService } from "@/services/features/dom-observer";
 import { createDomObserverId } from "@/services/features/dom-observer/types";
 
@@ -33,6 +34,13 @@ function cleanup() {
 }
 
 function observeThreadMessageBlocks() {
+  viewportStore.subscribe(
+    (store) => store.windowWidth,
+    () => {
+      void onMutation();
+    },
+  );
+
   threadDomObserverStore.subscribe(
     (store) => store.$messageBlocksWrapper,
     ($threadMessageBlocksWrapper) => {

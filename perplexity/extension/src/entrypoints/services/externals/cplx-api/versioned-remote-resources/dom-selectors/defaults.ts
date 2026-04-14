@@ -21,12 +21,12 @@ export const DOM_SELECTORS = {
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
-        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        NORMAL: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
+        BRANCHED: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
       },
       MOBILE: {
-        NORMAL: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
-        BRANCHED: `.h-headerHeight.\\!bg-base\\/95 ~ .scrollable-container > div.mx-auto.size-full .isolate div.mx-auto.max-w-threadContentWidth > div:first-child`,
+        NORMAL: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
+        BRANCHED: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
       },
     },
     MESSAGE: {
@@ -43,7 +43,8 @@ export const DOM_SELECTORS = {
       ANSWER: "div[id*='markdown-content-']",
       ANSWER_TEXT_CONTENT: ".prose.text-pretty",
       /** The footer of the message (share, rewrite, model name, etc.) */
-      FOOTER: ".gap-y-sm.flex.flex-col > .flex.items-center.justify-between",
+      FOOTER:
+        ".gap-y-sm.flex.flex-col > .flex.items-center.justify-between:has(>:nth-child(2))",
       FOOTER_GROUP: {
         FIRST: ">div:first-child",
         SECOND: ">div:last-child",

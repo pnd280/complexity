@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 
 export default function SponsorDialogWrapper({
   children,
@@ -17,7 +17,7 @@ export default function SponsorDialogWrapper({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent portal={!useIsMobileStore().isMobile}>
+      <DialogContent portal={!useViewport((store) => store.isMobile)}>
         <div className="x:absolute x:inset-0 x:-z-10 x:bg-linear-to-b x:from-primary/20 x:to-transparent" />
 
         <DialogHeader>

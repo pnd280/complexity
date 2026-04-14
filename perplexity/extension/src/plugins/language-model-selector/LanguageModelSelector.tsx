@@ -9,7 +9,7 @@ import {
 } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/context";
 import { getActiveQueryBoxTextbox } from "@/entrypoints/contexts/content-scripts/ui-groups/elements/query-box/utils";
 import type { LanguageModelCode } from "@/entrypoints/services/externals/cplx-api/remote-resources/pplx-language-models/types";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 import CometAssistantLanguageModelSelectorTriggerButton from "@/plugins/language-model-selector/components/CometAssistantTriggerButton";
 import DesktopContent from "@/plugins/language-model-selector/components/desktop";
 import ModelsListEditToggle from "@/plugins/language-model-selector/components/desktop/ModelsListEditToggle";
@@ -20,7 +20,7 @@ import { useBetterLanguageModelSelectorStore } from "@/plugins/language-model-se
 import { getSelectItems } from "@/plugins/language-model-selector/utils";
 
 export function LanguageModelSelector() {
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
   const { selectedLanguageModel, setSelectedLanguageModel } =
     useBetterLanguageModelSelectorStore((store) => ({
       selectedLanguageModel: store.model,

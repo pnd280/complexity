@@ -6,6 +6,7 @@ import type { MessageBlock } from "@/entrypoints/contexts/content-scripts/core-p
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
 import { persistentQueryClient } from "@/entrypoints/contexts/content-scripts/services/persistent-query-client";
 import { getVersionedRemoteResource } from "@/entrypoints/services/externals/cplx-api/versioned-remote-resources/utils";
+import { viewportStore } from "@/hooks/useViewport";
 
 const remoteFiberConfig = await getVersionedRemoteResource(
   threadMessageBlocksFiberConfigResourceConfig,
@@ -92,6 +93,7 @@ function parseMessageBlock({
   });
 
   return {
+    windowSize: viewportStore.getState().windowWidth,
     nodes,
     content,
     states: {

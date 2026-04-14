@@ -9,14 +9,14 @@ import CategoriesFilter from "@/entrypoints/contexts/options-page/routes/dashboa
 import TagsFilter from "@/entrypoints/contexts/options-page/routes/dashboard/pages/plugins/components/plugins-filter/TagsFilter";
 import { usePluginFilterSelection } from "@/entrypoints/contexts/options-page/routes/dashboard/pages/plugins/hooks/useFilterSelection";
 import { usePluginFilters } from "@/entrypoints/contexts/options-page/routes/dashboard/pages/plugins/hooks/usePluginFilters";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 
 import LuSettings2 from "~icons/lucide/settings-2";
 import TablerFilter2X from "~icons/tabler/filter-2-x";
 import TablerInfoCircle from "~icons/tabler/info-circle";
 
 export default function PluginsFilter() {
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
 
   const [open, setOpen] = useState(false);
   const { filters } = usePluginFilters();
