@@ -60,12 +60,19 @@ function parseMessageBlock({
     )
     .attr("data-index", index);
 
-  const { $query, $queryEditButtonGroup, $contentWrapper, $answer, $footer } =
-    getComponentNodes({ $wrapper, index });
+  const {
+    $query,
+    $queryEditTextBox,
+    $queryEditButtonGroup,
+    $contentWrapper,
+    $answer,
+    $footer,
+  } = getComponentNodes({ $wrapper, index });
 
   const nodes: MessageBlock["nodes"] = {
     $wrapper,
     $query,
+    $queryEditTextBox,
     $contentWrapper,
     $answer,
     $queryEditButtonGroup,
@@ -146,6 +153,10 @@ function refreshStaleNodes(
     nodes.$query = $wrapper.find(SELECTORS.QUERY_WRAPPER);
   }
 
+  if (isNodeStale({ $wrapper, $node: nodes.$queryEditTextBox })) {
+    nodes.$queryEditTextBox = $wrapper.find(SELECTORS.QUERY_EDIT_TEXTBOX);
+  }
+
   if (isNodeStale({ $wrapper, $node: nodes.$contentWrapper })) {
     nodes.$contentWrapper = $wrapper.find(SELECTORS.CONTENT_WRAPPER);
   }
@@ -173,6 +184,7 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   const $elements = $wrapper.find(
     [
       SELECTORS.QUERY_WRAPPER,
+      SELECTORS.QUERY_EDIT_TEXTBOX,
       SELECTORS.CONTENT_WRAPPER,
       SELECTORS.ANSWER,
       SELECTORS.FOOTER,
@@ -180,6 +192,7 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   );
 
   const $query = $elements.filter(SELECTORS.QUERY_WRAPPER);
+  const $queryEditTextBox = $elements.filter(SELECTORS.QUERY_EDIT_TEXTBOX);
   const $answer = $elements.filter(SELECTORS.ANSWER);
   const $footer = $elements.filter(SELECTORS.FOOTER);
   const $contentWrapper = $elements.filter(SELECTORS.CONTENT_WRAPPER);
@@ -189,6 +202,7 @@ function findFreshNodes($wrapper: JQuery<HTMLElement>): MessageBlock["nodes"] {
   return {
     $wrapper,
     $query,
+    $queryEditTextBox,
     $contentWrapper,
     $answer,
     $footer,
@@ -201,6 +215,9 @@ function setInternalAttributes(nodes: MessageBlock["nodes"]) {
     DomSelectorsService.Root.internalAttributes.THREAD.MESSAGE;
 
   nodes.$query.internalComponentAttr(internalAttrs.QUERY);
+  nodes.$queryEditTextBox.internalComponentAttr(
+    internalAttrs.QUERY_EDIT_TEXTBOX,
+  );
   nodes.$queryEditButtonGroup.internalComponentAttr(
     internalAttrs.QUERY_EDIT_BUTTON_GROUP,
   );

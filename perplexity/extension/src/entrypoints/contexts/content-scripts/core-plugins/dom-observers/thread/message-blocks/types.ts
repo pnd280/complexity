@@ -6,6 +6,7 @@ export type MessageBlock = {
   nodes: {
     $wrapper: JQuery<HTMLElement>;
     $query: JQuery<HTMLElement>;
+    $queryEditTextBox: JQuery<HTMLElement>;
     $queryEditButtonGroup: JQuery<HTMLElement>;
     $contentWrapper: JQuery<HTMLElement>;
     $answer: JQuery<HTMLElement>;

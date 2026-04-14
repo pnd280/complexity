@@ -32,6 +32,8 @@ export const DOM_SELECTORS = {
     MESSAGE: {
       QUERY_WRAPPER: "[role=tabpanel] .flex.flex-col > .bg-base",
       QUERY: ".group\\/query",
+      QUERY_EDIT_TEXTBOX:
+        'div[contenteditable="true"][role="textbox"]:not([id])',
       QUERY_EDIT_BUTTON_GROUP:
         ".pointer-events-none.group-hover\\:opacity-100.focus-within\\:pointer-events-auto.focus-within\\:opacity-100",
       QUERY_EDIT_BUTTON_GROUP_CHILD: {
@@ -162,6 +164,7 @@ export const INTERNAL_ATTRIBUTES = {
     MESSAGE: {
       BLOCK: "message-block",
       QUERY: "message-block-query",
+      QUERY_EDIT_TEXTBOX: "message-block-query-textbox",
       QUERY_EDIT_BUTTON_GROUP: "message-block-query-edit-button-group",
       ANSWER: "message-block-answer",
       CODE_BLOCK: "message-block-code-block",
