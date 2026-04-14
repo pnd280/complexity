@@ -14,7 +14,7 @@ body[data-cplx-zen-mode="true"] {
   &[location="thread"]
     [data-cplx-component="message-block"]:last-of-type
     [data-cplx-component="message-block-footer"]
-    + .border-subtlest.ring-subtlest.divide-subtlest {
+    + .mt-md:has(> .border-subtlest.ring-subtlest.divide-subtlest) {
     display: none;
   }
 
