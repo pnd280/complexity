@@ -1,7 +1,5 @@
 {
-  "extends": "@complexity/typescript-config/base.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "jsx": "react-jsx",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
@@ -11,9 +9,11 @@
       "@/*": ["./src/*"],
       "~/*": ["./*"]
     },
-    "target": "ESNext"
+    "target": "ESNext",
+    "types": ["chrome"]
   },
   "exclude": ["node_modules", "release/cli/**/*"],
+  "extends": "@complexity/typescript-config/base.json",
   "include": [
     "e2e/**/*",
     "src/**/*",

@@ -17,7 +17,7 @@ import {
   settingsStorage,
   type ProductionDevMode,
 } from "@/entrypoints/services/features/production-dev-mode/settings";
-import { isMobileStore } from "@/hooks/is-mobile-store";
+import { viewportStore } from "@/hooks/useViewport";
 import { whereAmI } from "@/utils/misc/utils";
 
 declare module "@/entrypoints/contexts/content-scripts/services/async-loaders" {
@@ -74,7 +74,7 @@ function setupLocationTracking() {
 }
 
 function setupMobileStateSubscription() {
-  isMobileStore.subscribe(
+  viewportStore.subscribe(
     (store) => store.isMobile,
     (isMobile) => {
       pluginGuardsStore.setState((state) => {

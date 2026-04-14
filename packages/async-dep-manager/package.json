@@ -30,6 +30,6 @@
     "tsup": "^8.5.1",
     "typescript": "catalog:types",
     "typescript-eslint": "catalog:lint",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.4"
   }
 }

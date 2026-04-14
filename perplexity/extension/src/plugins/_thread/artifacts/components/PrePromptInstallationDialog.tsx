@@ -16,7 +16,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/use-toast";
 import { softNavigate } from "@/entrypoints/contexts/content-scripts/core-plugins/spa-router/utils";
-import { internalWebSocketStore } from "@/entrypoints/contexts/content-scripts/stores/web-socket";
 import { PplxApiService } from "@/entrypoints/services/externals/pplx-api";
 import { setCookie } from "@/utils/dom-utils/generics";
 import { fetchTextResource } from "@/utils/misc/utils";
@@ -43,14 +42,7 @@ export function ArtifactsPrePromptInstallationDialog() {
   const { mutateAsync: createSpace } = useMutation({
     mutationKey: ["createSpace"],
     mutationFn: (space: Parameters<typeof PplxApiService.createSpace>[0]) => {
-      const socketInstance = internalWebSocketStore.getState().common;
-
-      invariant(
-        socketInstance != null,
-        "Please provide a valid socket instance",
-      );
-
-      return PplxApiService.createSpace(space, socketInstance);
+      return PplxApiService.createSpace(space);
     },
     onSuccess: async (data) => {
       toast({
@@ -154,7 +146,6 @@ export function ArtifactsPrePromptInstallationDialog() {
                 description: "",
                 emoji: "1f5bc-fe0f",
                 instructions: artfiactsInstruction,
-                model_selection: "claude2",
               });
             }}
           >

@@ -61,6 +61,8 @@ export const ENDPOINTS = {
         offset: number;
       }) =>
         `https://www.perplexity.ai/rest/collections/list_collection_threads?collection_slug=${spaceSlug}&limit=${limit}&offset=${offset}&filter_by_user=false&filter_by_shared_threads=false&version=2.13&source=default`,
+      CREATE_ONE:
+        "https://www.perplexity.ai/rest/collections/create_collection?version=2.18&source=default",
     },
   },
 } as const;

@@ -99,9 +99,13 @@ export function generateAccentColorOverrides({ light, dark }: ColorPalette) {
   invariant(dark.super200, "[ThemesUtils] Invalid context");
 
   return dedent`
+    .animate-pplxIndicator {
+      color: var(--primary) !important;
+    }
+
     ::selection {
-      color: var(--primary);
-      background: --alpha(var(--primary) / 30%);
+      color: var(--primary) !important;
+      background: --alpha(var(--primary) / 30%) !important;
     }
   
     body {

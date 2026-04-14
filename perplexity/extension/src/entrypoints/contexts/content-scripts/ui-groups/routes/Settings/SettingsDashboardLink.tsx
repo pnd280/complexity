@@ -3,12 +3,12 @@ import { Portal } from "@/components/ui/portal";
 import { useSettingsPageDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/settings-page/store";
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
 import { BgUtilsService } from "@/entrypoints/services/features/bg-utils/service-init.bg-worker";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 
 import TablerArrowUpRight from "~icons/tabler/arrow-up-right";
 
 export function SettingsDashboardLink() {
-  const isMobile = useIsMobileStore((store) => store.isMobile);
+  const isMobile = useViewport((store) => store.isMobile);
 
   const sidebarWrapper = useSettingsPageDomObserverStore(
     (store) => store.sidebarWrapper,

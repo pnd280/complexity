@@ -3,8 +3,8 @@ import { useTransition } from "react";
 
 import { Input } from "@/components/ui/input";
 import { usePluginFilters } from "@/entrypoints/contexts/options-page/routes/dashboard/pages/plugins/hooks/usePluginFilters";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
 import { getPlatform } from "@/hooks/usePlatformDetection";
+import { useViewport } from "@/hooks/useViewport";
 import { keysToString } from "@/utils/misc/utils";
 import { parseHotkeyCombo } from "@/utils/wrappers/hotkeys-js";
 
@@ -13,7 +13,7 @@ const SEARCH_HOTKEY = parseHotkeyCombo(
 );
 
 export default function SearchInput() {
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
   const { filters, setFilters } = usePluginFilters();
   const [, startTransition] = useTransition();
 

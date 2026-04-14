@@ -7,10 +7,10 @@ import Psa from "@/entrypoints/contexts/options-page/components/Psa";
 import DesktopSidebarWrapper from "@/entrypoints/contexts/options-page/components/sidebar/DesktopWrapper";
 import MobileSidebarWrapper from "@/entrypoints/contexts/options-page/components/sidebar/MobileWrapper";
 import Sidebar from "@/entrypoints/contexts/options-page/components/sidebar/Sidebar";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 
 export function Dashboard() {
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
   const SidebarWrapper = isMobile
     ? MobileSidebarWrapper
     : DesktopSidebarWrapper;

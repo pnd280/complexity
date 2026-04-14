@@ -1,6 +1,6 @@
 import { sidebarDomObserverStore } from "@/entrypoints/contexts/content-scripts/core-plugins/dom-observers/sidebar/store";
 import { DomSelectorsService } from "@/entrypoints/contexts/content-scripts/services/dom-selectors/service-init.loader";
-import { isMobileStore } from "@/hooks/is-mobile-store";
+import { viewportStore } from "@/hooks/useViewport";
 import { domObserverService } from "@/services/features/dom-observer";
 
 export function observeSidebarWrapper({ observerId }: { observerId: string }) {
@@ -30,7 +30,7 @@ export function observeSidebarWrapper({ observerId }: { observerId: string }) {
 }
 
 export function observeMobileTrigger({ observerId }: { observerId: string }) {
-  const isMobile = isMobileStore.getState().isMobile;
+  const isMobile = viewportStore.getState().isMobile;
 
   if (!isMobile) return () => {};
 

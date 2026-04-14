@@ -55,7 +55,9 @@ export const SpaceSchema = z.object({
   emoji: z.string().nullable().optional(),
   description: z.string(),
   access: z.number(),
-  model_selection: (z.string() as z.ZodType<LanguageModel["code"]>).nullable(),
+  model_selection: (z.string() as z.ZodType<LanguageModel["code"]>)
+    .nullable()
+    .optional(),
   enable_web_by_default: z.boolean().nullable(),
   updated_datetime: z.string(),
 });

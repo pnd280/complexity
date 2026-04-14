@@ -27,6 +27,7 @@ export const DomSelectorsSchema = z.object({
     MESSAGE: z.object({
       QUERY_WRAPPER: z.string(),
       QUERY: z.string(),
+      QUERY_EDIT_TEXTBOX: z.string(),
       QUERY_EDIT_BUTTON_GROUP: z.string(),
       QUERY_EDIT_BUTTON_GROUP_CHILD: z.object({
         EDIT_QUERY_BUTTON: z.string(),

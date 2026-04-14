@@ -15,7 +15,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 import useHookMobileTrigger from "@/plugins/better-sidebar/hooks/useHookMobileTrigger";
 import {
   betterSidebarStore,
@@ -64,7 +64,7 @@ const items = [
 
 export function BetterSidebar() {
   const portalContainer = usePortalContainer();
-  const isMobile = useIsMobileStore((store) => store.isMobile);
+  const isMobile = useViewport((store) => store.isMobile);
   const open = useBetterSidebarStore((store) => store.open);
 
   useHookMobileTrigger();

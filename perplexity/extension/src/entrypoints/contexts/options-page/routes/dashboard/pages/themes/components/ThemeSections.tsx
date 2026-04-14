@@ -1,7 +1,7 @@
 import { Tabs, TabContent, TabsList, TabTrigger } from "@/components/ui/tabs";
 import ThemeCard from "@/entrypoints/contexts/options-page/routes/dashboard/pages/themes/components/ThemeCard/ThemeCard";
 import type { Theme } from "@/entrypoints/core-plugins/custom-themes/themes/theme.types";
-import { useIsMobileStore } from "@/hooks/is-mobile-store";
+import { useViewport } from "@/hooks/useViewport";
 
 type ThemeSectionsProps = {
   builtInThemes: Theme[];
@@ -12,7 +12,7 @@ export function ThemeSections({
   builtInThemes,
   localThemes,
 }: ThemeSectionsProps) {
-  const { isMobile } = useIsMobileStore();
+  const { isMobile } = useViewport();
 
   if (builtInThemes.length === 0 && localThemes.length === 0) {
     return <div>No themes found</div>;
