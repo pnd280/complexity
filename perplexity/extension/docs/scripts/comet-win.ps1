@@ -3,7 +3,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   return
 }
 
-$policyPath = "HKLM:\SOFTWARE\Policies\Chromium"
+$policyPath = "HKLM:\SOFTWARE\Policies\Perplexity\Comet"
 $hostPattern = "*://*.perplexity.ai"
 
 function Test-Installed {
