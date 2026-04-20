@@ -56,7 +56,7 @@ export function TocPanel() {
       <Portal container={portalContainer}>
         <div
           id="thread-toc-container"
-          className={cn("x:absolute x:w-(--panel-width)", {
+          className={cn("x:absolute x:z-10 x:w-(--panel-width)", {
             "x:left-(--panel-left)": !isFloating,
             "x:right-4 x:rounded-xl x:border x:border-border/50 x:bg-secondary x:shadow-lg x:md:right-8":
               isFloating,
