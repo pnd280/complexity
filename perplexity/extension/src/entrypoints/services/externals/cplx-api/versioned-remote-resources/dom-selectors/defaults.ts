@@ -6,7 +6,7 @@ import type { DomSelectors } from "@/entrypoints/services/externals/cplx-api/ver
 export const DOM_SELECTORS = {
   ROOT: "#root",
   PAGE_WRAPPER:
-    "#root > .border-subtlest.ring-subtlest.divide-subtlest.bg-base",
+    ":is(#root > .border-subtlest.ring-subtlest.divide-subtlest.bg-base, #root > .contents)",
   SIDEBAR: {
     WRAPPER: String.raw`.group\/sidebar`,
     CHILD: {
@@ -16,8 +16,8 @@ export const DOM_SELECTORS = {
     PIN_SIDEBAR_BUTTON: 'button[data-testid="sidebar-pin-sidebar"]',
   },
   THREAD: {
-    NAVBAR: ".h-headerHeight.fixed.z-10",
-    WRAPPER: String.raw`.h-headerHeight.fixed ~ .\@container.isolate`,
+    NAVBAR: String.raw`:is(.h-headerHeight.fixed.z-10, .h-headerHeight.\@container\/header)`,
+    WRAPPER: String.raw`:is(.h-headerHeight.\@container\/header ~ div .\@container.isolate, .h-headerHeight.fixed.z-10 ~ .\@container.isolate)`,
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
