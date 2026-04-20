@@ -99,15 +99,6 @@ export function generateAccentColorOverrides({ light, dark }: ColorPalette) {
   invariant(dark.super200, "[ThemesUtils] Invalid context");
 
   return dedent`
-    .animate-pplxIndicator {
-      color: var(--primary) !important;
-    }
-
-    ::selection {
-      color: var(--primary) !important;
-      background: --alpha(var(--primary) / 30%) !important;
-    }
-  
     body {
       --super-bg-color: ${light.super100};
       --super-color: ${light.super200};
@@ -118,6 +109,7 @@ export function generateAccentColorOverrides({ light, dark }: ColorPalette) {
       --ring: oklch(${light.super200});
 
       caret-color: var(--primary);
+      --accent-fg-primary: var(--primary);
     }
 
     :root[data-color-scheme="dark"] body {

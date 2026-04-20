@@ -1,12 +1,3 @@
-.animate-pplxIndicator {
-  color: var(--primary) !important;
-}
-
-::selection {
-  color: var(--primary) !important;
-  background: --alpha(var(--primary) / 30%) !important;
-}
-
 body {
   --super-bg-color: 95% 0.042 285.6;
   --super-color: 73.59% 0.141 285.6;
@@ -17,6 +8,7 @@ body {
   --ring: oklch(73.59% 0.141 285.6);
 
   caret-color: var(--primary);
+  --accent-fg-primary: var(--primary);
 }
 
 :root[data-color-scheme="dark"] body {
