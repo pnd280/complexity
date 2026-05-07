@@ -15,12 +15,12 @@
     "r2:versioned-rr:gen": "dotenvx run -f ./src/r2/.env --quiet -- bun ./src/r2/remote-resources/versioned.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1032.0",
-    "@dotenvx/dotenvx": "^1.61.1",
+    "@aws-sdk/client-s3": "^3.1043.0",
+    "@dotenvx/dotenvx": "^1.65.0",
     "chrome-webstore-upload": "^4.0.3",
     "commander": "^14.0.3",
     "glob": "^13.0.6",
-    "inquirer": "^13.4.1",
+    "inquirer": "^13.4.2",
     "mime-types": "^3.0.2",
     "semver": "^7.7.4",
     "web-ext": "^9.4.0"

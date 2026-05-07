@@ -21,12 +21,12 @@ export const DOM_SELECTORS = {
     /** The container that wraps all messages */
     MESSAGE_BLOCKS_WRAPPER: {
       DESKTOP: {
-        NORMAL: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
-        BRANCHED: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col`,
+        NORMAL: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col:not([id])`,
+        BRANCHED: String.raw`.h-headerHeight.\@container\/header ~ div .mx-auto > .flex.flex-col:not([id])`,
       },
       MOBILE: {
-        NORMAL: String.raw`.h-headerHeight ~ div .mx-auto > .flex.flex-col`,
-        BRANCHED: String.raw`.h-headerHeight ~ div .mx-auto > .flex.flex-col`,
+        NORMAL: String.raw`.h-headerHeight ~ div .mx-auto > .flex.flex-col:not([id])`,
+        BRANCHED: String.raw`.h-headerHeight ~ div .mx-auto > .flex.flex-col:not([id])`,
       },
     },
     MESSAGE: {
