@@ -4,7 +4,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   return
 }
 
-$policyPath = "HKLM:\\SOFTWARE\\Policies\\Perplexity\\Comet"
+$policyPath = "HKLM:\SOFTWARE\Policies\Perplexity\Comet"
 $hostPattern = "*://*.perplexity.ai"
 $disableFeaturesFlag = "--disable-features=ExtensionManifestV2Unsupported,ExtensionManifestV2Disabled"
 
