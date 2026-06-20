@@ -13,3 +13,5 @@ TODO.md
 **/*.tsbuildinfo
 **/tsconfig.temp.json
 **/settings.local.json
+**/.pi/prompts.jsonl
+**/.pi/stashed-prompts.jsonl

@@ -35,7 +35,7 @@
     "@types/node": "22.17.2",
     "libav.js": "6.8.8",
     "prettier": "catalog:lint",
-    "terser": "^5.46.2",
+    "terser": "^5.48.0",
     "tsup": "^8.5.1",
     "typescript": "catalog:types"
   },

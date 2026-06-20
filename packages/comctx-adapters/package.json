@@ -20,7 +20,7 @@
     "lint": "eslint ./src"
   },
   "dependencies": {
-    "comctx": "^1.6.1",
+    "comctx": "^1.7.5",
     "tsup": "^8.5.1"
   },
   "devDependencies": {
