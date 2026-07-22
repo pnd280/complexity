@@ -19,14 +19,14 @@
     "lint": "eslint ./src"
   },
   "dependencies": {
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@complexity/eslint-config": "workspace:*",
     "@complexity/typescript-config": "workspace:*",
     "@types/node": "22.17.2",
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "eslint": "catalog:lint",
     "globals": "17.3.0",

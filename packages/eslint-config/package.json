@@ -10,14 +10,14 @@
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "@limegrass/eslint-plugin-import-alias": "^1.6.1",
-    "@typescript-eslint/utils": "^8.58.2",
+    "@typescript-eslint/utils": "^8.61.1",
     "eslint": "catalog:lint",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
+    "eslint-plugin-react-refresh": "^0.5.3",
     "eslint-plugin-unicorn": "62.0.0",
     "globals": "17.3.0",
     "typescript-eslint": "catalog:lint"
